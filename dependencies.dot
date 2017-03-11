@@ -2,7 +2,7 @@ digraph p4_dependencies {
 
     node [shape = box];
 
-    // My attempt at providing a kind of 'legend' for the drawing.
+    // My hack for providing a kind of 'legend' for the drawing.
     // There is likely a better way than this.
     legen [label="Legend:\nSolid arcs are depdendencies according to install instructions.\nDashed arcs represent git submodules, where the 'to' project is auto-installed\nif you run 'git clone --recursive' on the 'from' project.\nDashed arcs from p4factory not shown in this chart to make the other dependencies clearer." style=bold];
 
@@ -43,15 +43,17 @@ digraph p4_dependencies {
     googleapis [label="github.com/\ngoogleapis/googleapis"];
     googleapis [label="github.com/\ngoogle/googletest"];
     davidjamesca_ctypesgen [label="github.com/\ndavidjamesca/ctypesgen"];
-//    root_privileges [label="root privileges"];
 
-    // dependencies
+
+    ////////////////////////////////////////////////////////////////
+    // Dependencies
+    ////////////////////////////////////////////////////////////////
+
     behavioral_model -> thrift;
     behavioral_model -> nanomsg;
     behavioral_model -> nnpy [label="needed if\nyou use\nthe CLI"];
 
     ntf -> mininet;
-//    ntf -> root_privileges;
 
     p4_build -> behavioral_model;
     p4_build -> p4c_bm;
@@ -82,14 +84,12 @@ digraph p4_dependencies {
     floodlight_bigcode -> floodlight_infra [label="submodules/\ninfra" style=dashed];
 
     ptf -> scapy_vxlan;
-//    ptf -> root_privileges;
 
     SAI -> ptf [label="test/\nptf" style=dashed];
     SAI -> davidjamesca_ctypesgen [label="test/saithrift/\nctypesgen" style=dashed];
 
     switch -> p4_build [label="p4-build" style=dashed];
     switch -> SAI [label="switchsai/\nsubmodules/SAI" style=dashed];
-
 
     third_party -> grpc [label="grpc" style=dashed];
     third_party -> nanomsg [label="nanomsg" style=dashed];
