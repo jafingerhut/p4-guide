@@ -79,6 +79,9 @@ Excerpt from 2017-Mar-07 email from Antonin Bas on p4-dev email list
 
 ## `p4lang` repositories by category
 
+A few projects have intentionally been placed into more than one
+category.
+
 Remaining to be categorized:
 
 * [`p4-build`](https://github.com/p4lang/p4-build) - Infrastructure
@@ -148,3 +151,78 @@ Documentation, research papers, and tutorials:
   related to P4
 * [`tutorials`](https://github.com/p4lang/tutorials) - P4 language
   tutorials
+
+
+## `p4lang` repository descriptions
+
+Glossary:
+
+* `API` - Application Programming Interface
+* `HLIR` - High Level Intermediate Representation.  See IR.
+* `IR` - Intermediate Representation - data structures created as a
+  result of parsing P4 source code, representing all relevant details
+  about the source code needed for the back end portion of a compiler
+  to generate configuration specific to a particular P4 target.
+* `PD API` - Protocol Dependent API ?  TBD where to find out more
+  about this.
+* `PI API` - Protocol Independent API.  See `PI` repository [docs
+  directory](https://github.com/p4lang/PI/blob/master/docs/msg_format.md)
+  for some more about this, although I do not know if that particular
+  document is up to date with the code.
+* `v1.0.x` - As of 2017-Mar-12, v1.0.3 is the latest version of the P4
+  specification in the v1.0.x series, although there is a v1.0.4
+  planned by the P4 language design committee to clarify a few things,
+  e.g. eliminating the portion of the specification that says that
+  primitive actions within a compound action are to be performed in
+  parallel -- v1.0.4 will specify sequential behavior within a
+  compound action.
+* `v1.1.x` - As of 2016-Dec-14 when a draft version of the P4_16
+  language specification was released, the v1.1.x series of
+  specifications was no longer publicized and effectively deprecated.
+
+
+### `p4-hlir`
+
+Written in Python.  Parses source code for P4_14 (v1.0.x) and P4
+v1.1.x versions of P4.  Creates Python objects in memory representing
+P4 source code objects such as headers, tables, field lists, actions,
+etc.
+
+Also performs target-independent semantic checks, such as references
+to undefined tables or fields, and dead code elimination,
+e.g. eliminating tables that are never applied, or actions that are
+not an action of any live table.
+
+This repository has not been extended to parse P4_16 programs.  It
+seems that `p4c` is intended to be the new compiler for both P4_14 and
+P4_16.
+
+
+### `p4c-behavioral`
+
+`p4c-behavioral` uses `p4-hlir= as its front end to parse source code
+and produce an IR.  From that IR it generates a C/C++ behavioral model
+(version 1, not for use with bmv2).  This repository has seen very few
+changes since Aug 2016.  Most likely this is because bmv2 in
+`behavioral-model` is recommended over this v1 kind of behavioral
+model, for the reasons described
+[here](https://github.com/p4lang/behavioral-model#why-did-we-need-bmv2-).
+
+
+### `p4c-bm`
+
+`p4c-bm` uses `p4-hlir` as its front end to parse source code and
+produce an IR.  From that IR it can generate the kind of JSON data
+files used as input to the `behavioral-model`, and optionally C++ PD
+code.
+
+
+
+### `p4c`
+
+`p4c` is a front end compiler for both P4_14 and P4_16 programs.  The
+repository also contains a back end for `behavioral-model` (aka
+`bmv2`), and a couple of other sample back ends.  It is intended to be
+able to easily add new back ends to it.
+
+Unlike `p4-hlir` this front end is written in C++ rather than Python.
