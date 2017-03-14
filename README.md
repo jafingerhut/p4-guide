@@ -200,7 +200,7 @@ P4_16.
 
 ### `p4c-behavioral`
 
-`p4c-behavioral` uses `p4-hlir= as its front end to parse source code
+`p4c-behavioral` uses `p4-hlir` as its front end to parse source code
 and produce an IR.  From that IR it generates a C/C++ behavioral model
 (version 1, not for use with bmv2).  This repository has seen very few
 changes since Aug 2016.  Most likely this is because bmv2 in
