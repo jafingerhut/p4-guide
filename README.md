@@ -208,6 +208,10 @@ changes since Aug 2016.  Most likely this is because bmv2 in
 model, for the reasons described
 [here](https://github.com/p4lang/behavioral-model#why-did-we-need-bmv2-).
 
+There may be a conflict between installing this software, and that in
+the `p4c-bm` repo, as they both seem to install a Python module called
+p4c-bm.
+
 
 ### `p4c-bm`
 
