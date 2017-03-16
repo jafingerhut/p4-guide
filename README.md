@@ -233,21 +233,30 @@ Unlike `p4-hlir` this front end is written in C++ rather than Python.
 
 
 
-## Executables and Python modules created during installation
+## Executables created during installation
 
 The executables are shown with the path where they are
 created/installed using the latest README instructions as of March
 2017.
 
-| Repository | Executable |
-| ---------- | ---------- |
-| p4-hlir    | /usr/local/bin/p4-shell |
-| p4-hlir    | /usr/local/bin/p4-validate |
-| p4-hlir    | /usr/local/bin/p4-graphs |
-| p4c-bm     | /usr/local/bin/p4c-bmv2 |
-| p4c        | <repo_root>/build/p4c-bm2-ss |
-| p4c        | <repo_root>/build/p4c-ebpf |
-| p4c        | <repo_root>/build/p4test |
+| Repository | Executable | Notes |
+| ---------- | ---------- | ----- |
+| p4-hlir    | /usr/local/bin/p4-shell      | |
+| p4-hlir    | /usr/local/bin/p4-validate   | |
+| p4-hlir    | /usr/local/bin/p4-graphs     | |
+| p4c-bm     | /usr/local/bin/p4c-bmv2      | Compile P4_14 or v1.1 to bmv2 JSON input file, PD API files, and optionally a few other things. |
+| p4c        | <repo_root>/build/p4c-bm2-ss | Compile P4_14 or P4_16 to bmv2 JSON input file |
+| p4c        | <repo_root>/build/p4c-ebpf   | |
+| p4c        | <repo_root>/build/p4test     | |
+
+Sample command lines to compile P4_14 source file foo.p4 to JSON data
+file that can be used as bmv2 input:
+
+    p4c-bmv2 --json foo.json foo.p4
+    p4c-bm2-ss --p4v 14 -o foo.json foo.p4
+
+
+## Python modules created during installation
 
 Python modules currently installed can be shown using 'pip list'
 command.  You can see which directory the files are in using 'pip show
