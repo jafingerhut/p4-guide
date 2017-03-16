@@ -230,3 +230,36 @@ repository also contains a back end for `behavioral-model` (aka
 able to easily add new back ends to it.
 
 Unlike `p4-hlir` this front end is written in C++ rather than Python.
+
+
+
+## Executables and Python modules created during installation
+
+The executables are shown with the path where they are
+created/installed using the latest README instructions as of March
+2017.
+
+| Repository | Executable |
+| ---------- | ---------- |
+| p4-hlir    | /usr/local/bin/p4-shell |
+| p4-hlir    | /usr/local/bin/p4-validate |
+| p4-hlir    | /usr/local/bin/p4-graphs |
+| p4c-bm     | /usr/local/bin/p4c-bmv2 |
+| p4c        | <repo_root>/build/p4c-bm2-ss |
+| p4c        | <repo_root>/build/p4c-ebpf |
+| p4c        | <repo_root>/build/p4test |
+
+Python modules currently installed can be shown using 'pip list'
+command.  You can see which directory the files are in using 'pip show
+<module-name>' command.  This could be a system-wide directory
+requiring root privileges, or if you have created a Python virtual
+environment, it may be a directory anywhere you wish in the file
+system, without requiring root privileges to add modules.
+
+| Repository | Python module |
+| ---------- | ------------- |
+| p4-hlir    | p4-hlir |
+| p4c-bm     | wheel (not P4-specific module) |
+| p4c-bm     | Tenjin (not P4-specific module) |
+| p4c-bm     | p4-hlir |
+| p4c-bm     | p4c-bm |
