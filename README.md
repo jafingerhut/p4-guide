@@ -158,6 +158,13 @@ Documentation, research papers, and tutorials:
 Glossary:
 
 * `API` - Application Programming Interface
+* `bmv2` - Behavioral Model Version 2.  Contained in the
+  `behavioral-model` repository.
+* `bmv2 JSON configuration file` - a data file produced by some of the
+  compilers below that is read by the bmv2 behavioral model during
+  initialization.  Contains all data about a particular source P4
+  program that is needed by the behavioral model code to forward
+  packets as that P4 program specifies.
 * `HLIR` - High Level Intermediate Representation.  See IR.
 * `IR` - Intermediate Representation - data structures created as a
   result of parsing P4 source code, representing all relevant details
@@ -205,8 +212,7 @@ and produce an IR.  From that IR it generates a C/C++ behavioral model
 (version 1, not for use with bmv2).  This repository has seen very few
 changes since Aug 2016.  Most likely this is because bmv2 in
 `behavioral-model` is recommended over this v1 kind of behavioral
-model, for the reasons described
-[here](https://github.com/p4lang/behavioral-model#why-did-we-need-bmv2-).
+model (see `behavioral-model` below for more info).
 
 There may be a conflict between installing this software, and that in
 the `p4c-bm` repo, as they both seem to install a Python module called
@@ -216,10 +222,9 @@ p4c-bm.
 ### `p4c-bm`
 
 `p4c-bm` uses `p4-hlir` as its front end to parse source code and
-produce an IR.  From that IR it can generate the kind of JSON data
-files used as input to the `behavioral-model`, and optionally C++ PD
-code.
-
+produce an IR.  From that IR it can generate a bmv2 JSON configuration
+file, used as input to the `behavioral-model`.  It can also generate
+C++ PD code.
 
 
 ### `p4c`
@@ -234,6 +239,23 @@ Unlike `p4-hlir` this front end is written in C++ rather than Python.
 
 ### `behavioral-model`
 
+`behavioral-model` contains the code for what is often called `bmv2`
+(an abbreviation for "Behavioral Model Version 2").
+
+The 1st version of the behavioral model, produced as output from the
+`p4c-behavioral` git repo, os like a 'P4 to C compiler', i.e. source
+to source translation.  Changing the P4 program requires recompiling
+to a new C program, then recompiling that C code.
+
+bmv2 is more like an _interpreter_ for all possible P4 programs, which
+bmv2 configures itself to behave as, using the contents of the bmv2
+JSON configuration file produced by a couple of the compilers above.
+Changing the P4 source code requires recompiling it to produce a new
+bmv2 JSON configuration file, but does not require recompiling bmv2.
+
+See
+[here](https://github.com/p4lang/behavioral-model#why-did-we-need-bmv2-)
+for more discussion of why bmv2 was created.
 
 
 ## Executables created during installation
@@ -257,11 +279,20 @@ created/installed using the latest README instructions as of March
 | behavioral-model | /usr/local/bin/simple_switch     | executable compiled from C/C++ code |
 | behavioral-model | /usr/local/bin/simple_switch_CLI | wrapper script for sswitch_CLI.py |
 
-Sample command lines to compile P4_14 source file foo.p4 to JSON data
-file that can be used as bmv2 input:
+Sample command lines to compile P4_14 source file foo.p4 to bmv2 JSON
+configuration file:
 
+    # foo.p4 is P4_14 source code
     p4c-bmv2 --json foo.json foo.p4
     p4c-bm2-ss --p4v 14 -o foo.json foo.p4
+
+    # foo.p4 is P4_16 source code
+    p4c-bm2-ss -o foo.json foo.p4
+
+Sample command line for converting P4_14 source code to P4_16 source
+code:
+
+    p4test --p4v 14 --pp foo-translated-to-p4-16.p4 foo-in-p4-14.p4
 
 
 ## Python modules created during installation
