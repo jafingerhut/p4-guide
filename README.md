@@ -232,6 +232,9 @@ able to easily add new back ends to it.
 Unlike `p4-hlir` this front end is written in C++ rather than Python.
 
 
+### `behavioral-model`
+
+
 
 ## Executables created during installation
 
@@ -248,6 +251,11 @@ created/installed using the latest README instructions as of March
 | p4c        | <repo_root>/build/p4c-bm2-ss | Compile P4_14 or P4_16 to bmv2 JSON input file |
 | p4c        | <repo_root>/build/p4c-ebpf   | |
 | p4c        | <repo_root>/build/p4test     | |
+| behavioral-model | /usr/local/bin/bm_CLI            | wrapper script for runtime_CLI.py |
+| behavioral-model | /usr/local/bin/bm_nanomsg_events | wrapper script for nanomsg_client.py |
+| behavioral-model | /usr/local/bin/bm_p4dbg          | wrapper script for p4dbg.py |
+| behavioral-model | /usr/local/bin/simple_switch     | executable compiled from C/C++ code |
+| behavioral-model | /usr/local/bin/simple_switch_CLI | wrapper script for sswitch_CLI.py |
 
 Sample command lines to compile P4_14 source file foo.p4 to JSON data
 file that can be used as bmv2 input:
@@ -272,3 +280,4 @@ system, without requiring root privileges to add modules.
 | p4c-bm     | Tenjin (not P4-specific module) |
 | p4c-bm     | p4-hlir |
 | p4c-bm     | p4c-bm |
+| behavioral-model | Does not install anything that shows up in output of 'pip list', but does install many Python files in <some-python-install-dir>/dist-packages directory, e.g. bmpy_utils.py, bm_runtime/ and sswitch_runtime/ directories, and .py files that have shell wrapper scripts for them installed in /usr/local/bin, listed above |
