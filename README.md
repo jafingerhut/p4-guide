@@ -269,8 +269,8 @@ created/installed using the latest README instructions as of March
 | p4-hlir    | /usr/local/bin/p4-shell      | |
 | p4-hlir    | /usr/local/bin/p4-validate   | |
 | p4-hlir    | /usr/local/bin/p4-graphs     | |
-| p4c-bm     | /usr/local/bin/p4c-bmv2      | Compile P4_14 or v1.1 to bmv2 JSON input file, PD API files, and optionally a few other things. |
-| p4c        | <repo_root>/build/p4c-bm2-ss | Compile P4_14 or P4_16 to bmv2 JSON input file |
+| p4c-bm     | /usr/local/bin/p4c-bmv2      | Compile P4_14 or v1.1 to bmv2 JSON configuration file, PD API files, and optionally a few other things. |
+| p4c        | <repo_root>/build/p4c-bm2-ss | Compile P4_14 or P4_16 to bmv2 JSON configuration file |
 | p4c        | <repo_root>/build/p4c-ebpf   | |
 | p4c        | <repo_root>/build/p4test     | |
 | behavioral-model | /usr/local/bin/bm_CLI            | wrapper script for runtime_CLI.py |
