@@ -1,0 +1,14 @@
+--langdef=p4
+--langmap=p4:.p4
+--regex-p4=/const[ \t]+([a-zA-Z0-9_<>]+)[ \t]+([a-zA-Z0-9_]+)/\2/d,definition/
+--regex-p4=/enum[ \t]+([a-zA-Z0-9_]+)/\1/d,definition/
+--regex-p4=/extern[ \t]+([a-zA-Z0-9_]+)/\1/d,definition/
+--regex-p4=/header[ \t]+([a-zA-Z0-9_]+)/\1/t,typedefs/
+--regex-p4=/action[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
+--regex-p4=/control[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
+--regex-p4=/package[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
+--regex-p4=/parser[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
+--regex-p4=/state[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
+--regex-p4=/struct[ \t]+([a-zA-Z0-9_]+)/\1/t,typedefs/
+--regex-p4=/typedef[ \t]+([a-zA-Z0-9_<>]+)[ \t]+([a-zA-Z0-9_]+)/\2/t,typedefs/
+--regex-p4=/table[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
