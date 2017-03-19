@@ -22,7 +22,7 @@ repositories.
 All p4lang repositories as of 2017-Mar-10, sorted by name (case
 insensitive), with their descriptions:
 
-* [`behaviorial-model`](https://github.com/p4lang/behavioral-model) -
+* [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
   Rewrite of the behavioral model as a C++ project without
   auto-generated code (except for the PD interface)
 * [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
@@ -55,7 +55,7 @@ insensitive), with their descriptions:
 * [`scapy-vxlan`](https://github.com/p4lang/scapy-vxlan) - A scapy
   clone, with support for additional packet headers
 * [`switch`](https://github.com/p4lang/switch) - Consolidated switch
-  repo (API, SAI and Nettlink)
+  repo (API, SAI and Netlink)
 * [`third-party`](https://github.com/p4lang/third-party) - Third-party
   dependencies for p4lang software
 * [`thrift`](https://github.com/p4lang/thrift) - Mirror of Apache
@@ -95,7 +95,7 @@ Remaining to be categorized:
 * [`PI`](https://github.com/p4lang/PI) - P4 PI headers and
   target-independent code
 * [`switch`](https://github.com/p4lang/switch) - Consolidated switch
-  repo (API, SAI and Nettlink)
+  repo (API, SAI and Netlink)
 
 P4 compilers, some only front end, some front end plus back end for
 one or more P4 targets:
@@ -111,7 +111,7 @@ one or more P4 targets:
 P4 behavioral models, for running P4 programs on general purpose
 computers:
 
-* [`behaviorial-model`](https://github.com/p4lang/behavioral-model) -
+* [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
   Rewrite of the behavioral model as a C++ project without
   auto-generated code (except for the PD interface).  Also known as
   `bmv2`.
@@ -243,7 +243,7 @@ Unlike `p4-hlir` this front end is written in C++ rather than Python.
 (an abbreviation for "Behavioral Model Version 2").
 
 The 1st version of the behavioral model, produced as output from the
-`p4c-behavioral` git repo, os like a 'P4 to C compiler', i.e. source
+`p4c-behavioral` git repo, is like a 'P4 to C compiler', i.e. source
 to source translation.  Changing the P4 program requires recompiling
 to a new C program, then recompiling that C code.
 
@@ -258,7 +258,7 @@ See
 for more discussion of why bmv2 was created.
 
 
-## Executables created during installation
+## Executable files created during installation
 
 The executables are shown with the path where they are
 created/installed using the latest README instructions as of March

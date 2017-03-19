@@ -11,10 +11,9 @@ code.
 ## Tags
 
 [Exuberant ctags](http://ctags.sourceforge.net/) can be configured to
-create tags for for Emacs, Vim, and many other text editors for
-quickly finding definitions of some symbols, such as actions, control
-flow functions, and headers.  On Ubuntu Linux, it can be installed
-with:
+create tags for Emacs, Vim, and many other text editors for quickly
+finding definitions of some symbols, such as actions, control flow
+functions, and headers.  On Ubuntu Linux, it can be installed with:
 
     sudo apt-get install exuberant-ctags
 
@@ -23,7 +22,7 @@ program, first edit your `$HOME/.ctags` to add lines like the ones in
 the file `dot-ctags-for-p4-14.txt` or `dot-ctags-for-p4-16.txt`.
 
 To create a TAGS file for use with Emacs, for all source files with a
-`.p4` or `.h` suffix in the current directory and all subdirectories,
+`.p4` or `.h` suffix in the current directory and all sub-directories,
 use this command:
 
     ctags-exuberant -e -R
