@@ -18,14 +18,18 @@ automatically use C/C++ mode when loaded:
 
 * Emacs: Add a line like this in your `init.el` file:
 
+```
     (setq auto-mode-alist (cons '("\\.p4$" . c++-mode) auto-mode-alist))
+```
 
 * Vim: Add lines like the following in your `$HOME/.vimrc` file:
 
+```
     augroup filetypedetect
       au BufRead,BufNewFile *.p4 setfiletype c
       " associate *.p4 with c filetype
     augroup END
+```
 
 
 ## Tags
