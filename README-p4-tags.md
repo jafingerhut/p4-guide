@@ -27,12 +27,20 @@ use this command:
 
     ctags-exuberant -e -R
 
+Remove the '-e' command line option if you want to generate a 'tags'
+file for Vim.
+
 You can also give an explicit list of file names instead of the -R
 option, if there are some files you do not wish to include.  The
 following command achieves a similar effect as the one above, but may
 be more easily modified to include or exclude the files you want:
 
     find . -name '*.p4' -o -name '*.h' | xargs ctags-exuberant -e
+
+Instructions for using 'tags' file to navigate source code:
+
+* Vim: http://vim.wikia.com/wiki/Browsing_programs_with_tags
+* Emacs: https://www.emacswiki.org/emacs/EmacsTags
 
 
 ## Notes on P4_16 keywords
