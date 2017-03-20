@@ -7,6 +7,26 @@ P4 is close enough in syntax to C/C++ that Emacs `c++-mode` works well
 for color highlighting, and figuring out the indentation level of
 code.
 
+Force current buffer/file-being-edited to use C/C++ syntax for color
+highlighting and auto-indent:
+
+* Emacs: `M-x c++-mode RET`
+* Vim: `:set syntax=c RET`
+
+Cause all files with a suffix of `.p4` in their file name to
+automatically use C/C++ mode when loaded:
+
+* Emacs: Add a line like this in your `init.el` file:
+
+    (setq auto-mode-alist (cons '("\\.p4$" . c++-mode) auto-mode-alist))
+
+* Vim: Add lines like the following in your `$HOME/.vimrc` file:
+
+    augroup filetypedetect
+      au BufRead,BufNewFile *.p4 setfiletype c
+      " associate *.p4 with c filetype
+    augroup END
+
 
 ## Tags
 
