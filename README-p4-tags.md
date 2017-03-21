@@ -16,12 +16,6 @@ highlighting and auto-indent:
 Cause all files with a suffix of `.p4` in their file name to
 automatically use C/C++ mode when loaded:
 
-* Emacs: Add a line like this in your `init.el` file:
-
-```
-    (setq auto-mode-alist (cons '("\\.p4$" . c++-mode) auto-mode-alist))
-```
-
 * Vim: Add lines like the following in your `$HOME/.vimrc` file:
 
 ```
@@ -30,6 +24,38 @@ automatically use C/C++ mode when loaded:
       " associate *.p4 with c filetype
     augroup END
 ```
+
+* Emacs: Add a line like this in your `init.el` file:
+
+```
+    (setq auto-mode-alist (cons '("\\.p4$" . c++-mode) auto-mode-alist))
+```
+
+
+## cscope
+
+While the [`cscope`](http://cscope.sourceforge.net/) program was
+originally written for C/C++ programs, it works quite well on P4
+programs, too.  To install it on Ubuntu Linux:
+
+    sudo apt-get install cscope
+
+The first command below creates a file `cscope.files` that contains a
+list of names of all files with suffixes `.p4` and `.h` in the current
+directory and all subdirectories.  The second command reads that list
+of file names, and builds an index file `cscope.out` of symbols in
+those files.
+
+    find . -name '*.p4' -o -name '*.h' > cscope.files
+    cscope -bk
+
+If the links below do not help you using cscope in your chosen editor,
+check the [`cscope` page](http://cscope.sourceforge.net/) for more.
+
+* Vim: One page found by Google search for the terms "vim cscope"
+  [here](http://cscope.sourceforge.net/cscope_vim_tutorial.html)
+* Emacs: `xcscope` is an Emacs package that makes it straightforward
+  to use the cscope search capabilities from inside of Emacs.
 
 
 ## Tags
