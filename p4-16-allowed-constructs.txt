@@ -1,0 +1,54 @@
+top level
+    const
+    typedef
+    header
+    struct
+    variable decl
+    action
+        const, variable decl, assignment, action call
+        if
+            if or anything else that can appear inside of action
+        block statement { } - see below
+        return - 2017-Mar-30 compiler crashes, p4c issue #420
+        exit - 2017-Mar-30 p4c-bm2-ss allows in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.
+        NO: type definitions
+        NO: switch, transition
+        NO: parser, state, action, table, control
+    parser
+        const - TBD: Allowed?  2017-Mar-30 p4c gives error
+        variable decl
+        state
+            const, variable decl, assignment, action call
+            action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
+            block statement { } - see below
+            transition <statename>
+            transition select ....
+            NO: type definitions
+            NO: if, switch, return, exit
+            NO: parser, state, action, table, control
+    control
+        const
+        variable decl
+        action - see 'action' above
+        table
+            key = { ... }
+            actions = { <action_spec>; ... }
+            default_action = <action_spec>;
+        apply { } (body of control block)
+            const, variable decl, assignment, action call
+            if
+                if or anything else that can appear inside of control apply { }
+            return, exit
+            <table>.apply()
+            switch (<table>.apply().action_run) { ... }
+            block statement { }
+                const, variable decl, assignment, action call
+                if (not allowed inside 'state')
+                return, exit (not allowed inside 'state')
+                <table>.apply() (only in control body 'apply')
+                switch (<table>.apply().action_run) { ... } (only in control body 'apply')
+                block statement { }
+            NO: type definitions
+            NO: transition
+            NO: parser, state, action, table, control
+    NO: state, table - TBD: Should table be allowed at top level?
