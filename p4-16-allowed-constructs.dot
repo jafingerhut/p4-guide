@@ -1,0 +1,121 @@
+digraph p4_16_allowed_construct_nesting {
+
+    node [shape=box];
+    rankdir=LR;
+    
+    
+    toplevel -> parserDeclaration;
+    parserDeclaration [label="parser"];
+    toplevel -> constantDeclaration1;
+    constantDeclaration1 [label="const"];
+    toplevel -> typedefDeclaration;
+    typedefDeclaration [label="typedef"];
+    toplevel -> headerTypeDeclaration;
+    headerTypeDeclaration [label="header"];
+    toplevel -> structTypeDeclaration;
+    structTypeDeclaration [label="struct"];
+    toplevel -> variableDeclaration1;
+    variableDeclaration1 [label="variable decl"];
+    toplevel -> actionDeclaration;
+    actionDeclaration [label="action"];
+    toplevel -> controlDeclaration;
+    controlDeclaration [label="control"];
+
+    // this is 'parser <name> (<parameters>) { ... }'
+    parserDeclaration -> constantDeclaration2;
+    constantDeclaration2 [label="const"];
+    parserDeclaration -> variableDeclaration2;
+    variableDeclaration2 [label="variable decl"];
+    parserDeclaration -> parserState;
+
+    parserState [label="state"];
+    parserState -> constantDeclaration3 [color=red label="TBD: should\nbe allowed?" decorate=True];
+    constantDeclaration3 [label="const"];
+    parserState -> variableDeclaration3;
+    variableDeclaration3 [label="variable decl"];
+    parserState -> actionCallStatement3 [color=red label="TBD: Allowed?\np4c issue #413\np4-spec issue #151" decorate=True];
+    actionCallStatement3 [label="action call"];
+    parserState -> assignmentStatement3;
+    assignmentStatement3 [label="assignment"];
+    parserState -> blockStatement;
+    parserState -> transitionStatement;
+    transitionStatement [label="transition <statename>;\ntransition select ... ]"];
+
+    controlDeclaration -> constantDeclaration4;
+    constantDeclaration4 [label="const"];
+    controlDeclaration -> variableDeclaration4;
+    variableDeclaration4 [label="variable decl"];
+    controlDeclaration -> actionDeclaration;
+    controlDeclaration -> tableDeclaration;
+    controlDeclaration -> controlBody;
+    controlBody [label="control body\napply { }"];
+
+    tableDeclaration [label="table"];
+    tableDeclaration -> tablePropertyKey;
+    tablePropertyKey [label="key = { ... }"];
+    tableDeclaration -> tablePropertyActions;
+    tablePropertyActions [label="actions = { ... }"];
+    tableDeclaration -> tablePropertyDefaultAction;
+    tablePropertyDefaultAction [label="default_action = <action_name>;"];
+
+    actionDeclaration -> constantDeclaration5;
+    constantDeclaration5 [label="const"];
+    actionDeclaration -> variableDeclaration5;
+    variableDeclaration5 [label="variable decl"];
+    actionDeclaration -> actionCallStatement5;
+    actionCallStatement5 [label="action call"];
+    actionDeclaration -> assignmentStatement5;
+    assignmentStatement5 [label="assignment"];
+    actionDeclaration -> blockStatement;
+    actionDeclaration -> conditionalStatement5;
+    conditionalStatement5 [label="if"];
+    conditionalStatement5 -> conditionalStatement5;
+    actionDeclaration -> returnStatement5 [color=red label="2017-Mar-30 compiler\ncrashes - p4c issue #420" decorate=True];
+    returnStatement5 [label="return"];
+
+    // I am making up actionCallStatement.  It might most closely
+    // correspond in P4_16 grammar to assignmentOrMethodCallStatement.
+    //actionCallStatement
+
+    controlBody -> constantDeclaration6;
+    constantDeclaration6 [label="const"];
+    controlBody -> variableDeclaration6;
+    variableDeclaration6 [label="variable decl"];
+    controlBody -> actionCallStatement6;
+    actionCallStatement6 [label="action call"];
+    controlBody -> assignmentStatement6;
+    assignmentStatement6 [label="assignment"];
+    controlBody -> blockStatement;
+    controlBody -> conditionalStatement6;
+    conditionalStatement6 [label="if"];
+    conditionalStatement6 -> conditionalStatement6;
+    controlBody -> returnStatement6;
+    returnStatement6 [label="return"];
+    controlBody -> tableApplyCall6;
+    tableApplyCall6 [label="<table>.apply()"];
+    controlBody -> switchStatement6;
+    switchStatement6 [label="switch (<table>.apply().action_run) { ... }"];
+
+    blockStatement [label="block statement\n{ }"];
+    blockStatement -> constantDeclaration7;
+    constantDeclaration7 [label="const"];
+    blockStatement -> variableDeclaration7;
+    variableDeclaration7 [label="variable decl"];
+    blockStatement -> actionCallStatement7;
+    actionCallStatement7 [label="action call"];
+    blockStatement -> assignmentStatement7;
+    assignmentStatement7 [label="assignment"];
+    blockStatement -> blockStatement;
+    blockStatement -> conditionalStatement7 [label="unless block is\ninside state" decorate=True];
+    conditionalStatement7 [label="if"];
+    conditionalStatement7 -> conditionalStatement7;
+    blockStatement -> returnStatement7 [label="unless block is\ninside state" decorate=True];
+    returnStatement7 [label="return"];
+    blockStatement -> tableApplyCall7 [label="only in\ncontrol body\n'apply'"];
+    tableApplyCall7 [label="<table>.apply()"];
+    blockStatement -> switchStatement7 [label="only in\ncontrol body\n'apply'"];
+    switchStatement7 [label="switch (<table>.apply().action_run) { ... }"];
+
+//    conditionalStatement [label="if"];
+//    conditionalStatement -> conditionalStatement;
+}
