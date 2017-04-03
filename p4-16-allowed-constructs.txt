@@ -3,7 +3,8 @@ top level
     typedef
     header
     struct
-    variable decl
+    NO: variable decl
+    NO: state, table - TBD: Should table be allowed at top level?
     action
         const, variable decl, assignment, action call
         return - 2017-Mar-30 compiler crashes, p4c issue #420
@@ -48,4 +49,3 @@ top level
             NO: type definitions
             NO: transition
             NO: parser, state, action, table, control
-    NO: state, table - TBD: Should table be allowed at top level?

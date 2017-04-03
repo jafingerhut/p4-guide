@@ -14,8 +14,6 @@ digraph p4_16_allowed_construct_nesting {
     headerTypeDeclaration [label="header"];
     toplevel -> structTypeDeclaration;
     structTypeDeclaration [label="struct"];
-    toplevel -> variableDeclaration1;
-    variableDeclaration1 [label="variable decl"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;
