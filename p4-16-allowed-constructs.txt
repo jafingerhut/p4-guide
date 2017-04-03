@@ -38,6 +38,7 @@ top level
         apply { } (body of control block)
             const, variable decl, assignment, action call
             <table>.apply()
+            <control_name>.apply()
             switch (<table>.apply().action_run) { ... }
             return, exit
             if
