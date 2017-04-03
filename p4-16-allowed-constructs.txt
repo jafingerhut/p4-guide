@@ -6,29 +6,30 @@ top level
     variable decl
     action
         const, variable decl, assignment, action call
-        if
-            if or anything else that can appear inside of action
-        block statement { } - see below
         return - 2017-Mar-30 compiler crashes, p4c issue #420
         exit - 2017-Mar-30 p4c-bm2-ss allows in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
+        if
+            anything allowed directly inside action
+        block statement { }
+            anything allowed directly inside action
         NO: type definitions
         NO: switch, transition
         NO: parser, state, action, table, control
     parser
         const, variable decl
         state
-            const - TBD: Allowed?  2017-Mar-30 p4c gives error.  p4c issue #422
             const, variable decl, assignment, action call
+            const - TBD: Allowed?  2017-Mar-30 p4c gives error.  p4c issue #422
             action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
-            block statement { } - see below
-            transition <statename>
-            transition select ....
+            block statement { }
+                anything allowed directly inside state
+            transition <statename> (must be last in state definition)
+            transition select .... (must be last in state definition)
             NO: type definitions
             NO: if, switch, return, exit
             NO: parser, state, action, table, control
     control
-        const
-        variable decl
+        const, variable decl
         action - see 'action' above
         table
             key = { ... }
@@ -36,18 +37,13 @@ top level
             default_action = <action_spec>;
         apply { } (body of control block)
             const, variable decl, assignment, action call
-            if
-                if or anything else that can appear inside of control apply { }
-            return, exit
             <table>.apply()
             switch (<table>.apply().action_run) { ... }
+            return, exit
+            if
+                anything allowed directly inside control body apply { }
             block statement { }
-                const, variable decl, assignment, action call
-                if (not allowed inside 'state')
-                return, exit (not allowed inside 'state')
-                <table>.apply() (only in control body 'apply')
-                switch (<table>.apply().action_run) { ... } (only in control body 'apply')
-                block statement { }
+                anything allowed directly inside control body apply { }
             NO: type definitions
             NO: transition
             NO: parser, state, action, table, control
