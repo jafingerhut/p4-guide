@@ -10,14 +10,14 @@ top level
             if or anything else that can appear inside of action
         block statement { } - see below
         return - 2017-Mar-30 compiler crashes, p4c issue #420
-        exit - 2017-Mar-30 p4c-bm2-ss allows in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.
+        exit - 2017-Mar-30 p4c-bm2-ss allows in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
         NO: type definitions
         NO: switch, transition
         NO: parser, state, action, table, control
     parser
-        const - TBD: Allowed?  2017-Mar-30 p4c gives error
-        variable decl
+        const, variable decl
         state
+            const - TBD: Allowed?  2017-Mar-30 p4c gives error.  p4c issue #422
             const, variable decl, assignment, action call
             action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
             block statement { } - see below

@@ -29,7 +29,7 @@ digraph p4_16_allowed_construct_nesting {
     parserDeclaration -> parserState;
 
     parserState [label="state"];
-    parserState -> constantDeclaration3 [color=red label="TBD: should\nbe allowed?" decorate=True];
+    parserState -> constantDeclaration3 [color=red label="TBD: Allowed?\np4c issue #422" decorate=True];
     constantDeclaration3 [label="const"];
     parserState -> variableDeclaration3;
     variableDeclaration3 [label="variable decl"];
@@ -72,6 +72,8 @@ digraph p4_16_allowed_construct_nesting {
     conditionalStatement5 -> conditionalStatement5;
     actionDeclaration -> returnStatement5 [color=red label="2017-Mar-30 compiler\ncrashes - p4c issue #420" decorate=True];
     returnStatement5 [label="return"];
+    actionDeclaration -> exitStatement5;
+    exitStatement5 [label="exit"];
 
     // I am making up actionCallStatement.  It might most closely
     // correspond in P4_16 grammar to assignmentOrMethodCallStatement.
@@ -91,6 +93,8 @@ digraph p4_16_allowed_construct_nesting {
     conditionalStatement6 -> conditionalStatement6;
     controlBody -> returnStatement6;
     returnStatement6 [label="return"];
+    controlBody -> exitStatement6;
+    exitStatement6 [label="exit"];
     controlBody -> tableApplyCall6;
     tableApplyCall6 [label="<table>.apply()"];
     controlBody -> switchStatement6;
@@ -111,9 +115,11 @@ digraph p4_16_allowed_construct_nesting {
     conditionalStatement7 -> conditionalStatement7;
     blockStatement -> returnStatement7 [label="unless block is\ninside state" decorate=True];
     returnStatement7 [label="return"];
-    blockStatement -> tableApplyCall7 [label="only in\ncontrol body\n'apply'"];
+    blockStatement -> exitStatement7 [label="unless block is\ninside state" decorate=True];
+    exitStatement7 [label="exit"];
+    blockStatement -> tableApplyCall7 [label="only in\ncontrol body\n'apply'" decorate=True];
     tableApplyCall7 [label="<table>.apply()"];
-    blockStatement -> switchStatement7 [label="only in\ncontrol body\n'apply'"];
+    blockStatement -> switchStatement7 [label="only in\ncontrol body\n'apply'" decorate=True];
     switchStatement7 [label="switch (<table>.apply().action_run) { ... }"];
 
 //    conditionalStatement [label="if"];
