@@ -27,7 +27,7 @@ digraph p4_16_allowed_construct_nesting {
     parserDeclaration -> parserState;
 
     parserState [label="state"];
-    parserState -> constantDeclaration3 [color=red label="TBD: Allowed?\np4c issue #422" decorate=True];
+    parserState -> constantDeclaration3;
     constantDeclaration3 [label="const"];
     parserState -> variableDeclaration3;
     variableDeclaration3 [label="variable decl"];

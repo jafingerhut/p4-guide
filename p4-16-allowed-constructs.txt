@@ -20,7 +20,6 @@ top level
         const, variable decl
         state
             const, variable decl, assignment, action call
-            const - TBD: Allowed?  2017-Mar-30 p4c gives error.  p4c issue #422
             action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
             block statement { }
                 anything allowed directly inside state
