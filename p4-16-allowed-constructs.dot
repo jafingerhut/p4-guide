@@ -4,6 +4,7 @@ digraph p4_16_allowed_construct_nesting {
     rankdir=LR;
     
     
+    toplevel [label="top level"];
     toplevel -> parserDeclaration;
     parserDeclaration [label="parser"];
     toplevel -> constantDeclaration1;
@@ -14,6 +15,14 @@ digraph p4_16_allowed_construct_nesting {
     headerTypeDeclaration [label="header"];
     toplevel -> structTypeDeclaration;
     structTypeDeclaration [label="struct"];
+    toplevel -> enumDeclaration;
+    enumDeclaration [label="enum"];
+    toplevel -> errorDeclaration;
+    errorDeclaration [label="error"];
+    toplevel -> matchKindDeclaration;
+    matchKindDeclaration [label="match_kind"];
+    toplevel -> typeDeclarations;
+    typeDeclarations [label="type declarations for\nparser, control, package\n(most commonly useful inside\narchitecture model files)"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;

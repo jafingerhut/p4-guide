@@ -3,6 +3,10 @@ top level
     typedef
     header
     struct
+    enum
+    error
+    match_kind
+    type declarations for parser, control, package (most commonly useful inside architecture model files)
     NO: variable decl
     NO: state, table - TBD: Should table be allowed at top level?
     action
