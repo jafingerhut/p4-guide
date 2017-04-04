@@ -11,8 +11,7 @@ top level
     NO: state, table - TBD: Should table be allowed at top level?
     action
         const, variable decl, assignment, action call
-        return - 2017-Mar-30 compiler crashes, p4c issue #420
-        exit - 2017-Mar-30 p4c-bm2-ss allows in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
+        return, exit - 2017-Mar-30 p4c-bm2-ss allows exit in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
         if
             anything allowed directly inside action
         block statement { }

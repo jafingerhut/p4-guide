@@ -76,7 +76,7 @@ digraph p4_16_allowed_construct_nesting {
     assignmentStatement5 [label="assignment"];
     actionDeclaration -> actionCallStatement5;
     actionCallStatement5 [label="action call"];
-    actionDeclaration -> returnStatement5 [color=red label="2017-Mar-30 compiler\ncrashes - p4c issue #420" decorate=True];
+    actionDeclaration -> returnStatement5;
     returnStatement5 [label="return"];
     actionDeclaration -> exitStatement5;
     exitStatement5 [label="exit"];
