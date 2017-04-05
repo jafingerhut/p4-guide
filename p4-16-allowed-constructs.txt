@@ -1,8 +1,5 @@
 TBD to add:
-* instantiation of parser
 * instantiation of package
-* invoke parser
-* invoke control
 * extern function call
 
 
