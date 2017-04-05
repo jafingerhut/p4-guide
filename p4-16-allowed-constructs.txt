@@ -19,7 +19,8 @@ top level
     enum
     error
     match_kind
-    instantiation of control, extern object
+    instantiation of control block, extern object
+    NO: instantiation of parser
     NO: variable decl
     NO: state, table - TBD: Should table be allowed at top level?
     action
@@ -35,11 +36,13 @@ top level
         NO: parser, state, action, table, control
     parser
         const, variable decl
-        instantiation of extern object
+        instantiation of parser, extern object
+	NO: instantiation of control block
         state
             const, variable decl, assignment, action call
             action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
-            extern object method call (p4test allows, p4c-bm2-ss does not)
+            extern object method call (p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
+	    <subparser>.apply()
             block statement { }
                 anything allowed directly inside state
             transition <statename> (must be last in state definition)
@@ -49,7 +52,8 @@ top level
             NO: parser, state, action, table, control
     control
         const, variable decl
-        instantiation of control, extern object
+        instantiation of control block, extern object
+        NO: instantiation of parser
         action - see 'action' above
         table
             key = { ... }

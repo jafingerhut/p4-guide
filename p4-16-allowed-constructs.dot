@@ -40,6 +40,8 @@ digraph p4_16_allowed_construct_nesting {
     constantDeclaration2 [label="const"];
     parserDeclaration -> variableDeclaration2;
     variableDeclaration2 [label="variable decl"];
+    parserDeclaration -> parserInstantiation2;
+    parserInstantiation2 [label="instantiation of parser"];
     parserDeclaration -> externObjectInstantiation2;
     externObjectInstantiation2 [label="instantiation of extern object"];
     parserDeclaration -> parserState;
@@ -53,6 +55,8 @@ digraph p4_16_allowed_construct_nesting {
     assignmentStatement3 [label="assignment"];
     parserState -> actionCallStatement3 [color=red label="TBD: Allowed?\np4c issue #413\np4-spec issue #151" decorate=True];
     actionCallStatement3 [label="action call"];
+    parserState -> parserApplyCallStatement3;
+    parserApplyCallStatement3 [label="<subparser>.apply()"];
     parserState -> externObjectMethodCallStatement3;
     externObjectMethodCallStatement3 [label="extern object method call"];
     parserState -> blockStatement3;
