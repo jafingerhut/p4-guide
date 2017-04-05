@@ -3,8 +3,13 @@ digraph p4_16_allowed_construct_nesting {
     node [shape=box];
     rankdir=LR;
     
-    
     toplevel [label="top level"];
+    legend_bold_orange_box [label="Things inside dashed lines\nare either only allowed in,\nor most useful within,\narchitecture model files." style=dashed color=orange];
+
+    toplevel -> typeDeclaration;
+    typeDeclaration [label="type declarations for\nparser, control, package" style=dashed color=orange];
+    toplevel -> externDeclaration;
+    externDeclaration [label="extern function and\n object declarations" style=dashed color=orange];
     toplevel -> parserDeclaration;
     parserDeclaration [label="parser"];
     toplevel -> constantDeclaration1;
@@ -21,8 +26,10 @@ digraph p4_16_allowed_construct_nesting {
     errorDeclaration [label="error"];
     toplevel -> matchKindDeclaration;
     matchKindDeclaration [label="match_kind"];
-    toplevel -> typeDeclarations;
-    typeDeclarations [label="type declarations for\nparser, control, package\n(most commonly useful inside\narchitecture model files)"];
+    toplevel -> controlInstantiation;
+    controlInstantiation [label="instantiation of control"];
+    toplevel -> externObjectInstantiation;
+    externObjectInstantiation [label="instantiation of extern object"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;
@@ -33,6 +40,8 @@ digraph p4_16_allowed_construct_nesting {
     constantDeclaration2 [label="const"];
     parserDeclaration -> variableDeclaration2;
     variableDeclaration2 [label="variable decl"];
+    parserDeclaration -> externObjectInstantiation2;
+    externObjectInstantiation2 [label="instantiation of extern object"];
     parserDeclaration -> parserState;
 
     parserState [label="state"];
@@ -44,6 +53,8 @@ digraph p4_16_allowed_construct_nesting {
     assignmentStatement3 [label="assignment"];
     parserState -> actionCallStatement3 [color=red label="TBD: Allowed?\np4c issue #413\np4-spec issue #151" decorate=True];
     actionCallStatement3 [label="action call"];
+    parserState -> externObjectMethodCallStatement3;
+    externObjectMethodCallStatement3 [label="extern object method call"];
     parserState -> blockStatement3;
     blockStatement3 [label="block statement\n{ ... }"];
     blockStatement3 -> blockStatementInParserState;
@@ -55,6 +66,10 @@ digraph p4_16_allowed_construct_nesting {
     constantDeclaration4 [label="const"];
     controlDeclaration -> variableDeclaration4;
     variableDeclaration4 [label="variable decl"];
+    controlDeclaration -> controlInstantiation4;
+    controlInstantiation4 [label="instantiation of control"];
+    controlDeclaration -> externObjectInstantiation4;
+    externObjectInstantiation4 [label="instantiation of extern object"];
     controlDeclaration -> actionDeclaration;
     controlDeclaration -> tableDeclaration;
     controlDeclaration -> controlBody;
@@ -76,6 +91,8 @@ digraph p4_16_allowed_construct_nesting {
     assignmentStatement5 [label="assignment"];
     actionDeclaration -> actionCallStatement5;
     actionCallStatement5 [label="action call"];
+    actionDeclaration -> externObjectMethodCallStatement5;
+    externObjectMethodCallStatement5 [label="extern object method call"];
     actionDeclaration -> returnStatement5;
     returnStatement5 [label="return"];
     actionDeclaration -> exitStatement5;
@@ -100,6 +117,8 @@ digraph p4_16_allowed_construct_nesting {
     assignmentStatement6 [label="assignment"];
     controlBody -> actionCallStatement6;
     actionCallStatement6 [label="action call"];
+    controlBody -> externObjectMethodCallStatement6;
+    externObjectMethodCallStatement6 [label="extern object method call"];
     controlBody -> tableApplyCall6;
     tableApplyCall6 [label="<table>.apply()"];
     controlBody -> controlCallStatement6;

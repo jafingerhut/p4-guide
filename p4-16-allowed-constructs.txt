@@ -1,4 +1,17 @@
+TBD to add:
+* instantiation of parser
+* instantiation of package
+* invoke parser
+* invoke control
+* extern function call
+
+
+[*] Mark on things that are only allowed in, or most useful within,
+    architecture model files.
+
 top level
+    [*] type declarations for parser, control, package
+    [*] extern function and object declarations
     const
     typedef
     header
@@ -6,11 +19,12 @@ top level
     enum
     error
     match_kind
-    type declarations for parser, control, package (most commonly useful inside architecture model files)
+    instantiation of control, extern object
     NO: variable decl
     NO: state, table - TBD: Should table be allowed at top level?
     action
         const, variable decl, assignment, action call
+        extern object method call
         return, exit - 2017-Mar-30 p4c-bm2-ss allows exit in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
         if
             anything allowed directly inside action
@@ -21,9 +35,11 @@ top level
         NO: parser, state, action, table, control
     parser
         const, variable decl
+        instantiation of extern object
         state
             const, variable decl, assignment, action call
             action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
+            extern object method call (p4test allows, p4c-bm2-ss does not)
             block statement { }
                 anything allowed directly inside state
             transition <statename> (must be last in state definition)
@@ -33,6 +49,7 @@ top level
             NO: parser, state, action, table, control
     control
         const, variable decl
+        instantiation of control, extern object
         action - see 'action' above
         table
             key = { ... }
@@ -40,6 +57,7 @@ top level
             default_action = <action_spec>;
         apply { } (body of control block)
             const, variable decl, assignment, action call
+            extern object method call
             <table>.apply()
             <control_name>.apply()
             switch (<table>.apply().action_run) { ... }
@@ -51,3 +69,34 @@ top level
             NO: type definitions
             NO: transition
             NO: parser, state, action, table, control
+
+
+----------------------------------------------------------------------
+Type declarations for parser, control, package
+----------------------------------------------------------------------
+
+Type declarations for parsers, controls, and packages do not define
+the behavior of those things, nor do they instantiate such a thing.
+They only declare the thing's signature.
+
+All of them have the general syntax like this, with the only
+difference being the keyword 'parser', 'control', or 'package':
+
+    [ <annotation> ] control <name> [ <type parameters> ] ( <parameters> );
+
+Relevant symbols in grammar:
+    parserTypeDeclaration
+    controlTypeDeclaration
+    packageTypeDeclaration
+
+Examples, from file "very_simple_model.p4" in P4_16 spec:
+
+   parser Parser<H>(packet_in b,
+                    out H parsedHeaders);
+   control Pipe<H>(inout H headers,
+                   in error parseError,     // parser error
+                   in InControl inCtrl,     // input port
+                   out OutControl outCtrl); // output port
+   package VSS<H>(Parser<H> p,
+                  Pipe<H> map,
+                  Deparser<H> d);
