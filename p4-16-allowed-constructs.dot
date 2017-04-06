@@ -20,16 +20,10 @@ digraph p4_16_allowed_construct_nesting {
     headerTypeDeclaration [label="header"];
     toplevel -> structTypeDeclaration;
     structTypeDeclaration [label="struct"];
-    toplevel -> enumDeclaration;
-    enumDeclaration [label="enum"];
-    toplevel -> errorDeclaration;
-    errorDeclaration [label="error"];
-    toplevel -> matchKindDeclaration;
-    matchKindDeclaration [label="match_kind"];
-    toplevel -> controlInstantiation;
-    controlInstantiation [label="instantiation of control"];
-    toplevel -> externObjectInstantiation;
-    externObjectInstantiation [label="instantiation of extern object"];
+    toplevel -> enumErrorMatchKindDeclaration;
+    enumErrorMatchKindDeclaration [label="enum\nerror\nmatch_kind"];
+    toplevel -> Instantiation;
+    Instantiation [label="instantiation of:\nextern object\ncontrol\nparser"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;
@@ -38,10 +32,8 @@ digraph p4_16_allowed_construct_nesting {
     // this is 'parser <name> (<parameters>) { ... }'
     parserDeclaration -> constantOrVariableDeclaration2;
     constantOrVariableDeclaration2 [label="const, variable decl"];
-    parserDeclaration -> parserInstantiation2;
-    parserInstantiation2 [label="instantiation of parser"];
-    parserDeclaration -> externObjectInstantiation2;
-    externObjectInstantiation2 [label="instantiation of extern object"];
+    parserDeclaration -> Instantiation2;
+    Instantiation2 [label="instantiation of:\nextern object\nparser"];
     parserDeclaration -> parserState;
 
     parserState [label="state"];
@@ -60,10 +52,8 @@ digraph p4_16_allowed_construct_nesting {
 
     controlDeclaration -> constantOrVariableDeclaration4;
     constantOrVariableDeclaration4 [label="const, variable decl"];
-    controlDeclaration -> controlInstantiation4;
-    controlInstantiation4 [label="instantiation of control"];
-    controlDeclaration -> externObjectInstantiation4;
-    externObjectInstantiation4 [label="instantiation of extern object"];
+    controlDeclaration -> Instantiation4;
+    Instantiation4 [label="instantiation of:\nextern object\ncontrol"];
     controlDeclaration -> actionDeclaration;
     controlDeclaration -> tableDeclaration;
     controlDeclaration -> controlBody;

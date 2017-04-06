@@ -16,8 +16,7 @@ top level
     enum
     error
     match_kind
-    instantiation of control block, extern object
-    NO: instantiation of parser
+    instantiation of extern object, control block, parser
     NO: variable decl
     NO: state, table - TBD: Should table be allowed at top level?
     action
@@ -33,7 +32,7 @@ top level
         NO: parser, state, action, table, control
     parser
         const, variable decl
-        instantiation of parser, extern object
+        instantiation of extern object, parser
 	NO: instantiation of control block
         state
             const, variable decl, assignment, action call
@@ -49,7 +48,7 @@ top level
             NO: parser, state, action, table, control
     control
         const, variable decl
-        instantiation of control block, extern object
+        instantiation of extern object, control block
         NO: instantiation of parser
         action - see 'action' above
         table
