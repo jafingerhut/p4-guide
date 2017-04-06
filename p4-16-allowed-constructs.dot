@@ -36,10 +36,8 @@ digraph p4_16_allowed_construct_nesting {
     controlDeclaration [label="control"];
 
     // this is 'parser <name> (<parameters>) { ... }'
-    parserDeclaration -> constantDeclaration2;
-    constantDeclaration2 [label="const"];
-    parserDeclaration -> variableDeclaration2;
-    variableDeclaration2 [label="variable decl"];
+    parserDeclaration -> constantOrVariableDeclaration2;
+    constantOrVariableDeclaration2 [label="const, variable decl"];
     parserDeclaration -> parserInstantiation2;
     parserInstantiation2 [label="instantiation of parser"];
     parserDeclaration -> externObjectInstantiation2;
@@ -47,18 +45,12 @@ digraph p4_16_allowed_construct_nesting {
     parserDeclaration -> parserState;
 
     parserState [label="state"];
-    parserState -> constantDeclaration3;
-    constantDeclaration3 [label="const"];
-    parserState -> variableDeclaration3;
-    variableDeclaration3 [label="variable decl"];
-    parserState -> assignmentStatement3;
-    assignmentStatement3 [label="assignment"];
-    parserState -> actionCallStatement3 [color=red label="TBD: Allowed?\np4c issue #413\np4-spec issue #151" decorate=True];
-    actionCallStatement3 [label="action call"];
+    parserState -> constantOrVariableDeclaration3;
+    constantOrVariableDeclaration3 [label="const, variable decl"];
+    parserState -> assignmentActionMethodCallStatement3;
+    assignmentActionMethodCallStatement3 [label="assignment\naction call (TBD)\nextern object method call"];
     parserState -> parserApplyCallStatement3;
     parserApplyCallStatement3 [label="<subparser>.apply()"];
-    parserState -> externObjectMethodCallStatement3;
-    externObjectMethodCallStatement3 [label="extern object method call"];
     parserState -> blockStatement3;
     blockStatement3 [label="block statement\n{ ... }"];
     blockStatement3 -> blockStatementInParserState;
@@ -66,10 +58,8 @@ digraph p4_16_allowed_construct_nesting {
     parserState -> transitionStatement;
     transitionStatement [label="transition <statename>;\ntransition select ..."];
 
-    controlDeclaration -> constantDeclaration4;
-    constantDeclaration4 [label="const"];
-    controlDeclaration -> variableDeclaration4;
-    variableDeclaration4 [label="variable decl"];
+    controlDeclaration -> constantOrVariableDeclaration4;
+    constantOrVariableDeclaration4 [label="const, variable decl"];
     controlDeclaration -> controlInstantiation4;
     controlInstantiation4 [label="instantiation of control"];
     controlDeclaration -> externObjectInstantiation4;
@@ -87,20 +77,12 @@ digraph p4_16_allowed_construct_nesting {
     tableDeclaration -> tablePropertyDefaultAction;
     tablePropertyDefaultAction [label="default_action = <action_name>;"];
 
-    actionDeclaration -> constantDeclaration5;
-    constantDeclaration5 [label="const"];
-    actionDeclaration -> variableDeclaration5;
-    variableDeclaration5 [label="variable decl"];
-    actionDeclaration -> assignmentStatement5;
-    assignmentStatement5 [label="assignment"];
-    actionDeclaration -> actionCallStatement5;
-    actionCallStatement5 [label="action call"];
-    actionDeclaration -> externObjectMethodCallStatement5;
-    externObjectMethodCallStatement5 [label="extern object method call"];
-    actionDeclaration -> returnStatement5;
-    returnStatement5 [label="return"];
-    actionDeclaration -> exitStatement5;
-    exitStatement5 [label="exit"];
+    actionDeclaration -> constantOrVariableDeclaration5;
+    constantOrVariableDeclaration5 [label="const, variable decl"];
+    actionDeclaration -> assignmentActionMethodCallStatement5;
+    assignmentActionMethodCallStatement5 [label="assignment\naction call\nextern object method call"];
+    actionDeclaration -> returnOrExitStatement5;
+    returnOrExitStatement5 [label="return, exit"];
     actionDeclaration -> conditionalStatement5;
     conditionalStatement5 [label="if"];
     conditionalStatement5 -> blockStatementInActionDeclaration;
@@ -113,26 +95,18 @@ digraph p4_16_allowed_construct_nesting {
     // correspond in P4_16 grammar to assignmentOrMethodCallStatement.
     //actionCallStatement
 
-    controlBody -> constantDeclaration6;
-    constantDeclaration6 [label="const"];
-    controlBody -> variableDeclaration6;
-    variableDeclaration6 [label="variable decl"];
-    controlBody -> assignmentStatement6;
-    assignmentStatement6 [label="assignment"];
-    controlBody -> actionCallStatement6;
-    actionCallStatement6 [label="action call"];
-    controlBody -> externObjectMethodCallStatement6;
-    externObjectMethodCallStatement6 [label="extern object method call"];
+    controlBody -> constantOrVariableDeclaration6;
+    constantOrVariableDeclaration6 [label="const, variable decl"];
+    controlBody -> assignmentActionMethodCallStatement6;
+    assignmentActionMethodCallStatement6 [label="assignment\naction call\nextern object method call"];
     controlBody -> tableApplyCall6;
     tableApplyCall6 [label="<table>.apply()"];
     controlBody -> controlCallStatement6;
     controlCallStatement6 [label="<control_name>.apply()"];
     controlBody -> switchStatement6;
     switchStatement6 [label="switch (<table>.apply().action_run) { ... }"];
-    controlBody -> returnStatement6;
-    returnStatement6 [label="return"];
-    controlBody -> exitStatement6;
-    exitStatement6 [label="exit"];
+    controlBody -> returnOrExitStatement6;
+    returnOrExitStatement6 [label="return, exit"];
     controlBody -> conditionalStatement6;
     conditionalStatement6 [label="if"];
     conditionalStatement6 -> blockStatementInControlBody;
@@ -141,30 +115,6 @@ digraph p4_16_allowed_construct_nesting {
     blockStatement6 -> blockStatementInControlBody;
     blockStatementInControlBody [label="anything allowed\ndirectly inside control body"];
 
-//    blockStatement [label="block statement\n{ ... }"];
-//    blockStatement -> constantDeclaration7;
-//    constantDeclaration7 [label="const"];
-//    blockStatement -> variableDeclaration7;
-//    variableDeclaration7 [label="variable decl"];
-//    blockStatement -> actionCallStatement7;
-//    actionCallStatement7 [label="action call"];
-//    blockStatement -> assignmentStatement7;
-//    assignmentStatement7 [label="assignment"];
-//    blockStatement -> blockStatement;
-//    blockStatement -> conditionalStatement7 [label="unless block is\ninside state" decorate=True];
-//    conditionalStatement7 [label="if"];
-//    conditionalStatement7 -> conditionalStatement7;
-//    blockStatement -> returnStatement7 [label="unless block is\ninside state" decorate=True];
-//    returnStatement7 [label="return"];
-//    blockStatement -> exitStatement7 [label="unless block is\ninside state" decorate=True];
-//    exitStatement7 [label="exit"];
-//    blockStatement -> tableApplyCall7 [label="only in\ncontrol body\n'apply'" decorate=True];
-//    tableApplyCall7 [label="<table>.apply()"];
-//    blockStatement -> switchStatement7 [label="only in\ncontrol body\n'apply'" decorate=True];
-//    switchStatement7 [label="switch (<table>.apply().action_run) { ... }"];
-
-//    conditionalStatement [label="if"];
-//    conditionalStatement -> conditionalStatement;
 
     legend_oval [label="Things inside ovals are types,\nwith arrow A->B if type\nA can contain type B as a member." shape=oval];
 
