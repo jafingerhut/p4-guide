@@ -165,4 +165,39 @@ digraph p4_16_allowed_construct_nesting {
 
 //    conditionalStatement [label="if"];
 //    conditionalStatement -> conditionalStatement;
+
+    legend_oval [label="Things inside ovals are types,\nwith arrow A->B if type\nA can contain type B as a member." shape=oval];
+
+    {
+    rank=same;
+    containerHeader [shape=oval label="header"];
+    containerStructOrTuple [shape=oval label="struct or tuple"];
+    //containerStruct [shape=oval label="struct"];
+    //containerTuple [shape=oval label="tuple"];
+    }
+
+    {
+    rank=same;
+    elementBitW [shape=oval label="bit<W>"];
+    elementIntW [shape=oval label="int<W>"];
+    elementVarbitW [shape=oval label="varbit<W>"];
+    elementError [shape=oval label="error"];
+    elementBool [shape=oval label="bool"];
+    elementEnum [shape=oval label="enum"];
+    elementHeaderStack [shape=oval label="header stack"];
+    }
+
+    containerHeader -> elementBitW;
+    containerHeader -> elementIntW;
+    containerHeader -> elementVarbitW;
+
+    containerStructOrTuple -> elementBitW;
+    containerStructOrTuple -> elementIntW;
+    containerStructOrTuple -> elementVarbitW;
+    containerStructOrTuple -> elementError;
+    containerStructOrTuple -> elementBool;
+    containerStructOrTuple -> elementEnum;
+    containerStructOrTuple -> containerHeader;
+    containerStructOrTuple -> elementHeaderStack;
+    containerStructOrTuple -> containerStructOrTuple;
 }

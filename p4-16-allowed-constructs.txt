@@ -72,6 +72,37 @@ top level
             NO: parser, state, action, table, control
 
 
+The table below lists all types that may appear as members of headers,
+structs, and tuples.  Note that int means an infinite-precision
+integer, without a width specified.
+
+The two-argument extract method on packets only supports a single
+varbit field in a header.
+
+TBD: This table is yet to be reviewed and approved by the P4 language
+design work group, and the latest p4c compiler as of 2017-Apr-05 does
+not accept some of the types marked as 'allowed' inside of structs.
+
+|--------------|-----------|-----------------|
+|              | Container type              |
+| Element type | header    | struct or tuple |
++--------------+-----------+-----------------+
+| bit<W>       | allowed   |  allowed        |
+| int<W>       | allowed   |  allowed        |
+| varbit<W>    | allowed   |  allowed        |
+| int          | error     |  error          |
+| void         | error     |  error          |
+| error        | error     |  allowed        |
+| match_kind   | error     |  error          |
+| bool         | error     |  allowed        |
+| enum         | error     |  allowed        |
+| header       | error     |  allowed        |
+| header stack | error     |  allowed        |
+| struct       | error     |  allowed        |
+| tuple        | error     |  allowed        |
+|--------------|-----------|-----------------|
+
+
 ----------------------------------------------------------------------
 Type declarations for parser, control, package
 ----------------------------------------------------------------------
