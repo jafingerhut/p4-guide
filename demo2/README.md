@@ -54,9 +54,9 @@ Add both sets of entries below:
     table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
     table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
 
-WARNING: With 2017-Apr-06 version of p4c-bm2-ss and simple_switch, the
-counter_read commands below fail for demo2.p4_16.p4.  I have filed an
-issue on Github for this.
+WARNING: With 2017-Apr-08 version of p4c-bm2-ss and simple_switch, the
+'counter_read' commands below fail for demo2.p4_16.p4.  I have filed
+an issue on Github for this: https://github.com/p4lang/p4c/issues/461
 
 You can examine counter values in the counter named ipv4_da_lpm_stats
 using the `counter_read` command, which takes the counter name and a
