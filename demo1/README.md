@@ -52,7 +52,7 @@ demo1.p4_14.p4 or demo1.p4_16.p4 (same commands work for both)
 Another set of table entries to forward packets to a different output
 interface:
 
-    table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 58
+    table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 81
     table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
     table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
 

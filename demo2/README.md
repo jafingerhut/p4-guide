@@ -50,7 +50,7 @@ Add both sets of entries below:
     table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
     table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
 
-    table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 58
+    table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 81
     table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
     table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
 
