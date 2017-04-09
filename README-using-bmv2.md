@@ -31,13 +31,12 @@ It can be convenient to have all of these commands in your shell's
 command path, e.g. for bash:
 
     P4C=/path/to/your/copy/of/p4c
-    export PATH=$P4C/build:/usr/local/bin:$PATH
-
     BMV2=/path/to/your/copy/of/behavioral-model
+    export PATH=$P4C/build:$BMV2/tools:/usr/local/bin:$PATH
 
 To create veth interfaces:
 
-    sudo $BMV2/tools/veth_setup.sh
+    sudo veth_setup.sh
     # Verify that it created many veth<number> interfaces
     ifconfig | grep ^veth
 

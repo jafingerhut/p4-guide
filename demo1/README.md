@@ -40,20 +40,21 @@ General syntax for table_add commands at simple_switch_CLI prompt:
 ----------------------------------------------------------------------
 demo1.p4_14.p4 or demo1.p4_16.p4 (same commands work for both)
 ----------------------------------------------------------------------
-table_set_default ipv4_da_lpm my_drop
-table_set_default mac_da my_drop
-table_set_default send_frame my_drop
 
-table_add ipv4_da_lpm set_l2ptr 10.1.0.1/32 => 58
-table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
-table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
+    table_set_default ipv4_da_lpm my_drop
+    table_set_default mac_da my_drop
+    table_set_default send_frame my_drop
+
+    table_add ipv4_da_lpm set_l2ptr 10.1.0.1/32 => 58
+    table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
+    table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
 
 Another set of table entries to forward packets to a different output
 interface:
 
-table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 58
-table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
-table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
+    table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 58
+    table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
+    table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
 
 ----------------------------------------------------------------------
 scapy session for sending packets
@@ -61,16 +62,16 @@ scapy session for sending packets
 I believe we must run scapy as root for it to have permission to send
 packets on veth interfaces.
 
-sudo scapy
+    sudo scapy
 
-fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
-drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
+    fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
+    drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 
-# Send packet at layer2, specifying interface
-sendp(fwd_pkt1, iface="veth2")
-sendp(drop_pkt1, iface="veth2")
+    # Send packet at layer2, specifying interface
+    sendp(fwd_pkt1, iface="veth2")
+    sendp(drop_pkt1, iface="veth2")
 
-fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
-sendp(fwd_pkt2, iface="veth2")
+    fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
+    sendp(fwd_pkt2, iface="veth2")
 
 ----------------------------------------
