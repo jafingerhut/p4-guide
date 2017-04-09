@@ -56,6 +56,37 @@ interface:
     table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
     table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
 
+You can examine the existing entries in a table with 'table_dump':
+
+    table_dump ipv4_da_lpm
+    ==========
+    TABLE ENTRIES
+    **********
+    Dumping entry 0x0
+    Match key:
+    * ipv4.dstAddr        : LPM       0a010001/32
+    Action entry: set_l2ptr - 3a
+    **********
+    Dumping entry 0x1
+    Match key:
+    * ipv4.dstAddr        : LPM       0a0100c8/32
+    Action entry: set_l2ptr - 3a
+    ==========
+    Dumping default entry
+    Action entry: my_drop - 
+    ==========
+
+The numbers on the "Dumping entry <number>" lines are 'table entry
+handle ids'.  The table API implementation allocates a unique handle
+id when adding a new entry, and you must provide that value to delete
+the table entry.  The handle id is unique per entry, as long as the
+entry remains in the table.  After removing an entry, its handle id
+may be reused for a future entry added to the table.
+
+Handle ids are _not_ unique across all tables.  Only the pair
+<table,handle_id> is unique.
+
+
 ----------------------------------------------------------------------
 scapy session for sending packets
 ----------------------------------------------------------------------
