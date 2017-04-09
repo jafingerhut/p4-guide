@@ -1,5 +1,6 @@
 TBD to add:
 * instantiation of package
+* extern function declaration
 * extern function call
 
 
@@ -81,6 +82,7 @@ varbit field in a header.
 TBD: This table is yet to be reviewed and approved by the P4 language
 design work group, and the latest p4c compiler as of 2017-Apr-05 does
 not accept some of the types marked as 'allowed' inside of structs.
+The bmv2 behavioral model also does not support nested structs.
 
 |--------------|-----------|-----------------|
 |              | Container type              |
