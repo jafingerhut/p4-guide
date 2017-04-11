@@ -36,8 +36,8 @@ top level
         instantiation of extern object, parser
 	NO: instantiation of control block
         state
-            const, variable decl, assignment, action call
-            action call - TBD: Allowed? p4c issue #413 p4-spec issue #151
+            const, variable decl, assignment
+	    NO: action call (maybe P4 functions added in future - p4lang/p4-spec issue #151)
             extern object method call (p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
 	    <subparser>.apply()
             block statement { }

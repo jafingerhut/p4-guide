@@ -40,7 +40,7 @@ digraph p4_16_allowed_construct_nesting {
     parserState -> constantOrVariableDeclaration3;
     constantOrVariableDeclaration3 [label="const, variable decl"];
     parserState -> assignmentActionMethodCallStatement3;
-    assignmentActionMethodCallStatement3 [label="assignment\naction call (TBD)\nextern object method call"];
+    assignmentActionMethodCallStatement3 [label="assignment\nNO: action call\nextern object method call"];
     parserState -> parserApplyCallStatement3;
     parserApplyCallStatement3 [label="<subparser>.apply()"];
     parserState -> blockStatement3;
