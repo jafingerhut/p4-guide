@@ -19,7 +19,7 @@ top level
     match_kind
     instantiation of extern object, control block, parser
     NO: variable decl
-    NO: state, table - TBD: Should table be allowed at top level?
+    NO: state, table
     action
         const, variable decl, assignment, action call
         extern object method call
@@ -79,10 +79,10 @@ integer, without a width specified.
 The two-argument extract method on packets only supports a single
 varbit field in a header.
 
-TBD: This table is yet to be reviewed and approved by the P4 language
-design work group, and the latest p4c compiler as of 2017-Apr-05 does
-not accept some of the types marked as 'allowed' inside of structs.
-The bmv2 behavioral model also does not support nested structs.
+This table has been reviewed and approved by the P4 language design
+work group, but the latest p4c compiler as of 2017-Apr-11 does not
+accept some of the types marked as 'allowed' inside of structs.  The
+bmv2 behavioral model also does not yet support nested structs.
 
 |--------------|-----------|-----------------|
 |              | Container type              |
