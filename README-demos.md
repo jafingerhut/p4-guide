@@ -1,6 +1,6 @@
-== Guide to the include demo programs
+## Guide to the include demo programs
 
-=== demo1
+### demo1
 
 A very simple program that only does these things:
 
@@ -17,12 +17,12 @@ A very simple program that only does these things:
   * calculate a new IPv4 header checksum
 
 
-=== demo2
+### demo2
 
 The same as demo1, except add a per-prefix match count.
 
 
-=== demo4
+### demo4
 
 The same as demo2, except add calculation of an ECMP hash, and add
 ECMP group and path tables that can use the ECMP hash to pick one of
