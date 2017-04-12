@@ -99,7 +99,7 @@ parser parse_ipv4 {
 // Why bother creating an action that just does one primitive action?
 // That is, why not just use 'drop' as one of the possible actions
 // when defining a table?  Because the P4_14 compiler does not allow
-// primitve actions to be used directly as actions of tables.  You
+// primitive actions to be used directly as actions of tables.  You
 // must use 'compound actions', i.e. ones explicitly defined with the
 // 'action' keyword like below.
 
