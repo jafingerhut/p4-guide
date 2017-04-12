@@ -17,18 +17,6 @@ limitations under the License.
 #include <core.p4>
 #include <v1model.p4>
 
-const bit<1> NEXTHOP_TYPE_L2PTR          = 0;
-const bit<1> NEXTHOP_TYPE_ECMP_GROUP_IDX = 1;
-
-struct fwd_metadata_t {
-    bit<16> hash1;
-    bit<1>  nexthop_type;
-    bit<10> ecmp_group_idx;
-    bit<8>  ecmp_path_selector;
-    bit<32> l2ptr;
-    bit<24> out_bd;
-}
-
 header ethernet_t {
     bit<48> dstAddr;
     bit<48> srcAddr;
@@ -48,6 +36,18 @@ header ipv4_t {
     bit<16> hdrChecksum;
     bit<32> srcAddr;
     bit<32> dstAddr;
+}
+
+const bit<1> NEXTHOP_TYPE_L2PTR          = 0;
+const bit<1> NEXTHOP_TYPE_ECMP_GROUP_IDX = 1;
+
+struct fwd_metadata_t {
+    bit<16> hash1;
+    bit<1>  nexthop_type;
+    bit<10> ecmp_group_idx;
+    bit<8>  ecmp_path_selector;
+    bit<32> l2ptr;
+    bit<24> out_bd;
 }
 
 struct metadata {
@@ -70,6 +70,9 @@ parser ParserImpl(packet_in packet,
 {
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
 
+    state start {
+        transition parse_ethernet;
+    }
     state parse_ethernet {
         packet.extract(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
@@ -81,15 +84,13 @@ parser ParserImpl(packet_in packet,
         packet.extract(hdr.ipv4);
         transition accept;
     }
-    state start {
-        transition parse_ethernet;
-    }
 }
 
 control ingress(inout headers hdr,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
     direct_counter(CounterType.packets) ipv4_da_lpm_stats;
+
     action compute_lkp_ipv4_hash() {
         hash(meta.fwd_metadata.hash1, HashAlgorithm.crc16,
              (bit<16>) 0, { hdr.ipv4.srcAddr,
@@ -97,50 +98,13 @@ control ingress(inout headers hdr,
                             hdr.ipv4.protocol },
              (bit<32>) 65536);
     }
-    action set_ecmp_path_idx(bit<8> num_paths) {
-        hash(meta.fwd_metadata.ecmp_path_selector, HashAlgorithm.identity,
-             (bit<16>) 0, { meta.fwd_metadata.hash1 }, (bit<32>)num_paths);
-    }
-    action set_l2ptr(bit<32> l2ptr) {
-        meta.fwd_metadata.nexthop_type = NEXTHOP_TYPE_L2PTR;
-        meta.fwd_metadata.l2ptr = l2ptr;
-    }
-    action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
-        meta.fwd_metadata.out_bd = bd;
-        hdr.ethernet.dstAddr = dmac;
-        standard_metadata.egress_spec = intf;
-        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
-    }
     table compute_ipv4_hashes {
         actions = {
             compute_lkp_ipv4_hash;
         }
         default_action = compute_lkp_ipv4_hash;
     }
-    table ecmp_group {
-        actions = {
-            set_ecmp_path_idx;
-            set_l2ptr;
-            @default_only NoAction;
-        }
-        key = {
-            meta.fwd_metadata.ecmp_group_idx: exact;
-        }
-        size = 32768;
-        default_action = NoAction();
-    }
-    table ecmp_path {
-        actions = {
-            set_l2ptr;
-            @default_only NoAction;
-        }
-        key = {
-            meta.fwd_metadata.ecmp_group_idx    : exact;
-            meta.fwd_metadata.ecmp_path_selector: exact;
-        }
-        size = 32768;
-        default_action = NoAction();
-    }
+
     action set_l2ptr_with_stat(bit<32> l2ptr) {
         ipv4_da_lpm_stats.count();
         meta.fwd_metadata.nexthop_type = NEXTHOP_TYPE_L2PTR;
@@ -156,27 +120,69 @@ control ingress(inout headers hdr,
         mark_to_drop();
     }
     table ipv4_da_lpm {
+        key = {
+            hdr.ipv4.dstAddr: lpm;
+        }
         actions = {
             set_l2ptr_with_stat;
             set_ecmp_group_idx;
             my_drop_with_stat;
         }
-        key = {
-            hdr.ipv4.dstAddr: lpm;
-        }
         default_action = my_drop_with_stat;
         counters = direct_counter(CounterType.packets);
     }
+
+    action set_ecmp_path_idx(bit<8> num_paths) {
+        hash(meta.fwd_metadata.ecmp_path_selector, HashAlgorithm.identity,
+             (bit<16>) 0, { meta.fwd_metadata.hash1 }, (bit<32>)num_paths);
+    }
+    action set_l2ptr(bit<32> l2ptr) {
+        meta.fwd_metadata.nexthop_type = NEXTHOP_TYPE_L2PTR;
+        meta.fwd_metadata.l2ptr = l2ptr;
+    }
+    table ecmp_group {
+        key = {
+            meta.fwd_metadata.ecmp_group_idx: exact;
+        }
+        actions = {
+            set_ecmp_path_idx;
+            set_l2ptr;
+            @default_only NoAction;
+        }
+        default_action = NoAction();
+        size = 32768;
+    }
+
+    table ecmp_path {
+        key = {
+            meta.fwd_metadata.ecmp_group_idx    : exact;
+            meta.fwd_metadata.ecmp_path_selector: exact;
+        }
+        actions = {
+            set_l2ptr;
+            @default_only NoAction;
+        }
+        default_action = NoAction();
+        size = 32768;
+    }
+
+    action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
+        meta.fwd_metadata.out_bd = bd;
+        hdr.ethernet.dstAddr = dmac;
+        standard_metadata.egress_spec = intf;
+        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
+    }
     table mac_da {
+        key = {
+            meta.fwd_metadata.l2ptr: exact;
+        }
         actions = {
             set_bd_dmac_intf;
             my_drop;
         }
-        key = {
-            meta.fwd_metadata.l2ptr: exact;
-        }
         default_action = my_drop;
     }
+
     apply {
         compute_ipv4_hashes.apply();
         ipv4_da_lpm.apply();
@@ -198,15 +204,16 @@ control egress(inout headers hdr,
         hdr.ethernet.srcAddr = smac;
     }
     table send_frame {
+        key = {
+            meta.fwd_metadata.out_bd: exact;
+        }
         actions = {
             rewrite_mac;
             my_drop;
         }
-        key = {
-            meta.fwd_metadata.out_bd: exact;
-        }
         default_action = my_drop;
     }
+
     apply {
         send_frame.apply();
     }

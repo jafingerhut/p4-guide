@@ -1,0 +1,14 @@
+digraph g {
+   buffer [shape=doublecircle];
+   egress [shape=doublecircle];
+   ipv4_da_lpm [shape=ellipse];
+   ipv4_da_lpm -> mac_da [arrowhead=normal label="set_l2ptr"];
+   mac_da [shape=ellipse];
+   mac_da -> buffer [arrowhead=normal label="set_bd_dmac_intf"];
+   mac_da -> buffer [arrowhead=normal label="my_drop"];
+   ipv4_da_lpm -> mac_da [arrowhead=normal label="my_drop"];
+   buffer -> send_frame
+   send_frame [shape=ellipse];
+   send_frame -> egress [arrowhead=normal label="rewrite_mac"];
+   send_frame -> egress [arrowhead=normal label="my_drop"];
+}

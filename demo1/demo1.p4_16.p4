@@ -17,11 +17,6 @@ limitations under the License.
 #include <core.p4>
 #include <v1model.p4>
 
-struct fwd_metadata_t {
-    bit<32> l2ptr;
-    bit<24> out_bd;
-}
-
 header ethernet_t {
     bit<48> dstAddr;
     bit<48> srcAddr;
@@ -41,6 +36,11 @@ header ipv4_t {
     bit<16> hdrChecksum;
     bit<32> srcAddr;
     bit<32> dstAddr;
+}
+
+struct fwd_metadata_t {
+    bit<32> l2ptr;
+    bit<24> out_bd;
 }
 
 struct metadata {
@@ -70,6 +70,9 @@ parser ParserImpl(packet_in packet,
 {
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
 
+    state start {
+        transition parse_ethernet;
+    }
     state parse_ethernet {
         packet.extract(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
@@ -81,43 +84,43 @@ parser ParserImpl(packet_in packet,
         packet.extract(hdr.ipv4);
         transition accept;
     }
-    state start {
-        transition parse_ethernet;
-    }
 }
 
 control ingress(inout headers hdr,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
+
     action set_l2ptr(bit<32> l2ptr) {
         meta.fwd_metadata.l2ptr = l2ptr;
     }
+    table ipv4_da_lpm {
+        key = {
+            hdr.ipv4.dstAddr: lpm;
+        }
+        actions = {
+            set_l2ptr;
+            my_drop;
+        }
+        default_action = my_drop;
+    }
+
     action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
         meta.fwd_metadata.out_bd = bd;
         hdr.ethernet.dstAddr = dmac;
         standard_metadata.egress_spec = intf;
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
-    table ipv4_da_lpm {
-        actions = {
-            set_l2ptr;
-            my_drop;
-        }
-        key = {
-            hdr.ipv4.dstAddr: lpm;
-        }
-        default_action = my_drop;
-    }
     table mac_da {
+        key = {
+            meta.fwd_metadata.l2ptr: exact;
+        }
         actions = {
             set_bd_dmac_intf;
             my_drop;
         }
-        key = {
-            meta.fwd_metadata.l2ptr: exact;
-        }
         default_action = my_drop;
     }
+
     apply {
         ipv4_da_lpm.apply();
         mac_da.apply();
@@ -132,15 +135,16 @@ control egress(inout headers hdr,
         hdr.ethernet.srcAddr = smac;
     }
     table send_frame {
+        key = {
+            meta.fwd_metadata.out_bd: exact;
+        }
         actions = {
             rewrite_mac;
             my_drop;
         }
-        key = {
-            meta.fwd_metadata.out_bd: exact;
-        }
         default_action = my_drop;
     }
+
     apply {
         send_frame.apply();
     }
