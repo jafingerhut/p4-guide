@@ -1,0 +1,28 @@
+digraph g {
+   buffer [shape=doublecircle];
+   egress [shape=doublecircle];
+   compute_ipv4_hashes [shape=ellipse];
+   compute_ipv4_hashes -> ipv4_da_lpm [arrowhead=normal label="compute_lkp_ipv4_hash"];
+   ipv4_da_lpm [shape=ellipse];
+   ipv4_da_lpm -> _condition_0 [arrowhead=normal label="set_l2ptr"];
+   _condition_0 [shape=box label="(fwd_metadata.nexthop_type != 0)"];
+   _condition_0 -> mac_da [arrowhead=odot];
+   mac_da [shape=ellipse];
+   mac_da -> buffer [arrowhead=normal label="set_bd_dmac_intf"];
+   mac_da -> buffer [arrowhead=normal label="my_drop"];
+   _condition_0 -> ecmp_group [arrowhead=dot];
+   ecmp_group [shape=ellipse];
+   ecmp_group -> _condition_1 [arrowhead=normal label="set_ecmp_path_idx"];
+   _condition_1 [shape=box label="(fwd_metadata.nexthop_type != 0)"];
+   _condition_1 -> mac_da [arrowhead=odot];
+   _condition_1 -> ecmp_path [arrowhead=dot];
+   ecmp_path [shape=ellipse];
+   ecmp_path -> mac_da [arrowhead=normal label="set_l2ptr"];
+   ecmp_group -> _condition_1 [arrowhead=normal label="set_l2ptr"];
+   ipv4_da_lpm -> _condition_0 [arrowhead=normal label="set_ecmp_group_idx"];
+   ipv4_da_lpm -> _condition_0 [arrowhead=normal label="my_drop"];
+   buffer -> send_frame
+   send_frame [shape=ellipse];
+   send_frame -> egress [arrowhead=normal label="rewrite_mac"];
+   send_frame -> egress [arrowhead=normal label="my_drop"];
+}

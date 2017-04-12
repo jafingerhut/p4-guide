@@ -17,6 +17,12 @@ To compile the P4_16 version of the code:
                                    ^^^^^^^^^^^^^ source code
                   ^^^^^^^^^^^^^^^^ compiled output
 
+The .dot and .png files were created with p4-graphs program, installed
+from of the https://github.com/p4lang/p4-hlir repository, using this
+command:
+
+     p4-graphs demo1.p4_14.p4
+
 To run behavioral model with 3 ports 1, 2, 3:
 
     # Note: I have tried running simple_switch on an Ubuntu 14 VM
