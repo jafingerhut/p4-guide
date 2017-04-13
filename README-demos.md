@@ -12,7 +12,7 @@ A very simple program that only does these things:
     output BD (bridge domain), a new destination MAC address, and the
     output port.
   * decrement the IPv4 TTL field
-* on egress:o
+* on egress:
   * look up the output port number to get a new source MAC address
   * calculate a new IPv4 header checksum
 
@@ -28,3 +28,9 @@ The same as demo2, except add calculation of an ECMP hash, and add
 ECMP group and path tables that can use the ECMP hash to pick one of
 several paths for a packet that matches a single prefix in the longest
 prefix match table.
+
+Note that most P4 programs use 'action profiles' to implement ECMP.
+demo3 does not use those.  There is no strong reason why not -- demo3
+simply demonstrates another way to do ECMP that doesn't require P4
+action profiles, yet still achieves sharing of ECMP table entries
+among many IP prefixes.
