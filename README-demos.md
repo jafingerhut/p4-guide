@@ -22,7 +22,7 @@ A very simple program that only does these things:
 The same as demo1, except add a per-prefix match count.
 
 
-### demo4
+### demo3
 
 The same as demo2, except add calculation of an ECMP hash, and add
 ECMP group and path tables that can use the ECMP hash to pick one of

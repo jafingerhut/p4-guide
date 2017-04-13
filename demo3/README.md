@@ -7,17 +7,17 @@ Useful for quickly creating multiple terminal windows and tabs:
 
 To compile the P4_14 version of the code:
 
-    p4c-bmv2 --json demo4.p4_14.json demo4.p4_14.p4
+    p4c-bmv2 --json demo3.p4_14.json demo3.p4_14.p4
 
 To compile the P4_16 version of the code:
 
-    p4c-bm2-ss -o demo4.p4_16.json demo4.p4_16.p4
+    p4c-bm2-ss -o demo3.p4_16.json demo3.p4_16.p4
 
 The .dot and .png files were created with p4-graphs program, installed
 from of the https://github.com/p4lang/p4-hlir repository, using this
 command:
 
-     p4-graphs demo4.p4_14.p4
+     p4-graphs demo3.p4_14.p4
 
 To run behavioral model with 3 ports 1, 2, 3:
 
@@ -27,7 +27,7 @@ To run behavioral model with 3 ports 1, 2, 3:
     # a local file system.  p4c-bmv2 and simple_switch_CLI do not have
     # this limitation.
 
-    sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 demo4.p4_14.json
+    sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 demo3.p4_14.json
 
 To run CLI for controlling and examining simple_switch's table
 contents:
@@ -40,7 +40,7 @@ General syntax for table_add commands at simple_switch_CLI prompt:
     Add entry to a match table: table_add <table name> <action name> <match fields> => <action parameters> [priority]
 
 ----------------------------------------------------------------------
-simple_switch_CLI commands for demo4 program
+simple_switch_CLI commands for demo3 program
 ----------------------------------------------------------------------
 
 All of these, except for the counter-specific ones, also work for
