@@ -10,6 +10,21 @@ with the state of the art more quickly.  Corrections and comments
 are very welcome.
 
 
+## Quick summary
+
+If all you want to do is compile P4_14 and/or P4_16 source code for
+the bmv2 behavioral model, and use the command line or thrift API it
+provides for adding/removing table entries, then getting copies of and
+following the installation instructions for these 2 repositories is
+all you need:
+
+* [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
+  (also compiles P4_14 programs)
+* [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
+  Rewrite of the behavioral model as a C++ project without
+  auto-generated code (except for the PD interface)
+
+
 ## `p4lang` repositories by name
 
 `p4lang` is the name of a Github
@@ -35,6 +50,7 @@ insensitive), with their descriptions:
 * [`p4-hlir`](https://github.com/p4lang/p4-hlir) - (No description)
 * [`p4app`](https://github.com/p4lang/p4app) - (No description)
 * [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
+  (also compiles P4_14 programs)
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
   compiler for the behavioral model
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
@@ -102,6 +118,7 @@ one or more P4 targets:
 
 * [`p4-hlir`](https://github.com/p4lang/p4-hlir) - (No description)
 * [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
+  (also compiles P4_14 programs)
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
   compiler for the behavioral model
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
