@@ -34,6 +34,10 @@ command path, e.g. for bash:
     BMV2=/path/to/your/copy/of/behavioral-model
     export PATH=$P4C/build:$BMV2/tools:/usr/local/bin:$PATH
 
+Useful for quickly creating multiple terminal windows and tabs:
+
+    create-terminal-windows.sh
+
 To create veth interfaces:
 
     sudo veth_setup.sh

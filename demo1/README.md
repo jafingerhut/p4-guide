@@ -1,25 +1,22 @@
 See README-using-bmv2.txt for some things that are common across
 different P4 programs executed using bmv2.
 
-Useful for quickly creating multiple terminal windows and tabs:
-
-    create-terminal-windows.sh
-
-To compile the P4_14 version of the code:
-
-    p4c-bmv2 --json demo1.p4_14.json demo1.p4_14.p4
-                                     ^^^^^^^^^^^^^ source code
-                    ^^^^^^^^^^^^^^^^ compiled output
-
 To compile the P4_16 version of the code:
 
     p4c-bm2-ss -o demo1.p4_16.json demo1.p4_16.p4
                                    ^^^^^^^^^^^^^ source code
                   ^^^^^^^^^^^^^^^^ compiled output
 
+To compile the P4_14 version of the code:
+
+    p4c-bm2-ss -o demo1.p4_14.json --p4v 14 demo1.p4_14.p4
+                                            ^^^^^^^^^^^^^^ source code
+                                   ^^^^^^^^ specify P4_14 source code
+                  ^^^^^^^^^^^^^^^^ compiled output
+
 The .dot and .png files were created with p4-graphs program, installed
 from of the https://github.com/p4lang/p4-hlir repository, using this
-command:
+command (it does not work with P4_16 source code yet):
 
      p4-graphs demo1.p4_14.p4
 
