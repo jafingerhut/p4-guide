@@ -14,19 +14,14 @@ To compile the P4_14 version of the code:
                                    ^^^^^^^^ specify P4_14 source code
                   ^^^^^^^^^^^^^^^^ compiled output
 
-The .dot and .png files were created with p4-graphs program, installed
-from of the https://github.com/p4lang/p4-hlir repository, using this
-command (it does not work with P4_16 source code yet):
+The .dot and .png files in the subdirectory 'graphs' were created with
+p4-graphs program, installed from of the
+https://github.com/p4lang/p4-hlir repository, using this command (it
+does not work with P4_16 source code yet):
 
      p4-graphs demo1.p4_14.p4
 
-To run behavioral model with 3 ports 1, 2, 3:
-
-    # Note: I have tried running simple_switch on an Ubuntu 14 VM
-    # using a .json file that was mounted via SSHFS.  It fails to read
-    # such a file.  Workaround: Copy the .json file to a directory on
-    # a local file system.  p4c-bmv2 and simple_switch_CLI do not have
-    # this limitation.
+To run the behavioral model with 8 ports numbered 0 through 7:
 
     sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 demo1.p4_14.json
 
