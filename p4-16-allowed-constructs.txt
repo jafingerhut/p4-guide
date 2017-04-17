@@ -18,19 +18,9 @@ top level
     error
     match_kind
     instantiation of extern object, control block, parser
+    action - see 'action' below
     NO: variable decl
     NO: state, table
-    action
-        const, variable decl, assignment, action call
-        extern object method call
-        return, exit - 2017-Mar-30 p4c-bm2-ss allows exit in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
-        if
-            anything allowed directly inside action
-        block statement { }
-            anything allowed directly inside action
-        NO: type definitions
-        NO: switch, transition
-        NO: parser, state, action, table, control
     parser
         const, variable decl
         instantiation of extern object, parser
@@ -51,7 +41,17 @@ top level
         const, variable decl
         instantiation of extern object, control block
         NO: instantiation of parser
-        action - see 'action' above
+        action
+            const, variable decl, assignment, action call
+            extern object method call
+            return, exit - 2017-Mar-30 p4c-bm2-ss allows exit in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
+            if
+                anything allowed directly inside action
+            block statement { }
+                anything allowed directly inside action
+            NO: type definitions
+            NO: switch, transition
+            NO: parser, state, action, table, control
         table
             key = { ... }
             actions = { <action_spec>; ... }
