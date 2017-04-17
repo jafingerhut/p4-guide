@@ -1,4 +1,4 @@
-## Guide to the include demo programs
+## Guide to the included demo programs
 
 ### demo1
 

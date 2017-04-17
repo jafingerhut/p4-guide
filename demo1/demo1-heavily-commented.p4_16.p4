@@ -119,7 +119,7 @@ struct headers {
 /* Why bother creating an action that just does one primitive action?
  * That is, why not just use 'mark_to_drop' as one of the possible
  * actions when defining a table?  Because the P4_16 compiler does not
- * allow primitve actions to be used directly as actions of tables.
+ * allow primitive actions to be used directly as actions of tables.
  * You must use 'compound actions', i.e. ones explicitly defined with
  * the 'action' keyword like below.
  *
@@ -132,18 +132,56 @@ action my_drop() {
     mark_to_drop();
 }
 
+/* The ingress parser here is pretty simple.  It assumes every packet
+ * starts with a 14-byte Ethernet header, and if the ether type is
+ * 0x0800, it proceeds to parse the 20-byte mandatory part of an IPv4
+ * header, ignoring whether IPv4 options might be present. */
+
 parser ParserImpl(packet_in packet,
                   out headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata)
 {
+    /* The notation <decimal number>w<something> means that the
+     * <something> represents a constant unsigned integer value.  The
+     * <decimal number> is the width of that number in bits.  '0x' is
+     * taken from C's method of specifying that what follows is
+     * hexadecimal.  You can also do decimal (no special prefix),
+     * binary (prefix 0b), or octal (0o), but note that octal is _not_
+     * specified as it is in C.
+
+     * You can also have <decimal number>s<something> where the 's'
+     * indicates the number is a 2's complement signed integer value.
+     */
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
 
+    /* A parser is specified as a finite state machine, with a 'state'
+     * definition for each state of the FSM.  There must be a state
+     * named 'start', which is the starting state.  'transition'
+     * statements indicate what the next state will be.  There are
+     * special states 'accept' and 'reject' indicating that parsing is
+     * complete, where 'accept' indicates no error during parsing, and
+     * 'reject' indicates some kind of parsing error. */
     state start {
         transition parse_ethernet;
     }
     state parse_ethernet {
+        /* extract() is the name of a method defined for packets,
+         * declared in core.p4 #include'd above.  The parser's
+         * execution model starts with a 'pointer' to the beginning of
+         * the received packet.  Whenever you call the extract()
+         * method, it takes the size of the argument header in bits B,
+         * copies the next B bits from the packet into that header
+         * (making that header valid), and advances the pointer into
+         * the packet by B bits.  I believe some P4 targets may
+         * restrict the headers and pointer to be a multiple of 8
+         * bits. */
         packet.extract(hdr.ethernet);
+        /* The 'select' keyword introduces an expression that is like
+         * a C 'switch' statement, except that the expression for each
+         * of the cases must be a state name in the parser.  This
+         * makes convenient the handling of many possible ether types
+         * or IPv4 protocol values. */
         transition select(hdr.ethernet.etherType) {
             ETHERTYPE_IPV4: parse_ipv4;
             default: accept;
@@ -155,24 +193,92 @@ parser ParserImpl(packet_in packet,
     }
 }
 
+/* This program is for a P4 target architecture that has an ingress
+ * and an egress match-action 'pipeline' (nothing about the P4
+ * language requires that the target hardware must have a pipeline in
+ * it, but 'pipeline' is the word often used since the current highest
+ * performance target devices do have one).
+ *
+ * The ingress match-action pipeline specified here is very small --
+ * simply 2 tables applied in sequence, each with simple actions. */
+
 control ingress(inout headers hdr,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
 
+    /* Note that there is no direction 'in', 'out', or 'inout' given
+     * for the l2ptr parameter for action set_l2ptr.  Such
+     * directionless parameters for actions indicate that the value of
+     * l2ptr comes from the control plane.
+     *
+     * That is, it is the control plane's responsibility to create one
+     * or more table entries in the table ipv4_da_lpm.  For each such
+     * entry added, the control plane specifies:
+     *
+     * + a search key.  For table ipv4_da_lpm this is a prefix from 0
+     *   to 32 bits long for the hdr.ipv4.dstAddr field.
+     *
+     * + one of the actions allowed in the P4 program.  In this case,
+     *   either set_l2ptr or my_drop (from the 'actions' list
+     *   specified in the table below).
+     *
+     * + a value for every directionless parameter of that action.
+     *
+     * If the control plane chooses the my_drop action for a table
+     * entry, there are no parameters at all, so the control plane
+     * need not specify any.
+     *
+     * If the control plane chooses the set_l2ptr action for a table
+     * entry, it must specify a 32-bit value for the 'l2ptr'
+     * parameter.  This value will be stored in the target's
+     * ipv4_da_lpm table result for that entry.  Whenever a packet
+     * searches the table and matches an entry with a set_l2ptr action
+     * as its result, the value of l2ptr chosen by the control plane
+     * will become the value of the l2ptr parameter for the set_l2ptr
+     * action as it is executed at packet forwarding time. */
     action set_l2ptr(bit<32> l2ptr) {
+        /* Nothing complicated here in the action.  The l2ptr value
+         * specified by the control plane and stored in the table
+         * entry is copied into a field of the packet's metadata.  It
+         * will be used as the search key for the 'mac_da' table
+         * below. */
         meta.fwd_metadata.l2ptr = l2ptr;
     }
     table ipv4_da_lpm {
         key = {
+            /* lpm means 'Longest Prefix Match'.  It is called a
+             * 'match_kind' in P4_16, and the two most common other
+             * choices seen in P4 programs are 'exact' and
+             * 'ternary'. */
             hdr.ipv4.dstAddr: lpm;
         }
         actions = {
             set_l2ptr;
             my_drop;
         }
+        /* If at packet forwarding time, there is no matching entry
+         * found in the table, the action specified by the
+         * default_action keyword will be performed on the packet.
+         *
+         * In this case, my_drop is only the default action for this
+         * table when the P4 program is first loaded into the device.
+         * The control plane can choose to change that default action
+         * via an appropriate API call to a different action, if
+         * desired.  If you put 'const' before 'default_action', then
+         * it means that this default action cannot be changed by the
+         * control plane. */
         default_action = my_drop;
     }
 
+    /* This second table is no more complicated than the first.  The
+     * search key in this case is 'exact', so no longest prefix match
+     * going on here.  It would probably be implemented in the target
+     * as a hash table.
+     *
+     * If the control plane adds an entry to this table and chooses
+     * for that entry the action set_bd_dmac_intf, it must specify
+     * values for all 3 of the directionless parameters bd, dmac, and
+     * intf. */
     action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
         meta.fwd_metadata.out_bd = bd;
         hdr.ethernet.dstAddr = dmac;
@@ -190,12 +296,23 @@ control ingress(inout headers hdr,
         default_action = my_drop;
     }
 
+    /* Every control block must contain an apply block.  The contents
+     * of the apply block specify the flow of control between the
+     * tables.  This one is particularly simple -- always do the
+     * ipv4_da_lpm table, and regardless of the result, always do the
+     * mac_da table.  It is definitely possible to have if statements
+     * in apply blocks that handle many possible cases differently
+     * from each other, based upon the values of packet header fields
+     * or metadata fields. */
     apply {
         ipv4_da_lpm.apply();
         mac_da.apply();
     }
 }
 
+/* The egress match-action pipeline is even simpler than the one for
+ * ingress -- just one table that can overwrite the packet's source
+ * MAC address depending on its out_bd metadata field value. */
 control egress(inout headers hdr,
                inout metadata meta,
                inout standard_metadata_t standard_metadata)
@@ -219,17 +336,73 @@ control egress(inout headers hdr,
     }
 }
 
+/* The deparser controls what headers are created for the outgoing
+   packet. */
 control DeparserImpl(packet_out packet, in headers hdr) {
     apply {
+        /* The emit() method takes a header.  If that header's hidden
+         * 'valid' bit is true, then emit() appends the contents of
+         * the header (which may have been modified in the ingress or
+         * egress pipelines above) into the outgoing packet.
+         *
+         * If that header's hidden 'valid' bit is false, emit() does
+         * nothing. */
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv4);
+
+        /* This ends the deparser definition.
+         *
+         * Note that the target device will have recorded for each
+         * packet where parsing ended, and it considers every byte of
+         * data in the packet after the last parsed header as
+         * 'payload'.  For _this_ P4 program, even a TCP header
+         * immediately following the IPv4 header is considered part of
+         * the payload.  For a different P4 program that parsed the
+         * TCP header, the TCP header would not be considered part of
+         * the payload.
+         * 
+         * Whatever is considered as payload for this particular P4
+         * program for this packet, that payload is appended after the
+         * end of whatever sequence of bytes that the deparser
+         * creates. */
     }
 }
 
+/* In the v1model.p4 architecture this program is written for, there
+ * is a 'slot' for a control block that performs checksums on the
+ * already-parsed packet, and can modify metadata fields with the
+ * results of those checks, e.g. to set error flags, increment error
+ * counts, drop the packet, etc. */
 control verifyChecksum(in headers hdr, inout metadata meta) {
+    /* The next line is an instantiation of an 'extern' object called
+     * Checksum16, declared in the v1model.p4 #include'd above.
+     *
+     * Why is it an extern, instead of just writing it in P4 code?
+     *
+     * One reason is that high performance targets implement custom
+     * logic for these kinds of things to make them efficient.
+     *
+     * Another is that sometimes we want checksums over things that
+     * are variable length (e.g. IPv4 headers with options), and
+     * because P4 does not have loops, it would be very awkward to
+     * write such checksum code in P4. */
     Checksum16() ipv4_checksum;
     apply {
+        /* The call to the get() method of the 'ipv4_checksum' object
+         * below has one parameter.  The curly braces are the P4_16
+         * syntax for a 'tuple', which is an ordered collection of
+         * other data objects.  A tuple is similar to a struct, except
+         * its elements do not have names.
+         *
+         * In this case, the tuple contains a sequence of header field
+         * values that the get() method will concatenate together and
+         * calculate an IP 16-bit one's complement checksum for. */
         if ((hdr.ipv4.ihl == 4w5) &&
+            // TBD: bug?  I think this == should be !=
+            // Probably the current open source compiler/behavioral
+            // model does not actually implement the behavior of this
+            // control block yet, and that is why I haven't discovered
+            // the bug before now.
             (hdr.ipv4.hdrChecksum ==
              ipv4_checksum.get({ hdr.ipv4.version,
                          hdr.ipv4.ihl,
@@ -248,6 +421,10 @@ control verifyChecksum(in headers hdr, inout metadata meta) {
     }
 }
 
+/* Also in the v1model.p4 architecture, there is a slot for a control
+ * block that comes after the egress match-action pipeline, before the
+ * deparser, that can be used to calculate checksums for the outgoing
+ * packet. */
 control computeChecksum(inout headers hdr, inout metadata meta) {
     Checksum16() ipv4_checksum;
     apply {
