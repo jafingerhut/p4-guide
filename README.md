@@ -295,7 +295,7 @@ created/installed using the latest README instructions as of March
 | behavioral-model | /usr/local/bin/simple_switch     | executable compiled from C/C++ code |
 | behavioral-model | /usr/local/bin/simple_switch_CLI | wrapper script for sswitch_CLI.py |
 
-Sample command lines to compile P4_14 source file foo.p4 to bmv2 JSON
+Sample command lines to compile P4 source file foo.p4 to bmv2 JSON
 configuration file:
 
     # foo.p4 is P4_14 source code
