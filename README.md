@@ -217,9 +217,8 @@ to undefined tables or fields, and dead code elimination,
 e.g. eliminating tables that are never applied, or actions that are
 not an action of any live table.
 
-This repository has not been extended to parse P4_16 programs.  It
-seems that `p4c` is intended to be the new compiler for both P4_14 and
-P4_16.
+`p4-hlir` does _not_ parse P4_16 programs.  The `p4c` repository
+contains the new compiler for both P4_14 and P4_16.
 
 
 ### `p4c-behavioral`
@@ -227,9 +226,9 @@ P4_16.
 `p4c-behavioral` uses `p4-hlir` as its front end to parse source code
 and produce an IR.  From that IR it generates a C/C++ behavioral model
 (version 1, not for use with bmv2).  This repository has seen very few
-changes since Aug 2016.  Most likely this is because bmv2 in
-`behavioral-model` is recommended over this v1 kind of behavioral
-model (see `behavioral-model` below for more info).
+changes since Aug 2016.  This is because bmv2 in `behavioral-model` is
+recommended over this v1 kind of behavioral model (see
+`behavioral-model` below for more info).
 
 There may be a conflict between installing this software, and that in
 the `p4c-bm` repo, as they both seem to install a Python module called
@@ -251,7 +250,7 @@ repository also contains a back end for `behavioral-model` (aka
 `bmv2`), and a couple of other sample back ends.  It is intended to be
 able to easily add new back ends to it.
 
-Unlike `p4-hlir` this front end is written in C++ rather than Python.
+`p4c` is written in C++, not Python as `p4-hlir` is.
 
 
 ### `behavioral-model`
@@ -260,9 +259,9 @@ Unlike `p4-hlir` this front end is written in C++ rather than Python.
 (an abbreviation for "Behavioral Model Version 2").
 
 The 1st version of the behavioral model, produced as output from the
-`p4c-behavioral` git repo, is like a 'P4 to C compiler', i.e. source
-to source translation.  Changing the P4 program requires recompiling
-to a new C program, then recompiling that C code.
+code in the `p4c-behavioral` repository, is like a 'P4 to C compiler',
+i.e. source to source translation.  Changing the P4 program requires
+recompiling to a new C program, then recompiling that C code.
 
 bmv2 is more like an _interpreter_ for all possible P4 programs, which
 bmv2 configures itself to behave as, using the contents of the bmv2
