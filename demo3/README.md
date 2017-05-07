@@ -47,6 +47,17 @@ demo1.
 
 Add both sets of entries below:
 
+    # For P4_16 program, set_l2ptr action name for table ipv4_da_lpm
+    # is changed to set_l2ptr_with_stat.
+    table_add ipv4_da_lpm set_l2ptr_with_stat 10.1.0.1/32 => 58
+    table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
+    table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
+
+    table_add ipv4_da_lpm set_l2ptr_with_stat 10.1.0.200/32 => 81
+    table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 1
+    table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
+
+    # For P4_14 program, use this
     table_add ipv4_da_lpm set_l2ptr 10.1.0.1/32 => 58
     table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
     table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
@@ -54,9 +65,6 @@ Add both sets of entries below:
     table_add ipv4_da_lpm set_l2ptr 10.1.0.200/32 => 81
     table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 1
     table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
-
-    # For P4_16 program, set_l2ptr action name for table ipv4_da_lpm
-    # is changed to set_l2ptr_with_stat.
 
 The entries above with action set_l2ptr on table ipv4_da_lpm work
 exactly as they did before.  They avoid needing to do a lookup in the
