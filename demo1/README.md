@@ -108,3 +108,26 @@ packets on veth interfaces.
     sendp(fwd_pkt2, iface="veth2")
 
 ----------------------------------------
+
+
+The example table entries and sample packet given above can be
+generalized to the following pattern.
+
+If you send an input packet like this, specified as Python code when
+using the Scapy library:
+
+    input port: anything
+    Ether() / IP(dst=<hdr.ipv4.dstAddr>, ttl=<ttl>)
+
+and you create the following table entries:
+
+    table_add ipv4_da_lpm set_l2ptr <hdr.ipv4.dstAddr>/32 => <l2ptr>
+    table_add mac_da set_bd_dmac_intf <l2ptr> => <out_bd> <dmac> <out_intf>
+    table_add send_frame rewrite_mac <out_bd> => <smac>
+
+then the P4 program should produce an output packet like the one
+below, matching the input packet in every way except, except for the
+fields explicitly mentioned:
+
+    output port: <out_intf>
+    Ether(src=<smac>, dst=<dmac>) / IP(dst=<hdr.ipv4.dstAddr>, ttl=<ttl>-1)
