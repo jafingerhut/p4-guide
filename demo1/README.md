@@ -1,3 +1,5 @@
+= Compiling
+
 See README-using-bmv2.txt for some things that are common across
 different P4 programs executed using bmv2.
 
@@ -20,6 +22,9 @@ https://github.com/p4lang/p4-hlir repository, using this command (it
 does not work with P4_16 source code yet):
 
      p4-graphs demo1.p4_14.p4
+
+
+= Running
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
