@@ -110,6 +110,8 @@ packets on veth interfaces.
 ----------------------------------------
 
 
+= Patterns
+
 The example table entries and sample packet given above can be
 generalized to the following pattern.
 

@@ -126,11 +126,13 @@ packets on veth interfaces.
 ----------------------------------------
 
 
+= Patterns
+
 The example table entries and sample packet given above can be
 generalized to the following 3 patterns.
 
 
-Pattern 1 - no ECMP
+== Pattern 1 - no ECMP
 
 The first pattern is for packets that do not do ECMP at all, because
 their longest prefix match lookup result directly gives an l2ptr.
@@ -155,7 +157,7 @@ fields explicitly mentioned:
 
 
 
-Pattern 2 - no ECMP, but one level of indirection
+== Pattern 2 - no ECMP, but one level of indirection
 
 The second pattern is for packets that go through one level of
 indirection in the ecmp_group table, but skip over the ecmp_path
@@ -181,7 +183,7 @@ and you create the following table entries:
 
 
 
-Pattern 3 - full ECMP
+== Pattern 3 - full ECMP
 
 Software should use this for equal cost multipath routing,
 i.e. multiple shortest paths to the same destination, over which
