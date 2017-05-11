@@ -1,4 +1,4 @@
-= Compiling
+# Compiling
 
 See README-using-bmv2.txt for some things that are common across
 different P4 programs executed using bmv2.
@@ -24,7 +24,7 @@ does not work with P4_16 source code yet):
      p4-graphs demo1.p4_14.p4
 
 
-= Running
+# Running
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
@@ -115,7 +115,7 @@ packets on veth interfaces.
 ----------------------------------------
 
 
-= Patterns
+# Patterns
 
 The example table entries and sample packet given above can be
 generalized to the following pattern.

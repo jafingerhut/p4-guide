@@ -1,3 +1,5 @@
+# Compiling
+
 See README-using-bmv2.txt for some things that are common across
 different P4 programs executed using bmv2.
 
@@ -15,6 +17,9 @@ https://github.com/p4lang/p4-hlir repository, using this command (it
 does not work with P4_16 source code yet):
 
      p4-graphs demo3.p4_14.p4
+
+
+# Running
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
@@ -126,13 +131,13 @@ packets on veth interfaces.
 ----------------------------------------
 
 
-= Patterns
+# Patterns
 
 The example table entries and sample packet given above can be
 generalized to the following 3 patterns.
 
 
-== Pattern 1 - no ECMP
+## Pattern 1 - no ECMP
 
 The first pattern is for packets that do not do ECMP at all, because
 their longest prefix match lookup result directly gives an l2ptr.
@@ -157,7 +162,7 @@ fields explicitly mentioned:
 
 
 
-== Pattern 2 - no ECMP, but one level of indirection
+## Pattern 2 - no ECMP, but one level of indirection
 
 The second pattern is for packets that go through one level of
 indirection in the ecmp_group table, but skip over the ecmp_path
@@ -183,7 +188,7 @@ and you create the following table entries:
 
 
 
-== Pattern 3 - full ECMP
+## Pattern 3 - full ECMP
 
 Software should use this for equal cost multipath routing,
 i.e. multiple shortest paths to the same destination, over which
