@@ -124,3 +124,92 @@ packets on veth interfaces.
     fwd_to_ecmp_grp3=Ether() / IP(dst='11.1.0.1', src='1.2.3.7') / TCP(sport=5793, dport=80)
 
 ----------------------------------------
+
+
+The example table entries and sample packet given above can be
+generalized to the following 3 patterns.
+
+
+Pattern 1 - no ECMP
+
+The first pattern is for packets that do not do ECMP at all, because
+their longest prefix match lookup result directly gives an l2ptr.
+
+If you send an input packet like this:
+
+    input port: anything
+    Ether() / IP(dst=<hdr.ipv4.dstAddr>, ttl=<ttl>)
+
+and you create the following table entries:
+
+    table_add ipv4_da_lpm set_l2ptr_with_stat <hdr.ipv4.dstAddr>/32 => <l2ptr>
+    table_add mac_da set_bd_dmac_intf <l2ptr> => <out_bd> <dmac> <out_intf>
+    table_add send_frame rewrite_mac <out_bd> => <smac>
+
+then the P4 program should produce an output packet like the one
+below, matching the input packet in every way except, except for the
+fields explicitly mentioned:
+
+    output port: <out_intf>
+    Ether(src=<smac>, dst=<dmac>) / IP(dst=<hdr.ipv4.dstAddr>, ttl=<ttl>-1)
+
+
+
+Pattern 2 - no ECMP, but one level of indirection
+
+The second pattern is for packets that go through one level of
+indirection in the ecmp_group table, but skip over the ecmp_path
+table.  This is useful to software for having many longest prefix
+match entries point at a since ecmp_group table entry, but by having
+the indirection, all of those prefixes can be updated to a new output
+port and source MAC address with a single write to the ecmp_path
+table.
+
+The only differences between pattern 2 and pattern 1 are in table
+ipv4_da_lpm and ecmp_group.  mac_da and send_frame are the same as
+before.
+
+If you send an input packet like this:
+
+    same as pattern 1
+
+and you create the following table entries:
+
+    table_add ipv4_da_lpm set_ecmp_group_idx <hdr.ipv4.dstAddr>/32 => <ecmp_group_idx>
+    table_add ecmp_group set_l2ptr <ecmp_group_idx> => <l2ptr>
+    same as pattern 1 from table mac_da onwards
+
+
+
+Pattern 3 - full ECMP
+
+Software should use this for equal cost multipath routing,
+i.e. multiple shortest paths to the same destination, over which
+traffic should be load balanced, based upon a hash calculated from
+some packet header field values specified in action
+compute_lkp_ipv4_hash.
+
+If you send an input packet like this:
+
+    same as pattern 1
+
+and you create the following table entries:
+
+    table_add ipv4_da_lpm set_ecmp_group_idx <hdr.ipv4.dstAddr>/32 => <ecmp_group_idx>
+    table_add ecmp_group set_ecmp_path_idx <ecmp_group_idx> => <num_paths>
+    table_add ecmp_path set_l2ptr <ecmp_group_idx> <ecmp_path_selector> => <l2ptr>
+    same as pattern 1 from table mac_da onwards
+
+NOTE: <ecmp_path_selector> is a hash calculated from the packet, then
+modulo'd by <num_paths>, so it can be any number in the range [0,
+<num_paths>-1].  For this pattern, it would be good to install
+<num_paths> entries in the ecmp_path table, and for each one of those
+<l2ptr> values, there should be corresponding entries in the mac_da
+and send_frame tables.  It is OK to have multiple ecmp_path entries
+with the same <l2ptr> value -- this is normal when software creates
+such tables, especially across different <ecmp_group_idx> values.
+
+When checking the output packet, it is correct to receive an output
+packet for any of the <num_paths> possible paths.  If the test
+environment wants to narrow it down to 1 possible output packet, it
+must do the same hash function that the data path code is doing.
