@@ -13,6 +13,8 @@ top level
     const
     typedef
     header
+    header stack
+    header_union
     struct
     enum
     error
@@ -73,8 +75,8 @@ top level
 
 
 The table below lists all types that may appear as members of headers,
-structs, and tuples.  Note that int means an infinite-precision
-integer, without a width specified.
+header unions, structs, and tuples.  Note that int means an
+infinite-precision integer, without a width specified.
 
 The two-argument extract method on packets only supports a single
 varbit field in a header.
@@ -84,24 +86,27 @@ work group, but the latest p4c compiler as of 2017-Apr-11 does not
 accept some of the types marked as 'allowed' inside of structs.  The
 bmv2 behavioral model also does not yet support nested structs.
 
-|--------------|-----------|-----------------|
-|              | Container type              |
-| Element type | header    | struct or tuple |
-+--------------+-----------+-----------------+
-| bit<W>       | allowed   |  allowed        |
-| int<W>       | allowed   |  allowed        |
-| varbit<W>    | allowed   |  allowed        |
-| int          | error     |  error          |
-| void         | error     |  error          |
-| error        | error     |  allowed        |
-| match_kind   | error     |  error          |
-| bool         | error     |  allowed        |
-| enum         | error     |  allowed        |
-| header       | error     |  allowed        |
-| header stack | error     |  allowed        |
-| struct       | error     |  allowed        |
-| tuple        | error     |  allowed        |
-|--------------|-----------|-----------------|
++--------------+--------------------------------+
+|              |        Container type          |
+|              |                                |
+|              |           | header_ | struct   |
+| Element type | header    | union   | or tuple |
++--------------+-----------+---------+----------+
+| bit<W>       | allowed   | error   | allowed  |
+| int<W>       | allowed   | error   | allowed  |
+| varbit<W>    | allowed   | error   | allowed  |
+| int          | error     | error   | error    |
+| void         | error     | error   | error    |
+| error        | error     | error   | allowed  |
+| match_kind   | error     | error   | error    |
+| bool         | error     | error   | allowed  |
+| enum         | error     | error   | allowed  |
+| header       | error     | allowed | allowed  |
+| header stack | error     | error   | allowed  |
+| header_union | error     | error   | allowed  |
+| struct       | error     | error   | allowed  |
+| tuple        | error     | error   | allowed  |
++--------------+-----------+---------+----------+
 
 
 ----------------------------------------------------------------------

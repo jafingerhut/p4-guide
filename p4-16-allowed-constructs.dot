@@ -18,6 +18,8 @@ digraph p4_16_allowed_construct_nesting {
     typedefDeclaration [label="typedef"];
     toplevel -> headerTypeDeclaration;
     headerTypeDeclaration [label="header"];
+    toplevel -> headerUnionDeclaration;
+    headerUnionDeclaration [label="header_union"];
     toplevel -> structTypeDeclaration;
     structTypeDeclaration [label="struct"];
     toplevel -> enumErrorMatchKindDeclaration;
@@ -111,6 +113,7 @@ digraph p4_16_allowed_construct_nesting {
     {
     rank=same;
     containerHeader [shape=oval label="header"];
+    containerHeaderUnion [shape=oval label="header_union"];
     containerStructOrTuple [shape=oval label="struct or tuple"];
     //containerStruct [shape=oval label="struct"];
     //containerTuple [shape=oval label="tuple"];
@@ -131,6 +134,8 @@ digraph p4_16_allowed_construct_nesting {
     containerHeader -> elementIntW;
     containerHeader -> elementVarbitW;
 
+    containerHeaderUnion -> containerHeader;
+
     containerStructOrTuple -> elementBitW;
     containerStructOrTuple -> elementIntW;
     containerStructOrTuple -> elementVarbitW;
@@ -138,6 +143,7 @@ digraph p4_16_allowed_construct_nesting {
     containerStructOrTuple -> elementBool;
     containerStructOrTuple -> elementEnum;
     containerStructOrTuple -> containerHeader;
+    containerStructOrTuple -> containerHeaderUnion;
     containerStructOrTuple -> elementHeaderStack;
     containerStructOrTuple -> containerStructOrTuple;
 }
