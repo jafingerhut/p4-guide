@@ -25,7 +25,7 @@ digraph p4_16_allowed_construct_nesting {
     toplevel -> enumErrorMatchKindDeclaration;
     enumErrorMatchKindDeclaration [label="enum\nerror\nmatch_kind"];
     toplevel -> Instantiation;
-    Instantiation [label="instantiation of:\nextern object\ncontrol\nparser"];
+    Instantiation [label="instantiation of:\nextern object"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;

@@ -19,8 +19,9 @@ top level
     enum
     error
     match_kind
-    instantiation of extern object, control block, parser
+    instantiation of extern object
     action - see 'action' below
+    NO: instantiation of control block, parser
     NO: variable decl
     NO: state, table
     parser
