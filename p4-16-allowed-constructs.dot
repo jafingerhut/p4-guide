@@ -108,15 +108,19 @@ digraph p4_16_allowed_construct_nesting {
     blockStatementInControlBody [label="anything allowed\ndirectly inside control body"];
 
 
-    legend_oval [label="Things inside ovals are types,\nwith arrow A->B if type\nA can contain type B as a member." shape=oval];
+    legend_oval [label="Things inside\novals are types,\nwith arrow A->B if\ntype A can contain\ntype B as a member." shape=oval];
+
+    {
+    rank=same;
+    containerStructOrTuple [shape=oval label="struct or tuple"];
+    //containerStruct [shape=oval label="struct"];
+    //containerTuple [shape=oval label="tuple"];
+    containerHeaderUnion [shape=oval label="header_union"];
+    }
 
     {
     rank=same;
     containerHeader [shape=oval label="header"];
-    containerHeaderUnion [shape=oval label="header_union"];
-    containerStructOrTuple [shape=oval label="struct or tuple"];
-    //containerStruct [shape=oval label="struct"];
-    //containerTuple [shape=oval label="tuple"];
     }
 
     {
