@@ -24,6 +24,10 @@ all you need:
   Rewrite of the behavioral model as a C++ project without
   auto-generated code (except for the PD interface)
 
+The bash shell script `bin/install-p4dev.sh` can do this for an Ubuntu
+16.04 Linux machine, with no interaction required other than entering
+your password for `sudo` commands on occasion.
+
 
 ## `p4lang` repositories by name
 

@@ -29,8 +29,11 @@ INSTALL_DIR="${PWD}"
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
-
 sudo apt-get --yes install git vim
+# Install Ubuntu packages needed by protobuf, from its src/README.md
+sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
+# Install Ubuntu dependencies needed by p4c, from its README.md
+sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev pkg-config python python-scapy python-ipaddr tcpdump
 
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c"
@@ -41,8 +44,6 @@ cd "${INSTALL_DIR}"
 git clone https://github.com/google/protobuf
 cd protobuf
 git checkout v3.0.2
-# Install Ubuntu packages needed by protobuf, from its src/README.md
-sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 ./autogen.sh
 ./configure
 make
@@ -63,8 +64,6 @@ date
 cd "${INSTALL_DIR}"
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
-# Install Ubuntu dependencies needed by p4c, from its README.md
-sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev pkg-config python python-scapy python-ipaddr tcpdump
 cd p4c
 ./bootstrap.sh
 cd build
