@@ -40,7 +40,7 @@ Useful for quickly creating multiple terminal windows and tabs:
 
 To create veth interfaces:
 
-    sudo veth_setup.sh
+    sudo $BMV2/tools/veth_setup.sh
     # Verify that it created many veth<number> interfaces
     ifconfig | grep ^veth
 
