@@ -56,7 +56,7 @@ insensitive), with their descriptions:
 * [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
   (also compiles P4_14 programs)
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
-  compiler for the behavioral model
+  compiler for the behavioral model.  Deprecated.
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
   configuration for the behavioral-model (bmv2), as well as the C/C++
   PD code
@@ -124,7 +124,7 @@ one or more P4 targets:
 * [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
   (also compiles P4_14 programs)
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
-  compiler for the behavioral model
+  compiler for the behavioral model.  Deprecated.
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
   configuration for the behavioral-model (bmv2), as well as the C/C++
   PD code
@@ -137,7 +137,7 @@ computers:
   auto-generated code (except for the PD interface).  Also known as
   `bmv2`.
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
-  compiler for the behavioral model
+  compiler for the behavioral model.  Deprecated.
 
 Open source tools created by organizations other than p4.org, used by
 one or more `p4lang` repositories:
@@ -226,6 +226,9 @@ contains the new compiler for both P4_14 and P4_16.
 
 
 ### `p4c-behavioral`
+
+Deprecated, and may be deleted by 2018.  Use `behavioral-model`
+instead.
 
 `p4c-behavioral` uses `p4-hlir` as its front end to parse source code
 and produce an IR.  From that IR it generates a C/C++ behavioral model
