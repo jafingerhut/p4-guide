@@ -61,7 +61,7 @@ insensitive), with their descriptions:
   configuration for the behavioral-model (bmv2), as well as the C/C++
   PD code
 * [`p4factory`](https://github.com/p4lang/p4factory) - Compile P4 and
-  run the P4 behavioral simulator
+  run the P4 behavioral simulator.  Deprecated.
 * [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
   on a P4 dataplane
 * [`papers`](https://github.com/p4lang/papers) - Repository for papers
@@ -109,7 +109,7 @@ Remaining to be categorized:
   program
 * [`p4app`](https://github.com/p4lang/p4app) - (No description)
 * [`p4factory`](https://github.com/p4lang/p4factory) - Compile P4 and
-  run the P4 behavioral simulator
+  run the P4 behavioral simulator.  Deprecated.
 * [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
   on a P4 dataplane
 * [`PI`](https://github.com/p4lang/PI) - P4 PI headers and
