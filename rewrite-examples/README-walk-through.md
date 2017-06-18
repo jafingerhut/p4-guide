@@ -17,17 +17,18 @@ rewrite-examples.p4 would be as follows:
 
 (1) parser ParserImpl - parses the Ethernet + IPv4 headers in the
 received packet, making the variables hdr.ethernet and hdr.ipv4 valid,
-and their fields values defined and filled in with the values in the
-header of the received packet.
+and their field values filled in from the headers in the received
+packet.
 
 (2) ingress control block - I have deleted all of the switch.p4 code
 from this control block, to make a smaller example program that
 focuses on rewrite.
 
-(3) egress control block - calls process_tunnel_encap control block
+(3) egress control block - calls the control block
+'process_tunnel_encap'
 
-(4) process_tunnel_encap block - look at the 'apply { ... }' block to
-see the sequential steps below.
+(4) process_tunnel_encap control block - look at the 'apply { ... }'
+block near the end to see the sequential steps below.
 
 (5) tunnel_encap_process_inner.apply() - The P4 source code doesn't
 tell you what table entries the control plane would put in, but in
@@ -90,6 +91,9 @@ out" behavior.
 block, just before the deparser.  It calculates whatever checksums you
 want in the outgoing headers.  In this case, it calculates a fresh
 correct checksum for any valid IPv4 headers in the outgoing packet.
+The 'Checksum16' is an 'extern' object that has a method 'get' that
+takes a list of fields as input, and returns the IPv4/TCP one's
+complement 16-bit checksum of those input fields.
 
 (17) control DeparserImpl - the packet.emit() method on a header
 checks whether the header is valid.  If not, the emit() call is a no

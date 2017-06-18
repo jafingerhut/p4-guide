@@ -743,6 +743,11 @@ control DeparserImpl(packet_out packet,
         packet.emit(hdr.inner_ipv4);
         packet.emit(hdr.inner_tcp);
         packet.emit(hdr.inner_udp);
+        /* Any part of the packet that wasn't parsed as a header in
+         * the parser block, is considered part of the payload of the
+         * packet (as far as this P4 program is concerned, at least).
+         * It is appended after the last emitted header before the
+         * packet is transmitted out of the system. */
     }
 }
 
