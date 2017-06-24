@@ -97,3 +97,29 @@ sudo make install
 
 echo "end install behavioral-model:"
 date
+
+P4C="${INSTALL_DIR}/p4c"
+BMV2="${INSTALL_DIR}/behavioral-model"
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
+THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
+
+echo ""
+echo "You may wish to add lines like the ones below to your .bashrc or"
+echo ".profile files in your home directory to add commands like p4c-bm2-ss"
+echo "and simple_switch to your command path every time you log in or create"
+echo "a new shell:"
+echo ""
+echo "P4C=\"${P4C}\""
+echo "BMV2=\"${BMV2}\""
+echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\""
+echo "export PATH=\"\$P4GUIDE_BIN:\$P4C/build:\$BMV2/tools:/usr/local/bin:\$PATH\""
+echo ""
+echo "If you use the tcsh or csh shells instead, the following lines can be"
+echo "added to your .tcshrc or .cshrc file in your home directory:"
+echo ""
+echo "set P4C=\"${P4C}\""
+echo "set BMV2=\"${BMV2}\""
+echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\""
+echo "set path ( \$P4GUIDE_BIN \$P4C/build \$BMV2/tools /usr/local/bin \$path )"
