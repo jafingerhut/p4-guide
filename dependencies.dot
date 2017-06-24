@@ -4,7 +4,7 @@ digraph p4_dependencies {
 
     // My hack for providing a kind of 'legend' for the drawing.
     // There is likely a better way than this.
-    legen [label="Legend:\nSolid arcs are depdendencies according to install instructions.\nDashed arcs represent git submodules, where the 'to' project is auto-installed\nif you run 'git clone --recursive' on the 'from' project.\nDashed arcs from p4factory not shown in this chart to make the other dependencies clearer." style=bold];
+    legen [label="Legend:\nSolid arcs are dependencies according to install instructions.\nDashed arcs represent git submodules, where the 'to' project is auto-installed\nif you run 'git clone --recursive' on the 'from' project.\nDashed boxes indicate deprecated repositories.\nDashed arcs from p4factory not shown in this chart to make the other dependencies clearer." style=bold];
 
     // All nodes, with labels, for p4lang repositories
     behavioral_model [label="behavioral-model\n(aka bmv2)"];
@@ -14,9 +14,9 @@ digraph p4_dependencies {
     p4_hlir [label="p4-hlir"];
     p4app [label="p4app"];
     p4c [label="p4c"];
-    p4c_behavioral [label="p4c-behavioral"];
+    p4c_behavioral [label="p4c-behavioral" style=dashed];
     p4c_bm [label="p4c-bm"];
-    p4factory [label="p4factory"];
+    p4factory [label="p4factory" style=dashed];
     p4ofagent [label="p4ofagent"];
     papers [label="papers"];
     PI [label="PI"];
