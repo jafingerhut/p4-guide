@@ -117,17 +117,27 @@ Remaining to be categorized:
 * [`switch`](https://github.com/p4lang/switch) - Consolidated switch
   repo (API, SAI and Netlink)
 
+Documentation, research papers, and tutorials:
+
+* [`papers`](https://github.com/p4lang/papers) - Repository for papers
+  related to P4
+* [`tutorials`](https://github.com/p4lang/tutorials) - P4 language
+  tutorials
+
 P4 compilers, some only front end, some front end plus back end for
 one or more P4 targets:
 
-* [`p4-hlir`](https://github.com/p4lang/p4-hlir) - (No description)
 * [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
   (also compiles P4_14 programs)
-* [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
-  compiler for the behavioral model.  Deprecated.
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
   configuration for the behavioral-model (bmv2), as well as the C/C++
   PD code
+* [`p4-hlir`](https://github.com/p4lang/p4-hlir) - P4_14 compiler,
+  written in Python, which stops at generating an intermediate
+  representation, from which one can start in writing a back end
+  compiler.
+* [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
+  compiler for the behavioral model.  Deprecated.
 
 P4 behavioral models, for running P4 programs on general purpose
 computers:
@@ -166,13 +176,6 @@ For creating and running automated tests:
 * [`scapy-vxlan`](https://github.com/p4lang/scapy-vxlan) - A scapy
   clone, with support for additional packet headers
 
-Documentation, research papers, and tutorials:
-
-* [`papers`](https://github.com/p4lang/papers) - Repository for papers
-  related to P4
-* [`tutorials`](https://github.com/p4lang/tutorials) - P4 language
-  tutorials
-
 
 ## `p4lang` repository descriptions
 
@@ -207,6 +210,37 @@ Glossary:
 * `v1.1.x` - As of 2016-Dec-14 when a draft version of the P4_16
   language specification was released, the v1.1.x series of
   specifications was no longer publicized and effectively deprecated.
+
+
+### `p4c`
+
+`p4c` is a front end compiler for both P4_14 and P4_16 programs.  The
+repository also contains a back end for `behavioral-model` (aka
+`bmv2`), and a couple of other sample back ends.  It is intended to be
+able to easily add new back ends to it.
+
+`p4c` is written in C++, not Python as `p4-hlir` is.
+
+
+### `behavioral-model`
+
+`behavioral-model` contains the code for what is often called `bmv2`
+(an abbreviation for "Behavioral Model Version 2").
+
+The 1st version of the behavioral model, produced as output from the
+code in the `p4c-behavioral` repository, is like a 'P4 to C compiler',
+i.e. source to source translation.  Changing the P4 program requires
+recompiling to a new C program, then recompiling that C code.
+
+bmv2 is more like an _interpreter_ for all possible P4 programs, which
+bmv2 configures itself to behave as, using the contents of the bmv2
+JSON configuration file produced by a couple of the compilers above.
+Changing the P4 source code requires recompiling it to produce a new
+bmv2 JSON configuration file, but does not require recompiling bmv2.
+
+See
+[here](https://github.com/p4lang/behavioral-model#why-did-we-need-bmv2-)
+for more discussion of why bmv2 was created.
 
 
 ### `p4-hlir`
@@ -248,37 +282,6 @@ p4c-bm.
 produce an IR.  From that IR it can generate a bmv2 JSON configuration
 file, used as input to the `behavioral-model`.  It can also generate
 C++ PD code.
-
-
-### `p4c`
-
-`p4c` is a front end compiler for both P4_14 and P4_16 programs.  The
-repository also contains a back end for `behavioral-model` (aka
-`bmv2`), and a couple of other sample back ends.  It is intended to be
-able to easily add new back ends to it.
-
-`p4c` is written in C++, not Python as `p4-hlir` is.
-
-
-### `behavioral-model`
-
-`behavioral-model` contains the code for what is often called `bmv2`
-(an abbreviation for "Behavioral Model Version 2").
-
-The 1st version of the behavioral model, produced as output from the
-code in the `p4c-behavioral` repository, is like a 'P4 to C compiler',
-i.e. source to source translation.  Changing the P4 program requires
-recompiling to a new C program, then recompiling that C code.
-
-bmv2 is more like an _interpreter_ for all possible P4 programs, which
-bmv2 configures itself to behave as, using the contents of the bmv2
-JSON configuration file produced by a couple of the compilers above.
-Changing the P4 source code requires recompiling it to produce a new
-bmv2 JSON configuration file, but does not require recompiling bmv2.
-
-See
-[here](https://github.com/p4lang/behavioral-model#why-did-we-need-bmv2-)
-for more discussion of why bmv2 was created.
 
 
 ## Executable files created during installation
