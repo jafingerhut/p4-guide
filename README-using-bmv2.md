@@ -1,5 +1,7 @@
 Clone the p4lang git repositories named below and follow their README
-build/install instructions.
+build/install instructions, or use the shell script
+[bin/install-p4dev.sh](bin/install-p4dev.sh) to do it for you on an
+Ubuntu 16.04 Linux machine.
 
 From following install instructions for `p4lang/behavioral-model`
 repository, all of these should exist in /usr/local/bin:
@@ -44,7 +46,7 @@ To create veth interfaces:
     # Verify that it created many veth<number> interfaces
     ifconfig | grep ^veth
 
-To watch packets cross veth2 and veth4 as they occur:
+To watch packets cross veth2 and veth6 as they occur:
 
     # tcpdump options used:
     # -e Print the link-level header (i.e. Ethernet) on each dump line.
@@ -55,18 +57,18 @@ To watch packets cross veth2 and veth4 as they occur:
     # Note: Some versions of tcpdump do not accept the --number
     # option.  If so, just remove that one.
     sudo tcpdump -e -n --number -v -i veth2
-    sudo tcpdump -e -n --number -v -i veth4
+    sudo tcpdump -e -n --number -v -i veth6
 
     # Add -xx option to get raw hex dump of packet data:
     sudo tcpdump -xx -e -n --number -v -i veth2
-    sudo tcpdump -xx -e -n --number -v -i veth4
+    sudo tcpdump -xx -e -n --number -v -i veth6
 
     # If you want to use tshark for even more details about decoded
     # packets, but the output for each packet can often spread over 30
     # to 40 lines:
     sudo tshark -V -i veth2
-    sudo tshark -V -i veth4
+    sudo tshark -V -i veth6
 
     # Add -x option to get raw hex dump of packet data:
     sudo tshark -x -V -i veth2
-    sudo tshark -x -V -i veth4
+    sudo tshark -x -V -i veth6
