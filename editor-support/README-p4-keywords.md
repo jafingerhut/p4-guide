@@ -17,33 +17,68 @@ for:
 Now the list of things that I believe are fairly accurately done
 already:
 
-* action - yes, done
-* apply
-* bit - no
-* bool - no
-* const - yes, done (not sure if I have all characters that can appear in type name)
-* control - yes, done
-* default - no
-* else - no
-* exit - no
-* false - no
-* header - yes, done
-* if - no
-* in - no
-* inout - no
-* int - no
-* out - no
-* package - yes, done
-* parser - yes, done
-* return - no
-* select - no
-* state - yes, done
-* struct - yes, done
-* switch - no
-* table - yes, done
-* transition - no
-* true - no
-* typedef - yes, although syntax parsing of type name might not be 100% accurate.
-* varbit - no
-* verify - no
-* void - no
+* action - yes, done.  keyword in p4_16-mode.el
+* apply - keyword in p4_16-mode.el
+* bit - no - type in p4_16-mode.el
+* bool - no - type in p4_16-mode.el
+* const - yes, done (not sure if I have all characters that can appear in type name) - attribute in p4_16-mode.el
+* control - yes, done - keyword in p4_16-mode.el
+* default - no - keyword in p4_16-mode.el
+* else - no - keyword in p4_16-mode.el
+* enum - keyword in p4_16-mode.el
+* error - type in p4_16-mode.el
+* extern - keyword in p4_16-mode.el
+* exit - no - keyword in p4_16-mode.el
+* false - no - constant in p4_16-mode.el
+* header - yes, done - keyword in p4_16-mode.el
+* header_union - yes, done - keyword in p4_16-mode.el
+* if - no - keyword in p4_16-mode.el
+* in - no - attribute in p4_16-mode.el
+* inout - no - attribute in p4_16-mode.el
+* int - no - type in p4_16-mode.el
+* match_kind - keyword in p4_16-mode.el
+* out - no - attribute in p4_16-mode.el
+* package - yes, done - keyword in p4_16-mode.el
+* parser - yes, done - keyword in p4_16-mode.el
+* return - no - keyword in p4_16-mode.el
+* select - no - keyword in p4_16-mode.el
+* state - yes, done - keyword in p4_16-mode.el
+* struct - yes, done - keyword in p4_16-mode.el
+* switch - no - keyword in p4_16-mode.el
+* table - yes, done - keyword in p4_16-mode.el
+* transition - no - keyword in p4_16-mode.el
+* true - no - constant in p4_16-mode.el
+* tuple - keyword in p4_16-mode.el
+* typedef - yes, although syntax parsing of type name might not be 100% accurate. - keyword in p4_16-mode.el
+* varbit - no - type in p4_16-mode.el
+* verify - no - keyword in p4_16-mode.el
+* void - no - type in p4_16-mode.el
+
+
+Not P4_16 keywords, but some standard and some extension table
+attribute names:
+
+* key - attribute in p4_16-mode.el
+* actions - attribute in p4_16-mode.el
+* default_action - attribute in p4_16-mode.el
+* entries - attribute in p4_16-mode.el
+* implementation - attribute in p4_16-mode.el
+* counters - attribute in p4_16-mode.el
+* meters - attribute in p4_16-mode.el
+
+P4_16 common variable names:
+
+* packet_in - variable in p4_16-mode.el
+* packet_out - variable in p4_16-mode.el
+
+P4_16 operations:
+
+* &&& - operation in p4_16-mode.el
+* .. - operation in p4_16-mode.el
+* ++ - operation in p4_16-mode.el
+* ? - operation in p4_16-mode.el
+* : - operation in p4_16-mode.el
+
+P4_16 constants:
+
+* _ - constant in p4_16-mode.el

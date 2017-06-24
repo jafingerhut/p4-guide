@@ -4,6 +4,7 @@
 --regex-p4=/enum[ \t]+([a-zA-Z0-9_]+)/\1/d,definition/
 --regex-p4=/extern[ \t]+([a-zA-Z0-9_]+)/\1/d,definition/
 --regex-p4=/header[ \t]+([a-zA-Z0-9_]+)/\1/t,typedefs/
+--regex-p4=/header_union[ \t]+([a-zA-Z0-9_]+)/\1/t,typedefs/
 --regex-p4=/action[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
 --regex-p4=/control[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
 --regex-p4=/package[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
