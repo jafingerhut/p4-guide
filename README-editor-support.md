@@ -4,8 +4,7 @@
 ## Color highlighting and auto-indenting
 
 P4 is close enough in syntax to C/C++ that Emacs `c++-mode` works well
-for color highlighting, and figuring out the indentation level of
-code.
+for color highlighting, and auto-indentation of code with the TAB key.
 
 Force current buffer/file-being-edited to use C/C++ syntax for color
 highlighting and auto-indent:

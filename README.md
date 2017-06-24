@@ -26,7 +26,7 @@ Contents:
     including interactively adding table entries to the tables, and
     send packets using Scapy that will be processed by the emulator.
 
-* [Instructions](README-p4-tags.md) for setting up several text
+* [Instructions](README-editor-support.md) for setting up several text
   editing programs for color highlighting P4 programs, and quickly
   finding definitions for named things like control blocks and tables.
 
