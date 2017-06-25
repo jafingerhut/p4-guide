@@ -6,15 +6,18 @@
 P4 is close enough in syntax to C/C++ that Emacs `c++-mode` works well
 for color highlighting, and auto-indentation of code with the TAB key.
 
+
+## Vim color highlighting and auto-indenting
+
 To change the mode for the current file being edited:
 
-* Emacs: `M-x c++-mode RET`
-* Vim: `:set syntax=c RET`
+```vim
+:set syntax=c RET
+```
 
-Cause all files with a suffix of `.p4` in their file name to
-automatically use C/C++ mode when loaded:
-
-* Vim: Add lines like the following in your `$HOME/.vimrc` file:
+To cause all files with a suffix of `.p4` in their file name to
+automatically use C/C++ mode when loaded, add lines like the following
+in your `$HOME/.vimrc` file:
 
 ```vim
 augroup filetypedetect
@@ -23,15 +26,25 @@ augroup filetypedetect
 augroup END
 ```
 
-* Emacs: Add a line like this in your `init.el` file:
+
+## Emacs color highlighting and auto-indenting
+
+To change the mode for the current file being edited:
+
+```
+M-x c++-mode RET
+```
+
+To cause all files with a suffix of `.p4` in their file name to
+automatically use C/C++ mode when loaded, add lines like the following
+in your `$HOME/.emacs.d/init.el` file:
 
 ```elisp
 (setq auto-mode-alist (cons '("\\.p4$" . c++-mode) auto-mode-alist))
 ```
 
 If you want better P4-specific features in Emacs, thanks to Vladimir
-Gurevich Networks you may copy these files to your `$HOME/.emacs.d`
-directory:
+Gurevich you may copy these files to your `$HOME/.emacs.d` directory:
 
 * [editor-support/p4_16-mode.el](editor-support/p4_16-mode.el)
 * [editor-support/p4_14-mode.el](editor-support/p4_14-mode.el)
