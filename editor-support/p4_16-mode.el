@@ -19,10 +19,20 @@
 ;; Placeholder for user customization code
 (defvar p4_16-mode-hook nil)
 
+(defun p4_16-electric-brace (arg)
+  "Insert a brace."
+  (interactive "*P")
+  (self-insert-command (prefix-numeric-value arg))
+  (save-excursion
+    (move-beginning-of-line nil)
+    (indent-for-tab-command)))
+
 ;; Define the keymap (for now it is pretty much default)
 (defvar p4_16-mode-map
   (let ((map (make-keymap)))
     (define-key map "\C-j"      'newline-and-indent)
+    (define-key map "{"         'p4_16-electric-brace)
+    (define-key map "}"         'p4_16-electric-brace)
     (define-key map "\C-c\C-c"  'comment-region)
     map)
   "Keymap for P4_16 major mode")
