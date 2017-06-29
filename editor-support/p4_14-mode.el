@@ -239,6 +239,9 @@
   (setq major-mode 'p4_14-mode)
   (setq mode-name "P4_14")
   (setq imenu-generic-expression p4_14-imenu-generic-expression)
+  ;; Setting this to nil causes indentation to use only space
+  ;; characters, never tabs.
+  (setq indent-tabs-mode nil)
   (imenu-add-to-menubar "P4_14")
   (cscope-minor-mode)
   (run-hooks 'p4_14-mode-hook)
