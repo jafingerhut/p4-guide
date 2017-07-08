@@ -32,10 +32,12 @@ limitations under the License.
  * You can see its contents here:
  * https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4
  *
- * By mid-2017 there should be a psa.p4 architecture defined.  PSA
- * stands for Portable Switch Architecture.  It should be very much
- * like the only architecture defined for P4_14, and close to
- * v1model.p4, i.e.
+ * By 2017 there should be a psa.p4 architecture defined.  PSA stands
+ * for Portable Switch Architecture.  The work in progress version of
+ * PSA is being done in the p4-spec Github repository at
+ * https://github.com/p4lang/p4-spec in the directory p4-16/psa.  The
+ * PSA should be very much like the only architecture defined for
+ * P4_14, and close to v1model.p4, i.e.
  *
  * ingress consists of these things, programmed in P4:
  * + parser
@@ -101,7 +103,7 @@ struct fwd_metadata_t {
 }
 
 
-/* P4_16 code that is auto-tranlated from a P4_14 program, as this
+/* P4_16 code that is auto-translated from a P4_14 program, as this
  * program began, often collects together all headers into one big
  * struct, and all metadata we care about for a packet into another
  * big struct.  This enables passing fewer arguments when control
@@ -150,9 +152,17 @@ parser ParserImpl(packet_in packet,
      * hexadecimal.  You can also do decimal (no special prefix),
      * binary (prefix 0b), or octal (0o), but note that octal is _not_
      * specified as it is in C.
-
+     *
      * You can also have <decimal number>s<something> where the 's'
      * indicates the number is a 2's complement signed integer value.
+     *
+     * For just about every integer constant in your P4 program, it is
+     * usually perfectly fine to leave out the '<number>w' width
+     * specification, because the compiler infers the width it should
+     * be from the context, e.g. for the assignment below, if you
+     * leave off the '16w' the compiler infers that 0x0800 should be
+     * 16 bits wide because it is being assigned as the value of a
+     * bit<16> constant.
      */
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
 
@@ -181,8 +191,8 @@ parser ParserImpl(packet_in packet,
         /* The 'select' keyword introduces an expression that is like
          * a C 'switch' statement, except that the expression for each
          * of the cases must be a state name in the parser.  This
-         * makes convenient the handling of many possible ether types
-         * or IPv4 protocol values. */
+         * makes convenient the handling of many possible Ethernet
+         * types or IPv4 protocol values. */
         transition select(hdr.ethernet.etherType) {
             ETHERTYPE_IPV4: parse_ipv4;
             default: accept;
@@ -226,14 +236,15 @@ control ingress(inout headers hdr,
      * + a value for every directionless parameter of that action.
      *
      * If the control plane chooses the my_drop action for a table
-     * entry, there are no parameters at all, so the control plane
-     * need not specify any.
+     * entry, there are no action parameters at all, so the control
+     * plane need not specify any.
      *
      * If the control plane chooses the set_l2ptr action for a table
      * entry, it must specify a 32-bit value for the 'l2ptr'
      * parameter.  This value will be stored in the target's
-     * ipv4_da_lpm table result for that entry.  Whenever a packet
-     * searches the table and matches an entry with a set_l2ptr action
+     * ipv4_da_lpm table result for that entry.  Whenever a packet is
+     * being processed by the P4 program, and it searches the
+     * ip4_da_lpm table and matches an entry with a set_l2ptr action
      * as its result, the value of l2ptr chosen by the control plane
      * will become the value of the l2ptr parameter for the set_l2ptr
      * action as it is executed at packet forwarding time. */
@@ -259,15 +270,15 @@ control ingress(inout headers hdr,
         }
         /* If at packet forwarding time, there is no matching entry
          * found in the table, the action specified by the
-         * default_action keyword will be performed on the packet.
+         * 'default_action' keyword will be performed on the packet.
          *
          * In this case, my_drop is only the default action for this
          * table when the P4 program is first loaded into the device.
-         * The control plane can choose to change that default action
-         * via an appropriate API call to a different action, if
-         * desired.  If you put 'const' before 'default_action', then
-         * it means that this default action cannot be changed by the
-         * control plane. */
+         * The control plane can choose to change that default action,
+         * via an appropriate API call, to a different action.  If you
+         * put 'const' before 'default_action', then it means that
+         * this default action cannot be changed by the control
+         * plane. */
         default_action = my_drop;
     }
 
@@ -297,14 +308,14 @@ control ingress(inout headers hdr,
         default_action = my_drop;
     }
 
-    /* Every control block must contain an apply block.  The contents
-     * of the apply block specify the flow of control between the
-     * tables.  This one is particularly simple -- always do the
+    /* Every control block must contain an 'apply' block.  The
+     * contents of the apply block specify the flow of control between
+     * the tables.  This one is particularly simple -- always do the
      * ipv4_da_lpm table, and regardless of the result, always do the
-     * mac_da table.  It is definitely possible to have if statements
-     * in apply blocks that handle many possible cases differently
-     * from each other, based upon the values of packet header fields
-     * or metadata fields. */
+     * mac_da table.  It is definitely possible to have 'if'
+     * statements in apply blocks that handle many possible cases
+     * differently from each other, based upon the values of packet
+     * header fields or metadata fields. */
     apply {
         ipv4_da_lpm.apply();
         mac_da.apply();
@@ -398,7 +409,7 @@ control verifyChecksum(in headers hdr, inout metadata meta) {
          * In this case, the tuple contains a sequence of header field
          * values that the get() method will concatenate together and
          * calculate an IP 16-bit one's complement checksum for. */
-        if ((hdr.ipv4.ihl == 4w5) &&
+        if ((hdr.ipv4.ihl == 5) &&
             // TBD: bug?  I think this == should be !=
             // Probably the current open source compiler/behavioral
             // model does not actually implement the behavior of this
@@ -429,7 +440,7 @@ control verifyChecksum(in headers hdr, inout metadata meta) {
 control computeChecksum(inout headers hdr, inout metadata meta) {
     Checksum16() ipv4_checksum;
     apply {
-        if (hdr.ipv4.ihl == 4w5) {
+        if (hdr.ipv4.ihl == 5) {
             hdr.ipv4.hdrChecksum =
                 ipv4_checksum.get({ hdr.ipv4.version,
                             hdr.ipv4.ihl,

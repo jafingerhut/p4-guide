@@ -56,7 +56,7 @@ struct headers {
 // Why bother creating an action that just does one primitive action?
 // That is, why not just use 'mark_to_drop' as one of the possible
 // actions when defining a table?  Because the P4_16 compiler does not
-// allow primitve actions to be used directly as actions of tables.
+// allow primitive actions to be used directly as actions of tables.
 // You must use 'compound actions', i.e. ones explicitly defined with
 // the 'action' keyword like below.
 
@@ -161,7 +161,7 @@ control DeparserImpl(packet_out packet, in headers hdr) {
 control verifyChecksum(in headers hdr, inout metadata meta) {
     Checksum16() ipv4_checksum;
     apply {
-        if ((hdr.ipv4.ihl == 4w5) &&
+        if ((hdr.ipv4.ihl == 5) &&
             (hdr.ipv4.hdrChecksum ==
              ipv4_checksum.get({ hdr.ipv4.version,
                          hdr.ipv4.ihl,
@@ -183,7 +183,7 @@ control verifyChecksum(in headers hdr, inout metadata meta) {
 control computeChecksum(inout headers hdr, inout metadata meta) {
     Checksum16() ipv4_checksum;
     apply {
-        if (hdr.ipv4.ihl == 4w5) {
+        if (hdr.ipv4.ihl == 5) {
             hdr.ipv4.hdrChecksum =
                 ipv4_checksum.get({ hdr.ipv4.version,
                             hdr.ipv4.ihl,
