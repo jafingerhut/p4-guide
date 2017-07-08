@@ -34,3 +34,18 @@ demo3 does not use those.  There is no strong reason why not -- demo3
 simply demonstrates another way to do ECMP that doesn't require P4
 action profiles, yet still achieves sharing of ECMP table entries
 among many IP prefixes.
+
+
+### rewrite-examples
+
+The program rewrite-examples.p4 was created as a demo of two different
+ways of adding tunnel encapsulation headers onto packets.  See the
+README.md file in there for how it was created.
+
+
+### tcp-options-parser
+
+The program tcp-options-parser.p4 contains an example of P4_16
+header_union and a sub-parser that may be nearly production-worthy
+(not quite -- see comments in it for caveats) for parsing TCP options
+in a TCP header.
