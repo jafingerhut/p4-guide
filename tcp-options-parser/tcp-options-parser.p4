@@ -69,12 +69,10 @@ header tcp_t {
 }
 
 header Tcp_option_end_h {
-    //bit<8> kind;
-    bit<8> kind1;
+    bit<8> kind;
 }
 header Tcp_option_nop_h {
-    //bit<8> kind;
-    bit<8> kind2;
+    bit<8> kind;
 }
 header Tcp_option_ss_h {
     bit<8>  kind;
