@@ -21,11 +21,15 @@ https://github.com/p4lang/p4c by Andy Fingerhut
 (andy.fingerhut@gmail.com).  That earlier version also appears in
 the P4_16 v1.0.0 specification document.
 
-As of 2017-Jul-08, the P4_16 compiler 'p4test' in
-https://github.com/p4lang/p4c compiles this program without any
-errors, but 'p4c-bm2-ss' gives an error that Tcp_option_h is not a
-header type.  This is because as of that date p4c-bm2-ss's bmv2
-backend code does not yet handle header_union's.
+As of 2017-Jul-08, both the `p4test` and `p4c-bm2-ss` compiler can
+handle this program, because it does not use the 'header_union'
+feature of the language.  Note that it also does not correctly parse
+TCP options, either, so don't try to use it for parsing them in
+production code.  It was created purely to exercise some other P4
+compilers and tools with a parser that initializes and modifies a
+local variable, and does a 'transition select' statement on the value
+of that local variable, as opposed to the much more common case of a
+value directly copied from a packet header field.
 */
 
 #include <core.p4>
