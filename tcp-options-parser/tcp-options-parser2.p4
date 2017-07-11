@@ -85,7 +85,7 @@ header Tcp_faked_option_h {
 typedef Tcp_faked_option_h[10] Tcp_option_stack;
 
 header Tcp_option_padding_h {
-    varbit<256> variable_stuff;
+    varbit<256> padding;
 }
 
 struct headers {
@@ -164,8 +164,9 @@ parser Tcp_option_parser(packet_in b,
         }
     }
     state parse_tcp_option_end {
-        b.extract(vec.next, 0);
+        verify(tcp_hdr_bytes_left >= 2, error.TcpOptionTooLongForHeader);
         tcp_hdr_bytes_left = tcp_hdr_bytes_left - 2;
+        b.extract(vec.next, 0);
         transition consume_remaining_tcp_hdr_and_accept;
     }
     state consume_remaining_tcp_hdr_and_accept {
@@ -181,8 +182,9 @@ parser Tcp_option_parser(packet_in b,
         transition accept;
     }
     state parse_tcp_option_nop {
-        b.extract(vec.next, 0);
+        verify(tcp_hdr_bytes_left >= 2, error.TcpOptionTooLongForHeader);
         tcp_hdr_bytes_left = tcp_hdr_bytes_left - 2;
+        b.extract(vec.next, 0);
         transition next_option;
     }
     state parse_tcp_option_ss {
@@ -319,6 +321,7 @@ control DeparserImpl(packet_out packet, in headers hdr) {
         packet.emit(hdr.ipv4);
         packet.emit(hdr.tcp);
         packet.emit(hdr.tcp_options_vec);
+        packet.emit(hdr.tcp_options_padding);
     }
 }
 

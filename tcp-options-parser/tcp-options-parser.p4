@@ -85,10 +85,7 @@ header Tcp_option_s_h {
 header Tcp_option_sack_h {
     bit<8>         kind;
     bit<8>         length;
-#define VARBIT_IN_HEADER_UNION
-#ifdef VARBIT_IN_HEADER_UNION
     varbit<256>    sack;
-#endif  /* VARBIT_IN_HEADER_UNION */
 }
 header_union Tcp_option_h {
     Tcp_option_end_h  end;
@@ -101,11 +98,16 @@ header_union Tcp_option_h {
 // Defines a stack of 10 tcp options
 typedef Tcp_option_h[10] Tcp_option_stack;
 
+header Tcp_option_padding_h {
+    varbit<256> padding;
+}
+
 struct headers {
     ethernet_t       ethernet;
     ipv4_t           ipv4;
     tcp_t            tcp;
     Tcp_option_stack tcp_options_vec;
+    Tcp_option_padding_h tcp_options_padding;
 }
 
 struct fwd_metadata_t {
@@ -143,7 +145,8 @@ struct Tcp_option_sack_top
 
 parser Tcp_option_parser(packet_in b,
                          in bit<4> tcp_hdr_data_offset,
-                         out Tcp_option_stack vec)
+                         out Tcp_option_stack vec,
+                         out Tcp_option_padding_h padding)
 {
     bit<7> tcp_hdr_bytes_left;
     
@@ -191,17 +194,7 @@ parser Tcp_option_parser(packet_in b,
         // tcp_hdr_bytes_left might be as large as 40, so multiplying
         // it by 8 it may be up to 320, which requires 9 bits to avoid
         // losing any information.
-
-        // Warning: The use of advance() in this parser means that
-        // these bytes of the packet will not be part of any parsed
-        // header, and will not be part of the payload, and therefore
-        // will not be emitted as part of the output packet.  This
-        // would most likely cause the TCP checksum of the transmitted
-        // packet to be incorrect, if it was forwarded rather than
-        // dropped, so this code should be modified (and tested
-        // thoroughly) before production use.
-        // See https://github.com/p4lang/p4-spec/issues/288
-        b.advance((bit<32>) (8 * (bit<9>) tcp_hdr_bytes_left));
+        b.extract(padding, (bit<32>) (8 * (bit<9>) tcp_hdr_bytes_left));
         transition accept;
     }
     state parse_tcp_option_nop {
@@ -233,11 +226,7 @@ parser Tcp_option_parser(packet_in b,
         verify(tcp_hdr_bytes_left >= (bit<7>) n_sack_bytes,
                error.TcpOptionTooLongForHeader);
         tcp_hdr_bytes_left = tcp_hdr_bytes_left - (bit<7>) n_sack_bytes;
-#ifdef VARBIT_IN_HEADER_UNION
         b.extract(vec.next.sack, (bit<32>) (8 * n_sack_bytes - 16));
-#else   /* VARBIT_IN_HEADER_UNION */
-        b.extract(vec.next.sack);
-#endif  /* VARBIT_IN_HEADER_UNION */
         transition next_option;
     }
 }
@@ -269,7 +258,7 @@ parser ParserImpl(packet_in packet,
     state parse_tcp {
         packet.extract(hdr.tcp);
         Tcp_option_parser.apply(packet, hdr.tcp.dataOffset,
-                                hdr.tcp_options_vec);
+                                hdr.tcp_options_vec, hdr.tcp_options_padding);
     }
 }
 
@@ -347,6 +336,7 @@ control DeparserImpl(packet_out packet, in headers hdr) {
         packet.emit(hdr.ipv4);
         packet.emit(hdr.tcp);
         packet.emit(hdr.tcp_options_vec);
+        packet.emit(hdr.tcp_options_padding);
     }
 }
 
