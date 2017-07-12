@@ -4,7 +4,8 @@ build/install instructions, or use the shell script
 Ubuntu 16.04 Linux machine.
 
 From following install instructions for `p4lang/behavioral-model`
-repository, all of these should exist in /usr/local/bin:
+repository (including the `sudo make install` step), all of these
+should exist in /usr/local/bin:
 
     bm_CLI
     bm_nanomsg_events
@@ -12,22 +13,22 @@ repository, all of these should exist in /usr/local/bin:
     simple_switch
     simple_switch_CLI
 
-From following install instructions for `p4lang/p4c-bm` repository,
-this should exist in /usr/local/bin:
-
-    p4c-bmv2
-
-Note: p4c-bmv2 only compiles P4_14 programs.  p4c-bm2-ss below can
-compile P4_14 or P4_16 programs, but it is still somewhere around
-alpha or beta readiness as of April 2017, so you may want to stick
-with p4c-bmv2 for P4_14 programs until p4c catches up on features,
-probably by May 2017 or soon afterwards.
-
 From following install instructions for `p4lang/p4c` repository, these
 should exist in `$P4C/build`, where `P4C` is a shell varaible
 containing the path to your copy of the `p4lang/p4c` repository.
 
     p4c-bm2-ss
+
+[Historical note: There is also a `p4lang/p4c-bm` repository whose
+install instructions will result in the following file in
+/usr/local/bin:
+
+    p4c-bmv2
+
+However, note that p4c-bmv2 only compiles P4_14 programs, whereas
+p4c-bm2-ss above can compile both P4_14 and P4_16 programs.  p4c-bmv2
+may be somewhat more feature complete than p4c-bm2-ss as of July 2017,
+still, but p4c-bm2-ss is getting there.]
 
 It can be convenient to have all of these commands in your shell's
 command path, e.g. for bash:
