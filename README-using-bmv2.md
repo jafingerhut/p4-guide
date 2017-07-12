@@ -108,7 +108,7 @@ these commands:
     cd $P4C/build
     ../backends/bmv2/run-bmv2-test.py .. –b –v ../testdata/p4_16_samples/issue447-5-bmv2.p4
 
-The `–v` is optional, and enabls the extra log message printing.
+The `–v` is optional, and enables the extra log message printing.
 Similarly `–b` is optional, and causes a temporary directory that is
 created by `run-bmv2-test.py` to be left on disk after it completes,
 instead of being deleted.
@@ -123,19 +123,24 @@ have a corresponding `<basename>.stf` file in the same directory.  The
 expected ones, and reports any differences), and P4 table entries to
 be added.
 
-`run-bmv2-test.py` uses `p4c-bm2-ss` to compile P4_16 source files
-to a bmv2 JSON configuration file, then runs `simple_switch` with some
-selected command line options that causes `simple_switch` to read
-packets from `.pcap` files instead of sniffing them on virtual
-Ethernet interfaces, and write output packets to `.pcap` files.  This
-has 2 benefits – the pcap files are different for input vs. output
-packets, so it is easy for the test environment to distinguish input
-vs. output packets (it is not obvious to me if it is possible to do
-this for packets sniffed on veth interfaces), and it means that the
-occasional IPv6 ND packets that Linux sends to veth interfaces do not
-occur (because the Linux kernel doesn't treat the pcap files as
-Ethernet interfaces, and automatically start up some kind of IPv6
-neighbor discovery stuff on them that sends such packets).
+`run-bmv2-test.py` uses `p4c-bm2-ss` to compile P4_16 source files to
+a bmv2 JSON configuration file, then runs `simple_switch` with the
+`--use-files 0` command line option (among other options).
+`--use-files 0` causes `simple_switch` to read packets from `.pcap`
+files instead of sniffing them on virtual Ethernet interfaces, and to
+write output packets to `.pcap` files.
+
+This has 2 benefits:
+
++ There are separate pcap files for input vs. output packets, so it is
+  easy for the test environment to distinguish input vs. output
+  packets.  It is not obvious to me if it is possible to do this for
+  packets sniffed on veth interfaces.
+
++ By default, Linux sends occasional IPv6 Neighbor Discovery packets
+  to veth interfaces, which can throw off your `simple_switch` test
+  results.  While there is some way to disable this behavior, Linux
+  will not send such packets to pcap files.
 
 There are many `.stf` files in the `$P4C/testdata/p4_16_samples/`
 directory, but there are also many more `.p4` files that do not have a
