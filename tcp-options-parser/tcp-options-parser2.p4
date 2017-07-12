@@ -273,7 +273,7 @@ control ingress(inout headers hdr,
         default_action = my_drop;
     }
 
-    action set_bd_dmac_intf(bit<24> bd, bit<1> unused1, bit<1> unused2, bit<1> unused3, bit<48> dmac, bit<9> intf) {
+    action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
         meta.fwd_metadata.out_bd = bd;
         hdr.ethernet.dstAddr = dmac;
         standard_metadata.egress_spec = intf;
