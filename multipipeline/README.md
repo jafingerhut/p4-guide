@@ -7,6 +7,10 @@ device could be made explicit in P4_16 code, rather than implicit.
 
 # Normal 1-pipeline version of the code
 
+There is nothing special about this version of the example code.  It
+is included in this repository to make it convenient to run `diff`
+against this version and the one below.
+
 The file `psa-1pipeline.p4` is exactly the same as the draft version
 of `psa.p4` that is the latest one checked in here as of 2017-Jul-24:
 
