@@ -4,6 +4,12 @@ The P4 files in this directory are intended to demonstrate by example
 one way that a multi-pipeline PSA (Portable Switch Architecture)
 device could be made explicit in P4_16 code, rather than implicit.
 
+Both of the commands below give no errors or warnings with the latest version of `p4test` compiled from the repository [https://github.com/p4lang/p4c](https://github.com/p4lang/p4c) as of 2017-Jul-19.
+
+```
+p4test example-1pipeline.p4
+p4test example-multipipe.p4
+```
 
 # Normal 1-pipeline version of the code
 
