@@ -1,0 +1,6 @@
+Using latest version of p4test as of 2017-Jul-19:
+
+% p4test example-arch-use.p4
+example-arch-use.p4(106): error: main: Cannot unify package Egress to package Egress
+Switch(ig, eg) main;
+               ^^^^
