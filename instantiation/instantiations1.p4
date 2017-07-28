@@ -165,9 +165,11 @@ control ingress(inout headers hdr,
         bit<32> tmp;
         port_bytes_in.count(istd.ingress_port,
                             (ByteCounter_t) hdr.ethernet.etherType);
-        tmp = reg1.read((bit<7>) istd.ingress_port[5:0]);
-        tmp = tmp + 0xdeadbeef;
-        reg1.write((bit<7>) istd.ingress_port[5:0], tmp);
+        @atomic {
+            tmp = reg1.read((bit<7>) istd.ingress_port[5:0]);
+            tmp = tmp + 0xdeadbeef;
+            reg1.write((bit<7>) istd.ingress_port[5:0], tmp);
+        }
         ostd.egress_port = 0;
         foo2_inst.apply(hdr, user_meta);
     }
