@@ -26,20 +26,30 @@ header ethernet_t {
     bit<16>         etherType;
 }
 
+// Make all of the types ing_in_headers, ing_out_headers,
+// egr_in_headers, and egr_out_headers at least slightly different
+// from each other, so they cannot be unified.  This helps us to know
+// whether we have type parameters for constructors correct in later
+// code.
+
 struct ing_in_headers {
     ethernet_t       ethernet;
+    bit<10> a0;
 }
 
 struct ing_out_headers {
     ethernet_t       ethernet;
+    bit<11> a1;
 }
 
 struct egr_in_headers {
     ethernet_t       ethernet;
+    bit<12> a2;
 }
 
 struct egr_out_headers {
     ethernet_t       ethernet;
+    bit<13> a3;
 }
 
 struct ing_to_egr {
@@ -62,7 +72,7 @@ control ingress(in ing_in_headers ihdr,
                 out OutControl outCtrl)
 {
     apply {
-        ohdr = ihdr;
+        ohdr.ethernet = ihdr.ethernet;
         toEgress.x = inCtrl.inputPort;
         outCtrl.outputPort = inCtrl.inputPort;
     }
@@ -90,7 +100,7 @@ control egress(in egr_in_headers ihdr,
                out OutControl outCtrl)
 {
     apply {
-        ohdr = ihdr;
+        ohdr.ethernet = ihdr.ethernet;
         outCtrl.outputPort = fromIngress.x;
     }
 }
@@ -101,9 +111,36 @@ control egr_deparse(in egr_out_headers ohdr,
     apply { b.emit(ohdr.ethernet); }
 }
 
-Ingress(ing_parse(), ingress(), ing_deparse()) ig;
-Egress(egr_parse(), egress(), egr_deparse()) eg;
-Switch(ig, eg) main;
+// It is normal for the compiler to give "unused instance" warnings
+// messages for the package instantiations for Ingress and Egress
+// below, if the instances are not used later.
 
+Ingress(ing_parse(), ingress(), ing_deparse()) ig1;
+Ingress<ing_to_egr, ing_in_headers, ing_out_headers>
+    (ing_parse(), ingress(), ing_deparse()) ig2;
+
+Egress(egr_parse(), egress(), egr_deparse()) eg1;
+Egress<ing_to_egr, egr_in_headers, egr_out_headers>
+    (egr_parse(), egress(), egr_deparse()) eg2;
+
+// Next instantiation gives error, as expected:
+// "Cannot unify struct egr_in_headers to struct ing_in_headers"
+
+//Egress<ing_to_egr, ing_in_headers, egr_out_headers>
+//    (egr_parse(), egress(), egr_deparse()) eg3;
+
+// If you try any one of the attempted instantiations of package
+// Switch below, it causes the latest version of p4test as of
+// 2017-Jul-19 to give an error message like this;
+
+// example-arch-use.p4(140): error: main: Cannot unify package Egress to package Egress
+// Switch(ig1, eg2) main;
+//                  ^^^^
+
+Switch(ig1, eg1) main;
+//Switch(ig1, eg2) main;
+//Switch(ig2, eg1) main;
+//Switch(ig2, eg2) main;
+//Switch<ing_to_egr>(ig1, eg1) main;
 //Switch(Ingress(ing_parse(), ingress(), ing_deparse()),
 //       Egress(egr_parse(), egress(), egr_deparse())) main;
