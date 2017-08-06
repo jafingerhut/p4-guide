@@ -39,6 +39,33 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # Install Ubuntu dependencies needed by p4c, from its README.md
 sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev pkg-config python python-scapy python-ipaddr tcpdump cmake
 
+
+
+echo "------------------------------------------------------------"
+echo "Installing p4lang/behavioral-model"
+echo "start install behavioral-model:"
+date
+
+cd "${INSTALL_DIR}"
+# Clone Github repo
+git clone https://github.com/p4lang/behavioral-model.git
+
+cd behavioral-model
+./install_deps.sh
+
+# Compile and install behavioral-model
+./autogen.sh
+# With debug enabled in binaries:
+./configure 'CXXFLAGS=-O0 -g'
+# Without debug enabled:
+#./configure
+make
+sudo make install
+
+echo "end install behavioral-model:"
+date
+
+
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c"
 echo "start install protobuf:"
@@ -76,32 +103,6 @@ cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
 make -j${MAX_PARALLEL_JOBS}
 
 echo "end install p4c:"
-date
-
-
-
-echo "------------------------------------------------------------"
-echo "Installing p4lang/behavioral-model"
-echo "start install behavioral-model:"
-date
-
-cd "${INSTALL_DIR}"
-# Clone Github repo
-git clone https://github.com/p4lang/behavioral-model.git
-
-cd behavioral-model
-./install_deps.sh
-
-# Compile and install behavioral-model
-./autogen.sh
-# With debug enabled in binaries:
-./configure 'CXXFLAGS=-O0 -g'
-# Without debug enabled:
-#./configure
-make
-sudo make install
-
-echo "end install behavioral-model:"
 date
 
 echo "------------------------------------------------------------"
