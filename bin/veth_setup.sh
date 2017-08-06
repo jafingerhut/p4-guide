@@ -21,7 +21,7 @@ for idx in 0 1 2 3 4 5 6 7 8; do
 
         # Disable IPv6 on the interfaces, so that the Linux kernel
         # will not automatically send IPv6 MDNS, Router Solicitation,
-        # and Multicast Listerner Report pakets on the interface,
+        # and Multicast Listener Report pakets on the interface,
         # which can make P4 program debugging more confusing.
         #
         # Testing indicates that we can still send IPv6 packets across
