@@ -26,6 +26,10 @@ MAX_PARALLEL_JOBS=3
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
 
+echo "------------------------------------------------------------"
+echo "Time and disk space used before installation begins:"
+date
+df -h .
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
@@ -97,6 +101,11 @@ sudo make install
 
 echo "end install behavioral-model:"
 date
+
+echo "------------------------------------------------------------"
+echo "Time and disk space used when installation was complete:"
+date
+df -h .
 
 P4C="${INSTALL_DIR}/p4c"
 BMV2="${INSTALL_DIR}/behavioral-model"
