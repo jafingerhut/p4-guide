@@ -26,6 +26,8 @@ MAX_PARALLEL_JOBS=3
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
 
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
@@ -112,7 +114,6 @@ df -h .
 
 P4C="${INSTALL_DIR}/p4c"
 BMV2="${INSTALL_DIR}/behavioral-model"
-THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
