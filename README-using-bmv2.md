@@ -128,9 +128,7 @@ a bmv2 JSON configuration file, then runs `simple_switch` with the
 `--use-files 0` command line option (among other options).
 `--use-files 0` causes `simple_switch` to read packets from `.pcap`
 files instead of sniffing them on virtual Ethernet interfaces, and to
-write output packets to `.pcap` files.
-
-This has 2 benefits:
+write output packets to `.pcap` files.  This has 2 benefits:
 
 + There are separate pcap files for input vs. output packets, so it is
   easy for the test environment to distinguish input vs. output
