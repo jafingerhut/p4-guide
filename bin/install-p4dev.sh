@@ -42,6 +42,10 @@ sudo apt-get --yes install git vim
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # Install Ubuntu dependencies needed by p4c, from its README.md
 sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev pkg-config python python-scapy python-ipaddr tcpdump cmake
+# Optional Ubuntu dependency required to compile graphs backend for
+# p4c.  For more details, see:
+# https://github.com/p4lang/p4c/blob/master/backends/graphs/README.md
+sudo apt-get --yes install libboost-graph-dev
 
 
 
