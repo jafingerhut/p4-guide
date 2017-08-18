@@ -89,8 +89,14 @@ control cIngress(inout Parsed_packet hdr,
                  inout mystruct1 meta,
                  inout standard_metadata_t stdmeta) {
     C1 c0;
-    // Illegal syntax, because right-hand side is not a method call.
     C1 c1 = MyC1();
+    // 2017-Aug-16 version of p4test gives the following error on the
+    // line above:
+    //
+    // In file: /home/jafinger/p4c/frontends/p4/simplifyDefUse.cpp:526
+    // Compiler Bug: control-variable.p4(92): MyC1();: expected method call
+    //     C1 c1 = MyC1();
+    //             ^^^^^^
     C1 c2 = MyC2();
     apply {
         if (hdr.ipv4.dstAddr[0:0] == 1) {

@@ -7,13 +7,11 @@ compile these files:
 - controls.p4 demonstrates an attempt to pass a parser as a run-time
   parameter to another parser.
 
-- control-variable.p4 demonstrates an attempt to declare a variable
-  with a type that is a control.  There is no error declaring variable
-  c0 of type C1, but that is uninitialized and not good for much.  The
-  later declaration for variable c1 with an initializer expression of
-  MyC1() gives an error because the compiler expects a method call in
-  the initializer expression.  The same error occurs if you try to
-  assign a value to c1 inside a control apply block.
+- control-variable1.p4 control-variable2.p4 control-variable3.p4
+  demonstrate three different attempts to declare a variable with a
+  type that is a control, or to assign different values to a such a
+  variable or instance name at run time.  All give errors from the
+  open source p4test compiler, probably by design.
 
 See this links for more discussion:
 
