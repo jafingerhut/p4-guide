@@ -13,6 +13,16 @@ parser MyP1() {
     }
 }
 parser MyP2(P1 p1) {
+    // README
+    // 2017-Aug-16 version of p4test gives the following error on the
+    // line above:
+    //
+    // parsers.p4(15): error: p1: parameter cannot have type parser P1
+    // parser MyP2(P1 p1) {
+    //                ^^
+    // parsers.p4(4)
+    // parser P1();
+    //        ^^
     state start {
         p1.apply();
         transition accept;

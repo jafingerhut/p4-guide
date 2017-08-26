@@ -93,6 +93,7 @@ control cIngress(inout Parsed_packet hdr,
     MyC2() c2;
     apply {
         c0 = c1;
+        // README
         // 2017-Aug-16 version of p4test gives the following error on
         // the line above:
         //

@@ -4,8 +4,8 @@ compile these files:
 - parsers.p4 demonstrates an attempt to pass a parser as a run-time
   parameter to another parser.
 
-- controls.p4 demonstrates an attempt to pass a parser as a run-time
-  parameter to another parser.
+- controls.p4 demonstrates an attempt to pass a control as a run-time
+  parameter to another control.
 
 - control-variable1.p4 control-variable2.p4 control-variable3.p4
   demonstrate three different attempts to declare a variable with a

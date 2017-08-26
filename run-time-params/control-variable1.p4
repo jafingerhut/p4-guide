@@ -90,6 +90,7 @@ control cIngress(inout Parsed_packet hdr,
                  inout standard_metadata_t stdmeta) {
     C1 c0;
     C1 c1 = MyC1();
+    // README
     // 2017-Aug-16 version of p4test gives the following error on the
     // line above:
     //
