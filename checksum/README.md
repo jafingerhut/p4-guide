@@ -25,8 +25,8 @@ scapy session for sending packets
 We must run scapy as root for it to have permission to send packets on
 veth interfaces.
 
-I found a working example of using Scapy 
-http://allievi.sssup.it/techblog/archives/631
+I found a working example of using Scapy to generate IPv4 headers with
+IP options here: http://allievi.sssup.it/techblog/archives/631
 
     sudo scapy
 
