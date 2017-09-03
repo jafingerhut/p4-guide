@@ -12,8 +12,7 @@ pkt_with_opts=Ether() / IP(dst='10.1.0.1', options=IPOption('\x83\x03\x10')) / T
 ```
 
 
-## Convert Scapy packets to/from other data types
-
+## Convert Scapy packets to/from strings of 8-bit bytes
 
 ```python
 # Construct a packet as a Scapy object
@@ -58,6 +57,52 @@ True
 1504418046.720192
 >>> pkt1x.time
 1504419231.279649
+```
+
+
+## Convert Scapy packets to/from strings of ASCII hex digits
+
+This is similar to the previous section, except the strings are not an
+entire 8-bit byte per character, but 2 ASCII hex digits per 8-bit
+byte.  This is useful in multiple contexts, e.g. representing packet
+contents in an STF file as part of an automated test of the p4c P4
+compiler.
+
+```python
+>>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
+>>> def str_to_hex(s):
+...     return ''.join(map(lambda x: '%02x' % (ord(x)), s))
+>>> str_to_hex(str(pkt1))
+'525400123502080027018bbc08004500002800010000400664bf0a00020f0a01000116a1005000000000000000005002200062e10000'
+```
+
+Below are some intermediate steps demonstrating how the function
+`str_to_hex` above works:
+
+```python
+>>> map(lambda x: x, str(pkt1))
+['R', 'T', '\x00', '\x12', '5', '\x02', '\x08', '\x00', "'", '\x01', '\x8b', '\xbc', '\x08', '\x00', 'E', '\x00', '\x00', '(', '\x00', '\x01', '\x00', '\x00', '@', '\x06', 'd', '\xbf', '\n', '\x00', '\x02', '\x0f', '\n', '\x01', '\x00', '\x01', '\x16', '\xa1', '\x00', 'P', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', 'P', '\x02', ' ', '\x00', 'b', '\xe1', '\x00', '\x00']
+>>> map(lambda x: '%02x' % (ord(x)), str(pkt1))
+['52', '54', '00', '12', '35', '02', '08', '00', '27', '01', '8b', 'bc', '08', '00', '45', '00', '00', '28', '00', '01', '00', '00', '40', '06', '64', 'bf', '0a', '00', '02', '0f', '0a', '01', '00', '01', '16', 'a1', '00', '50', '00', '00', '00', '00', '00', '00', '00', '00', '50', '02', '20', '00', '62', 'e1', '00', '00']
+>>> ''.join(map(lambda x: '%02x' % (ord(x)), str(pkt1)))
+'525400123502080027018bbc08004500002800010000400664bf0a00020f0a01000116a1005000000000000000005002200062e10000'
+```
+
+Below shows how to convert from a string of hex digits (with optional
+embedded space and tab characters, which will be ignored) to a Scapy
+packet.
+
+```python
+>>> s1='5254 00123 5020 8002 7018BBC08004	500002800010000400664BF0A00020F0A01000116A1005000000000000000005002200062E10000'
+>>> import re
+>>> def hex_to_str(hex_s):
+...     tmp = re.sub('[ \t]', '', hex_s)
+...     return str(bytearray.fromhex(tmp))
+... 
+
+>>> pkt2=Ether(hex_to_str(s1))
+>>> str(pkt1)==str(pkt2)
+True
 ```
 
 
@@ -175,11 +220,11 @@ True
 ```
 
 Get values of fields in IP header.  Note that the packet is only
-'partially built', meaning that some of the field values are `None`.
-The idea with Scapy is that these fields are auto-calculated from
-other parts of the packet on demand, just before doing things like
-`pkt1.show2()` or `str(pkt1)`, which need those fields to be
-calculated.
+'partially built', meaning that some of the field values are `None`
+(fields `ihl`, `len`, and `chksum` in this example).  The idea with
+Scapy is that these fields are auto-calculated from other parts of the
+packet on demand, just before doing things like `pkt1.show2()` or
+`str(pkt1)`, which need those fields to be calculated.
 
 See below for one way to get the calculated value of those fields.
 
