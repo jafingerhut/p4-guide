@@ -129,6 +129,11 @@ previous section.
      \options\
 ###[ Raw ]### 
         load= '\x16\xa1\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00'
+
+>>> str(pkt1) == str(pkt2)
+False
+>>> str(pkt1)[0:53] == str(pkt2)
+True
 ```
 
 
@@ -169,11 +174,12 @@ previous section.
 <type 'int'>
 ```
 
-Get values of fields in IP header.  Note that since the packet is only
-'partially built', meaning that some of the field values are None.
+Get values of fields in IP header.  Note that the packet is only
+'partially built', meaning that some of the field values are `None`.
 The idea with Scapy is that these fields are auto-calculated from
 other parts of the packet on demand, just before doing things like
-pkt1.show2() or str(pkt1), which need those fields to be calculated.
+`pkt1.show2()` or `str(pkt1)`, which need those fields to be
+calculated.
 
 See below for one way to get the calculated value of those fields.
 
