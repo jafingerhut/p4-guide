@@ -7,6 +7,13 @@ To compile the P4_16 version of the code:
 
     p4c-bm2-ss checksum-ipv4-with-options.p4 -o checksum-ipv4-with-options.json
 
+This program currently only compiles without errors using a version of
+p4c after this 2017-Aug-23 commit:
+
+    https://github.com/p4lang/p4c/commit/f09a95dcda68ca18a1528be6a63a16f2b8074d46
+
+but before that commit was reverted on 2017-Aug-28.
+
 
 # Running
 
