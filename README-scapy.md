@@ -106,6 +106,30 @@ True
 ```
 
 
+## Writing Scapy packets to, and reading Scapy packets from, pcap files
+
+```python
+>>> pkt0=Ether() / IP(dst='10.0.0.1') / TCP(sport=1, dport=8)
+>>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
+>>> pkt2=Ether() / IP(dst='10.2.0.2') / TCP(sport=65535, dport=443)
+>>> wrpcap('some-pkts.pcap', [pkt0, pkt1, pkt2])
+
+>>> pktlst=rdpcap('some-pkts.pcap')
+>>> len(pktlst)
+3
+>>> pktlst
+<some-pkts.pcap: TCP:3 UDP:0 ICMP:0 Other:0>
+>>> pktlst[0]
+<Ether  dst=52:54:00:12:35:02 src=08:00:27:01:8b:bc type=0x800 |<IP  version=4L ihl=5L tos=0x0 len=40 id=1 flags= frag=0L ttl=64 proto=tcp chksum=0x64c0 src=10.0.2.15 dst=10.0.0.1 options=[] |<TCP  sport=tcpmux dport=8 seq=0 ack=0 dataofs=5L reserved=0L flags=S window=8192 chksum=0x79ca urgptr=0 |>>>
+>>> str(pkt0)==str(pktlst[0])
+True
+>>> str(pkt1)==str(pktlst[1])
+True
+>>> str(pkt2)==str(pktlst[2])
+True
+```
+
+
 ## Truncate a packet
 
 This is a pretty straightforward application of the techniques in the
@@ -283,7 +307,7 @@ calling the `Ether()` constructor on the resulting string.
 ```
 
 
-# Creating packets with incorrect values for auto-calculated fields
+## Creating packets with incorrect values for auto-calculated fields
 
 Here is one way to create a packet with an incorrect IPv4 header
 checksum, without knowing in advance what the correct checksum is:
