@@ -140,6 +140,75 @@ write output packets to `.pcap` files.  This has 2 benefits:
   results.  While there is some way to disable this behavior, Linux
   will not send such packets to pcap files.
 
+To successfully take advantage of the `--use-files 0` option, you
+still must specify interfaces on the `simple_switch` command line
+using one or more `-i` options.  For example, if you use the option
+`-i 0@pcap0`, then the P4 program port 0 will get input packets from
+file `pcap0_in.pcap`, and write output packets to file
+`pcap0_out.pcap`.
+
+The packet out pcap files created by `simple_switch` are not Ethernet
+type pcap files, the way that a pcap file captured from an Ethernet
+interface using tcpdump or Wireshark is.  They are type 0, which is
+shown as 'No link-layer encapsulation' from the output of the Linux
+`file` command, and causes a warning like the one below when using
+Scapy's `rdpcap` function to read the file:
+
+    >>> pkts2=rdpcap('pcap0_out.pcap')
+    WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+
+If you want to change such a file (named `pcap0_out.pcap` in the
+sample command below) to one with a link type of Ethernet, which makes
+it more useful when reading into Wireshark, use a command like this:
+
+    editcap -F pcap -T ether pcap0_out.pcap pcap0_out_ether.pcap
+
+From the output of the commands below, it appears that this also
+changes the capture length from 0 to 262144.  A capture length of 0
+seems to cause trouble for some programs that read pcap files, too.
+
+    % file pcap0_out.pcap
+    pcap0_out.pcap: tcpdump capture file (little-endian) - version 2.4 (No link-layer encapsulation, capture length 0)
+    
+    % file pcap0_out_ether.pcap
+    pcap0_out_ether.pcap: tcpdump capture file (little-endian) - version 2.4 (Ethernet, capture length 262144)
+
+The sample `scapy` interactive session below shows that the original
+`pcap0_out.pcap` file contents are read in using Scapy's `rdpcap`
+function as `Raw` packets, whereas the Scapy packet objects created
+from reading file `pcap0_out_ether.pcap` are decoded as Ethernet
+frames.  They also demonstrate that the packet contents after
+converting them to strings with `str()` are the same byte sequences as
+each other.
+
+    [02:22:05] $ scapy
+    INFO: Can't import matplotlib. Won't be able to plot.
+    INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
+    WARNING: No route found for IPv6 destination :: (no default route?)
+    INFO: Can't import python Crypto lib. Won't be able to decrypt WEP.
+    INFO: Can't import python Crypto lib. Disabled certificate manipulation tools
+    INFO: Can't import python ecdsa lib. Disabled certificate manipulation tools
+    Welcome to Scapy (2.3.3)
+    >>> p1=rdpcap('pcap0_out.pcap')
+    WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+    >>> type(p1[0])
+    <class 'scapy.packet.Raw'>
+    >>> p2=rdpcap('pcap0_out_ether.pcap')
+    >>> type(p2[0])
+    <class 'scapy.layers.l2.Ether'>
+    >>> p1[0]
+    <Raw  load="RT\x00\x125\x02\x08\x00'\x01\x8b\xbc\x08\x00E\x00\x00(\x00\x01\x00\x00?\x06e\xbb\n\x00\x02\x0f\n\x01\x00\x05\x16\xa2\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00\x00" |>
+    >>> p2[0]
+    <Ether  dst=52:54:00:12:35:02 src=08:00:27:01:8b:bc type=0x800 |<IP  version=4L ihl=5L tos=0x0 len=40 id=1 flags= frag=0L ttl=63 proto=tcp chksum=0x65bb src=10.0.2.15 dst=10.1.0.5 options=[] |<TCP  sport=5794 dport=http seq=0 ack=0 dataofs=5L reserved=0L flags=S window=8192 chksum=0x62e1 urgptr=0 |>>>
+    >>> p1[0]==p2[0]
+    False
+    >>> str(p1[0])==str(p2[0])
+    True
+    >>> p1[1]==p2[1]
+    False
+    >>> str(p1[1])==str(p2[1])
+    True
+
 There are many `.stf` files in the `$P4C/testdata/p4_16_samples/`
 directory, but there are also many more `.p4` files that do not have a
 corresponding `.stf` file in that directory.  For all of those, I

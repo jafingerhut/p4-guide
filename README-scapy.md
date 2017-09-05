@@ -72,6 +72,7 @@ compiler.
 >>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
 >>> def str_to_hex(s):
 ...     return ''.join(map(lambda x: '%02x' % (ord(x)), s))
+... 
 >>> str_to_hex(str(pkt1))
 '525400123502080027018bbc08004500002800010000400664bf0a00020f0a01000116a1005000000000000000005002200062e10000'
 ```
