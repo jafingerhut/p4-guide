@@ -18,9 +18,9 @@ is functionally equivalent to having the following two tables.
 
 
 ```
-    // X is the smallest integer such that 2^X >= N, so that it is
-    // just large enough to represent an index into a table with N
-    // entries.
+    // X is the smallest integer such that 2^X >= N, so that a bit<X>
+    // value is just large enough to represent an index into a table
+    // with N entries.
     bit<X> T_profile_member_id;
 
     action T_set_profile_member_id (bit<X> profile_member_id) {
