@@ -346,7 +346,21 @@ many more than 4 members to be added to the action profile.
     Dumping member 12
     Action entry: foo1 - 70
 
-That looks like a bug in simple_switch, perhaps?
+That looks like a bug in simple_switch, perhaps?  I have filed a
+Github issue on p4lang/behavioral-model repository about this
+behavior, in case it is a bug deemed worthy of fixing:
+
+    https://github.com/p4lang/behavioral-model/issues/435
+
+Now try adding more than 8 table entries to see if that causes an
+error.
+
+    RuntimeCmd: table_indirect_add t1 17 => 0
+    <etc. with unique keys>
+
+I did get a TABLE_FULL error on attempting to add a 9th table entry to
+table t1, which matches my expectations, since the P4_16 program has
+'size = 8' for table t1.
 
 ----------------------------------------------------------------------
 scapy session for sending packets
