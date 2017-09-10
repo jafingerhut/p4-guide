@@ -46,6 +46,56 @@ an empty list for the value of "action_profile".
       }
     ],
 
+action-profile.json has the attributes below for table t2, that the
+following implementation in the P4 source code:
+
+        @mode("fair") implementation =
+            action_selector(HashAlgorithm.identity, 16, 4);
+
+Here are its attributes:
+
+          "type" : "indirect_ws",
+          "action_profile" : "action_profile_1",
+
+and later in the JSON file, the attribute of action_profile_1 are:
+
+        {
+          "name" : "action_profile_1",
+          "id" : 1,
+          "selector" : {
+            "algo" : "identity",
+            "input" : [
+              {
+                "type" : "field",
+                "value" : ["scalars", "metadata.hash1"]
+              }
+            ]
+          },
+          "max_size" : 16
+        }
+
+The second parameter value to the action_selector (16 in the example
+above) appears to become the value of the "max_size" attribute of the
+action profile in the JSON file.  I verified this guess by modifying
+only the 16 value in the P4 source code, recompiling, and checking
+that "max_size" changed to match.  When translated from a P4_14
+program to P4_16, this second parameter of the action_selector() comes
+from the `size` attribute of the action_profile.
+
+The third parameter value to the action_selector (4 in the example
+above) appears not to be put anywhere in the JSON file.  I changed
+only the 4 value, and the JSON file produced by the compiler was
+exactly the same as before I made the change.  What is that parameter
+value supposed to be?  When translated from a P4_14 program to a P4_16
+program, this third parameter of the action_selector() comes from the
+`output_width` attribute of the field_list_calculation that is named
+by the `selection_key` attribute of the `action_selector`, which in
+turn is named by the `dynamic_action_selection` attribute of the
+`action_profile`.
+
+
+# simple_switch_CLI commands to manipulate tables with implementation `action_profile`
+
 Try adding a table entry to t1 like a normal table, i.e. like a table
 that did not have `implementation = action_profile(4);` as a table
 attribute.
@@ -362,45 +412,5 @@ I did get a TABLE_FULL error on attempting to add a 9th table entry to
 table t1, which matches my expectations, since the P4_16 program has
 'size = 8' for table t1.
 
-----------------------------------------------------------------------
-scapy session for sending packets
-----------------------------------------------------------------------
 
-    sudo scapy
-
-    pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
-    pkt2=Ether() / IP(dst='192.168.3.4') / TCP(sport=5501, dport=80)
-
-    # Send packet at layer2, specifying interface
-    sendp(pkt1, iface="veth2")
-    sendp(pkt2, iface="veth2")
-
-
-# Behavior seen during simple_switch run with pkt1 and pkt2
-
-Sending in pkt1 should cause control mod_headers1 to be called.
-
-It will run its apply body.  Because its parameters are in the order
-`inout headers hdr` first, followed by `inout ipv4_t ipv4`, the
-copy-out of the parameter values will be done in that order.  Thus any
-changes made to `hdr.ipv4.*` fields will be overwritten in the caller
-when the `ipv4` parameter is copied out.
-
-    Header field   pkt1       packet out
-    ipv4.ttl       64         62           as expected from ipv4.ttl assignment
-    ipv4.dstAddr   10.1.0.1   10.1.0.5     as expected from ipv4.dstAddr assignment
-    tcp.srcPort    5793       5794         as expected from hdr.tcp.srcPort assignment
-
-
-Sending in pkt2 should cause control mod_headers2 to be called.
-
-It will run its apply body.  Because its parameters are in the order
-`inout ipv4_t ipv4` first, followed by `inout headers hdr`, the
-copy-out of the parameter values will be done in that order.  Thus any
-changes made to `ipv4.*` fields will be overwritten in the caller when
-the `hdr` parameter is copied out.
-
-    Header field  pkt1        packet out
-    ipv4.ttl      64          63           as expected from hdr.ipv4.ttl assignment
-    ipv4.dstAddr  192.168.3.4 192.168.3.4  as expected, ipv4.dstAddr change in mod_headers2 was undone by copy-out of hdr.ipv4
-    tcp.srcPort   5501        5502         as expected from hdr.tcp.srcPort assignment, which was not overwritten by copy-out of hdr.ipv4
+# simple_switch_CLI commands to manipulate tables with implementation `action_selector`

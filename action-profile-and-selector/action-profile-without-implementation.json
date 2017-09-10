@@ -1,0 +1,1180 @@
+{
+  "program" : "action-profile.p4",
+  "__meta__" : {
+    "version" : [2, 7],
+    "compiler" : "https://github.com/p4lang/p4c"
+  },
+  "header_types" : [
+    {
+      "name" : "scalars_0",
+      "id" : 0,
+      "fields" : [
+        ["tmp_5", 9, false],
+        ["tmp_6", 9, false],
+        ["tmp_7", 9, false],
+        ["tmp_8", 32, false],
+        ["tmp", 9, false],
+        ["tmp_0", 1, false],
+        ["tmp_1", 1, false],
+        ["metadata.hash1", 16, false],
+        ["_padding_0", 2, false]
+      ]
+    },
+    {
+      "name" : "IPv4_up_to_ihl_only_h",
+      "id" : 1,
+      "fields" : [
+        ["version", 4, false],
+        ["ihl", 4, false]
+      ]
+    },
+    {
+      "name" : "ethernet_t",
+      "id" : 2,
+      "fields" : [
+        ["dstAddr", 48, false],
+        ["srcAddr", 48, false],
+        ["etherType", 16, false]
+      ]
+    },
+    {
+      "name" : "ipv4_t",
+      "id" : 3,
+      "fields" : [
+        ["version", 4, false],
+        ["ihl", 4, false],
+        ["diffserv", 8, false],
+        ["totalLen", 16, false],
+        ["identification", 16, false],
+        ["flags", 3, false],
+        ["fragOffset", 13, false],
+        ["ttl", 8, false],
+        ["protocol", 8, false],
+        ["hdrChecksum", 16, false],
+        ["srcAddr", 32, false],
+        ["dstAddr", 32, false],
+        ["options", "*"]
+      ],
+      "max_length" : 480
+    },
+    {
+      "name" : "tcp_t",
+      "id" : 4,
+      "fields" : [
+        ["srcPort", 16, false],
+        ["dstPort", 16, false],
+        ["seqNo", 32, false],
+        ["ackNo", 32, false],
+        ["dataOffset", 4, false],
+        ["res", 3, false],
+        ["ecn", 3, false],
+        ["ctrl", 6, false],
+        ["window", 16, false],
+        ["checksum", 16, false],
+        ["urgentPtr", 16, false]
+      ]
+    },
+    {
+      "name" : "mystruct1_t",
+      "id" : 5,
+      "fields" : [
+        ["a", 4, false],
+        ["b", 4, false]
+      ]
+    },
+    {
+      "name" : "standard_metadata",
+      "id" : 6,
+      "fields" : [
+        ["ingress_port", 9, false],
+        ["egress_spec", 9, false],
+        ["egress_port", 9, false],
+        ["clone_spec", 32, false],
+        ["instance_type", 32, false],
+        ["drop", 1, false],
+        ["recirculate_port", 16, false],
+        ["packet_length", 32, false],
+        ["enq_timestamp", 32, false],
+        ["enq_qdepth", 19, false],
+        ["deq_timedelta", 32, false],
+        ["deq_qdepth", 19, false],
+        ["ingress_global_timestamp", 48, false],
+        ["lf_field_list", 32, false],
+        ["mcast_grp", 16, false],
+        ["resubmit_flag", 1, false],
+        ["egress_rid", 16, false],
+        ["_padding", 5, false]
+      ]
+    }
+  ],
+  "headers" : [
+    {
+      "name" : "tmp_4",
+      "id" : 0,
+      "header_type" : "IPv4_up_to_ihl_only_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "scalars",
+      "id" : 1,
+      "header_type" : "scalars_0",
+      "metadata" : true,
+      "pi_omit" : true
+    },
+    {
+      "name" : "standard_metadata",
+      "id" : 2,
+      "header_type" : "standard_metadata",
+      "metadata" : true,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ethernet",
+      "id" : 3,
+      "header_type" : "ethernet_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ipv4",
+      "id" : 4,
+      "header_type" : "ipv4_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "tcp",
+      "id" : 5,
+      "header_type" : "tcp_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "mystruct1",
+      "id" : 6,
+      "header_type" : "mystruct1_t",
+      "metadata" : true,
+      "pi_omit" : true
+    }
+  ],
+  "header_stacks" : [],
+  "header_union_types" : [],
+  "header_unions" : [],
+  "header_union_stacks" : [],
+  "field_lists" : [],
+  "errors" : [
+    ["NoError", 1],
+    ["PacketTooShort", 2],
+    ["NoMatch", 3],
+    ["StackOutOfBounds", 4],
+    ["HeaderTooShort", 5],
+    ["ParserTimeout", 6],
+    ["IPv4HeaderTooShort", 7],
+    ["IPv4IncorrectVersion", 8],
+    ["IPv4ChecksumError", 9]
+  ],
+  "enums" : [],
+  "parsers" : [
+    {
+      "name" : "parser",
+      "id" : 0,
+      "init_state" : "start",
+      "parse_states" : [
+        {
+          "name" : "start",
+          "id" : 0,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ethernet"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "0x0800",
+              "mask" : null,
+              "next_state" : "parse_ipv4"
+            },
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ethernet", "etherType"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_ipv4",
+          "id" : 1,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp"]
+                },
+                {
+                  "type" : "lookahead",
+                  "value" : [0, 9]
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "parameters" : [
+                    {
+                      "type" : "header",
+                      "value" : "tmp_4"
+                    }
+                  ],
+                  "op" : "add_header"
+                }
+              ],
+              "op" : "primitive"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["tmp_4", "version"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : ">>",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "tmp"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x5"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x01ff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0f"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["tmp_4", "ihl"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : ">>",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "tmp"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x1"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x01ff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0f"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["tmp_4", "$valid$"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "tmp"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x01"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_5"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["tmp_4", "ihl"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x01ff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x2"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x01ff"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_6"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "+",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "tmp_5"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x01ec"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x01ff"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_7"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "tmp_6"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x3"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x01ff"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_8"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "tmp_7"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffff"
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ipv4"
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "field",
+                    "value" : ["scalars", "tmp_8"]
+                  }
+                }
+              ],
+              "op" : "extract_VL"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_0"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "b2d",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4", "version"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x04"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "op" : "d2b",
+                    "left" : null,
+                    "right" : {
+                      "type" : "field",
+                      "value" : ["scalars", "tmp_0"]
+                    }
+                  }
+                },
+                {
+                  "type" : "hexstr",
+                  "value" : "8"
+                }
+              ],
+              "op" : "verify"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_1"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "b2d",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : ">=",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4", "ihl"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x05"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "op" : "d2b",
+                    "left" : null,
+                    "right" : {
+                      "type" : "field",
+                      "value" : ["scalars", "tmp_1"]
+                    }
+                  }
+                },
+                {
+                  "type" : "hexstr",
+                  "value" : "7"
+                }
+              ],
+              "op" : "verify"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "0x06",
+              "mask" : null,
+              "next_state" : "parse_tcp"
+            },
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "protocol"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_tcp",
+          "id" : 2,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "tcp"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : []
+        }
+      ]
+    }
+  ],
+  "deparsers" : [
+    {
+      "name" : "deparser",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "action-profile.p4",
+        "line" : 193,
+        "column" : 8,
+        "source_fragment" : "DeparserI"
+      },
+      "order" : ["ethernet", "ipv4", "tcp"]
+    }
+  ],
+  "meter_arrays" : [],
+  "counter_arrays" : [],
+  "register_arrays" : [],
+  "calculations" : [
+    {
+      "name" : "calc",
+      "id" : 0,
+      "algo" : "crc16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4", "srcAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "dstAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "protocol"]
+        },
+        {
+          "type" : "field",
+          "value" : ["tcp", "srcPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["tcp", "dstPort"]
+        }
+      ]
+    }
+  ],
+  "learn_lists" : [],
+  "actions" : [
+    {
+      "name" : "NoAction",
+      "id" : 0,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 1,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 2,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "foo1",
+      "id" : 3,
+      "runtime_data" : [
+        {
+          "name" : "dstAddr",
+          "bitwidth" : 32
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "dstAddr"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 114,
+            "column" : 8,
+            "source_fragment" : "hdr.ipv4.dstAddr = dstAddr"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "foo1",
+      "id" : 4,
+      "runtime_data" : [
+        {
+          "name" : "dstAddr",
+          "bitwidth" : 32
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "dstAddr"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 114,
+            "column" : 8,
+            "source_fragment" : "hdr.ipv4.dstAddr = dstAddr"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "foo1",
+      "id" : 5,
+      "runtime_data" : [
+        {
+          "name" : "dstAddr",
+          "bitwidth" : 32
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "dstAddr"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 114,
+            "column" : 8,
+            "source_fragment" : "hdr.ipv4.dstAddr = dstAddr"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "foo2",
+      "id" : 6,
+      "runtime_data" : [
+        {
+          "name" : "srcAddr",
+          "bitwidth" : 32
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "srcAddr"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 117,
+            "column" : 8,
+            "source_fragment" : "hdr.ipv4.srcAddr = srcAddr"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "foo2",
+      "id" : 7,
+      "runtime_data" : [
+        {
+          "name" : "srcAddr",
+          "bitwidth" : 32
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "srcAddr"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 117,
+            "column" : 8,
+            "source_fragment" : "hdr.ipv4.srcAddr = srcAddr"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "foo2",
+      "id" : 8,
+      "runtime_data" : [
+        {
+          "name" : "srcAddr",
+          "bitwidth" : 32
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "srcAddr"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 117,
+            "column" : 8,
+            "source_fragment" : "hdr.ipv4.srcAddr = srcAddr"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "act",
+      "id" : 9,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata.hash1"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00010000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 163,
+            "column" : 8,
+            "source_fragment" : "hash(meta.hash1, HashAlgorithm.crc16, (bit<16>) 0, ..."
+          }
+        }
+      ]
+    }
+  ],
+  "pipelines" : [
+    {
+      "name" : "ingress",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "action-profile.p4",
+        "line" : 109,
+        "column" : 8,
+        "source_fragment" : "cIngress"
+      },
+      "init_table" : "t0",
+      "tables" : [
+        {
+          "name" : "t0",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 126,
+            "column" : 10,
+            "source_fragment" : "t0"
+          },
+          "key" : [
+            {
+              "match_type" : "exact",
+              "target" : ["tcp", "dstPort"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 8,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [3, 6, 0],
+          "actions" : ["foo1", "foo2", "NoAction"],
+          "base_default_next" : "t1",
+          "next_tables" : {
+            "foo1" : "t1",
+            "foo2" : "t1",
+            "NoAction" : "t1"
+          },
+          "default_entry" : {
+            "action_id" : 0,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "t1",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 136,
+            "column" : 10,
+            "source_fragment" : "t1"
+          },
+          "key" : [
+            {
+              "match_type" : "exact",
+              "target" : ["tcp", "dstPort"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 8,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [4, 7, 1],
+          "actions" : ["foo1", "foo2", "NoAction"],
+          "base_default_next" : "tbl_act",
+          "next_tables" : {
+            "foo1" : "tbl_act",
+            "foo2" : "tbl_act",
+            "NoAction" : "tbl_act"
+          },
+          "default_entry" : {
+            "action_id" : 1,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "tbl_act",
+          "id" : 2,
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [9],
+          "actions" : ["act"],
+          "base_default_next" : "t2",
+          "next_tables" : {
+            "act" : "t2"
+          },
+          "default_entry" : {
+            "action_id" : 9,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "t2",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "action-profile.p4",
+            "line" : 147,
+            "column" : 10,
+            "source_fragment" : "t2"
+          },
+          "key" : [
+            {
+              "match_type" : "exact",
+              "target" : ["tcp", "srcPort"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "exact",
+          "type" : "indirect_ws",
+          "action_profile" : "action_profile_0",
+          "max_size" : 16,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [5, 8, 2],
+          "actions" : ["foo1", "foo2", "NoAction"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "foo1" : null,
+            "foo2" : null,
+            "NoAction" : null
+          }
+        }
+      ],
+      "action_profiles" : [
+        {
+          "name" : "action_profile_0",
+          "id" : 0,
+          "selector" : {
+            "algo" : "identity",
+            "input" : [
+              {
+                "type" : "field",
+                "value" : ["scalars", "metadata.hash1"]
+              }
+            ]
+          },
+          "max_size" : 16
+        }
+      ],
+      "conditionals" : []
+    },
+    {
+      "name" : "egress",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "action-profile.p4",
+        "line" : 174,
+        "column" : 8,
+        "source_fragment" : "cEgress"
+      },
+      "init_table" : null,
+      "tables" : [],
+      "action_profiles" : [],
+      "conditionals" : []
+    }
+  ],
+  "checksums" : [],
+  "force_arith" : [],
+  "extern_instances" : [],
+  "field_aliases" : [
+    [
+      "queueing_metadata.enq_timestamp",
+      ["standard_metadata", "enq_timestamp"]
+    ],
+    [
+      "queueing_metadata.enq_qdepth",
+      ["standard_metadata", "enq_qdepth"]
+    ],
+    [
+      "queueing_metadata.deq_timedelta",
+      ["standard_metadata", "deq_timedelta"]
+    ],
+    [
+      "queueing_metadata.deq_qdepth",
+      ["standard_metadata", "deq_qdepth"]
+    ],
+    [
+      "intrinsic_metadata.ingress_global_timestamp",
+      ["standard_metadata", "ingress_global_timestamp"]
+    ],
+    [
+      "intrinsic_metadata.lf_field_list",
+      ["standard_metadata", "lf_field_list"]
+    ],
+    [
+      "intrinsic_metadata.mcast_grp",
+      ["standard_metadata", "mcast_grp"]
+    ],
+    [
+      "intrinsic_metadata.resubmit_flag",
+      ["standard_metadata", "resubmit_flag"]
+    ],
+    [
+      "intrinsic_metadata.egress_rid",
+      ["standard_metadata", "egress_rid"]
+    ]
+  ]
+}

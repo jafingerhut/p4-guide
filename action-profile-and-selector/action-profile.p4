@@ -123,6 +123,16 @@ control cIngress(inout headers hdr,
     action foo3(bit<8> ttl) {
         hdr.ipv4.ttl = ttl;
     }
+    table t0 {
+        key = {
+            hdr.tcp.dstPort : exact;
+        }
+        actions = {
+            foo1;
+            foo2;
+        }
+        size = 8;
+    }
     table t1 {
         key = {
             hdr.tcp.dstPort : exact;
@@ -148,6 +158,7 @@ control cIngress(inout headers hdr,
             action_selector(HashAlgorithm.identity, 16, 4);
     }
     apply {
+        t0.apply();
         t1.apply();
         hash(meta.hash1, HashAlgorithm.crc16, (bit<16>) 0,
             { hdr.ipv4.srcAddr,
