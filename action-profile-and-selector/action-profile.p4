@@ -160,13 +160,20 @@ control cIngress(inout headers hdr,
     apply {
         t0.apply();
         t1.apply();
-        hash(meta.hash1, HashAlgorithm.crc16, (bit<16>) 0,
-            { hdr.ipv4.srcAddr,
-                hdr.ipv4.dstAddr,
-                hdr.ipv4.protocol,
-                hdr.tcp.srcPort,
-                hdr.tcp.dstPort },
-            (bit<32>) 65536);
+
+        //hash(meta.hash1, HashAlgorithm.crc16, (bit<16>) 0,
+        //    { hdr.ipv4.srcAddr,
+        //        hdr.ipv4.dstAddr,
+        //        hdr.ipv4.protocol,
+        //        hdr.tcp.srcPort,
+        //        hdr.tcp.dstPort },
+        //    (bit<32>) 65536);
+
+        // The following assignment isn't really a good hash function
+        // for calculating meta.hash1.  I wrote it this way simply to
+        // make it easy to control and predict what its value will be
+        // when sending in test packets.
+        meta.hash1 = hdr.ipv4.dstAddr[15:0];
         t2.apply();
     }
 }

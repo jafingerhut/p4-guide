@@ -681,7 +681,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "action-profile.p4",
-        "line" : 193,
+        "line" : 200,
         "column" : 8,
         "source_fragment" : "DeparserI"
       },
@@ -691,35 +691,7 @@
   "meter_arrays" : [],
   "counter_arrays" : [],
   "register_arrays" : [],
-  "calculations" : [
-    {
-      "name" : "calc",
-      "id" : 0,
-      "algo" : "crc16",
-      "input" : [
-        {
-          "type" : "field",
-          "value" : ["ipv4", "srcAddr"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4", "dstAddr"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4", "protocol"]
-        },
-        {
-          "type" : "field",
-          "value" : ["tcp", "srcPort"]
-        },
-        {
-          "type" : "field",
-          "value" : ["tcp", "dstPort"]
-        }
-      ]
-    }
-  ],
+  "calculations" : [],
   "learn_lists" : [],
   "actions" : [
     {
@@ -932,30 +904,35 @@
       "runtime_data" : [],
       "primitives" : [
         {
-          "op" : "modify_field_with_hash_based_offset",
+          "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
               "value" : ["scalars", "metadata.hash1"]
             },
             {
-              "type" : "hexstr",
-              "value" : "0x0000"
-            },
-            {
-              "type" : "calculation",
-              "value" : "calc"
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x00010000"
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["ipv4", "dstAddr"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
             }
           ],
           "source_info" : {
             "filename" : "action-profile.p4",
-            "line" : 163,
+            "line" : 176,
             "column" : 8,
-            "source_fragment" : "hash(meta.hash1, HashAlgorithm.crc16, (bit<16>) 0, ..."
+            "source_fragment" : "meta.hash1 = hdr.ipv4.dstAddr[15:0]"
           }
         }
       ]
@@ -1126,7 +1103,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "action-profile.p4",
-        "line" : 174,
+        "line" : 181,
         "column" : 8,
         "source_fragment" : "cEgress"
       },

@@ -414,3 +414,348 @@ table t1, which matches my expectations, since the P4_16 program has
 
 
 # simple_switch_CLI commands to manipulate tables with implementation `action_selector`
+
+One quick difference is the output format from the `table_dump`
+command for tables t1 and t2.  The output for t2 mentions GROUPS in
+addition to TABLE ENTRIES and MEMBERS:
+
+    RuntimeCmd: table_dump t1
+    ==========
+    TABLE ENTRIES
+    ==========
+    MEMBERS
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+    
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    ==========
+    MEMBERS
+    ==========
+    GROUPS
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+
+
+Try adding a group to table t2, and then a member to that group, to
+see if that works:
+
+    RuntimeCmd: help act_prof_create_group
+    Add a group to an action pofile: act_prof_create_group <action profile name>
+    
+    RuntimeCmd: act_prof_create_group action_profile_1
+    Group has been created with handle 0
+    
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    ==========
+    MEMBERS
+    ==========
+    GROUPS
+    **********
+    Dumping group 0
+    Members: []
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+
+Now create a table entry that uses the just created group 0:
+
+    RuntimeCmd: table_indirect_add t2 443 => 0
+    Adding entry to indirect match table t2
+    Invalid table operation (INVALID_MBR_HANDLE)
+
+Add a member to action_profile_1, dump table t2, then add that member
+number 0 to group 0, then dump table t2 again.
+
+    RuntimeCmd: act_prof_create_member action_profile_1 foo2 17
+    Member has been created with handle 0
+    
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    ==========
+    MEMBERS
+    **********
+    Dumping member 0
+    Action entry: foo2 - 11
+    ==========
+    GROUPS
+    **********
+    Dumping group 0
+    Members: []
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+    
+    RuntimeCmd: act_prof_add_member_to_group action_profile_1 0 0
+    
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    ==========
+    MEMBERS
+    **********
+    Dumping member 0
+    Action entry: foo2 - 11
+    ==========
+    GROUPS
+    **********
+    Dumping group 0
+    Members: [0]
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+
+It looks like perhaps the command to add a group to a table with an
+action_selector is `table_indirect_add_with_group`:
+
+    RuntimeCmd: help table_indirect_add_with_group
+    Add entry to an indirect match table: table_indirect_add <table name> <match fields> => <group handle> [priority]
+
+Out of curiosity, first check whether simple_switch allows
+table_indirect_add with a group in table t2:
+
+    RuntimeCmd: table_indirect_add t2 443 => 0
+    Adding entry to indirect match table t2
+    Entry has been added with handle 0
+    
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    **********
+    Dumping entry 0x0
+    Match key:
+    * tcp.srcPort         : EXACT     01bb
+    Index: member(0)
+    ==========
+    MEMBERS
+    **********
+    Dumping member 0
+    Action entry: foo2 - 11
+    ==========
+    GROUPS
+    **********
+    Dumping group 0
+    Members: [0]
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+
+It looks like it does.  I am a little surprised.  I would have thought
+that only groups could be added as the result of table entries in t2.
+
+Remove member 0 from group 0, then create new members 1 and 2 that are
+different than member 0, add them both to group 0, and use
+`table_indirect_add_with_group` command to add a table entry that uses
+group 0 as its action:
+
+    RuntimeCmd: act_prof_remove_member_from_group action_profile_1 0 0
+    
+    RuntimeCmd: act_prof_create_member action_profile_1 foo1 201
+    Member has been created with handle 1
+    RuntimeCmd: act_prof_create_member action_profile_1 foo2 202
+    Member has been created with handle 2
+    
+    RuntimeCmd: act_prof_add_member_to_group action_profile_1 1 0
+    RuntimeCmd: act_prof_add_member_to_group action_profile_1 2 0
+    
+    RuntimeCmd: table_indirect_add_with_group t2 444 => 0
+    Adding entry to indirect match table t2
+    Entry has been added with handle 1
+
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    **********
+    Dumping entry 0x0
+    Match key:
+    * tcp.srcPort         : EXACT     01bb
+    Index: member(0)
+    **********
+    Dumping entry 0x1
+    Match key:
+    * tcp.srcPort         : EXACT     01bc
+    Index: group(0)
+    ==========
+    MEMBERS
+    **********
+    Dumping member 0
+    Action entry: foo2 - 11
+    **********
+    Dumping member 1
+    Action entry: foo1 - c9
+    **********
+    Dumping member 2
+    Action entry: foo2 - ca
+    ==========
+    GROUPS
+    **********
+    Dumping group 0
+    Members: [1, 2]
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+
+Now try sending some packets that match t2 entry 0 with tcp.srcPort
+443 to see what happens:
+
+    [ in Scapy session ]
+    >>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=443)
+    >>> sendp(pkt1, iface='veth2')
+
+From looking at the console log messages, the packet matched t2 entry
+0, and performed action foo2 with parameter 11 (hex).  The only change
+from input packet to output packet was assigning 0.0.0.17 to the IPv4
+srcAddr, which is what action foo2 with parameter 0x11 should do.
+
+Now try sending a packet that matches t2 entry 1 with tcp.srcPort 444:
+
+    [ in Scapy session ]
+    >>> pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=444, dport=5793)
+    >>> sendp(pkt2, iface='veth2')
+
+Here are some relevant lines of console output from simple_switch for
+table t2 matching:
+
+    [05:18:10.187] [bmv2] [T] [thread 18675] [3.0] [cxt 0] Applying table 't2'
+    [05:18:10.187] [bmv2] [D] [thread 18675] [3.0] [cxt 0] Looking up key:
+    * tcp.srcPort         : 01bc
+    
+    [05:18:10.187] [bmv2] [D] [thread 18675] [3.0] [cxt 0] Choosing member 2 from group 0
+    [05:18:10.187] [bmv2] [D] [thread 18675] [3.0] [cxt 0] Table 't2': hit with handle 1
+    [05:18:10.187] [bmv2] [D] [thread 18675] [3.0] [cxt 0] Dumping entry 1
+    Match key:
+    * tcp.srcPort         : EXACT     01bc
+    Index: group(0)
+    Group members:
+      mbr 1: foo1 - c9,
+      mbr 2: foo2 - ca,
+    
+    [05:18:10.187] [bmv2] [D] [thread 18675] [3.0] [cxt 0] Action entry is foo2 - ca,
+
+The IPv4 srcAddr changed to 0x000000ca as action foo2 should have done.
+
+Now try changing the input packet IPv4 dstAddr to be 1 more than
+before, to see if it will pick the other member of the group.
+
+    [ in Scapy session ]
+    >>> pkt3=Ether() / IP(dst='10.1.0.2') / TCP(sport=444, dport=5793)
+    >>> sendp(pkt3, iface='veth2')
+
+Here are some relevant lines of console output from simple_switch for
+table t2 matching:
+
+    [05:20:53.445] [bmv2] [T] [thread 18675] [4.0] [cxt 0] Applying table 't2'
+    [05:20:53.445] [bmv2] [D] [thread 18675] [4.0] [cxt 0] Looking up key:
+    * tcp.srcPort         : 01bc
+    
+    [05:20:53.445] [bmv2] [D] [thread 18675] [4.0] [cxt 0] Choosing member 1 from group 0
+    [05:20:53.445] [bmv2] [D] [thread 18675] [4.0] [cxt 0] Table 't2': hit with handle 1
+    [05:20:53.445] [bmv2] [D] [thread 18675] [4.0] [cxt 0] Dumping entry 1
+    Match key:
+    * tcp.srcPort         : EXACT     01bc
+    Index: group(0)
+    Group members:
+      mbr 1: foo1 - c9,
+      mbr 2: foo2 - ca,
+    
+    [05:20:53.445] [bmv2] [D] [thread 18675] [4.0] [cxt 0] Action entry is foo1 - c9,
+
+For this packet it selected member 1 from group 0, which is action
+foo1 with parameter 0xc9.
+
+The only change from input packet to output packet was to change the
+IPv4 dstAddr to 0.0.0.201, which is what action foo1 with parameter
+0xc9 should do.
+
+Now try adding a third member to group 0, and send in packets with
+varying values of the 'selector' field `meta.hash1 =
+hdr.ipv4.dstAddr[15:0]`, to see which values of the selector cause
+which members of the 3-element group to be selected.
+
+    RuntimeCmd: act_prof_create_member action_profile_1 foo1 109
+    Member has been created with handle 3
+
+    RuntimeCmd: act_prof_add_member_to_group action_profile_1 3 0
+
+    RuntimeCmd: table_dump t2
+    ==========
+    TABLE ENTRIES
+    **********
+    Dumping entry 0x0
+    Match key:
+    * tcp.srcPort         : EXACT     01bb
+    Index: member(0)
+    **********
+    Dumping entry 0x1
+    Match key:
+    * tcp.srcPort         : EXACT     01bc
+    Index: group(0)
+    ==========
+    MEMBERS
+    **********
+    Dumping member 0
+    Action entry: foo2 - 11
+    **********
+    Dumping member 1
+    Action entry: foo1 - c9
+    **********
+    Dumping member 2
+    Action entry: foo2 - ca
+    **********
+    Dumping member 3
+    Action entry: foo1 - 6d
+    ==========
+    GROUPS
+    **********
+    Dumping group 0
+    Members: [1, 2, 3]
+    ==========
+    Dumping default entry
+    EMPTY
+    ==========
+
+
+As I send in packets that differ only in the IPv4 destination address,
+with the least significant bits ranging from 0 up to 11, the member
+number chosen in group 0 goes from 1, then 2, then 3, then repeats in
+that pattern.  This is consistent with the member chosen being
+something like `(hash % number_of_members_in_group)`.
+
+    >>> sendp(Ether() / IP(dst='10.1.0.0') / TCP(sport=444,dport=5793), iface='veth2')
+    [06:59:04.537] [bmv2] [D] [thread 18675] [5.0] [cxt 0] Choosing member 1 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.1') / TCP(sport=444,dport=5793), iface='veth2')
+    [06:59:51.257] [bmv2] [D] [thread 18675] [6.0] [cxt 0] Choosing member 2 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.2') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:00:14.728] [bmv2] [D] [thread 18675] [7.0] [cxt 0] Choosing member 3 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.3') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:00:47.096] [bmv2] [D] [thread 18675] [8.0] [cxt 0] Choosing member 1 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.4') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:01:04.837] [bmv2] [D] [thread 18675] [9.0] [cxt 0] Choosing member 2 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.5') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:01:24.601] [bmv2] [D] [thread 18675] [10.0] [cxt 0] Choosing member 3 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.6') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:01:43.996] [bmv2] [D] [thread 18675] [11.0] [cxt 0] Choosing member 1 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.7') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:02:04.077] [bmv2] [D] [thread 18675] [12.0] [cxt 0] Choosing member 2 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.8') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:02:22.921] [bmv2] [D] [thread 18675] [13.0] [cxt 0] Choosing member 3 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.9') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:02:38.740] [bmv2] [D] [thread 18675] [14.0] [cxt 0] Choosing member 1 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.10') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:02:55.405] [bmv2] [D] [thread 18675] [15.0] [cxt 0] Choosing member 2 from group 0
+    >>> sendp(Ether() / IP(dst='10.1.0.11') / TCP(sport=444,dport=5793), iface='veth2')
+    [07:03:15.038] [bmv2] [D] [thread 18675] [16.0] [cxt 0] Choosing member 3 from group 0
+
