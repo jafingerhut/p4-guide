@@ -5,9 +5,9 @@ P4_16 program, like this:
 
 ```
     table T {
-        key = { <keyElementList> }
-        actions = { <actionList> }
-        <other tableProperties here>
+        key = { <table T keyElementList> }
+        actions = { <table T actionList> }
+        <other tableProperties of table T here>
         implementation = action_profile(N);
     }
 
@@ -29,13 +29,13 @@ is functionally equivalent to the code below with two tables:
         T_member_id = member_id;
     }
     table T_key_to_member_id {
-        key = { <keyElementList> }
+        key = { <table T keyElementList> }
         actions = { T_set_member_id; }
-        <other tableProperties here>
+        <other tableProperties of table T here>
     }
     table T_member_id_to_action {
         key = { T_member_id : exact; }
-        actions = { <actionList> }
+        actions = { <table T actionList> }
         size = N;
     }
 
@@ -101,18 +101,18 @@ action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
         key = {
             // <nonSelectorKeyElementList> contains all keys that have
             // a match_kind other than 'selector'.
-            <nonSelectorKeyElementList>;
+            <table T nonSelectorKeyElementList>;
 
             // <selectorKeyElementList> contains all keys that have a
-            // match_kind of 'selector'.
-            // TBD: Is it allowed to have more than one key with
-            // match_kind 'selector'?  If so, are they simply
-            // concatenated together and fed as input to the
-            // action_selector hash algorithm?
-            <selectorKeyElementList>;
+            // match_kind of 'selector'.  The current p4c P4_16
+            // compiler as of 2017-Sep-01 allows more than one key
+            // with match_kind 'selector'.  In this case, all such
+            // fields are given as input to the action_selector hash
+            // algorithm.
+            <table T selectorKeyElementList>;
         }
-        actions = { <actionList> }
-        <other tableProperties here>
+        actions = { <table T actionList> }
+        <other tableProperties of table T here>
         implementation = action_selector(HashAlgorithm.H, N, W);
     }
 
@@ -129,40 +129,38 @@ is functionally equivalent to the code below with three tables:
     // value is just large enough to represent an index into a table
     // with N entries.
     bit<X> T_group_id;
+    bit<X> T_group_size;    // See Note 1 below
     bit<X> T_member_id;
-    bit<W> T_selector_output;
+    bit<W> T_member_of_group;
 
-    action T_set_group_id (bit<X> group_id) {
+    action T_set_group_id_and_size (bit<X> group_id,
+                                    bit<X> group_size)
+    {
         T_group_id = group_id;
+        T_group_size = group_size;
     }
     action T_set_member_id (bit<X> member_id) {
         T_member_id = member_id;
     }
     table T_key_to_group_or_member_id {
-        key = { <nonSelectorKeyElementList> }
+        key = { <table T nonSelectorKeyElementList> }
         actions = {
             T_set_group_id;
-            // T_set_member_id should only be a possible action for
-            // this table, if it is correct that adding members
-            // directly to table T is allowed.  If only groups can be
-            // added to table T, then remove the following action.
-            T_set_member_id;
+            T_set_member_id;    // See Note 2 below
         }
-        <other tableProperties here>
+        <other tableProperties of table T here>
     }
-    table T_group_id_and_selector_to_member_id {
+    table T_group_to_member_id {
         key = {
             T_group_id        : exact;
-            T_selector_output : exact;
+            T_member_of_group : exact;
         }
         actions = { T_set_member_id; }
-        // TBD: What should size of this table be?  Same value N as
-        // for table T_member_id_to_action?
-        size = N;
+        size = N;    // See Note 3 below
     }
     table T_member_id_to_action {
         key = { T_member_id : exact; }
-        actions = { <actionList> }
+        actions = { <table T actionList> }
         size = N;
     }
 
@@ -170,16 +168,42 @@ is functionally equivalent to the code below with three tables:
 
     switch (T_key_to_group_or_member_id.apply().action_run) {
         T_set_group_id: {
-            // TBD: Is this how HashAlgorithm.H and W are intended to be used?
-            // TBD: Are there any other ways intended to be
-            // implemented for calculating 'T_selector_output' other
-            // than as a deterministic function of values of the
-            // fields of T's key with match_kind 'selector'?
-            T_selector_output = least significant W bits of the output
+            // See Notes 4 and 5 below
+            bit<W> T_selector_hash;
+            T_selector_hash = (least significant W bits of the output
                of HashAlgorithm.H, when given the fields in
-               <selectorKeyElementList> as input;
-            T_group_id_and_selector_to_member_id.apply();
+               <table T selectorKeyElementList> as input);
+            T_member_of_group = T_selector_hash % T_group_size;
+            T_group_to_member_id.apply();
         }
     }
     T_member_id_to_action.apply();
 ```
+
+Note 1: TBD: Should T_group_size be X bits wide?  It needs to be able
+to represent any integer value in the range [1, M], where M is the
+maximum number of elements allowed in a group.  The minimum value of 1
+assumes that the control plane does not permit making a table entry
+'point at' a group id unless that group id contains at least 1 member,
+and that while the group id is 'pointed at' by at least one table
+entry, the control plane will not be allowed to remove its last
+member.  If the plan is that M can be as large as N, one way to always
+represent a value S in the range [1, N] is to store the value (S-1),
+adding 1 to the value before using it elsewhere.
+
+Note 2: With the current p4c and behavioral-model code as of
+2017-Sep-01, P4_14 action profiles with dynamic selectors, and P4_16
+tables with implementation action_selector(), are both allowed to have
+a table entry 'point at' a member directly, without going through a
+group.  This is by design.  See this issue for an example and
+discussion: https://github.com/p4lang/behavioral-model/issues/438
+
+Note 3: TBD: What should the size of table T_group_to_member_id be?
+The same value N as for table T_member_id_to_action?
+
+Note 4: TBD: Does the code below correctly represent how
+HashAlgorithm.H and W are intended to be used?
+
+Note 5: TBD: Are there any other ways intended to be implemented for
+calculating 'T_member_of_group' other than as a deterministic function
+of values of the fields of T's key with match_kind 'selector'?
