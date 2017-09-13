@@ -12,7 +12,6 @@ P4_16 program, like this:
     }
 
     // to apply the table:
-
     T.apply();
 ```
 
@@ -40,7 +39,6 @@ is functionally equivalent to the code below with two tables:
     }
 
     // to apply the table:
-
     T_key_to_member_id.apply();
     T_member_id_to_action.apply();
 ```
@@ -99,16 +97,10 @@ action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
 ```
     table T {
         key = {
-            // <nonSelectorKeyElementList> contains all keys that have
-            // a match_kind other than 'selector'.
+            // <table T selectorKeyElementList> contains all fields of
+            // the table key that have a match_kind 'selector', and
+            // the next line contains all the rest of the fields.
             <table T nonSelectorKeyElementList>;
-
-            // <selectorKeyElementList> contains all keys that have a
-            // match_kind of 'selector'.  The current p4c P4_16
-            // compiler as of 2017-Sep-01 allows more than one key
-            // with match_kind 'selector'.  In this case, all such
-            // fields are given as input to the action_selector hash
-            // algorithm.
             <table T selectorKeyElementList>;
         }
         actions = { <table T actionList> }
@@ -117,7 +109,6 @@ action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
     }
 
     // to apply the table:
-
     T.apply();
 ```
 
@@ -145,7 +136,7 @@ is functionally equivalent to the code below with three tables:
     table T_key_to_group_or_member_id {
         key = { <table T nonSelectorKeyElementList> }
         actions = {
-            T_set_group_id;
+            T_set_group_id_and_size;
             T_set_member_id;    // See Note 2 below
         }
         <other tableProperties of table T here>
@@ -165,9 +156,8 @@ is functionally equivalent to the code below with three tables:
     }
 
     // to apply the table:
-
     switch (T_key_to_group_or_member_id.apply().action_run) {
-        T_set_group_id: {
+        T_set_group_id_and_size: {
             // See Notes 4 and 5 below
             bit<W> T_selector_hash;
             T_selector_hash = (least significant W bits of the output
