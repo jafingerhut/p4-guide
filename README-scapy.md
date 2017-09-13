@@ -327,3 +327,41 @@ value to construct another similar packet.
 >>> str(pkt2)==str(pkt1)
 False
 ```
+
+
+## Creating packets that are only slightly different than other packets
+
+You can use the `copy()` method to create a duplicate of a Scapy
+packet object, then modify the copy, and no changes will be made to
+the original.
+
+Note that if the original packet is 'partially built',
+i.e. `pkt1[IP].chksum is None` is `true`, as shown in the transcript
+below, then the same is true for the copy.  Any changes made to the
+copy's fields before doing something like `str()` or `show2()` on it
+will cause those modified field values to be included when the fields
+with value `None` are auto-calculated.
+
+```python
+>>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
+>>> pkt2=pkt1.copy()
+>>> pkt1[IP].chksum is None
+True
+>>> pkt2[IP].chksum is None
+True
+>>> pkt2[IP].ttl -= 1
+>>> pkt1[IP].ttl
+64
+>>> pkt2[IP].ttl
+63
+
+# Auto-calculated checksums are different for pkt1 and pkt2, because
+# they have different ttl field values.
+
+>>> Ether(str(pkt1))[IP].chksum
+WARNING: Mac address to reach destination not found. Using broadcast.
+25791
+>>> Ether(str(pkt2))[IP].chksum
+WARNING: Mac address to reach destination not found. Using broadcast.
+26047
+```
