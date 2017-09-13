@@ -15,8 +15,8 @@ import sstf_lib as sstf
 import bm_runtime.standard.ttypes as ttypes
 
 
-def table_entries(hdl, table_info):
-
+@sstf.test_wrap
+def test_table_add_errors(hdl, table_info):
     # Verify that simple_switch disallows adding a 'normal' table
     # entry to a table with implementation action_profile() or
     # action_selector().
@@ -42,6 +42,9 @@ def table_entries(hdl, table_info):
             # Remove the entry that was added
             hdl.do_table_delete(table_name + " " + str(entry_hdl))
 
+
+@sstf.test_wrap
+def test_act_prof_create_group_fails_on_indirect_table(hdl, table_info):
     # Verify that it is an error to try to create groups for tables
     # with implementation action_profile().  They have type 'indirect'
     # in compiled JSON files.
@@ -58,7 +61,9 @@ def table_entries(hdl, table_info):
         assert exc_raised
         print("Expected: exception runtime_CLI.UIn_Error was raised")
 
-    print('')
+
+@sstf.test_wrap
+def test_table_indirect_add_all_table_types(hdl, table_info):
     print('== table_indirect_add should fail for a normal table')
     for table_name in table_info.keys():
         t = table_info[table_name]
@@ -153,7 +158,9 @@ def main():
         'act_prof_name': 'action_profile_1'
     }
     
-    table_entries(hdl, table_info)
+    test_table_add_errors(hdl, table_info)
+    test_act_prof_create_group_fails_on_indirect_table(hdl, table_info)
+    test_table_indirect_add_all_table_types(hdl, table_info)
 
     ss_process_obj.kill()
 
