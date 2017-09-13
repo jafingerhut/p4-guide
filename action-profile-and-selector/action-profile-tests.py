@@ -17,8 +17,6 @@ import bm_runtime.standard.ttypes as ttypes
 
 def table_entries(hdl, table_info):
 
-    hdl.do_table_dump('t1')
-
     # Verify that simple_switch disallows adding a 'normal' table
     # entry to a table with implementation action_profile() or
     # action_selector().
@@ -95,9 +93,20 @@ def table_entries(hdl, table_info):
             assert hdl.do_table_num_entries(table_name) == 1
             print("Table %s has expected 1 entry" % (table_name))
 
-            # TBD: Verify that trying to remove the member, while it
-            # still has a table entry referring to it, causes an
-            # error.
+            # Verify that trying to remove the member, while it still
+            # has a table entry referring to it, causes an error.
+            exc2_type_expected = ttypes.InvalidTableOperation
+            exc2_raised = None
+            try:
+                hdl.do_act_prof_delete_member(t['act_prof_name'] + " " +
+                                              str(member_hdl))
+            except Exception as e:
+                exc2_raised = e
+            assert isinstance(exc2_raised, exc2_type_expected)
+            print("Expected: While attempting act_prof_delete_member"
+                  " on a member still referred to by an entry of table %s,"
+                  " exception of type %s was raised"
+                  "" % (table_name, exc2_type_expected))
 
             # Remove the entry that was added
             hdl.do_table_indirect_delete(table_name + " " + str(entry_hdl))
