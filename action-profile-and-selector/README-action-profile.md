@@ -64,12 +64,12 @@ check that gives an error, and does not remove an action profile
 member, if there is still at least one table entry that uses it.  If
 implemented as 2 separate tables, it would be good to have a similar
 consistency check in the control software to prevent removing an entry
-from T_member_id_to_action if its <idx> value is still one of the
+from T_member_id_to_action if its `<idx>` value is still one of the
 possible values set by an entry of T_key_to_member_id.
 
 Similarly it would be good to disallow adding an entry to
-T_key_to_member_id that uses a particular value of <idx>, unless
-T_member_id_to_action currently has an entry for key <idx>.
+T_key_to_member_id that uses a particular value of `<idx>`, unless
+T_member_id_to_action currently has an entry for key `<idx>`.
 simple_switch gives error INVALID_MBR_HANDLE if you attempt to do
 this.
 
