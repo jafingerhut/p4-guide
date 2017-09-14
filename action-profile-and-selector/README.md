@@ -759,3 +759,61 @@ something like `(hash % number_of_members_in_group)`.
     >>> sendp(Ether() / IP(dst='10.1.0.11') / TCP(sport=444,dport=5793), iface='veth2')
     [07:03:15.038] [bmv2] [D] [thread 18675] [16.0] [cxt 0] Choosing member 3 from group 0
 
+Below is output from the test named
+`test_action_selector_traffic_distribution` in the test script
+`action-profile-tests.py`.  It tests sending the same sequence of 15
+IPv4 packets, with IPv4 dest addresses ranging from 192.168.0.0 to
+192.168.0.14, varying only in the least significant bits, to the
+program `action-profile.p4` after setting up one matching table entry
+that points at a group of members.  The only difference between the 4
+sets of results below is which actions are currently in that group.
+
+Below the raw data is a table that formats the results in a more
+readable way.
+
+```
+{0: {'dst_addr_to_member': OrderedDict([('192.168.0.0', 0), ('192.168.0.1', 1), ('192.168.0.2', 2), ('192.168.0.3', 0), ('192.168.0.4', 1), ('192.168.0.5', 2), ('192.168.0.6', 0), ('192.168.0.7', 1), ('192.168.0.8', 2), ('192.168.0.9', 0), ('192.168.0.10', 1), ('192.168.0.11', 2), ('192.168.0.12', 0), ('192.168.0.13', 1), ('192.168.0.14', 2)]),
+     'member_list': [0, 1, 2]},
+ 1: {'dst_addr_to_member': OrderedDict([('192.168.0.0', 0), ('192.168.0.1', 1), ('192.168.0.2', 2), ('192.168.0.3', 3), ('192.168.0.4', 0), ('192.168.0.5', 1), ('192.168.0.6', 2), ('192.168.0.7', 3), ('192.168.0.8', 0), ('192.168.0.9', 1), ('192.168.0.10', 2), ('192.168.0.11', 3), ('192.168.0.12', 0), ('192.168.0.13', 1), ('192.168.0.14', 2)]),
+     'member_list': [0, 1, 2, 3]},
+ 2: {'dst_addr_to_member': OrderedDict([('192.168.0.0', 0), ('192.168.0.1', 1), ('192.168.0.2', 2), ('192.168.0.3', 3), ('192.168.0.4', 4), ('192.168.0.5', 0), ('192.168.0.6', 1), ('192.168.0.7', 2), ('192.168.0.8', 3), ('192.168.0.9', 4), ('192.168.0.10', 0), ('192.168.0.11', 1), ('192.168.0.12', 2), ('192.168.0.13', 3), ('192.168.0.14', 4)]),
+     'member_list': [0, 1, 2, 3, 4]},
+ 3: {'dst_addr_to_member': OrderedDict([('192.168.0.0', 0), ('192.168.0.1', 2), ('192.168.0.2', 4), ('192.168.0.3', 0), ('192.168.0.4', 2), ('192.168.0.5', 4), ('192.168.0.6', 0), ('192.168.0.7', 2), ('192.168.0.8', 4), ('192.168.0.9', 0), ('192.168.0.10', 2), ('192.168.0.11', 4), ('192.168.0.12', 0), ('192.168.0.13', 2), ('192.168.0.14', 4)]),
+     'member_list': [0, 2, 4]}}
+```
+
+Here are the 4 different lists of members in the group that were
+configured before sending the 15 packets:
+
+| group number | list of group members |
+| ------------ | --------------------- |
+| 1            | 0, 1, 2               |
+| 2            | 0, 1, 2, 3            |
+| 3            | 0, 1, 2, 3, 4         |
+| 4            | 0, 2, 4               |
+
+The table below shows, for each (group config, input packet
+destination IPv4 address) combination, which of the group members was
+selected while executing `t2.apply()`.  This was straightforward to
+determine from the output packet, because each member action had a
+different action parameter value, and the action wrote that action
+parameter value into the IPv4 source address of the output packet.
+
+| Dest IPv4    | group | group | group | group |
+| address      | 1     | 2     | 3     | 4     |
+| ------------ | ----- | ----- | ----- | ----- |
+| 192.168.0.0  | 0     | 0     | 0     | 0     |
+| 192.168.0.1  | 1     | 1     | 1     | 2     |
+| 192.168.0.2  | 2     | 2     | 2     | 4     |
+| 192.168.0.3  | 0     | 3     | 3     | 0     |
+| 192.168.0.4  | 1     | 0     | 4     | 2     |
+| 192.168.0.5  | 2     | 1     | 0     | 4     |
+| 192.168.0.6  | 0     | 2     | 1     | 0     |
+| 192.168.0.7  | 1     | 3     | 2     | 2     |
+| 192.168.0.8  | 2     | 0     | 3     | 4     |
+| 192.168.0.9  | 0     | 1     | 4     | 0     |
+| 192.168.0.10 | 1     | 2     | 0     | 2     |
+| 192.168.0.11 | 2     | 3     | 1     | 4     |
+| 192.168.0.12 | 0     | 0     | 2     | 0     |
+| 192.168.0.13 | 1     | 1     | 3     | 2     |
+| 192.168.0.14 | 2     | 2     | 4     | 4     |
