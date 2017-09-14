@@ -816,3 +816,25 @@ parameter value into the IPv4 source address of the output packet.
 | 192.168.0.12 | 0     | 0     | 2     | 0     |
 | 192.168.0.13 | 1     | 1     | 3     | 2     |
 | 192.168.0.14 | 2     | 2     | 4     | 4     |
+
+These results imply that p4lang/behavioral-model simple_switch's
+implementation picks a member via a formula like `hash_value %
+number_of_group_members`, which I believe is implemented by this line
+of code:
+https://github.com/p4lang/behavioral-model/blob/master/src/bm_sim/action_profile.cpp#L128
+
+It also shows that when removing members from a group, as was done
+when first having members `[0, 1, 2, 3, 4]`, then removing members 1
+and 3, simple_switch seems to implement this by preserving the
+relative order of the remaining members, leaving `[0, 2, 4]`.
+
+I can't think of a reason why this would be a good thing to do in a
+hardware implementation.  It seems it would be easier, or at least
+fewer writes to hardware tables, to implement removing member 1 from
+the list `[0, 1, 2, 3, 4]` by copying member 4 down to where the
+removed member 1 is, leaving `[0, 4, 2, 3]`.  Then when removing
+member 2, the result would be `[0, 4, 3]`.
+
+In any case, I can't think of a strong reason why PSA should mandate
+the order of members in a group after multiple member add and remove
+operations have been done -- any order should be acceptable.
