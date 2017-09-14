@@ -226,6 +226,44 @@ Note 5: TBD: Are there any other ways intended to be implemented for
 calculating 'T_member_of_group' other than as a deterministic function
 of values of the fields of T's key with match_kind 'selector'?
 
+Tables with implementation `action_selector()` can do everything that
+a table with implementation `action_profile()` can do, and more.
+
+If you choose, you may restrict yourself only to do control plane
+operations on a table `TS` with implementation `action_selector()`
+that are defined for a corresponding table `TA` with implementation
+`action_profile()`.  If you do this, `TS` will have exactly the same
+forwarding behavior as table `TA`.
+
+The implementations for the following `simple_switch_CLI` commands
+described in the previous section can be carried over with only one
+small modification for `action_selector()` tables.
+
+```
+    act_prof_create_member
+    act_prof_delete_member
+    act_prof_modify_member
+
+    table_indirect_add
+    table_indirect_delete
+```
+
+The only modification necessary is to use the table name
+`T_key_to_group_or_member_id` in place of `T_key_to_member_id`.
+
+TBD: Document implementations of the following commands that are
+specific to tables with implementation `action_selector()`
+
+```
+    table_indirect_add_with_group
+
+    act_prof_create_group
+    act_prof_delete_group
+
+    act_prof_add_member_to_group
+    act_prof_remove_member_from_group
+```
+
 
 # simple_switch_CLI commands specific to action_profile and action_selector tables
 
