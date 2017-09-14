@@ -1,4 +1,4 @@
-# action_profile
+# action_profile tables
 
 Having a table `T` with `implementation = action_profile(N)` in a
 P4_16 program, like this:
@@ -47,14 +47,32 @@ In simple_switch_CLI, the following special commands for dealing with
 tables that have an action profile implementation are implemented as
 described.
 
+    Original simple_switch_CLI command:
     act_prof_create_member <action_profile_name> <action_name> [action parameters]
-      => table_add T_member_id_to_action <action_name> <idx> => [action parameters]
+    Implemented as:
+    table_add T_member_id_to_action <action_name> <idx> => [action parameters]
          where <idx> is an arbitrary integer in the range [0, N-1]
-         that is not already a key that has been added to table
+         that is not currently a key that has been added to table
          T_member_id_to_action.
 
+    Original simple_switch_CLI command:
     act_prof_delete_member <action_profile_name> <member handle>
-      => table_delete T_member_id_to_action <entry handle>
+
+    Implemented as:
+    table_delete T_member_id_to_action <entry handle>
+         where <entry handle> is the value assigned by simple_switch
+         to the table T_member_id_to_action entry when it was
+         added.
+
+         It is an error to attempt to do this when there are one or
+         more entries in table T_key_to_member_id that set this
+         entry's member_id.
+
+    Original simple_switch_CLI command:
+    act_prof_modify_member <action profile name> <action_name> <member_handle> [action parameters]
+
+    Implemented as:
+    table_modify T_member_id_to_action <action name> <entry handle> [action parameters]
          where <entry handle> is the value assigned by simple_switch
          to the table T_member_id_to_action entry when it was
          added.
@@ -73,23 +91,34 @@ T_member_id_to_action currently has an entry for key `<idx>`.
 simple_switch gives error INVALID_MBR_HANDLE if you attempt to do
 this.
 
+    Original simple_switch_CLI command:
     table_indirect_add T <match fields> => <member handle> [priority]
-      => table_add T_key_to_member_id T_set_member_id <match fields> => <idx> [priority]
+
+    Implemented as:
+    table_add T_key_to_member_id T_set_member_id <match fields> => <idx> [priority]
          where <idx> is the desired value of <idx> for the action
-         profile member created via the previous command, when adding
-         a table entry to table T_member_id_to_action.
+         profile member created via the "table_add
+         T_member_id_to_action ..." command above.
 
+         It is an error to attempt this command for an <idx> value
+         that does not correspond to any current member.
+
+    Original simple_switch_CLI command:
     table_indirect_delete T <entry handle>
-      => table_delete T_key_to_member_id <entry handle>
+
+    Implemented as:
+    table_delete T_key_to_member_id <entry handle>
          where <entry handle> is the value assigned by simple_switch
-         to the table T_key_to_member_id entry when it was
-         added.
+         for the entry added to the table T_key_to_member_id.
 
+    Original simple_switch_CLI command:
     act_prof_dump <action_profile_name>
-      => table_dump T_member_id_to_action
+
+    Implemented as:
+    table_dump T_member_id_to_action
 
 
-# action_selector
+# action_selector tables
 
 Having a table `T` with `implementation =
 action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
@@ -113,7 +142,6 @@ action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
 ```
 
 is functionally equivalent to the code below with three tables:
-
 
 ```
     // X is the smallest integer such that 2^X >= N, so that a bit<X>
@@ -197,3 +225,81 @@ HashAlgorithm.H and W are intended to be used?
 Note 5: TBD: Are there any other ways intended to be implemented for
 calculating 'T_member_of_group' other than as a deterministic function
 of values of the fields of T's key with match_kind 'selector'?
+
+
+# simple_switch_CLI commands specific to action_profile and action_selector tables
+
+Below is a list of all simple_switch_CLI commands that have behavior
+specific to tables with implementation `action_profile()` or
+`action_selector()`:
+
+```
+act_prof_add_member_to_group
+act_prof_create_group
+act_prof_create_member
+act_prof_delete_group
+act_prof_delete_member
+act_prof_dump
+act_prof_dump_group
+act_prof_dump_member
+act_prof_modify_member
+act_prof_remove_member_from_group
+table_dump_group (deprecated - use act_prof_dump_group)
+table_dump_member (deprecated - use act_prof_dump_member)
+table_indirect_add
+table_indirect_add_member_to_group (deprecated - use act_prof_add_member_to_group)
+table_indirect_add_with_group
+table_indirect_create_group (deprecated - use act_prof_create_group)
+table_indirect_create_member (deprecated - use act_prof_create_member)
+table_indirect_delete
+table_indirect_delete_group (deprecated - use act_prof_delete_group)
+table_indirect_delete_member (deprecated - use act_prof_delete_member)
+table_indirect_modify_member (deprecated - use act_prof_modify_member)
+table_indirect_remove_member_from_group (deprecated - use act_prof_remove_member_from_group)
+table_indirect_set_default
+table_indirect_set_default_with_group
+```
+
+Below is the same list of commands, with the deprecated ones removed,
+and arranged in groups with related effects.
+
+The commands marked "S" are only applicable for a table with
+implementation `action_selector()`.  The others are applicable for
+both `action_profile()` and `action_selector()` tables.
+
+```
+  # Commands to manipulate entries in the 'main table', i.e. the one
+  # that maps the user-specified search key fields to a member, or to
+  # a group.  It appears that perhaps simple_switch_CLI does not
+  # support any method of modifying an existing main table entry,
+  # i.e. there is no analog to the 'table_modify' command that exists
+  # for normal/simple tables.
+  table_indirect_add
+S table_indirect_add_with_group
+  table_indirect_delete
+  table_indirect_set_default
+S table_indirect_set_default_with_group
+
+  # Commands to create and delete groups.  Groups always have 0
+  # members when first created.
+S act_prof_create_group
+S act_prof_delete_group
+
+  # Commands to add members to, or remove members from, an existing
+  # group.  These are the only supported ways to modify a group.
+S act_prof_add_member_to_group
+S act_prof_remove_member_from_group
+
+  # Commands to create, delete, and modify members.  Each member has
+  # its own independent action and action parameter values, which can
+  # be chosen from the user-defined `actions` list of the table.
+  act_prof_create_member
+  act_prof_delete_member
+  act_prof_modify_member
+
+  # Show/dump commands for debugging.  They have no effect on the
+  # state of the system.
+S act_prof_dump_group
+  act_prof_dump_member
+  act_prof_dump
+```
