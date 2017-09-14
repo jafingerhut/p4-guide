@@ -83,13 +83,15 @@ member, if there is still at least one table entry that uses it.  If
 implemented as 2 separate tables, it would be good to have a similar
 consistency check in the control software to prevent removing an entry
 from T_member_id_to_action if its `<idx>` value is still one of the
-possible values set by an entry of T_key_to_member_id.
+possible values set by an entry of T_key_to_member_id.  One way to
+implement this is to maintain a reference count for each member.
 
-Similarly it would be good to disallow adding an entry to
-T_key_to_member_id that uses a particular value of `<idx>`, unless
-T_member_id_to_action currently has an entry for key `<idx>`.
-simple_switch gives error INVALID_MBR_HANDLE if you attempt to do
-this.
+Similarly one should disallow adding an entry to T_key_to_member_id
+that uses a particular value of `<idx>`, unless T_member_id_to_action
+currently has an entry for key `<idx>`.  simple_switch gives error
+INVALID_MBR_HANDLE if you attempt to do this.  If this is done, then
+no miss will ever occur on searches of table T_member_id_to_action,
+and no default action is needed.
 
     Original simple_switch_CLI command:
     table_indirect_add T <match fields> => <member handle> [priority]
@@ -263,6 +265,88 @@ specific to tables with implementation `action_selector()`
     act_prof_add_member_to_group
     act_prof_remove_member_from_group
 ```
+
+`act_prof_create_group <action profile name>` creates an group with 0
+members.  No changes to the tables need to be made as a result of this
+operation.  Control software should maintain the id of each group, and
+for each one, its set of members.
+
+`act_prof_add_member_to_group <action profile name> <member handle>
+<group handle>` causes an error if either the member handle or group
+handle are not currently existing, or if the member is already in the
+group.  Otherwise, the member is added to the group's set of members.
+
+    table_add T_group_to_member_id T_set_member_id <group_id> <member_of_group> => <member_id>
+    table_modify T_key_to_group_or_member_id T_set_group_id_and_size <entry handle> => <group_id> <new_group_size>
+
+where `<member_of_group>` is the number of members the group had
+before the operation began, e.g. 0 if the group was empty, 5 if the
+group initially had 5 members and we are now adding a 6th.
+
+The `table_modify` must be done for every entry of table
+T_key_to_group_or_member_id that has the `<group_id>` of the group
+being modified.  This could be a large number.  To avoid this, an
+alternate implementation could have yet another intermediate table
+with key <group_id> an an action that assigns the size of the group to
+a temporary metadata field.  Then changes in the size of a group would
+only need to be updated in one place, at the cost of another dependent
+table `apply()` operation.
+
+
+`act_prof_remove_member_from_group <action profile name> <member
+handle> <group handle>` causes an error if either the member handle or
+group handle are not currently existing, or if the member is not
+currently in the group.  It is also an error if the group is 'in use',
+i.e. it is the result of at least one entry in table
+`T_key_to_group_or_member_id`, and the group has only one member in
+it.  All 'in use' groups must always have at least one member.
+
+If none of these error conditions hold, the member is removed from the
+group's set of members.  This could be done by 'shifting' all members
+with a `member_of_group` number larger than the removed member,
+decrementing them all by one.  Another way, if control software
+maintains the `member_of_group` values for all members of a group, is
+to do:
+
+    table_modify T_group_to_member_id T_set_member_id <entry handle> => <member_id>
+
+but only for the <entry handle> of the removed member, overwriting the
+<member_id> with that of the member that had the largest
+`member_of_group` value.  In either case, you must also do a
+`table_delete` on table `T_group_to_member_id` to remove the entry
+that had the largest `member_of_group` value.
+
+Finally, as for `act_prof_add_member_to_group`, the size of the group
+must be modified everywhere it is stored, to be one smaller than
+before.  See the notes for that operation for how to limit this to a
+single table entry, vs. updating potentially many places where the
+group size is stored.
+
+
+`act_prof_delete_group <action profile name> <group handle>` is an
+error if the group does not exist, or if the group is 'in use', as
+described above.
+
+It is an implementation choice for the control plane software whether
+this operation is allowed when the group has at least one member.  If
+so, all group members should be removed first, as described above for
+`act_prof_remove_member_from_group`, except it might be optimized with
+the knowledge that all members are going to be removed.
+
+Once the group is empty, there is nothing in the tables to remove to
+delete a group.  It is purely a control plane software operation of
+'forgetting' the group id, i.e. restoring the state so that the group
+id could be reallocated again by a future `act_prof_create_group`
+operation.
+
+
+`table_indirect_add_with_group <table name> <match fields> => <group
+handle> [priority]` is an error if the group does not exist, or
+contains 0 members.
+
+If no such error conditions apply, it is implemented by:
+
+    table_add T_key_to_group_or_member_id T_set_group_id_and_size <match fields> => <group_id> <group_size>
 
 
 # simple_switch_CLI commands specific to action_profile and action_selector tables
