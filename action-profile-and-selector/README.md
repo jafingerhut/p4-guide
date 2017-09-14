@@ -799,8 +799,7 @@ determine from the output packet, because each member action had a
 different action parameter value, and the action wrote that action
 parameter value into the IPv4 source address of the output packet.
 
-| Dest IPv4    | group | group | group | group |
-| address      | 1     | 2     | 3     | 4     |
+| Dest IPv4 address | group 1 | group 2 | group 3 | group 4 |
 | ------------ | ----- | ----- | ----- | ----- |
 | 192.168.0.0  | 0     | 0     | 0     | 0     |
 | 192.168.0.1  | 1     | 1     | 1     | 2     |
