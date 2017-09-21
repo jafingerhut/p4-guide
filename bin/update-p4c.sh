@@ -16,6 +16,8 @@ else
     exit 1
 fi
 
+set -x
+
 # Recommended in p4c's README.md
 git submodule update --init --recursive
 
@@ -34,3 +36,10 @@ cd build
 # Configure for a debug build
 cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
 make -j${MAX_PARALLEL_JOBS}
+
+set +x
+echo ""
+echo "If you want to run p4c automated tests, run these commands:"
+echo ""
+echo "    cd build"
+echo "    make check"
