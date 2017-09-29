@@ -332,8 +332,8 @@ no-holes invariant holds for all header stacks, at all times.  This
 invariant can be maintained if a P4_14 program restricts itself to the
 following operations on header stacks:
 
-During parsing, only do extract(<header_stack>[next]) operations for
-modification, never extract(<header_stack>[3]) (or any other
+During parsing, only do `extract(<header_stack>[next])` operations for
+modification, never `extract(<header_stack>[3])` (or any other
 constant value in place of the 3 in that example).
 
 It is also allowed to read the last-extracted header via the
@@ -341,11 +341,11 @@ expression `latest`, but this never modifies any state.
 
 During ingress/egress control blocks, only do the operations:
 
-+ push(<header_stack>, <count>)
-+ pop(<header_stack>, <count>)
++ `push(<header_stack>, <count>)`
++ `pop(<header_stack>, <count>)`
 
 In P4_14, the push operation is specified to make the first new
-<count> headers pushed onto the top of the stack valid, with all
+`<count>` headers pushed onto the top of the stack valid, with all
 fields other than the valid bit initialized to 0.  Thus it maintains
 the no-holes invariant.
 
@@ -365,25 +365,26 @@ invariant using these operations, and it is not clear whether they are
 considered to be fully supported in P4_14, or not.
 
 During parsing, do extract on a particular index,
-e.g. extract(<header_stack>[3]).  bmv2 implements this by making the
+e.g. `extract(<header_stack>[3])`.  bmv2 implements this by making the
 specified element of the header stack valid, and copying data from the
 input packet into that header.  It does not access nextIndex, neither
 to read it nor modify it.
 
-During ingress/egress control blocks, do add_header(<header_stack>[3])
-or remove_header(<header_stack>[3]).  bmv2 implements this by making
-the specified element of the header stack valid for add_header, or
-invalid for remove_header, without accessing nextIndex, neither
-reading nextIndex nor modifying it.  bmv2 does _not_ implement the
-behavior for these operations in the P4_14 spec, which says that later
-elements of the header stack should be shifted 1 index higher for
-add_header, or shifted 1 index lower for remove_header.
+During ingress/egress control blocks, do
+`add_header(<header_stack>[3])` or `remove_header(<header_stack>[3])`.
+bmv2 implements this by making the specified element of the header
+stack valid for `add_header`, or invalid for `remove_header`, without
+accessing `nextIndex`, neither reading `nextIndex` nor modifying it.
+bmv2 does _not_ implement the behavior for these operations in the
+P4_14 spec, which says that later elements of the header stack should
+be shifted 1 index higher for `add_header`, or shifted 1 index lower for
+`remove_header`.
 
-Those P4_14 specified behaviors for add_header and remove_header are
-additional evidence that suggest the intent was to maintain the
+Those P4_14 specified behaviors for `add_header` and `remove_header`
+are additional evidence that suggest the intent was to maintain the
 no-holes invariant, although the P4_14 spec does not specify what
-should happen if add_header or remove_header are performed with an
-index that is larger than nextIndex.
+should happen if `add_header` or `remove_header` are performed with an
+index larger than the current value of `nextIndex`.
 
 
 ## Possible approaches to harmonizing header stack operations
@@ -395,7 +396,7 @@ programs to P4_16 programs with equivalent behavior.
 ### P4_16 v1.0.0 is right
 
 One approach to this would be to declare P4_16 v1.0.0's "holes are
-explicitly" supported approach as common to both P4_14 and P4_16,
+explicitly supported" approach as common to both P4_14 and P4_16,
 creating an edited P4_14 v1.0.5 spec that made this explicit, and
 updating the few cases where bmv2 does not match the P4_16 v1.0.0
 spec.
