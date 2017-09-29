@@ -27,6 +27,13 @@ I will use "bottom" or "end" to refer to the point just after the
 maximum index in a header stack that contains a valid header.
 
 
+## Related Github issues
+
++ https://github.com/p4lang/behavioral-model/issues/111
++ https://github.com/p4lang/p4-spec/issues/284
++ https://github.com/p4lang/p4-spec/issues/431
+
+
 ## Are holes allowed in header stacks?
 
 By a "hole" I mean an invalid element in a header stack, where there
