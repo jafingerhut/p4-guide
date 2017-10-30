@@ -106,10 +106,10 @@ those test cases, but with extra log message printing enabled, try
 these commands:
 
     cd $P4C/build
-    ../backends/bmv2/run-bmv2-test.py .. –b –v ../testdata/p4_16_samples/issue447-5-bmv2.p4
+    ../backends/bmv2/run-bmv2-test.py .. -b -v ../testdata/p4_16_samples/issue447-5-bmv2.p4
 
-The `–v` is optional, and enables the extra log message printing.
-Similarly `–b` is optional, and causes a temporary directory that is
+The `-v` is optional, and enables the extra log message printing.
+Similarly `-b` is optional, and causes a temporary directory that is
 created by `run-bmv2-test.py` to be left on disk after it completes,
 instead of being deleted.
 
@@ -214,9 +214,9 @@ directory, but there are also many more `.p4` files that do not have a
 corresponding `.stf` file in that directory.  For all of those, I
 believe that the behavior of `run-bmv2-test.py` is to use the file
 `empty.stf` in that directory instead.  In this case, I believe no
-`simple_switch` process is started by `run-bmv2-test.py` – it just
+`simple_switch` process is started by `run-bmv2-test.py` - it just
 compiles the source files and checks whether the compiler crashed,
-gave errors or warnings, etc. (I believe – I haven't gone through that
+gave errors or warnings, etc. (I believe - I haven't gone through that
 carefully yet).
 
 After running `run-bmv2-test.py` with the options above, you should be
@@ -225,7 +225,7 @@ replaced with random-looking letters and digits, and that directory
 should contain files created near the time you ran the command.  I saw
 files with names like this:
 
-+ issue447-5-bmv2.p4-stderr – From the name, probably the stderr
++ issue447-5-bmv2.p4-stderr - From the name, probably the stderr
   output from running `simple_switch`.
 
 + pcap0_in.pcap - I know that `run-bmv2-test.py` creates the input
@@ -234,15 +234,15 @@ files with names like this:
   0, even though packets were sent to `simple_switch`, I believe
   because it is a named pipe rather than a regular file.
 
-+ pcap0_out.pcap – A sequence of packets sent out on port 0 by
++ pcap0_out.pcap - A sequence of packets sent out on port 0 by
   `simple_switch` process.  In general there can be more than one of
   these files, with the '0' replaced by the port number for each
   simulated Ethernet port.
 
-+ switch.log.txt – The log file produced when you give the `—log-file
-  switch.log –flush-log` options to the `simple_switch` command.  This
++ switch.log.txt - The log file produced when you give the `--log-file
+  switch.log --flush-log` options to the `simple_switch` command.  This
   is the same kinds of details you see on the console when you use the
-  `—log-console` command line option to simple_switch, except written
+  `--log-console` command line option to simple_switch, except written
   to a file instead.  It contains details about all packets received,
   processed, and sent, including every P4 table searched, the search
   key, whether the search result was a hit or miss, and if the search
