@@ -1,3 +1,26 @@
+# Introduction
+
+checksum-ipv4-with-options.p4 is a small P4_16 program using the
+latest v1model.p4 as of 2017-Oct-03, with correct syntax for checking
+the received IPv4 header checksum, and updating the outgoing IPv4
+header checksum.
+
+The test cases given in this repository demonstrate that the outgoing
+IPv4 header checksums are correct (at least for the couple of test
+cases included).
+
+Note: I do not know how to use the result of checking the received
+IPv4 header checksum to drop, or otherwise treat different, received
+IPv4 packets with an incorrect IPv4 header checksum.  I imagine that
+the v1model.p4 architecture of p4c-bm2-ss might provide such a
+mechanism, but I do not know what it is.  I am also not highly
+motivated to discover what it is, if it does exist, as the forthcoming
+PSA specification's InternetChecksum extern API is quite different
+from v1model.p4, and does specify and include an example P4_16 program
+showing how to detect and handle differently received packets that
+have a bad checksum.
+
+
 # Compiling
 
 See README-using-bmv2.txt for some things that are common across
