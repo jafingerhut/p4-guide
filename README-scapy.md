@@ -365,3 +365,150 @@ WARNING: Mac address to reach destination not found. Using broadcast.
 WARNING: Mac address to reach destination not found. Using broadcast.
 26047
 ```
+
+
+## Scapy version notes
+
+This section has details recorded while trying to track down
+differences in Scapy behavior between different versions I had
+installed on different virtual machines, especially in regards to how
+UDP header checksums were calculated.
+
+The brief summary of that particular issue is that there is a corner
+case bug in Scapy calculating UDP header checksums for IPv6/UDP
+packets that was fixed in Scapy v2.3.2.
+
+A similar bug exists for calculating the UDP header checksum for
+IPv4/UDP packets up to and including Scapy v2.3.3.  There doesn't
+appear to be a more recently "released" version of Scapy that fixes
+that bug, but the latest Scapy version published on Github does have a
+fix for it.
+
+
+
+Latest version of Scapy seen using Synaptic package manager on these
+versions of Ubuntu desktop Linux, as of 2017-Oct-19:
+
++ 14.04.5 LTS - python-scapy 2.2.0-1
+
+  + On my VM named "Ubuntu 14.04" in VirtualBox, /usr/local/bin/scapy
+    exists, but python-scapy package is not installed, so I probably
+    installed it as part of some open source P4 tools some time ago (I
+    don't recall exactly which install did this).  Starting it shows
+    version 2.2.0-dev
+  
++ 16.04.3 LTS - python-scapy 2.2.0-1
+
+  + On my well-used VM named "Ubuntu 16.04" in VirtualBox, which is
+    _not_ a fresh install, there is /usr/bin/scapy,
+    /usr/local/bin/scapy, and even /home/jafinger/.local/bin/scapy (I
+    don't know why that exists).  Both /usr/bin/scapy and
+    /usr/local/bin/scapy claim they are version 2.3.3.  I do not know
+    whether /usr/bin/scapy mmight have been overwritten after the
+    python-scapy package was installed, and I do not know which
+    install step I did that created /usr/local/bin/scapy.
+
+  + On my little-used VM named "Ubuntu 16.04.3 try3" in VirtualBox,
+    package python-scapy is installed, and the only scapy executable
+    in my path is /usr/bin/scapy.  It reports as version 2.2.0.
+
++ 17.10       - python-scapy 2.3.3-1 (also python3-scapy 0.21-1)
+  + After 'sudo apt-get install python-scapy', then running command
+    /usr/bin/scapy, it says '(unknown.version)'.
+
+
+Using scapy 2.2.0 on my VM named "Ubuntu 16.04.03 try3"
+
+```Python
+pkt1=Ether()/IP()/UDP()
+pkt2=Ether()/IP()/UDP(dport=53+0x172)
+pkt3=Ether()/IPv6()/UDP()
+pkt4=Ether()/IPv6()/UDP(dport=53+0xff72)
+wrpcap("udp-pkts.pcap", [pkt1, pkt2, pkt3, pkt4])
+```
+
+The value 0x172 was what I saw in the UDP checksum field of pkt1 after
+being written out to the pcap file, according to wireshark.
+
+By making pkt2 have a single 16-bit field that was larger by that much
+than pkt1, the 16-bit 1's complement sum for the UDP fields should
+have been 0xffff, and complementing that gives 0x0000.
+
+Similarly the 0xff72 value was what I saw in the UDP checksum field of
+pkt3, and pkt4 thus has a UDP one's complement sum of 0xffff, and
+complementing that gives 0x0000.
+
+0x0000 is what scapy put into the UDP checksum field for pkt2, which I
+believe is incorrect.  RFC 768 has a special case that I think is only
+applicable to UDP checksums, not to IPv4 header nor TCP header
+checksums, which is that if the calculated value that would normally
+be transmitted in the packet is 0, it should be replaced with 0xffff.
+The protocol designers I believe wanted to reserve 0 as a special
+value for UDP that means "the sender did not calculate a UDP checksum,
+and the receiver should not check the value".  This is for efficiency
+of encapsulating other packets within UDP payloads, I believe, which
+is especially useful for implementing tunneling protocols that add new
+UDP headers in high-speed routers.
+
+
+VM name: "Ubuntu 16.04" /usr/bin/scapy says version 2.3.3
+pkt2 IPv4/UDP checksum 0x0000 (looks wrong)
+pkt4 IPv6/UDP checksum 0xffff (looks correct)
+
+VM name: "Ubuntu 16.04.3 try3" /usr/bin/scapy says version 2.2.0
+pkt2 IPv4/UDP checksum 0x0000 (looks wrong, wireshark 2.2.6 says missing)
+pkt4 IPv6/UDP checksum 0x0000 (looks wrong, wireshark 2.2.6 says illegal)
+
+VM name: "Ubuntu 14.04" /usr/local/bin/scapy says version 2.2.0-dev
+pkt2 IPv4/UDP checksum 0x0000 (looks wrong, wireshark 1.12.1 says missing)
+pkt4 IPv6/UDP checksum 0x0000 (looks wrong, wireshark 1.12.1 says illegal)
+
+VM name: "Ubuntu 17.10" /usr/bin/scapy says version "unknown.version"
+pkt2 IPv4/UDP checksum 0x0000 (looks wrong)
+pkt4 IPv6/UDP checksum 0xffff (looks correct)
+
+On my Ubuntu VM named "Ubuntu 16.04" I did these commands:
+
+```bash
+git clone https://github.com/secdev/scapy
+cd scapy
+git checkout ca0543ef581f2556c9933c073bdfd84f0b2ff895
+./run_scapy
+```
+
+That reported itself on startup as version 2.3.3.dev793.  The pkt2
+created and written to the pcap file this time had a UDP header
+checksum of 0xffff, which I believe is correct.
+
+
+Here is the secdev/scapy Github project commit that appears to have
+fixed this corner case bug of UDP checksum calculation, for IPv4/UDP
+packets:
+
+```
+commit 3a51db106625814de8d56bedf842b2b2454f0fce
+Author: Guillaume Valadon <guillaume.valadon@ssi.gouv.fr>
+Date:   Fri Nov 25 17:41:02 2016 +0100
+
+    UDP checksum computation fixed
+```
+
+Using gitk, the commit above says it is on the master branch, and it
+"Follows: v2.3.3".
+
+And here is the commit that appears to have fixed this for IPv6/UDP
+packets:
+
+```
+commit 12d9d9434bfbd375c518d5b1f0397905d900d5d4
+Author: Guillaume Valadon <guillaume@valadon.net>
+Date:   Mon May 11 16:00:37 2015 +0200
+
+    IPv6 - when the UDP checksum is 0, set it to 0xffff
+    
+    --HG--
+    branch : Issue #5116 - IPv6 & UDP.chksum == 0
+```
+
+Using gitk, the commit above is on the master branch, it "Follows:
+v2.3.1" and "Precedes: v2.3.2".
