@@ -102,7 +102,8 @@
         ["mcast_grp", 16, false],
         ["resubmit_flag", 1, false],
         ["egress_rid", 16, false],
-        ["_padding", 5, false]
+        ["checksum_error", 1, false],
+        ["_padding", 4, false]
       ]
     }
   ],
@@ -696,6 +697,67 @@
       "id" : 0,
       "source_info" : {
         "filename" : "checksum-ipv4-with-options.p4",
+        "line" : 165,
+        "column" : 8,
+        "source_fragment" : "verify_checksum(true, ..."
+      },
+      "algo" : "csum16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4", "version"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "ihl"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "diffserv"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "totalLen"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "identification"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "flags"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "fragOffset"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "ttl"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "protocol"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "srcAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "dstAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "options"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_0",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "checksum-ipv4-with-options.p4",
         "line" : 189,
         "column" : 8,
         "source_fragment" : "update_checksum(true, ..."
@@ -962,6 +1024,13 @@
       "target" : ["ipv4", "hdrChecksum"],
       "type" : "generic",
       "calculation" : "calc"
+    },
+    {
+      "name" : "cksum_0",
+      "id" : 1,
+      "target" : ["ipv4", "hdrChecksum"],
+      "type" : "generic",
+      "calculation" : "calc_0"
     }
   ],
   "force_arith" : [],

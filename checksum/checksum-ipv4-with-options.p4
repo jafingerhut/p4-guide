@@ -149,8 +149,8 @@ control cEgress(inout headers hdr,
     }
 }
 
-control vc(in headers hdr,
-           inout metadata meta)
+control verifyChecksum(inout headers hdr,
+                       inout metadata meta)
 {
     apply {
         // There is code similar to this in Github repo p4lang/p4c in
@@ -182,8 +182,8 @@ control vc(in headers hdr,
     }
 }
 
-control uc(inout headers hdr,
-           inout metadata meta)
+control updateChecksum(inout headers hdr,
+                       inout metadata meta)
 {
     apply {
         update_checksum(true,
@@ -217,8 +217,8 @@ control DeparserI(packet_out packet,
 }
 
 V1Switch<headers, metadata>(parserI(),
-                            vc(),
+                            verifyChecksum(),
                             cIngress(),
                             cEgress(),
-                            uc(),
+                            updateChecksum(),
                             DeparserI()) main;

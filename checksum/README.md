@@ -8,21 +8,20 @@ To compile the P4_16 version of the code:
     p4c-bm2-ss checksum-ipv4-with-options.p4 -o checksum-ipv4-with-options.json
 
 This program currently only compiles without errors using a version of
-p4c after this 2017-Aug-23 commit:
+p4c after this 2017-Oct-03 commit:
 
-    https://github.com/p4lang/p4c/commit/f09a95dcda68ca18a1528be6a63a16f2b8074d46
+    https://github.com/p4lang/p4c/commit/52e273d402cc4e18eb9a6db6c2b52d4bbc89a91b
 
-but before that commit was reverted on 2017-Aug-28.  I have checked in
-a file checksum-ipv4-with-options.json generated with the p4c-bm2-ss
-command above, using a version of p4c-bm2-ss compiled from the p4c
-repository, just before the 2017-Aug-28 commit that reverted the
-needed changes.
+I have checked in a file checksum-ipv4-with-options.json generated
+with the p4c-bm2-ss command above, using a version of p4c-bm2-ss
+compiled from the p4c repository, the latest master version as of
+2017-Oct-30.
 
 # Running
 
-To run the behavioral model with 8 ports numbered 0 through 7:
+To run the behavioral model with 1 port numbered 0:
 
-    sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 checksum-ipv4-with-options.json
+    sudo simple_switch --log-console -i 0@veth2 checksum-ipv4-with-options.json
 
 
 No table entries need to be added for the default action 'foo' to be
