@@ -248,6 +248,7 @@ parser ParserImpl(packet_in packet,
         packet.extract(hdr.tcp);
         Tcp_option_parser.apply(packet, hdr.tcp.dataOffset,
                                 hdr.tcp_options_vec, hdr.tcp_options_padding);
+        transition accept;
     }
 }
 

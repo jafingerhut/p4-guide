@@ -21,7 +21,7 @@ https://github.com/p4lang/p4c by Andy Fingerhut
 (andy.fingerhut@gmail.com).  That earlier version also appears in
 the P4_16 v1.0.0 specification document.
 
-As of 2017-Jul-08, the P4_16 compiler `p4test` in
+As of 2017-Nov-09, the P4_16 compiler `p4test` in
 https://github.com/p4lang/p4c compiles tcp-options-parser.p4 without
 any errors, but `p4c-bm2-ss` gives an error that Tcp_option_h is not a
 header type.  This is because as of that date the bmv2 back end code
@@ -259,6 +259,7 @@ parser ParserImpl(packet_in packet,
         packet.extract(hdr.tcp);
         Tcp_option_parser.apply(packet, hdr.tcp.dataOffset,
                                 hdr.tcp_options_vec, hdr.tcp_options_padding);
+        transition accept;
     }
 }
 
