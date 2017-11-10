@@ -1,0 +1,8 @@
+digraph ParserImpl {
+0[label=accept, margin="0,0", shape=doublecircle, style=solid];
+1[label=start, margin="0,0", shape=circle, style=solid];
+2[label=parse_ipv4, margin="0.05,0", shape=box, style=solid];
+1 -> 2[label="0x0800"];
+1 -> 0[label=default];
+2 -> 0[label=default];
+}

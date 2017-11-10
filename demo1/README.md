@@ -21,7 +21,10 @@ p4-graphs program, installed from of the
 https://github.com/p4lang/p4-hlir repository, using this command (it
 does not work with P4_16 source code yet):
 
-     p4-graphs demo1.p4_14.p4
+     p4c-graphs -I $HOME/p4c/p4include demo1.p4_16.p4
+
+The '-I' option is only necessary if you did _not_ install the P4
+compiler in your system-wide /usr/local/bin directory.
 
 
 # Running

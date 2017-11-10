@@ -25,19 +25,22 @@ limitations under the License.
 #include <core.p4>
 
 
-/* v1model.p4 defines the P4_16 'architecture', i.e. is there an
+/* v1model.p4 defines one P4_16 'architecture', i.e. is there an
  * ingress and an egress pipeline, or just one?  Where is parsing
  * done, and how many parsers does the target device have?  etc.
  *
  * You can see its contents here:
  * https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4
  *
- * By 2017 there should be a psa.p4 architecture defined.  PSA stands
- * for Portable Switch Architecture.  The work in progress version of
- * PSA is being done in the p4-spec Github repository at
- * https://github.com/p4lang/p4-spec in the directory p4-16/psa.  The
- * PSA should be very much like the only architecture defined for
- * P4_14, and close to v1model.p4, i.e.
+ * A draft version 0.9 of the PSA (Portable Switch Architecture)
+ * specification was published on Nov 10, 2017 here:
+ *
+ * https://p4lang.github.io/p4-spec/
+ *
+ * P4_16 programs written for the PSA architecture should include
+ * psa.p4 instead of v1model.p4, and several parts of the program
+ * after that would use different extern objects and functions than
+ * this example program shows.
  *
  * ingress consists of these things, programmed in P4:
  * + parser
@@ -364,14 +367,13 @@ control DeparserImpl(packet_out packet, in headers hdr) {
 
         /* This ends the deparser definition.
          *
-         * Note that the target device will have recorded for each
-         * packet where parsing ended, and it considers every byte of
-         * data in the packet after the last parsed header as
-         * 'payload'.  For _this_ P4 program, even a TCP header
-         * immediately following the IPv4 header is considered part of
-         * the payload.  For a different P4 program that parsed the
-         * TCP header, the TCP header would not be considered part of
-         * the payload.
+         * Note that for each packet, the target device records where
+         * parsing ended, and it considers every byte of data in the
+         * packet after the last parsed header as 'payload'.  For
+         * _this_ P4 program, even a TCP header immediately following
+         * the IPv4 header is considered part of the payload.  For a
+         * different P4 program that parsed the TCP header, the TCP
+         * header would not be considered part of the payload.
          * 
          * Whatever is considered as payload for this particular P4
          * program for this packet, that payload is appended after the
@@ -385,51 +387,54 @@ control DeparserImpl(packet_out packet, in headers hdr) {
  * already-parsed packet, and can modify metadata fields with the
  * results of those checks, e.g. to set error flags, increment error
  * counts, drop the packet, etc. */
-control verifyChecksum(in headers hdr, inout metadata meta) {
-    /* The next line is an instantiation of an 'extern' object called
-     * Checksum16, declared in the v1model.p4 #include'd above.
-     *
-     * Why is it an extern, instead of just writing it in P4 code?
-     *
-     * One reason is that high performance targets implement custom
-     * logic for these kinds of things to make them efficient.
-     *
-     * Another is that sometimes we want checksums over things that
-     * are variable length (e.g. IPv4 headers with options), and
-     * because P4 does not have loops, it would be very awkward to
-     * write such checksum code in P4. */
-    Checksum16() ipv4_checksum;
+control verifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
-        /* The call to the get() method of the 'ipv4_checksum' object
-         * below has one parameter.  The curly braces are the P4_16
-         * syntax for a 'tuple', which is an ordered collection of
-         * other data objects.  A tuple is similar to a struct, except
-         * its elements do not have names.
+        /* The verify_checksum() extern function is declared in
+         * v1model.p4.  Its behavior is implementated in the target,
+         * e.g. the bmv2 software switch.
          *
-         * In this case, the tuple contains a sequence of header field
-         * values that the get() method will concatenate together and
-         * calculate an IP 16-bit one's complement checksum for. */
-        if ((hdr.ipv4.ihl == 5) &&
-            // TBD: bug?  I think this == should be !=
-            // Probably the current open source compiler/behavioral
-            // model does not actually implement the behavior of this
-            // control block yet, and that is why I haven't discovered
-            // the bug before now.
-            (hdr.ipv4.hdrChecksum ==
-             ipv4_checksum.get({ hdr.ipv4.version,
-                         hdr.ipv4.ihl,
-                         hdr.ipv4.diffserv,
-                         hdr.ipv4.totalLen,
-                         hdr.ipv4.identification,
-                         hdr.ipv4.flags,
-                         hdr.ipv4.fragOffset,
-                         hdr.ipv4.ttl,
-                         hdr.ipv4.protocol,
-                         hdr.ipv4.srcAddr,
-                         hdr.ipv4.dstAddr })))
-        {
-            mark_to_drop();
-        }
+         * It can takes a single header field by itself as the second
+         * parameter, but more commonly you want to use a list of
+         * header fields inside curly braces { }.  They are
+         * concatenated together and the checksum calculation is
+         * performed over all of them.
+         *
+         * The computed checksum is compared against the received
+         * checksum in the field hdr.ipv4.hdrChecksum, given as the
+         * 3rd argument.
+         *
+         * The verify_checksum() primitive can perform multiple kinds
+         * of hash or checksum calculations.  The 4th argument
+         * specifies that we want 'HashAlgorithm.csum16', which is the
+         * Internet checksum.
+         *
+         * The first argument is a Boolean true/false value.  The
+         * entire verify_checksum() call does nothing if that value is
+         * false.  In this case it is true only when the parsed packet
+         * had an IPv4 header, which is true exactly when
+         * hdr.ipv4.isValid() is true, and if that IPv4 header has a
+         * header length 'ihl' of 5 32-bit words.
+         *
+         * Oddly enough, v1model.p4 does not yet (as of Nov 2017
+         * versions of p4c and behavioral-model) implement a way for
+         * later code executed after this, e.g. in ingress, to
+         * determine whether this call found the checksum to be
+         * correct, or wrong.  Perhaps such a method will be defined
+         * later.
+         */
+        verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
+            { hdr.ipv4.version,
+                hdr.ipv4.ihl,
+                hdr.ipv4.diffserv,
+                hdr.ipv4.totalLen,
+                hdr.ipv4.identification,
+                hdr.ipv4.flags,
+                hdr.ipv4.fragOffset,
+                hdr.ipv4.ttl,
+                hdr.ipv4.protocol,
+                hdr.ipv4.srcAddr,
+                hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
 
@@ -438,29 +443,33 @@ control verifyChecksum(in headers hdr, inout metadata meta) {
  * deparser, that can be used to calculate checksums for the outgoing
  * packet. */
 control computeChecksum(inout headers hdr, inout metadata meta) {
-    Checksum16() ipv4_checksum;
     apply {
-        if (hdr.ipv4.ihl == 5) {
-            hdr.ipv4.hdrChecksum =
-                ipv4_checksum.get({ hdr.ipv4.version,
-                            hdr.ipv4.ihl,
-                            hdr.ipv4.diffserv,
-                            hdr.ipv4.totalLen,
-                            hdr.ipv4.identification,
-                            hdr.ipv4.flags,
-                            hdr.ipv4.fragOffset,
-                            hdr.ipv4.ttl,
-                            hdr.ipv4.protocol,
-                            hdr.ipv4.srcAddr,
-                            hdr.ipv4.dstAddr });
-        }
+        /* update_checksum() is declared in v1model.p4, and its
+         * arguments are similar to verify_checksum() above.  The
+         * primary difference is that after calculating the checksum,
+         * it modifies the value of the field given as the 3rd
+         * parameter to be equal to the newly computed checksum. */
+        update_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
+            { hdr.ipv4.version,
+                hdr.ipv4.ihl,
+                hdr.ipv4.diffserv,
+                hdr.ipv4.totalLen,
+                hdr.ipv4.identification,
+                hdr.ipv4.flags,
+                hdr.ipv4.fragOffset,
+                hdr.ipv4.ttl,
+                hdr.ipv4.protocol,
+                hdr.ipv4.srcAddr,
+                hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
 
 
 /* This is a "package instantiation".  There must be at least one
  * named "main" in any complete P4_16 program.  It is what specifies
- * which pieces to plug into which slot in the target architecture. */
+ * which pieces to plug into which "slot" in the target
+ * architecture. */
 
 V1Switch(ParserImpl(),
          verifyChecksum(),
