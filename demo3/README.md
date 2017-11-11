@@ -16,7 +16,10 @@ p4-graphs program, installed from of the
 https://github.com/p4lang/p4-hlir repository, using this command (it
 does not work with P4_16 source code yet):
 
-     p4-graphs demo3.p4_14.p4
+     p4c-graphs -I $HOME/p4c/p4include demo3.p4_16.p4
+
+The '-I' option is only necessary if you did _not_ install the P4
+compiler in your system-wide /usr/local/bin directory.
 
 
 # Running
@@ -38,9 +41,6 @@ General syntax for table_add commands at simple_switch_CLI prompt:
 ----------------------------------------------------------------------
 simple_switch_CLI commands for demo3 program
 ----------------------------------------------------------------------
-
-All of these, except for the counter-specific ones, also work for
-demo1.
 
     # These should be unnecessary for P4_16 program, which defines
     # these default actions with default_action assignments in its

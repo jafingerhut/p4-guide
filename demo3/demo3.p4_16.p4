@@ -130,7 +130,7 @@ control ingress(inout headers hdr,
             my_drop_with_stat;
         }
         default_action = my_drop_with_stat;
-        counters = direct_counter(CounterType.packets);
+        counters = ipv4_da_lpm_stats;
     }
 
     action set_ecmp_path_idx(bit<8> num_paths) {
@@ -227,45 +227,39 @@ control DeparserImpl(packet_out packet, in headers hdr) {
     }
 }
 
-control verifyChecksum(in headers hdr, inout metadata meta) {
-    Checksum16() ipv4_checksum;
+control verifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
-        if ((hdr.ipv4.ihl == 4w5) &&
-            (hdr.ipv4.hdrChecksum ==
-             ipv4_checksum.get({ hdr.ipv4.version,
-                         hdr.ipv4.ihl,
-                         hdr.ipv4.diffserv,
-                         hdr.ipv4.totalLen,
-                         hdr.ipv4.identification,
-                         hdr.ipv4.flags,
-                         hdr.ipv4.fragOffset,
-                         hdr.ipv4.ttl,
-                         hdr.ipv4.protocol,
-                         hdr.ipv4.srcAddr,
-                         hdr.ipv4.dstAddr })))
-        {
-            mark_to_drop();
-        }
+        verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
+            { hdr.ipv4.version,
+                hdr.ipv4.ihl,
+                hdr.ipv4.diffserv,
+                hdr.ipv4.totalLen,
+                hdr.ipv4.identification,
+                hdr.ipv4.flags,
+                hdr.ipv4.fragOffset,
+                hdr.ipv4.ttl,
+                hdr.ipv4.protocol,
+                hdr.ipv4.srcAddr,
+                hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
 
 control computeChecksum(inout headers hdr, inout metadata meta) {
-    Checksum16() ipv4_checksum;
     apply {
-        if (hdr.ipv4.ihl == 4w5) {
-            hdr.ipv4.hdrChecksum =
-                ipv4_checksum.get({ hdr.ipv4.version,
-                            hdr.ipv4.ihl,
-                            hdr.ipv4.diffserv,
-                            hdr.ipv4.totalLen,
-                            hdr.ipv4.identification,
-                            hdr.ipv4.flags,
-                            hdr.ipv4.fragOffset,
-                            hdr.ipv4.ttl,
-                            hdr.ipv4.protocol,
-                            hdr.ipv4.srcAddr,
-                            hdr.ipv4.dstAddr });
-        }
+        update_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
+            { hdr.ipv4.version,
+                hdr.ipv4.ihl,
+                hdr.ipv4.diffserv,
+                hdr.ipv4.totalLen,
+                hdr.ipv4.identification,
+                hdr.ipv4.flags,
+                hdr.ipv4.fragOffset,
+                hdr.ipv4.ttl,
+                hdr.ipv4.protocol,
+                hdr.ipv4.srcAddr,
+                hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
 
