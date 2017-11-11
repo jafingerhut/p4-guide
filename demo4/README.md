@@ -12,7 +12,7 @@ Useful for quickly creating multiple terminal windows and tabs:
 
 To compile the P4_14 version of the code:
 
-    p4c-bmv2 --json demo4.p4_14.json demo4.p4_14.p4
+    p4c-bm2-ss -o demo4.p4_14.json --p4v 14 demo4.p4_14.p4
 
 To compile the P4_16 version of the code:
 
