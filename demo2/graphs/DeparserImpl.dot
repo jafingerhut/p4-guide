@@ -1,0 +1,12 @@
+digraph DeparserImpl {
+subgraph cluster {
+graph [
+label="", labeljust=r, style=bold];
+0[label=__START__, margin="", shape=rectangle, style=solid];
+1[label=__EXIT__, margin="", shape=rectangle, style=solid];
+2[label="packet.emit<ethernet_t>(hdr.ethernet);
+packet.emit<ipv4_t>(hdr.ipv4);", margin="", shape=rectangle, style=solid];
+0 -> 2[label=""];
+2 -> 1[label=""];
+}
+}

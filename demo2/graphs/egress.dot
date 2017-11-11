@@ -1,0 +1,11 @@
+digraph egress {
+subgraph cluster {
+graph [
+label="", labeljust=r, style=bold];
+0[label=__START__, margin="", shape=rectangle, style=solid];
+1[label=__EXIT__, margin="", shape=rectangle, style=solid];
+2[label=send_frame, margin="", shape=ellipse, style=solid];
+0 -> 2[label=""];
+2 -> 1[label=""];
+}
+}

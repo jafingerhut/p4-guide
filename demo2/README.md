@@ -14,7 +14,10 @@ p4-graphs program, installed from of the
 https://github.com/p4lang/p4-hlir repository, using this command (it
 does not work with P4_16 source code yet):
 
-     p4-graphs demo2.p4_14.p4
+     p4c-graphs -I $HOME/p4c/p4include demo2.p4_16.p4
+
+The '-I' option is only necessary if you did _not_ install the P4
+compiler in your system-wide /usr/local/bin directory.
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
@@ -51,16 +54,24 @@ Add both sets of entries below:
     table_add mac_da set_bd_dmac_intf 81 => 15 08:de:ad:be:ef:00 4
     table_add send_frame rewrite_mac 15 => ca:fe:ba:be:d0:0d
 
-WARNING: With 2017-Apr-08 version of p4c-bm2-ss and simple_switch, the
-'counter_read' commands below fail for demo2.p4_16.p4.  I have filed
-an issue on Github for this: https://github.com/p4lang/p4c/issues/461
+You should be able to examine counter values in the counter named
+ipv4_da_lpm_stats using the `counter_read` command, which takes the
+counter name and a handle id.  Because ipv4_da_lpm_stats is declared
+`direct` on table ipv4_da_lpm, and thus contains one entry for every
+one in ipv4_da_lpm, use the handle id for the corresponding
+ipv4_da_lpm table entry that you want stats for.
 
-You can examine counter values in the counter named ipv4_da_lpm_stats
-using the `counter_read` command, which takes the counter name and a
-handle id.  Because ipv4_da_lpm_stats is declared `direct` on table
-ipv4_da_lpm, and thus contains one entry for every one in ipv4_da_lpm,
-use the handle id for the corresponding ipv4_da_lpm table entry that
-you want stats for.
+With latest version of p4lang/p4c ang p4lang/behavioral-model as of
+2017-Nov-09, here is the behavior I see:
+
+With either demo2.p4_14.json or demo2.p4_16.json:
+
+    RuntimeCmd: counter_read ipv4_da_lpm_stats 0
+    this is the direct counter for table ipv4_da_lpm
+    Invalid table operation (COUNTERS_DISABLED)
+
+Below is the format of output I used to see with an older version,
+probably from close to the date 2017-Apr-08:
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
     this is the direct counter for table ipv4_da_lpm

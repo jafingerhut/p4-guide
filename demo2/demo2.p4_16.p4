@@ -84,11 +84,6 @@ control ingress(inout headers hdr,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
 
-    // 2017-Apr-08 version of p4c-bm2-ss gives warning that direct
-    // counter ipv4_da_lpm_stats is not used.  However, if you comment
-    // out the following line, it gives errors for the later lines
-    // that call ipv4_da_lpm_stats.count().  The warning seems like a
-    // bug.
     direct_counter(CounterType.packets) ipv4_da_lpm_stats;
 
     action set_l2ptr(bit<32> l2ptr) {
@@ -108,7 +103,7 @@ control ingress(inout headers hdr,
             drop_with_count;
         }
         default_action = drop_with_count;
-        counters = direct_counter(CounterType.packets);
+        counters = ipv4_da_lpm_stats;
     }
 
     action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
@@ -164,45 +159,39 @@ control DeparserImpl(packet_out packet, in headers hdr) {
     }
 }
 
-control verifyChecksum(in headers hdr, inout metadata meta) {
-    Checksum16() ipv4_checksum;
+control verifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
-        if ((hdr.ipv4.ihl == 4w5) &&
-            (hdr.ipv4.hdrChecksum ==
-             ipv4_checksum.get({ hdr.ipv4.version,
-                         hdr.ipv4.ihl,
-                         hdr.ipv4.diffserv,
-                         hdr.ipv4.totalLen,
-                         hdr.ipv4.identification,
-                         hdr.ipv4.flags,
-                         hdr.ipv4.fragOffset,
-                         hdr.ipv4.ttl,
-                         hdr.ipv4.protocol,
-                         hdr.ipv4.srcAddr,
-                         hdr.ipv4.dstAddr })))
-        {
-            mark_to_drop();
-        }
+        verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
+            { hdr.ipv4.version,
+                hdr.ipv4.ihl,
+                hdr.ipv4.diffserv,
+                hdr.ipv4.totalLen,
+                hdr.ipv4.identification,
+                hdr.ipv4.flags,
+                hdr.ipv4.fragOffset,
+                hdr.ipv4.ttl,
+                hdr.ipv4.protocol,
+                hdr.ipv4.srcAddr,
+                hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
 
 control computeChecksum(inout headers hdr, inout metadata meta) {
-    Checksum16() ipv4_checksum;
     apply {
-        if (hdr.ipv4.ihl == 4w5) {
-            hdr.ipv4.hdrChecksum =
-                ipv4_checksum.get({ hdr.ipv4.version,
-                            hdr.ipv4.ihl,
-                            hdr.ipv4.diffserv,
-                            hdr.ipv4.totalLen,
-                            hdr.ipv4.identification,
-                            hdr.ipv4.flags,
-                            hdr.ipv4.fragOffset,
-                            hdr.ipv4.ttl,
-                            hdr.ipv4.protocol,
-                            hdr.ipv4.srcAddr,
-                            hdr.ipv4.dstAddr });
-        }
+        update_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
+            { hdr.ipv4.version,
+                hdr.ipv4.ihl,
+                hdr.ipv4.diffserv,
+                hdr.ipv4.totalLen,
+                hdr.ipv4.identification,
+                hdr.ipv4.flags,
+                hdr.ipv4.fragOffset,
+                hdr.ipv4.ttl,
+                hdr.ipv4.protocol,
+                hdr.ipv4.srcAddr,
+                hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
 

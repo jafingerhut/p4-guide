@@ -1,3 +1,0 @@
-digraph ingress {
-ipv4_da_lpm -> mac_da [color=red label="fwd_metadata.l2ptr" decorate=true];
-}
