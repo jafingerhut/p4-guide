@@ -70,12 +70,16 @@ With either demo2.p4_14.json or demo2.p4_16.json:
     this is the direct counter for table ipv4_da_lpm
     Invalid table operation (COUNTERS_DISABLED)
 
-Below is the format of output I used to see with an older version,
-probably from close to the date 2017-Apr-08:
+Below is the format of output I used to see with an older version from
+2017-Nov-06, at least with the P4_14 version:
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
     this is the direct counter for table ipv4_da_lpm
     ipv4_da_lpm_stats[0]=  BmCounterValue(packets=1, bytes=54)
+
+I have filed an issue for this bug:
+https://github.com/p4lang/p4c/issues/1032
+
 
 After sending another packet matching the same ipv4_da_lpm entry,
 reading the counter entry gives different values:
