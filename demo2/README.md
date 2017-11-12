@@ -62,9 +62,8 @@ one in ipv4_da_lpm, use the handle id for the corresponding
 ipv4_da_lpm table entry that you want stats for.
 
 With latest version of p4lang/p4c ang p4lang/behavioral-model as of
-2017-Nov-09, here is the behavior I see:
-
-With either demo2.p4_14.json or demo2.p4_16.json:
+2017-Nov-09, here is the behavior I see for both demo2.p4_14.json and
+demo2.p4_16.json:
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
     this is the direct counter for table ipv4_da_lpm
