@@ -55,7 +55,12 @@ To create veth interfaces:
     # Verify that it created many veth<number> interfaces
     ifconfig | grep ^veth
 
-To watch packets cross veth2 and veth6 as they occur:
+To watch packets cross veth2 and veth6 as they occur, tcpdump and
+tshark are 2 similar programs.  You only need one of them.  Use
+tcpdump if you aren't sure which one to use.  tcpdump is simpler and
+does not parse as many different kinds of packet headers.  tshark is a
+text version of Wireshark, and can parse more packet header types than
+I have ever heard of.
 
     # tcpdump options used:
     # -e Print the link-level header (i.e. Ethernet) on each dump line.
@@ -84,6 +89,11 @@ To watch packets cross veth2 and veth6 as they occur:
 
 
 # Automated running of compiler and bmv2 with checking of results
+
+This is _not_ needed for straightforward running of P4 programs.  This
+semi-advanced info, only useful if you want some gory details on how
+to run some of the bmv2-based automated tests that come with the open
+source p4c compiler.
 
 If you have followed the instructions above to install both the `p4c`
 and `behavioral-model` repositories, you should have these two files

@@ -37,6 +37,12 @@ To get the log to go to a file instead of the console:
 
     sudo simple_switch --log-file ss-log --log-flush -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 demo1.p4_14.json
 
+CHECK THIS: If you see "Add port operation failed" messages in the
+output of the simple_switch command, it means that one or more of the
+virtual Ethernet interfaces veth2, veth4, etc. have not been created
+on your system.  Search for "veth" in the file README-using-bmv2.txt
+(top level directory of this repository) for a command to create them.
+
 To run CLI for controlling and examining simple_switch's table
 contents:
 
