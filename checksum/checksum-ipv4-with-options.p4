@@ -107,8 +107,8 @@ parser parserI(packet_in pkt,
 #else /* ALLOW_IPV4_OPTIONS */
         pkt.extract(hdr.ipv4);
 #endif /* ALLOW_IPV4_OPTIONS */
-        verify(hdr.ipv4.version == 4w4, error.IPv4IncorrectVersion);
-        verify(hdr.ipv4.ihl >= 4w5, error.IPv4HeaderTooShort);
+        verify(hdr.ipv4.version == 4, error.IPv4IncorrectVersion);
+        verify(hdr.ipv4.ihl >= 5, error.IPv4HeaderTooShort);
         transition select (hdr.ipv4.protocol) {
             6: parse_tcp;
             default: accept;
