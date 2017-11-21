@@ -10,9 +10,8 @@ To compile the P4_14 version of the code:
     p4c-bm2-ss -o demo2.p4_14.json --p4v 14 demo2.p4_14.p4
 
 The .dot and .png files in the subdirectory 'graphs' were created with
-p4-graphs program, installed from of the
-https://github.com/p4lang/p4-hlir repository, using this command (it
-does not work with P4_16 source code yet):
+the p4c-graphs program, which is also installed when you build and
+install p4c-bm2-ss:
 
      p4c-graphs -I $HOME/p4c/p4include demo2.p4_16.p4
 
@@ -61,27 +60,13 @@ counter name and a handle id.  Because ipv4_da_lpm_stats is declared
 one in ipv4_da_lpm, use the handle id for the corresponding
 ipv4_da_lpm table entry that you want stats for.
 
-With latest version of p4lang/p4c ang p4lang/behavioral-model as of
-2017-Nov-09, here is the behavior I see for both demo2.p4_14.json and
-demo2.p4_16.json:
-
-    RuntimeCmd: counter_read ipv4_da_lpm_stats 0
-    this is the direct counter for table ipv4_da_lpm
-    Invalid table operation (COUNTERS_DISABLED)
-
-I have filed an issue for this bug:
-https://github.com/p4lang/p4c/issues/1032
-
-Below is the format of output I used to see with an older version from
-2017-Nov-06 (which you can get from the p4c repository by using the
-command `git checkout 951bf53191a29d668c890a7bcb4f5198aef0d5e6`).  It
-works with the P4_14 version of the program, but not the P4_16
-version:
+[ There is a bug with some versions of p4c-bm2-ss that prevents
+counter_read commands from succeeding, roughly corresponding to p4c
+source code from 2017-Nov-07 until 2017-Nov-20. ]
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
     this is the direct counter for table ipv4_da_lpm
     ipv4_da_lpm_stats[0]=  BmCounterValue(packets=1, bytes=54)
-
 
 After sending another packet matching the same ipv4_da_lpm entry,
 reading the counter entry gives different values:
