@@ -16,11 +16,13 @@ To compile the P4_14 version of the code:
     p4c-bm2-ss -o demo5.p4_14.json --p4v 14 demo5.p4_14.p4
 
 The .dot and .png files in the subdirectory 'graphs' were created with
-p4-graphs program, installed from of the
-https://github.com/p4lang/p4-hlir repository, using this command (it
-does not work with P4_16 source code yet):
+the p4c-graphs program, which is also installed when you build and
+install p4c-bm2-ss:
 
-     p4-graphs demo5.p4_14.p4
+     p4c-graphs -I $HOME/p4c/p4include demo5.p4_16.p4
+
+The '-I' option is only necessary if you did _not_ install the P4
+compiler in your system-wide /usr/local/bin directory.
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 

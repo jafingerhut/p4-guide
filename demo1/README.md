@@ -17,9 +17,8 @@ To compile the P4_14 version of the code:
                   ^^^^^^^^^^^^^^^^ compiled output
 
 The .dot and .png files in the subdirectory 'graphs' were created with
-p4-graphs program, installed from of the
-https://github.com/p4lang/p4-hlir repository, using this command (it
-does not work with P4_16 source code yet):
+the p4c-graphs program, which is also installed when you build and
+install p4c-bm2-ss:
 
      p4c-graphs -I $HOME/p4c/p4include demo1.p4_16.p4
 
