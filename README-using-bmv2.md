@@ -16,7 +16,7 @@ should exist in /usr/local/bin:
     simple_switch_CLI
 
 From following install instructions for `p4lang/p4c` repository, these
-should exist in `$P4C/build`, where `P4C` is a shell varaible
+should exist in `$P4C/build`, where `P4C` is a shell variable
 containing the path to your copy of the `p4lang/p4c` repository.
 
     p4c-bm2-ss
