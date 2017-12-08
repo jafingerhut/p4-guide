@@ -82,7 +82,17 @@ date
 cd "${INSTALL_DIR}"
 git clone https://github.com/google/protobuf
 cd protobuf
-git checkout v3.0.2
+# As of 2017-Dec-06, the p4lang/p4c README recommends v3.0.2 of protobuf.
+#
+# However, that version might not work with the latest version of
+# p4lang/PI.
+#
+# This email message linked below suggests that v3.2.0 should soon
+# become the recommended version for both p4lang/p4c and p4lang/PI.
+#
+# http://lists.p4.org/pipermail/p4-dev_lists.p4.org/2017-December/001655.html
+#git checkout v3.0.2
+git checkout v3.2.0
 ./autogen.sh
 ./configure
 make
