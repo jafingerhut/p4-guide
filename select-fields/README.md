@@ -16,17 +16,34 @@ extern to implement such functionality.  The P4_16 language operators
 are sufficient.
 
 The only reason to consider creating a new extern for this is
-efficiency of implmenting this behavior in some kinds of hardware
+efficiency of implementing this behavior in some kinds of hardware
 targets, e.g. those that are similar to the RMT architecture, and
 perhaps others.
 
-By restricting the choice of which 16 out of 40 bytes to select to the
-control plane API, i.e. by restricting the choice so it _cannot_ be
-changed per packet in the P4 program, unless the control plane makes
-appropriate API calls to change the choices, it makes possible
-implementations that consume fewer hardware resources, as compared to
-implementations that can choose a different subset of 16 out of 40
-bytes based upon the contents of the input packet.
+One way to write this in a P4 program would permit the choice of 16
+out of 40 bytes to change from one packet to the next, based on the
+contents of the packet.  For example, the packet itself might contain
+16 6-bit values in it, where each 6-bit value specifies one of the 40
+bytes to select.  I am not claiming this is useful for any known
+network protocols -- it is simply an example where if you wanted to do
+that, it means that the field selection is very dynamic.
+
+Another way, in fact the way that motivates the creation of a new
+extern, is to say that the choice of which 16 bytes is selected from
+the 40 can _only_ change when the control plane software makes an
+appropriate API call.
+
+Why is this distinction important?
+
+It makes possible implementations that consume fewer hardware
+resources.  For example, in an RMT-like architecture, perhaps making
+the control plane API call might change the operands in one or more
+VLIW instructions, or to config registers for some hardware
+multiplexors.  It is expected that there are existing and/or planned
+P4 implementations where these selections are straightforward to
+change at control plane operation time (i.e. a very slow time scale
+relative to packets arriving), but very difficult to change based on
+contents of arriving packets.
 
 Below is an example implementation of this behavior in P4_16 code with
 no new externs.  It is an excerpt from the file `select-fields4.p4`,
