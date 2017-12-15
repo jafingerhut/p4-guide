@@ -34,7 +34,7 @@ echo "Building p4c from scratch"
 mkdir build
 cd build
 # Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG
 make -j${MAX_PARALLEL_JOBS}
 
 set +x
