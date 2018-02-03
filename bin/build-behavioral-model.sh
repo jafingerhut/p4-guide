@@ -54,6 +54,8 @@ fi
 ./autogen.sh
 # With debug enabled in binaries:
 ./configure 'CXXFLAGS=-O0 -g'
+# With debug and P4_16 stack operation support enabled in binaries:
+#./configure --enable-WP4-16-stacks 'CXXFLAGS=-O0 -g'
 # Without debug enabled:
 #./configure
 make
