@@ -34,3 +34,26 @@ Contents:
   used within a program.
   * [figure](p4-16-allowed-constructs.pdf)
   * [text](p4-16-allowed-constructs.txt)
+
+* Some advantages of P4_16 over P4_14:
+  * You can write assignments that look like C/C++/Java, rather than
+    modify_field(dst, src); all over the place, and you can have
+    arithmetic expressions on the right-hand side instead of
+    add_to_field/subtract_from_field/etc.  This is not additional
+    power in the language, but it is a nice convenience for those
+    familiar with those other languages.
+  * Controls could call other controls in P4_14, but there were no
+    parameters or return values.  All side effects had to be done via
+    access to global variables.  In P4_16, there are no global
+    variables -- you may pass parameters with directionality in, out,
+    inout.
+  * Tables must be, and externs may be, defined within the scope of a
+    control, and are then accessible only from that control, which can
+    be useful for keeping the code that accesses those objects closer
+    to it, and knowing where they can be accessed from.  Extern are
+    used for things like counters, meters, and registers that were
+    part of the base P4_14 language, but in P4_16 are defined as
+    extern add-ons in the Portable Switch Architecture specification).
+* Disadvantages of P4_16 vs P4_14:
+  * Tool and vendor support it not as good for P4_16 as of Jan 2018,
+    but this is gradually changing.
