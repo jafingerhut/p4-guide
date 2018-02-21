@@ -137,10 +137,10 @@ Egress<ing_to_egr, egr_in_headers, egr_out_headers>
 // Switch(ig1, eg2) main;
 //                  ^^^^
 
-Switch(ig1, eg1) main;
+//Switch(ig1, eg1) main;
 //Switch(ig1, eg2) main;
 //Switch(ig2, eg1) main;
 //Switch(ig2, eg2) main;
 //Switch<ing_to_egr>(ig1, eg1) main;
-//Switch(Ingress(ing_parse(), ingress(), ing_deparse()),
-//       Egress(egr_parse(), egress(), egr_deparse())) main;
+Switch(Ingress(ing_parse(), ingress(), ing_deparse()),
+       Egress(egr_parse(), egress(), egr_deparse())) main;
