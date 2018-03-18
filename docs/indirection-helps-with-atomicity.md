@@ -1,8 +1,9 @@
 # Building "effectively atomic" updates from non-atomic updates
 
-Sandesh Kumar Sodhi describes a scenario in a short document titled
-"Dataplane-atomic flag in Write batch: Use case for TRIO", added to
-this [P4-API Google doc](https://docs.google.com/document/d/16gvs3Y196ptz38ujEc9tCGMSm_Elv2I5WdrtEUU3jd0).
+Sandesh Kumar Sodhi and Surya Nimmagadda describe a scenario in a
+short document titled "Dataplane-atomic flag in Write batch: Use case
+for TRIO", added to this [P4-API Google
+doc](https://docs.google.com/document/d/16gvs3Y196ptz38ujEc9tCGMSm_Elv2I5WdrtEUU3jd0).
 
 There it is claimed that that this scenario demonstrates a case where
 a certain kind of dataplane _requires_ a dataplane-atomic batch update
@@ -53,9 +54,10 @@ meta.hash1=K1 -> set_pic with pic_id=1
 meta.hash1=K2 -> set_pic with pic_id=2
 ```
 
-We want to change from the current state to a new state, where in the
-new state all packets matching K1 go to pic_id 2 instead of 1, and all
-packets matching K2 to go to pic_id 1 instead of 2.  That is:
+In the scenario, we want to change from the current state to a new
+state, where in the new state all packets matching K1 go to pic_id 2
+instead of 1, and all packets matching K2 to go to pic_id 1 instead of
+2.  That is:
 
 ```
 New desired choose_pic entries:
@@ -63,9 +65,10 @@ meta.hash1=K1 -> set_pic with pic_id=2
 meta.hash1=K2 -> set_pic with pic_id=1
 ```
 
-Claim: "No sequence of NON-dataplane-atomic updates will be able to
-achieve the minimum packet loss numbers that dataplane-atomic write
-batch update will be able to achieve."
+In that document, the following claim is made: "No sequence of
+NON-dataplane-atomic updates will be able to achieve the minimum
+packet loss numbers that dataplane-atomic write batch update will be
+able to achieve."
 
 I agree that without a dataplane-atomic write batch request, the
 example scenario could not be done in an atomic way _with only a
@@ -212,7 +215,7 @@ meta.color=1, meta.hash1=K2 -> set_pic with pic_id=1
 ```
 
 
-Generalizations:
+## Generalizations:
 
 This same idea can work with a field like "meta.color" with multiple
 bits.  There is no reason why it must be restricted to only 1 bit.
