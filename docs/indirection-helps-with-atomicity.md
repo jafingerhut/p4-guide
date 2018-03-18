@@ -20,7 +20,8 @@ which packets go to PIC1 vs. those which go to PIC2, but for the sake
 of writing a specific P4 program to represent this scenario, I will
 imagine that the key of that table is a hash function calculated from
 the contents of the packet, stored in "meta.hash1".  See the partial
-P4 program in control "ingress_1_table" below.
+P4 program in control "ingress_1_table" below (written using the
+syntax of the P4_16 dialect of P4).
 
 ```
 control ingress_1_table {
@@ -49,7 +50,7 @@ The scenario describes a current state of the device containing these
 table entries:
 
 ```
-Original choose_pic entries:
+Original entries in table choose_pic:
 meta.hash1=K1 -> set_pic with pic_id=1
 meta.hash1=K2 -> set_pic with pic_id=2
 ```
@@ -60,7 +61,7 @@ instead of 1, and all packets matching K2 to go to pic_id 1 instead of
 2.  That is:
 
 ```
-New desired choose_pic entries:
+New desired entries in table choose_pic:
 meta.hash1=K1 -> set_pic with pic_id=2
 meta.hash1=K2 -> set_pic with pic_id=1
 ```
@@ -215,7 +216,7 @@ meta.color=1, meta.hash1=K2 -> set_pic with pic_id=1
 ```
 
 
-## Generalizations:
+## Generalizations
 
 This same idea can work with a field like "meta.color" with multiple
 bits.  There is no reason why it must be restricted to only 1 bit.
