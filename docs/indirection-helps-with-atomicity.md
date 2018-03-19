@@ -38,7 +38,7 @@ control ingress_1_table {
         // Code here that calculates a value for meta.hash1
 
         // Using meta.hash1, select a target PIC
-        set_pic.apply();
+        choose_pic.apply();
 
         // Code here that uses meta.pic_id to send the packet to
         // that PIC
@@ -118,7 +118,7 @@ control ingress_2_tables {
         assign_color.apply();
         
         // Using meta.color and meta.hash1, select a target PIC
-        set_pic.apply();
+        choose_pic.apply();
 
         // Code here that uses meta.pic_id to send the packet to
         // that PIC
