@@ -27,7 +27,8 @@ When it is necessary to specify a size for a table, it would be very
 convenient if one could simply say "I want this table to be able to
 hold 1024 entries" (or some other desired number), and the resulting
 table would be able to hold any arbitrary set of 1024 entries that you
-attempted to add via the P4Runtime API, never failing.
+attempted to add via the P4Runtime API, never failing to add a new
+entry (unless the table already contains 1024 entries).
 
 This is possible in some situations, but there are practical
 implementation issues that often make this an unrealistic goal.
@@ -102,11 +103,11 @@ control plane software is dependent on the particular ranges used.
 
 There is only one remaining case.  Not that the majority of the tables
 in the example open source program `switch.p4` are likely to fall into
-this case in a practical implementation.  While it is _possible_ for
-an implementation to use table implementations with predictable
-capacity like TCAM or CAM as described above, those hardware
-implementations are significantly more expensive in power and are per
-bit of storage, and thus impractical for large tables.
+this case in a practical implementation.  While it is _possible_ for a
+P4 target to use table implementations with predictable capacity like
+TCAM or CAM as described above, those hardware implementations are
+significantly more expensive in power and area per bit of storage, and
+thus impractical for large tables.
 
 + A P4 table where all fields have `match_kind` `exact`, the total
   width in bits of all search key fields is W bits, you request a
