@@ -309,7 +309,7 @@ enough to justify the extra hardware cost.  (TBD: citation).
 
 #### Dependence on order of table operations
 
-There is a subtle of hash tables with H > 1 hash functions, in which
+There is a subtle property of hash tables with H > 1 hash functions, in which
 it differs from the kinds of tables described earlier.  When adding
 new entries, there are now H different choices of where to install the
 new entry (unless some of those H buckets become full -- then there
