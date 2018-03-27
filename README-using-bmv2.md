@@ -1,5 +1,10 @@
 # What to install for compiling P4 programs and running them on bmv2
 
+Note: Building the open source tools is likely to fail on a machine
+(or virtual machine) with only 1 Gbyte of RAM.  4 Gbytes of RAM is
+definitely enough as of 2018-Mar-26.  TBD whether 2 Gbytes of RAM is
+enough.
+
 Clone the p4lang git repositories named below and follow their README
 build/install instructions, or use the shell script
 [bin/install-p4dev.sh](bin/install-p4dev.sh) to do it for you on an
