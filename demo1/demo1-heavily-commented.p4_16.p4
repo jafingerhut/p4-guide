@@ -32,17 +32,18 @@ limitations under the License.
  * You can see its contents here:
  * https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4
  *
- * A draft version 0.9 of the PSA (Portable Switch Architecture)
- * specification was published on Nov 10, 2017 here:
+ * The standard P4_16 architecture called PSA (Portable Switch
+ * Architecture) version 1.0 was published on March 1, 2018 here:
  *
- * https://p4lang.github.io/p4-spec/
+ * https://p4.org/specs/
  *
  * P4_16 programs written for the PSA architecture should include
  * psa.p4 instead of v1model.p4, and several parts of the program
  * after that would use different extern objects and functions than
  * this example program shows.
  *
- * ingress consists of these things, programmed in P4:
+ * In the v1model.p4 architecture, ingress consists of these things,
+ * programmed in P4:
  * + parser
  * + ingress match-action pipeline
  *
@@ -106,11 +107,31 @@ struct fwd_metadata_t {
 }
 
 
-/* P4_16 code that is auto-translated from a P4_14 program, as this
- * program began, often collects together all headers into one big
- * struct, and all metadata we care about for a packet into another
- * big struct.  This enables passing fewer arguments when control
- * blocks call each other. */
+/* The v1model.p4 and psa.p4 architectures require you to define one
+ * type that contains instances of all headers you care about, which
+ * will typically be a struct with one member for each header instance
+ * that your parser code might parse.
+ *
+ * You must also define another type that contains all metadata fields
+ * that you use in your program.  It is typically a struct type, and
+ * may contain bit vector fields, nested structs, or any other types
+ * you want.
+ *
+ * Instances of these two types are then passed as parameters to the
+ * top level controls defined by the architectures.  For example, the
+ * ingress parser takes a parameter that contains your header type as
+ * an 'out' parameter, returning filled-in headers when parsing is
+ * complete, whereas the ingress control block takes that same
+ * parameter with direction 'inout', since it is initially filled in
+ * by the parser, but the ingress control block is allowed to modify
+ * the contents of the headers during packet processing.
+ *
+ * Note: If you ever want to parse an outer and an inner IPv4 header
+ * from a packet, the struct containing headers that you define should
+ * contain two members, both with type ipv4_t, perhaps with field
+ * names like "outer_ipv4" and "inner_ipv4", but the names are
+ * completely up to you.  Similarly the struct type names 'metadata'
+ * and 'headers' below can be anything you want to name them. */
 
 struct metadata {
     fwd_metadata_t fwd_metadata;
