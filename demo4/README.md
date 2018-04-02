@@ -3,8 +3,8 @@ It is intended to have pretty much the same ECMP feature as demo3,
 but implemented using P4 action selectors instead of the way demo3
 implemented ECMP.
 
-See README-using-bmv2.txt for some things that are common across
-different P4 programs executed using bmv2.
+See [README-using-bmv2.md](../README-using-bmv2.md) for some things
+that are common across different P4 programs executed using bmv2.
 
 Useful for quickly creating multiple terminal windows and tabs:
 

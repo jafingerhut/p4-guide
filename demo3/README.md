@@ -1,7 +1,7 @@
 # Compiling
 
-See README-using-bmv2.txt for some things that are common across
-different P4 programs executed using bmv2.
+See [README-using-bmv2.md](../README-using-bmv2.md) for some things
+that are common across different P4 programs executed using bmv2.
 
 To compile the P4_16 version of the code:
 
@@ -25,7 +25,7 @@ compiler in your system-wide /usr/local/bin directory.
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
-    sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 demo3.p4_14.json
+    sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 demo3.p4_16.json
 
 To run CLI for controlling and examining simple_switch's table
 contents:
