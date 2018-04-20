@@ -1,0 +1,116 @@
+{
+ "tables": [
+  {
+   "preamble": {
+    "id": 33587900,
+    "name": "ingress.learn_notify",
+    "alias": "learn_notify"
+   },
+   "matchFields": [
+    {
+     "id": 1,
+     "name": "standard_metadata.ingress_port",
+     "bitwidth": 9,
+     "matchType": "EXACT"
+    },
+    {
+     "id": 2,
+     "name": "hdr.eth.srcAddr",
+     "bitwidth": 48,
+     "matchType": "EXACT"
+    }
+   ],
+   "actionRefs": [
+    {
+     "id": 16797483
+    },
+    {
+     "id": 16791812
+    },
+    {
+     "id": 16810310
+    },
+    {
+     "id": 16800567,
+     "annotations": [
+      "@defaultonly()"
+     ]
+    }
+   ],
+   "size": "1024"
+  }
+ ],
+ "actions": [
+  {
+   "preamble": {
+    "id": 16800567,
+    "name": "NoAction",
+    "alias": "NoAction"
+   }
+  },
+  {
+   "preamble": {
+    "id": 16797483,
+    "name": "ingress.nop",
+    "alias": "nop"
+   }
+  },
+  {
+   "preamble": {
+    "id": 16791812,
+    "name": "ingress.generate_learn_notify",
+    "alias": "generate_learn_notify"
+   }
+  },
+  {
+   "preamble": {
+    "id": 16810310,
+    "name": "ingress.action_with_parameters",
+    "alias": "action_with_parameters"
+   },
+   "params": [
+    {
+     "id": 1,
+     "name": "port",
+     "bitwidth": 9
+    },
+    {
+     "id": 2,
+     "name": "new_dest_mac",
+     "bitwidth": 48
+    }
+   ]
+  }
+ ],
+ "externs": [
+  {
+   "externTypeId": 2550195709,
+   "externTypeName": "digest",
+   "instances": [
+    {
+     "preamble": {
+      "id": 2566935103,
+      "name": "mac_learn_digest",
+      "alias": "mac_learn_digest"
+     },
+     "info": {
+      "@type": "type.googleapis.com/p4.config.v1model.Digest",
+      "receiver": 1024,
+      "fields": [
+       {
+        "id": 1,
+        "name": "eth.srcAddr",
+        "bitwidth": 48
+       },
+       {
+        "id": 2,
+        "name": "standard_metadata.ingress_port",
+        "bitwidth": 9
+       }
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}
