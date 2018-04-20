@@ -22,7 +22,7 @@
 # You will likely need to enter your password for multiple uses of 'sudo'
 # spread throughout this script.
 
-# The files installed by this script consume about 3.5 Gbytes of disk
+# The files installed by this script consume about 4.0 GB of disk
 # space.
 
 # Size of source trees, after being built on an x86_64 machine, without
@@ -36,6 +36,8 @@
 # The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
 # take 1 to 1.5G of RAM, and the build will fail if you run out of RAM,
 # so don't make this number huge on a machine with 4G of RAM, for example.
+# 3 will work on a machine with 2 GB of RAM as long as you are not
+# running any other processes using significant memory.
 MAX_PARALLEL_JOBS=3
 
 # Remember the current directory when the script was started:
