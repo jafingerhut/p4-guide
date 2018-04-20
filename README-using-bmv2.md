@@ -3,11 +3,13 @@
 Recommendations for a machine (or virtual machine) that you use solely
 for the purpose of building P4 open source tools:
 
-+ RAM - 4 GB (1 GB is definitely too small, 2 GB may be enough)
-+ disk - 10 GB is barely enough for Ubuntu 16.04 Linux OS plus build
-  of p4lang/behavioral-model and p4lang/p4c, leaving intermediate
-  build files on disk for quicker rebuilding.  Add more as you wish
-  for other tools and/or data files.
++ RAM - At least 2 GB (1 GB is definitely too small)
++ disk - 11 GB is barely enough for Ubuntu 16.04 Desktop Linux OS plus
+  build of p4lang/behavioral-model and p4lang/p4c, leaving
+  intermediate build files on disk for quicker rebuilding.  Add more
+  as you wish for other tools and/or data files.  Before running the
+  install-p4dev.sh script linked below, you must have at least 4 GB of
+  disk space free on the Ubuntu machine's disk.
 + number of CPU cores / virtual CPUs - 1 is enough, but the p4c build
   can take advantage of 4 CPU cores in parallel, so 2 or 4 will speed
   up some things.
