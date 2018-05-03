@@ -73,9 +73,11 @@ date
 
 cd "${INSTALL_DIR}"
 # Clone Github repo
-git clone https://github.com/p4lang/behavioral-model.git
+#git clone https://github.com/p4lang/behavioral-model.git
+git clone https://github.com/jafingerhut/behavioral-model.git
 
 cd behavioral-model
+git checkout use-thrift-0.11.0
 ./install_deps.sh
 
 # Compile and install behavioral-model
