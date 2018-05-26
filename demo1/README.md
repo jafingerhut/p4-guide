@@ -5,16 +5,24 @@ that are common across different P4 programs executed using bmv2.
 
 To compile the P4_16 version of the code:
 
-    p4c-bm2-ss -o demo1.p4_16.json demo1.p4_16.p4
-                                   ^^^^^^^^^^^^^ source code
-                  ^^^^^^^^^^^^^^^^ compiled output
+    p4c --target bmv2 --arch v1model demo1.p4_16.p4
+                                     ^^^^^^^^^^^^^^ source code
+
+Running that command will create three files:
+
+    demo1.p4_16.p4i - the output of running only the preprocessor on
+        the P4 source program.
+    demo1.p4_16.p4rt - a binary format file containing a description
+        of the tables and other objects in your P4 program that have
+        an auto-generated control plane API.
+    demo1.p4_16.json - the JSON file format expected by BMv2
+        behavioral model `simple_switch`.
 
 To compile the P4_14 version of the code:
 
-    p4c-bm2-ss -o demo1.p4_14.json --p4v 14 demo1.p4_14.p4
-                                            ^^^^^^^^^^^^^^ source code
-                                   ^^^^^^^^ specify P4_14 source code
-                  ^^^^^^^^^^^^^^^^ compiled output
+    p4c --std p4-14 --target bmv2 --arch v1model demo1.p4_14.p4
+                                                 ^^^^^^^^^^^^^^ source code
+        ^^^^^^^^^^^ specify P4_14 source code
 
 The .dot and .png files in the subdirectory 'graphs' were created with
 the p4c-graphs program, which is also installed when you build and
