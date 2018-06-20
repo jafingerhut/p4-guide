@@ -260,17 +260,17 @@ It can improve utilization in dynamic add/delete situations if
 previously-added entries can be moved between sub-tables.
 
 
-If the hit index is used in the data plane as a linking field, then
-moving a table entry will change its hit index.  In the simplest case,
+Moving a table entry changes its hit index.  In the simplest case,
 this could affect only one table entry in a later table, but in
-general it could affect many later table entries.  One way to allow
-changing these values would be to have a way for the agent to send a
-message to the controller indicating "table entry X currently has
-hit_index A, but I would like to change it to B.  Please do whatever
-other table add/delete/modify operations you want to make this
-acceptable, then let me know when I can proceed."  The agent would not
-be allowed to change the hit index until the controller later sent an
-explicit message indicating it could proceed.
+general it could affect many later table entries.
+
+One way to allow changing hit index(es) would be to have a way for the
+agent to send a message to the controller indicating "table entry X
+currently has hit_index A, but I would like to change it to B.  Please
+do whatever other table add/delete/modify operations you want to make
+this acceptable, then let me know when I can proceed."  The agent
+would not be allowed to change the hit index until the controller
+later sent an explicit message indicating it could proceed.
 
 The agent must always be prepared not to get such a message from the
 controller for a long time, or instead to be told by the controller
@@ -280,15 +280,27 @@ the keys of later tables to accomodate it."
 Note that one reason an agent might want to move an entry is in order
 to make it possible to successfully add a new table entry requested by
 the controller.  One can easily imagine cases where the agent could
-say "yes" to such a new table entry request if it could move other
-table entries around, but otherwise must say "no".  How to design the
-possible interactions between controller and agent in such a situation
-could get tricky.  For example, does this mean that a controller must
-be able to respond to such "desire to move table entry X from hit
-index A to B" messages while waiting for responses to any
-controller-to-agent message requesting to add a new table entry?  Even
-if those requests to add a new table entry were performed because the
-controller was trying to accomodate an earlier such message?
+say "yes" to such a new table entry add request if it could move other
+table entries around, but otherwise it must say "no".
+
+How to design the possible interactions between controller and agent
+in such a situation could get tricky.  For example, does this mean
+that a controller must be able to respond to such "desire to move
+table entry X from hit index A to B" messages while waiting for
+responses to controller-to-agent "add table entry" messages?
+
+Even if those requests to add a new table entry were performed because
+the controller was trying to accomodate an earlier such message?
+
+How deeply "nested" should such interactions be allowed to go?
+
+Control plane software that handles hit indexes as linking fields
+between tables has been implemented many times before, and it will be
+again, for network switch ASICs, because of the data plane storage
+savings.  I suspect that the "controller" and "agent" are often
+written by the same software team.  That is, it is probably usually
+developed with more tight coupling between them, at least partly
+becuase of the hit index management involved.
 
 
 If the hit index is not used in the data plane for any reason (the way
