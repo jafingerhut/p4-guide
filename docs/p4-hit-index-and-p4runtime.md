@@ -86,7 +86,7 @@ This could be done in the order:
 If this is done, then potentially many packets could be processed by
 the data plane after the new entry is written to T1, before the new
 entry is written to table T2.  "Many" could be hundreds, thousands, or
-even milliions, depending upon the relative speed of the data and
+even millions, depending upon the relative speed of the data and
 control plane processing.  Switch ASIC data plane implementations can
 often process billions of packets per second, and control planes are
 not necessarily "slow", but even the smallest time between consecutive
@@ -275,7 +275,7 @@ later sent an explicit message indicating it could proceed.
 The agent must always be prepared not to get such a message from the
 controller for a long time, or instead to be told by the controller
 "sorry, give up trying to move that entry, because I could not change
-the keys of later tables to accomodate it."
+the keys of later tables to accommodate it."
 
 Note that one reason an agent might want to move an entry is in order
 to make it possible to successfully add a new table entry requested by
@@ -290,7 +290,7 @@ table entry X from hit index A to B" messages while waiting for
 responses to controller-to-agent "add table entry" messages?
 
 Even if those requests to add a new table entry were performed because
-the controller was trying to accomodate an earlier such message?
+the controller was trying to accommodate an earlier such message?
 
 How deeply "nested" should such interactions be allowed to go?
 
@@ -300,7 +300,7 @@ again, for network switch ASICs, because of the data plane storage
 savings.  I suspect that the "controller" and "agent" are often
 written by the same software team.  That is, it is probably usually
 developed with more tight coupling between them, at least partly
-becuase of the hit index management involved.
+because of the hit index management involved.
 
 
 If the hit index is not used in the data plane for any reason (the way
