@@ -119,8 +119,8 @@ functions, and headers.  On Ubuntu Linux, it can be installed with:
 
 To create a tags file for a collection of files containing a single P4
 program, first edit your `$HOME/.ctags` to add lines like the ones in
-the file [`dot-ctags-for-p4-14.txt`](dot-ctags-for-p4-14.txt) or
-[`dot-ctags-for-p4-16.txt`](dot-ctags-for-p4-16.txt).
+the file [`dot-ctags-for-p4-14.txt`](editor-support/dot-ctags-for-p4-14.txt) or
+[`dot-ctags-for-p4-16.txt`](editor-support/dot-ctags-for-p4-16.txt).
 
 To create a TAGS file for use with Emacs, for all source files with a
 `.p4` or `.h` suffix in the current directory and all sub-directories,
