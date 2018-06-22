@@ -146,7 +146,7 @@ followed by writing the new table entries in T1.
     write new table entries to T2 (back)
     write new table entries to T1 (to front)
 
-This can generalized in a straightforward manner to any number of
+This can be generalized in a straightforward manner to any number of
 linking fields, spanning across any number of tables.  It can also be
 generalized to allocating a "batch" of N new linking field values at
 once, then writing N new entries to table T2, followed by writing N
@@ -346,11 +346,12 @@ numbered from 0 up to N-1, where N is the number of entries.  Each
 entry has a valid bit (invalid entries cannot match search keys).
 When a search is performed, then among all TCAM entries whose
 value/mask matches the search key, the one with the smallest numerical
-hardware address matches.  This hardware address is the 'hit index',
-and typically it is used as the read address of a hardware SRAM to get
-data associated with the matching entry, which for a P4-programmable
-device would typically contain some encoding of the action to be
-performed, and the values of the action parameters.
+hardware address is the one whose action should be performed.  This
+hardware address is the 'hit index', and typically it is used as the
+read address of a hardware SRAM to get data associated with the
+matching entry, which for a P4-programmable device would typically
+contain some encoding of the action to be performed, and the values of
+the action parameters.
 
 In such a TCAM, the entries must always be installed while maintaining
 this "priority invariant":
@@ -499,4 +500,4 @@ with more action parameters, and no hit index at all.
 
 Allow the use of hit indexes for tables with ternary/range match_kind
 fields, and design the controller/agent interaction protocol to enable
-this to work for arbitrary use of the hit index value.
+this to work for arbitrary use of the hit index value in a P4 program.
