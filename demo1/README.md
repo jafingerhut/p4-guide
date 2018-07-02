@@ -35,6 +35,11 @@ compiler in your system-wide /usr/local/bin directory.
 
 
 # Running
+Before running the behavioral model you should add the veth interfaces by runnning the `veth_setup.sh` file in the `bin` folder:
+
+`sudo ./veth_setup.sh`
+
+You can now check the interfaces active by `ifconfig` .
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
