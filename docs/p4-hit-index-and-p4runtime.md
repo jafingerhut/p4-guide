@@ -501,3 +501,39 @@ with more action parameters, and no hit index at all.
 Allow the use of hit indexes for tables with ternary/range match_kind
 fields, and design the controller/agent interaction protocol to enable
 this to work for arbitrary use of the hit index value in a P4 program.
+
+(d)
+
+Instead of a control plane API that uses relative priority values as
+P4Runtime API v1.0 does, instead require the control plane to specify
+hardware indices in a TCAM where table entries are installed, e.g. in
+the range `[0, size-1]`, where `size` is the size of the ternary table
+in number of TCAM entries.
+
+This approach has properties that one could consider an advantage or a
+disadvantage, depending upon your purposes.
+
++ One the positive side, it makes it clear what the relative priority
+  of entries are, and how much space they consume in the hardware.
+  That is, if a new entry does not fit in the table's capacity, it is
+  clear exactly why.  It is also easy to predict whether an entire new
+  collection of table entries will fit, and how much capacity they
+  will require, as long as you know how many TCAM value/masks it
+  requires to represent the matching rules.
+
++ Perhaps considered a disadvantage by most people, if you wanted to
+  implement range matching on some fields using a normal TCAM, the
+  control plane must explicitly create multiple TCAM value/masks for
+  any ranges of a field value that are not "power of 2 aligned"
+  ranges.
+
++ If some hardware implementations have special techniques for
+  implementation range matching, either the control plane cannot take
+  advantage of those, or it must be explicitly aware of how the
+  hardware works in detail, making it more time consuming to write
+  control software for a variety of hardware implementations.
+
++ If some hardware has some kind of "algorithmic TCAM" implementation,
+  these have even more varieties and differences between them, and the
+  notion of a hardware index in the range `[0, size-1]` is likely
+  meaningless for those implementations.
