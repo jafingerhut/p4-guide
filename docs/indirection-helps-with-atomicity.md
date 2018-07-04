@@ -253,3 +253,20 @@ for example.  The critical factor is that there is at least one value
 for this field that is not currently in use, in order to add new table
 entries that no data packets currently flowing through the system can
 match.
+
+It can be generalized to an entire network of devices.  See:
+
+"Abstractions for Network Update", M. Reitblatt, N. Foster,
+J. Rexford, C. Schlesinger, D. Walker, SIGCOMM 2012
+
+Note that the technique can achieve a number of updates required in
+the data plane that is at most 2 times the number of updates required
+if the technique is not used.  This can be done by starting with the
+"red" and "blue" sets of rules equal to each other.
+
+If it takes K table updates to change the red set from the current
+state to the desired next state, then if that is successful, after we
+switch from the blue to the red set, do the corresponding K table
+updates to the blue set to make them equal to the red set.  Over an
+arbitrary sequence of updates, we will do twice as many table updates
+as would be required if there were only one set of rules.
