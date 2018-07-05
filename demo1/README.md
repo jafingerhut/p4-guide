@@ -8,15 +8,17 @@ To compile the P4_16 version of the code:
     p4c --target bmv2 --arch v1model demo1.p4_16.p4
                                      ^^^^^^^^^^^^^^ source code
 
-Running that command will create three files:
+Running that command will create these files:
 
     demo1.p4_16.p4i - the output of running only the preprocessor on
         the P4 source program.
-    demo1.p4_16.p4rt - a binary format file containing a description
-        of the tables and other objects in your P4 program that have
-        an auto-generated control plane API.
     demo1.p4_16.json - the JSON file format expected by BMv2
         behavioral model `simple_switch`.
+
+Only the file with the `.json` suffix is needed to run your P4 program
+using the `simple_switch` command.  You can ignore the file with
+suffix `.p4i` unless you suspect that the preprocessor is doing
+something unexpected with your program.
 
 To compile the P4_14 version of the code:
 
