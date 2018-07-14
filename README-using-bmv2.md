@@ -1,3 +1,66 @@
+# What are the pieces involved in running these demos?
+
+Normally when you have a switch in a production setting, you would
+have a physical switch device, often consisting of a switch ASIC plus
+a nearby general purpose CPU (e.g. Intel, PowerPC, etc.) running
+control plane software that manages the contents of the tables in the
+switch ASIC.  The switch ASIC would be connected to physical Ethernet
+ports, and those in turn would be connected to ports on other
+switches, or to Ethernet ports on hosts.  The control plane software
+in commercial switches can easily contain up to tens of millions of
+lines of source code, and be developed and maintained by teams of
+hundreds of developers.
+
+However, the purpose of these demos is not to teach you how to set
+that up.  The focus here is on learning how P4 programs behave, by
+using a P4 program for processing data packets, and running it on an
+open source switch emulator software called `simple_switch`.
+
+Instead of loading the compiled P4 program into a switch ASIC, you
+will start up the `simple_switch` process as a normal process running
+on a Linux machine (or virtual machine).
+
+Instead of physically connecting multiple devices to each other via
+Ethernet cables, we will create 'virtual' Ethernet ports on your Linux
+machine, and tell `simple_switch` to treat every packet sent to one of
+those virtual Ethernet ports as one that arrived at the software
+emulated switch, and it will process the packet via the P4 program.
+Any packets sent out by the emulated switch will be transmitted to one
+of those virtual Ethernet ports.  A virtual Ethernet port simply means
+it is not a physical Ethernet port, but instead one created purely via
+a configuration command.  We use them here because they are cheap.
+
+There are existing open source tools for monitoring all packets that
+go across a Linux machine's Ethernet port, and print out some or all
+of the contents of those packets in various formats (search for
+`tcpdump` or `tshark` below for example commands to run those
+programs).
+
+There are also multiple open source tools for constructing packets in
+memory, or reading them from files, and transmitting them on Ethernet
+ports.  The instructions here show a few examples of how to use a
+Python library called Scapy for that purpose.
+
+Instead of running a complex collection of control plane software, you
+will be running a tiny program called `simple_switch_CLI` which lets
+you have complete control over exactly which table entries are added
+to the tables of your P4 program.  This is not good for a production
+switch, as such a thing might require adding hundreds or thousands of
+table entries before it is in a sufficiently usable state.  It _is_
+good for the demo P4 programs here, which typically only need 3 to 5
+table entries to be added in order to forward packets.  By requiring
+you to add any necessary table entries via a relatively simple command
+line interface, you can be fully aware of exactly which table entries
+have been installed, because if you didn't enter the command to add
+it, it will not be there.
+
+The instructions here, unlike the ones in the `p4lang/tutorials`
+repository, have you run only a single emulated switch at a time.
+Running multiple emulated switches is certainly possible, and often
+useful, but when you are first learning P4 a single emulated switch is
+easier to debug when things are not behaving as you expect.
+
+
 # What to install for compiling P4 programs and running them on bmv2
 
 Recommendations for a machine (or virtual machine) that you use solely
@@ -33,6 +96,7 @@ From following install instructions for `p4lang/p4c` repository, these
 should exist in `$P4C/build`, where `P4C` is a shell variable
 containing the path to your copy of the `p4lang/p4c` repository.
 
+    p4c
     p4c-bm2-ss
 
 [Historical note: There is also a `p4lang/p4c-bm` repository whose
@@ -67,7 +131,12 @@ To create veth interfaces:
 
     sudo $BMV2/tools/veth_setup.sh
     # Verify that it created many veth<number> interfaces
-    ifconfig | grep ^veth
+    ip link show | grep veth
+
+`tcpdump` and `tshark` are two similar programs that can show the
+contents of packets "live" as they cross Ethernet interfaces of your
+Linux system, including virtual Ethernet interfaces like veth2 and
+veth6.
 
 To watch packets cross veth2 and veth6 as they occur, tcpdump and
 tshark are 2 similar programs.  You only need one of them.  Use
