@@ -537,3 +537,37 @@ disadvantage, depending upon your purposes.
   these have even more varieties and differences between them, and the
   notion of a hardware index in the range `[0, size-1]` is likely
   meaningless for those implementations.
+
+
+# hit indexes, and using TCAMs to implement range matching
+
+There are well known techniques for implementing range matching fields
+using TCAMs, but they require for most ranges to implement a single
+table entry added via the control plane API as multiple separate
+hardware TCAM entries.  For example, the range [0, 5] of a 16-bit
+field could be implemented as the union of two separate ranges [0, 3]
+and [4, 5], where these are "power of 2 aligned ranges" that can be
+represented with a single TCAM entry each.  In general this can be
+done for an arbitrary range of a single W-bit field using at most 2W-2
+TCAM entries, the worst case being achieved when implementing the
+range [1, 2^W-2].
+
+If a P4 device used this technique, note that a single entry added via
+the control plane API becomes multiple TCAM entries, _and they each
+have their own separate hit index_.  In order to use the hit index as
+a linking field, any later table entry using the hit index as a field
+in its search key must in general now become _multiple_ table entries.
+If two such hit indices are both used as fields in the search key of a
+single table, the cross product of both sets of hit indices must be
+added as table entries, etc.
+
+You might be thinking: Ah!  I know how to avoid this problem.  I can
+have a table just after the ternary table, that maps the ternary table
+hit index to another software-selected value, and I will write control
+plane code that takes all of those multiple hit indexes that resulted
+from the one original rule, and maps them all to a common value.
+
+Good idea.  But that is _exactly_ the extra storage required to get a
+software-controllable linking field value, when no hit indexes are
+used in a P4 program at all.  Using this remapping technique nullifies
+the only advantage that the hit indexes can provide.
