@@ -35,6 +35,63 @@ Contents:
   * [figure](p4-16-allowed-constructs.pdf)
   * [text](p4-16-allowed-constructs.txt)
 
+* A very brief overview of P4 (in about 500 words), to get a flavor
+  for what it is like:
+  * Start with C.
+  * Remove loops, recursive calls, pointers, malloc, and free.  When
+    your mind recovers from reeling over these drastic limitations,
+    you will clearly realize that P4 is _not_ a general purpose
+    programming language.  It was not designed to be.
+    * Without loops or recursive calls, the work done per packet can
+      be bounded at compilation time, which helps when targeting the
+      highest performance P4-programmable devices.  Without pointers,
+      malloc, and free, general purpose data structures like linked
+      lists, trees, etc. having arbitrary size is not possible.
+  * Add special constructs called _parsers_, focused on the capabilities
+    most needed when parsing the contents of a received packet into a
+    sequence of _headers_.
+    * Parsers are defined as finite state machines, with states that
+      you must name and define what the possible transitions are
+      between them.  It is actually allowed to have loops in the
+      parser finite state machine, but the highest performance targets
+      will typically restrict you to loops that can be unrolled to a
+      compile-time known maximum number of iterations, e.g. for
+      parsing a sequence of MPLS headers at most 5 headers long (where
+      5, or some other value, is a number you pick in your source
+      code).
+    * P4 is focused on packet header processing.  Whatever part of a
+      packet you do not parse into some header is, for that P4
+      program, considered the "payload" of the packet, which is
+      typically carried along, unmodified, with the packet when you
+      are done processing it.  You can modify fields however you like.
+  * Add special constructs called _tables_, where for each one you
+    define a search key consisting of a number of packet header fields
+    and/or values of variables in your P4 program.  Each table can
+    also have one or more _actions_ defined for them.
+    * A P4 program represents only a small fraction of a complete
+      working system.  Control plane software that would typically be
+      running on a general purpose CPU, written in one or more general
+      purpose programmling languages like C, C++, Java, Python, etc.,
+      is responsible for adding and removing entries to these tables,
+      selecting for each entry the search key to be matched against,
+      and the action to be executed if, while processing a packet,
+      that table entry is matched.
+  * A P4_16 "architecture" like the Portable Switch Architecture (PSA)
+    also defines a library of other constructs, such as packet/byte
+    counters, meters for enforcing average packet and/or bit rates on
+    forwarded traffic, registers for some limited kinds of stateful
+    packet processing, and methods for recirculating a packet,
+    multicasting it to multiple destinations, etc.
+  * Fields and variables can be integers of arbitrary bit width (up to
+    some maximum size allowed by a particular implementation), with
+    results of arithmetic operations well defined for all operations.
+    P4 implementations need not implement floating point arithmetic,
+    and I expect most would not because such things are not needed for
+    the majority of packet processing applications.  P4
+    implementations also need not implement multiplication, division,
+    or modulo operations, again given that such operations are often
+    not needed for most packet processing applications.
+
 * Some advantages of P4_16 over P4_14:
   * You can write assignments that look like C/C++/Java, rather than
     modify_field(dst, src); all over the place, and you can have
