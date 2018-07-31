@@ -79,8 +79,8 @@ cd behavioral-model
 
 # Replace all occurrences of version 0.9.2 with 0.11.0 in Thrift
 # install script.
-sed s/0.9.2/0.11.0/g behavioral-model/travis/install-thrift.sh > behavioral-model/travis/install-thrift-0.11.0.sh
-/bin/cp behavioral-model/travis/install-thrift-0.11.0.sh behavioral-model/travis/install-thrift.sh
+sed s/0.9.2/0.11.0/g travis/install-thrift.sh > travis/install-thrift-0.11.0.sh
+/bin/cp travis/install-thrift-0.11.0.sh travis/install-thrift.sh
 
 ./install_deps.sh
 
