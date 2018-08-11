@@ -25,7 +25,7 @@ digraph p4_16_allowed_construct_nesting {
     toplevel -> enumErrorMatchKindDeclaration;
     enumErrorMatchKindDeclaration [label="enum\nerror\nmatch_kind"];
     toplevel -> Instantiation;
-    Instantiation [label="instantiation of:\nextern object"];
+    Instantiation [label="instantiation of:\nextern object\nparser value set\npackage (there\nmust be one\ncalled 'main')"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;
@@ -35,7 +35,7 @@ digraph p4_16_allowed_construct_nesting {
     parserDeclaration -> constantOrVariableDeclaration2;
     constantOrVariableDeclaration2 [label="const, variable decl"];
     parserDeclaration -> Instantiation2;
-    Instantiation2 [label="instantiation of:\nextern object\nparser"];
+    Instantiation2 [label="instantiation of:\nextern object\nparser\nparser value set"];
     parserDeclaration -> parserState;
 
     parserState [label="state"];
@@ -49,8 +49,12 @@ digraph p4_16_allowed_construct_nesting {
     blockStatement3 [label="block statement\n{ ... }"];
     blockStatement3 -> blockStatementInParserState;
     blockStatementInParserState [label="anything allowed\ndirectly inside state\nexcept transition,\nwhich must be last"];
-    parserState -> transitionStatement;
-    transitionStatement [label="transition <statename>;\ntransition select ..."];
+    parserState -> transitionStatement1;
+    parserState -> transitionStatement2;
+    transitionStatement1 [label="transition <statename>"];
+    transitionStatement2 [label="transition select ..."];
+    transitionStatement2 -> parserValueSetCall;
+    parserValueSetCall [label="parser value set\nas key set\nexpression"];
 
     controlDeclaration -> constantOrVariableDeclaration4;
     constantOrVariableDeclaration4 [label="const, variable decl"];

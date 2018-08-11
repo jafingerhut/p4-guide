@@ -1,5 +1,13 @@
+The contents of this document have been compared against Appendix F
+"Restrictions on compile time and run time calls" of the P4_16
+v1.1.0-rc as of this git commit on 2018-Aug-11, and they appear to
+match each other:
+
+$ git clone https://github.com/p4lang/p4-spec
+$ git checkout 015f9225ea022a337d986a9d2905f81bc6741217
+
+
 TBD to add:
-* instantiation of package
 * extern function declaration
 * extern function call
 
@@ -19,14 +27,15 @@ top level
     enum
     error
     match_kind
-    instantiation of extern object
+    instantiation of extern object, parser value set
+    instantiation of package (there must be one named 'main')
     action - see 'action' below
     NO: instantiation of control block, parser
     NO: variable decl
     NO: state, table
     parser
         const, variable decl
-        instantiation of extern object, parser
+        instantiation of extern object, parser, parser value set
 	NO: instantiation of control block
         state
             const, variable decl, assignment
@@ -37,13 +46,14 @@ top level
                 anything allowed directly inside state
             transition <statename> (must be last in state definition)
             transition select .... (must be last in state definition)
+                call to a parser value set, as a key set expression
             NO: type definitions
             NO: if, switch, return, exit
             NO: parser, state, action, table, control
     control
         const, variable decl
         instantiation of extern object, control block
-        NO: instantiation of parser
+        NO: instantiation of parser, parser value set
         action
             const, variable decl, assignment, action call
             extern object method call
