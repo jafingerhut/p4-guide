@@ -71,7 +71,7 @@ Contents:
     * A P4 program represents only a small fraction of a complete
       working system.  Control plane software that would typically be
       running on a general purpose CPU, written in one or more general
-      purpose programmling languages like C, C++, Java, Python, etc.,
+      purpose programming languages like C, C++, Java, Python, etc.,
       is responsible for adding and removing entries to these tables,
       selecting for each entry the search key to be matched against,
       and the action to be executed if, while processing a packet,
@@ -112,5 +112,5 @@ Contents:
     part of the base P4_14 language, but in P4_16 are defined as
     extern add-ons in the Portable Switch Architecture specification).
 * Disadvantages of P4_16 vs P4_14:
-  * Tool and vendor support it not as good for P4_16 as of Jan 2018,
+  * Tool and vendor support is not as good for P4_16 as of Jan 2018,
     but this is gradually changing.
