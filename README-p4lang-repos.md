@@ -311,15 +311,15 @@ configuration file:
 
     # foo.p4 is P4_14 source code
     p4c-bmv2 --json foo.json foo.p4
-    p4c-bm2-ss --p4v 14 -o foo.json foo.p4
+    p4c --target bmv2 --arch v1model --std p4-14 foo.p4
 
     # foo.p4 is P4_16 source code
-    p4c-bm2-ss -o foo.json foo.p4
+    p4c --target bmv2 --arch v1model foo.p4
 
 Sample command line for converting P4_14 source code to P4_16 source
 code:
 
-    p4test --p4v 14 --pp foo-translated-to-p4-16.p4 foo-in-p4-14.p4
+    p4test --std p4-14 --pp foo-translated-to-p4-16.p4 foo-in-p4-14.p4
 
 
 ## Python modules created during installation
