@@ -4,6 +4,20 @@ calling-convention.p4 was written simply to have a simple example P4
 program that demonstrates the difference between the copy-in/copy-out
 semantics of P4_16, vs. call by reference.
 
+It demonstrates a perhaps subtle behavior mandated by the P4_16
+language specification, where a program's behavior when calling
+parsers or controls with multiple `out` or `inout` parameters can
+change depending upon the order of those parameters, if those
+parameters "overlap" in the caller (e.g. they refer to the same
+variable, or where one variable is part of another).
+
+I do not believe that this subtlety of the language is something that
+will arise commonly in practical P4 programs.  This example program
+was written primarily as a short test case for P4 compiler writers.
+It does demonstrate why it would be incorrect, at least in a case like
+this program, to implement `out` or `inout` parameters as "pass by
+reference" or "pass by pointer".
+
 
 # Compiling
 
