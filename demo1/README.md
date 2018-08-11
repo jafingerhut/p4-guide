@@ -28,7 +28,7 @@ To compile the P4_14 version of the code:
 
 The .dot and .png files in the subdirectory 'graphs' were created with
 the p4c-graphs program, which is also installed when you build and
-install p4c-bm2-ss:
+install p4c:
 
      p4c-graphs -I $HOME/p4c/p4include demo1.p4_16.p4
 
@@ -125,8 +125,9 @@ Handle ids are _not_ unique across all tables.  Only the pair
 ----------------------------------------------------------------------
 scapy session for sending packets
 ----------------------------------------------------------------------
-I believe we must run scapy as root for it to have permission to send
-packets on veth interfaces.
+Any process that you want to have permission to send and receive
+packets on Ethernet interfaces (such as the veth virtual interfaces)
+must run as the super-user root, hence the use of `sudo`:
 
     sudo scapy
 
