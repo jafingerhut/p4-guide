@@ -36,12 +36,12 @@ top level
     parser
         const, variable decl
         instantiation of extern object, parser, parser value set
-	NO: instantiation of control block
+        NO: instantiation of control block
         state
             const, variable decl, assignment
-	    NO: action call (maybe P4 functions added in future - p4lang/p4-spec issue #151)
+            NO: action call (maybe P4 functions added in future - p4lang/p4-spec issue #151)
             extern object method call (p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
-	    <subparser>.apply()
+            <subparser>.apply()
             block statement { }
                 anything allowed directly inside state
             transition <statename> (must be last in state definition)
