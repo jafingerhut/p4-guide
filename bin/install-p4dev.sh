@@ -55,14 +55,11 @@ df -h .
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
 sudo apt-get --yes install git vim
-# Install Ubuntu packages needed by protobuf, from its src/README.md
+# Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # Install Ubuntu dependencies needed by p4c, from its README.md
-sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev pkg-config python python-scapy python-ipaddr tcpdump cmake
-# Optional Ubuntu dependency required to compile graphs backend for
-# p4c.  For more details, see:
-# https://github.com/p4lang/p4c/blob/master/backends/graphs/README.md
-sudo apt-get --yes install libboost-graph-dev
+# Matches latest p4c README.md instructions as of 2018-Aug-13
+sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr tcpdump cmake
 
 
 
