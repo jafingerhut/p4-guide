@@ -51,7 +51,7 @@
         "package" "parser" 
         "return"
         "select" "state" "struct" "switch"
-        "table"  "transition" "tuple" "typedef"
+        "table"  "transition" "tuple" "typedef" "type"
         "verify" 
         ))
 
