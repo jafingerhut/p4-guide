@@ -63,11 +63,11 @@ set -x
 
 if [ ${DO_UPDATE_FIRST} -eq 1 ]
 then
-    # Recommended in p4c's README.md
-    git submodule update --init --recursive
-
     # Get updates from master repo
     git pull
+
+    # Recommended in p4c's README.md
+    git submodule update --init --recursive
 fi
 
 if [ -d build ]
@@ -81,6 +81,8 @@ mkdir build
 cd build
 # Configure for a debug build
 cmake .. -DCMAKE_BUILD_TYPE=DEBUG
+# Copied from p4c/Dockerfile
+#cmake .. '-DCMAKE_CXX_FLAGS:STRING=-O3'
 make -j${MAX_PARALLEL_JOBS}
 
 set +x
