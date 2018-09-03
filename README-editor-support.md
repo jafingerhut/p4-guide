@@ -117,6 +117,11 @@ functions, and headers.  On Ubuntu Linux, it can be installed with:
 
     sudo apt-get install exuberant-ctags
 
+On macOS with MacPorts installed, you can install Exuberant ctags
+with:
+
+    sudo port install ctags
+
 To create a tags file for a collection of files containing a single P4
 program, first edit your `$HOME/.ctags` to add lines like the ones in
 the file [`dot-ctags-for-p4-14.txt`](editor-support/dot-ctags-for-p4-14.txt) or
