@@ -8,7 +8,11 @@ import sys
 import time
 import threading
 
-from scapy.all import sniff, sendp, Ether, IP, UDP
+try:
+    from scapy.all import sniff, sendp, Ether, IP, UDP
+except:
+    print("Install Scapy.  On Ubuntu 16.04: 'sudo apt install python-scapy'")
+    sys.exit(1)
 
 
 def check_intf_exists(intf_name):
