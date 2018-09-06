@@ -1,5 +1,12 @@
 # Linux kernel issue where it adds extra bytes at end of packet
 
+The program `test-veth-intf.py` can be run as the superuser to test
+whether the Linux kernel you are running modifies packets sent to a
+veth interface:
+
+    sudo ../bin/test-veth-intf.py
+
+
 p4lang/behavioral-model issue: https://github.com/p4lang/behavioral-model/issues/650
 
 Link to Ubuntu page with a bug report: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1782544
