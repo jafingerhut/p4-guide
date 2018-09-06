@@ -7,11 +7,11 @@ Link to Ubuntu page with a bug report: https://bugs.launchpad.net/ubuntu/+source
 Kernel versions as output by 'uname -r' command where I have seen GOOD
 results:
 
-4.4.0-31-generic (Ubuntu 14.04.5)
-4.4.0-134-generic (Ubuntu 14.04.5)
++ 4.4.0-31-generic (Ubuntu 14.04.5)
++ 4.4.0-134-generic (Ubuntu 14.04.5)
 
 
 Kernel versions where I have seen BAD results, with captured packet 14
 bytes longer than the sent packet:
 
-4.15.0-33-generic (Ubuntu 16.04.5)
++ 4.15.0-33-generic (Ubuntu 16.04.5)
