@@ -1,6 +1,6 @@
 # Linux kernel issue where it adds extra bytes at end of packet
 
-p4lang/behavioral-model issue: https://github.com/p4lang/behavioral-model/issues/650#issuecomment-419228162
+p4lang/behavioral-model issue: https://github.com/p4lang/behavioral-model/issues/650
 
 Link to Ubuntu page with a bug report: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1782544
 

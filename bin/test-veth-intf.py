@@ -32,7 +32,8 @@ def create_and_cfg_veth_intf(intf_name, peer_intf_name):
 
     intf_exists = check_intf_exists(intf_name)
     if not intf_exists:
-        args=['ip', 'link', 'add', 'name', intf_name, 'type', 'veth']
+        args=['ip', 'link', 'add', 'name', intf_name, 'type', 'veth',
+              'peer', 'name', peer_intf_name]
         subprocess.check_output(args)
 
     for i in range(2):
