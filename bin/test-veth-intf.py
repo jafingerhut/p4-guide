@@ -14,6 +14,16 @@ except:
     print("Install Scapy.  On Ubuntu 16.04: 'sudo apt install python-scapy'")
     sys.exit(1)
 
+def clean_veth_pair(veth0, veth1):
+    
+    if check_intf_exists(veth0):
+        print("Deleting interface pair %s<->%s" % (veth0, veth1))
+        subprocess.call(['ip', 'link', 'del', veth0])
+
+    #removing one side of the pair is enough
+    #if check_intf_exists(veth1):
+    #    print("Deleting interface %s" % (veth1))
+    #    subprocess.call(['ip', 'link', 'del', veth1])
 
 def check_intf_exists(intf_name):
     intf_exists = False
@@ -132,3 +142,5 @@ else:
     else:
         print("BAD - Captured packet is %d bytes longer than sent packet - this looks like a known Linux kernel issue for veth interfaces"
               "" % (len(cap_pkt_str) - len(sent_pkt_str)))
+
+clean_veth_pair(intf_name, peer_intf_name)
