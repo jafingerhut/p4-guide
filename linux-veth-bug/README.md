@@ -29,10 +29,14 @@ results:
 + 4.4.0-134-generic (Ubuntu 14.04.5)
 + 4.14.68-041468-generic (Ubuntu 16.04.5), installed via ukuu
 + 4.15.0-041500-generic (Ubuntu 16.04.5), installed via ukuu
++ 4.15.0-15-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
++ 4.15.0-24-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
++ 4.15.0-29-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
++ 4.15.0-30-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
++ 4.15.0-32-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
 + 4.15.1-041501-generic (Ubuntu 16.04.5), installed via ukuu
 + 4.15.18-041518-generic (Ubuntu 16.04.5), installed via ukuu
 + 4.16.18-041618-generic (Ubuntu 16.04.5), installed via ukuu
-
 
 Kernel versions where I have seen BAD results, with captured packet 14
 bytes longer than the sent packet:
