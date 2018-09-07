@@ -139,6 +139,15 @@ else:
             break
     if mismatch_found:
         print("VERY BAD - Captured packet differs at byte position %d from sent packet" % (i))
+        print("""
+Please try running this test script several times to see if a 'VERY
+BAD' result is reproducible.  It could be due to some other Linux
+process, or the kernel, sending a packet to the test veth interface
+while this program was capturing packets sent to that interface.  Such
+events should not be common.  If you can get 100%, or a large
+fraction, of failures of this type, then it is more believable that
+the veth implementation is at fault.
+""")
     else:
         print("BAD - Captured packet is %d bytes longer than sent packet - this looks like a known Linux kernel issue for veth interfaces"
               "" % (len(cap_pkt_str) - len(sent_pkt_str)))
