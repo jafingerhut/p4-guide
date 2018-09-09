@@ -22,23 +22,28 @@ cause the Grub menu to display that lets you (under the Advanced
 options) pick an installed version of the kernel to use for booting.
 
 
-Kernel versions as output by 'uname -r' command where I have seen GOOD
-results:
+Test results: BAD+14 means that the test results were bad, and bad
+because the captured packet was the same as the packet sent, plus 14
+extra bytes appended at the end.
 
-+ 4.4.0-31-generic (Ubuntu 14.04.5)
-+ 4.4.0-134-generic (Ubuntu 14.04.5)
-+ 4.14.68-041468-generic (Ubuntu 16.04.5), installed via ukuu
-+ 4.15.0-041500-generic (Ubuntu 16.04.5), installed via ukuu
-+ 4.15.0-15-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
-+ 4.15.0-24-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
-+ 4.15.0-29-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
-+ 4.15.0-30-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
-+ 4.15.0-32-generic (Ubuntu 16.04.5), installed from Ubuntu via synaptic
-+ 4.15.1-041501-generic (Ubuntu 16.04.5), installed via ukuu
-+ 4.15.18-041518-generic (Ubuntu 16.04.5), installed via ukuu
-+ 4.16.18-041618-generic (Ubuntu 16.04.5), installed via ukuu
+Kernel version: As output by the `uname -r` command.
 
-Kernel versions where I have seen BAD results, with captured packet 14
-bytes longer than the sent packet:
-
-+ 4.15.0-33-generic (Ubuntu 16.04.5)
+| Test    | Kernel  | Distribution | Notes |
+| Results | version |              |       |
+| ------- | ------- | ------------ | ----- |
+| GOOD    | 4.4.0-31-generic        | Ubuntu 14.04.5 | |
+| GOOD    | 4.4.0-116-generic       | Ubuntu 16.04 ? | from Edgar Costa |
+| BAD+14  | 4.4.0-131-generic       | Ubuntu 16.04 ? | from Edgar Costa |
+| GOOD    | 4.4.0-134-generic       | Ubuntu 14.04.5 | |
+| GOOD    | 4.4.142-0404142-generic | Ubuntu 16.04 ? | from Edgar Costa, maybe installed via ukuu? |
+| GOOD    | 4.14.68-041468-generic  | Ubuntu 16.04.5 | installed via ukuu |
+| GOOD    | 4.15.0-041500-generic   | Ubuntu 16.04.5 | installed via ukuu |
+| GOOD    | 4.15.0-15-generic       | Ubuntu 16.04.5 | installed from Ubuntu via synaptic |
+| GOOD    | 4.15.0-24-generic       | Ubuntu 16.04.5 | installed from Ubuntu via synaptic |
+| GOOD    | 4.15.0-29-generic       | Ubuntu 16.04.5 | installed from Ubuntu via synaptic |
+| GOOD    | 4.15.0-30-generic       | Ubuntu 16.04.5 | installed from Ubuntu via synaptic |
+| GOOD    | 4.15.0-32-generic       | Ubuntu 16.04.5 | installed from Ubuntu via synaptic |
+| BAD+14  | 4.15.0-33-generic       | Ubuntu 16.04.5 | installed from Ubuntu via Software Updater |
+| GOOD    | 4.15.1-041501-generic   | Ubuntu 16.04.5 | installed via ukuu |
+| GOOD    | 4.15.18-041518-generic  | Ubuntu 16.04.5 | installed via ukuu |
+| GOOD    | 4.16.18-041618-generic  | Ubuntu 16.04.5 | installed via ukuu |
