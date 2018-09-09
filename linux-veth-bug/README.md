@@ -28,9 +28,8 @@ extra bytes appended at the end.
 
 Kernel version: As output by the `uname -r` command.
 
-| Test    | Kernel  | Distribution | Notes |
-| Results | version |              |       |
-| ------- | ------- | ------------ | ----- |
+| Test Results | Kernel version | Distribution | Notes |
+| ------------ | -------------- | ------------ | ----- |
 | GOOD    | 4.4.0-31-generic        | Ubuntu 14.04.5 | |
 | GOOD    | 4.4.0-116-generic       | Ubuntu 16.04 ? | from Edgar Costa |
 | BAD+14  | 4.4.0-131-generic       | Ubuntu 16.04 ? | from Edgar Costa |
