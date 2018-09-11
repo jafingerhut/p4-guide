@@ -65,9 +65,7 @@
       "id" : 4,
       "fields" : [
         ["l2ptr", 32, false],
-        ["out_bd", 24, false],
-        ["was_resubmitted", 1, false],
-        ["_padding_0", 7, false]
+        ["out_bd", 24, false]
       ]
     }
   ],
@@ -118,18 +116,22 @@
       "name" : "tuple_0",
       "elements" : [
         {
-          "type" : "hexstr",
-          "value" : "0x01"
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "packet_length"]
         }
       ]
     },
     {
       "id" : 2,
-      "name" : "recirculate",
+      "name" : "tuple_1",
       "elements" : [
         {
-          "type" : "hexstr",
-          "value" : "0xdeadbeef"
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_port"]
         }
       ]
     }
@@ -216,7 +218,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 278,
+        "line" : 294,
         "column" : 8,
         "source_fragment" : "DeparserImpl"
       },
@@ -232,7 +234,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 305,
+        "line" : 321,
         "column" : 8,
         "source_fragment" : "update_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5, ..."
       },
@@ -289,7 +291,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 287,
+        "line" : 303,
         "column" : 8,
         "source_fragment" : "verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5, ..."
       },
@@ -378,7 +380,7 @@
           "parameters" : [],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 76,
+            "line" : 75,
             "column" : 4,
             "source_fragment" : "mark_to_drop()"
           }
@@ -395,7 +397,7 @@
           "parameters" : [],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 76,
+            "line" : 75,
             "column" : 4,
             "source_fragment" : "mark_to_drop()"
           }
@@ -426,7 +428,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 171,
+            "line" : 169,
             "column" : 8,
             "source_fragment" : "meta.fwd.l2ptr = l2ptr"
           }
@@ -457,28 +459,9 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 174,
+            "line" : 172,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.dstAddr = new_ipv4_dstAddr"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["userMetadata.fwd", "was_resubmitted"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x01"
-            }
-          ],
-          "source_info" : {
-            "filename" : "v1model-special-ops.p4",
-            "line" : 175,
-            "column" : 8,
-            "source_fragment" : "meta.fwd.was_resubmitted = 1"
           }
         },
         {
@@ -516,7 +499,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 180,
+            "line" : 193,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.dstAddr = new_ipv4_dstAddr"
           }
@@ -564,7 +547,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 197,
+            "line" : 213,
             "column" : 8,
             "source_fragment" : "meta.fwd.out_bd = bd"
           }
@@ -583,7 +566,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 198,
+            "line" : 214,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.dstAddr = dmac"
           }
@@ -602,7 +585,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 199,
+            "line" : 215,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_spec = intf"
           }
@@ -644,7 +627,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 200,
+            "line" : 216,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -693,7 +676,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 235,
+            "line" : 251,
             "column" : 12,
             "source_fragment" : "hdr.ipv4.dstAddr = hdr.ipv4.dstAddr - 100"
           }
@@ -742,7 +725,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 237,
+            "line" : 253,
             "column" : 12,
             "source_fragment" : "hdr.ipv4.dstAddr = hdr.ipv4.dstAddr - 200"
           }
@@ -771,7 +754,7 @@
           "parameters" : [],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 76,
+            "line" : 75,
             "column" : 4,
             "source_fragment" : "mark_to_drop()"
           }
@@ -802,7 +785,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 256,
+            "line" : 272,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.srcAddr = smac"
           }
@@ -816,7 +799,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 161,
+        "line" : 159,
         "column" : 8,
         "source_fragment" : "ingress"
       },
@@ -827,7 +810,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 104,
+            "line" : 103,
             "column" : 10,
             "source_fragment" : "dbg_table"
           },
@@ -977,7 +960,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 145,
+            "line" : 144,
             "column" : 10,
             "source_fragment" : "dbg_table"
           },
@@ -998,12 +981,6 @@
               "match_type" : "exact",
               "name" : "meta.fwd.out_bd",
               "target" : ["userMetadata.fwd", "out_bd"],
-              "mask" : null
-            },
-            {
-              "match_type" : "exact",
-              "name" : "meta.fwd.was_resubmitted",
-              "target" : ["userMetadata.fwd", "was_resubmitted"],
               "mask" : null
             }
           ],
@@ -1077,7 +1054,7 @@
           "id" : 4,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 183,
+            "line" : 199,
             "column" : 10,
             "source_fragment" : "ipv4_da_lpm"
           },
@@ -1116,7 +1093,7 @@
           "id" : 5,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 202,
+            "line" : 218,
             "column" : 10,
             "source_fragment" : "mac_da"
           },
@@ -1153,7 +1130,7 @@
           "id" : 6,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 145,
+            "line" : 144,
             "column" : 10,
             "source_fragment" : "dbg_table"
           },
@@ -1174,12 +1151,6 @@
               "match_type" : "exact",
               "name" : "meta.fwd.out_bd",
               "target" : ["userMetadata.fwd", "out_bd"],
-              "mask" : null
-            },
-            {
-              "match_type" : "exact",
-              "name" : "meta.fwd.was_resubmitted",
-              "target" : ["userMetadata.fwd", "was_resubmitted"],
               "mask" : null
             }
           ],
@@ -1207,7 +1178,7 @@
           "id" : 7,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 104,
+            "line" : 103,
             "column" : 10,
             "source_fragment" : "dbg_table"
           },
@@ -1360,7 +1331,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 234,
+            "line" : 250,
             "column" : 13,
             "source_fragment" : "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT"
           },
@@ -1386,7 +1357,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 236,
+            "line" : 252,
             "column" : 20,
             "source_fragment" : "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RECIRC"
           },
@@ -1412,7 +1383,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 240,
+            "line" : 256,
             "column" : 12,
             "source_fragment" : "meta.fwd.l2ptr != 0"
           },
@@ -1440,7 +1411,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 248,
+        "line" : 264,
         "column" : 8,
         "source_fragment" : "egress"
       },
@@ -1451,7 +1422,7 @@
           "id" : 8,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 104,
+            "line" : 103,
             "column" : 10,
             "source_fragment" : "dbg_table"
           },
@@ -1601,7 +1572,7 @@
           "id" : 9,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 258,
+            "line" : 274,
             "column" : 10,
             "source_fragment" : "send_frame"
           },
@@ -1638,7 +1609,7 @@
           "id" : 10,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 104,
+            "line" : 103,
             "column" : 10,
             "source_fragment" : "dbg_table"
           },
@@ -1791,7 +1762,7 @@
           "id" : 3,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 271,
+            "line" : 287,
             "column" : 12,
             "source_fragment" : "standard_metadata.recirculate_flag == 0"
           },

@@ -60,7 +60,6 @@ header ipv4_t {
 struct fwd_meta_t {
     bit<32> l2ptr;
     bit<24> out_bd;
-    bit<1>  was_resubmitted;
 }
 
 struct meta_t {
@@ -147,7 +146,6 @@ control my_debug_1(in headers_t hdr, in meta_t meta)
             hdr.ipv4.dstAddr : exact;
             meta.fwd.l2ptr : exact;
             meta.fwd.out_bd : exact;
-            meta.fwd.was_resubmitted : exact;
         }
         actions = { NoAction; }
         const default_action = NoAction();
@@ -172,13 +170,31 @@ control ingress(inout headers_t hdr,
     }
     action do_resubmit(bit<32> new_ipv4_dstAddr) {
         hdr.ipv4.dstAddr = new_ipv4_dstAddr;
-        meta.fwd.was_resubmitted = 1;
-        resubmit({meta.fwd.was_resubmitted});
-        //resubmit(32w0xcafed00d);
+        // By giving a list of fields inside the curly braces { } to
+        // resubmit, when things go well p4c creates a field list of
+        // those field names in the BMv2 JSON file output by the
+        // compiler.  All of those field names should have their
+        // values preserved from the packet being processed now, to
+        // the packet that will be processed by the ingress control
+        // block in the future.
+
+        // Note: There is what might be considered a bug in p4c that
+        // if you give a metadata field name in the list below, and
+        // the compiler can simplify it to a constant value,
+        // e.g. because you assign that field a constant value shortly
+        // before the resubmit() call, then the BMv2 JSON file will
+        // have that constant value in it instead of the field name.
+        // I believe in that case that BMv2 simple_switch will _not_
+        // have that metadata field value preserved.
+        resubmit({standard_metadata.ingress_port,
+            standard_metadata.packet_length});
     }
     action do_recirculate(bit<32> new_ipv4_dstAddr) {
         hdr.ipv4.dstAddr = new_ipv4_dstAddr;
-        recirculate(32w0xdeadbeef);
+        // See the resubmit() call above for comments about the
+        // parameter to recirculate(), which has the same form as for
+        // resubmit.
+        recirculate({standard_metadata.ingress_port});
     }
     table ipv4_da_lpm {
         key = {
