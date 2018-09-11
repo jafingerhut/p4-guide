@@ -263,10 +263,17 @@ if (resubmit_flag != 0) {
   behavioral-model code, but not used anywhere.  I do not know what it
   might have been intended for.
 
-+ `drop` - TBD
++ `drop` - TBD I think this is unused.  At least, it is not mentioned
+  in the source file
+  [`simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp).
+  It was added as part of the initial addition of the file
+  `v1model.p4` to the p4lang/p4c repository in Apr 2016, so perhaps it
+  is a historical vestige?
 
-+ `recirculate_port` - TBD I could find no mention of this field
-  anywhere in the behavioral-model source code.
++ `recirculate_port` - TBD There is no mention of this field anywhere
+  in the behavioral-model source code.  Similar to the `drop` field,
+  it was added to `v1model.p4` in the p4lang/p4c repository in Apr
+  2016, so also perhaps a historical vestige.
 
 + `packet_length` - At least for new packets from a port, or
   recirculated packets, the length of the packet in bytes.  Must be
