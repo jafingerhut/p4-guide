@@ -1,4 +1,4 @@
-# Compiling
+# Introduction
 
 The program v1model-special-ops.p4 demonstrates the use of resubmit
 and recirculate operations in the BMV2 simple_switch's implementation
@@ -16,10 +16,28 @@ tables.  Thus they are effectively 'debug print' commands.  The tables
 have only `NoAction` as an action, so can never modify the packet or
 its metadata.
 
+Note that such debug tables are likely to be useless when compiling to
+a hardware target.  Worse than useless, they might cause the program
+to be larger or more complex in ways that it will not "fit" into the
+target when the debug table(s) are present, even though the program
+does fit when they are left out.  If you find them useful for
+developing P4 programs, you can consider surrounding them with C
+preprocessor `#ifdef` directives so that they can easily be included
+or left out with a one line change (or perhaps a compiler command line
+option).
+
 I tested this program with a few table entries and test packets
 described below, and the resulting log output from `simple_switch` for
 a packet that was resubmitted is in the file `resub-pkt-log.txt`, and
 for a recirculated packet in `recirc-pkt-log.txt`.
+
+I used these versions of the p4lang/behavioral-model and p4lang/p4c
+repositories in my testing:
+
++ p4lang/behavioral-model - git commit
+  13370aaf9329fcb369a3ea3989722eb5f61c07f3 dated Aug 16 2018
++ p4lang/p4c - git commit c534c585f8faba3e10af5776d5538c8a4374b8a6
+  dated Aug 31 2018
 
 I believe there might be a way to pass parameters to the
 `recirculate()` and `resubmit()` P4_16 operations that might actually
@@ -27,6 +45,8 @@ cause some additional metadata field values to be preserved across the
 resubmit or recirculate options, but if so, I have not found the way
 to do that yet.
 
+
+# Compiling
 
 See [README-using-bmv2.md](../README-using-bmv2.md) for some things
 that are common across different P4 programs executed using bmv2.
