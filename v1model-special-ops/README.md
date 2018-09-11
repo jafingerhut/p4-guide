@@ -104,9 +104,14 @@ General syntax for table_add commands at simple_switch_CLI prompt:
     table_set_default send_frame my_drop
     table_add ipv4_da_lpm do_resubmit 10.1.0.101/32 => 10.1.0.1
     table_add ipv4_da_lpm do_recirculate 10.1.0.201/32 => 10.1.0.1
+    table_add ipv4_da_lpm do_clone_i2e 10.3.0.55/32 => 10.5.0.99
     table_add ipv4_da_lpm set_l2ptr 10.1.0.1/32 => 58
     table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
     table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
+    mirroring_add 5 1
+
+Note: 'mirroring_add 5 1' should cause a packet cloned to clone/mirror
+session id 5 to be sent to output port 1.
 
 ----------------------------------------------------------------------
 scapy session for sending packets
@@ -122,12 +127,14 @@ fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
 drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 resub_pkt=Ether() / IP(dst='10.1.0.101') / TCP(sport=5793, dport=80)
 recirc_pkt=Ether() / IP(dst='10.1.0.201') / TCP(sport=5793, dport=80)
+clone_i2e_pkt=Ether() / IP(dst='10.3.0.55') / TCP(sport=5793, dport=80)
 
 # Send packet at layer2, specifying interface
-sendp(fwd_pkt1, iface="veth2")
-sendp(drop_pkt1, iface="veth2")
-sendp(resub_pkt, iface="veth2")
-sendp(recirc_pkt, iface="veth2")
+sendp(fwd_pkt1, iface="veth6")
+sendp(drop_pkt1, iface="veth6")
+sendp(resub_pkt, iface="veth6")
+sendp(recirc_pkt, iface="veth6")
+sendp(clone_i2e_pkt, iface="veth6")
 ```
 
 ----------------------------------------

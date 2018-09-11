@@ -34,6 +34,11 @@ const bit<32> BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT      = 6;
 
 #define IS_RESUBMITTED(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT)
 #define IS_RECIRCULATED(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RECIRC)
+#define IS_I2E_CLONE(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_INGRESS_CLONE)
+#define IS_E2E_CLONE(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_EGRESS_CLONE)
+
+const bit<32> I2E_CLONE_SESSION_ID = 5;
+const bit<32> E2E_CLONE_SESSION_ID = 11;
 
 
 header ethernet_t {
@@ -57,6 +62,11 @@ header ipv4_t {
     bit<32> dstAddr;
 }
 
+header switch_to_cpu_header_t {
+    bit<32> word0;
+    bit<32> word1;
+}
+
 struct fwd_meta_t {
     bit<32> l2ptr;
     bit<24> out_bd;
@@ -67,6 +77,7 @@ struct meta_t {
 }
 
 struct headers_t {
+    switch_to_cpu_header_t switch_to_cpu;
     ethernet_t ethernet;
     ipv4_t     ipv4;
 }
@@ -196,6 +207,22 @@ control ingress(inout headers_t hdr,
         // resubmit.
         recirculate({standard_metadata.ingress_port});
     }
+    action do_clone_i2e(bit<32> new_ipv4_dstAddr) {
+        hdr.ipv4.dstAddr = new_ipv4_dstAddr;
+        // If you want to pass a list of metadata field to preserve
+        // for the cloned packet, similar to the resubmit() and
+        // recirculate() calls above, use the operation 'clone3'
+        // instead of 'clone', and give the field list as the last
+        // argument.
+
+        // BMv2 simple_switch can have multiple different clone
+        // "sessions" at the same time.  Each one can be configured to
+        // go to an independent output port of the switch.  You can
+        // use the 'simple_switch_CLI' command mirroring_add to do
+        // that.  A 'mirroring session' and 'clone session' are simply
+        // two different names for the same thing.
+        clone(CloneType.I2E, I2E_CLONE_SESSION_ID);
+    }
     table ipv4_da_lpm {
         key = {
             hdr.ipv4.dstAddr: lpm;
@@ -204,6 +231,7 @@ control ingress(inout headers_t hdr,
             set_l2ptr;
             do_resubmit;
             do_recirculate;
+            do_clone_i2e;
             my_drop;
         }
         default_action = my_drop;
@@ -284,7 +312,21 @@ control egress(inout headers_t hdr,
 
     apply {
         debug_std_meta_egress_start.apply(standard_metadata);
-        if (standard_metadata.recirculate_flag == 0) {
+        if (IS_I2E_CLONE(standard_metadata)) {
+            // whatever you want to do special for ingress-to-egress
+            // clone packets here.
+            hdr.switch_to_cpu.setValid();
+            hdr.switch_to_cpu.word0 = 0xa5a5a5a5;
+            hdr.switch_to_cpu.word1 = 0x5a5a5a5a;
+        } else if (IS_E2E_CLONE(standard_metadata)) {
+            // whatever you want to do special for egress-to-egress
+            // clone packets here.
+        } else if (standard_metadata.recirculate_flag != 0) {
+            // If you want to do something in egress special for
+            // packets that during ingress were specified to be
+            // recirculated, do that here.
+        } else {
+            // For all other packets, do this branch.
             send_frame.apply();
         }
         debug_std_meta_egress_end.apply(standard_metadata);
@@ -293,6 +335,7 @@ control egress(inout headers_t hdr,
 
 control DeparserImpl(packet_out packet, in headers_t hdr) {
     apply {
+        packet.emit(hdr.switch_to_cpu);
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv4);
     }
