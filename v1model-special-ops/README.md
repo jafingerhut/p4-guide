@@ -8,23 +8,33 @@ packet being processed in the ingress control block is the result of a
 resubmit or recirculate option, vs. a new packet received from an
 ingress port.
 
-It also demonstrates "debug tables", which are in the program only
-because when you use the `--log-console` or `--log-file` command line
-options to the `simple_switch` command, when those tables are applied,
-the log output shows the values of all fields in the key of those
-tables.  Thus they are effectively 'debug print' commands.  The tables
-have only `NoAction` as an action, so can never modify the packet or
-its metadata.
+It also demonstrates "debug tables".  When you use the `--log-console`
+or `--log-file` command line options to the `simple_switch` command,
+then whenever _any_ tables are applied, the log output shows:
+
++ the values of all fields in the key of those tables, with the name
+  of each field next to its value,
++ whether there was a match found or not, and
++ if there was a match found, the name of the action and the values of
+  its action parameters (the names of the action parameters are not
+  shown, but the action parameter values are given in the same order
+  they appear in your P4 source code).
+
+"Debug tables" are simply my name for a table that has `NoAction` as
+its only action, so there is never any reason to add entries to it,
+they can never modify the packet or its metadata, and its only reason
+for being in the program is to show in the log the values of the
+fields in the key when the table is applied.  They are effectively
+"debug print" commands.
 
 Note that such debug tables are likely to be useless when compiling to
 a hardware target.  Worse than useless, they might cause the program
 to be larger or more complex in ways that it will not "fit" into the
 target when the debug table(s) are present, even though the program
 does fit when they are left out.  If you find them useful for
-developing P4 programs, you can consider surrounding them with C
-preprocessor `#ifdef` directives so that they can easily be included
-or left out with a one line change (or perhaps a compiler command line
-option).
+developing P4 programs, consider surrounding them with C preprocessor
+`#ifdef` directives so that they can easily be included or left out
+with a one line change (or perhaps a compiler command line option).
 
 I tested this program with a few table entries and test packets
 described below, and the resulting log output from `simple_switch` for
@@ -155,8 +165,9 @@ This list of standard_metadata fields comes from that version of p4c,
 in the file: p4c/p4include/v1model.p4.
 
 Many of these 'built in' metadata fields are completely different in
-P4_16 plus the Portable Switch Architecture (PSA).  See the PSA spec
-for the metadata that PSA has and how its values are used.
+P4_16 plus the Portable Switch Architecture (PSA).  See the [PSA
+specification](https://p4.org/specs/) for the metadata that PSA has
+and how its values are used.
 
 Unless stated otherwise, assume that these values will be 0 for
 recirculated or resubmitted packets at the beginning of ingress
@@ -169,8 +180,8 @@ At the end of ingress processing, there are multiple of these fields
 that are used to determine what happens to the packet next.  You can
 read the details in the method `ingress_thread` of the
 p4lang/behavioral-model source file
-`targets/simple_switch/simple_switch.cpp`, but it should be the same
-as this:
+[`targets/simple_switch/simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp),
+but it should be the same as this:
 
 ```
 if (clone_spec != 0) {
@@ -216,6 +227,8 @@ if (resubmit_flag != 0) {
   specific value to this field (511 decimal), such that if it has that
   value at the end of ingress processing, the packet will be dropped
   and not stored in the packet buffer, nor sent to egress processing.
+  See pseudocode above for relative priority of this vs. other
+  possible packet operations at end of ingress.
 
 + `egress_port` - 0 in ingress.  In egress processing, equal to the
   output port this packet is destined to.  Should be treated as read
@@ -280,19 +293,23 @@ if (resubmit_flag != 0) {
   value, if it is not 0, and it is assigned a value as a side effect
   of calling the `digest` extern.
 
-+ `mcast_grp` - TBD: Probably, like `egress_spec`, intended to be
-  assigned a value by your P4 code during ingress processing.  If it
-  is 0 at the end of ingress processing, no multicast replication
-  occurs.  If it is non-0, the packet is replicated once for each of
-  the configured `(egress_port, egress_rid)` value pairs configured
-  for that multicast group number by the control plane software.
++ `mcast_grp` - Like `egress_spec`, intended to be assigned a value by
+  your P4 code during ingress processing.  If it is 0 at the end of
+  ingress processing, no multicast replication occurs.  If it is
+  non-0, the packet is replicated once for each of the configured
+  `(egress_port, egress_rid)` value pairs configured for that
+  multicast group number by the control plane software.  See
+  pseudocode above for relative priority of this vs. other possible
+  packet operations at end of ingress.
 
 + `resubmit_flag` - The `resubmit` primitive operation assigns a non-0
   value to this field indicating that the packet should be
   resubmitted.  Your code should probably never explicitly assign a
   value to it.  Reading it may be helpful for debugging, and perhaps
   for knowing whether a `resubmit` operation was called for this
-  packet earlier in its processing.
+  packet earlier in its processing.  See pseudocode above for relative
+  priority of this vs. other possible packet operations at end of
+  ingress.
 
 + `egress_rid` - TBD Probably always 0 on ingress, and on egress 0 for
   unicast packets.  May be non-0 for packets that were
