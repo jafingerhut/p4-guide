@@ -1,12 +1,14 @@
 # Introduction
 
-The program v1model-special-ops.p4 demonstrates the use of resubmit
-and recirculate operations in the BMV2 simple_switch's implementation
-of P4_16's v1model architecture.  It doesn't do anything fancy with
-these features, but at least it shows how to distinguish whether a
-packet being processed in the ingress control block is the result of a
-resubmit or recirculate option, vs. a new packet received from an
-ingress port.
+The program v1model-special-ops.p4 demonstrates the use of resubmit,
+recirculate, and clone operations in the BMV2 simple_switch's
+implementation of P4_16's v1model architecture.  It does not do
+anything fancy with these features, but at least it shows how to
+distinguish whether a packet being processed in the ingress control
+block is the result of a resubmit or recirculate operation, vs. a new
+packet received from an ingress port.  Similarly whether a packet
+being processed in the egress control block is the result of a clone
+operation.
 
 It also demonstrates "debug tables".  When you use the `--log-console`
 or `--log-file` command line options to the `simple_switch` command,
@@ -49,11 +51,11 @@ repositories in my testing:
 + p4lang/p4c - git commit c534c585f8faba3e10af5776d5538c8a4374b8a6
   dated Aug 31 2018
 
-I believe there might be a way to pass parameters to the
-`recirculate()` and `resubmit()` P4_16 operations that might actually
-cause some additional metadata field values to be preserved across the
-resubmit or recirculate options, but if so, I have not found the way
-to do that yet.
+The program also demonstrates passing a list of fields to the
+`recirculate()` and `resubmit()` primitive operations, which causes
+the values of those fields to be preserved with the
+resubmitted/recirculated packet (this technique also works for the
+`clone3()` primitive operation when cloning packets).
 
 
 # Compiling
@@ -95,8 +97,9 @@ To get the log to go to a file instead of the console:
 CHECK THIS: If you see "Add port operation failed" messages in the
 output of the simple_switch command, it means that one or more of the
 virtual Ethernet interfaces veth2, veth4, etc. have not been created
-on your system.  Search for "veth" in the file README-using-bmv2.txt
-(top level directory of this repository) for a command to create them.
+on your system.  Search for "veth" in the file
+[README-using-bmv2.md](../README-using-bmv2.md) for a command to
+create them.
 
 To run CLI for controlling and examining simple_switch's table
 contents:
@@ -120,8 +123,9 @@ General syntax for table_add commands at simple_switch_CLI prompt:
     table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
     mirroring_add 5 1
 
-Note: 'mirroring_add 5 1' should cause a packet cloned to clone/mirror
-session id 5 to be sent to output port 1.
+Note: The control plane operation "mirroring_add 5 1" causes a packet
+that is cloned to clone session id 5 (aka "mirror session id") to be
+sent to output port 1.
 
 ----------------------------------------------------------------------
 scapy session for sending packets
@@ -150,7 +154,7 @@ sendp(clone_i2e_pkt, iface="veth6")
 ----------------------------------------
 
 
-# p4c and behavioral-model P4_61 plus architecture v1model standard metadata
+# Standard metadata for P4_16 + v1model architecture in p4c and behavioral-model
 
 These notes may be specific to not only p4c and behavioral-model open
 source repository implementations, but perhaps even to the specific
@@ -162,9 +166,10 @@ versions below that I have tested some of this with.
   dated Aug 31 2018
 
 This list of standard_metadata fields comes from that version of p4c,
-in the file: p4c/p4include/v1model.p4.
+in the file:
+[p4c/p4include/v1model.p4](https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4)
 
-Many of these 'built in' metadata fields are completely different in
+Many of these "built in" metadata fields are completely different in
 P4_16 plus the Portable Switch Architecture (PSA).  See the [PSA
 specification](https://p4.org/specs/) for the metadata that PSA has
 and how its values are used.
