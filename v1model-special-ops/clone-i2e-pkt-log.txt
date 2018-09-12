@@ -1,0 +1,252 @@
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Processing packet received on port 2
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Parser 'parser': start
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Parser 'parser' entering state 'start'
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Extracting header 'ethernet'
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Parser state 'start': key is 0800
+[18:58:32.976] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Bytes parsed: 14
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Parser 'parser' entering state 'parse_ipv4'
+[18:58:32.976] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Extracting header 'ipv4'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Parser state 'parse_ipv4' has no switch, going to default next state
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Bytes parsed: 34
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Verifying checksum 'cksum': true
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Verifying checksum 'cksum_0': true
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Parser 'parser': end
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Pipeline 'ingress': start
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Applying table 'ingress.debug_std_meta_ingress_start.dbg_table'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port            : 0002
+* standard_metadata.egress_spec             : 0000
+* standard_metadata.egress_port             : 0000
+* standard_metadata.clone_spec              : 00000000
+* standard_metadata.instance_type           : 00000000
+* standard_metadata.drop                    : 00
+* standard_metadata.recirculate_port        : 0000
+* standard_metadata.packet_length           : 00000036
+* standard_metadata.enq_timestamp           : 00000000
+* standard_metadata.enq_qdepth              : 000000
+* standard_metadata.deq_timedelta           : 00000000
+* standard_metadata.deq_qdepth              : 000000
+* standard_metadata.ingress_global_timestamp: 00001760a1de
+* standard_metadata.egress_global_timestamp : 000000000000
+* standard_metadata.lf_field_list           : 00000000
+* standard_metadata.mcast_grp               : 0000
+* standard_metadata.resubmit_flag           : 00000000
+* standard_metadata.egress_rid              : 0000
+* standard_metadata.checksum_error          : 00
+* standard_metadata.recirculate_flag        : 00000000
+
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Table 'ingress.debug_std_meta_ingress_start.dbg_table': miss
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Action entry is NoAction - 
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Action NoAction
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Applying table 'ingress.my_debug_1_1.dbg_table'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 0a030037
+* meta.fwd.l2ptr      : 00000000
+* meta.fwd.out_bd     : 000000
+
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Table 'ingress.my_debug_1_1.dbg_table': miss
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Action entry is NoAction - 
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Action NoAction
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] v1model-special-ops.p4(266) Condition "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT" (node_4) is false
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] v1model-special-ops.p4(268) Condition "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RECIRC" (node_6) is false
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Applying table 'ingress.ipv4_da_lpm'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 0a030037
+
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Table 'ingress.ipv4_da_lpm': hit with handle 2
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Dumping entry 2
+Match key:
+* hdr.ipv4.dstAddr    : LPM       0a030037/32
+Action entry: ingress.do_clone_i2e - a050063,
+
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Action entry is ingress.do_clone_i2e - a050063,
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Action ingress.do_clone_i2e
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] v1model-special-ops.p4(211) Primitive hdr.ipv4.dstAddr = new_ipv4_dstAddr
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Primitive (no source info)
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] v1model-special-ops.p4(272) Condition "meta.fwd.l2ptr != 0" (node_9) is false
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Applying table 'ingress.my_debug_1_2.dbg_table'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 0a050063
+* meta.fwd.l2ptr      : 00000000
+* meta.fwd.out_bd     : 000000
+
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Table 'ingress.my_debug_1_2.dbg_table': miss
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Action entry is NoAction - 
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Action NoAction
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Applying table 'ingress.debug_std_meta_ingress_end.dbg_table'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port            : 0002
+* standard_metadata.egress_spec             : 0000
+* standard_metadata.egress_port             : 0000
+* standard_metadata.clone_spec              : 00030005
+* standard_metadata.instance_type           : 00000000
+* standard_metadata.drop                    : 00
+* standard_metadata.recirculate_port        : 0000
+* standard_metadata.packet_length           : 00000036
+* standard_metadata.enq_timestamp           : 00000000
+* standard_metadata.enq_qdepth              : 000000
+* standard_metadata.deq_timedelta           : 00000000
+* standard_metadata.deq_qdepth              : 000000
+* standard_metadata.ingress_global_timestamp: 00001760a1de
+* standard_metadata.egress_global_timestamp : 000000000000
+* standard_metadata.lf_field_list           : 00000000
+* standard_metadata.mcast_grp               : 0000
+* standard_metadata.resubmit_flag           : 00000000
+* standard_metadata.egress_rid              : 0000
+* standard_metadata.checksum_error          : 00
+* standard_metadata.recirculate_flag        : 00000000
+
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Table 'ingress.debug_std_meta_ingress_end.dbg_table': miss
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Action entry is NoAction - 
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.0] [cxt 0] Action NoAction
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Pipeline 'ingress': end
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Cloning packet at ingress
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Parser 'parser': start
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Parser 'parser' entering state 'start'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Extracting header 'ethernet'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Parser state 'start': key is 0800
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.1] [cxt 0] Bytes parsed: 14
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Parser 'parser' entering state 'parse_ipv4'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Extracting header 'ipv4'
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Parser state 'parse_ipv4' has no switch, going to default next state
+[18:58:32.977] [bmv2] [T] [thread 29705] [1.1] [cxt 0] Bytes parsed: 34
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Verifying checksum 'cksum': true
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Verifying checksum 'cksum_0': true
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.1] [cxt 0] Parser 'parser': end
+[18:58:32.977] [bmv2] [D] [thread 29705] [1.0] [cxt 0] Egress port is 0
+[18:58:32.977] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Pipeline 'egress': start
+[18:58:32.977] [bmv2] [T] [thread 29706] [1.0] [cxt 0] Applying table 'egress.debug_std_meta_egress_start.dbg_table'
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port            : 0002
+* standard_metadata.egress_spec             : 0000
+* standard_metadata.egress_port             : 0000
+* standard_metadata.clone_spec              : 00000000
+* standard_metadata.instance_type           : 00000000
+* standard_metadata.drop                    : 00
+* standard_metadata.recirculate_port        : 0000
+* standard_metadata.packet_length           : 00000036
+* standard_metadata.enq_timestamp           : 1760a646
+* standard_metadata.enq_qdepth              : 000000
+* standard_metadata.deq_timedelta           : 00000047
+* standard_metadata.deq_qdepth              : 000000
+* standard_metadata.ingress_global_timestamp: 00001760a1de
+* standard_metadata.egress_global_timestamp : 00001760a689
+* standard_metadata.lf_field_list           : 00000000
+* standard_metadata.mcast_grp               : 0000
+* standard_metadata.resubmit_flag           : 00000000
+* standard_metadata.egress_rid              : 0000
+* standard_metadata.checksum_error          : 00
+* standard_metadata.recirculate_flag        : 00000000
+
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Table 'egress.debug_std_meta_egress_start.dbg_table': miss
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Action entry is NoAction - 
+[18:58:32.978] [bmv2] [T] [thread 29706] [1.0] [cxt 0] Action NoAction
+[18:58:32.978] [bmv2] [T] [thread 29706] [1.0] [cxt 0] v1model-special-ops.p4(303) Condition "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_INGRESS_CLONE" (node_16) is false
+[18:58:32.978] [bmv2] [T] [thread 29706] [1.0] [cxt 0] v1model-special-ops.p4(309) Condition "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_EGRESS_CLONE" (node_18) is false
+[18:58:32.978] [bmv2] [T] [thread 29706] [1.0] [cxt 0] v1model-special-ops.p4(312) Condition "standard_metadata.recirculate_flag == 0" (node_19) is true
+[18:58:32.978] [bmv2] [T] [thread 29706] [1.0] [cxt 0] Applying table 'egress.debug_std_meta_egress_end.dbg_table'
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port            : 0002
+* standard_metadata.egress_spec             : 0000
+* standard_metadata.egress_port             : 0000
+* standard_metadata.clone_spec              : 00000000
+* standard_metadata.instance_type           : 00000000
+* standard_metadata.drop                    : 00
+* standard_metadata.recirculate_port        : 0000
+* standard_metadata.packet_length           : 00000036
+* standard_metadata.enq_timestamp           : 1760a646
+* standard_metadata.enq_qdepth              : 000000
+* standard_metadata.deq_timedelta           : 00000047
+* standard_metadata.deq_qdepth              : 000000
+* standard_metadata.ingress_global_timestamp: 00001760a1de
+* standard_metadata.egress_global_timestamp : 00001760a689
+* standard_metadata.lf_field_list           : 00000000
+* standard_metadata.mcast_grp               : 0000
+* standard_metadata.resubmit_flag           : 00000000
+* standard_metadata.egress_rid              : 0000
+* standard_metadata.checksum_error          : 00
+* standard_metadata.recirculate_flag        : 00000000
+
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Table 'egress.debug_std_meta_egress_end.dbg_table': miss
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Action entry is NoAction - 
+[18:58:32.978] [bmv2] [T] [thread 29706] [1.0] [cxt 0] Action NoAction
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Pipeline 'egress': end
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Deparser 'deparser': start
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Updating checksum 'cksum'
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Updating checksum 'cksum_0'
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Deparsing header 'ethernet'
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Deparsing header 'ipv4'
+[18:58:32.978] [bmv2] [D] [thread 29706] [1.0] [cxt 0] Deparser 'deparser': end
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Pipeline 'egress': start
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] Applying table 'egress.debug_std_meta_egress_start.dbg_table'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Looking up key:
+* standard_metadata.ingress_port            : 0000
+* standard_metadata.egress_spec             : 0000
+* standard_metadata.egress_port             : 0001
+* standard_metadata.clone_spec              : 00000000
+* standard_metadata.instance_type           : 00000001
+* standard_metadata.drop                    : 00
+* standard_metadata.recirculate_port        : 0000
+* standard_metadata.packet_length           : a191f6c0
+* standard_metadata.enq_timestamp           : 1760a61d
+* standard_metadata.enq_qdepth              : 000000
+* standard_metadata.deq_timedelta           : 00000205
+* standard_metadata.deq_qdepth              : 000000
+* standard_metadata.ingress_global_timestamp: 000000000000
+* standard_metadata.egress_global_timestamp : 00001760a820
+* standard_metadata.lf_field_list           : 00000000
+* standard_metadata.mcast_grp               : 0000
+* standard_metadata.resubmit_flag           : 00000000
+* standard_metadata.egress_rid              : 0000
+* standard_metadata.checksum_error          : 00
+* standard_metadata.recirculate_flag        : 00000000
+
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Table 'egress.debug_std_meta_egress_start.dbg_table': miss
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Action entry is NoAction - 
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] Action NoAction
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] v1model-special-ops.p4(303) Condition "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_INGRESS_CLONE" (node_16) is true
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] Applying table 'tbl_act_1'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Looking up key:
+
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Table 'tbl_act_1': miss
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Action entry is act_1 - 
+[18:58:32.978] [bmv2]sudo tcpdump -e -n --number -v -i veth [T] [thread 29707] [1.1] [cxt 0] Action act_1
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] v1model-special-ops.p4(306) Primitive hdr.switch_to_cpu.setValid()
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] v1model-special-ops.p4(307) Primitive hdr.switch_to_cpu.word0 = 0xa5a5a5a5
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] v1model-special-ops.p4(308) Primitive hdr.switch_to_cpu.word1 = 0x5a5a5a5a
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] Applying table 'egress.debug_std_meta_egress_end.dbg_table'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Looking up key:
+* standard_metadata.ingress_port            : 0000
+* standard_metadata.egress_spec             : 0000
+* standard_metadata.egress_port             : 0001
+* standard_metadata.clone_spec              : 00000000
+* standard_metadata.instance_type           : 00000001
+* standard_metadata.drop                    : 00
+* standard_metadata.recirculate_port        : 0000
+* standard_metadata.packet_length           : a191f6c0
+* standard_metadata.enq_timestamp           : 1760a61d
+* standard_metadata.enq_qdepth              : 000000
+* standard_metadata.deq_timedelta           : 00000205
+* standard_metadata.deq_qdepth              : 000000
+* standard_metadata.ingress_global_timestamp: 000000000000
+* standard_metadata.egress_global_timestamp : 00001760a820
+* standard_metadata.lf_field_list           : 00000000
+* standard_metadata.mcast_grp               : 0000
+* standard_metadata.resubmit_flag           : 00000000
+* standard_metadata.egress_rid              : 0000
+* standard_metadata.checksum_error          : 00
+* standard_metadata.recirculate_flag        : 00000000
+
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Table 'egress.debug_std_meta_egress_end.dbg_table': miss
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Action entry is NoAction - 
+[18:58:32.978] [bmv2] [T] [thread 29707] [1.1] [cxt 0] Action NoAction
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Pipeline 'egress': end
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Deparser 'deparser': start
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Updating checksum 'cksum'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Updating checksum 'cksum_0'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Deparsing header 'switch_to_cpu'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Deparsing header 'ethernet'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Deparsing header 'ipv4'
+[18:58:32.978] [bmv2] [D] [thread 29707] [1.1] [cxt 0] Deparser 'deparser': end
+[18:58:32.978] [bmv2] [D] [thread 29710] [1.0] [cxt 0] Transmitting packet of size 54 out of port 0
+[18:58:32.978] [bmv2] [D] [thread 29710] [1.1] [cxt 0] Transmitting packet of size 62 out of port 1
