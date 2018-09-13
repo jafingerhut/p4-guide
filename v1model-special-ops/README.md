@@ -1,6 +1,6 @@
 # Introduction
 
-The program v1model-special-ops.p4 demonstrates the use of resubmit,
+The program `v1model-special-ops.p4` demonstrates the use of resubmit,
 recirculate, and clone operations in the BMV2 simple_switch's
 implementation of P4_16's v1model architecture.  It does not do
 anything fancy with these features, but at least it shows how to
@@ -52,10 +52,9 @@ repositories in my testing:
   dated Aug 31 2018
 
 The program also demonstrates passing a list of fields to the
-`recirculate()` and `resubmit()` primitive operations, which causes
-the values of those fields to be preserved with the
-resubmitted/recirculated packet (this technique also works for the
-`clone3()` primitive operation when cloning packets).
+`recirculate()`, `resubmit()`, and `clone3()` primitive operations,
+which causes the values of those fields to be preserved with the
+resubmitted/recirculated/cloned packet.
 
 
 # Compiling
@@ -177,19 +176,21 @@ and how its values are used.
 Unless stated otherwise, assume that these values will be 0 for
 recirculated or resubmitted packets at the beginning of ingress
 processing, or for cloned packets at the beginning of egress
-processing, _unless_ you mention the field explicitly in the list of
+processing, _unless_ you include the field explicitly in the list of
 metadata fields whose values should be preserved, as a parameter to
-the resubmit, recirculate, or clone operation.
+the `resubmit`, `recirculate`, or `clone3` primitive operation.
 
 At the end of ingress processing, there are multiple of these fields
 that are used to determine what happens to the packet next.  You can
 read the details in the method `ingress_thread` of the
 p4lang/behavioral-model source file
 [`targets/simple_switch/simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp),
-but it should be the same as this:
+but it should be the same as the pseudocode below:
 
 ```
 if (clone_spec != 0) {
+    // This condition will be true if your code called the `clone` or
+    // `clone3` operation during ingress processing.
     Make a clone of the packet destined for the egress_port configured
     in the clone / mirror session id number that was given when the
     last clone or clone3 primitive operation was called.
@@ -199,28 +200,43 @@ if (clone_spec != 0) {
     // fall through to code below
 }
 if (lf_field_list != 0) {
+    // This condition will be true if your code called the
+    // `generate_digest` operation during ingress processing.
     Send a digest message to the control plane that contains the
     values of the fields in the specified field list.
     // fall through to code below
 }
 if (resubmit_flag != 0) {
+    // This condition will be true if your code called the `resubmit`
+    // operation during ingress processing.
     Start ingress over again for this packet, with its original
     unmodified packet contents and metadata values, except preserve
     the current values of any fields specified in the field list given
     as an argument to the last resubmit() primitive operation called.
     Also the instance_type will indicate the packet was resubmitted.
 } else if (mcast_grp != 0) {
+    // This condition will be true if your code made an assignment to
+    // standard_metadtaa.mcast_grp during ingress processing.  There
+    // are no primitive operations built in to simple_switch for you
+    // to call to do this -- just use a normal P4_16 assignment
+    // statement.
     Make 0 or more copies of the packet based upon the list of
     (egress_port, egress_rid) values configured by the control plane
     for the mcast_grp value.  Enqueue each one in the appropriate
     packet buffer queue.
 } else if (egress_spec == 511) {
+    // This condition will be true if your code called the
+    // `mark_to_drop` operation during ingress processing.
     Drop packet.
 } else {
     Enqueue one copy of the packet destined for egress_port equal to
     egress_spec.
 }
 ```
+
+The next fields below are not mentioned in the behavioral-model
+[`simple_switch`
+documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
 
 + `ingress_port` - For new packets, ingress port number on which the
   packet arrived to the device.  TBD whether it is ever a good idea to
@@ -280,30 +296,24 @@ if (resubmit_flag != 0) {
   included in a list of fields to preserve for a resubmit operation if
   you want it to be non-0.
 
-+ `enq_timestamp` - TBD The time that this packet was enqueued in the
-  packet buffer after ingress processing, in units of TBD.
+The next fields below are inside of what is called the
+`queueing_metadata` header in the behavioral-model [`simple_switch`
+documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
+See there for details about their values.
 
-+ `enq_qdepth` - TBD The depth of the queue that the packet was
-  enqueued in the packet buffer, at the time it was enqueued, in units
-  of TBD.
++ `enq_timestamp`
++ `enq_qdepth`
++ `deq_timedelta`
++ `deq_qdepth`
 
-+ `deq_timedelta` - TBD The elapsed time that the packet spent in the
-  packet buffer, from the time it was finished with ingress
-  processing, until it began egress processing, in units of TBD.
+The next fields below are inside of what is called the
+`intrinsic_metadata` header in the behavioral-model [`simple_switch`
+documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
+See there for details about their values.
 
-+ `deq_qdepth` - TBD The depth of the queue that the packet was
-  enqueued in the packet buffer, at the time it was dequeued shortly
-  before it began egress processing, in units of TBD.
-
-+ `ingress_global_timestamp` - TBD The time that the packet began
-  ingress processing, in units of TBD.
-
-+ `egress_global_timestamp` - TBD The time that the packet began
-  egress processing, in units of TBD.
-
-+ `lf_field_list` - TBD I think this might be a field list identifier
-  value, if it is not 0, and it is assigned a value as a side effect
-  of calling the `digest` extern.
++ `ingress_global_timestamp`
++ `egress_global_timestamp`
++ `lf_field_list`
 
 + `mcast_grp` - Like `egress_spec`, intended to be assigned a value by
   your P4 code during ingress processing.  If it is 0 at the end of
@@ -314,33 +324,38 @@ if (resubmit_flag != 0) {
   pseudocode above for relative priority of this vs. other possible
   packet operations at end of ingress.
 
++ `egress_rid` - Should not be accessed during ingress processing.
+  Only intended to be read, never written, during egress processing.
+  0 for unicast packets.  May be non-0 in egress processing for
+  packets that were multicast-replicated.  In that case, its value
+  comes from a value configured for the multicast group used to
+  replicate this packet, configured on a per-packet-copy basis.
+
 + `resubmit_flag` - The `resubmit` primitive operation assigns a non-0
   value to this field indicating that the packet should be
-  resubmitted.  Your code should probably never explicitly assign a
-  value to it.  Reading it may be helpful for debugging, and perhaps
-  for knowing whether a `resubmit` operation was called for this
-  packet earlier in its processing.  See pseudocode above for relative
-  priority of this vs. other possible packet operations at end of
-  ingress.
+  resubmitted.  Your code should not access it directly.  Reading it
+  may be helpful for debugging, and perhaps for knowing whether a
+  `resubmit` operation was called for this packet earlier in its
+  processing.  See pseudocode above for relative priority of this
+  vs. other possible packet operations at end of ingress.
 
-+ `egress_rid` - TBD Probably always 0 on ingress, and on egress 0 for
-  unicast packets.  May be non-0 for packets that were
-  multicast-replicated, and then its value comes from a value
-  configured for the multicast group used to replicate this packet,
-  configured on a per-packet-copy basis.
++ `recirculate_flag` - The `recirculate` primitive operation assigns a
+  non-0 value to this field indicating that the packet should be
+  recirculated.  Your code should not access it directly.  Reading it
+  may be helpful for debugging, and perhaps for knowing whether a
+  `recirculate` operation was called for this packet earlier in its
+  processing.
+
+
+The next fields below are not mentioned in the behavioral-model
+[`simple_switch`
+documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
 
 + `checksum_error` - TBD: Probably intended to contain 1 if a checksum
   error was discovered during the "verify checksum" control block
   execution, 0 if no error was found.  In the v1model architecture,
   this control block is executed after parsing a packet's headers,
   before executing the ingress control block.
-
-+ `recirculate_flag` - The `recirculate` primitive operation assigns a
-  non-0 value to this field indicating that the packet should be
-  recirculated.  Your code should probably never explicitly assign a
-  value to it.  Reading it may be helpful for debugging, and perhaps
-  for knowing whether a `recirculate` operation was called for this
-  packet earlier in its processing.
 
 + `parser_error` - TBD: Probably intended to contain the value of any
   error encountered while parsing a packet's headers, either one of
