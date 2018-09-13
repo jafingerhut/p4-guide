@@ -216,7 +216,7 @@ if (resubmit_flag != 0) {
     Also the instance_type will indicate the packet was resubmitted.
 } else if (mcast_grp != 0) {
     // This condition will be true if your code made an assignment to
-    // standard_metadtaa.mcast_grp during ingress processing.  There
+    // standard_metadata.mcast_grp during ingress processing.  There
     // are no primitive operations built in to simple_switch for you
     // to call to do this -- just use a normal P4_16 assignment
     // statement.
@@ -241,7 +241,6 @@ documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simpl
 + `ingress_port` - For new packets, ingress port number on which the
   packet arrived to the device.  TBD whether it is ever a good idea to
   assign a value to this.  Probably best to treat it as read only.
-
 + `egress_spec` - Can be assigned a value in ingress control block to
   control which output port a packet will go to.  The primitive action
   `mark_to_drop` has the side effect of assigning an implementation
@@ -250,11 +249,9 @@ documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simpl
   and not stored in the packet buffer, nor sent to egress processing.
   See pseudocode above for relative priority of this vs. other
   possible packet operations at end of ingress.
-
 + `egress_port` - 0 in ingress.  In egress processing, equal to the
   output port this packet is destined to.  Should be treated as read
   only.
-
 + `clone_spec` - Like `resubmit_flag` and `recirculate_flag` fields
   described below, the `clone` or `clone3` primitive operations assign
   a non-0 value to this field indicating that the packet should be
@@ -262,7 +259,6 @@ documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simpl
   to this field.  Reading it may be helpful for debugging, and perhaps
   for knowing whether a `clone` operation was called for this packet
   earlier in its processing.
-
 + `instance_type` - Contains a value that can be read by your P4 code.
   In ingress processing, the value can be used to distinguish whether
   the packet is newly arrived from a port (`NORMAL`), it was the
@@ -278,19 +274,16 @@ documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simpl
   values.  Note: The `PktInstanceType` `COALESCED` is defined in the
   behavioral-model code, but not used anywhere.  I do not know what it
   might have been intended for.
-
 + `drop` - TBD I think this is unused.  At least, it is not mentioned
   in the source file
   [`simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp).
   It was added as part of the initial addition of the file
   `v1model.p4` to the p4lang/p4c repository in Apr 2016, so perhaps it
   is a historical vestige?
-
 + `recirculate_port` - TBD There is no mention of this field anywhere
   in the behavioral-model source code.  Similar to the `drop` field,
   it was added to `v1model.p4` in the p4lang/p4c repository in Apr
   2016, so also perhaps a historical vestige.
-
 + `packet_length` - At least for new packets from a port, or
   recirculated packets, the length of the packet in bytes.  Must be
   included in a list of fields to preserve for a resubmit operation if
@@ -314,7 +307,6 @@ See there for details about their values.
 + `ingress_global_timestamp`
 + `egress_global_timestamp`
 + `lf_field_list`
-
 + `mcast_grp` - Like `egress_spec`, intended to be assigned a value by
   your P4 code during ingress processing.  If it is 0 at the end of
   ingress processing, no multicast replication occurs.  If it is
@@ -323,14 +315,12 @@ See there for details about their values.
   multicast group number by the control plane software.  See
   pseudocode above for relative priority of this vs. other possible
   packet operations at end of ingress.
-
 + `egress_rid` - Should not be accessed during ingress processing.
   Only intended to be read, never written, during egress processing.
   0 for unicast packets.  May be non-0 in egress processing for
   packets that were multicast-replicated.  In that case, its value
   comes from a value configured for the multicast group used to
   replicate this packet, configured on a per-packet-copy basis.
-
 + `resubmit_flag` - The `resubmit` primitive operation assigns a non-0
   value to this field indicating that the packet should be
   resubmitted.  Your code should not access it directly.  Reading it
@@ -338,14 +328,12 @@ See there for details about their values.
   `resubmit` operation was called for this packet earlier in its
   processing.  See pseudocode above for relative priority of this
   vs. other possible packet operations at end of ingress.
-
 + `recirculate_flag` - The `recirculate` primitive operation assigns a
   non-0 value to this field indicating that the packet should be
   recirculated.  Your code should not access it directly.  Reading it
   may be helpful for debugging, and perhaps for knowing whether a
   `recirculate` operation was called for this packet earlier in its
   processing.
-
 
 The next fields below are not mentioned in the behavioral-model
 [`simple_switch`
@@ -356,7 +344,6 @@ documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simpl
   execution, 0 if no error was found.  In the v1model architecture,
   this control block is executed after parsing a packet's headers,
   before executing the ingress control block.
-
 + `parser_error` - TBD: Probably intended to contain the value of any
   error encountered while parsing a packet's headers, either one of
   the standard errors defined in the P4_16 language spec that can
