@@ -168,8 +168,8 @@ This list of standard_metadata fields comes from that version of p4c,
 in the file:
 [p4c/p4include/v1model.p4](https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4)
 
-Many of these "built in" metadata fields are completely different in
-P4_16 plus the Portable Switch Architecture (PSA).  See the [PSA
+Many of these "intrinsic" or "standard" metadata fields are different
+in P4_16 plus the Portable Switch Architecture (PSA).  See the [PSA
 specification](https://p4.org/specs/) for the metadata that PSA has
 and how its values are used.
 
@@ -186,6 +186,9 @@ read the details in the method `ingress_thread` of the
 p4lang/behavioral-model source file
 [`targets/simple_switch/simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp),
 but it should be the same as the pseudocode below:
+
+After-ingress pseudocode - for determining what happens to a packet
+after ingress processing is complete:
 
 ```
 if (clone_spec != 0) {
@@ -234,119 +237,155 @@ if (resubmit_flag != 0) {
 }
 ```
 
+List of annotations about each of the field names below:
+
++ sm14 - the field is defined in v1.0.4 of the P4_14 language
+  specification, Section 6 titled "Standard Intrinsic Metadata".
+
++ v1m - the field is defined in the `p4include/v1model.p4` include
+  file of the [p4c](https://github.com/p4lang/p4c) repository, intended
+  to be included in P4_16 programs compiled for the v1model
+  architecture.
+
+
 The next fields below are not mentioned in the behavioral-model
 [`simple_switch`
 documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
 
-+ `ingress_port` - For new packets, ingress port number on which the
-  packet arrived to the device.  TBD whether it is ever a good idea to
-  assign a value to this.  Probably best to treat it as read only.
-+ `egress_spec` - Can be assigned a value in ingress control block to
-  control which output port a packet will go to.  The primitive action
-  `mark_to_drop` has the side effect of assigning an implementation
-  specific value to this field (511 decimal), such that if it has that
-  value at the end of ingress processing, the packet will be dropped
-  and not stored in the packet buffer, nor sent to egress processing.
-  See pseudocode above for relative priority of this vs. other
-  possible packet operations at end of ingress.
-+ `egress_port` - 0 in ingress.  In egress processing, equal to the
-  output port this packet is destined to.  Should be treated as read
-  only.
-+ `clone_spec` - Like `resubmit_flag` and `recirculate_flag` fields
-  described below, the `clone` or `clone3` primitive operations assign
-  a non-0 value to this field indicating that the packet should be
-  cloned.  Your code should probably never explicitly assign a value
-  to this field.  Reading it may be helpful for debugging, and perhaps
-  for knowing whether a `clone` operation was called for this packet
-  earlier in its processing.
-+ `instance_type` - Contains a value that can be read by your P4 code.
-  In ingress processing, the value can be used to distinguish whether
-  the packet is newly arrived from a port (`NORMAL`), it was the
-  result of a resubmit operation (`RESUBMIT`), or it was the result of
-  a recirculate operation (`RECIRC`).  In egress processing, can be
-  used to determine whether the packet was produced as the result of
-  an ingress-to-egress clone operation (`INGRESS_CLONE`),
-  egress-to-egress clone operation (`EGRESS_CLONE`), multicast
-  replication specified during ingress processing (`REPLICATION`), or
-  none of those, so a normal unicast packet from ingress (`NORMAL`).
-  See the constants near the beginning of `v1model-special-ops.p4`
-  with names containing `BMV2_V1MODEL_INSTANCE_TYPE` for the numeric
-  values.  Note: The `PktInstanceType` `COALESCED` is defined in the
-  behavioral-model code, but not used anywhere.  I do not know what it
-  might have been intended for.
-+ `drop` - TBD I think this is unused.  At least, it is not mentioned
-  in the source file
-  [`simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp).
-  It was added as part of the initial addition of the file
-  `v1model.p4` to the p4lang/p4c repository in Apr 2016, so perhaps it
-  is a historical vestige?
-+ `recirculate_port` - TBD There is no mention of this field anywhere
-  in the behavioral-model source code.  Similar to the `drop` field,
-  it was added to `v1model.p4` in the p4lang/p4c repository in Apr
-  2016, so also perhaps a historical vestige.
-+ `packet_length` - At least for new packets from a port, or
++ `ingress_port` (sm14, v1m) - For new packets, the number of the
+  ingress port which the packet arrived to the device.  Intended only
+  to be read.
++ `packet_length` (sm14, v1m) - For new packets from a port, or
   recirculated packets, the length of the packet in bytes.  Must be
   included in a list of fields to preserve for a resubmit operation if
   you want it to be non-0.
++ `egress_spec` (sm14, v1m) - Can be assigned a value in ingress
+  control block to control which output port a packet will go to.  The
+  v1model primitive action `mark_to_drop` has the side effect of
+  assigning an implementation specific value to this field (511
+  decimal), such that if `egress_spec` has that value at the end of
+  ingress processing, the packet will be dropped and not stored in the
+  packet buffer, nor sent to egress processing.  See the
+  "after-ingress pseudocode" for relative priority of this vs. other
+  possible packet operations at end of ingress.
++ `egress_port` (sm14, v1m) - Only intended to be accessed during
+  egress processing, and there, read only.  The output port this
+  packet is destined to.
++ `egress_instance` (sm14) - See `egress_rid` below.
++ `instance_type` (sm14, v1m) - Contains a value that can be read by
+  your P4 code.  In ingress processing, the value can be used to
+  distinguish whether the packet is newly arrived from a port
+  (`NORMAL`), it was the result of a resubmit operation (`RESUBMIT`),
+  or it was the result of a recirculate operation (`RECIRC`).  In
+  egress processing, can be used to determine whether the packet was
+  produced as the result of an ingress-to-egress clone operation
+  (`INGRESS_CLONE`), egress-to-egress clone operation
+  (`EGRESS_CLONE`), multicast replication specified during ingress
+  processing (`REPLICATION`), or none of those, so a normal unicast
+  packet from ingress (`NORMAL`).  See the constants near the
+  beginning of the program `v1model-special-ops.p4` with names
+  containing `BMV2_V1MODEL_INSTANCE_TYPE` for the numeric values.
+  Note: The `PktInstanceType` `COALESCED` is defined in the
+  behavioral-model code, but not used anywhere.
++ `parser_status` (sm14) or `parser_error` (v1m) - `parser_status` is
+  the name in the P4_14 language specification.  It has been renamed
+  to `parser_error` in v1model.  0 (sm14) or error.NoError (P4_16 +
+  v1model) means no error.  Otherwise, the value indicates what error
+  occurred during parsing.
++ `parser_error_location` (sm14) - Not present in v1model.p4, and not
+  implemented in simple_switch.
 
 The next fields below are inside of what is called the
 `queueing_metadata` header in the behavioral-model [`simple_switch`
 documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
 See there for details about their values.
 
-+ `enq_timestamp`
-+ `enq_qdepth`
-+ `deq_timedelta`
-+ `deq_qdepth`
++ `enq_timestamp` (v1m)
++ `enq_qdepth` (v1m)
++ `deq_timedelta` (v1m)
++ `deq_qdepth` (v1m)
++ `qid` - This is in the simple_switch documentation about
+  queueing_metadata, but is not in v1model.p4.  TBD: Should it be
+  added to v1model.p4?
 
 The next fields below are inside of what is called the
 `intrinsic_metadata` header in the behavioral-model [`simple_switch`
 documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
 See there for details about their values.
 
-+ `ingress_global_timestamp`
-+ `egress_global_timestamp`
-+ `lf_field_list`
-+ `mcast_grp` - Like `egress_spec`, intended to be assigned a value by
-  your P4 code during ingress processing.  If it is 0 at the end of
-  ingress processing, no multicast replication occurs.  If it is
-  non-0, the packet is replicated once for each of the configured
++ `ingress_global_timestamp` (v1m)
++ `egress_global_timestamp` (v1m)
++ `mcast_grp` (v1m) - Like `egress_spec`, intended to be assigned a
+  value by your P4 code during ingress processing.  If it is 0 at the
+  end of ingress processing, no multicast replication occurs.  If it
+  is non-0, the packet is replicated once for each of the configured
   `(egress_port, egress_rid)` value pairs configured for that
-  multicast group number by the control plane software.  See
-  pseudocode above for relative priority of this vs. other possible
-  packet operations at end of ingress.
-+ `egress_rid` - Should not be accessed during ingress processing.
-  Only intended to be read, never written, during egress processing.
-  0 for unicast packets.  May be non-0 in egress processing for
-  packets that were multicast-replicated.  In that case, its value
-  comes from a value configured for the multicast group used to
-  replicate this packet, configured on a per-packet-copy basis.
-+ `resubmit_flag` - The `resubmit` primitive operation assigns a non-0
-  value to this field indicating that the packet should be
-  resubmitted.  Your code should not access it directly.  Reading it
-  may be helpful for debugging, and perhaps for knowing whether a
-  `resubmit` operation was called for this packet earlier in its
-  processing.  See pseudocode above for relative priority of this
-  vs. other possible packet operations at end of ingress.
-+ `recirculate_flag` - The `recirculate` primitive operation assigns a
-  non-0 value to this field indicating that the packet should be
-  recirculated.  Your code should not access it directly.  Reading it
-  may be helpful for debugging, and perhaps for knowing whether a
-  `recirculate` operation was called for this packet earlier in its
-  processing.
+  multicast group number by the control plane software.  See the
+  "after-ingress pseudocode" for relative priority of this vs. other
+  possible packet operations at end of ingress.
++ `egress_instance` (sm14) or `egress_rid` (v1m) - `egress_instance`
+  is the name in the P4_14 language specification.  It has been
+  renamed to `egress_rid` in v1model and to `instance` in PSA.  Should
+  only be accessed during egress processing, read only.  0 for unicast
+  packets.  May be non-0 for packets that were multicast-replicated.
+  In that case, its value comes from a value configured for the
+  multicast group used to replicate this packet, configured by the
+  control plane software on a per-packet-copy basis.
++ `resubmit_flag` (v1m) - This field is one of several "simple_switch
+  internal implementation detail fields", assigned a value as a side
+  effect of executing the v1model `resubmit` primitive operation.  See
+  below for additional notes.  See the "after-ingress pseudocode" for
+  relative priority of this vs. other possible packet operations at
+  end of ingress.
++ `recirculate_flag` (v1m) - This field is one of several
+  "simple_switch internal implementation detail fields", assigned a
+  value as a side effect of executing the v1model `recirculate`
+  primitive operation.  See below for additional notes.
++ `clone_spec` (v1m) - This field is one of several "simple_switch
+  internal implementation detail fields", assigned a value as a side
+  effect of executing the v1model `clone` or `clone3` primitive
+  operations.  See below for additional notes.  TBD: Should this field
+  be documented as a field of the `intrinsic_metadata` header?  It is
+  very similar to the `resubmit_flag` and `recirculate_flag` fields
+  that are part of `intrinsic_metadata`, so perhaps this one should
+  be, too?
++ `lf_field_list` (v1m) - This field is one of several "simple_switch
+  internal implementation detail fields", assigned a value as a side
+  effect of executing the v1model `generate_digest` primitive
+  operation.  See below for additional notes.
+
+The "simple_switch internal implementation detail" fields above have
+the following things in common:
+
++ They are initialized to 0, and are assigned a compiler-chosen non-0
+  value when the corresponding primitive operation is called.
++ Your P4 program should never assign them a value directly.
++ Reading the values may be helpful for debugging.
++ Reading them may also be useful for knowing whether the
+  corresponding primitive operation was called earlier in the
+  execution of the P4 program, but if you want to know whether such a
+  use is portable to P4 implementations other than simple_switch, you
+  will have to check the documentation for that other implementation.
 
 The next fields below are not mentioned in the behavioral-model
 [`simple_switch`
 documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
+Perhaps the only reason to do so would be to deprecate them.
 
-+ `checksum_error` - TBD: Probably intended to contain 1 if a checksum
-  error was discovered during the "verify checksum" control block
-  execution, 0 if no error was found.  In the v1model architecture,
-  this control block is executed after parsing a packet's headers,
-  before executing the ingress control block.
-+ `parser_error` - TBD: Probably intended to contain the value of any
-  error encountered while parsing a packet's headers, either one of
-  the standard errors defined in the P4_16 language spec that can
-  occur during parsing like `error.PacketTooShort`, or one that the
-  user wrote a `verify` statement for and its condition evaluated to
-  `false`.
++ `checksum_error` - Contains 1 if a checksum error was discovered
+  during the v1model `verify checksum` control block execution, 0 if
+  no error was found.  In the v1model architecture, this control block
+  is executed after parsing a packet's headers, before executing the
+  ingress control block.  Comments in v1model.p4 indicate this field
+  is deprecated.  Use `parser_error` instead.
++ `recirculate_port` - TBD There is no mention of this field anywhere
+  in the behavioral-model source code.  Similar to the `drop` field,
+  it was added to `v1model.p4` in the p4lang/p4c repository in Apr
+  2016, so also perhaps this field is a historical vestige and could
+  be removed.
++ `drop` - TBD This field appears to be unused in simple_switch.  It
+  is not mentioned in the source file
+  [`simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp).
+  It was added as part of the initial addition of the file
+  `v1model.p4` to the p4lang/p4c repository in Apr 2016, so perhaps it
+  is a historical vestige and could be removed.
