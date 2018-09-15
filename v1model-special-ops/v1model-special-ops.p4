@@ -190,22 +190,34 @@ control ingress(inout headers_t hdr,
         // block in the future.
 
         // Note: There is what might be considered a bug in p4c that
-        // if you give a metadata field name in the list below, and
-        // the compiler can simplify it to a constant value,
-        // e.g. because you assign that field a constant value shortly
-        // before the resubmit() call, then the BMv2 JSON file will
-        // have that constant value in it instead of the field name.
-        // I believe in that case that BMv2 simple_switch will _not_
-        // have that metadata field value preserved.
-        resubmit({standard_metadata.ingress_port,
-            standard_metadata.packet_length});
+        // if you give an individual metadata field name in the list
+        // below, and the compiler can simplify it to a constant
+        // value, e.g. because you assign that field a constant value
+        // shortly before the resubmit() call, then the BMv2 JSON file
+        // will have that constant value in it instead of the field
+        // name.  I believe in that case that BMv2 simple_switch will
+        // _not_ have that metadata field value preserved.
+
+        // If you give an entire struct like standard_metadata, it
+        // includes all fields inside of that struct.  Even though
+        // standard_metadta.instance_type is one of the fields inside
+        // of this struct, that field's value will _not_ be preserved
+        // across the resubmit operation -- the resubmitted packet
+        // will have standard_metadata.instance_type ==
+        // BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT.  The instance_type
+        // field is an exception to the "preserve metadata field
+        // value" rule.
+        resubmit(standard_metadata);
     }
     action do_recirculate(bit<32> new_ipv4_dstAddr) {
         hdr.ipv4.dstAddr = new_ipv4_dstAddr;
         // See the resubmit() call above for comments about the
         // parameter to recirculate(), which has the same form as for
         // resubmit.
-        recirculate({standard_metadata.ingress_port});
+
+        // recirculate() is similar to resubmit() in the argument you
+        // pass to it.  See the notes for the resubmit() call above.
+        recirculate(standard_metadata);
     }
     action do_clone_i2e(bit<32> new_ipv4_dstAddr) {
         hdr.ipv4.dstAddr = new_ipv4_dstAddr;
@@ -221,7 +233,11 @@ control ingress(inout headers_t hdr,
         // use the 'simple_switch_CLI' command mirroring_add to do
         // that.  A 'mirroring session' and 'clone session' are simply
         // two different names for the same thing.
-        clone(CloneType.I2E, I2E_CLONE_SESSION_ID);
+
+        // The 3rd argument to clone3() is similar to the only
+        // argument to the resubmit() call.  See the notes for the
+        // resubmit() call above.
+        clone3(CloneType.I2E, I2E_CLONE_SESSION_ID, standard_metadata);
     }
     table ipv4_da_lpm {
         key = {

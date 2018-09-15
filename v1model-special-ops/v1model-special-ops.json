@@ -128,7 +128,7 @@
   "field_lists" : [
     {
       "id" : 1,
-      "name" : "tuple_0",
+      "name" : "standard_metadata",
       "elements" : [
         {
           "type" : "field",
@@ -136,24 +136,265 @@
         },
         {
           "type" : "field",
+          "value" : ["standard_metadata", "egress_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "clone_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "instance_type"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "drop"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_port"]
+        },
+        {
+          "type" : "field",
           "value" : ["standard_metadata", "packet_length"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_timedelta"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "lf_field_list"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "mcast_grp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "resubmit_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_rid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "checksum_error"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "parser_error"]
         }
       ]
     },
     {
       "id" : 2,
-      "name" : "tuple_1",
+      "name" : "standard_metadata",
       "elements" : [
         {
           "type" : "field",
           "value" : ["standard_metadata", "ingress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "clone_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "instance_type"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "drop"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "packet_length"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_timedelta"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "lf_field_list"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "mcast_grp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "resubmit_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_rid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "checksum_error"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "parser_error"]
         }
       ]
     },
     {
       "id" : 3,
       "name" : "fl",
-      "elements" : []
+      "elements" : [
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "clone_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "instance_type"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "drop"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "packet_length"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_timedelta"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "lf_field_list"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "mcast_grp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "resubmit_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_rid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "checksum_error"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "parser_error"]
+        }
+      ]
     }
   ],
   "errors" : [
@@ -238,7 +479,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 336,
+        "line" : 352,
         "column" : 8,
         "source_fragment" : "DeparserImpl"
       },
@@ -254,7 +495,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 364,
+        "line" : 380,
         "column" : 8,
         "source_fragment" : "update_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5, ..."
       },
@@ -311,7 +552,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 346,
+        "line" : 362,
         "column" : 8,
         "source_fragment" : "verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5, ..."
       },
@@ -519,7 +760,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 204,
+            "line" : 213,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.dstAddr = new_ipv4_dstAddr"
           }
@@ -559,7 +800,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 211,
+            "line" : 223,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.dstAddr = new_ipv4_dstAddr"
           }
@@ -611,7 +852,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 241,
+            "line" : 257,
             "column" : 8,
             "source_fragment" : "meta.fwd.out_bd = bd"
           }
@@ -630,7 +871,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 242,
+            "line" : 258,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.dstAddr = dmac"
           }
@@ -649,7 +890,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 243,
+            "line" : 259,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_spec = intf"
           }
@@ -691,7 +932,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 244,
+            "line" : 260,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -740,7 +981,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 279,
+            "line" : 295,
             "column" : 12,
             "source_fragment" : "hdr.ipv4.dstAddr = hdr.ipv4.dstAddr - 100"
           }
@@ -789,7 +1030,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 281,
+            "line" : 297,
             "column" : 12,
             "source_fragment" : "hdr.ipv4.dstAddr = hdr.ipv4.dstAddr - 200"
           }
@@ -849,7 +1090,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 300,
+            "line" : 316,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.srcAddr = smac"
           }
@@ -871,7 +1112,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 318,
+            "line" : 334,
             "column" : 12,
             "source_fragment" : "hdr.switch_to_cpu.setValid()"
           }
@@ -890,7 +1131,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 319,
+            "line" : 335,
             "column" : 12,
             "source_fragment" : "hdr.switch_to_cpu.word0 = 0xa5a5a5a5"
           }
@@ -909,7 +1150,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 320,
+            "line" : 336,
             "column" : 12,
             "source_fragment" : "hdr.switch_to_cpu.word1 = 0x5a5a5a5a"
           }
@@ -1178,7 +1419,7 @@
           "id" : 4,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 226,
+            "line" : 242,
             "column" : 10,
             "source_fragment" : "ipv4_da_lpm"
           },
@@ -1218,7 +1459,7 @@
           "id" : 5,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 246,
+            "line" : 262,
             "column" : 10,
             "source_fragment" : "mac_da"
           },
@@ -1456,7 +1697,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 278,
+            "line" : 294,
             "column" : 13,
             "source_fragment" : "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT"
           },
@@ -1482,7 +1723,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 280,
+            "line" : 296,
             "column" : 20,
             "source_fragment" : "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RECIRC"
           },
@@ -1508,7 +1749,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 284,
+            "line" : 300,
             "column" : 12,
             "source_fragment" : "meta.fwd.l2ptr != 0"
           },
@@ -1536,7 +1777,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "v1model-special-ops.p4",
-        "line" : 292,
+        "line" : 308,
         "column" : 8,
         "source_fragment" : "egress"
       },
@@ -1720,7 +1961,7 @@
           "id" : 10,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 302,
+            "line" : 318,
             "column" : 10,
             "source_fragment" : "send_frame"
           },
@@ -1910,7 +2151,7 @@
           "id" : 3,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 315,
+            "line" : 331,
             "column" : 13,
             "source_fragment" : "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_INGRESS_CLONE"
           },
@@ -1936,7 +2177,7 @@
           "id" : 4,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 321,
+            "line" : 337,
             "column" : 20,
             "source_fragment" : "standard_metadata.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_EGRESS_CLONE"
           },
@@ -1962,7 +2203,7 @@
           "id" : 5,
           "source_info" : {
             "filename" : "v1model-special-ops.p4",
-            "line" : 324,
+            "line" : 340,
             "column" : 19,
             "source_fragment" : "standard_metadata.recirculate_flag != 0"
           },
