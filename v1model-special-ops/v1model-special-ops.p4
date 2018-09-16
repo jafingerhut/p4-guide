@@ -36,6 +36,7 @@ const bit<32> BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT      = 6;
 #define IS_RECIRCULATED(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_RECIRC)
 #define IS_I2E_CLONE(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_INGRESS_CLONE)
 #define IS_E2E_CLONE(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_EGRESS_CLONE)
+#define IS_REPLICATED(std_meta) (std_meta.instance_type == BMV2_V1MODEL_INSTANCE_TYPE_REPLICATION)
 
 const bit<32> I2E_CLONE_SESSION_ID = 5;
 const bit<32> E2E_CLONE_SESSION_ID = 11;
@@ -167,6 +168,21 @@ control my_debug_1(in headers_t hdr, in meta_t meta)
 }
 
 
+control fill_ipv4_address(out bit<32> ipv4_address,
+                          in bit<8> byte0,    // most significant byte
+                          in bit<8> byte1,
+                          in bit<8> byte2,
+                          in bit<8> byte3)    // least significant byte
+{
+    apply {
+        ipv4_address = (((bit<32>) byte0 << 24) |
+            ((bit<32>) byte1 << 16) |
+            ((bit<32>) byte2 << 8) |
+            (bit<32>) byte3);
+    }
+}
+
+
 control ingress(inout headers_t hdr,
                 inout meta_t meta,
                 inout standard_metadata_t standard_metadata)
@@ -175,9 +191,16 @@ control ingress(inout headers_t hdr,
     debug_std_meta() debug_std_meta_ingress_end;
     my_debug_1() my_debug_1_1;
     my_debug_1() my_debug_1_2;
+    fill_ipv4_address() c_fill_ipv4_address;
+
+    const bit<32> RESUBMITTED_PKT_L2PTR = 0xe50b;
+    const bit<32> RECIRCULATED_PKT_L2PTR = 0xec1c;
 
     action set_l2ptr(bit<32> l2ptr) {
         meta.fwd.l2ptr = l2ptr;
+    }
+    action set_mcast_grp(bit<16> mcast_grp) {
+        standard_metadata.mcast_grp = mcast_grp;
     }
     action do_resubmit(bit<32> new_ipv4_dstAddr) {
         hdr.ipv4.dstAddr = new_ipv4_dstAddr;
@@ -200,33 +223,22 @@ control ingress(inout headers_t hdr,
 
         // If you give an entire struct like standard_metadata, it
         // includes all fields inside of that struct.  Even though
-        // standard_metadta.instance_type is one of the fields inside
+        // standard_metadata.instance_type is one of the fields inside
         // of this struct, that field's value will _not_ be preserved
         // across the resubmit operation -- the resubmitted packet
         // will have standard_metadata.instance_type ==
         // BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT.  The instance_type
         // field is an exception to the "preserve metadata field
         // value" rule.
+
+        // For the resubmit operation, standard_metadata.resubmit_flag
+        // is 0 for the resubmitted packet, which avoids that packet
+        // being resubmitted indefinitely, unless your program
+        // explicitly causes a separate call to resubmit() on each
+        // execution of ingress.
         resubmit(standard_metadata);
     }
-    action do_recirculate(bit<32> new_ipv4_dstAddr) {
-        hdr.ipv4.dstAddr = new_ipv4_dstAddr;
-        // See the resubmit() call above for comments about the
-        // parameter to recirculate(), which has the same form as for
-        // resubmit.
-
-        // recirculate() is similar to resubmit() in the argument you
-        // pass to it.  See the notes for the resubmit() call above.
-        recirculate(standard_metadata);
-    }
-    action do_clone_i2e(bit<32> new_ipv4_dstAddr) {
-        hdr.ipv4.dstAddr = new_ipv4_dstAddr;
-        // If you want to pass a list of metadata field to preserve
-        // for the cloned packet, similar to the resubmit() and
-        // recirculate() calls above, use the operation 'clone3'
-        // instead of 'clone', and give the field list as the last
-        // argument.
-
+    action do_clone_i2e(bit<32> l2ptr) {
         // BMv2 simple_switch can have multiple different clone
         // "sessions" at the same time.  Each one can be configured to
         // go to an independent output port of the switch.  You can
@@ -236,8 +248,11 @@ control ingress(inout headers_t hdr,
 
         // The 3rd argument to clone3() is similar to the only
         // argument to the resubmit() call.  See the notes for the
-        // resubmit() call above.
+        // resubmit() call above.  clone() is the same as clone3(),
+        // except there are only 2 parameters, and thus no metadata
+        // field values are preserved in the cloned packet.
         clone3(CloneType.I2E, I2E_CLONE_SESSION_ID, standard_metadata);
+        meta.fwd.l2ptr = l2ptr;
     }
     table ipv4_da_lpm {
         key = {
@@ -245,8 +260,8 @@ control ingress(inout headers_t hdr,
         }
         actions = {
             set_l2ptr;
+            set_mcast_grp;
             do_resubmit;
-            do_recirculate;
             do_clone_i2e;
             my_drop;
         }
@@ -285,18 +300,27 @@ control ingress(inout headers_t hdr,
         // Note that for resubmitted packets, everything else about
         // their contents and metadata _except_ the
         // standard_metadata.instance_type field will be the same
-        // about them.
+        // about them, plus the metadata fields you give as an
+        // argument to the resubmit() call.  Thus you probably need
+        // some ingress code that causes something different to happen
+        // for resubmitted vs. not-resubmitted packets, or else
+        // whatever caused the packet to be resubmitted will happen
+        // for the packet after being resubmitted, too, in an infinite
+        // loop.
 
         // For recirculated packets, anything your P4 code did to
         // change the packet during the previous time(s) through
         // ingress and/or egress processing will have taken effect on
         // the packet processed this time.
         if (IS_RESUBMITTED(standard_metadata)) {
-            hdr.ipv4.dstAddr = hdr.ipv4.dstAddr - 100;
+            c_fill_ipv4_address.apply(hdr.ipv4.srcAddr, 10, 252, 129, 2);
+            meta.fwd.l2ptr = RESUBMITTED_PKT_L2PTR;
         } else if (IS_RECIRCULATED(standard_metadata)) {
-            hdr.ipv4.dstAddr = hdr.ipv4.dstAddr - 200;
+            c_fill_ipv4_address.apply(hdr.ipv4.srcAddr, 10, 199, 86, 99);
+            meta.fwd.l2ptr = RECIRCULATED_PKT_L2PTR;
+        } else {
+            ipv4_da_lpm.apply();
         }
-        ipv4_da_lpm.apply();
         if (meta.fwd.l2ptr != 0) {
             mac_da.apply();
         }
@@ -312,8 +336,32 @@ control egress(inout headers_t hdr,
     debug_std_meta() debug_std_meta_egress_start;
     debug_std_meta() debug_std_meta_egress_end;
 
+    action set_out_bd (bit<24> bd) {
+        meta.fwd.out_bd = bd;
+    }
+    table get_multicast_copy_out_bd {
+        key = {
+            standard_metadata.mcast_grp  : exact;
+            standard_metadata.egress_rid : exact;
+        }
+        actions = { set_out_bd; }
+    }
+
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
+    }
+    action do_recirculate(bit<32> new_ipv4_dstAddr) {
+        hdr.ipv4.dstAddr = new_ipv4_dstAddr;
+        // See the resubmit() call above for comments about the
+        // parameter to recirculate(), which has the same form as for
+        // resubmit.
+        recirculate(standard_metadata);
+    }
+    action do_clone_e2e(bit<48> smac) {
+        hdr.ethernet.srcAddr = smac;
+        // See the resubmit() call for notes on the 3rd argument,
+        // which is similar to the only argument to resubmit().
+        clone3(CloneType.E2E, E2E_CLONE_SESSION_ID, standard_metadata);
     }
     table send_frame {
         key = {
@@ -321,6 +369,8 @@ control egress(inout headers_t hdr,
         }
         actions = {
             rewrite_mac;
+            do_recirculate;
+            do_clone_e2e;
             my_drop;
         }
         default_action = my_drop;
@@ -332,17 +382,20 @@ control egress(inout headers_t hdr,
             // whatever you want to do special for ingress-to-egress
             // clone packets here.
             hdr.switch_to_cpu.setValid();
-            hdr.switch_to_cpu.word0 = 0xa5a5a5a5;
+            hdr.switch_to_cpu.word0 = 0x012e012e;
             hdr.switch_to_cpu.word1 = 0x5a5a5a5a;
         } else if (IS_E2E_CLONE(standard_metadata)) {
             // whatever you want to do special for egress-to-egress
             // clone packets here.
-        } else if (standard_metadata.recirculate_flag != 0) {
-            // If you want to do something in egress special for
-            // packets that during ingress were specified to be
-            // recirculated, do that here.
+            hdr.switch_to_cpu.setValid();
+            hdr.switch_to_cpu.word0 = 0x0e2e0e2e;
+            hdr.switch_to_cpu.word1 = 0x5a5a5a5a;
         } else {
-            // For all other packets, do this branch.
+            if (IS_REPLICATED(standard_metadata)) {
+                // whatever you want to do special for multicast
+                // replicated packets here.
+                get_multicast_copy_out_bd.apply();
+            }
             send_frame.apply();
         }
         debug_std_meta_egress_end.apply(standard_metadata);

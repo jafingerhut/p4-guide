@@ -110,21 +110,205 @@ General syntax for table_add commands at simple_switch_CLI prompt:
     RuntimeCmd: help table_add
     Add entry to a match table: table_add <table name> <action name> <match fields> => <action parameters> [priority]
 
+Summary of all table entries to create:
 
-    table_set_default ipv4_da_lpm my_drop
-    table_set_default mac_da my_drop
-    table_set_default send_frame my_drop
     table_add ipv4_da_lpm do_resubmit 10.1.0.101/32 => 10.1.0.1
-    table_add ipv4_da_lpm do_recirculate 10.1.0.201/32 => 10.1.0.1
-    table_add ipv4_da_lpm do_clone_i2e 10.3.0.55/32 => 10.5.0.99
-    table_add ipv4_da_lpm set_l2ptr 10.1.0.1/32 => 58
-    table_add mac_da set_bd_dmac_intf 58 => 9 02:13:57:ab:cd:ef 2
+    table_add ipv4_da_lpm set_l2ptr 10.1.0.201/32 => 0xcafe
+    table_add ipv4_da_lpm do_clone_i2e 10.3.0.55/32 => 0xd00d
+    table_add ipv4_da_lpm set_l2ptr 10.47.1.1/32 => 0xbeef
+    table_add ipv4_da_lpm set_mcast_grp 225.1.2.3/32 => 1113
+    table_add mac_da set_bd_dmac_intf 0xe50b => 9 02:13:57:0b:e5:ff 2
+    table_add mac_da set_bd_dmac_intf 0xcafe => 14 02:13:57:fe:ca:ff 3
+    table_add mac_da set_bd_dmac_intf 0xec1c => 9 02:13:57:1c:ec:ff 2
+    table_add mac_da set_bd_dmac_intf 0xd00d => 9 02:13:57:0d:d0:ff 1
+    table_add mac_da set_bd_dmac_intf 0xbeef => 26 02:13:57:ef:be:ff 0
     table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
-    mirroring_add 5 1
+    table_add send_frame do_recirculate 14 => 10.1.0.2
+    table_add send_frame do_clone_e2e 26 => 00:11:22:33:55:44
+    table_add send_frame rewrite_mac 10 => 00:11:22:33:0a:55
+    table_add send_frame rewrite_mac 11 => 00:11:22:33:0b:55
+    table_add send_frame rewrite_mac 12 => 00:11:22:33:0c:55
+    table_add get_multicast_copy_out_bd set_out_bd 1113 400 => 10
+    table_add get_multicast_copy_out_bd set_out_bd 1113 401 => 11
+    table_add get_multicast_copy_out_bd set_out_bd 1113 402 => 12
+    mirroring_add 5 4
+    mirroring_add 11 5
+    mc_mgrp_create 1113
+    mc_node_create 400 0
+    mc_node_create 401 1
+    mc_node_create 402 2
+    mc_node_associate 1113 0
+    mc_node_associate 1113 1
+    mc_node_associate 1113 2
 
 Note: The control plane operation "mirroring_add 5 1" causes a packet
 that is cloned to clone session id 5 (aka "mirror session id") to be
 sent to output port 1.
+
+Details of which input packets should match which sequence of table
+entries are given below.  All of this can be seen in the log file
+output produced using the `--log-console` option to simple_switch,
+which I have saved in a separate file for each input packet.
+
+A note on the log files:
+
+Most lines have a time, and several other common parts to it, like
+this example output line:
+
+    [09:25:02.955] [bmv2] [D] [thread 4822] [1.0] [cxt 0] Cloning packet at ingress
+
+Note the part `[1.0]`.  It means roughly "for original input packet
+#1, this line contains info about copy #0 made of that packet".  For
+packets that are not cloned or multicast replicated, this label should
+remain the same for all messages about the packet.
+
+For cloned packets, after the clone operation occurs, you will see a
+mingling of some log lines with "[1.0]" and others with "[1.1]".  The
+"[1.0]" lines are for the original packet, not the clone.  The "[1.1]"
+lines are for the cloned packet.  simple_switch apparently processes
+these two packets either via two parallel threads, or in some other
+similar fashion, that causes the log lines for these two packets to be
+intermingled with each other.  Try to focus on only one set of lines
+if you want to follow the sequential thread of execution for one of
+those two copies.
+
+A similar thing occurs when packets are multicast replicated.
+
+Resubmitted packet, log in file: `resub-pkt-log.txt`:
+
+    Summary: ingress, resubmit, ingress, egress, out
+    Distinctive log message in log file to look for: "Resubmitting packet"
+
+    resub_pkt=Ether() / IP(dst='10.1.0.101') / TCP(sport=5793, dport=80)
+    packet in: ipv4.dstAddr = 10.1.0.101
+    ingress
+    table_add ipv4_da_lpm do_resubmit 10.1.0.101/32 => 10.1.0.1
+    resubmit, packet same as before except instance_type
+    ingress
+    assign ipv4.srcAddr a vlaue of 10.252.129.2, l2ptr=RESUBMITTED_PKT_L2PTR=0xe50b
+    table_add mac_da set_bd_dmac_intf 0xe50b => 9 02:13:57:0b:e5:ff 2
+    egress
+    table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
+    packet out port 2
+
+Recirculated packet, log in file: `recirc-pkt-log.txt`:
+
+    Summary: ingress, egress, recirculate, ingress, egress, out
+    Distinctive log message in log file to look for: "Recirculating packet"
+
+    recirc_pkt=Ether() / IP(dst='10.1.0.201') / TCP(sport=5793, dport=80)
+    packet in: ipv4.dstAddr = 10.1.0.201
+    table_add ipv4_da_lpm set_l2ptr 10.1.0.201/32 => 0xcafe
+    table_add mac_da set_bd_dmac_intf 0xcafe => 14 02:13:57:fe:ca:ff 3
+    egress
+    table_add send_frame do_recirculate 14 => 10.1.0.2
+        assign ipv4.dstAddr=10.1.0.2
+    recirculate
+    ingress
+    assign ipv4.srcAddr a value of 10.199.86.99, l2ptr=RECIRCULATED_PKT_L2PTR=0xec1c
+    table_add mac_da set_bd_dmac_intf 0xec1c => 9 02:13:57:1c:ec:ff 2
+    egress    Distinctive log message in log file to look for: "Resubmitting packet"
+
+    table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
+    packet out port 2
+
+Packet cloned from ingress to egress, log in file: `clone-i2e-pkt-log.txt`:
+
+    Summary: ingress, clone
+    original packet -> egress, out
+    cloned packet -> egress, out
+
+    Distinctive log message in log file to look for: "Cloning packet at ingress"
+
+    i2e_clone_pkt=Ether() / IP(dst='10.3.0.55') / TCP(sport=5793, dport=80)
+    packet in: ipv4.dstAddr = 10.3.0.55
+    ingress
+    table_add ipv4_da_lpm do_clone_i2e 10.3.0.55/32 => 0xd00d
+    clone3 to I2E_CLONE_SESSION_ID=5, configured to go out port 4 with this table entry:
+    mirroring_add 5 4
+    table_add mac_da set_bd_dmac_intf 0xd00d => 9 02:13:57:0d:d0:ff 1
+
+    original packet:
+    egress
+    table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
+    packet out port 1
+
+    cloned packet:
+    egress
+    execute code for clone_i2e case that adds switch_to_cpu header
+    packet out port 4
+
+Packet cloned from egress to egress, log in file: `clone-e2e-pkt-log.txt`:
+
+    Summary: ingress, egress, clone
+    original packet -> out
+    cloned packet -> egress, out
+
+    Distinctive log message in log file to look for: "Cloning packet at egress"
+
+    e2e_clone_pkt=Ether() / IP(dst='10.47.1.1') / TCP(sport=5793, dport=80)
+    packet in: ipv4.dstAddr = 10.47.1.1
+    ingress
+    table_add ipv4_da_lpm set_l2ptr 10.47.1.1/32 => 0xbeef
+    table_add mac_da set_bd_dmac_intf 0xbeef => 26 02:13:57:ef:be:ff 0
+
+    original packet:
+    egress
+    table_add send_frame do_clone_e2e 26 => 00:11:22:33:55:44
+        do clone3 action to E2E_CLONE_SESSION_ID=11, configured to go
+        out port 5 with this table entry:
+    mirroring_add 11 5
+    packet out port 0
+
+    cloned packet:
+    egress
+    execute code for clone_e2e case that adds switch_to_cpu header
+    packet out port 5
+
+Packet using multicast replication, log in file: `mcast-pkt-log.txt`:
+
+    Summary: ingress, multicast
+    Each of the 3 copies independently then does: egress, out
+
+    Distinctive log message in log file to look for: "Multicast requested for packet"
+
+    mcast_pkt=Ether() / IP(dst='225.1.2.3') / TCP(sport=5793, dport=80)
+    packet in: ipv4.dstAddr = 225.1.2.3
+    ingress
+    table_add ipv4_da_lpm set_mcast_grp 225.1.2.3/32 => 1113
+
+    at end of ingress, 3 copies made because of this configuration of
+    mcast_grp 0x1113:
+    mc_mgrp_create 1113
+    mc_node_create 400 0
+    mc_node_create 401 1
+    mc_node_create 402 2
+    # Note: The 0, 1, and 2 below should be the "handles" created when
+    # the mc_node_create commands above were performed.  If they were
+    # the only such commands performed, and they were done in that
+    # order, they should have been assigned handles 0, 1, and 2.
+    mc_node_associate 1113 0
+    mc_node_associate 1113 1
+    mc_node_associate 1113 2
+
+    copy with egress_port=0, egress_rid=400:
+    egress
+    table_add get_multicast_copy_out_bd set_out_bd 1113 400 => 10
+    table_add send_frame rewrite_mac 10 => 00:11:22:33:0a:55
+    packet out port 0
+
+    copy with egress_port=1, egress_rid=401:
+    egress
+    table_add get_multicast_copy_out_bd set_out_bd 1113 401 => 11
+    table_add send_frame rewrite_mac 11 => 00:11:22:33:0b:55
+    packet out port 1
+
+    copy with egress_port=2, egress_rid=402:
+    egress
+    table_add get_multicast_copy_out_bd set_out_bd 1113 402 => 12
+    table_add send_frame rewrite_mac 12 => 00:11:22:33:0c:55
+    packet out port 2
+
 
 ----------------------------------------------------------------------
 scapy session for sending packets
@@ -136,18 +320,18 @@ must run as the super-user root, hence the use of `sudo`:
 ```python
 sudo scapy
 
-fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
-drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 resub_pkt=Ether() / IP(dst='10.1.0.101') / TCP(sport=5793, dport=80)
 recirc_pkt=Ether() / IP(dst='10.1.0.201') / TCP(sport=5793, dport=80)
-clone_i2e_pkt=Ether() / IP(dst='10.3.0.55') / TCP(sport=5793, dport=80)
+i2e_clone_pkt=Ether() / IP(dst='10.3.0.55') / TCP(sport=5793, dport=80)
+e2e_clone_pkt=Ether() / IP(dst='10.47.1.1') / TCP(sport=5793, dport=80)
+mcast_pkt=Ether() / IP(dst='225.1.2.3') / TCP(sport=5793, dport=80)
 
 # Send packet at layer2, specifying interface
-sendp(fwd_pkt1, iface="veth6")
-sendp(drop_pkt1, iface="veth6")
 sendp(resub_pkt, iface="veth6")
 sendp(recirc_pkt, iface="veth6")
-sendp(clone_i2e_pkt, iface="veth6")
+sendp(i2e_clone_pkt, iface="veth6")
+sendp(e2e_clone_pkt, iface="veth6")
+sendp(mcast_pkt, iface="veth6")
 ```
 
 ----------------------------------------
@@ -192,44 +376,49 @@ after ingress processing is complete:
 
 ```
 if (clone_spec != 0) {
-    // This condition will be true if your code called the `clone` or
-    // `clone3` operation during ingress processing.
+    // This condition will be true if your code called the clone or
+    // clone3 primitive action during ingress processing.
     Make a clone of the packet destined for the egress_port configured
-    in the clone / mirror session id number that was given when the
-    last clone or clone3 primitive operation was called.
+    in the clone (aka mirror) session id number that was given when the
+    last clone or clone3 primitive action was called.
 
-    If it was a clone3 operation, also preserve the values of the
-    metadata fields specified in the field list argument.
+    If it was a clone3 action, also preserve the final ingress values
+    of the metadata fields specified in the field list argument,
+    except assign clone_spec a value of 0 always, and instance_type a
+    value of PKT_INSTANCE_TYPE_INGRESS_CLONE.
     // fall through to code below
 }
 if (lf_field_list != 0) {
     // This condition will be true if your code called the
-    // `generate_digest` operation during ingress processing.
+    // generate_digest primitive action during ingress processing.
     Send a digest message to the control plane that contains the
     values of the fields in the specified field list.
     // fall through to code below
 }
 if (resubmit_flag != 0) {
-    // This condition will be true if your code called the `resubmit`
-    // operation during ingress processing.
+    // This condition will be true if your code called the resubmit
+    // primitive action during ingress processing.
     Start ingress over again for this packet, with its original
-    unmodified packet contents and metadata values, except preserve
-    the current values of any fields specified in the field list given
-    as an argument to the last resubmit() primitive operation called.
-    Also the instance_type will indicate the packet was resubmitted.
+    unmodified packet contents and metadata values.  Preserve the
+    final ingress values of any fields specified in the field list
+    given as an argument to the last resubmit() primitive operation
+    called, except assign resubmit_flag a value of 0 always, and
+    instance_type a value of PKT_INSTANCE_TYPE_RESUBMIT.
 } else if (mcast_grp != 0) {
     // This condition will be true if your code made an assignment to
     // standard_metadata.mcast_grp during ingress processing.  There
-    // are no primitive operations built in to simple_switch for you
-    // to call to do this -- just use a normal P4_16 assignment
-    // statement.
+    // are no special primitive actions built in to simple_switch for
+    // you to call to do this -- use a normal P4_16 assignment
+    // statement, or P4_14 modify_field() primitive action.
     Make 0 or more copies of the packet based upon the list of
     (egress_port, egress_rid) values configured by the control plane
     for the mcast_grp value.  Enqueue each one in the appropriate
-    packet buffer queue.
+    packet buffer queue.  The instance_type of each will be
+    PKT_INSTANCE_TYPE_REPLICATION.
 } else if (egress_spec == 511) {
     // This condition will be true if your code called the
-    // `mark_to_drop` operation during ingress processing.
+    // mark_to_drop (P4_16) or drop (P4_14) primitive action during
+    // ingress processing.
     Drop packet.
 } else {
     Enqueue one copy of the packet destined for egress_port equal to
