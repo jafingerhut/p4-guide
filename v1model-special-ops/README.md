@@ -276,8 +276,7 @@ Packet using multicast replication, log in file: `mcast-pkt-log.txt`:
     ingress
     table_add ipv4_da_lpm set_mcast_grp 225.1.2.3/32 => 1113
 
-    at end of ingress, 3 copies made because of this configuration of
-    mcast_grp 0x1113:
+    at end of ingress, 3 copies made because of this configuration of mcast_grp 1113:
     mc_mgrp_create 1113
     mc_node_create 400 0
     mc_node_create 401 1
