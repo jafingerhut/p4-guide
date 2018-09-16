@@ -207,8 +207,7 @@ Recirculated packet, log in file: `recirc-pkt-log.txt`:
     ingress
     assign ipv4.srcAddr a value of 10.199.86.99, l2ptr=RECIRCULATED_PKT_L2PTR=0xec1c
     table_add mac_da set_bd_dmac_intf 0xec1c => 9 02:13:57:1c:ec:ff 2
-    egress    Distinctive log message in log file to look for: "Resubmitting packet"
-
+    egress
     table_add send_frame rewrite_mac 9 => 00:11:22:33:44:55
     packet out port 2
 
