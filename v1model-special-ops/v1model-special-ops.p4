@@ -18,6 +18,8 @@ limitations under the License.
 #include <core.p4>
 #include <v1model.p4>
 
+#define ENABLE_DEBUG_TABLES
+
 // These definitions are derived from the numerical values of the enum
 // named "PktInstanceType" in the p4lang/behavioral-model source file
 // targets/simple_switch/simple_switch.h
@@ -110,6 +112,7 @@ parser ParserImpl(packet_in packet,
     }
 }
 
+#ifdef ENABLE_DEBUG_TABLES
 control debug_std_meta(in standard_metadata_t standard_metadata)
 {
     table dbg_table {
@@ -166,6 +169,7 @@ control my_debug_1(in headers_t hdr, in meta_t meta)
         dbg_table.apply();
     }
 }
+#endif  // ENABLE_DEBUG_TABLES
 
 
 control fill_ipv4_address(out bit<32> ipv4_address,
@@ -187,10 +191,12 @@ control ingress(inout headers_t hdr,
                 inout meta_t meta,
                 inout standard_metadata_t standard_metadata)
 {
+#ifdef ENABLE_DEBUG_TABLES
     debug_std_meta() debug_std_meta_ingress_start;
     debug_std_meta() debug_std_meta_ingress_end;
     my_debug_1() my_debug_1_1;
     my_debug_1() my_debug_1_2;
+#endif  // ENABLE_DEBUG_TABLES
     fill_ipv4_address() c_fill_ipv4_address;
 
     const bit<32> RESUBMITTED_PKT_L2PTR = 0xe50b;
@@ -286,8 +292,10 @@ control ingress(inout headers_t hdr,
     }
 
     apply {
+#ifdef ENABLE_DEBUG_TABLES
         debug_std_meta_ingress_start.apply(standard_metadata);
         my_debug_1_1.apply(hdr, meta);
+#endif  // ENABLE_DEBUG_TABLES
 
         // The actions below aren't necessarily terribly useful in
         // packet processing.  They are simply demonstrations of how
@@ -324,8 +332,10 @@ control ingress(inout headers_t hdr,
         if (meta.fwd.l2ptr != 0) {
             mac_da.apply();
         }
+#ifdef ENABLE_DEBUG_TABLES
         my_debug_1_2.apply(hdr, meta);
         debug_std_meta_ingress_end.apply(standard_metadata);
+#endif  // ENABLE_DEBUG_TABLES
     }
 }
 
@@ -333,8 +343,10 @@ control egress(inout headers_t hdr,
                inout meta_t meta,
                inout standard_metadata_t standard_metadata)
 {
+#ifdef ENABLE_DEBUG_TABLES
     debug_std_meta() debug_std_meta_egress_start;
     debug_std_meta() debug_std_meta_egress_end;
+#endif  // ENABLE_DEBUG_TABLES
 
     action set_out_bd (bit<24> bd) {
         meta.fwd.out_bd = bd;
@@ -377,7 +389,9 @@ control egress(inout headers_t hdr,
     }
 
     apply {
+#ifdef ENABLE_DEBUG_TABLES
         debug_std_meta_egress_start.apply(standard_metadata);
+#endif  // ENABLE_DEBUG_TABLES
         if (IS_I2E_CLONE(standard_metadata)) {
             // whatever you want to do special for ingress-to-egress
             // clone packets here.
@@ -398,7 +412,9 @@ control egress(inout headers_t hdr,
             }
             send_frame.apply();
         }
+#ifdef ENABLE_DEBUG_TABLES
         debug_std_meta_egress_end.apply(standard_metadata);
+#endif  // ENABLE_DEBUG_TABLES
     }
 }
 
