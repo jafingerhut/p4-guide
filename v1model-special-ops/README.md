@@ -367,10 +367,31 @@ that are used to determine what happens to the packet next.  You can
 read the details in the method `ingress_thread` of the
 p4lang/behavioral-model source file
 [`targets/simple_switch/simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp),
-but it should be the same as the pseudocode below:
+but it should be the same as the pseudocode below.
+
+After-ingress pseudocode - the short version:
+
+```
+if (clone_spec != 0) {      // because your code called clone or clone3
+    make a clone of the packet with details configured for the clone session
+}
+if (lf_field_list != 0) {   // because your code called generate_digest
+    send a digest message to the control plane software
+}
+if (resubmit_flag != 0) {   // because your code called resubmit
+    start ingress processing over again for the original packet
+} else if (mcast_grp != 0) {  // because your code assigned a value to mcast_grp
+    multicast the packet to the output port(s) configured for group mcast_grp
+} else if (egress_spec == 511) {  // because your code called drop/mark_to_drop
+    Drop packet.
+} else {
+    unicast the packet to the port equal to egress_spec
+}
+```
 
 After-ingress pseudocode - for determining what happens to a packet
-after ingress processing is complete:
+after ingress processing is complete.  The longer more detailed
+version:
 
 ```
 if (clone_spec != 0) {
@@ -379,6 +400,14 @@ if (clone_spec != 0) {
     Make a clone of the packet destined for the egress_port configured
     in the clone (aka mirror) session id number that was given when the
     last clone or clone3 primitive action was called.
+
+    The packet contents will be the same as when it most recently
+    began the ingress processing, where the clone operation was
+    performed, without any modifications that may have been made
+    during the execution of that ingress code.  (That may not be the
+    packet as originally received by the switch, if the packet reached
+    this occurrence of ingress processing via a recirculate operation,
+    for example.)
 
     If it was a clone3 action, also preserve the final ingress values
     of the metadata fields specified in the field list argument,
