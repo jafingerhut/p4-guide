@@ -118,32 +118,3 @@ and no default action is needed.
 
     Implemented as:
     table_dump T_member_id_to_action
-
-
-# action_selector tables
-
-I have seen multiple implementations of action selectors and things
-like them in multiple switch ASICs.  There is more than one way to do
-this, and I would not be surprised if there are more ways than I
-describe here.
-
-See these 3 files for 3 possible variations, with different tradeoffs
-in control plane software complexity and update efficiency, versus
-data plane storage space and latency.
-
-+ [README-action-selector-variant1.md](README-action-selector-variant1.md)
-  - This is like variant 2, but has a terrible inefficiency in control
-  plane updates if there are many keys of the original table that all
-  "point at" the same group.  That is an expected common case for many
-  uses of action selectors, so variant 1 seems impractical to me for
-  that reason.
-
-+ [README-action-selector-variant2.md](README-action-selector-variant2.md)
-  - This is like variant 3, but adds an extra table in order to make
-  the control plane's job somewhat simpler.  Because of the extra cost
-  in the data plane, I doubt there are many switch ASICs that
-  implement things this way.
-
-+ [README-action-selector-variant3.md](README-action-selector-variant3.md)
-  - This is the one most like what I have seen implemented in switch
-  ASICs before.

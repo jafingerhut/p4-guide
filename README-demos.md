@@ -78,11 +78,11 @@ architecture.
 There are also documents with P4_16 code excerpts showing how 
 to: implement action profiles and action selec
 
-+ [how to implement implement an action
++ [How to implement implement an action
   profile](action-profile-and-selector/README-action-profile.md) using
   ordinary P4 tables, even if action profiles were not built into the
   language.
-+ several variations of how to implement an action selector using
++ Several variations of how to implement an action selector using
   ordinary P4 tables, and a hash function, even if action selectors
   were not built into the language.
   + [variant
@@ -98,8 +98,8 @@ to: implement action profiles and action selec
     - uses 4 tables where each has a data dependency on the previous
     one.  This one does not have the flaw of variant 1, and it is a
     bit more flexible than variant 3, in that the members of a group
-    need not be consecutive in table `T_group_to_member_id`, but that
-    flexibility comes with the cost of an extra dependent table
+    need not be consecutive in table `T_group_to_member_id`.  However,
+    that flexibility comes with the cost of an extra dependent table
     lookup.
   + [variant
     3](action-profile-and-selector/README-action-selector-variant3.md)
@@ -112,3 +112,5 @@ to: implement action profiles and action selec
     group as a contiguous block, introducing the possibility of
     fragmentation, or for the control software to avoid it by
     implementing techniques similar to a compacting garbage collector.
+    This one is most like what I have most often seen in several
+    switch ASIC designs before.
