@@ -65,13 +65,6 @@ struct metadata {
     mystruct1_t mystruct1;
 }
 
-typedef tuple<
-    bit<4>,
-    bit<4>,
-    bit<8>,
-    varbit<56>
-    > myTuple1;
-
 // Declare user-defined errors that may be signaled during parsing
 error {
     IPv4HeaderTooShort,
@@ -156,12 +149,7 @@ control verifyChecksum(inout headers hdr,
         // There is code similar to this in Github repo p4lang/p4c in
         // file testdata/p4_16_samples/flowlet_switching-bmv2.p4
         // However in that file it is only for a fixed length IPv4
-        // header with no options.  When I try to do this, it gives an
-        // error for having a varbit<> element in the tuple.
-
-        // The compiler does not give any error when one includes a
-        // varbit<> as an element of a tuple in a typedef, as you can
-        // see from the definition of myTuple1 above.
+        // header with no options.
         verify_checksum(true,
             { hdr.ipv4.version,
                 hdr.ipv4.ihl,
