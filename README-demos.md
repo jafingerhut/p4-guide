@@ -36,6 +36,21 @@ action profiles, yet still achieves sharing of ECMP table entries
 among many IP prefixes.
 
 
+### v1model-special-ops
+
+For P4_16 with the v1model architecture implemented in the open source
+`p4c` compiler and BMv2 `simple_switch` software switch, the program
+`v1model-special-ops.p4` demonstrates how to use the resubmit,
+recirculate, clone, and multicast operations.
+
+Includes not only the program, but also table entries and other
+configuration commands that can be issued from the `simple_switch_CLI`
+program, plus test packets to send in, that demonstrate the operations
+occurring for those packets.
+
+See the [README.md](v1model-special-ops/README.md) for details.
+
+
 ### rewrite-examples
 
 The program rewrite-examples.p4 was created as a demo of two different
@@ -49,3 +64,51 @@ The program tcp-options-parser.p4 contains an example of P4_16
 header_union and a sub-parser that may be nearly production-worthy
 (not quite -- see comments in it for caveats) for parsing TCP options
 in a TCP header.
+
+
+### action-profile-and-selector
+
+There are two short but complete P4_16 program showing how to use
+action_profile and action_selector tables in P4_16 plus the v1model
+architecture.
+
++ [action-profile.p4](action-profile-and-selector/action-profile.p4)
++ [action-selector.p4](action-profile-and-selector/action-selector.p4)
+
+There are also documents with P4_16 code excerpts showing how 
+to: implement action profiles and action selec
+
++ [how to implement implement an action
+  profile](action-profile-and-selector/README-action-profile.md) using
+  ordinary P4 tables, even if action profiles were not built into the
+  language.
++ several variations of how to implement an action selector using
+  ordinary P4 tables, and a hash function, even if action selectors
+  were not built into the language.
+  + [variant
+    1](action-profile-and-selector/README-action-selector-variant1.md)
+    - uses 3 tables, where each has a data dependency upon the
+    previous table lookup completing first.  It actually has a
+    scalability flaw, in that if you have M table entries pointing at
+    the same group, and you want to change the number of members in
+    the group, you must update all M table entries.  This is slow for
+    those kinds of updates if M is large.
+  + [variant
+    2](action-profile-and-selector/README-action-selector-variant2.md)
+    - uses 4 tables where each has a data dependency on the previous
+    one.  This one does not have the flaw of variant 1, and it is a
+    bit more flexible than variant 3, in that the members of a group
+    need not be consecutive in table `T_group_to_member_id`, but that
+    flexibility comes with the cost of an extra dependent table
+    lookup.
+  + [variant
+    3](action-profile-and-selector/README-action-selector-variant3.md)
+    - uses 3 tables where each has a data dependency on the previou
+    one.  This one also does not have the scalability flaw of variant
+    1.  It reduces the number of dependent table lookups vs. variant 2
+    by requiring that the ids of group members in table
+    `T_member_id_to_action` must be consecutive integers.  This
+    introduces a requirement in the control software to manage each
+    group as a contiguous block, introducing the possibility of
+    fragmentation, or for the control software to avoid it by
+    implementing techniques similar to a compacting garbage collector.
