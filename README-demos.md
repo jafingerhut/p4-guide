@@ -68,11 +68,9 @@ in a TCP header.
 
 ### action-profile-and-selector
 
-There are two short but complete P4_16 program showing how to use
-action_profile and action_selector tables in P4_16 plus the v1model
-architecture.
+There is a short but complete P4_16 program showing how to use an
+action_selector table in P4_16 plus the v1model architecture.
 
-+ [action-profile.p4](action-profile-and-selector/action-profile.p4)
 + [action-selector.p4](action-profile-and-selector/action-selector.p4)
 
 There are also documents with P4_16 code excerpts showing how 
