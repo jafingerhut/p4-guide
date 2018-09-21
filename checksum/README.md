@@ -9,25 +9,15 @@ The test cases given in this repository demonstrate that the outgoing
 IPv4 header checksums are correct (at least for the couple of test
 cases included).
 
-Note: I do not know how to use the result of checking the received
-IPv4 header checksum to drop, or otherwise treat different, received
-IPv4 packets with an incorrect IPv4 header checksum.
+With an update to p4lang/behavioral-model code made on 2018-Sep-21, I
+have confirmed that some test cases below that send in packets with an
+incorrect IPv4 header checksum _are_ detected, and as a result assign
+a value of 1 to the `checksum_error` field in the standard_metadata_t
+struct of v1model.p4.  This field can be used by your P4 program code
+to determine what to do with the packet.
 
-As of 2018-Sep-20, the latest version of p4c's v1model.p4 include file
-defines these fields in the `standard_metadata_t` struct type:
-
-```
-    bit<1>  checksum_error;
-    error parser_error;
-```
-
-The latest version of `simple_switch` as of that date will execute
-this compiled program, and can execute the code in the
-`veirfyChecksum` control block and if you have enabled logging with
-`--log-console` or `--log-file`, it will show log messages after
-parsing indicating whether the received IPv4 header checksum was
-correct or wrong, but it does not modify the `checksum_error` nor the
-`parser_error` field as a result, nor any other fields.
+One of the test cases also confirms that a `PacketTooShort` parser
+error is visible to ingress code in the `parser_error` field.
 
 The PSA v1.0 specification's InternetChecksum extern API is quite
 different from v1model.p4, and does specify and include an example
