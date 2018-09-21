@@ -7,8 +7,8 @@ p4c-bm2-ss and simple_switch.
 
 # Compiling
 
-See README-using-bmv2.txt for some things that are common across
-different P4 programs executed using bmv2.
+See [README-using-bmv2.md](../README-using-bmv2.md) for some things
+that are common across different P4 programs executed using bmv2.
 
 To compile the P4_16 version of the code:
 

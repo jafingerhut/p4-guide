@@ -123,6 +123,10 @@ command path, e.g. for bash:
 
 # Other useful commands
 
+See the file [`README-troubleshooting.md`](README-troubleshooting.md)
+in case you run into troubles.  It describes symptoms of some
+problems, and things you can do to resolve them.
+
 Useful for quickly creating multiple terminal windows and tabs:
 
     create-terminal-windows.sh

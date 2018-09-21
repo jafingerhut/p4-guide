@@ -49,8 +49,14 @@ To get the log to go to a file instead of the console:
 CHECK THIS: If you see "Add port operation failed" messages in the
 output of the simple_switch command, it means that one or more of the
 virtual Ethernet interfaces veth2, veth4, etc. have not been created
-on your system.  Search for "veth" in the file README-using-bmv2.txt
-(top level directory of this repository) for a command to create them.
+on your system.  Search for "veth" in the file
+[`README-using-bmv2.md`](../README-using-bmv2.md`) (top level
+directory of this repository) for a command to create them.
+
+See the file
+[`README-troubleshooting.md`](../README-troubleshooting.md) in case
+you run into troubles.  It describes symptoms of some problems, and
+things you can do to resolve them.
 
 To run CLI for controlling and examining simple_switch's table
 contents:
