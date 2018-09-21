@@ -70,8 +70,7 @@ struct metadata {
 // Declare user-defined errors that may be signaled during parsing
 error {
     IPv4HeaderTooShort,
-    IPv4IncorrectVersion,
-    IPv4ChecksumError
+    IPv4IncorrectVersion
 }
 
 #ifdef ENABLE_DEBUG_TABLES
