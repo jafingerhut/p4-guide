@@ -1,6 +1,8 @@
 #include <core.p4>
 #include <v1model.p4>
 
+#define ENABLE_DEBUG_TABLES
+
 typedef bit<48>  EthernetAddress;
 typedef bit<32>  IPv4Address;
 
@@ -72,6 +74,10 @@ error {
     IPv4ChecksumError
 }
 
+#ifdef ENABLE_DEBUG_TABLES
+#include "debug-utils.p4"
+#endif  // ENABLE_DEBUG_TABLES
+
 parser parserI(packet_in pkt,
                out headers hdr,
                inout metadata meta,
@@ -117,6 +123,10 @@ control cIngress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t stdmeta)
 {
+#ifdef ENABLE_DEBUG_TABLES
+    debug_std_meta() debug_std_meta_ingress_start;
+#endif  // ENABLE_DEBUG_TABLES
+
     action foo() {
         hdr.tcp.srcPort = hdr.tcp.srcPort + 1;
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
@@ -130,6 +140,9 @@ control cIngress(inout headers hdr,
         default_action = foo;
     }
     apply {
+#ifdef ENABLE_DEBUG_TABLES
+        debug_std_meta_ingress_start.apply(stdmeta);
+#endif  // ENABLE_DEBUG_TABLES
         guh.apply();
     }
 }
