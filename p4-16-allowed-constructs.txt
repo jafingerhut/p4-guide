@@ -29,6 +29,9 @@ top level
     match_kind
     instantiation of extern object, parser value set
     instantiation of package (there must be one named 'main')
+    function definition
+        const, variable decl, assignment, function call
+	NO: action call
     action - see 'action' below
     NO: instantiation of control block, parser
     NO: variable decl
@@ -38,8 +41,8 @@ top level
         instantiation of extern object, parser, parser value set
         NO: instantiation of control block
         state
-            const, variable decl, assignment
-            NO: action call (maybe P4 functions added in future - p4lang/p4-spec issue #151)
+            const, variable decl, assignment, function call
+            NO: action call
             extern object method call (p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
             <subparser>.apply()
             block statement { }
@@ -55,7 +58,7 @@ top level
         instantiation of extern object, control block
         NO: instantiation of parser, parser value set
         action
-            const, variable decl, assignment, action call
+            const, variable decl, assignment, function call, action call
             extern object method call
             return, exit - 2017-Mar-30 p4c-bm2-ss allows exit in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
             if
@@ -70,7 +73,7 @@ top level
             actions = { <action_spec>; ... }
             default_action = <action_spec>;
         apply { } (body of control block)
-            const, variable decl, assignment, action call
+            const, variable decl, assignment, function call, action call
             extern object method call
             <table>.apply()
             <control_name>.apply()

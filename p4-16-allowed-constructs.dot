@@ -26,6 +26,8 @@ digraph p4_16_allowed_construct_nesting {
     enumErrorMatchKindDeclaration [label="enum\nerror\nmatch_kind"];
     toplevel -> Instantiation;
     Instantiation [label="instantiation of:\nextern object\nparser value set\npackage (there\nmust be one\ncalled 'main')"];
+    toplevel -> functionDefinition;
+    functionDefinition [label="function definition"];
     toplevel -> actionDeclaration;
     actionDeclaration [label="action"];
     toplevel -> controlDeclaration;
@@ -42,7 +44,7 @@ digraph p4_16_allowed_construct_nesting {
     parserState -> constantOrVariableDeclaration3;
     constantOrVariableDeclaration3 [label="const, variable decl"];
     parserState -> assignmentActionMethodCallStatement3;
-    assignmentActionMethodCallStatement3 [label="assignment\nNO: action call\nextern object method call"];
+    assignmentActionMethodCallStatement3 [label="assignment\nfunction call\nNO: action call\nextern object method call"];
     parserState -> parserApplyCallStatement3;
     parserApplyCallStatement3 [label="<subparser>.apply()"];
     parserState -> blockStatement3;
@@ -73,10 +75,15 @@ digraph p4_16_allowed_construct_nesting {
     tableDeclaration -> tablePropertyDefaultAction;
     tablePropertyDefaultAction [label="default_action = <action_name>;"];
 
+    functionDefinition -> constantOrVariableDeclaration7;
+    constantOrVariableDeclaration7 [label="const, variable decl"];
+    functionDefinition -> assignmentFunctionCallStatement1;
+    assignmentFunctionCallStatement1 [label="assignment\nfunction call"];
+
     actionDeclaration -> constantOrVariableDeclaration5;
     constantOrVariableDeclaration5 [label="const, variable decl"];
     actionDeclaration -> assignmentActionMethodCallStatement5;
-    assignmentActionMethodCallStatement5 [label="assignment\naction call\nextern object method call"];
+    assignmentActionMethodCallStatement5 [label="assignment\nfunction call\naction call\nextern object method call"];
     actionDeclaration -> returnOrExitStatement5;
     returnOrExitStatement5 [label="return, exit"];
     actionDeclaration -> conditionalStatement5;
@@ -94,7 +101,7 @@ digraph p4_16_allowed_construct_nesting {
     controlBody -> constantOrVariableDeclaration6;
     constantOrVariableDeclaration6 [label="const, variable decl"];
     controlBody -> assignmentActionMethodCallStatement6;
-    assignmentActionMethodCallStatement6 [label="assignment\naction call\nextern object method call"];
+    assignmentActionMethodCallStatement6 [label="assignment\nfunction call\naction call\nextern object method call"];
     controlBody -> tableApplyCall6;
     tableApplyCall6 [label="<table>.apply()"];
     controlBody -> controlCallStatement6;
