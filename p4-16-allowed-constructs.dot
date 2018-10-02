@@ -78,7 +78,7 @@ digraph p4_16_allowed_construct_nesting {
     functionDefinition -> constantOrVariableDeclaration7;
     constantOrVariableDeclaration7 [label="const, variable decl"];
     functionDefinition -> assignmentFunctionCallStatement1;
-    assignmentFunctionCallStatement1 [label="assignment\nfunction call"];
+    assignmentFunctionCallStatement1 [label="assignment\nfunction call\nreturn <expression>"];
 
     actionDeclaration -> constantOrVariableDeclaration5;
     constantOrVariableDeclaration5 [label="const, variable decl"];

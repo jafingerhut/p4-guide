@@ -30,8 +30,8 @@ top level
     instantiation of extern object, parser value set
     instantiation of package (there must be one named 'main')
     function definition
-        const, variable decl, assignment, function call
-	NO: action call
+        const, variable decl, assignment, function call, return <expression>
+        NO: action call
     action - see 'action' below
     NO: instantiation of control block, parser
     NO: variable decl
