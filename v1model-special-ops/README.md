@@ -386,12 +386,6 @@ The fields below are not mentioned in the behavioral-model
 documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
 Perhaps the only reason to do so would be to deprecate them.
 
-+ `checksum_error` - Contains 1 if a checksum error was discovered
-  during the v1model `verify checksum` control block execution, 0 if
-  no error was found.  In the v1model architecture, this control block
-  is executed after parsing a packet's headers, before executing the
-  ingress control block.  Comments in v1model.p4 indicate this field
-  is deprecated.  Use `parser_error` instead.
 + `recirculate_port` - TBD There is no mention of this field anywhere
   in the behavioral-model source code.  Similar to the `drop` field,
   it was added to `v1model.p4` in the p4lang/p4c repository in Apr
