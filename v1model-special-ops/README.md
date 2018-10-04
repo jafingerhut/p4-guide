@@ -383,17 +383,16 @@ The `qid` field is in `queueing_metadata` defined on that page:
 
 The fields below are not mentioned in the behavioral-model
 [`simple_switch`
-documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md).
-Perhaps the only reason to do so would be to deprecate them.
+documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md),
+and there is a comment in the
+[v1model.p4](https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4)
+include file explaining that they are deprecated.  Both were added to
+the p4lang/p4c repository as part of the initial commit in Apr 2016,
+so perhaps they are historical vestiges of some older ideas of how
+v1model should work.
 
-+ `recirculate_port` - TBD There is no mention of this field anywhere
-  in the behavioral-model source code.  Similar to the `drop` field,
-  it was added to `v1model.p4` in the p4lang/p4c repository in Apr
-  2016, so also perhaps this field is a historical vestige and could
-  be removed.
-+ `drop` - TBD This field appears to be unused in simple_switch.  It
-  is not mentioned in the source file
++ `recirculate_port` - There is no mention of this field anywhere in
+  the behavioral-model source code.
++ `drop` - This field appears to be unused in simple_switch.  It is
+  not mentioned in the source file
   [`simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp).
-  It was added as part of the initial addition of the file
-  `v1model.p4` to the p4lang/p4c repository in Apr 2016, so perhaps it
-  is a historical vestige and could be removed.
