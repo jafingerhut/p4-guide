@@ -35,6 +35,9 @@ Contents:
   * [figure](p4-16-allowed-constructs.pdf)
   * [text](p4-16-allowed-constructs.txt)
 
+* Another useful ['cheat sheet'](https://github.com/p4lang/tutorials/blob/master/p4-cheat-sheet.pdf)
+  with example snippets of code is in the p4lang/tutorials repository.
+
 * A very brief overview of P4 (in about 500 words), to get a flavor
   for what it is like:
   * Start with C.
