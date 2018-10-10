@@ -37,22 +37,30 @@ limitations under the License.
  *
  * https://p4.org/specs/
  *
- * P4_16 programs written for the PSA architecture should include
- * psa.p4 instead of v1model.p4, and several parts of the program
+ * P4_16 programs written for the PSA architecture should include the
+ * file psa.p4 instead of v1model.p4, and several parts of the program
  * after that would use different extern objects and functions than
  * this example program shows.
  *
  * In the v1model.p4 architecture, ingress consists of these things,
- * programmed in P4:
- * + parser
- * + ingress match-action pipeline
+ * programmed in P4.  Each P4 program can name these things as they
+ * choose.  The name used in this program for that piece is given in
+ * parentheses:
+ *
+ * + a parser (ParserImpl)
+ * + a specialized control block intended for verifying checksums
+ *   in received headers (verifyChecksum)
+ * + ingress match-action pipeline (ingress)
  *
  * Then there is a packet replication engine and packet buffer, which
  * are not P4-programmable.
  *
- * egress consists of these things, programmed in P4:
- * + egress match-action pipeline
- * + deparser (also called rewrite in some networking chips)
+ * Egress consists of these things, programmed in P4:
+ *
+ * + egress match-action pipeline (egress)
+ * + a specialized control block intended for computing checksums in
+ *   transmitted headers (computeChecksum)
+ * + deparser (also called rewrite in some networking chips, DeparserImpl)
  */
 
 #include <v1model.p4>
@@ -87,14 +95,14 @@ header ipv4_t {
     bit<32> dstAddr;
 }
 
-/* metadata is the term used for information about a packet, but that
- * might not be inside of the packet contents itself, e.g. a bridge
- * domain (BD) or VRF (Virtual Routing and Forwarding) id.  They can
- * also contain copies of packet header fields if you wish, which can
- * be useful if they can be filled in from one of several possible
- * places in a packet, e.g. an outer IPv4 destination address for
- * non-IP-tunnel packets, or an inner IPv4 destination address for IP
- * tunnel packets.
+/* "Metadata" is the term used for information about a packet, but
+ * that might not be inside of the packet contents itself, e.g. a
+ * bridge domain (BD) or VRF (Virtual Routing and Forwarding) id.
+ * They can also contain copies of packet header fields if you wish,
+ * which can be useful if they can be filled in from one of several
+ * possible places in a packet, e.g. an outer IPv4 destination address
+ * for non-IP-tunnel packets, or an inner IPv4 destination address for
+ * IP tunnel packets.
  *
  * You can define as many or as few structs for metadata as you wish.
  * Some people like to have more than one struct so that metadata for
@@ -208,9 +216,9 @@ parser ParserImpl(packet_in packet,
          * method, it takes the size of the argument header in bits B,
          * copies the next B bits from the packet into that header
          * (making that header valid), and advances the pointer into
-         * the packet by B bits.  I believe some P4 targets may
-         * restrict the headers and pointer to be a multiple of 8
-         * bits. */
+         * the packet by B bits.  Some P4 targets, such as the
+         * behavioral model called BMv2 simple_switch, restrict the
+         * headers and pointer to be a multiple of 8 bits. */
         packet.extract(hdr.ethernet);
         /* The 'select' keyword introduces an expression that is like
          * a C 'switch' statement, except that the expression for each
@@ -412,7 +420,7 @@ control verifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
         /* The verify_checksum() extern function is declared in
          * v1model.p4.  Its behavior is implementated in the target,
-         * e.g. the bmv2 software switch.
+         * e.g. the BMv2 software switch.
          *
          * It can takes a single header field by itself as the second
          * parameter, but more commonly you want to use a list of
@@ -436,12 +444,16 @@ control verifyChecksum(inout headers hdr, inout metadata meta) {
          * hdr.ipv4.isValid() is true, and if that IPv4 header has a
          * header length 'ihl' of 5 32-bit words.
          *
-         * Oddly enough, v1model.p4 does not yet (as of Nov 2017
-         * versions of p4c and behavioral-model) implement a way for
-         * later code executed after this, e.g. in ingress, to
-         * determine whether this call found the checksum to be
-         * correct, or wrong.  Perhaps such a method will be defined
-         * later.
+         * In September 2018, the simple_switch process in the
+         * p4lang/behavioral-model Github repository was enhanced so
+         * that it initializes the value of
+         * standard_metadata.checksum_error to 0 for all received
+         * packets, and if any call to verify_checksum() with a first
+         * parameter of true finds an incorrect checksum value, it
+         * assigns 1 to the checksum_error field.  This field can be
+         * read in your ingress control block code, e.g. using it in
+         * an 'if' condition to choose to drop the packet.  This
+         * example program does not demonstrate that.
          */
         verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
             { hdr.ipv4.version,
