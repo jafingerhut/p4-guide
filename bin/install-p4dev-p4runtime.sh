@@ -37,13 +37,17 @@
 # You will likely need to enter your password for multiple uses of 'sudo'
 # spread throughout this script.
 
-# The files installed by this script consume about tbd GB of disk
+# The files installed by this script consume about 7 GB of disk
 # space.
 
-# Size of source trees, after being built on an x86_64 machine, without
-# documentation:
-# p4c - tbd
-# behavioral-model - tbd
+# On a 2015 MacBook Pro with a decent speed Internet connection and an
+# SSD drive, it took 48 mins.
+
+# Size of the largest 3 source trees, after being built on an x86_64
+# machine, without documentation:
+# grpc - 0.7G
+# p4c - 1.4G
+# behavioral-model - 2.5G
 
 # This script has been tested on a freshly installed Ubuntu 16.04
 # system, from a file with this name: ubuntu-16.04.5-desktop-amd64.iso
@@ -168,7 +172,7 @@ echo "start install PI:"
 date
 
 # Deps needed to build PI:
-sudo apt install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+sudo apt --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 
 git clone https://github.com/p4lang/PI
 cd PI
@@ -270,6 +274,7 @@ df -h .
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
+cd "${INSTALL_DIR}"
 echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
 echo "P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.bash
 echo "BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.bash
