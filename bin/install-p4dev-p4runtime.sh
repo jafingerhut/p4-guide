@@ -174,6 +174,7 @@ date
 # Deps needed to build PI:
 sudo apt --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 
+cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/PI
 cd PI
 git submodule update --init --recursive
