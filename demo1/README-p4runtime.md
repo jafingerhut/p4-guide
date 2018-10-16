@@ -124,10 +124,15 @@ demo1.p4_14.p4 or demo1.p4_16.p4 (same commands work for both)
 ----------------------------------------------------------------------
 
 ```python
+# The full names of the tables and actions begin with 'ingress.' or
+# 'egress.', but some layer of software between here and there adds
+# these on for you, as long as the table/action name is unique after
+# that point.
+
 # assign default actions for tables using a key of None
-h.send_request_add_entry_to_action('ingress.ipv4_da_lpm', None, 'my_drop', [])
-h.send_request_add_entry_to_action('ingress.mac_da', None, 'my_drop', [])
-h.send_request_add_entry_to_action('egress.send_frame', None, 'my_drop', [])
+h.table_add('ipv4_da_lpm', None, 'my_drop', [])
+h.table_add('mac_da', None, 'my_drop', [])
+h.table_add('send_frame', None, 'my_drop', [])
 
 # add new non-default table entries by filling in at least one key field
 
@@ -143,7 +148,7 @@ h.send_request_add_entry_to_action('egress.send_frame', None, 'my_drop', [])
 # contents expected by table add operation.
 
 # Define a few small helper functions that help construct parameters
-# for the function send_request_add_entry_to_action()
+# for the function table_add()
 
 def ipv4_da_lpm_key(h, ipv4_addr_string, prefix_len):
     return [h.Lpm('hdr.ipv4.dstAddr',
@@ -168,16 +173,9 @@ def send_frame_key(h, bd_int_val):
 def rewrite_mac_params(h, smac_string):
     return [('smac', base_test.mac_to_binary(smac_string))]
 
-# The full names of the tables and actions begin with 'ingress.' or
-# 'egress.', but some layer of software between here and there adds
-# these on for you, as long as the table/action name is unique after
-# that point.
-
-h.send_request_add_entry_to_action('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.1.0.1', 32), 'set_l2ptr', set_l2ptr_params(h, 58))
-
-h.send_request_add_entry_to_action('mac_da', mac_da_key(h, 58), 'set_bd_dmac_intf', set_bd_dmac_intf_params(h, 9, '02:13:57:ab:cd:ef', 2))
-
-h.send_request_add_entry_to_action('send_frame', send_frame_key(h, 9), 'rewrite_mac', rewrite_mac_params(h, '00:11:22:33:44:55'))
+h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.1.0.1', 32), 'set_l2ptr', set_l2ptr_params(h, 58))
+h.table_add('mac_da', mac_da_key(h, 58), 'set_bd_dmac_intf', set_bd_dmac_intf_params(h, 9, '02:13:57:ab:cd:ef', 2))
+h.table_add('send_frame', send_frame_key(h, 9), 'rewrite_mac', rewrite_mac_params(h, '00:11:22:33:44:55'))
 
 ```
 
@@ -185,9 +183,9 @@ Another set of table entries to forward packets to a different output
 interface:
 
 ```python
-h.send_request_add_entry_to_action('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.1.0.200', 32), 'set_l2ptr', set_l2ptr_params(h, 81))
-h.send_request_add_entry_to_action('mac_da', mac_da_key(h, 81), 'set_bd_dmac_intf', set_bd_dmac_intf_params(h, 15, '08:de:ad:be:ef:00', 4))
-h.send_request_add_entry_to_action('send_frame', send_frame_key(h, 15), 'rewrite_mac', rewrite_mac_params(h, 'ca:fe:ba:be:d0:0d'))
+h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.1.0.200', 32), 'set_l2ptr', set_l2ptr_params(h, 81))
+h.table_add('mac_da', mac_da_key(h, 81), 'set_bd_dmac_intf', set_bd_dmac_intf_params(h, 15, '08:de:ad:be:ef:00', 4))
+h.table_add('send_frame', send_frame_key(h, 15), 'rewrite_mac', rewrite_mac_params(h, 'ca:fe:ba:be:d0:0d'))
 ```
 
 You can examine the existing entries in a table using the

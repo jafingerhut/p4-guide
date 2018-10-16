@@ -540,6 +540,11 @@ class P4RuntimeTest():
         self.push_update_add_entry_to_action(req, t_name, mk, a_name, params)
         return req, self.write_request(req, store=(mk is not None))
 
+    # Just a shorter name for send_request_add_entry_to_action
+    def table_add(self, table_name, key, action_name, action_params):
+        return self.send_request_add_entry_to_action(table_name, key,
+                                                     action_name, action_params)
+
     def push_update_add_entry_to_member(self, req, t_name, mk, mbr_id):
         update = req.updates.add()
         update.type = p4runtime_pb2.Update.INSERT
