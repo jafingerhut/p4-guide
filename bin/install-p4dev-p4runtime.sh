@@ -21,7 +21,10 @@
 
 # This script differs from install-p4dev.sh as follows:
 
-# install-p4dev.sh has build steps to build the behavioral-model simple_switch program, which uses only Thrift as the IPC mechanism for other processes to connect to it and make table add/modify/delete requests.
+# install-p4dev.sh has build steps to build the behavioral-model
+# simple_switch program, which uses only Thrift as the IPC mechanism
+# for other processes to connect to it and make table
+# add/modify/delete requests.
 
 # install-p4dev-p4runtime.sh has build steps to build the
 # behavioral-model simple_switch_grpc program, which uses the
@@ -265,25 +268,28 @@ echo "Time and disk space used when installation was complete:"
 date
 df -h .
 
-P4C="${INSTALL_DIR}/p4c"
-BMV2="${INSTALL_DIR}/behavioral-model"
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
+echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
+echo "P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.bash
+echo "BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.bash
+echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.bash
+echo "export PATH=\"\$P4GUIDE_BIN:\$P4C/build:\$BMV2/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
+
+echo "set P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.csh
+echo "set P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.csh
+echo "set BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.csh
+echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.csh
+echo "set path = ( \$P4GUIDE_BIN \$P4C/build \$BMV2/tools /usr/local/bin \$path )" >> p4setup.csh
+
 echo ""
-echo "You may wish to add lines like the ones below to your .bashrc or"
-echo ".profile files in your home directory to add commands like p4c-bm2-ss"
-echo "and simple_switch to your command path every time you log in or create"
-echo "a new shell:"
+echo "Created files: p4setup.bash p4setup.csh"
 echo ""
-echo "P4C=\"${P4C}\""
-echo "BMV2=\"${BMV2}\""
-echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\""
-echo "export PATH=\"\$P4GUIDE_BIN:\$P4C/build:\$BMV2/tools:/usr/local/bin:\$PATH\""
+echo "If you use a Bash-like command shell, you may wish to copy the lines"
+echo "of the file p4setup.bash to your .bashrc or .profile files in your"
+echo "home directory to add commands like p4c and simple_switch_grpc to your"
+echo "command path every time you log in or create a new shell."
 echo ""
-echo "If you use the tcsh or csh shells instead, the following lines can be"
-echo "added to your .tcshrc or .cshrc file in your home directory:"
-echo ""
-echo "set P4C=\"${P4C}\""
-echo "set BMV2=\"${BMV2}\""
-echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\""
-echo "set path ( \$P4GUIDE_BIN \$P4C/build \$BMV2/tools /usr/local/bin \$path )"
+echo "If you use the tcsh or csh shells, instead copy the contents of the"
+echo "file p4setup.csh to your .tcshrc or .cshrc file in your home"
+echo "directory."
