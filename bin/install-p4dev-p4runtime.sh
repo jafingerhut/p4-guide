@@ -268,6 +268,21 @@ echo "end install p4c:"
 date
 
 echo "------------------------------------------------------------"
+echo "Installing a few Python packages"
+echo "start install python packages:"
+date
+
+# On 2018-Oct-15 on an Ubuntu 16.04 machine, this installed grpcio
+# 1.15.0
+pip install grpcio
+# On 2018-Oct-15 on an Ubuntu 16.04 machine, this installed protobuf
+# 3.6.1
+pip install protobuf
+
+echo "end install python packages:"
+date
+
+echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
 date
 df -h .
