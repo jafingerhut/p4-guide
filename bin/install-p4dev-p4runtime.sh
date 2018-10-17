@@ -81,6 +81,13 @@ sudo apt --yes install git vim
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt --yes install autoconf automake libtool curl make g++ unzip
 
+# Several packages install PkgConfig files, and if your system does
+# not already have pkg-config installed when trying to execute the
+# p4lang/PI part of this script, it fails to find pkg-config but keeps
+# going.  It being absent then might be causing problems in p4lang/PI
+# install, so try installing it early here.
+sudo apt --yes install pkg-config
+
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
 echo "start install protobuf:"
