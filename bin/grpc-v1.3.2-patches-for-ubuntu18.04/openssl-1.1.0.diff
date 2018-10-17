@@ -1,0 +1,49 @@
+Description: Fix compilation of gRPC with OpenSSL 1.1.0.
+Author: Steinar H. Gunderson <sesse@debian.org>
+
+Index: grpc-1.2.5/src/core/lib/security/credentials/jwt/jwt_verifier.c
+===================================================================
+--- grpc-1.2.5.orig/src/core/lib/security/credentials/jwt/jwt_verifier.c
++++ grpc-1.2.5/src/core/lib/security/credentials/jwt/jwt_verifier.c
+@@ -481,6 +481,7 @@ static EVP_PKEY *pkey_from_jwk(grpc_exec
+                                const char *kty) {
+   const grpc_json *key_prop;
+   RSA *rsa = NULL;
++  BIGNUM *n = NULL, *e = NULL;
+   EVP_PKEY *result = NULL;
+ 
+   GPR_ASSERT(kty != NULL && json != NULL);
+@@ -495,24 +496,26 @@ static EVP_PKEY *pkey_from_jwk(grpc_exec
+   }
+   for (key_prop = json->child; key_prop != NULL; key_prop = key_prop->next) {
+     if (strcmp(key_prop->key, "n") == 0) {
+-      rsa->n =
+-          bignum_from_base64(exec_ctx, validate_string_field(key_prop, "n"));
+-      if (rsa->n == NULL) goto end;
++      n = bignum_from_base64(exec_ctx, validate_string_field(key_prop, "n"));
++      if (n == NULL) goto end;
+     } else if (strcmp(key_prop->key, "e") == 0) {
+-      rsa->e =
+-          bignum_from_base64(exec_ctx, validate_string_field(key_prop, "e"));
+-      if (rsa->e == NULL) goto end;
++      e = bignum_from_base64(exec_ctx, validate_string_field(key_prop, "e"));
++      if (e == NULL) goto end;
+     }
+   }
+-  if (rsa->e == NULL || rsa->n == NULL) {
++  if (e == NULL || n == NULL) {
+     gpr_log(GPR_ERROR, "Missing RSA public key field.");
+     goto end;
+   }
++  RSA_set0_key(rsa, n, e, NULL);
++  n = e = NULL;
+   result = EVP_PKEY_new();
+   EVP_PKEY_set1_RSA(result, rsa); /* uprefs rsa. */
+ 
+ end:
+   if (rsa != NULL) RSA_free(rsa);
++  if (n != NULL) BN_free(n);
++  if (e != NULL) BN_free(e);
+   return result;
+ }
+ 

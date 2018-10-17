@@ -110,30 +110,30 @@ date
 cd "${INSTALL_DIR}"
 git clone https://github.com/google/grpc.git
 cd grpc
+# This version works fine with Ubuntu 16.04
+git checkout tags/v1.3.2
 if [[ "${ubuntu_release}" > "18" ]]
 then
-    # Versions older than this one fail due to warnings with Ubuntu
-    # 18.04's newer version of GCC, which the grpc makefile options
-    # for GCC turn into errors.
-    #git checkout tags/v1.7.0 - succeeded once, then failed on fresh run?
-    #git checkout tags/v1.11.0 - succeeded once, then failed on fresh run?
-    git checkout tags/v1.12.0
-else
-    # This version works fine with Ubuntu 16.04
-    git checkout tags/v1.3.2
+    # Apply patches that seem to be necessary in order for grpc v1.3.2
+    # to compile and install successfully on an Ubuntu 18.04 system
+    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.3.2-patches-for-ubuntu18.04"
+    for PATCH_FILE in openssl-1.1.0.diff no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
+    do
+        patch -p1 < "${PATCH_DIR}/${PATCH_FILE}"
+    done
 fi
 git submodule update --init --recursive
 make
 sudo make install
 sudo ldconfig
-# Save about 0.5G of storage by cleaning up grpc v1.7.0 build
+# Save about 0.1G of storage by cleaning up grpc v1.3.2 build
 make clean
 
 echo "end install grpc:"
 date
 
 # Stop here prematurely for now, since the grpc install often fails
-exit 0
+#exit 0
 
 
 # Dependencies recommended to install libyang, from proto/README.md in

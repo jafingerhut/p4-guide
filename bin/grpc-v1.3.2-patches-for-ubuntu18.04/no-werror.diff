@@ -1,0 +1,11 @@
+--- grpc-1.2.5.orig/Makefile
++++ grpc-1.2.5/Makefile
+@@ -328,7 +328,7 @@ CXXFLAGS += -std=c++11
+ else
+ CXXFLAGS += -std=c++0x
+ endif
+-CPPFLAGS += -g -Wall -Wextra -Werror -Wno-long-long -Wno-unused-parameter -DOSATOMIC_USE_INLINED=1
++CPPFLAGS += -g -Wall -Wextra -Wno-long-long -Wno-unused-parameter -DOSATOMIC_USE_INLINED=1
+ LDFLAGS += -g
+ 
+ CPPFLAGS += $(CPPFLAGS_$(CONFIG))
