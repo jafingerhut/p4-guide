@@ -1,0 +1,37 @@
+$ date
+Wed Oct 17 11:13:57 PDT 2018
+
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 18.04.1 LTS
+Release:	18.04
+Codename:	bionic
+
+$ uname -a
+Linux p4dev 4.15.0-36-generic #39-Ubuntu SMP Mon Sep 24 16:19:09 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+
+$ find-RSA_set0_key.sh 
+                 U RSA_set0_key
+/usr/lib/x86_64-linux-gnu/libdns.so.1100  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
+                 U RSA_set0_key
+/usr/lib/x86_64-linux-gnu/libdns.so.1100.1.1  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
+                 U RSA_set0_key
+/usr/lib/x86_64-linux-gnu/libssh.so.4  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
+0000000000180090 T RSA_set0_key
+/usr/lib/x86_64-linux-gnu/libcrypto.so.1.1  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
+                 U RSA_set0_key
+/usr/lib/x86_64-linux-gnu/libssh.so.4.5.0  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
+                 U RSA_set0_key
+/usr/lib/python3/dist-packages/cryptography/hazmat/bindings/_openssl.abi3.so  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
+nm: /usr/lib/cups/backend/cups-brf: Permission denied
+
+U in nm output means 'The symbol is undefined'
+T in nm output means 'The sybmol is in the text (code) section'
+Read 'man nm' output for meanings of other letters.
+
+$ dpkg -S /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
+libssl1.1:amd64: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
+
+$ dpkg -L libssl1.1 | grep libcrypto
+/usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
