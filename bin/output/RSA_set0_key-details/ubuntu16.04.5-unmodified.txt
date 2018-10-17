@@ -11,6 +11,18 @@ Codename:	xenial
 $ uname -a
 Linux p4dev 4.15.0-36-generic #39~16.04.1-Ubuntu SMP Tue Sep 25 08:59:23 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 
+# large-pkgs.py is a Python script inside of repo
+# https://github.com/jafingerhut/dotfiles
+
+$ large-pkgs.py | grep ssl
+20 libnet-smtp-ssl-perl
+61 ssl-cert
+99 libgnutls-openssl27
+467 libio-socket-ssl-perl
+934 openssl
+1083 libnet-ssleay-perl
+3402 libssl1.0.0
+
 $ PATH=$HOME/p4-guide/bin:$PATH
 
 $ find-RSA_set0_key.sh
