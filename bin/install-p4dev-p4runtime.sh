@@ -124,7 +124,15 @@ then
     # Apply patches that seem to be necessary in order for grpc v1.3.2
     # to compile and install successfully on an Ubuntu 18.04 system
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.3.2-patches-for-ubuntu18.04"
-    for PATCH_FILE in openssl-1.1.0.diff no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
+
+    # I have tried with the openssl-1.1.0.diff patch applied, in addition
+    # to the others, but it leads to errors when building grpc on an Ubuntu
+    # 18.04.1 system, because of not being able to find the definition of
+    # a function RSA_set0_key.  Leave that patch out for now to see if
+    # things seem to work without it.
+    #for PATCH_FILE in openssl-1.1.0.diff no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
+
+    for PATCH_FILE in no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
     do
         patch -p1 < "${PATCH_DIR}/${PATCH_FILE}"
     done
