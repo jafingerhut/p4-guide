@@ -1,0 +1,21 @@
+$ date
+Wed Oct 17 14:32:25 PDT 2018
+
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 16.04.5 LTS
+Release:	16.04
+Codename:	xenial
+
+$ uname -a
+Linux p4dev 4.15.0-36-generic #39~16.04.1-Ubuntu SMP Tue Sep 25 08:59:23 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+
+$ PATH=$HOME/p4-guide/bin:$PATH
+
+$ find-RSA_set0_key.sh
+nm: /usr/lib/cups/backend/serial: Permission denied
+
+U in nm output means 'The symbol is undefined'
+T in nm output means 'The sybmol is in the text (code) section'
+Read 'man nm' output for meanings of other letters.

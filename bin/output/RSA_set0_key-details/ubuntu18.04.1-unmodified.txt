@@ -11,6 +11,8 @@ Codename:	bionic
 $ uname -a
 Linux p4dev 4.15.0-36-generic #39-Ubuntu SMP Mon Sep 24 16:19:09 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 
+$ PATH=$HOME/p4-guide/bin:$PATH
+
 $ find-RSA_set0_key.sh 
                  U RSA_set0_key
 /usr/lib/x86_64-linux-gnu/libdns.so.1100  <--- see previous line(s) for occurrences of RSA_set0_key in 'nm -D' output of this file
