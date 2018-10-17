@@ -72,6 +72,7 @@ echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
 df -h .
+df -BM .
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
@@ -128,8 +129,8 @@ then
     # I have tried with the openssl-1.1.0.diff patch applied, in addition
     # to the others, but it leads to errors when building grpc on an Ubuntu
     # 18.04.1 system, because of not being able to find the definition of
-    # a function RSA_set0_key.  Leave that patch out for now to see if
-    # things seem to work without it.
+    # a function RSA_set0_key.  Leave that patch out for now, since things
+    # to build better without it.
     #for PATCH_FILE in openssl-1.1.0.diff no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
 
     for PATCH_FILE in no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
@@ -146,9 +147,6 @@ make clean
 
 echo "end install grpc:"
 date
-
-# Stop here prematurely for now, since the grpc install often fails
-#exit 0
 
 
 # Dependencies recommended to install libyang, from proto/README.md in
@@ -318,6 +316,7 @@ echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
 date
 df -h .
+df -BM .
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
