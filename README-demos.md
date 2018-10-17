@@ -16,6 +16,17 @@ A very simple program that only does these things:
   * look up the output port number to get a new source MAC address
   * calculate a new IPv4 header checksum
 
+See the instructions in the file [`README.md`](demo1/README.md) if you
+want to use `simple_switch` using the Thrift API for communicating
+from a simple CLI "controller" process.
+
+Use the alternate instructions in
+[`README-p4runtime.md`](demo1/README-p4runtime.md) if you want to use
+`simple_switch_grpc`, which can still use the Thrift API, but it
+intended for using the newer P4Runtime API for communicating from a
+controller process (in the example run, it is an interactive Python
+session acting as the controller).
+
 
 ### demo2
 
