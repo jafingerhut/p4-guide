@@ -13,20 +13,15 @@ Running that command will create these files:
         the P4 source program.
     demo1.p4_16.json - the JSON file format expected by BMv2
         behavioral model `simple_switch`.
-    demo1.p4_16.p4rt - the binary format of the file that describes
+    demo1.p4_16.p4rt.txt - the text format of the file that describes
         the P4Runtime API of the program.
 
-Only the two files with the `.json` suffix are needed to run your P4
-program.  You can ignore the file with suffix `.p4i` unless you
-suspect that the preprocessor is doing something unexpected with your
-program.
+Only the lasat two files are needed to run your P4 program.  You can
+ignore the file with suffix `.p4i` unless you suspect that the
+preprocessor is doing something unexpected with your program.
 
-To compile the P4_14 version of the code:
-
-    TBD: update this
-    p4c --std p4-14 --target bmv2 --arch v1model demo1.p4_14.p4
-                                                 ^^^^^^^^^^^^^^ source code
-        ^^^^^^^^^^^ specify P4_14 source code
+The P4Runtime API is targeted for use with P4_16.  I do not know of
+any plans to make it work with P4_14 programs.
 
 The .dot and .png files in the subdirectory 'graphs' were created with
 the p4c-graphs program, which is also installed when you build and
@@ -38,7 +33,7 @@ The '-I' option is only necessary if you did _not_ install the P4
 compiler in your system-wide /usr/local/bin directory.
 
 
-# Running
+# One-time setup
 
 Once after booting your system, you should run the sysrepod daemon
 using this command, preferably in a separate terminal window where you
@@ -47,9 +42,12 @@ can watch for error messages in its output:
     sudo sysrepod -d
 
 Run this command to install some YANG data models into the sysrepo
-daemon:
+daemon (`$P4_INSTALL` is just the directory above the one where you
+created your copy of the `PI` repository.  The variable is set for you
+if you do `source p4setup.bash` using the provided install script.
+Replace it with your own path if you did not use the install script):
 
-    sudo $PI_SYSREPO/install_yangs.sh
+    sudo $P4_INSTALL/PI/proto/sysrepo/install_yangs.sh
 
 Note: It is _normal_ to see many error messages in the window where
 you started `sysrepod` when this command is run.  To check whether the command had the intended side effect, run this command:
@@ -61,6 +59,7 @@ and compare to see if it is at least similar to the output here:
     https://github.com/p4lang/PI/blob/master/proto/README.md
 
 
+# Running simple_switch_grpc
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
@@ -96,6 +95,14 @@ install table entries:
 ```bash
 cd $P4INSTALL/p4-guide/demo1
 python
+
+# NOTE: For most interactive Python sessions, typing Ctrl-D or typing
+# the command `quit()` is enough to quit Python and go back to the
+# shell.  For this Python session, one or more of the commands below
+# cause this interactive session to 'hang' if you try that.  In the
+# most commonly used Linux/OSX shells you can type Ctrl-Z to put the
+# Python process in the background and return to the shell prompt.
+# You may want to kill the process, e.g. using `kill -9 %1` in bash.
 ```
 
 Enter these commands at the `>>> ` prompt of the Python session:
@@ -118,6 +125,10 @@ base_test.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4rt.txt', my_dev1_addr,
 h=base_test.P4RuntimeTest()
 h.setUp(my_dev1_addr, 'demo1.p4_16.p4rt.txt')
 ```
+
+Note: Unless the `simple_switch_grpc` process crashes, or you kill it
+yourself, you can continue to use the same running processes, loading
+different compiler P4 programs into them over time.
 
 ----------------------------------------------------------------------
 demo1.p4_14.p4 or demo1.p4_16.p4 (same commands work for both)
