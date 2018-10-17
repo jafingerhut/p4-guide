@@ -66,6 +66,8 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
+ubuntu_release=`lsb_release -s -r`
+
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
@@ -108,12 +110,21 @@ date
 cd "${INSTALL_DIR}"
 git clone https://github.com/google/grpc.git
 cd grpc
-git checkout tags/v1.3.2
+if [[ "${ubuntu_release}" > "18" ]]
+then
+    # Versions older than this one, at least v1.6.0 and older that I tried,
+    # all fail due to warnings with Ubuntu 18.04's newer version of GCC,
+    # which the grpc makefile options for GCC turn into errors.
+    git checkout tags/v1.7.0
+else
+    # This version works fine with Ubuntu 16.04
+    git checkout tags/v1.3.2
+fi
 git submodule update --init --recursive
 make
 sudo make install
 sudo ldconfig
-# Save about 0.08G of storage by cleaning up protobuf build
+# Save about 0.5G of storage by cleaning up grpc v1.7.0 build
 make clean
 
 echo "end install grpc:"
