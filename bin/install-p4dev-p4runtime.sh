@@ -115,7 +115,9 @@ then
     # Versions older than this one fail due to warnings with Ubuntu
     # 18.04's newer version of GCC, which the grpc makefile options
     # for GCC turn into errors.
-    git checkout tags/v1.11.0
+    #git checkout tags/v1.7.0 - succeeded once, then failed on fresh run?
+    #git checkout tags/v1.11.0 - succeeded once, then failed on fresh run?
+    git checkout tags/v1.12.0
 else
     # This version works fine with Ubuntu 16.04
     git checkout tags/v1.3.2
