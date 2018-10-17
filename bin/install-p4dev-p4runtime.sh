@@ -132,6 +132,9 @@ make clean
 echo "end install grpc:"
 date
 
+# Stop here prematurely for now, since the grpc install often fails
+exit 0
+
 
 # Dependencies recommended to install libyang, from proto/README.md in
 # p4lang/PI repo:
