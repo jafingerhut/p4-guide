@@ -15,10 +15,6 @@
 # limitations under the License.
 
 
-# Install the P4-16 (and also P4-14) compiler, and the behavioral-model
-# software packet forwarding program, that can behave as just about
-# any legal P4 program.
-
 # This script differs from install-p4dev.sh as follows:
 
 # install-p4dev.sh has build steps to build the behavioral-model
@@ -34,23 +30,12 @@
 # supports Thrift, but this is only intended as a debugging aid,
 # e.g. to show table contents using the simple_switch_CLI program.
 
-# You will likely need to enter your password for multiple uses of 'sudo'
-# spread throughout this script.
-
-# The files installed by this script consume about 7 GB of disk
-# space.
-
-# On a 2015 MacBook Pro with a decent speed Internet connection and an
-# SSD drive, it took 48 mins.
-
 # Size of the largest 3 source trees, after being built on an x86_64
 # machine, without documentation:
 # grpc - 0.7G
 # p4c - 1.4G
 # behavioral-model - 2.5G
 
-# This script has been tested on a freshly installed Ubuntu 16.04
-# system, from a file with this name: ubuntu-16.04.5-desktop-amd64.iso
 
 # The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
 # take 1 to 1.5G of RAM, and the build will fail if you run out of RAM,
@@ -67,6 +52,23 @@ THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_release=`lsb_release -s -r`
+
+echo "This script builds and installs the P4-16 (and also P4-14)"
+echo "compiler, and the behavioral-model software packet forwarding"
+echo "program, that can behave as just about any legal P4 program."
+echo ""
+echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
+echo "with all Ubuntu software updates as of 2018-Oct-17, and a"
+echo "similarly updated Ubuntu 18.04 system."
+echo ""
+echo "The files installed by this script consume about 7 GB of disk space."
+echo ""
+echo "On a 2015 MacBook Pro with a decent speed Internet connection and an"
+echo "SSD drive, it took 48 minutes."
+echo ""
+echo "You will likely need to enter your password for multiple uses of"
+echo "'sudo' spread throughout this script."
+
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
