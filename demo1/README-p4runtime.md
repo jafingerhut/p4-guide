@@ -16,7 +16,7 @@ Running that command will create these files:
     demo1.p4_16.p4rt.txt - the text format of the file that describes
         the P4Runtime API of the program.
 
-Only the lasat two files are needed to run your P4 program.  You can
+Only the last two files are needed to run your P4 program.  You can
 ignore the file with suffix `.p4i` unless you suspect that the
 preprocessor is doing something unexpected with your program.
 
@@ -29,28 +29,31 @@ install p4c:
 
      p4c-graphs -I $HOME/p4c/p4include demo1.p4_16.p4
 
-The '-I' option is only necessary if you did _not_ install the P4
+The `-I` option is only necessary if you did _not_ install the P4
 compiler in your system-wide /usr/local/bin directory.
 
 
 # One-time setup
 
-Once after booting your system, you should run the sysrepod daemon
-using this command, preferably in a separate terminal window where you
-can watch for error messages in its output:
+Once after booting your system, you should run the `sysrepod` daemon
+using the command below, preferably in a separate terminal window
+where you can watch for error messages in its output:
 
     sudo sysrepod -d
 
-Run this command to install some YANG data models into the sysrepo
-daemon (`$P4_INSTALL` is just the directory above the one where you
-created your copy of the `PI` repository.  The variable is set for you
-if you do `source p4setup.bash` using the provided install script.
-Replace it with your own path if you did not use the install script):
+Run the next command to install some YANG data models into the running
+`sysrepo` process.  `$P4_INSTALL` is just the directory above the one
+where you created your copy of the `PI` repository.  A shell variable
+with that name is created for you if you have done `source
+p4setup.bash` on the `p4setup.bash` file that was created using the
+provided install script.  You can create a brand new clone of the
+`p4lang/PI` repository if you do not have one handy.
 
     sudo $P4_INSTALL/PI/proto/sysrepo/install_yangs.sh
 
 Note: It is _normal_ to see many error messages in the window where
-you started `sysrepod` when this command is run.  To check whether the command had the intended side effect, run this command:
+you started `sysrepod` when this command is run.  To check whether the
+command had the intended side effect, run this command:
 
     sysrepoctl -l
 
@@ -93,16 +96,16 @@ compiled P4 program into the running `simple_switch_grpc` process, and
 install table entries:
 
 ```bash
-cd $P4INSTALL/p4-guide/demo1
+cd p4-guide/demo1
 python
 
-# NOTE: For most interactive Python sessions, typing Ctrl-D or typing
-# the command `quit()` is enough to quit Python and go back to the
-# shell.  For this Python session, one or more of the commands below
-# cause this interactive session to 'hang' if you try that.  In the
-# most commonly used Linux/OSX shells you can type Ctrl-Z to put the
-# Python process in the background and return to the shell prompt.
-# You may want to kill the process, e.g. using `kill -9 %1` in bash.
+# NOTE: For most interactive Python sessions, typing Ctrl-D or the
+# command `quit()` is enough to quit Python and go back to the shell.
+# For this Python session, one or more of the commands below cause
+# this interactive session to 'hang' if you try that.  In the most
+# commonly used Linux/OSX shells you can type Ctrl-Z to put the Python
+# process in the background and return to the shell prompt.  You may
+# want to kill the process, e.g. using `kill -9 %1` in bash.
 ```
 
 Enter these commands at the `>>> ` prompt of the Python session:
@@ -110,37 +113,46 @@ Enter these commands at the `>>> ` prompt of the Python session:
 ```python
 # Note: 50051 is the default TCP port number on which the
 # simple_switch_grpc process is listening for connections.
+
 my_dev1_addr='localhost:50051'
 my_dev1_id=0
-
 import base_test
 
-# Convert BMv2 JSON file from p4c compiler into the binary format
-# expected by BMv2 over P4Runtime.
+# Convert the BMv2 JSON file demo1.p4_16.json, created by the p4c
+# compiler, into the binary format file demo1.p4_16.bin expected by
+# simple_switch_grpc.  We will send this binary file to
+# simple_switch_grpc over the P4Runtime connection.
+
 base_test.bmv2_json_to_device_config('demo1.p4_16.json', 'demo1.p4_16.bin')
 
 # Load the binary version of the compiled P4 program, and the text
-# version of the P4Runtime info file, into the device.
+# version of the P4Runtime info file, into the simple_switch_grpc
+# 'device'.
+
 base_test.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4rt.txt', my_dev1_addr, my_dev1_id)
 h=base_test.P4RuntimeTest()
 h.setUp(my_dev1_addr, 'demo1.p4_16.p4rt.txt')
 ```
 
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it
-yourself, you can continue to use the same running processes, loading
-different compiler P4 programs into them over time.
+yourself, you can continue to use the same running process, loading
+different compiled P4 programs into it over time, repeating the
+`base_test.update_config` call above with the same or different file
+names.
 
 ----------------------------------------------------------------------
-demo1.p4_14.p4 or demo1.p4_16.p4 (same commands work for both)
+demo1.p4_16.p4
 ----------------------------------------------------------------------
 
 ```python
 # The full names of the tables and actions begin with 'ingress.' or
 # 'egress.', but some layer of software between here and there adds
-# these on for you, as long as the table/action name is unique after
-# that point.
+# these prefixes for you, as long as the table/action name is unique
+# after that point.
 
-# assign default actions for tables using a key of None
+# assign default actions for tables using an empty key, represented by
+# None in Python.
+
 h.table_add('ipv4_da_lpm', None, 'my_drop', [])
 h.table_add('mac_da', None, 'my_drop', [])
 h.table_add('send_frame', None, 'my_drop', [])
@@ -148,15 +160,16 @@ h.table_add('send_frame', None, 'my_drop', [])
 # add new non-default table entries by filling in at least one key field
 
 # base_test.ipv4_to_binary takes an IPv4 address written as a string
-# in dotted decimal notation, and converts it to a string with binary
-# contents expected by table add operation.
+# in dotted decimal notation, e.g. '10.1.2.3', and converts it to a
+# string with binary contents expected by the table add operation.
 
 # base_test.mac_to_binary is similar, but takes a MAC address as a
-# string, with colons separating each byte, specified in hex.
+# string, with colons separating each byte, specified in hex,
+# e.g. '00:de:ad:be:ef:ff'.
 
 # base_test.stringify takes an integer value, and an integer width in
-# _bytes_ as the second parameter, and returns a string with binary
-# contents expected by table add operation.
+# units of _bytes_ as the second parameter, and returns a string with
+# binary contents expected by the table add operation.
 
 # Define a few small helper functions that help construct parameters
 # for the function table_add()
@@ -199,7 +212,11 @@ h.table_add('mac_da', mac_da_key(h, 81), 'set_bd_dmac_intf', set_bd_dmac_intf_pa
 h.table_add('send_frame', send_frame_key(h, 15), 'rewrite_mac', rewrite_mac_params(h, 'ca:fe:ba:be:d0:0d'))
 ```
 
-You can examine the existing entries in a table using the
+TBD: Let me know if you find a way to read table entries using the
+P4Runtime API via the interactive Python session created above.  There
+must be a way.
+
+Until then, you can examine the existing entries in a table using the
 `simple_switch_CLI` command (best from a separate terminal window)
 with the 'table_dump' command:
 
@@ -226,6 +243,12 @@ Dumping default entry
 Action entry: my_drop - 
 ==========
 ```
+
+WARNING: Nothing in these programs will stop you from modifying the
+table entries, or other switch state, from the `simple_switch_CLI`
+program, but if you do so, you will likely cause state maintained by
+the P4Runtime API to become stale with respect to what is in the
+switch.  Don't do this unless you like causing yourself confusion.
 
 
 ----------------------------------------------------------------------

@@ -32,7 +32,7 @@ install p4c:
 
      p4c-graphs -I $HOME/p4c/p4include demo1.p4_16.p4
 
-The '-I' option is only necessary if you did _not_ install the P4
+The `-I` option is only necessary if you did _not_ install the P4
 compiler in your system-wide /usr/local/bin directory.
 
 
