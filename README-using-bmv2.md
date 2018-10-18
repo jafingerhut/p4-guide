@@ -14,7 +14,9 @@ hundreds of developers.
 However, the purpose of these demos is not to teach you how to set
 that up.  The focus here is on learning how P4 programs behave, by
 using a P4 program for processing data packets, and running it on an
-open source switch emulator software called `simple_switch`.
+open source switch emulator software called `simple_switch` (or the
+similar program `simple_switch_grpc` program, but we will often simply
+say `simple_switch` here to refer to either program).
 
 Instead of loading the compiled P4 program into a switch ASIC, you
 will start up the `simple_switch` process as a normal process running
@@ -42,17 +44,31 @@ ports.  The instructions here show a few examples of how to use a
 Python library called Scapy for that purpose.
 
 Instead of running a complex collection of control plane software, you
-will be running a tiny program called `simple_switch_CLI` which lets
-you have complete control over exactly which table entries are added
-to the tables of your P4 program.  This is not good for a production
-switch, as such a thing might require adding hundreds or thousands of
-table entries before it is in a sufficiently usable state.  It _is_
-good for the demo P4 programs here, which typically only need 3 to 5
-table entries to be added in order to forward packets.  By requiring
-you to add any necessary table entries via a relatively simple command
-line interface, you can be fully aware of exactly which table entries
-have been installed, because if you didn't enter the command to add
-it, it will not be there.
+will be running simple programs that gives you complete control over
+exactly which table entries are added to the tables of your P4
+program.
+
++ If you use the newer P4Runtime API with `simple_switch_grpc`, there
+  are instructions (currently only for the demo1 program) for running an
+  interactive Python session using a small library that creates the
+  necessary P4Runtime request messages and sends them to the
+  `simple_switch_grpc` process.
++ If you are using the older Thrift API with `simple_switch`
+  (`simple_switch_grpc` can also accept such connections), there are
+  instructions for running a tiny program called `simple_switch_CLI`
+  that has its own custom syntax for commands to add, delete, and
+  modify table entries, and other controller operations.
+
+Using a simple command line interface for adding all table entries is
+not good for a production switch, as such a device might require
+adding hundreds or thousands of table entries before it is in a
+sufficiently usable state.  It _is_ good for the demo P4 programs
+here, which typically only need 3 to 5 table entries to be added in
+order to forward packets.  By requiring you to add any necessary table
+entries via a relatively simple command line interface, you can be
+fully aware of exactly which table entries have been installed,
+because if you did not enter the command to add it, it will not be
+there.
 
 The instructions here, unlike the ones in the `p4lang/tutorials`
 repository, have you run only a single emulated switch at a time.
@@ -66,38 +82,44 @@ easier to debug when things are not behaving as you expect.
 Recommendations for a machine (or virtual machine) that you use solely
 for the purpose of building P4 open source tools:
 
-+ RAM - At least 2 GB (1 GB is definitely too small)
-+ disk - 11 GB is barely enough for Ubuntu 16.04 Desktop Linux OS plus
++ RAM - At least 2 GB, 4 GB recommended (1 GB is definitely too small)
++ disk - 13 GB is barely enough for Ubuntu 18.04 Desktop Linux OS plus
   build of p4lang/behavioral-model and p4lang/p4c, leaving
   intermediate build files on disk for quicker rebuilding.  Add more
-  as you wish for other tools and/or data files.  Before running the
-  install-p4dev.sh script linked below, you must have at least 4 GB of
-  disk space free on the Ubuntu machine's disk.
+  as you wish for other programs, data files, and room to grow.
+  Before running the install-p4dev.sh script linked below, you must
+  have at least 4 GB of disk space free on the Ubuntu machine's disk
+  (7 GB free is required for install-p4dev-p4runtime.sh)
 + number of CPU cores / virtual CPUs - 1 is enough, but the p4c build
   can take advantage of 4 CPU cores in parallel, so 2 or 4 will speed
   up some things.
 
 Clone the p4lang git repositories named below and follow their README
-build/install instructions, or use the shell script
-[bin/install-p4dev.sh](bin/install-p4dev.sh) to do it for you on an
-Ubuntu 16.04 Linux machine.
+build/install instructions, or run one of these shell scripts to do it
+for you on an Ubuntu 16.04 or 18.04 Linux system:
+
++ [bin/install-p4dev.sh](bin/install-p4dev.sh) - Builds
+  `simple_switch` that requires a Thrift API connection from a
+  controller, like the `simple_switch_CLI` process.
++ [bin/install-p4dev-p4runtime.sh](bin/install-p4dev-p4runtime.sh) -
+  Builds the above, but also a `simple_switch_grpc` program that can
+  accept connections from controller programs that use the newer
+  P4Runtime API.
 
 From following install instructions for `p4lang/behavioral-model`
 repository (including the `sudo make install` step), all of these
 should exist in /usr/local/bin:
 
-    bm_CLI
-    bm_nanomsg_events
-    bm_p4dbg
     simple_switch
     simple_switch_CLI
+    simple_switch_grpc (if you follow instructions or use the script
+        that installs this program)
 
 From following install instructions for `p4lang/p4c` repository, these
 should exist in `$P4C/build`, where `P4C` is a shell variable
 containing the path to your copy of the `p4lang/p4c` repository.
 
     p4c
-    p4c-bm2-ss
 
 [Historical note: There is also a `p4lang/p4c-bm` repository whose
 install instructions will result in the following file in
@@ -105,10 +127,10 @@ install instructions will result in the following file in
 
     p4c-bmv2
 
-However, note that p4c-bmv2 only compiles P4_14 programs, whereas
-p4c-bm2-ss above can compile both P4_14 and P4_16 programs.  p4c-bmv2
-may be somewhat more feature complete than p4c-bm2-ss as of July 2017,
-still, but p4c-bm2-ss is getting there.]
+However, note that p4c-bmv2 only compiles P4_14 programs, whereas p4c
+can compile both P4_14 and P4_16 programs.  As of October 2018, p4c
+should have implemented most or all of the features that p4c-bmv2
+has.]
 
 
 # Recommended path changes for your shell
@@ -119,6 +141,11 @@ command path, e.g. for bash:
     P4C=/path/to/your/copy/of/p4c
     BMV2=/path/to/your/copy/of/behavioral-model
     export PATH=$P4C/build:$BMV2/tools:/usr/local/bin:$PATH
+
+If you use one of the shell scripts linked above to do the install
+steps for you, they create `p4setup.bash` and `p4setup.csh` files you
+can `source` or copy into your shell's init scripts, that do the above
+and a bit more.
 
 
 # Other useful commands
@@ -144,14 +171,14 @@ veth6.
 
 To watch packets cross veth2 and veth6 as they occur, tcpdump and
 tshark are 2 similar programs.  You only need one of them.  Use
-tcpdump if you aren't sure which one to use.  tcpdump is simpler and
+tcpdump if you are not sure which one to use.  tcpdump is simpler and
 does not parse as many different kinds of packet headers.  tshark is a
 text version of Wireshark, and can parse more packet header types than
 I have ever heard of.
 
     # tcpdump options used:
     # -e Print the link-level header (i.e. Ethernet) on each dump line.
-    # -n Don't convert addresses to names
+    # -n Do not convert addresses to names
     # --number Print an optional packet number at the beginning of the line.
     # -v slightly more verbose output, e.g. TTL values
 
@@ -313,7 +340,7 @@ believe that the behavior of `run-bmv2-test.py` is to use the file
 `empty.stf` in that directory instead.  In this case, I believe no
 `simple_switch` process is started by `run-bmv2-test.py` - it just
 compiles the source files and checks whether the compiler crashed,
-gave errors or warnings, etc. (I believe - I haven't gone through that
+gave errors or warnings, etc. (I believe - I have not gone through that
 carefully yet).
 
 After running `run-bmv2-test.py` with the options above, you should be
