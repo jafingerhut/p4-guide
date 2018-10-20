@@ -12,7 +12,7 @@ Running that command will create these files:
     demo1.p4_16.p4i - the output of running only the preprocessor on
         the P4 source program.
     demo1.p4_16.json - the JSON file format expected by BMv2
-        behavioral model `simple_switch`.
+        behavioral model `simple_switch_grpc`.
     demo1.p4_16.p4rt.txt - the text format of the file that describes
         the P4Runtime API of the program.
 
@@ -73,7 +73,7 @@ To get the log to go to a file instead of the console:
     sudo simple_switch_grpc --log-file ss-log --log-flush -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 --no-p4
 
 CHECK THIS: If you see "Add port operation failed" messages in the
-output of the simple_switch command, it means that one or more of the
+output of the simple_switch_grpc command, it means that one or more of the
 virtual Ethernet interfaces veth2, veth4, etc. have not been created
 on your system.  Search for "veth" in the file
 [`README-using-bmv2.md`](../README-using-bmv2.md`) (top level
