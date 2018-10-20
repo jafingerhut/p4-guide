@@ -4,8 +4,8 @@ graph [
 label="", labeljust=r, style=bold];
 0[label=__START__, margin="", shape=rectangle, style=solid];
 1[label=__EXIT__, margin="", shape=rectangle, style=solid];
-2[label=ipv4_da_lpm, margin="", shape=ellipse, style=solid];
-3[label=mac_da, margin="", shape=ellipse, style=solid];
+2[label="ingress.ipv4_da_lpm", margin="", shape=ellipse, style=solid];
+3[label="ingress.mac_da", margin="", shape=ellipse, style=solid];
 0 -> 2[label=""];
 2 -> 3[label=""];
 3 -> 1[label=""];

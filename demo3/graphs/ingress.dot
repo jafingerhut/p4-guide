@@ -4,13 +4,13 @@ graph [
 label="", labeljust=r, style=bold];
 0[label=__START__, margin="", shape=rectangle, style=solid];
 1[label=__EXIT__, margin="", shape=rectangle, style=solid];
-2[label=compute_ipv4_hashes, margin="", shape=ellipse, style=solid];
-3[label=ipv4_da_lpm, margin="", shape=ellipse, style=solid];
+2[label="ingress.compute_ipv4_hashes", margin="", shape=ellipse, style=solid];
+3[label="ingress.ipv4_da_lpm", margin="", shape=ellipse, style=solid];
 4[label="meta.fwd_metadata.nexthop_type != 0;", margin="", shape=rectangle, style=solid];
-5[label=ecmp_group, margin="", shape=ellipse, style=solid];
+5[label="ingress.ecmp_group", margin="", shape=ellipse, style=solid];
 6[label="meta.fwd_metadata.nexthop_type != 0;", margin="", shape=rectangle, style=solid];
-7[label=ecmp_path, margin="", shape=ellipse, style=solid];
-8[label=mac_da, margin="", shape=ellipse, style=solid];
+7[label="ingress.ecmp_path", margin="", shape=ellipse, style=solid];
+8[label="ingress.mac_da", margin="", shape=ellipse, style=solid];
 0 -> 2[label=""];
 2 -> 3[label=""];
 3 -> 4[label=""];
