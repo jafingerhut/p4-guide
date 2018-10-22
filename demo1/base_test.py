@@ -18,6 +18,12 @@
 #
 #
 
+# Andy Fingerhut (andy.fingerhut@gmail.com)
+#
+# This file was copied and then slightly modified from the file
+# PI/proto/ptf/base_test.py in the https://github.com/p4lang/PI
+# repository.
+
 from collections import Counter
 from functools import wraps, partial
 import re
@@ -218,6 +224,7 @@ class P4RuntimeTest():
             google.protobuf.text_format.Merge(fin.read(), self.p4info)
 
         self.import_p4info_names()
+        self.import_p4info_ids()
 
         # used to store write requests sent to the P4Runtime server, useful for
         # autocleanup of tests (see definition of autocleanup decorator below)
@@ -243,6 +250,20 @@ class P4RuntimeTest():
         for key, c in suffix_count.items():
             if c > 1:
                 del self.p4info_obj_map[key]
+
+    def import_p4info_ids(self):
+        self.p4info_id_to_obj_map = {}
+        for obj_type in ["tables", "action_profiles", "actions", "counters",
+                         "direct_counters"]:
+            for obj in getattr(self.p4info, obj_type):
+                pre = obj.preamble
+                key = (obj_type, pre.id)
+                assert key not in self.p4info_id_to_obj_map
+                self.p4info_id_to_obj_map[key] = obj
+
+    def get_obj_by_id(self, obj_type, id):
+        key = (obj_type, id)
+        return self.p4info_id_to_obj_map[key]
 
     def set_up_stream(self):
         self.stream_out_q = Queue.Queue()
@@ -545,6 +566,32 @@ class P4RuntimeTest():
         return self.send_request_add_entry_to_action(table_name, key,
                                                      action_name, action_params)
 
+    def table_dump_helper(self, request):
+        for response in self.stub.Read(request):
+            yield response
+
+    def table_dump_data(self, table_name):
+        req = p4runtime_pb2.ReadRequest()
+        req.device_id = self.device_id
+        entity = req.entities.add()
+        table = entity.table_entry
+        table.table_id = self.get_table_id(table_name)
+        if table_name is None:
+            table_entry.table_id = 0
+        else:
+            table.table_id = self.get_table_id(table_name)
+        table_entries = []
+        for response in self.table_dump_helper(req):
+            for entity in response.entities:
+                #print('entity.WhichOneof("entity")="%s"'
+                #      '' % (entity.WhichOneof('entity')))
+                assert entity.WhichOneof('entity') == 'table_entry'
+                entry = entity.table_entry
+                table_entries.append(entry)
+                #print(entry)
+                #print('----')
+        return table_entries
+
     def push_update_add_entry_to_member(self, req, t_name, mk, mbr_id):
         update = req.updates.add()
         update.type = p4runtime_pb2.Update.INSERT
@@ -645,8 +692,8 @@ def autocleanup(f):
 
 
 # I copied and modified the function bmv2_json_to_device_config() from
-# some similar code in the p4lang/PI repository file
-# PI/proto/ptf/bmv2/gen_bmv2_config.py
+# some similar code in the https://github.com/p4lang/PI repository
+# file PI/proto/ptf/bmv2/gen_bmv2_config.py
 
 def bmv2_json_to_device_config(bmv2_json_fname, bmv2_bin_fname):
     with open(bmv2_bin_fname, 'wf') as f_out:
@@ -655,8 +702,9 @@ def bmv2_json_to_device_config(bmv2_json_fname, bmv2_bin_fname):
             device_config.device_data = f_json.read()
             f_out.write(device_config.SerializeToString())
 
-# Copied update_config from the p4lang/PI repository in file
-# PI/proto/ptf/ptf_runner.py, then modified it slightly:
+# Copied update_config from the https://github.com/p4lang/PI
+# repository in file PI/proto/ptf/ptf_runner.py, then modified it
+# slightly:
 
 def update_config(config_path, p4info_path, grpc_addr, device_id):
     '''
