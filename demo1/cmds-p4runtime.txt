@@ -1,0 +1,109 @@
+# Commands copied from README-p4runtime.md, for convenience
+
+my_dev1_addr='localhost:50051'
+my_dev1_id=0
+import base_test
+base_test.bmv2_json_to_device_config('demo1.p4_16.json', 'demo1.p4_16.bin')
+base_test.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4rt.txt', my_dev1_addr, my_dev1_id)
+h=base_test.P4RuntimeTest()
+h.setUp(my_dev1_addr, 'demo1.p4_16.p4rt.txt')
+h.table_add('ipv4_da_lpm', None, 'my_drop', [])
+h.table_add('mac_da', None, 'my_drop', [])
+h.table_add('send_frame', None, 'my_drop', [])
+
+def ipv4_da_lpm_key(h, ipv4_addr_string, prefix_len):
+    return [h.Lpm('hdr.ipv4.dstAddr',
+                  base_test.ipv4_to_binary(ipv4_addr_string), prefix_len)]
+
+def set_l2ptr_params(h, l2ptr_int_val):
+    return [('l2ptr', base_test.stringify(l2ptr_int_val, 4))]
+
+def mac_da_key(h, l2ptr_int_val):
+    return [h.Exact('meta.fwd_metadata.l2ptr',
+                    base_test.stringify(l2ptr_int_val, 4))]
+
+def set_bd_dmac_intf_params(h, bd_int_val, dmac_string, intf_int_val):
+    return [('bd', base_test.stringify(bd_int_val, 3)),
+            ('dmac', base_test.mac_to_binary(dmac_string)),
+	    ('intf', base_test.stringify(intf_int_val, 2))]
+
+def send_frame_key(h, bd_int_val):
+    return [h.Exact('meta.fwd_metadata.out_bd',
+                    base_test.stringify(bd_int_val, 3))]
+
+def rewrite_mac_params(h, smac_string):
+    return [('smac', base_test.mac_to_binary(smac_string))]
+
+h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.1.0.1', 32), 'set_l2ptr', set_l2ptr_params(h, 58))
+h.table_add('mac_da', mac_da_key(h, 58), 'set_bd_dmac_intf', set_bd_dmac_intf_params(h, 9, '02:13:57:ab:cd:ef', 2))
+h.table_add('send_frame', send_frame_key(h, 9), 'rewrite_mac', rewrite_mac_params(h, '00:11:22:33:44:55'))
+h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.2.0.0', 16), 'set_l2ptr', set_l2ptr_params(h, 60))
+h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '12.13.14.15', 32), 'set_l2ptr', set_l2ptr_params(h, 67))
+
+# Now we have at least 3 table entries in ipv4_da_lpm table
+
+d = h.table_dump_data('ipv4_da_lpm')
+
+
+from p4.v1 import p4runtime_pb2
+req = p4runtime_pb2.ReadRequest()
+req.device_id = h.device_id
+entity = req.entities.add()
+table = entity.table_entry
+table.table_id = h.get_table_id('ipv4_da_lpm')
+
+# debugging
+req
+type(req)    # p4.v1.p4runtime_pb2.ReadRequest
+
+# Try sending ReadRequest:
+rep = h.stub.Read(req)
+type(rep)
+# -> <class 'grpc._channel._Rendezvous'>
+
+resp=list(rep)
+len(resp)
+# -> 1
+
+r1=resp[0]
+type(r1)
+# -> <class 'p4.v1.p4runtime_pb2.ReadResponse'>
+
+
+# I got names of fields of messags from file
+# PI/proto/p4runtime/proto/p4/v1/p4runtime.proto
+
+type(r1.entities)
+# -> <type 'google.protobuf.pyext._message.RepeatedCompositeContainer'>
+type(r1.complete)
+# -> <type 'bool'>
+
+r1.complete
+# -> False
+
+# TBD: How do I get the entire response?  r1.complete = False leads me
+# to believe this is only the beginning of the response, not all of
+# it.
+
+r11=r1.entities[0]
+type(r11)
+# -> <class 'p4.v1.p4runtime_pb2.Entity'>
+
+# TBD; No error occurs when I look at all of the 'oneof' fields of an
+# Entity.  In the Python Protobuf bindings, how do I determine which
+# of them is the one that is valid?
+
+>>> r11.extern_entry
+
+>>> r11.digest_entry
+
+>>> type(r11.table_entry)
+<class 'p4.v1.p4runtime_pb2.TableEntry'>
+
+>>> dir(r11)
+
+The output was long, but helped me find 'WhichOneof'.  I searched on
+Internet for that and protobuf, and found this:
+
+r11.WhichOneof('entity')
+# -> 'table_entry'
