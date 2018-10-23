@@ -78,18 +78,15 @@ df -BM .
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
-sudo apt --yes install git vim
+sudo apt-get --yes install git vim
 
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
-sudo apt --yes install autoconf automake libtool curl make g++ unzip
+sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 
-# Several packages install PkgConfig files, and if your system does
-# not already have pkg-config installed when trying to execute the
-# p4lang/PI part of this script, it fails to find pkg-config but keeps
-# going.  It being absent then might be causing problems in p4lang/PI
-# install, so try installing it early here.
-sudo apt --yes install pkg-config
+# Install pkg-config here, as it is required for p4lang/PI
+# installation to succeed.
+sudo apt-get --yes install pkg-config
 
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
@@ -153,7 +150,7 @@ date
 
 # Dependencies recommended to install libyang, from proto/README.md in
 # p4lang/PI repo:
-sudo apt --yes install build-essential cmake libpcre3-dev libavl-dev libev-dev libprotobuf-c-dev protobuf-c-compiler
+sudo apt-get --yes install build-essential cmake libpcre3-dev libavl-dev libev-dev libprotobuf-c-dev protobuf-c-compiler
 
 echo "------------------------------------------------------------"
 echo "Installing libyang, needed for installing p4lang/PI"
@@ -203,7 +200,7 @@ echo "start install PI:"
 date
 
 # Deps needed to build PI:
-sudo apt --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+sudo apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 
 cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/PI
@@ -284,7 +281,7 @@ date
 
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2018-Aug-13
-sudo apt --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
+sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
 
 cd "${INSTALL_DIR}"
 # Clone p4c and its submodules:
