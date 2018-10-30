@@ -88,6 +88,7 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # installation to succeed.
 sudo apt-get --yes install pkg-config
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-1-before-protobuf.txt
 
 echo "------------------------------------------------------------"
@@ -110,6 +111,7 @@ make clean
 echo "end install protobuf:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-2-after-protobuf.txt
 
 echo "------------------------------------------------------------"
@@ -117,7 +119,6 @@ echo "Installing grpc, needed for installing p4lang/PI"
 echo "start install grpc:"
 date
 
-cd "${INSTALL_DIR}"
 git clone https://github.com/google/grpc.git
 cd grpc
 # This version works fine with Ubuntu 16.04
@@ -150,6 +151,7 @@ make clean
 echo "end install grpc:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-3-after-grpc.txt
 
 # Dependencies recommended to install libyang, from proto/README.md in
@@ -161,7 +163,6 @@ echo "Installing libyang, needed for installing p4lang/PI"
 echo "start install libyang:"
 date
 
-cd "${INSTALL_DIR}"
 git clone https://github.com/CESNET/libyang.git
 cd libyang
 git checkout v0.16-r1
@@ -176,6 +177,7 @@ sudo ldconfig
 echo "end install libyang:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-4-after-libyang.txt
 
 echo "------------------------------------------------------------"
@@ -183,7 +185,6 @@ echo "Installing sysrepo, needed for installing p4lang/PI"
 echo "start install sysrepo:"
 date
 
-cd "${INSTALL_DIR}"
 git clone https://github.com/sysrepo/sysrepo.git
 cd sysrepo
 git checkout v0.7.5
@@ -198,6 +199,7 @@ sudo ldconfig
 echo "end install sysrepo:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-5-after-sysrepo.txt
 
 echo "------------------------------------------------------------"
@@ -208,7 +210,6 @@ date
 # Deps needed to build PI:
 sudo apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 
-cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/PI
 cd PI
 git submodule update --init --recursive
@@ -234,6 +235,7 @@ make clean
 echo "end install PI:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-6-after-PI.txt
 
 echo "------------------------------------------------------------"
@@ -252,7 +254,6 @@ date
 # also the `--with-sysrepo` configure flag, which this script will do.
 # That should all have been done by this time, by the script above.
 
-cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/behavioral-model.git
 cd behavioral-model
 # This command installs Thrift, which I want to include in my build of
@@ -280,6 +281,7 @@ sudo make install
 echo "end install behavioral-model:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-7-after-behavioral-model.txt
 
 echo "------------------------------------------------------------"
@@ -291,7 +293,6 @@ date
 # Matches latest p4c README.md instructions as of 2018-Aug-13
 sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
 
-cd "${INSTALL_DIR}"
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
 cd p4c
@@ -304,6 +305,7 @@ make -j${MAX_PARALLEL_JOBS}
 echo "end install p4c:"
 date
 
+cd "${INSTALL_DIR}"
 find /usr/local > usr-local-8-after-p4c.txt
 
 echo "------------------------------------------------------------"
@@ -327,6 +329,7 @@ date
 df -h .
 df -BM .
 
+cd "${INSTALL_DIR}"
 diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
 diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
 diff usr-local-3-after-grpc.txt usr-local-4-after-libyang.txt > usr-local-file-changes-libyang.txt
