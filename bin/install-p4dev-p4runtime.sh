@@ -88,6 +88,8 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # installation to succeed.
 sudo apt-get --yes install pkg-config
 
+find /usr/local > usr-local-1-before-protobuf.txt
+
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
 echo "start install protobuf:"
@@ -108,6 +110,7 @@ make clean
 echo "end install protobuf:"
 date
 
+find /usr/local > usr-local-2-after-protobuf.txt
 
 echo "------------------------------------------------------------"
 echo "Installing grpc, needed for installing p4lang/PI"
@@ -129,7 +132,7 @@ then
     # to the others, but it leads to errors when building grpc on an Ubuntu
     # 18.04.1 system, because of not being able to find the definition of
     # a function RSA_set0_key.  Leave that patch out for now, since things
-    # to build better without it.
+    # seem to build better without it.
     #for PATCH_FILE in openssl-1.1.0.diff no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
 
     for PATCH_FILE in no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
@@ -147,6 +150,7 @@ make clean
 echo "end install grpc:"
 date
 
+find /usr/local > usr-local-3-after-grpc.txt
 
 # Dependencies recommended to install libyang, from proto/README.md in
 # p4lang/PI repo:
@@ -172,6 +176,7 @@ sudo ldconfig
 echo "end install libyang:"
 date
 
+find /usr/local > usr-local-4-after-libyang.txt
 
 echo "------------------------------------------------------------"
 echo "Installing sysrepo, needed for installing p4lang/PI"
@@ -193,6 +198,7 @@ sudo ldconfig
 echo "end install sysrepo:"
 date
 
+find /usr/local > usr-local-5-after-sysrepo.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc"
@@ -228,6 +234,7 @@ make clean
 echo "end install PI:"
 date
 
+find /usr/local > usr-local-6-after-PI.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/behavioral-model"
@@ -273,6 +280,7 @@ sudo make install
 echo "end install behavioral-model:"
 date
 
+find /usr/local > usr-local-7-after-behavioral-model.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
@@ -296,6 +304,8 @@ make -j${MAX_PARALLEL_JOBS}
 echo "end install p4c:"
 date
 
+find /usr/local > usr-local-8-after-p4c.txt
+
 echo "------------------------------------------------------------"
 echo "Installing a few Python packages"
 echo "start install python packages:"
@@ -316,6 +326,14 @@ echo "Time and disk space used when installation was complete:"
 date
 df -h .
 df -BM .
+
+diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
+diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
+diff usr-local-3-after-grpc.txt usr-local-4-after-libyang.txt > usr-local-file-changes-libyang.txt
+diff usr-local-4-after-libyang.txt usr-local-5-after-sysrepo.txt > usr-local-file-changes-sysrepo.txt
+diff usr-local-5-after-sysrepo.txt usr-local-6-after-PI.txt > usr-local-file-changes-PI.txt
+diff usr-local-6-after-PI.txt usr-local-7-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
+diff usr-local-7-after-behavioral-model.txt usr-local-8-after-p4c.txt > usr-local-file-changes-p4c.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
