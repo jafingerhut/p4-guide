@@ -59,16 +59,53 @@ class partialmethod(partial):
 # See
 # https://stackoverflow.com/questions/16022556/has-python-3-to-bytes-been-back-ported-to-python-2-7
 def stringify(n, length):
+    """Take a non-negative integer 'n' as the first parameter, and a
+    non-negative integer 'length' in units of _bytes_ as the second
+    parameter.  Return a string with binary contents expected by the
+    Python P4Runtime client operations.  If 'n' does not fit in
+    'length' bytes, it is represented in the fewest number of bytes it
+    does fit into without loss of precision.  It always returns a
+    string at least one byte long, even if value=width=0."""
     h = '%x' % n
     s = ('0'*(len(h) % 2) + h).zfill(length*2).decode('hex')
     return s
 
+def int2string(n, width_in_bits):
+    """Take a non-negative integer 'n' as the first parameter, and a
+    positive integer 'width_in_bits' as the second parameter.  Return
+    a string with binary contents expected by the Python P4Runtime
+    client operations.  If 'n' does not fit in 'width_in_bits' bits,
+    an exception is raised."""
+    assert isinstance(width_in_bits, int)
+    assert width_in_bits >= 1
+    assert isinstance(n, int) or isinstance(n, long)
+    assert (n >= 0) and (n < (1 << width_in_bits))
+    width_in_bytes = (width_in_bits + 7) / 8
+    return stringify(n, width_in_bytes)
+
 def ipv4_to_binary(addr):
+    """Take an argument 'addr' containing an IPv4 address written as a
+    string in dotted decimal notation, e.g. '10.1.2.3', and convert it
+    to a string with binary contents expected by the Python P4Runtime
+    client operations."""
     bytes_ = [int(b, 10) for b in addr.split('.')]
+    assert len(bytes_) == 4
+    # Note: The chr(b) call below will throw exception if any b is
+    # outside of the range [0, 25]], so no need to add a separate
+    # check for that here.
     return "".join(chr(b) for b in bytes_)
 
 def mac_to_binary(addr):
+    """Take an argument 'addr' containing an Ethernet MAC address written
+    as a string in hexadecimal notation, with each byte separated by a
+    colon, e.g. '00:de:ad:be:ef:ff', and convert it to a string with
+    binary contents expected by the Python P4Runtime client
+    operations."""
     bytes_ = [int(b, 16) for b in addr.split(':')]
+    assert len(bytes_) == 6
+    # Note: The chr(b) call below will throw exception if any b is
+    # outside of the range [0, 25]], so no need to add a separate
+    # check for that here.
     return "".join(chr(b) for b in bytes_)
 
 # Used to indicate that the gRPC error Status object returned by the server has
@@ -561,8 +598,19 @@ class P4RuntimeTest():
         self.push_update_add_entry_to_action(req, t_name, mk, a_name, params)
         return req, self.write_request(req, store=(mk is not None))
 
-    # Just a shorter name for send_request_add_entry_to_action
-    def table_add(self, table_name, key, action_name, action_params):
+    # A shorter name for send_request_add_entry_to_action, and also
+    # bundles up table name and key into one tupple, and action name
+    # and params into another tuple, for the convenience of the caller
+    # using some helper functions that create these tuples.
+    def table_add(self, table_name_and_key, action_name_and_params):
+        assert isinstance(table_name_and_key, tuple)
+        assert len(table_name_and_key) == 2
+        table_name = table_name_and_key[0]
+        key = table_name_and_key[1]
+        assert isinstance(action_name_and_params, tuple)
+        assert len(action_name_and_params) == 2
+        action_name = action_name_and_params[0]
+        action_params = action_name_and_params[1]
         return self.send_request_add_entry_to_action(table_name, key,
                                                      action_name, action_params)
 
