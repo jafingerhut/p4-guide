@@ -60,7 +60,9 @@ extern AvgQueueDepths {
 // #include here.
 
 
-const bit<32> NUM_RED_DROP_VALUES = 512;
+// This value specifies size for table calc_red_drop_probability.  See
+// Note 2 for one way to make it smaller.
+const bit<32> NUM_RED_DROP_VALUES = 16384;
 
 typedef bit<48>  EthernetAddress;
 
@@ -75,7 +77,6 @@ struct Parsed_packet {
 }
 
 struct metadata_t {
-    bit<1> drop;
     bit<1> unicast;
     QueueId_t qid;
     bit<3> class_of_service;
@@ -103,7 +104,7 @@ control cIngress(inout Parsed_packet hdr,
     AvgQueueDepths() avg_queue_depth_inst;
     QueueDepth_t avg_qdepth;
     QueueDepth_t penalty;
-    bit<8> drop_prob;
+    bit<9> drop_prob;
 
     action set_avg_qdepth_penalty (QueueDepth_t avg_qdepth_penalty) {
         penalty = avg_qdepth_penalty;
@@ -121,7 +122,7 @@ control cIngress(inout Parsed_packet hdr,
         size = 8;
     }
 
-    action set_drop_probability (bit<8> drop_probability) {
+    action set_drop_probability (bit<9> drop_probability) {
         drop_prob = drop_probability;
     }
     table calc_red_drop_probability {
@@ -138,42 +139,48 @@ control cIngress(inout Parsed_packet hdr,
     apply {
         // Most of your ingress P4 code goes here.  See Note 1.
 
+        avg_qdepth = avg_queue_depth_inst.read(meta.qid);
+
+        // In addition to the fields calculated before here in the RED
+        // example code, assume there is a value
+        // meta.class_of_service, ranging from 0 to 7 for this example
+        // code.
+
+        // There are multiple choices of how to use
+        // meta.class_of_service plus avg_qdepth to calculate the drop
+        // probability.
+
+        // https://en.wikipedia.org/wiki/Weighted_random_early_detection
+
+        // One way that reduces table space is to use the same shape
+        // of 'curve' for the drop probability of all classes of
+        // service, but give each class of service a different
+        // 'penalty' on its average queue depth value before looking
+        // up the drop probability.  I will demonstrate that method
+        // here.
+        calc_wred_avg_qdepth_penalty.apply();
+        // |+| is P4_16's saturating addition operator, added in v1.1
+        // of the language spec.  Addition does _not_ wrap around like
+        // for the normal + operator.  Instead it "sticks" at the
+        // maximum value.
+        avg_qdepth = avg_qdepth |+| penalty;
+        // See Note 2
+        calc_red_drop_probability.apply();
+        bit<8> rand_val;
+        random<bit<8>>(rand_val, 0, 255);
         // Of course someone might choose to do WRED on multicast
         // packets in some way, too.  I am just avoiding the question
-        // of what that might mean for this example.
-        if ((meta.drop == 0) && (meta.unicast == 1)) {
-            avg_qdepth = avg_queue_depth_inst.read(meta.qid);
+        // of what that might mean for this example.  One might also
+        // wish to only apply WRED for TCP packets, in which case the
+        // 'if' condition would need to be changed to specify that.
 
-            // In addition to the fields calculated before here in the
-            // RED example code, assume there is a value
-            // meta.class_of_service, e.g. perhaps ranging from 0 to
-            // 7.
-
-            // There are multiple choices of how to use
-            // meta.class_of_service plus avg_qdepth to calculate the
-            // drop probability.
-
-            // https://en.wikipedia.org/wiki/Weighted_random_early_detection
-
-            // One way that reduces table space is to use the same
-            // shape of 'curve' for the drop probability of all
-            // classes of service, but give each class of service a
-            // different 'penalty' on its average queue depth value
-            // before looking up the drop probability.  I will
-            // demonstrate that method here.
-            calc_wred_avg_qdepth_penalty.apply();
-            // |+| is P4_16's saturating addition operator, added in
-            // v1.1 of the language spec.  Addition does _not_ wrap
-            // around like for the normal + operator.  Instead it
-            // "sticks" at the maximum value.
-            avg_qdepth = avg_qdepth |+| penalty;
-            // See Note 2
-            calc_red_drop_probability.apply();
-            bit<8> rand_val;
-            random<bit<8>>(rand_val, 0, 255);
-            if (rand_val < drop_prob) {
-                mark_to_drop();
-            }
+        // drop_prob=0 means never do RED drop.  drop_prob in the
+        // range [1, 256] means to drop a fraction (drop_prob/256) of
+        // the time.  It is 9 bits in size so we can represent the
+        // "always drop" case, desirable when the average queue depth
+        // is high enough.
+        if ((meta.unicast == 1) && ((bit<9>) rand_val < drop_prob)) {
+            mark_to_drop();
         }
     }
 }
@@ -193,9 +200,6 @@ control cIngress(inout Parsed_packet hdr,
 //   in, if it is not dropped.  This will typically be a
 //   function of the packet's destined output port, and its
 //   class of service.
-
-// + meta.drop - 1 if packet was dropped earlier, for any
-//   reason other than RED.
 
 // + meta.unicast - 1 if the packet is unicast, 0 if multicast
 
