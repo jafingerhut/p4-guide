@@ -56,10 +56,13 @@ echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
 df -h .
+df -BM .
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
 sudo apt-get --yes install git vim
+
+
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # Install Ubuntu dependencies needed by p4c, from its README.md
@@ -146,9 +149,11 @@ echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
 date
 df -h .
+df -BM .
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
+cd "${INSTALL_DIR}"
 echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
 echo "P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.bash
 echo "BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.bash
