@@ -70,8 +70,8 @@ with higher bandwidth than DDR4:
 
 | $ per Gbyte | Type of device | Note | Source |
 | ----------- | -------------- | ---- | ------ |
-|  $8.50 / GB |    GDDR5       |  | https://www.gamersnexus.net/guides/3032-vega-56-cost-of-hbm2-and-necessity-to-use-it |
-| $21.88 / GB |    HBM2        | I think the $175 cost in the source article is for 8 GByte of HBM2, but not certain. | https://www.gamersnexus.net/guides/3032-vega-56-cost-of-hbm2-and-necessity-to-use-it |
+|  $8.50 / GB |    GDDR5       |  | [source](https://www.gamersnexus.net/guides/3032-vega-56-cost-of-hbm2-and-necessity-to-use-it) |
+| $21.88 / GB |    HBM2        | I think the $175 cost in the source article is for 8 GByte of HBM2, but not certain. | [source](https://www.gamersnexus.net/guides/3032-vega-56-cost-of-hbm2-and-necessity-to-use-it) |
 
 Now let us switch to examining the cost of memory per Gbyte (so we
 have the same units as above, at least) for on-chip CPU cache memory.
