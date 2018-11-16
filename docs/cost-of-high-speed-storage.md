@@ -147,6 +147,11 @@ discounts, but I do not know how much that might be.
 |  64 MB | $1300 |    12 MB | 2.25 MB | 78.25 MB | $17,012 / GB | Ryzen Threadripper 2970WX YD297XAZAFWOF | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113546) |
 |  64 MB | $1750 |    16 MB | 3 MB   | 83 MB     | $21,590 / GB | AMD 2nd Gen RYZEN Threadripper 2990WX 32-Core, 64-Thread, 4.2 GHz Max Boost (3.0 GHz Base), Socket sTR4 250W YD299XAZAFWOF Desktop Processor | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113541&cm_re=YD299XAZAFWOF-_-19-113-541-_-Product) |
 
+So around 400 to 2000 times more per bit of storage than commodity
+DRAM.  If you want to know why a switch ASIC designer is fanatical
+about reducing the size of search keys, or number of entries, this is
+it.
+
 What could possibly explain these astronomical prices per Gbyte?
 
 There are at least several factors in play here:
