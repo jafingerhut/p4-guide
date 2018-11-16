@@ -1,13 +1,13 @@
-# How much does data storage cost?
+# How much does on-chip memory cost vs. commodity DRAM?
 
-It depends quite a bit on several factors:
+The cost of memory depends quite a bit on several factors:
 
 + What is the throughput for reading and writing data?
 + What is the latency of accessing it?
 + For random access technology (i.e. not tape drives), what is the
   rate at which one can choose new addresses to access?
 
-[Here][http://www.thessdreview.com/featured/ssd-throughput-latency-iopsexplained/]
+[Here](http://www.thessdreview.com/featured/ssd-throughput-latency-iopsexplained/)
 is one article from 2014 explaining the significant differences in
 these parameters between mechanical hard drives and SSDs (solid state
 drives).
@@ -100,7 +100,12 @@ Here is an image of an Intel Core i7 CPU with major subsystems such as
 CPU cores, memory controller, I/O, and Shared L3 Cache labeled,
 showing the relative sizes of each:
 
-https://techreport.com/review/15818/intel-core-i7-processors
+<img src="die-callout.jpg"
+ alt="The Core i7 die and major components. Source: Intel."
+ title="The Core i7 die and major components. Source: Intel."
+ align="center" />
+
+Source: https://techreport.com/review/15818/intel-core-i7-processors
 
 I may be able to find a similar image of a modern switch ASIC, labeled
 with major functional pieces, but I was not able to find a public one
