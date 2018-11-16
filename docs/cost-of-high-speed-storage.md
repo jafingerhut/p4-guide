@@ -24,7 +24,7 @@ performance.
 
 I think it is less common for such developers to know the cost of
 on-CPU cache memory, because while they definitely benefit from it due
-ot the performance increase it enables while running their programs,
+to the performance increase it enables while running their programs,
 its size is not something you can easily add more of in a system.  A
 certain amount of it typically comes with the CPUs you buy, and unlike
 choosing systems with more or less DRAM installed, or more or less SSD
@@ -75,8 +75,9 @@ with higher bandwidth than DDR4:
 
 Now let us switch to examining the cost of memory per Gbyte (so we
 have the same units as above, at least) for on-chip CPU cache memory.
-Yes, none of them have more than a fraction of a Gbyte of cache
-memory, so the numbers are definitely higher.
+Yes, no CPU has more than a fraction of a Gbyte of cache memory, so
+the numbers are definitely higher.  The part that surprised me when I
+first ran the numbers was: how _much_ more expensive it is.
 
 Before you dismiss me here, I know very well that CPUs have lots of
 their silicon area devoted to other things besides cache memory.  For
@@ -109,9 +110,9 @@ Source: https://techreport.com/review/15818/intel-core-i7-processors
 
 I may be able to find a similar image of a modern switch ASIC, labeled
 with major functional pieces, but I was not able to find a public one
-in about 15 minutes of searching, so sorry, no such image yet.  If you
-are willing to trust me for a moment on this, the fraction of such a
-chip's die area taken up by lookup tables is often not far away from
+in about 15 minutes of searching, so: sorry, no such image yet.  If
+you are willing to trust me for a moment on this, the fraction of such
+a chip's die area taken up by lookup tables is often not far away from
 the fraction of die area taken up by the Intel Core i7 CPU for L3
 cache.
 
