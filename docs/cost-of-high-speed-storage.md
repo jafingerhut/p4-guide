@@ -140,13 +140,12 @@ discounts, but I do not know how much that might be.
 
 | L3 cache size (MBytes) | Lowest $ cost among processors with that L3 cache size | Total L2 cache | Total L1 cache | Total size of L3 + L2 + L1 caches | $ per Gbyte of cache size (total L1+L2+L3) | Processor name / model | Source (as of 2018-Oct-30) |
 | -------| ----- | -------- | ------ | --------- | ------------ | -- | -- |
-|   4 MB |  $100 |     2 MB | 384 KB |  6.375 MB | $16,063 / GB | AMD Ryzen 3 2200G Model YD2200C5FBBOX | https://www.newegg.com/Product/Product.aspx?Item=N82E16819113481&cm_re=amd-_-19-113-481-_-Product |
-
-|   8 MB |   $60 | 3 x 2 MB |   ?    | 14 MB     |  $4,389 / GB | AMD FX-6300 Vishera 6-Core 3.5 GHz Socket AM3+ 95W FD6300WMHKBOX Desktop Processor | https://www.newegg.com/Product/Product.aspx?Item=N82E16819113286 |
-|  16 MB |  $140 |     2 MB | 384 KB | 18.375 MB |  $7,802 / GB | AMD Ryzen 5 1500X Model YD150XBBAEBOX | https://www.newegg.com/Product/Product.aspx?Item=N82E16819113436 |
-|  32 MB |  $420 |     6 MB | 1.125 MB | 39.125 MB | $10,992 / GB | AMD Ryzen Threadripper 1920X YD192XA8AEWOF | https://www.newegg.com/Product/Product.aspx?Item=N82E16819113448 |
-|  64 MB | $1300 |    12 MB | 2.25 MB | 78.25 MB | $17,012 / GB | Ryzen Threadripper 2970WX YD297XAZAFWOF | https://www.newegg.com/Product/Product.aspx?Item=N82E16819113546 |
-|  64 MB | $1750 |    16 MB | 3 MB   | 83 MB     | $21,590 / GB | AMD 2nd Gen RYZEN Threadripper 2990WX 32-Core, 64-Thread, 4.2 GHz Max Boost (3.0 GHz Base), Socket sTR4 250W YD299XAZAFWOF Desktop Processor | https://www.newegg.com/Product/Product.aspx?Item=N82E16819113541&cm_re=YD299XAZAFWOF-_-19-113-541-_-Product |
+|   4 MB |  $100 |     2 MB | 384 KB |  6.375 MB | $16,063 / GB | AMD Ryzen 3 2200G Model YD2200C5FBBOX | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113481&cm_re=amd-_-19-113-481-_-Product) |
+|   8 MB |   $60 | 3 x 2 MB |   ?    | 14 MB     |  $4,389 / GB | AMD FX-6300 Vishera 6-Core 3.5 GHz Socket AM3+ 95W FD6300WMHKBOX Desktop Processor | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113286) |
+|  16 MB |  $140 |     2 MB | 384 KB | 18.375 MB |  $7,802 / GB | AMD Ryzen 5 1500X Model YD150XBBAEBOX | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113436) |
+|  32 MB |  $420 |     6 MB | 1.125 MB | 39.125 MB | $10,992 / GB | AMD Ryzen Threadripper 1920X YD192XA8AEWOF | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113448) |
+|  64 MB | $1300 |    12 MB | 2.25 MB | 78.25 MB | $17,012 / GB | Ryzen Threadripper 2970WX YD297XAZAFWOF | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113546) |
+|  64 MB | $1750 |    16 MB | 3 MB   | 83 MB     | $21,590 / GB | AMD 2nd Gen RYZEN Threadripper 2990WX 32-Core, 64-Thread, 4.2 GHz Max Boost (3.0 GHz Base), Socket sTR4 250W YD299XAZAFWOF Desktop Processor | [source](https://www.newegg.com/Product/Product.aspx?Item=N82E16819113541&cm_re=YD299XAZAFWOF-_-19-113-541-_-Product) |
 
 What could possibly explain these astronomical prices per Gbyte?
 
