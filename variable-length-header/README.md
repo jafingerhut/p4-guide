@@ -138,3 +138,5 @@ parser that can parse some simple cases of such a header, one example
 of modifying the contents of such a header, and a deparser that emits
 the header (either the original one, or containing whatever
 modifications were made by the P4 code).
+
+See the source code in file [`srv6-skeleton.p4`](srv6-skeleton.p4).
