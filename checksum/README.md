@@ -23,7 +23,7 @@ The PSA v1.0 specification's InternetChecksum extern API is quite
 different from v1model.p4, and does specify and include an example
 P4_16 program showing how to detect and handle differently received
 packets that have a bad checksum.  It is not yet implemented in the
-open source P4 tools, though.
+open source P4 tools as of Nov 2018, though.
 
 
 # Compiling

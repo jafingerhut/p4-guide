@@ -18,8 +18,9 @@ Contents:
     * The newer [shell script](bin/install-p4dev-p4runtime.sh) also
       installs `simple_switch_grpc`, which uses the newer P4Runtime
       API protocol to communicate with a controller.
-  * A figure with the [dependencies](dependencies.pdf) between
-    these repositories.
+  * A figure with the [dependencies](dependencies.pdf) between these
+    repositories (last updated June 2017 so may be slightly out of
+    date).
 
 * A collection of small [demo P4 programs](README-demos.md), some of
   them with equivalent versions written in both P4_14 and P4_16
@@ -46,7 +47,8 @@ Contents:
   with example snippets of code is in the p4lang/tutorials repository.
 
 * A very brief overview of P4 (in about 500 words), to get a flavor
-  for what it is like:
+  for what it is like (assuming you are familiar with the programming
+  language C):
   * Start with C.
   * Remove loops, recursive calls, pointers, malloc, and free.  When
     your mind recovers from reeling over these drastic limitations,
@@ -54,9 +56,12 @@ Contents:
     programming language.  It was not designed to be.
     * Without loops or recursive calls, the work done per packet can
       be bounded at compilation time, which helps when targeting the
-      highest performance P4-programmable devices.  Without pointers,
-      malloc, and free, general purpose data structures like linked
-      lists, trees, etc. having arbitrary size is not possible.
+      highest performance P4-programmable devices.
+    * Without pointers, malloc, and free, general purpose data
+      structures like linked lists, trees, etc. having arbitrary size
+      is not possible.  You _can_ implement trees with fixed depth,
+      e.g. a depth 3 tree could be implemented via a sequence of 3 P4
+      tables.
   * Add special constructs called _parsers_, focused on the capabilities
     most needed when parsing the contents of a received packet into a
     sequence of _headers_.
@@ -73,7 +78,8 @@ Contents:
       packet you do not parse into some header is, for that P4
       program, considered the "payload" of the packet, which is
       typically carried along, unmodified, with the packet when you
-      are done processing it.  You can modify fields however you like.
+      are done processing it.  You can modify header fields however
+      you like.
   * Add special constructs called _tables_, where for each one you
     define a search key consisting of a number of packet header fields
     and/or values of variables in your P4 program.  Each table can
@@ -104,23 +110,23 @@ Contents:
 
 * Some advantages of P4_16 over P4_14:
   * You can write assignments that look like C/C++/Java, rather than
-    modify_field(dst, src); all over the place, and you can have
+    `modify_field(dst, src);` all over the place, and you can have
     arithmetic expressions on the right-hand side instead of
-    add_to_field/subtract_from_field/etc.  This is not additional
+    `add_to_field`/`subtract_from_field`/etc.  This is not additional
     power in the language, but it is a nice convenience for those
     familiar with those other languages.
-  * Controls could call other controls in P4_14, but there were no
-    parameters or return values.  All side effects had to be done via
+  * You may call controls from other controls in P4_14, but there are
+    no parameters or return values.  All side effects must be done via
     access to global variables.  In P4_16, there are no global
-    variables -- you may pass parameters with directionality in, out,
-    inout.
+    variables -- you may pass parameters with directionality `in`,
+    `out`, `inout`.
   * Tables must be, and externs may be, defined within the scope of a
     control, and are then accessible only from that control, which can
     be useful for keeping the code that accesses those objects closer
-    to it, and knowing where they can be accessed from.  Extern are
+    to it, and knowing where they can be accessed from.  Externs are
     used for things like counters, meters, and registers that were
     part of the base P4_14 language, but in P4_16 are defined as
     extern add-ons in the Portable Switch Architecture specification).
 * Disadvantages of P4_16 vs P4_14:
   * Tool and vendor support is not as good for P4_16 as of Jan 2018,
-    but this is gradually changing.
+    but support for P4_16 is improving over time.
