@@ -114,6 +114,8 @@ error {
     BadSRv6HdrExtLen
 }
 
+#include "debug-srv6.p4"
+
 parser ParserImpl(packet_in packet,
                   out headers_t hdr,
                   inout metadata_t meta,
@@ -212,6 +214,8 @@ control ingress(inout headers_t hdr,
                 inout metadata_t meta,
                 inout standard_metadata_t stdmeta)
 {
+    debug_srv6_fixedpart() debug_srv6_fixedpart_inst;
+
     action srv6_handle_1_address () {
         // TBD: code here to handle case of 1 IPv6 address in SRv6
         // header.
@@ -243,6 +247,10 @@ control ingress(inout headers_t hdr,
         // Other code here unrelated to SRv6 processing
         
         if (hdr.srv6_fixedpart.isValid()) {
+            // Debug table to show in simple_switch console log the
+            // values of the fields in hdr.srv6_fixedpart
+            debug_srv6_fixedpart_inst.apply(hdr.srv6_fixedpart);
+
             meta.num_srv6_addresses =
                 (bit<4>) (hdr.srv6_fixedpart.hdr_ext_len >> 1);
             process_srv6_hdr_step1.apply();
