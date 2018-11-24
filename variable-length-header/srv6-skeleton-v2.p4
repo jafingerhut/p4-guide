@@ -56,36 +56,15 @@ header srv6_fixedpart_t {
     bit<16>  tag;
 }
 
-// Now define one header for each of several cases that we want our
-// program to handle explicitly.
+// Now, since the rest of the SRv6 header is one or more IPv6
+// addresses, all with the same format, we use a P4_16 header stack to
+// represent that.  See field srv6_seg_list inside the headers_t
+// struct below.
 
-header srv6_seg_list_1_t {
-    bit<128> seg_list_0;
-}
+#define MAX_IPV6_ADDRESSES  8
 
-header srv6_seg_list_2_t {
-    bit<128> seg_list_0;
-    bit<128> seg_list_1;
-}
-
-header srv6_seg_list_3_t {
-    bit<128> seg_list_0;
-    bit<128> seg_list_1;
-    bit<128> seg_list_2;
-}
-
-header srv6_seg_list_4_or_more_t {
-    bit<128> seg_list_0;
-    bit<128> seg_list_1;
-    bit<128> seg_list_2;
-    bit<128> seg_list_3;
-    // How long should this varbit field be?  It is really a design
-    // choice for the person writing the code: what is the longest
-    // segment routing header that they want their P4 code to handle?
-    // I will choose for this example program up to 4 more IPv6
-    // addresses.
-#define MAX_IPV6_ADDRESSES_MINUS_4  4
-    varbit<(128*MAX_IPV6_ADDRESSES_MINUS_4)> rest_of_exthdr;
+header srv6_seg_list_t {
+    bit<128> dstAddr;
 }
 
 header udp_t {
@@ -99,10 +78,7 @@ struct headers_t {
     ethernet_t ethernet;
     ipv6_t     ipv6;
     srv6_fixedpart_t srv6_fixedpart;
-    srv6_seg_list_1_t srv6_1_seg;
-    srv6_seg_list_2_t srv6_2_seg;
-    srv6_seg_list_3_t srv6_3_seg;
-    srv6_seg_list_4_or_more_t srv6_4_or_more_seg;
+    srv6_seg_list_t[MAX_IPV6_ADDRESSES] srv6_seg_list;
     udp_t      udp;
 }
 
@@ -122,6 +98,8 @@ parser ParserImpl(packet_in packet,
     const bit<16> ETHERTYPE_IPV6 = 0x86dd;
     const bit<8> IPPROTO_UDP = 17;
     const bit<8> IPPROTO_IPV6EXTHDR_ROUTING = 43;
+
+    bit<8> segments_remaining_to_parse;
 
     state start {
         transition parse_ethernet;
@@ -158,15 +136,18 @@ parser ParserImpl(packet_in packet,
         // must be even, and not 0.  This example program is only
         // written to handle SRv6 headers with up to 8 such IPv6
         // addresses.
-        transition select (hdr.srv6_fixedpart.hdr_ext_len) {
-            2: parse_srv6_1;
-            4: parse_srv6_2;
-            6: parse_srv6_3;
-            8: parse_srv6_4_or_more;
-            10: parse_srv6_4_or_more;
-            12: parse_srv6_4_or_more;
-            14: parse_srv6_4_or_more;
-            16: parse_srv6_4_or_more;
+        verify(hdr.srv6_fixedpart.hdr_ext_len != 0, error.BadSRv6HdrExtLen);
+        verify(hdr.srv6_fixedpart.hdr_ext_len[0:0] == 0, error.BadSRv6HdrExtLen);
+        segments_remaining_to_parse = hdr.srv6_fixedpart.hdr_ext_len >> 1;
+        transition select (segments_remaining_to_parse) {
+            1: parse_srv6_one_segment;
+            2: parse_srv6_one_segment;
+            3: parse_srv6_one_segment;
+            4: parse_srv6_one_segment;
+            5: parse_srv6_one_segment;
+            6: parse_srv6_one_segment;
+            7: parse_srv6_one_segment;
+            8: parse_srv6_one_segment;
             default: parse_srv6_bad_len;
         }
     }
@@ -174,27 +155,12 @@ parser ParserImpl(packet_in packet,
         verify(false, error.BadSRv6HdrExtLen);
         transition reject;
     }
-    state parse_srv6_1 {
-        packet.extract(hdr.srv6_1_seg);
-        transition parse_ipv6_after_srv6;
-    }
-    state parse_srv6_2 {
-        packet.extract(hdr.srv6_2_seg);
-        transition parse_ipv6_after_srv6;
-    }
-    state parse_srv6_3 {
-        packet.extract(hdr.srv6_3_seg);
-        transition parse_ipv6_after_srv6;
-    }
-    state parse_srv6_4_or_more {
-        // When hdr.srv6_fixedpart.hdr_ext_len is 8, then the
-        // length of the varbit field should be 0 bits.  Each 1 larger
-        // value of hdr_ext_len corresponds to 64 more bits (8 octets)
-        // in the IPv6 extension header.
-        packet.extract(hdr.srv6_4_or_more_seg,
-            (bit<32>)
-            (64 * (((bit<10>) hdr.srv6_fixedpart.hdr_ext_len) - 8)));
-        transition parse_ipv6_after_srv6;
+    state parse_srv6_one_segment {
+        packet.extract(hdr.srv6_seg_list.next);
+        transition select (segments_remaining_to_parse) {
+            0: parse_ipv6_after_srv6;
+            default: parse_srv6_one_segment;
+        }
     }
     state parse_ipv6_after_srv6 {
         transition select (hdr.srv6_fixedpart.next_header) {
@@ -265,10 +231,7 @@ control DeparserImpl(packet_out packet, in headers_t hdr) {
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv6);
         packet.emit(hdr.srv6_fixedpart);
-        packet.emit(hdr.srv6_1_seg);
-        packet.emit(hdr.srv6_2_seg);
-        packet.emit(hdr.srv6_3_seg);
-        packet.emit(hdr.srv6_4_or_more_seg);
+        packet.emit(hdr.srv6_seg_list);
         packet.emit(hdr.udp);
     }
 }
