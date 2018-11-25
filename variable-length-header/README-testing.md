@@ -1,3 +1,18 @@
+```python
+from scapy import all
+p0=Ether() / IPv6() / IPv6ExtHdrRouting() / UDP()
+p1=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1']) / UDP()
+p2=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2']) / UDP()
+p3=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2', 'f002::3']) / UDP()
+p4=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2', 'f002::3', 'f002::4']) / UDP()
+p5=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2', 'f002::3', 'f002::4', 'f002::5']) / UDP()
+p8=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2', 'f002::3', 'f002::4', 'f002::5', 'f002::6', 'f002::7', 'f002::8']) / UDP()
+p9=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2', 'f002::3', 'f002::4', 'f002::5', 'f002::6', 'f002::7', 'f002::8', 'f002::9']) / UDP()
+sendp(p0, iface='veth2')
+```
+
+----------------------------------------------------------------------
+
 With Scapy version 2.2.0:
 
 ```python

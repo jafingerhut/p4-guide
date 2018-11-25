@@ -249,7 +249,8 @@ control ingress(inout headers_t hdr,
         if (hdr.srv6_fixedpart.isValid()) {
             // Debug table to show in simple_switch console log the
             // values of the fields in hdr.srv6_fixedpart
-            debug_srv6_fixedpart_inst.apply(hdr.srv6_fixedpart);
+            debug_srv6_fixedpart_inst.apply(hdr.srv6_fixedpart,
+                stdmeta.parser_error);
 
             meta.num_srv6_addresses =
                 (bit<4>) (hdr.srv6_fixedpart.hdr_ext_len >> 1);
