@@ -15,8 +15,8 @@ However, the purpose of these demos is not to teach you how to set
 that up.  The focus here is on learning how P4 programs behave, by
 using a P4 program for processing data packets, and running it on an
 open source switch emulator software called `simple_switch` (or the
-similar program `simple_switch_grpc` program, but we will often simply
-say `simple_switch` here to refer to either program).
+similar program `simple_switch_grpc`, but we will often simply say
+`simple_switch` here to refer to either program).
 
 Instead of loading the compiled P4 program into a switch ASIC, you
 will start up the `simple_switch` process as a normal process running
@@ -33,18 +33,21 @@ it is not a physical Ethernet port, but instead one created purely via
 a configuration command.  We use them here because they are cheap.
 
 There are existing open source tools for monitoring all packets that
-go across a Linux machine's Ethernet port, and print out some or all
-of the contents of those packets in various formats (search for
+go across an Ethernet port of a system (regardless of whether that
+Ethernet port is physical or virtual), and print out some or all of
+the contents of those packets in various formats.  Search for
 `tcpdump` or `tshark` below for example commands to run those
-programs).
+programs.
 
 There are also multiple open source tools for constructing packets in
 memory, or reading them from files, and transmitting them on Ethernet
 ports.  The instructions here show a few examples of how to use a
-Python library called Scapy for that purpose.
+Python library called Scapy for that purpose.  `tcpreplay` is another
+open source program that can read packets from a file in `pcap` format
+and send them to a port.
 
 Instead of running a complex collection of control plane software, you
-will be running simple programs that gives you complete control over
+will be running simple programs that give you complete control over
 exactly which table entries are added to the tables of your P4
 program.
 
@@ -70,11 +73,12 @@ fully aware of exactly which table entries have been installed,
 because if you did not enter the command to add it, it will not be
 there.
 
-The instructions here, unlike the ones in the `p4lang/tutorials`
-repository, have you run only a single emulated switch at a time.
-Running multiple emulated switches is certainly possible, and often
-useful, but when you are first learning P4 a single emulated switch is
-easier to debug when things are not behaving as you expect.
+The instructions here, unlike the ones in the
+[`p4lang/tutorials`](https://github.com/p4lang/tutorials) repository,
+have you run only a single emulated switch at a time.  Running
+multiple emulated switches is certainly possible, and often useful,
+but when you are first learning P4 a single emulated switch is easier
+to debug when things are not behaving as you expect.
 
 
 # What to install for compiling P4 programs and running them on bmv2
@@ -84,12 +88,12 @@ for the purpose of building P4 open source tools:
 
 + RAM - At least 2 GB, 4 GB recommended (1 GB is definitely too small)
 + disk - 13 GB is barely enough for Ubuntu 18.04 Desktop Linux OS plus
-  build of p4lang/behavioral-model and p4lang/p4c, leaving
+  a full build of p4lang/behavioral-model and p4lang/p4c, leaving
   intermediate build files on disk for quicker rebuilding.  Add more
   as you wish for other programs, data files, and room to grow.
-  Before running the install-p4dev.sh script linked below, you must
+  Before running the `install-p4dev.sh` script linked below, you must
   have at least 4 GB of disk space free on the Ubuntu machine's disk
-  (7 GB free is required for install-p4dev-p4runtime.sh)
+  (7 GB free is required for `install-p4dev-p4runtime.sh`)
 + number of CPU cores / virtual CPUs - 1 is enough, but the p4c build
   can take advantage of 4 CPU cores in parallel, so 2 or 4 will speed
   up some things.
@@ -138,9 +142,11 @@ has.]
 It can be convenient to have all of these commands in your shell's
 command path, e.g. for bash:
 
-    P4C=/path/to/your/copy/of/p4c
-    BMV2=/path/to/your/copy/of/behavioral-model
-    export PATH=$P4C/build:$BMV2/tools:/usr/local/bin:$PATH
+```bash
+P4C=/path/to/your/copy/of/p4c
+BMV2=/path/to/your/copy/of/behavioral-model
+export PATH=$P4C/build:$BMV2/tools:/usr/local/bin:$PATH
+```
 
 If you use one of the shell scripts linked above to do the install
 steps for you, they create `p4setup.bash` and `p4setup.csh` files you
@@ -156,50 +162,53 @@ problems, and things you can do to resolve them.
 
 Useful for quickly creating multiple terminal windows and tabs:
 
-    create-terminal-windows.sh
+```bash
+create-terminal-windows.sh
+```
 
 To create veth interfaces:
 
-    sudo $BMV2/tools/veth_setup.sh
-    # Verify that it created many veth<number> interfaces
-    ip link show | grep veth
+```bash
+sudo $BMV2/tools/veth_setup.sh
+# Verify that it created many veth<number> interfaces
+ip link show | grep veth
+```
 
 `tcpdump` and `tshark` are two similar programs that can show the
 contents of packets "live" as they cross Ethernet interfaces of your
 Linux system, including virtual Ethernet interfaces like veth2 and
-veth6.
+veth6.  You only need one of them.  Use `tcpdump` if you are not sure
+which one to use.  `tcpdump` is simpler and does not parse as many
+different kinds of packet headers.  `tshark` is a text version of
+Wireshark, and can parse more packet header types than I have ever
+heard of.
 
-To watch packets cross veth2 and veth6 as they occur, tcpdump and
-tshark are 2 similar programs.  You only need one of them.  Use
-tcpdump if you are not sure which one to use.  tcpdump is simpler and
-does not parse as many different kinds of packet headers.  tshark is a
-text version of Wireshark, and can parse more packet header types than
-I have ever heard of.
+```bash
+# tcpdump options used:
+# -e Print the link-level header (i.e. Ethernet) on each dump line.
+# -n Do not convert addresses to names
+# --number Print an optional packet number at the beginning of the line.
+# -v slightly more verbose output, e.g. TTL values
 
-    # tcpdump options used:
-    # -e Print the link-level header (i.e. Ethernet) on each dump line.
-    # -n Do not convert addresses to names
-    # --number Print an optional packet number at the beginning of the line.
-    # -v slightly more verbose output, e.g. TTL values
+# Note: Some versions of tcpdump do not accept the --number
+# option.  If so, just remove that one.
+sudo tcpdump -e -n --number -v -i veth2
+sudo tcpdump -e -n --number -v -i veth6
 
-    # Note: Some versions of tcpdump do not accept the --number
-    # option.  If so, just remove that one.
-    sudo tcpdump -e -n --number -v -i veth2
-    sudo tcpdump -e -n --number -v -i veth6
+# Add -xx option to get raw hex dump of packet data:
+sudo tcpdump -xx -e -n --number -v -i veth2
+sudo tcpdump -xx -e -n --number -v -i veth6
 
-    # Add -xx option to get raw hex dump of packet data:
-    sudo tcpdump -xx -e -n --number -v -i veth2
-    sudo tcpdump -xx -e -n --number -v -i veth6
+# If you want to use tshark for even more details about decoded
+# packets, but the output for each packet can often spread over 30
+# to 40 lines:
+sudo tshark -V -i veth2
+sudo tshark -V -i veth6
 
-    # If you want to use tshark for even more details about decoded
-    # packets, but the output for each packet can often spread over 30
-    # to 40 lines:
-    sudo tshark -V -i veth2
-    sudo tshark -V -i veth6
-
-    # Add -x option to get raw hex dump of packet data:
-    sudo tshark -x -V -i veth2
-    sudo tshark -x -V -i veth6
+# Add -x option to get raw hex dump of packet data:
+sudo tshark -x -V -i veth2
+sudo tshark -x -V -i veth6
+```
 
 
 # Automated running of compiler and bmv2 with checking of results
@@ -213,24 +222,30 @@ If you have followed the instructions above to install both the `p4c`
 and `behavioral-model` repositories, you should have these two files
 of Python code as part of the p4lang/p4c repository:
 
-    $P4C/backends/bmv2/run-bmv2-test.py
-    $P4C/backends/bmv2/bmv2stf.py
+```bash
+$P4C/backends/bmv2/run-bmv2-test.py
+$P4C/backends/bmv2/bmv2stf.py
+```
 
 The first file `import`s the code of the second and uses it.
 
 After you have built your own copy of the p4c compiler, you should
 have a directory `$P4C/build` on disk.  If you run these commands:
 
-    cd $P4C/build
-    make check
+```bash
+cd $P4C/build
+make check
+```
 
 then as part of running the hundreds of test cases included with p4c,
 it runs the `run-bmv2-test.py` program many times.  To run only one of
 those test cases, but with extra log message printing enabled, try
 these commands:
 
-    cd $P4C/build
-    ../backends/bmv2/run-bmv2-test.py .. -b -v ../testdata/p4_16_samples/issue447-5-bmv2.p4
+```bash
+cd $P4C/build
+../backends/bmv2/run-bmv2-test.py .. -b -v ../testdata/p4_16_samples/issue447-5-bmv2.p4
+```
 
 The `-v` is optional, and enables the extra log message printing.
 Similarly `-b` is optional, and causes a temporary directory that is
@@ -278,24 +293,30 @@ shown as 'No link-layer encapsulation' from the output of the Linux
 `file` command, and causes a warning like the one below when using
 Scapy's `rdpcap` function to read the file:
 
-    >>> pkts2=rdpcap('pcap0_out.pcap')
-    WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+```python
+>>> pkts2=rdpcap('pcap0_out.pcap')
+WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+```
 
 If you want to change such a file (named `pcap0_out.pcap` in the
 sample command below) to one with a link type of Ethernet, which makes
 it more useful when reading into Wireshark, use a command like this:
 
-    editcap -F pcap -T ether pcap0_out.pcap pcap0_out_ether.pcap
+```bash
+editcap -F pcap -T ether pcap0_out.pcap pcap0_out_ether.pcap
+```
 
 From the output of the commands below, it appears that this also
 changes the capture length from 0 to 262144.  A capture length of 0
 seems to cause trouble for some programs that read pcap files, too.
 
-    % file pcap0_out.pcap
-    pcap0_out.pcap: tcpdump capture file (little-endian) - version 2.4 (No link-layer encapsulation, capture length 0)
-    
-    % file pcap0_out_ether.pcap
-    pcap0_out_ether.pcap: tcpdump capture file (little-endian) - version 2.4 (Ethernet, capture length 262144)
+```bash
+% file pcap0_out.pcap
+pcap0_out.pcap: tcpdump capture file (little-endian) - version 2.4 (No link-layer encapsulation, capture length 0)
+
+% file pcap0_out_ether.pcap
+pcap0_out_ether.pcap: tcpdump capture file (little-endian) - version 2.4 (Ethernet, capture length 262144)
+```
 
 The sample `scapy` interactive session below shows that the original
 `pcap0_out.pcap` file contents are read in using Scapy's `rdpcap`
@@ -305,33 +326,35 @@ frames.  They also demonstrate that the packet contents after
 converting them to strings with `str()` are the same byte sequences as
 each other.
 
-    [02:22:05] $ scapy
-    INFO: Can't import matplotlib. Won't be able to plot.
-    INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
-    WARNING: No route found for IPv6 destination :: (no default route?)
-    INFO: Can't import python Crypto lib. Won't be able to decrypt WEP.
-    INFO: Can't import python Crypto lib. Disabled certificate manipulation tools
-    INFO: Can't import python ecdsa lib. Disabled certificate manipulation tools
-    Welcome to Scapy (2.3.3)
-    >>> p1=rdpcap('pcap0_out.pcap')
-    WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
-    >>> type(p1[0])
-    <class 'scapy.packet.Raw'>
-    >>> p2=rdpcap('pcap0_out_ether.pcap')
-    >>> type(p2[0])
-    <class 'scapy.layers.l2.Ether'>
-    >>> p1[0]
-    <Raw  load="RT\x00\x125\x02\x08\x00'\x01\x8b\xbc\x08\x00E\x00\x00(\x00\x01\x00\x00?\x06e\xbb\n\x00\x02\x0f\n\x01\x00\x05\x16\xa2\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00\x00" |>
-    >>> p2[0]
-    <Ether  dst=52:54:00:12:35:02 src=08:00:27:01:8b:bc type=0x800 |<IP  version=4L ihl=5L tos=0x0 len=40 id=1 flags= frag=0L ttl=63 proto=tcp chksum=0x65bb src=10.0.2.15 dst=10.1.0.5 options=[] |<TCP  sport=5794 dport=http seq=0 ack=0 dataofs=5L reserved=0L flags=S window=8192 chksum=0x62e1 urgptr=0 |>>>
-    >>> p1[0]==p2[0]
-    False
-    >>> str(p1[0])==str(p2[0])
-    True
-    >>> p1[1]==p2[1]
-    False
-    >>> str(p1[1])==str(p2[1])
-    True
+```python
+[02:22:05] $ scapy
+INFO: Can't import matplotlib. Won't be able to plot.
+INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
+WARNING: No route found for IPv6 destination :: (no default route?)
+INFO: Can't import python Crypto lib. Won't be able to decrypt WEP.
+INFO: Can't import python Crypto lib. Disabled certificate manipulation tools
+INFO: Can't import python ecdsa lib. Disabled certificate manipulation tools
+Welcome to Scapy (2.3.3)
+>>> p1=rdpcap('pcap0_out.pcap')
+WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+>>> type(p1[0])
+<class 'scapy.packet.Raw'>
+>>> p2=rdpcap('pcap0_out_ether.pcap')
+>>> type(p2[0])
+<class 'scapy.layers.l2.Ether'>
+>>> p1[0]
+<Raw  load="RT\x00\x125\x02\x08\x00'\x01\x8b\xbc\x08\x00E\x00\x00(\x00\x01\x00\x00?\x06e\xbb\n\x00\x02\x0f\n\x01\x00\x05\x16\xa2\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00\x00" |>
+>>> p2[0]
+<Ether  dst=52:54:00:12:35:02 src=08:00:27:01:8b:bc type=0x800 |<IP  version=4L ihl=5L tos=0x0 len=40 id=1 flags= frag=0L ttl=63 proto=tcp chksum=0x65bb src=10.0.2.15 dst=10.1.0.5 options=[] |<TCP  sport=5794 dport=http seq=0 ack=0 dataofs=5L reserved=0L flags=S window=8192 chksum=0x62e1 urgptr=0 |>>>
+>>> p1[0]==p2[0]
+False
+>>> str(p1[0])==str(p2[0])
+True
+>>> p1[1]==p2[1]
+False
+>>> str(p1[1])==str(p2[1])
+True
+```
 
 There are many `.stf` files in the `$P4C/testdata/p4_16_samples/`
 directory, but there are also many more `.p4` files that do not have a
