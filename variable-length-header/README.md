@@ -13,7 +13,7 @@ different from one packet to another.  The length of such a field is
 not known before the packet is received and parsed.
 
 Given the capabilities defined in the P4_16 language specification
-version 1.0.0, the length of such a `varbit` field must be determined
+version 1.1.0, the length of such a `varbit` field must be determined
 before the header with the `varbit` field is extracted, typically from
 the values of earlier fixed-length fields within the packet.
 
@@ -21,7 +21,8 @@ After such a header is extracted, the P4_16 language specification
 does not require that an implementation allow you to _do_ much of
 anything with such a `varbit` type field.  You can do these things:
 
-+ Emit the header in a deparser.
++ Emit the header in a deparser, with the contents of the `varbit`
+  field identical to what was received and parsed.
 + Delete the header containing the `varbit` field, e.g. by calling the
   `setInvalid` method on the header.
 + Copy the entire valid header to another header of the same type,
@@ -41,7 +42,10 @@ Other operations that the P4_16 language specification does not
 mandate, nor even mention:
 
 + Use of a `varbit` field as a key of a table or parser value set.
-+ Assignment to a variable with type `varbit`.
++ Assignment of a literal value to a variable with type `varbit`.
++ Modifying the dynamic length of a `varbit` field, by any means other
+  than assignment from another variable of type `varbit` which copies
+  the current dynamic length _and_ the contents.
 + Arithmetic operations.
 + Extracting some of the bits.
 + Modifying some of the bits.
@@ -50,12 +54,13 @@ Basically, the operations required by the language specification let
 you remove a header containing a field with type `varbit`, pass it
 through to the output packet without modification, or make copies of
 that header (and perhaps modify the contents of the fixed-length
-field, but not the `varbit` field).
+fields, but not the `varbit` field).
 
 You cannot look at `varbit` values in any meaningful way, nor change
 their values.  There is also no way to add a new header to a packet
 with a field of type `varbit` and initialize the value of a field with
-a type `varbit`.
+a type `varbit` (except by copying the `varbit` value from another
+variable of type `varbit`).
 
 This makes them useful for a few things, such as:
 
@@ -72,6 +77,25 @@ specification shows one way to check the value of the IHL field of an
 IPv4 header before using it to calculate the length of the IPv4
 options, and then extract them into a header containing a `varbit`
 field.
+
+Assuming that the restrictions above are accurate, if you want to
+write a P4 program where:
+
++ it can receive and parse packets with IPv4 headers containing
+  options that are stored in a `varbit` field at the end of the Ipv4
+  header, and
++ it can _add_ an IPv4 header to a received packet, with all bits in
+  the output header containing values that have predictable contents
+  across P4 implementations
+
+Then it seems that one must define two separate header types for an
+IPv4 header:
+
++ one containing a `varbit` field, used for parsing received IPv4
+  headers that may contain options.
++ one that contains no `varbit` fields, used for constructing new IPv4
+  headers for the output packet that were not part of the received
+  packet.
 
 
 ## Alternate approach: use multiple fixed-length headers
