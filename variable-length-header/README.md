@@ -155,12 +155,22 @@ contents of an IPv6 Segment Routing header is given below:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The example P4 program given here is _not_ intended to be anything
-like a complete implementation of a router that performs IPv6 segment
-routing.  It is intended to demonstrate one way to write a P4_16
-parser that can parse some simple cases of such a header, one example
-of modifying the contents of such a header, and a deparser that emits
-the header (either the original one, or containing whatever
+The example P4 programs given here are _not_ intended to be anything
+near to a complete implementation of a router that performs IPv6
+segment routing.  It is intended to demonstrate one way to write a
+P4_16 parser that can parse some simple cases of such a header, one
+example of modifying the contents of such a header, and a deparser
+that emits the header (either the original one, or containing whatever
 modifications were made by the P4 code).
 
-See the source code in file [`srv6-skeleton.p4`](srv6-skeleton.p4).
+There are two variations of such a "skeleton" program:
+
++ The program [`srv6-skeleton.p4`](srv6-skeleton.p4) is the more
+  general technique, where you create multiple different `header`
+  types, one for each format of that header you want to support.
++ The program [`srv6-skeleton-v2.p4`](srv6-skeleton-v2.p4) takes
+  advantage of the fact that for this example, the variable length
+  header consists of a fixed length portion that always has the same
+  format, follows by 1 to N instances of a portion of the header that
+  all have the same format and size as each other, and thus can be
+  represented via a P4_16 header stack.
