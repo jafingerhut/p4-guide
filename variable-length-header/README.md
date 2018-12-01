@@ -68,9 +68,10 @@ This makes them useful for a few things, such as:
   preserve the contents of the IPv4 options in the outgoing packet.
 
 This use case should not be dismissed -- it is an important use case
-for processing IPv4 packet that may contain IPv4 options, and many
+for processing IPv4 headers that may contain IPv4 options, and many
 switches do forward such packets without examining the contents of
-their options.
+their options (or punt them to a nearby general purpose CPU for
+significantly slower processing in software).
 
 Section 11.8.2 "Variable width extraction" of the P4_16 language
 specification shows one way to check the value of the IHL field of an
