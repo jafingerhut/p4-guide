@@ -71,6 +71,15 @@ See the [`README.md`](rewrite-examples/README.md) file in there for
 how it was created.
 
 
+### `variable-length-header`
+
+This directory contains a
+[`README.md`](variable-length-header/README.md) explaining the
+operations that P4_16 supports on variable-length headers, and
+demonstrates an alternate way to process variable-length headers using
+one of several fixed-length headers.
+
+
 ### `tcp-options-parser`
 
 The program `tcp-options-parser.p4` contains an example of a variable
