@@ -73,11 +73,11 @@ switches do forward such packets without examining the contents of
 their options (or punt them to a nearby general purpose CPU for
 significantly slower processing in software).
 
-Section 11.8.2 "Variable width extraction" of the P4_16 language
-specification shows one way to check the value of the IHL field of an
-IPv4 header before using it to calculate the length of the IPv4
-options, and then extract them into a header containing a `varbit`
-field.
+[Section 12.8.2 "Variable width extraction"](https://p4.org/p4-spec/docs/P4-16-v1.1.0-spec.html#sec-packet-extract-two)
+of the P4_16 language specification shows one way to check the value
+of the IHL field of an IPv4 header before using it to calculate the
+length of the IPv4 options, and then extract them into a header
+containing a `varbit` field.
 
 Assuming that the restrictions above are accurate, if you want to
 write a P4 program where:
@@ -175,3 +175,8 @@ There are two variations of such a "skeleton" program:
   format, follows by 1 to N instances of a portion of the header that
   all have the same format and size as each other, and thus can be
   represented via a P4_16 header stack.
+
+See the file [`README-testing.md`](README-testing.md) for how to use
+Scapy to construct packets containing IPv6 Routing extension headers,
+which I used to test the skeleton P4 programs above using `p4c` and
+`simple_switch`.

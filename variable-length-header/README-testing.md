@@ -1,3 +1,5 @@
+# Test input packets constructed using Scapy
+
 ```python
 from scapy import all
 p0=Ether() / IPv6() / IPv6ExtHdrRouting() / UDP()
@@ -11,9 +13,11 @@ p9=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2', 'f002::
 sendp(p0, iface='veth2')
 ```
 
-----------------------------------------------------------------------
 
-With Scapy version 2.2.0:
+## Notes on verifying the contents of packets that Scapy creates
+
+Tested using Scapy version 2.2.0 installed on an Ubuntu 16.04 Linux
+system:
 
 ```python
 >>> from scapy import all
@@ -31,6 +35,12 @@ With Scapy version 2.2.0:
 'ffffffffffff00000000000086dd6000000000102b4000000000000000000000000000000001000000000000000000000000000000011100000000000000003500350008ff72'
 ```
 
+Below I break apart the hex string for the full packet from above into
+pieces for each of the headers, and identify the values of several
+fields.  This packet's IPv6 Routing extension header contains 0 IPv6
+addresses.
+
+```
 Ether() (14 bytes)
 ffffffffffff00000000000086dd
 
@@ -46,6 +56,11 @@ IPv6ExtHdrRouting() (8 bytes)
 
 UDP() (8 bytes)
 003500350008ff72
+```
+
+Below we use the `addresses` optional keyword arg for the
+`IPv6ExtHdrRouting` constructor, to specify a list of 2 IPv6
+addresses.
 
 ```python
 >>> p2=Ether() / IPv6() / IPv6ExtHdrRouting(addresses=['f002::1', 'f002::2']) / UDP()
@@ -53,9 +68,14 @@ UDP() (8 bytes)
 'ffffffffffff00000000000086dd6000000000302b4000000000000000000000000000000001000000000000000000000000000000011104000200000000f0020000000000000000000000000001f00200000000000000000000000000020035003500080f6f'
 ```
 
+And again, below I break apart the hex string for the full packet from
+above into pieces for each of the headers, and identify the values of
+several fields.  This packet's IPv6 Routing extension header contains
+2 IPv6 addresses.
+
+```
 Ether() (14 bytes)
 ffffffffffff00000000000086dd
-
 
 IPv6() (40 bytes)
 6000000000302b40 version=6  payload_length=0x30=48  next_header=0x2b=43  hop_limit=0x40=64
@@ -75,3 +95,4 @@ f002000000000000 seg[1] address=f002::2
 
 UDP() (8 bytes)
 0035003500080f6f
+```
