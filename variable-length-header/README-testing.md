@@ -52,7 +52,7 @@ IPv6() (40 bytes)
 0000000000000001
 
 IPv6ExtHdrRouting() (8 bytes)
-1100000000000000  NextHeader=17 for UDP, all other fields 0
+1100000000000000 next_header=0x11=17 for UDP, all other fields 0
 
 UDP() (8 bytes)
 003500350008ff72
@@ -85,8 +85,6 @@ IPv6() (40 bytes)
 0000000000000001
 
 IPv6ExtHdrRouting() (8 bytes)
-1100000000000000  NextHeader=17 for UDP, all other fields 0
-
 1104000200000000 next_header=0x11=17 for UDP, hdr_ext_len=4 for length (4+1)*8=40 bytes, routing_type=0, segments_left=2, last_entry=0, flags=0, tag=0
 f002000000000000 seg[0] address=f002::1
 0000000000000001
