@@ -30,7 +30,7 @@ Contents:
     carefully one may learn some things about the P4_16 language.
   * Each of the demo directories includes its own README.md file with
     instructions for compiling the program and running it with the
-    `simple_switch` emulator from the `behavior_model` repository,
+    `simple_switch` emulator from the `behavioral-model` repository,
     including interactively adding table entries to the tables, and
     send packets using Scapy that will be processed by the emulator.
 
@@ -42,6 +42,11 @@ Contents:
   used within a program.
   * [figure](p4-16-allowed-constructs.pdf)
   * [text](p4-16-allowed-constructs.txt)
+  * NOTE: This describes where language constructs are allowed by the
+    P4_16 language specification (version 1.1.0).  P4_16
+    implementations may restrict your program to less than what is
+    shown here, or enable extensions not described here.  Ask the
+    creator of the implementation you are using to learn more.
 
 * Another useful ['cheat sheet'](https://github.com/p4lang/tutorials/blob/master/p4-cheat-sheet.pdf)
   with example snippets of code is in the p4lang/tutorials repository.
@@ -107,6 +112,14 @@ Contents:
     implementations also need not implement multiplication, division,
     or modulo operations, again given that such operations are often
     not needed for most packet processing applications.
+  * Note that integer arithmetic is sufficient for implementing fixed
+    point operations, because fixed point add/subtract/shift can be
+    viewed as the corresponding operations on integers that are in
+    smaller units, e.g. an integer could be used to represent time in
+    multiples of 0.8 nanoseconds, as opposed to in units of
+    nanoseconds, which would be convenient if an implementation had a
+    clock speed of 1.25 GHz and measured time in integer number of
+    clock cycles (1 cycle / 0.8 nanosec = 1.25 GHz).
 
 * Some advantages of P4_16 over P4_14:
   * You can write assignments that look like C/C++/Java, rather than
