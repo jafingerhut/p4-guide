@@ -176,12 +176,13 @@ There are at least several factors in play here:
   some cases to be discarded, unless part of the chip can be disabled
   and the device sold as a cheaper smaller part (e.g. as a 4-core CPU
   instead of an 8-core CPU, because some cores are non-functional).
-  be discarded.  DRAM parts probably have 90% or higher "yields", due
-  to techniques to "route around" bad bits of memory to spare blocks
-  of memory, because the structure of the logic is so regular and
-  repeating.  CPUs have some of this, too, but it is not so easy to do
-  for the CPU cores inside the device as it is for large regular
-  memory structures.
+  DRAM parts probably have 90% or higher "yields" (fraction of chips
+  that can be sold with full functionality), due to techniques to
+  "route around" bad bits of memory to spare blocks of memory, because
+  the structure of the logic is so regular and repeating.  This is
+  possible with CPU chips, too, but typically only for defects in the
+  regular parts of the design (e.g. cache memory) or by disabling
+  larger fractions of the chip (e.g. a whole CPU core).
 
 + The on chip caches are simply more die area per bit of storage than
   DRAM hardware is.  They have lower latency requirements, and higher
