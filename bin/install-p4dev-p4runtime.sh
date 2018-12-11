@@ -89,7 +89,7 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 sudo apt-get --yes install pkg-config
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-1-before-protobuf.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-1-before-protobuf.txt
 
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
@@ -112,7 +112,7 @@ echo "end install protobuf:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-2-after-protobuf.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-2-after-protobuf.txt
 
 echo "------------------------------------------------------------"
 echo "Installing grpc, needed for installing p4lang/PI"
@@ -152,7 +152,7 @@ echo "end install grpc:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-3-after-grpc.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-3-after-grpc.txt
 
 # Dependencies recommended to install libyang, from proto/README.md in
 # p4lang/PI repo:
@@ -178,7 +178,7 @@ echo "end install libyang:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-4-after-libyang.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-4-after-libyang.txt
 
 echo "------------------------------------------------------------"
 echo "Installing sysrepo, needed for installing p4lang/PI"
@@ -200,7 +200,7 @@ echo "end install sysrepo:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-5-after-sysrepo.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-5-after-sysrepo.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc"
@@ -236,7 +236,7 @@ echo "end install PI:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-6-after-PI.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-6-after-PI.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/behavioral-model"
@@ -282,7 +282,7 @@ echo "end install behavioral-model:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-7-after-behavioral-model.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-7-after-behavioral-model.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
@@ -306,7 +306,7 @@ echo "end install p4c:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/local > usr-local-8-after-p4c.txt
+find /usr/lib /usr/local $HOME/.local > usr-local-8-after-p4c.txt
 
 echo "------------------------------------------------------------"
 echo "Installing a few Python packages"
