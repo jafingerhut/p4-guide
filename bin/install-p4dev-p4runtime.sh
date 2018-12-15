@@ -315,13 +315,16 @@ date
 
 # On 2018-Oct-15 on an Ubuntu 16.04 machine, this installed grpcio
 # 1.15.0
-pip install grpcio
+sudo pip install grpcio
 # On 2018-Oct-15 on an Ubuntu 16.04 machine, this installed protobuf
 # 3.6.1
-pip install protobuf
+sudo pip install protobuf
 
 echo "end install python packages:"
 date
+
+cd "${INSTALL_DIR}"
+find /usr/lib /usr/local $HOME/.local > usr-local-9-after-pip-install.txt
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
@@ -337,6 +340,7 @@ diff usr-local-4-after-libyang.txt usr-local-5-after-sysrepo.txt > usr-local-fil
 diff usr-local-5-after-sysrepo.txt usr-local-6-after-PI.txt > usr-local-file-changes-PI.txt
 diff usr-local-6-after-PI.txt usr-local-7-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
 diff usr-local-7-after-behavioral-model.txt usr-local-8-after-p4c.txt > usr-local-file-changes-p4c.txt
+diff usr-local-8-after-p4c.txt usr-local-9-after-pip-install.txt > usr-local-file-changes-pip-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
