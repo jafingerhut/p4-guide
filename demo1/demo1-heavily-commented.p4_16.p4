@@ -33,7 +33,7 @@ limitations under the License.
  * https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4
  *
  * The standard P4_16 architecture called PSA (Portable Switch
- * Architecture) version 1.0 was published on March 1, 2018 here:
+ * Architecture) version 1.1 was published on November 22, 2018 here:
  *
  * https://p4.org/specs/
  *
@@ -158,10 +158,17 @@ struct headers {
  * You must use 'compound actions', i.e. ones explicitly defined with
  * the 'action' keyword like below.
  *
- * mark_to_drop() is an extern defined in v1model.h, I believe
+ * mark_to_drop() is an extern function defined in v1model.h,
  * implemented in the behavioral model by setting an appropriate
  * 'intrinsic metadata' field with a code indicating the packet should
- * be dropped. */
+ * be dropped.
+ *
+ * See the following page if you are interestd in more detailed
+ * documentation on the behavior of mark_to_drop and several other
+ * operations in the v1model architecture, as implemented in the open
+ * source behavioral-model BMv2 software switch:
+ * https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md
+ */
 
 action my_drop() {
     mark_to_drop();
@@ -341,13 +348,16 @@ control ingress(inout headers hdr,
     }
 
     /* Every control block must contain an 'apply' block.  The
-     * contents of the apply block specify the flow of control between
-     * the tables.  This one is particularly simple -- always do the
-     * ipv4_da_lpm table, and regardless of the result, always do the
-     * mac_da table.  It is definitely possible to have 'if'
-     * statements in apply blocks that handle many possible cases
-     * differently from each other, based upon the values of packet
-     * header fields or metadata fields. */
+     * contents of the apply block specify the sequential flow of
+     * control of packet processing, including applying the tables you
+     * wish, in the order you wish.
+     *
+     * This one is particularly simple -- always apply the ipv4_da_lpm
+     * table, and regardless of the result, always apply the mac_da
+     * table.  It is definitely possible to have 'if' statements in
+     * apply blocks that handle many possible cases differently from
+     * each other, based upon the values of packet header fields or
+     * metadata fields. */
     apply {
         ipv4_da_lpm.apply();
         mac_da.apply();
@@ -381,7 +391,7 @@ control egress(inout headers hdr,
 }
 
 /* The deparser controls what headers are created for the outgoing
-   packet. */
+ * packet. */
 control DeparserImpl(packet_out packet, in headers hdr) {
     apply {
         /* The emit() method takes a header.  If that header's hidden
