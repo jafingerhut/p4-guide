@@ -18,7 +18,7 @@
 # The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
 # take 1 to 1.5G of RAM, and the build will fail if you run out of RAM,
 # so don't make this number huge on a machine with 4G of RAM, for example.
-MAX_PARALLEL_JOBS=4
+MAX_PARALLEL_JOBS=3
 
 if [ -d .git -a -d midend ]
 then
