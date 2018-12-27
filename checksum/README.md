@@ -21,7 +21,7 @@ error is visible to ingress code in the `parser_error` field.
 
 The PSA v1.0 specification's InternetChecksum extern API is quite
 different from v1model.p4, and does specify and include an example
-P4_16 program showing how to detect and handle differently received
+P4_16 program showing how to detect, and process differently, received
 packets that have a bad checksum.  It is not yet implemented in the
 open source P4 tools as of Nov 2018, though.
 
@@ -33,17 +33,17 @@ that are common across different P4 programs executed using bmv2.
 
 To compile the P4_16 version of the code:
 
-    p4c-bm2-ss checksum-ipv4-with-options.p4 -o checksum-ipv4-with-options.json
+    p4c --target bmv2 --arch v1model checksum-ipv4-with-options.p4
 
 This program currently only compiles without errors using a version of
 p4c after this 2017-Oct-03 commit:
 
     https://github.com/p4lang/p4c/commit/52e273d402cc4e18eb9a6db6c2b52d4bbc89a91b
 
-I have checked in a file checksum-ipv4-with-options.json generated
-with the p4c-bm2-ss command above, using a version of p4c-bm2-ss
-compiled from the p4c repository, the latest master version as of
-2017-Oct-30.
+TBD (not done yet): I have checked in a file
+checksum-ipv4-with-options.json generated with the p4c command above,
+using a version of p4c-bm2-ss compiled from the p4c repository, the
+latest master version as of 2018-Dec-07.
 
 # Running
 
