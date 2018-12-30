@@ -16,6 +16,15 @@ First, some entirely auto-generated files were created on an Ubuntu
 
 Then I renamed the files with a `.dot` suffix and hand edited them.
 
+The version of the `p4runtime` Git repository that the `.proto` files
+were used had this commit as the most recent one:
+
+```
+commit d88c4ab58b1b60f952f9523085bf160890ab3c82 (HEAD -> master, origin/master, origin/HEAD)
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Wed Dec 26 19:36:49 2018 -0800
+```
+
 Both of the file `p4info-and-p4types.hand-edited.dot` and
 `p4runtime-and-p4data.hand-edited.dot` were edited to add new nodes
 with names ending with " copy <number>", which are intended to be
