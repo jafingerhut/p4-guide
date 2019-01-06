@@ -17,8 +17,8 @@
 
 # Size of source trees, after being built on an x86_64 machine, without
 # documentation:
-# p4c - a little under 1G
-# behavioral-model - about 1.5G
+# p4c - 1.3G
+# behavioral-model - 2.0G
 
 
 # The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
@@ -43,7 +43,7 @@ echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
 echo "with all Ubuntu software updates as of 2018-Oct-17, and a"
 echo "similarly updated Ubuntu 18.04 system."
 echo ""
-echo "The files installed by this script consume about 4 GB of disk space."
+echo "The files installed by this script consume about 5 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection and an"
 echo "SSD drive, it took about 40 minutes."

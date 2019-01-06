@@ -15,15 +15,6 @@
 # limitations under the License.
 
 
-# Install the P4-16 (and also P4-14) compiler, but not the behavioral-model
-# software packet forwarding program.
-
-# You will likely need to enter your password for multiple uses of 'sudo'
-# spread throughout this script.
-
-# This script has been tested on a freshly installed Ubuntu 16.04
-# system, from a file with this name: ubuntu-16.04.4-desktop-amd64.iso
-
 # The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
 # take 1 to 1.5G of RAM, and the build will fail if you run out of RAM,
 # so don't make this number huge on a machine with 4G of RAM, for example.
@@ -38,10 +29,29 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
+echo "This script builds and installs the P4-16 (and also P4-14)"
+echo "compiler, but _not_ the behavioral-model software packet"
+echo "forwarding program, that can behave as just about any legal P4"
+echo "program."
+echo ""
+echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
+echo "with all Ubuntu software updates as of 2018-Oct-17, and a"
+echo "similarly updated Ubuntu 18.04 system."
+echo ""
+echo "You will likely need to enter your password for multiple uses of"
+echo "'sudo' spread throughout this script."
+
+
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
 df -h .
+df -BM .
+
+# Install a few packages (vim is not strictly necessary -- installed for
+# my own convenience):
+sudo apt-get --yes install git vim
+
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
@@ -106,23 +116,29 @@ echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
 date
 df -h .
+df -BM .
 
-P4C="${INSTALL_DIR}/p4c"
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
+cd "${INSTALL_DIR}"
+echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
+echo "P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.bash
+echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.bash
+echo "export PATH=\"\$P4GUIDE_BIN:\$P4C/build:/usr/local/bin:\$PATH\"" >> p4setup.bash
+
+echo "set P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.csh
+echo "set P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.csh
+echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.csh
+echo "set path = ( \$P4GUIDE_BIN \$P4C/build /usr/local/bin \$path )" >> p4setup.csh
+
 echo ""
-echo "You may wish to add lines like the ones below to your .bashrc or"
-echo ".profile files in your home directory to add commands like p4c-bm2-ss"
-echo "and simple_switch to your command path every time you log in or create"
-echo "a new shell:"
+echo "Created files: p4setup.bash p4setup.csh"
 echo ""
-echo "P4C=\"${P4C}\""
-echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\""
-echo "export PATH=\"\$P4GUIDE_BIN:\$P4C/build:/usr/local/bin:\$PATH\""
+echo "If you use a Bash-like command shell, you may wish to copy the lines"
+echo "of the file p4setup.bash to your .bashrc or .profile files in your"
+echo "home directory to add commands like p4c and simple_switch_grpc to your"
+echo "command path every time you log in or create a new shell."
 echo ""
-echo "If you use the tcsh or csh shells instead, the following lines can be"
-echo "added to your .tcshrc or .cshrc file in your home directory:"
-echo ""
-echo "set P4C=\"${P4C}\""
-echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\""
-echo "set path ( \$P4GUIDE_BIN \$P4C/build /usr/local/bin \$path )"
+echo "If you use the tcsh or csh shells, instead copy the contents of the"
+echo "file p4setup.csh to your .tcshrc or .cshrc file in your home"
+echo "directory."
