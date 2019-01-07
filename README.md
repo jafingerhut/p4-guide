@@ -18,6 +18,8 @@ Contents:
     * The newer [shell script](bin/install-p4dev-p4runtime.sh) also
       installs `simple_switch_grpc`, which uses the newer P4Runtime
       API protocol to communicate with a controller.
+    * See [here](bin/README-install-troubleshooting.md) for
+      trouble-shooting tips on these scripts.
   * A figure with the [dependencies](dependencies.pdf) between these
     repositories (last updated June 2017 so may be slightly out of
     date).
