@@ -1,17 +1,29 @@
+This script builds and installs the P4-16 (and also P4-14)
+compiler, and the behavioral-model software packet forwarding
+program, that can behave as just about any legal P4 program.
+
+It has been tested on a freshly installed Ubuntu 16.04 system,
+with all Ubuntu software updates as of 2018-Oct-17, and a
+similarly updated Ubuntu 18.04 system.
+
+The files installed by this script consume about 7 GB of disk space.
+
+On a 2015 MacBook Pro with a decent speed Internet connection and an
+SSD drive, it took 48 minutes.
+
+You will likely need to enter your password for multiple uses of
+'sudo' spread throughout this script.
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Wed Oct 17 17:08:30 PDT 2018
+Sun Jan  6 13:50:37 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        36G  4.1G   30G  13% /
+/dev/sda1        36G  4.2G   30G  13% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         36157M 4184M    30115M  13% /
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
+/dev/sda1         36157M 4210M    30089M  13% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
-git is already the newest version (1:2.7.4-0ubuntu1.5).
+git is already the newest version (1:2.7.4-0ubuntu1.6).
 The following package was automatically installed and is no longer required:
   libllvm5.0
 Use 'sudo apt autoremove' to remove it.
@@ -20,14 +32,14 @@ Suggested packages:
   | vim-athena-py2 | vim-nox-py2
 The following NEW packages will be installed:
   vim vim-runtime
-0 upgraded, 2 newly installed, 0 to remove and 14 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 6,199 kB of archives.
 After this operation, 30.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim-runtime all 2:7.4.1689-3ubuntu1.2 [5,164 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim amd64 2:7.4.1689-3ubuntu1.2 [1,036 kB]
-Fetched 6,199 kB in 1s (4,126 kB/s)
+Fetched 6,199 kB in 11s (519 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 178578 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 178777 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a7.4.1689-3ubuntu1.2_all.deb ...
 Adding 'diversion of /usr/share/vim/vim74/doc/help.txt to /usr/share/vim/vim74/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim74/doc/tags to /usr/share/vim/vim74/doc/tags.vim-tiny by vim-runtime'
@@ -45,9 +57,6 @@ update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rview (rview) 
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vi (vi) in auto mode
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/view (view) in auto mode
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/ex (ex) in auto mode
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -64,7 +73,7 @@ Suggested packages:
   | fortran95-compiler gcj-jdk
 The following NEW packages will be installed:
   autoconf automake autotools-dev curl libltdl-dev libsigsegv2 libtool m4
-0 upgraded, 8 newly installed, 0 to remove and 14 not upgraded.
+0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
 Need to get 1,573 kB of archives.
 After this operation, 6,193 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libsigsegv2 amd64 2.10-4 [14.1 kB]
@@ -72,12 +81,12 @@ Get:2 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 m4 amd64 1.4.17-5 [1
 Get:3 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 autoconf all 2.69-9 [321 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 autotools-dev all 20150820.1 [39.8 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 automake all 1:1.15-4ubuntu1 [510 kB]
-Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.9 [138 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.11 [139 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl-dev amd64 2.4.6-0.1 [162 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool all 2.4.6-0.1 [193 kB]
-Fetched 1,573 kB in 1s (925 kB/s)
+Fetched 1,573 kB in 4s (375 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180287 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180486 files and directories currently installed.)
 Preparing to unpack .../libsigsegv2_2.10-4_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.10-4) ...
 Selecting previously unselected package m4.
@@ -93,8 +102,8 @@ Selecting previously unselected package automake.
 Preparing to unpack .../automake_1%3a1.15-4ubuntu1_all.deb ...
 Unpacking automake (1:1.15-4ubuntu1) ...
 Selecting previously unselected package curl.
-Preparing to unpack .../curl_7.47.0-1ubuntu2.9_amd64.deb ...
-Unpacking curl (7.47.0-1ubuntu2.9) ...
+Preparing to unpack .../curl_7.47.0-1ubuntu2.11_amd64.deb ...
+Unpacking curl (7.47.0-1ubuntu2.11) ...
 Selecting previously unselected package libltdl-dev:amd64.
 Preparing to unpack .../libltdl-dev_2.4.6-0.1_amd64.deb ...
 Unpacking libltdl-dev:amd64 (2.4.6-0.1) ...
@@ -112,13 +121,10 @@ Setting up autoconf (2.69-9) ...
 Setting up autotools-dev (20150820.1) ...
 Setting up automake (1:1.15-4ubuntu1) ...
 update-alternatives: using /usr/bin/automake-1.15 to provide /usr/bin/automake (automake) in auto mode
-Setting up curl (7.47.0-1ubuntu2.9) ...
+Setting up curl (7.47.0-1ubuntu2.11) ...
 Setting up libltdl-dev:amd64 (2.4.6-0.1) ...
 Setting up libtool (2.4.6-0.1) ...
 Processing triggers for libc-bin (2.23-0ubuntu10) ...
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -126,11 +132,11 @@ pkg-config is already the newest version (0.29.1-0ubuntu1).
 The following package was automatically installed and is no longer required:
   libllvm5.0
 Use 'sudo apt autoremove' to remove it.
-0 upgraded, 0 newly installed, 0 to remove and 14 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Wed Oct 17 17:08:47 PDT 2018
+Sun Jan  6 13:51:07 PST 2019
 Cloning into 'protobuf'...
 Note: checking out 'v3.2.0'.
 
@@ -147,12 +153,12 @@ HEAD is now at 593e917... Bump version number to 3.2.0
 Google Mock not present.  Fetching gmock-1.7.0 from the web...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    324      0 --:--:-- --:--:-- --:--:--   324
-100  362k    0  362k    0     0   349k      0 --:--:--  0:00:01 --:--:--  349k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    206      0 --:--:-- --:--:-- --:--:--   206
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0100  362k    0  362k    0     0   169k      0 --:--:--  0:00:02 --:--:--  478k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    358      0 --:--:-- --:--:-- --:--:--   358
-100  618k    0  618k    0     0   792k      0 --:--:-- --:--:-- --:--:--  792k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    248      0 --:--:-- --:--:-- --:--:--   248
+100 55305    0 55305    0     0  49054      0 --:--:--  0:00:01 --:--:-- 49054100  618k    0  618k    0     0   314k      0 --:--:--  0:00:01 --:--:--  672k
 + autoreconf -f -i -Wall,no-obsolete
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
 libtoolize: copying file 'build-aux/ltmain.sh'
@@ -1754,11 +1760,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/jafinger/protobuf/src'
 end install protobuf:
-Wed Oct 17 17:17:50 PDT 2018
+Sun Jan  6 14:00:43 PST 2019
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Wed Oct 17 17:17:50 PDT 2018
+Sun Jan  6 14:00:43 PST 2019
 Cloning into 'grpc'...
 Note: checking out 'tags/v1.3.2'.
 
@@ -2631,10 +2637,7 @@ make: Circular /home/jafinger/grpc/libs/opt/libares.a <- /home/jafinger/grpc/lib
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Wed Oct 17 17:23:09 PDT 2018
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
+Sun Jan  6 14:10:04 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -2651,7 +2654,7 @@ The following NEW packages will be installed:
   cmake cmake-data libavl-dev libavl1 libev-dev libev4 libjsoncpp1
   libpcre3-dev libpcre32-3 libpcrecpp0v5 libprotobuf-c-dev libprotobuf-c1
   libprotoc9v5 protobuf-c-compiler
-0 upgraded, 14 newly installed, 0 to remove and 14 not upgraded.
+0 upgraded, 14 newly installed, 0 to remove and 0 not upgraded.
 Need to get 5,033 kB of archives.
 After this operation, 25.4 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 cmake-data all 3.5.1-1ubuntu3 [1,121 kB]
@@ -2668,9 +2671,9 @@ Get:11 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libprotoc9v5 amd64 
 Get:12 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 protobuf-c-compiler amd64 1.2.1-1 [68.6 kB]
 Get:13 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libev4 amd64 1:4.22-1 [26.3 kB]
 Get:14 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libev-dev amd64 1:4.22-1 [116 kB]
-Fetched 5,033 kB in 3s (1,663 kB/s)
+Fetched 5,033 kB in 12s (418 kB/s)
 Selecting previously unselected package cmake-data.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180654 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180853 files and directories currently installed.)
 Preparing to unpack .../cmake-data_3.5.1-1ubuntu3_all.deb ...
 Unpacking cmake-data (3.5.1-1ubuntu3) ...
 Selecting previously unselected package libjsoncpp1:amd64.
@@ -2732,7 +2735,7 @@ Processing triggers for libc-bin (2.23-0ubuntu10) ...
 ------------------------------------------------------------
 Installing libyang, needed for installing p4lang/PI
 start install libyang:
-Wed Oct 17 17:23:19 PDT 2018
+Sun Jan  6 14:10:23 PST 2019
 Cloning into 'libyang'...
 Note: checking out 'v0.16-r1'.
 
@@ -2901,11 +2904,11 @@ Install the project...
 -- Installing: /usr/local/lib/libyang/user_types/user_date_and_time.so
 -- Set runtime path of "/usr/local/lib/libyang/user_types/user_date_and_time.so" to ""
 end install libyang:
-Wed Oct 17 17:23:36 PDT 2018
+Sun Jan  6 14:10:52 PST 2019
 ------------------------------------------------------------
 Installing sysrepo, needed for installing p4lang/PI
 start install sysrepo:
-Wed Oct 17 17:23:36 PDT 2018
+Sun Jan  6 14:10:52 PST 2019
 Cloning into 'sysrepo'...
 Note: checking out 'v0.7.5'.
 
@@ -3170,14 +3173,11 @@ Install the project...
 -- Installing: /usr/local/include/sysrepo-cpp/Internal.h
 -- Installing: /usr/local/lib/pkgconfig/libSysrepo-cpp.pc
 end install sysrepo:
-Wed Oct 17 17:24:10 PDT 2018
+Sun Jan  6 14:11:33 PST 2019
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Wed Oct 17 17:24:10 PDT 2018
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
+Sun Jan  6 14:11:33 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -3210,7 +3210,7 @@ The following NEW packages will be installed:
   libboost-thread1.58-dev libboost-thread1.58.0 libboost1.58-dev libjudy-dev
   libjudydebian1 libreadline-dev libreadline6-dev libtinfo-dev libtool-bin
   valgrind
-0 upgraded, 21 newly installed, 0 to remove and 14 not upgraded.
+0 upgraded, 21 newly installed, 0 to remove and 0 not upgraded.
 Need to get 18.4 MB of archives.
 After this operation, 179 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libboost1.58-dev amd64 1.58.0+dfsg-5ubuntu3.1 [6,222 kB]
@@ -3234,9 +3234,9 @@ Get:18 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline6-dev am
 Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline-dev amd64 6.3-8ubuntu2 [992 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool-bin amd64 2.4.6-0.1 [79.2 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 valgrind amd64 1:3.11.0-1ubuntu4.2 [11.2 MB]
-Fetched 18.4 MB in 6s (2,630 kB/s)
+Fetched 18.4 MB in 33s (546 kB/s)
 Selecting previously unselected package libboost1.58-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 182902 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 183101 files and directories currently installed.)
 Preparing to unpack .../libboost1.58-dev_1.58.0+dfsg-5ubuntu3.1_amd64.deb ...
 Unpacking libboost1.58-dev:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Selecting previously unselected package libboost-atomic1.58.0:amd64.
@@ -3328,19 +3328,16 @@ Setting up libtool-bin (2.4.6-0.1) ...
 Setting up valgrind (1:3.11.0-1ubuntu4.2) ...
 Processing triggers for libc-bin (2.23-0ubuntu10) ...
 Cloning into 'PI'...
-Submodule 'proto/googleapis' (https://github.com/googleapis/googleapis.git) registered for path 'proto/googleapis'
 Submodule 'proto/openconfig/gnmi' (https://github.com/openconfig/gnmi.git) registered for path 'proto/openconfig/gnmi'
 Submodule 'proto/openconfig/public' (https://github.com/openconfig/public.git) registered for path 'proto/openconfig/public'
 Submodule 'proto/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'proto/p4runtime'
 Submodule 'third_party/googletest' (https://github.com/google/googletest) registered for path 'third_party/googletest'
-Cloning into 'proto/googleapis'...
-Submodule path 'proto/googleapis': checked out '37cc0e5acae50ee91f00827a7010c3b07dfa5311'
 Cloning into 'proto/openconfig/gnmi'...
 Submodule path 'proto/openconfig/gnmi': checked out '9c8d9e965b3e854107ea02c12ab11b70717456f2'
 Cloning into 'proto/openconfig/public'...
 Submodule path 'proto/openconfig/public': checked out '1040d11c089c74084c64c234bee3691ec70e8a9f'
 Cloning into 'proto/p4runtime'...
-Submodule path 'proto/p4runtime': checked out 'a6f81ac53c6b56d75a9603690794196d67c5dc07'
+Submodule path 'proto/p4runtime': checked out 'ef54d874d7bd385b1721a07722c371d02dee245f'
 Cloning into 'third_party/googletest'...
 Submodule path 'third_party/googletest': checked out 'ecd530865cefdfa7dea58e84f6aa1b548950363d'
 libtoolize: putting auxiliary files in '.'.
@@ -3845,7 +3842,6 @@ checking for MHD_start_daemon in -lmicrohttpd... no
 configure: WARNING: microhttpd library not found, will not compile demo
 checking for lys_parse_path in -lyang... yes
 checking for sr_connect in -lsysrepo... yes
-checking for /home/jafinger/PI/proto/google/rpc/status.proto... yes
 checking for /home/jafinger/PI/proto/p4/v1/p4runtime.proto... yes
 checking whether gcc is Clang... no
 checking whether pthreads work with -pthread... yes
@@ -3975,6 +3971,11 @@ depbase=`echo p4info/meters.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -DPI_LOG_ON -isystem/usr/local/include -I../include -I../lib -isystem../third_party/cJSON/include -pthread -Wall -Werror -Wextra -g -O2 -MT p4info/meters.lo -MD -MP -MF p4info/.deps/meters.Tpo -c p4info/meters.c  -fPIC -DPIC -o p4info/.libs/meters.o
 libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -DPI_LOG_ON -isystem/usr/local/include -I../include -I../lib -isystem../third_party/cJSON/include -pthread -Wall -Werror -Wextra -g -O2 -MT p4info/meters.lo -MD -MP -MF p4info/.deps/meters.Tpo -c p4info/meters.c -o p4info/meters.o >/dev/null 2>&1
+depbase=`echo p4info/digests.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -DPI_LOG_ON -isystem/usr/local/include -I../include -I../lib -isystem../third_party/cJSON/include  -pthread -Wall -Werror -Wextra  -g -O2 -MT p4info/digests.lo -MD -MP -MF $depbase.Tpo -c -o p4info/digests.lo p4info/digests.c &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -DPI_LOG_ON -isystem/usr/local/include -I../include -I../lib -isystem../third_party/cJSON/include -pthread -Wall -Werror -Wextra -g -O2 -MT p4info/digests.lo -MD -MP -MF p4info/.deps/digests.Tpo -c p4info/digests.c  -fPIC -DPIC -o p4info/.libs/digests.o
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -DPI_LOG_ON -isystem/usr/local/include -I../include -I../lib -isystem../third_party/cJSON/include -pthread -Wall -Werror -Wextra -g -O2 -MT p4info/digests.lo -MD -MP -MF p4info/.deps/digests.Tpo -c p4info/digests.c -o p4info/digests.o >/dev/null 2>&1
 depbase=`echo config_readers/bmv2_json_reader.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -DPI_LOG_ON -isystem/usr/local/include -I../include -I../lib -isystem../third_party/cJSON/include  -pthread -Wall -Werror -Wextra  -g -O2 -MT config_readers/bmv2_json_reader.lo -MD -MP -MF $depbase.Tpo -c -o config_readers/bmv2_json_reader.lo config_readers/bmv2_json_reader.c &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -4020,14 +4021,14 @@ libtool: link: ar cru .libs/libpiutils.a utils/.libs/logging.o utils/.libs/seria
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpiutils.a
 libtool: link: ( cd ".libs" && rm -f "libpiutils.la" && ln -s "../libpiutils.la" "libpiutils.la" )
-/bin/bash ../libtool  --tag=CC   --mode=link gcc -pthread -Wall -Werror -Wextra  -g -O2 -L/usr/local/lib  -o libpip4info.la -rpath /usr/local/lib p4info/actions.lo p4info/p4info_struct.lo p4info/tables.lo p4info/act_profs.lo p4info/counters.lo p4info/meters.lo config_readers/bmv2_json_reader.lo config_readers/native_json_reader.lo p4info/p4info.lo p4info/p4info_name_map.lo p4info/p4info_common.lo p4info/fast_id_vector.lo ../third_party/cJSON/libpicjson.la ../lib/libpitoolkit.la libpiutils.la -lJudy 
-libtool: link: gcc -shared  -fPIC -DPIC  p4info/.libs/actions.o p4info/.libs/p4info_struct.o p4info/.libs/tables.o p4info/.libs/act_profs.o p4info/.libs/counters.o p4info/.libs/meters.o config_readers/.libs/bmv2_json_reader.o config_readers/.libs/native_json_reader.o p4info/.libs/p4info.o p4info/.libs/p4info_name_map.o p4info/.libs/p4info_common.o p4info/.libs/fast_id_vector.o  -Wl,--whole-archive ../third_party/cJSON/.libs/libpicjson.a ../lib/.libs/libpitoolkit.a ./.libs/libpiutils.a -Wl,--no-whole-archive  -L/usr/local/lib -lm -lJudy  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpip4info.so.0 -o .libs/libpip4info.so.0.0.0
+/bin/bash ../libtool  --tag=CC   --mode=link gcc -pthread -Wall -Werror -Wextra  -g -O2 -L/usr/local/lib  -o libpip4info.la -rpath /usr/local/lib p4info/actions.lo p4info/p4info_struct.lo p4info/tables.lo p4info/act_profs.lo p4info/counters.lo p4info/meters.lo p4info/digests.lo config_readers/bmv2_json_reader.lo config_readers/native_json_reader.lo p4info/p4info.lo p4info/p4info_name_map.lo p4info/p4info_common.lo p4info/fast_id_vector.lo ../third_party/cJSON/libpicjson.la ../lib/libpitoolkit.la libpiutils.la -lJudy 
+libtool: link: gcc -shared  -fPIC -DPIC  p4info/.libs/actions.o p4info/.libs/p4info_struct.o p4info/.libs/tables.o p4info/.libs/act_profs.o p4info/.libs/counters.o p4info/.libs/meters.o p4info/.libs/digests.o config_readers/.libs/bmv2_json_reader.o config_readers/.libs/native_json_reader.o p4info/.libs/p4info.o p4info/.libs/p4info_name_map.o p4info/.libs/p4info_common.o p4info/.libs/fast_id_vector.o  -Wl,--whole-archive ../third_party/cJSON/.libs/libpicjson.a ../lib/.libs/libpitoolkit.a ./.libs/libpiutils.a -Wl,--no-whole-archive  -L/usr/local/lib -lm -lJudy  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpip4info.so.0 -o .libs/libpip4info.so.0.0.0
 libtool: link: (cd ".libs" && rm -f "libpip4info.so.0" && ln -s "libpip4info.so.0.0.0" "libpip4info.so.0")
 libtool: link: (cd ".libs" && rm -f "libpip4info.so" && ln -s "libpip4info.so.0.0.0" "libpip4info.so")
 libtool: link: (cd .libs/libpip4info.lax/libpicjson.a && ar x "/home/jafinger/PI/src/../third_party/cJSON/.libs/libpicjson.a")
 libtool: link: (cd .libs/libpip4info.lax/libpitoolkit.a && ar x "/home/jafinger/PI/src/../lib/.libs/libpitoolkit.a")
 libtool: link: (cd .libs/libpip4info.lax/libpiutils.a && ar x "/home/jafinger/PI/src/./.libs/libpiutils.a")
-libtool: link: ar cru .libs/libpip4info.a  p4info/actions.o p4info/p4info_struct.o p4info/tables.o p4info/act_profs.o p4info/counters.o p4info/meters.o config_readers/bmv2_json_reader.o config_readers/native_json_reader.o p4info/p4info.o p4info/p4info_name_map.o p4info/p4info_common.o p4info/fast_id_vector.o  .libs/libpip4info.lax/libpicjson.a/cJSON.o  .libs/libpip4info.lax/libpitoolkit.a/_assert.o .libs/libpip4info.lax/libpitoolkit.a/read_file.o .libs/libpip4info.lax/libpitoolkit.a/vector.o  .libs/libpip4info.lax/libpiutils.a/logging.o .libs/libpip4info.lax/libpiutils.a/serialize.o 
+libtool: link: ar cru .libs/libpip4info.a  p4info/actions.o p4info/p4info_struct.o p4info/tables.o p4info/act_profs.o p4info/counters.o p4info/meters.o p4info/digests.o config_readers/bmv2_json_reader.o config_readers/native_json_reader.o p4info/p4info.o p4info/p4info_name_map.o p4info/p4info_common.o p4info/fast_id_vector.o  .libs/libpip4info.lax/libpicjson.a/cJSON.o  .libs/libpip4info.lax/libpitoolkit.a/_assert.o .libs/libpip4info.lax/libpitoolkit.a/read_file.o .libs/libpip4info.lax/libpitoolkit.a/vector.o  .libs/libpip4info.lax/libpiutils.a/logging.o .libs/libpip4info.lax/libpiutils.a/serialize.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpip4info.a
 libtool: link: rm -fr .libs/libpip4info.lax
@@ -4106,8 +4107,8 @@ libtool: link: ar cru .libs/libpifegeneric.a  frontends/generic/pi.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpifegeneric.a
 libtool: link: ( cd ".libs" && rm -f "libpifegeneric.la" && ln -s "../libpifegeneric.la" "libpifegeneric.la" )
-/bin/bash ../libtool  --tag=CC   --mode=link gcc -pthread -Wall -Werror -Wextra  -g -O2 -L/usr/local/lib  -o libpiall.la -rpath /usr/local/lib p4info/actions.lo p4info/p4info_struct.lo p4info/tables.lo p4info/act_profs.lo p4info/counters.lo p4info/meters.lo config_readers/bmv2_json_reader.lo config_readers/native_json_reader.lo p4info/p4info.lo p4info/p4info_name_map.lo p4info/p4info_common.lo p4info/fast_id_vector.lo pi.lo pi_tables.lo pi_act_prof.lo pi_counter.lo pi_meter.lo pi_learn.lo pi_value.lo pi_mc.lo pi_clone.lo device_map.lo  frontends/generic/pi.lo ../third_party/cJSON/libpicjson.la libpiutils.la ../lib/libpitoolkit.la -lJudy 
-libtool: link: gcc -shared  -fPIC -DPIC  p4info/.libs/actions.o p4info/.libs/p4info_struct.o p4info/.libs/tables.o p4info/.libs/act_profs.o p4info/.libs/counters.o p4info/.libs/meters.o config_readers/.libs/bmv2_json_reader.o config_readers/.libs/native_json_reader.o p4info/.libs/p4info.o p4info/.libs/p4info_name_map.o p4info/.libs/p4info_common.o p4info/.libs/fast_id_vector.o .libs/pi.o .libs/pi_tables.o .libs/pi_act_prof.o .libs/pi_counter.o .libs/pi_meter.o .libs/pi_learn.o .libs/pi_value.o .libs/pi_mc.o .libs/pi_clone.o .libs/device_map.o frontends/generic/.libs/pi.o  -Wl,--whole-archive ../third_party/cJSON/.libs/libpicjson.a ./.libs/libpiutils.a ../lib/.libs/libpitoolkit.a -Wl,--no-whole-archive  -L/usr/local/lib -lm -lJudy  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpiall.so.0 -o .libs/libpiall.so.0.0.0
+/bin/bash ../libtool  --tag=CC   --mode=link gcc -pthread -Wall -Werror -Wextra  -g -O2 -L/usr/local/lib  -o libpiall.la -rpath /usr/local/lib p4info/actions.lo p4info/p4info_struct.lo p4info/tables.lo p4info/act_profs.lo p4info/counters.lo p4info/meters.lo p4info/digests.lo config_readers/bmv2_json_reader.lo config_readers/native_json_reader.lo p4info/p4info.lo p4info/p4info_name_map.lo p4info/p4info_common.lo p4info/fast_id_vector.lo pi.lo pi_tables.lo pi_act_prof.lo pi_counter.lo pi_meter.lo pi_learn.lo pi_value.lo pi_mc.lo pi_clone.lo device_map.lo  frontends/generic/pi.lo ../third_party/cJSON/libpicjson.la libpiutils.la ../lib/libpitoolkit.la -lJudy 
+libtool: link: gcc -shared  -fPIC -DPIC  p4info/.libs/actions.o p4info/.libs/p4info_struct.o p4info/.libs/tables.o p4info/.libs/act_profs.o p4info/.libs/counters.o p4info/.libs/meters.o p4info/.libs/digests.o config_readers/.libs/bmv2_json_reader.o config_readers/.libs/native_json_reader.o p4info/.libs/p4info.o p4info/.libs/p4info_name_map.o p4info/.libs/p4info_common.o p4info/.libs/fast_id_vector.o .libs/pi.o .libs/pi_tables.o .libs/pi_act_prof.o .libs/pi_counter.o .libs/pi_meter.o .libs/pi_learn.o .libs/pi_value.o .libs/pi_mc.o .libs/pi_clone.o .libs/device_map.o frontends/generic/.libs/pi.o  -Wl,--whole-archive ../third_party/cJSON/.libs/libpicjson.a ./.libs/libpiutils.a ../lib/.libs/libpitoolkit.a -Wl,--no-whole-archive  -L/usr/local/lib -lm -lJudy  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpiall.so.0 -o .libs/libpiall.so.0.0.0
 libtool: link: (cd ".libs" && rm -f "libpiall.so.0" && ln -s "libpiall.so.0.0.0" "libpiall.so.0")
 libtool: link: (cd ".libs" && rm -f "libpiall.so" && ln -s "libpiall.so.0.0.0" "libpiall.so")
 libtool: link: (cd .libs/libpiall.lax/libpicjson.a && ar x "/home/jafinger/PI/src/../third_party/cJSON/.libs/libpicjson.a")
@@ -4115,7 +4116,7 @@ libtool: link: (cd .libs/libpiall.lax/libpiutils.a && ar x "/home/jafinger/PI/sr
 libtool: link: (cd .libs/libpiall.lax/libpitoolkit.a && ar x "/home/jafinger/PI/src/../lib/.libs/libpitoolkit.a")
 copying selected object files to avoid basename conflicts...
 libtool: link: ln frontends/generic/pi.o .libs/libpiall.lax/lt1-pi.o || cp frontends/generic/pi.o .libs/libpiall.lax/lt1-pi.o
-libtool: link: ar cru .libs/libpiall.a p4info/actions.o p4info/p4info_struct.o p4info/tables.o p4info/act_profs.o p4info/counters.o p4info/meters.o config_readers/bmv2_json_reader.o config_readers/native_json_reader.o p4info/p4info.o p4info/p4info_name_map.o p4info/p4info_common.o p4info/fast_id_vector.o pi.o pi_tables.o pi_act_prof.o pi_counter.o pi_meter.o pi_learn.o pi_value.o pi_mc.o pi_clone.o device_map.o .libs/libpiall.lax/lt1-pi.o .libs/libpiall.lax/libpicjson.a/cJSON.o .libs/libpiall.lax/libpiutils.a/logging.o .libs/libpiall.lax/libpiutils.a/serialize.o .libs/libpiall.lax/libpitoolkit.a/_assert.o .libs/libpiall.lax/libpitoolkit.a/read_file.o .libs/libpiall.lax/libpitoolkit.a/vector.o
+libtool: link: ar cru .libs/libpiall.a p4info/actions.o p4info/p4info_struct.o p4info/tables.o p4info/act_profs.o p4info/counters.o p4info/meters.o p4info/digests.o config_readers/bmv2_json_reader.o config_readers/native_json_reader.o p4info/p4info.o p4info/p4info_name_map.o p4info/p4info_common.o p4info/fast_id_vector.o pi.o pi_tables.o pi_act_prof.o pi_counter.o pi_meter.o pi_learn.o pi_value.o pi_mc.o pi_clone.o device_map.o .libs/libpiall.lax/lt1-pi.o .libs/libpiall.lax/libpicjson.a/cJSON.o .libs/libpiall.lax/libpiutils.a/logging.o .libs/libpiall.lax/libpiutils.a/serialize.o .libs/libpiall.lax/libpitoolkit.a/_assert.o .libs/libpiall.lax/libpitoolkit.a/read_file.o .libs/libpiall.lax/libpitoolkit.a/vector.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpiall.a
 libtool: link: rm -fr .libs/libpiall.lax .libs/libpiall.lax
@@ -4465,12 +4466,17 @@ depbase=`echo src/pre_clone_mgr.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -Wall -Werror -g -O2 -std=c++11 -MT src/pre_clone_mgr.lo -MD -MP -MF src/.deps/pre_clone_mgr.Tpo -c src/pre_clone_mgr.cpp  -fPIC -DPIC -o src/.libs/pre_clone_mgr.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -Wall -Werror -g -O2 -std=c++11 -MT src/pre_clone_mgr.lo -MD -MP -MF src/.deps/pre_clone_mgr.Tpo -c src/pre_clone_mgr.cpp -o src/pre_clone_mgr.o >/dev/null 2>&1
-/bin/bash ../libtool  --tag=CXX   --mode=link g++ -Wall -Werror -g -O2 -std=c++11   -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang 
-libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/.libs/device_mgr.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -Wl,-rpath -Wl,/home/jafinger/PI/frontends_extra/cpp/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/p4info/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/.libs -Wl,-rpath -Wl,/home/jafinger/PI/src/.libs ../../frontends_extra/cpp/.libs/libpifecpp.so ../p4info/.libs/libpiconvertproto.so ../.libs/libpiprotobuf.so ../../src/.libs/libpip4info.so -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
+depbase=`echo src/digest_mgr.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I..  -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party  -Wall -Werror -g -O2 -std=c++11 -MT src/digest_mgr.lo -MD -MP -MF $depbase.Tpo -c -o src/digest_mgr.lo src/digest_mgr.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -Wall -Werror -g -O2 -std=c++11 -MT src/digest_mgr.lo -MD -MP -MF src/.deps/digest_mgr.Tpo -c src/digest_mgr.cpp  -fPIC -DPIC -o src/.libs/digest_mgr.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -Wall -Werror -g -O2 -std=c++11 -MT src/digest_mgr.lo -MD -MP -MF src/.deps/digest_mgr.Tpo -c src/digest_mgr.cpp -o src/digest_mgr.o >/dev/null 2>&1
+/bin/bash ../libtool  --tag=CXX   --mode=link g++ -Wall -Werror -g -O2 -std=c++11   -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo src/digest_mgr.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang 
+libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/.libs/device_mgr.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o src/.libs/digest_mgr.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -Wl,-rpath -Wl,/home/jafinger/PI/frontends_extra/cpp/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/p4info/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/.libs -Wl,-rpath -Wl,/home/jafinger/PI/src/.libs ../../frontends_extra/cpp/.libs/libpifecpp.so ../p4info/.libs/libpiconvertproto.so ../.libs/libpiprotobuf.so ../../src/.libs/libpip4info.so -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
 libtool: link: (cd ".libs" && rm -f "libpifeproto.so.0" && ln -s "libpifeproto.so.0.0.0" "libpifeproto.so.0")
 libtool: link: (cd ".libs" && rm -f "libpifeproto.so" && ln -s "libpifeproto.so.0.0.0" "libpifeproto.so")
 libtool: link: (cd .libs/libpifeproto.lax/libfmt.a && ar x "/home/jafinger/PI/proto/frontend/../third_party/.libs/libfmt.a")
-libtool: link: ar cru .libs/libpifeproto.a  src/device_mgr.o src/action_prof_mgr.o src/table_info_store.o src/action_helpers.o src/packet_io_mgr.o src/common.o src/logging.o src/pre_mc_mgr.o src/pre_clone_mgr.o  .libs/libpifeproto.lax/libfmt.a/_assert.o .libs/libpifeproto.lax/libfmt.a/format.o .libs/libpifeproto.lax/libfmt.a/ostream.o .libs/libpifeproto.lax/libfmt.a/posix.o .libs/libpifeproto.lax/libfmt.a/printf.o 
+libtool: link: ar cru .libs/libpifeproto.a  src/device_mgr.o src/action_prof_mgr.o src/table_info_store.o src/action_helpers.o src/packet_io_mgr.o src/common.o src/logging.o src/pre_mc_mgr.o src/pre_clone_mgr.o src/digest_mgr.o  .libs/libpifeproto.lax/libfmt.a/_assert.o .libs/libpifeproto.lax/libfmt.a/format.o .libs/libpifeproto.lax/libfmt.a/ostream.o .libs/libpifeproto.lax/libfmt.a/posix.o .libs/libpifeproto.lax/libfmt.a/printf.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpifeproto.a
 libtool: link: rm -fr .libs/libpifeproto.lax
@@ -4554,7 +4560,7 @@ make[2]: Nothing to be done for 'install-exec-am'.
  /bin/mkdir -p '/usr/local/include/PI'
  /usr/bin/install -c -m 644  PI/pi.h PI/pi_base.h PI/p4info.h PI/pi_tables.h PI/pi_value.h PI/pi_act_prof.h PI/pi_counter.h PI/pi_meter.h PI/pi_learn.h PI/pi_mc.h PI/pi_clone.h '/usr/local/include/PI'
  /bin/mkdir -p '/usr/local/include/PI/p4info'
- /usr/bin/install -c -m 644  PI/p4info/actions.h PI/p4info/tables.h PI/p4info/act_profs.h PI/p4info/counters.h PI/p4info/meters.h '/usr/local/include/PI/p4info'
+ /usr/bin/install -c -m 644  PI/p4info/actions.h PI/p4info/tables.h PI/p4info/act_profs.h PI/p4info/counters.h PI/p4info/meters.h PI/p4info/digests.h '/usr/local/include/PI/p4info'
  /bin/mkdir -p '/usr/local/include/PI/target'
  /usr/bin/install -c -m 644  PI/target/pi_imp.h PI/target/pi_tables_imp.h PI/target/pi_act_prof_imp.h PI/target/pi_counter_imp.h PI/target/pi_meter_imp.h PI/target/pi_learn_imp.h PI/target/pi_mc_imp.h PI/target/pi_clone_imp.h '/usr/local/include/PI/target'
  /bin/mkdir -p '/usr/local/include/PI/int'
@@ -4942,8 +4948,8 @@ make[4]: Entering directory '/home/jafinger/PI/proto/frontend'
  /bin/mkdir -p '/usr/local/lib'
  /bin/bash ../libtool   --mode=install /usr/bin/install -c   libpifeproto.la '/usr/local/lib'
 libtool: warning: relinking 'libpifeproto.la'
-libtool: install: (cd /home/jafinger/PI/proto/frontend; /bin/bash "/home/jafinger/PI/proto/libtool"  --tag CXX --mode=relink g++ -Wall -Werror -g -O2 -std=c++11 -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang )
-libtool: relink: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/.libs/device_mgr.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -L/usr/local/lib -lpifecpp -lpiconvertproto -lpiprotobuf -lpip4info -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
+libtool: install: (cd /home/jafinger/PI/proto/frontend; /bin/bash "/home/jafinger/PI/proto/libtool"  --tag CXX --mode=relink g++ -Wall -Werror -g -O2 -std=c++11 -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo src/digest_mgr.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang )
+libtool: relink: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/.libs/device_mgr.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o src/.libs/digest_mgr.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -L/usr/local/lib -lpifecpp -lpiconvertproto -lpiprotobuf -lpip4info -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
 libtool: install: /usr/bin/install -c .libs/libpifeproto.so.0.0.0T /usr/local/lib/libpifeproto.so.0.0.0
 libtool: install: (cd /usr/local/lib && { ln -s -f libpifeproto.so.0.0.0 libpifeproto.so.0 || { rm -f libpifeproto.so.0 && ln -s libpifeproto.so.0.0.0 libpifeproto.so.0; }; })
 libtool: install: (cd /usr/local/lib && { ln -s -f libpifeproto.so.0.0.0 libpifeproto.so || { rm -f libpifeproto.so && ln -s libpifeproto.so.0.0.0 libpifeproto.so; }; })
@@ -5196,7 +5202,7 @@ Making clean in proto
 make[1]: Entering directory '/home/jafinger/PI/proto'
 Making clean in .
 make[2]: Entering directory '/home/jafinger/PI/proto'
-test -z "cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/config/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py proto_files.ts" || rm -f cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/config/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py proto_files.ts
+test -z "cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/__init__.py py_out/p4/config/__init__.py py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py proto_files.ts" || rm -f cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/__init__.py py_out/p4/config/__init__.py py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py proto_files.ts
 test -z "libpiprotobuf.la libpiprotogrpc.la" || rm -f libpiprotobuf.la libpiprotogrpc.la
 rm -f ./so_locations
 rm -rf .libs _libs
@@ -5277,12 +5283,12 @@ rm -f *.lo
 make[2]: Leaving directory '/home/jafinger/PI/proto/server'
 Making clean in tests
 make[2]: Entering directory '/home/jafinger/PI/proto/tests'
- rm -f test_p4info_convert test_proto_fe test_proto_fe_packet_io test_proto_fe_set_pipeline_config test_server_no_pipeline_config test_server_gnmi test_server_arbitration test_pi_server
+ rm -f test_p4info_convert test_proto_fe test_proto_fe_digest test_proto_fe_packet_io test_proto_fe_set_pipeline_config test_server_no_pipeline_config test_server_gnmi test_server_arbitration test_pi_server test_task_queue
 rm -rf .libs _libs
 rm -f *.o
 rm -f server/*.o
-test -z "test_p4info_convert.log test_proto_fe.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log" || rm -f test_p4info_convert.log test_proto_fe.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log
-test -z "test_p4info_convert.trs test_proto_fe.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs" || rm -f test_p4info_convert.trs test_proto_fe.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs
+test -z "test_p4info_convert.log test_proto_fe.log test_proto_fe_digest.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log test_task_queue.log" || rm -f test_p4info_convert.log test_proto_fe.log test_proto_fe_digest.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log test_task_queue.log
+test -z "test_p4info_convert.trs test_proto_fe.trs test_proto_fe_digest.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs test_task_queue.trs" || rm -f test_p4info_convert.trs test_proto_fe.trs test_proto_fe_digest.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs test_task_queue.trs
 test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[2]: Leaving directory '/home/jafinger/PI/proto/tests'
@@ -5293,11 +5299,11 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/jafinger/PI'
 end install PI:
-Wed Oct 17 17:29:47 PDT 2018
+Sun Jan  6 14:17:36 PST 2019
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Wed Oct 17 17:29:47 PDT 2018
+Sun Jan  6 14:17:36 PST 2019
 Cloning into 'behavioral-model'...
 Reading package lists...
 Building dependency tree...
@@ -5335,7 +5341,7 @@ The following NEW packages will be installed:
   libpython-all-dev libpython-dev libpython2.7-dev libssl-dev libssl-doc
   python-all python-all-dev python-dev python-pip python-pip-whl
   python-pkg-resources python-setuptools python-wheel python2.7-dev zlib1g-dev
-0 upgraded, 38 newly installed, 0 to remove and 14 not upgraded.
+0 upgraded, 38 newly installed, 0 to remove and 0 not upgraded.
 Need to get 35.1 MB of archives.
 After this operation, 70.5 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libfl-dev amd64 2.6.0-11 [12.5 kB]
@@ -5360,14 +5366,14 @@ Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libgmpxx4ldbl amd64
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libgmp-dev amd64 2:6.1.0+dfsg-2 [314 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libpcap0.8-dev amd64 1.7.4-2 [212 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libpcap-dev all 1.7.4-2 [3,394 B]
-Get:23 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-dev amd64 2.7.12-1ubuntu0~16.04.3 [27.8 MB]
+Get:23 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-dev amd64 2.7.12-1ubuntu0~16.04.4 [27.8 MB]
 Get:24 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-dev amd64 2.7.12-1~16.04 [7,840 B]
 Get:25 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-all-dev amd64 2.7.12-1~16.04 [1,006 B]
 Get:26 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-2ubuntu4.1 [168 kB]
-Get:27 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl-dev amd64 1.0.2g-1ubuntu4.13 [1,342 kB]
-Get:28 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl-doc all 1.0.2g-1ubuntu4.13 [1,079 kB]
+Get:27 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl-dev amd64 1.0.2g-1ubuntu4.14 [1,345 kB]
+Get:28 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl-doc all 1.0.2g-1ubuntu4.14 [1,078 kB]
 Get:29 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-all amd64 2.7.12-1~16.04 [996 B]
-Get:30 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-dev amd64 2.7.12-1ubuntu0~16.04.3 [276 kB]
+Get:30 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-dev amd64 2.7.12-1ubuntu0~16.04.4 [276 kB]
 Get:31 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-dev amd64 2.7.12-1~16.04 [1,186 B]
 Get:32 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-all-dev amd64 2.7.12-1~16.04 [1,016 B]
 Get:33 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python-pip-whl all 8.1.1-2ubuntu0.4 [1,110 kB]
@@ -5377,9 +5383,9 @@ Get:36 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-setuptools a
 Get:37 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-wheel all 0.29.0-1 [48.0 kB]
 Get:38 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libffi-dev amd64 3.2.1-4 [161 kB]
 Extracting templates from packages: 78%Extracting templates from packages: 100%
-Fetched 35.1 MB in 9s (3,673 kB/s)
+Fetched 35.1 MB in 1min 4s (542 kB/s)
 Selecting previously unselected package libfl-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 194965 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 195164 files and directories currently installed.)
 Preparing to unpack .../libfl-dev_2.6.0-11_amd64.deb ...
 Unpacking libfl-dev:amd64 (2.6.0-11) ...
 Selecting previously unselected package flex.
@@ -5446,8 +5452,8 @@ Selecting previously unselected package libpcap-dev.
 Preparing to unpack .../libpcap-dev_1.7.4-2_all.deb ...
 Unpacking libpcap-dev (1.7.4-2) ...
 Selecting previously unselected package libpython2.7-dev:amd64.
-Preparing to unpack .../libpython2.7-dev_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
-Unpacking libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Preparing to unpack .../libpython2.7-dev_2.7.12-1ubuntu0~16.04.4_amd64.deb ...
+Unpacking libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.4) ...
 Selecting previously unselected package libpython-dev:amd64.
 Preparing to unpack .../libpython-dev_2.7.12-1~16.04_amd64.deb ...
 Unpacking libpython-dev:amd64 (2.7.12-1~16.04) ...
@@ -5458,17 +5464,17 @@ Selecting previously unselected package zlib1g-dev:amd64.
 Preparing to unpack .../zlib1g-dev_1%3a1.2.8.dfsg-2ubuntu4.1_amd64.deb ...
 Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
 Selecting previously unselected package libssl-dev:amd64.
-Preparing to unpack .../libssl-dev_1.0.2g-1ubuntu4.13_amd64.deb ...
-Unpacking libssl-dev:amd64 (1.0.2g-1ubuntu4.13) ...
+Preparing to unpack .../libssl-dev_1.0.2g-1ubuntu4.14_amd64.deb ...
+Unpacking libssl-dev:amd64 (1.0.2g-1ubuntu4.14) ...
 Selecting previously unselected package libssl-doc.
-Preparing to unpack .../libssl-doc_1.0.2g-1ubuntu4.13_all.deb ...
-Unpacking libssl-doc (1.0.2g-1ubuntu4.13) ...
+Preparing to unpack .../libssl-doc_1.0.2g-1ubuntu4.14_all.deb ...
+Unpacking libssl-doc (1.0.2g-1ubuntu4.14) ...
 Selecting previously unselected package python-all.
 Preparing to unpack .../python-all_2.7.12-1~16.04_amd64.deb ...
 Unpacking python-all (2.7.12-1~16.04) ...
 Selecting previously unselected package python2.7-dev.
-Preparing to unpack .../python2.7-dev_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
-Unpacking python2.7-dev (2.7.12-1ubuntu0~16.04.3) ...
+Preparing to unpack .../python2.7-dev_2.7.12-1ubuntu0~16.04.4_amd64.deb ...
+Unpacking python2.7-dev (2.7.12-1ubuntu0~16.04.4) ...
 Selecting previously unselected package python-dev.
 Preparing to unpack .../python-dev_2.7.12-1~16.04_amd64.deb ...
 Unpacking python-dev (2.7.12-1~16.04) ...
@@ -5522,14 +5528,14 @@ Setting up libgmpxx4ldbl:amd64 (2:6.1.0+dfsg-2) ...
 Setting up libgmp-dev:amd64 (2:6.1.0+dfsg-2) ...
 Setting up libpcap0.8-dev (1.7.4-2) ...
 Setting up libpcap-dev (1.7.4-2) ...
-Setting up libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.4) ...
 Setting up libpython-dev:amd64 (2.7.12-1~16.04) ...
 Setting up libpython-all-dev:amd64 (2.7.12-1~16.04) ...
 Setting up zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
-Setting up libssl-dev:amd64 (1.0.2g-1ubuntu4.13) ...
-Setting up libssl-doc (1.0.2g-1ubuntu4.13) ...
+Setting up libssl-dev:amd64 (1.0.2g-1ubuntu4.14) ...
+Setting up libssl-doc (1.0.2g-1ubuntu4.14) ...
 Setting up python-all (2.7.12-1~16.04) ...
-Setting up python2.7-dev (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7-dev (2.7.12-1ubuntu0~16.04.4) ...
 Setting up python-dev (2.7.12-1~16.04) ...
 Setting up python-all-dev (2.7.12-1~16.04) ...
 Setting up python-pip-whl (8.1.1-2ubuntu0.4) ...
@@ -5539,173 +5545,173 @@ Setting up python-setuptools (20.7.0-1) ...
 Setting up python-wheel (0.29.0-1) ...
 Setting up libffi-dev:amd64 (3.2.1-4) ...
 Processing triggers for libc-bin (2.23-0ubuntu10) ...
---2018-10-17 17:30:14--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
+--2019-01-06 14:19:22--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
 Resolving archive.apache.org (archive.apache.org)... 163.172.17.199
 Connecting to archive.apache.org (archive.apache.org)|163.172.17.199|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 8053046 (7.7M) [application/x-gzip]
 Saving to: ‘thrift-0.9.2.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  0% 2.74M 3s
-    50K .......... .......... .......... .......... ..........  1% 3.14M 3s
-   100K .......... .......... .......... .......... ..........  1% 4.13M 2s
-   150K .......... .......... .......... .......... ..........  2% 2.13M 3s
-   200K .......... .......... .......... .......... ..........  3% 6.79M 2s
-   250K .......... .......... .......... .......... ..........  3% 5.68M 2s
-   300K .......... .......... .......... .......... ..........  4% 8.60M 2s
-   350K .......... .......... .......... .......... ..........  5% 8.42M 2s
-   400K .......... .......... .......... .......... ..........  5% 5.45M 2s
-   450K .......... .......... .......... .......... ..........  6% 15.6M 2s
-   500K .......... .......... .......... .......... ..........  6% 6.59M 2s
-   550K .......... .......... .......... .......... ..........  7% 8.74M 1s
-   600K .......... .......... .......... .......... ..........  8% 7.54M 1s
-   650K .......... .......... .......... .......... ..........  8% 7.06M 1s
-   700K .......... .......... .......... .......... ..........  9% 12.7M 1s
-   750K .......... .......... .......... .......... .......... 10% 7.21M 1s
-   800K .......... .......... .......... .......... .......... 10% 10.2M 1s
-   850K .......... .......... .......... .......... .......... 11% 6.91M 1s
-   900K .......... .......... .......... .......... .......... 12% 7.66M 1s
-   950K .......... .......... .......... .......... .......... 12%  800K 2s
-  1000K .......... .......... .......... .......... .......... 13% 3.88M 2s
-  1050K .......... .......... .......... .......... .......... 13% 9.78M 1s
-  1100K .......... .......... .......... .......... .......... 14% 6.96M 1s
-  1150K .......... .......... .......... .......... .......... 15% 9.29M 1s
-  1200K .......... .......... .......... .......... .......... 15% 5.56M 1s
-  1250K .......... .......... .......... .......... .......... 16% 6.55M 1s
-  1300K .......... .......... .......... .......... .......... 17% 7.59M 1s
-  1350K .......... .......... .......... .......... .......... 17% 5.18M 1s
-  1400K .......... .......... .......... .......... .......... 18% 8.16M 1s
-  1450K .......... .......... .......... .......... .......... 19% 8.76M 1s
-  1500K .......... .......... .......... .......... .......... 19% 6.41M 1s
-  1550K .......... .......... .......... .......... .......... 20% 3.92M 1s
-  1600K .......... .......... .......... .......... .......... 20% 9.13M 1s
-  1650K .......... .......... .......... .......... .......... 21% 9.69M 1s
-  1700K .......... .......... .......... .......... .......... 22% 6.38M 1s
-  1750K .......... .......... .......... .......... .......... 22% 10.9M 1s
-  1800K .......... .......... .......... .......... .......... 23% 8.00M 1s
-  1850K .......... .......... .......... .......... .......... 24% 9.96M 1s
-  1900K .......... .......... .......... .......... .......... 24% 9.42M 1s
-  1950K .......... .......... .......... .......... .......... 25% 15.5M 1s
-  2000K .......... .......... .......... .......... .......... 26% 5.93M 1s
-  2050K .......... .......... .......... .......... .......... 26% 11.2M 1s
-  2100K .......... .......... .......... .......... .......... 27% 8.14M 1s
-  2150K .......... .......... .......... .......... .......... 27% 5.52M 1s
-  2200K .......... .......... .......... .......... .......... 28% 6.45M 1s
-  2250K .......... .......... .......... .......... .......... 29% 14.9M 1s
-  2300K .......... .......... .......... .......... .......... 29% 10.9M 1s
-  2350K .......... .......... .......... .......... .......... 30% 9.49M 1s
-  2400K .......... .......... .......... .......... .......... 31% 6.91M 1s
-  2450K .......... .......... .......... .......... .......... 31% 13.8M 1s
-  2500K .......... .......... .......... .......... .......... 32% 1.69M 1s
-  2550K .......... .......... .......... .......... .......... 33% 8.57M 1s
-  2600K .......... .......... .......... .......... .......... 33% 14.1M 1s
-  2650K .......... .......... .......... .......... .......... 34% 8.59M 1s
-  2700K .......... .......... .......... .......... .......... 34% 6.98M 1s
-  2750K .......... .......... .......... .......... .......... 35% 11.4M 1s
-  2800K .......... .......... .......... .......... .......... 36% 8.93M 1s
-  2850K .......... .......... .......... .......... .......... 36% 12.3M 1s
-  2900K .......... .......... .......... .......... .......... 37% 8.82M 1s
-  2950K .......... .......... .......... .......... .......... 38% 9.46M 1s
-  3000K .......... .......... .......... .......... .......... 38% 8.85M 1s
-  3050K .......... .......... .......... .......... .......... 39% 7.12M 1s
-  3100K .......... .......... .......... .......... .......... 40% 8.60M 1s
-  3150K .......... .......... .......... .......... .......... 40% 5.96M 1s
-  3200K .......... .......... .......... .......... .......... 41% 8.28M 1s
-  3250K .......... .......... .......... .......... .......... 41% 17.0M 1s
-  3300K .......... .......... .......... .......... .......... 42% 7.01M 1s
-  3350K .......... .......... .......... .......... .......... 43% 9.97M 1s
-  3400K .......... .......... .......... .......... .......... 43% 8.41M 1s
-  3450K .......... .......... .......... .......... .......... 44% 11.3M 1s
-  3500K .......... .......... .......... .......... .......... 45% 11.4M 1s
-  3550K .......... .......... .......... .......... .......... 45% 11.6M 1s
-  3600K .......... .......... .......... .......... .......... 46% 5.81M 1s
-  3650K .......... .......... .......... .......... .......... 47% 9.39M 1s
-  3700K .......... .......... .......... .......... .......... 47% 9.83M 1s
-  3750K .......... .......... .......... .......... .......... 48% 9.01M 1s
-  3800K .......... .......... .......... .......... .......... 48% 7.65M 1s
-  3850K .......... .......... .......... .......... .......... 49% 9.69M 1s
-  3900K .......... .......... .......... .......... .......... 50% 8.22M 1s
-  3950K .......... .......... .......... .......... .......... 50% 12.1M 1s
-  4000K .......... .......... .......... .......... .......... 51% 9.94M 1s
-  4050K .......... .......... .......... .......... .......... 52% 8.07M 1s
-  4100K .......... .......... .......... .......... .......... 52% 4.14M 1s
-  4150K .......... .......... .......... .......... .......... 53% 19.3M 1s
-  4200K .......... .......... .......... .......... .......... 54% 7.34M 1s
-  4250K .......... .......... .......... .......... .......... 54% 9.70M 1s
-  4300K .......... .......... .......... .......... .......... 55% 6.48M 1s
-  4350K .......... .......... .......... .......... .......... 55% 5.93M 1s
-  4400K .......... .......... .......... .......... .......... 56% 12.7M 1s
-  4450K .......... .......... .......... .......... .......... 57% 7.03M 0s
-  4500K .......... .......... .......... .......... .......... 57% 9.57M 0s
-  4550K .......... .......... .......... .......... .......... 58% 5.78M 0s
-  4600K .......... .......... .......... .......... .......... 59% 9.01M 0s
-  4650K .......... .......... .......... .......... .......... 59% 8.46M 0s
-  4700K .......... .......... .......... .......... .......... 60% 5.02M 0s
-  4750K .......... .......... .......... .......... .......... 61% 9.41M 0s
-  4800K .......... .......... .......... .......... .......... 61% 6.78M 0s
-  4850K .......... .......... .......... .......... .......... 62% 9.99M 0s
-  4900K .......... .......... .......... .......... .......... 62% 6.84M 0s
-  4950K .......... .......... .......... .......... .......... 63% 7.58M 0s
-  5000K .......... .......... .......... .......... .......... 64% 10.4M 0s
-  5050K .......... .......... .......... .......... .......... 64% 7.90M 0s
-  5100K .......... .......... .......... .......... .......... 65% 20.1M 0s
-  5150K .......... .......... .......... .......... .......... 66% 4.97M 0s
-  5200K .......... .......... .......... .......... .......... 66% 13.6M 0s
-  5250K .......... .......... .......... .......... .......... 67% 8.61M 0s
-  5300K .......... .......... .......... .......... .......... 68% 10.2M 0s
-  5350K .......... .......... .......... .......... .......... 68% 9.74M 0s
-  5400K .......... .......... .......... .......... .......... 69% 6.87M 0s
-  5450K .......... .......... .......... .......... .......... 69% 13.9M 0s
-  5500K .......... .......... .......... .......... .......... 70% 8.32M 0s
-  5550K .......... .......... .......... .......... .......... 71% 13.1M 0s
-  5600K .......... .......... .......... .......... .......... 71% 8.44M 0s
-  5650K .......... .......... .......... .......... .......... 72% 9.85M 0s
-  5700K .......... .......... .......... .......... .......... 73% 9.40M 0s
-  5750K .......... .......... .......... .......... .......... 73% 11.1M 0s
-  5800K .......... .......... .......... .......... .......... 74% 7.18M 0s
-  5850K .......... .......... .......... .......... .......... 75% 10.3M 0s
-  5900K .......... .......... .......... .......... .......... 75% 6.78M 0s
-  5950K .......... .......... .......... .......... .......... 76% 5.10M 0s
-  6000K .......... .......... .......... .......... .......... 76% 11.1M 0s
-  6050K .......... .......... .......... .......... .......... 77% 5.37M 0s
-  6100K .......... .......... .......... .......... .......... 78% 8.84M 0s
-  6150K .......... .......... .......... .......... .......... 78% 7.33M 0s
-  6200K .......... .......... .......... .......... .......... 79% 11.4M 0s
-  6250K .......... .......... .......... .......... .......... 80% 7.67M 0s
-  6300K .......... .......... .......... .......... .......... 80% 7.97M 0s
-  6350K .......... .......... .......... .......... .......... 81% 7.72M 0s
-  6400K .......... .......... .......... .......... .......... 82% 9.16M 0s
-  6450K .......... .......... .......... .......... .......... 82% 8.07M 0s
-  6500K .......... .......... .......... .......... .......... 83% 7.99M 0s
-  6550K .......... .......... .......... .......... .......... 83% 11.0M 0s
-  6600K .......... .......... .......... .......... .......... 84% 9.01M 0s
-  6650K .......... .......... .......... .......... .......... 85% 11.6M 0s
-  6700K .......... .......... .......... .......... .......... 85% 5.82M 0s
-  6750K .......... .......... .......... .......... .......... 86% 5.98M 0s
-  6800K .......... .......... .......... .......... .......... 87% 7.54M 0s
-  6850K .......... .......... .......... .......... .......... 87% 7.57M 0s
-  6900K .......... .......... .......... .......... .......... 88% 5.87M 0s
-  6950K .......... .......... .......... .......... .......... 89% 5.95M 0s
-  7000K .......... .......... .......... .......... .......... 89% 10.7M 0s
-  7050K .......... .......... .......... .......... .......... 90% 11.0M 0s
-  7100K .......... .......... .......... .......... .......... 90% 5.55M 0s
-  7150K .......... .......... .......... .......... .......... 91% 6.41M 0s
-  7200K .......... .......... .......... .......... .......... 92% 9.94M 0s
-  7250K .......... .......... .......... .......... .......... 92% 6.14M 0s
-  7300K .......... .......... .......... .......... .......... 93% 6.45M 0s
-  7350K .......... .......... .......... .......... .......... 94% 6.52M 0s
-  7400K .......... .......... .......... .......... .......... 94% 9.93M 0s
-  7450K .......... .......... .......... .......... .......... 95% 8.79M 0s
-  7500K .......... .......... .......... .......... .......... 96% 3.34M 0s
-  7550K .......... .......... .......... .......... .......... 96% 5.72M 0s
-  7600K .......... .......... .......... .......... .......... 97% 12.3M 0s
-  7650K .......... .......... .......... .......... .......... 97% 3.62M 0s
-  7700K .......... .......... .......... .......... .......... 98% 8.28K 0s
-  7750K .......... .......... .......... .......... .......... 99% 3.86M 0s
-  7800K .......... .......... .......... .......... .......... 99% 4.51M 0s
-  7850K .......... ....                                       100% 5.64M=7.1s
+     0K .......... .......... .......... .......... ..........  0%  191K 41s
+    50K .......... .......... .......... .......... ..........  1%  301K 33s
+   100K .......... .......... .......... .......... ..........  1%  428K 28s
+   150K .......... .......... .......... .......... ..........  2%  406K 26s
+   200K .......... .......... .......... .......... ..........  3%  472K 24s
+   250K .......... .......... .......... .......... ..........  3%  396K 23s
+   300K .......... .......... .......... .......... ..........  4%  407K 22s
+   350K .......... .......... .......... .......... ..........  5%  926K 20s
+   400K .......... .......... .......... .......... ..........  5%  455K 20s
+   450K .......... .......... .......... .......... ..........  6%  448K 19s
+   500K .......... .......... .......... .......... ..........  6%  363K 19s
+   550K .......... .......... .......... .......... ..........  7% 1004K 18s
+   600K .......... .......... .......... .......... ..........  8%  484K 18s
+   650K .......... .......... .......... .......... ..........  8%  727K 17s
+   700K .......... .......... .......... .......... ..........  9%  692K 16s
+   750K .......... .......... .......... .......... .......... 10%  445K 16s
+   800K .......... .......... .......... .......... .......... 10%  940K 16s
+   850K .......... .......... .......... .......... .......... 11%  422K 16s
+   900K .......... .......... .......... .......... .......... 12%  139K 17s
+   950K .......... .......... .......... .......... .......... 12%  374K 17s
+  1000K .......... .......... .......... .......... .......... 13%  183K 18s
+  1050K .......... .......... .......... .......... .......... 13%  320K 18s
+  1100K .......... .......... .......... .......... .......... 14%  224K 18s
+  1150K .......... .......... .......... .......... .......... 15%  360K 18s
+  1200K .......... .......... .......... .......... .......... 15%  460K 18s
+  1250K .......... .......... .......... .......... .......... 16%  496K 18s
+  1300K .......... .......... .......... .......... .......... 17%  895K 17s
+  1350K .......... .......... .......... .......... .......... 17%  381K 17s
+  1400K .......... .......... .......... .......... .......... 18%  566K 17s
+  1450K .......... .......... .......... .......... .......... 19%  523K 16s
+  1500K .......... .......... .......... .......... .......... 19%  449K 16s
+  1550K .......... .......... .......... .......... .......... 20%  431K 16s
+  1600K .......... .......... .......... .......... .......... 20%  245K 16s
+  1650K .......... .......... .......... .......... .......... 21%  537K 16s
+  1700K .......... .......... .......... .......... .......... 22%  705K 16s
+  1750K .......... .......... .......... .......... .......... 22%  502K 15s
+  1800K .......... .......... .......... .......... .......... 23%  154K 16s
+  1850K .......... .......... .......... .......... .......... 24%  327K 16s
+  1900K .......... .......... .......... .......... .......... 24%  102K 17s
+  1950K .......... .......... .......... .......... .......... 25% 79.4K 18s
+  2000K .......... .......... .......... .......... .......... 26%  584K 18s
+  2050K .......... .......... .......... .......... .......... 26%  253K 18s
+  2100K .......... .......... .......... .......... .......... 27%  410K 17s
+  2150K .......... .......... .......... .......... .......... 27%  750K 17s
+  2200K .......... .......... .......... .......... .......... 28%  790K 17s
+  2250K .......... .......... .......... .......... .......... 29% 60.7K 18s
+  2300K .......... .......... .......... .......... .......... 29% 67.4K 19s
+  2350K .......... .......... .......... .......... .......... 30%  170K 20s
+  2400K .......... .......... .......... .......... .......... 31%  220K 19s
+  2450K .......... .......... .......... .......... .......... 31%  406K 19s
+  2500K .......... .......... .......... .......... .......... 32%  448K 19s
+  2550K .......... .......... .......... .......... .......... 33%  247K 19s
+  2600K .......... .......... .......... .......... .......... 33%  318K 18s
+  2650K .......... .......... .......... .......... .......... 34%  584K 18s
+  2700K .......... .......... .......... .......... .......... 34%  247K 18s
+  2750K .......... .......... .......... .......... .......... 35%  581K 18s
+  2800K .......... .......... .......... .......... .......... 36%  252K 18s
+  2850K .......... .......... .......... .......... .......... 36%  414K 17s
+  2900K .......... .......... .......... .......... .......... 37% 1014K 17s
+  2950K .......... .......... .......... .......... .......... 38%  230K 17s
+  3000K .......... .......... .......... .......... .......... 38%  431K 17s
+  3050K .......... .......... .......... .......... .......... 39%  226K 16s
+  3100K .......... .......... .......... .......... .......... 40%  411K 16s
+  3150K .......... .......... .......... .......... .......... 40%  500K 16s
+  3200K .......... .......... .......... .......... .......... 41% 73.9K 16s
+  3250K .......... .......... .......... .......... .......... 41%  502K 16s
+  3300K .......... .......... .......... .......... .......... 42%  172K 16s
+  3350K .......... .......... .......... .......... .......... 43%  371K 16s
+  3400K .......... .......... .......... .......... .......... 43%  738K 16s
+  3450K .......... .......... .......... .......... .......... 44%  653K 15s
+  3500K .......... .......... .......... .......... .......... 45%  243K 15s
+  3550K .......... .......... .......... .......... .......... 45%  332K 15s
+  3600K .......... .......... .......... .......... .......... 46%  597K 15s
+  3650K .......... .......... .......... .......... .......... 47%  527K 14s
+  3700K .......... .......... .......... .......... .......... 47%  100K 15s
+  3750K .......... .......... .......... .......... .......... 48%  672K 14s
+  3800K .......... .......... .......... .......... .......... 48%  149K 14s
+  3850K .......... .......... .......... .......... .......... 49% 1.39M 14s
+  3900K .......... .......... .......... .......... .......... 50%  226K 14s
+  3950K .......... .......... .......... .......... .......... 50%  391K 14s
+  4000K .......... .......... .......... .......... .......... 51%  318K 13s
+  4050K .......... .......... .......... .......... .......... 52%  318K 13s
+  4100K .......... .......... .......... .......... .......... 52%  339K 13s
+  4150K .......... .......... .......... .......... .......... 53%  886K 13s
+  4200K .......... .......... .......... .......... .......... 54%  327K 13s
+  4250K .......... .......... .......... .......... .......... 54% 1.19M 12s
+  4300K .......... .......... .......... .......... .......... 55%  270K 12s
+  4350K .......... .......... .......... .......... .......... 55%  301K 12s
+  4400K .......... .......... .......... .......... .......... 56%  404K 12s
+  4450K .......... .......... .......... .......... .......... 57%  355K 12s
+  4500K .......... .......... .......... .......... .......... 57%  452K 11s
+  4550K .......... .......... .......... .......... .......... 58%  289K 11s
+  4600K .......... .......... .......... .......... .......... 59% 1006K 11s
+  4650K .......... .......... .......... .......... .......... 59%  640K 11s
+  4700K .......... .......... .......... .......... .......... 60%  695K 10s
+  4750K .......... .......... .......... .......... .......... 61%  236K 10s
+  4800K .......... .......... .......... .......... .......... 61%  849K 10s
+  4850K .......... .......... .......... .......... .......... 62%  753K 10s
+  4900K .......... .......... .......... .......... .......... 62%  263K 10s
+  4950K .......... .......... .......... .......... .......... 63%  406K 9s
+  5000K .......... .......... .......... .......... .......... 64% 1.01M 9s
+  5050K .......... .......... .......... .......... .......... 64%  280K 9s
+  5100K .......... .......... .......... .......... .......... 65%  430K 9s
+  5150K .......... .......... .......... .......... .......... 66%  378K 9s
+  5200K .......... .......... .......... .......... .......... 66%  422K 9s
+  5250K .......... .......... .......... .......... .......... 67%  383K 8s
+  5300K .......... .......... .......... .......... .......... 68%  524K 8s
+  5350K .......... .......... .......... .......... .......... 68%  818K 8s
+  5400K .......... .......... .......... .......... .......... 69%  700K 8s
+  5450K .......... .......... .......... .......... .......... 69%  589K 8s
+  5500K .......... .......... .......... .......... .......... 70%  612K 7s
+  5550K .......... .......... .......... .......... .......... 71%  688K 7s
+  5600K .......... .......... .......... .......... .......... 71%  509K 7s
+  5650K .......... .......... .......... .......... .......... 72%  530K 7s
+  5700K .......... .......... .......... .......... .......... 73%  423K 7s
+  5750K .......... .......... .......... .......... .......... 73%  826K 6s
+  5800K .......... .......... .......... .......... .......... 74%  544K 6s
+  5850K .......... .......... .......... .......... .......... 75%  408K 6s
+  5900K .......... .......... .......... .......... .......... 75%  592K 6s
+  5950K .......... .......... .......... .......... .......... 76%  477K 6s
+  6000K .......... .......... .......... .......... .......... 76%  789K 6s
+  6050K .......... .......... .......... .......... .......... 77%  389K 5s
+  6100K .......... .......... .......... .......... .......... 78%  388K 5s
+  6150K .......... .......... .......... .......... .......... 78%  319K 5s
+  6200K .......... .......... .......... .......... .......... 79%  395K 5s
+  6250K .......... .......... .......... .......... .......... 80%  350K 5s
+  6300K .......... .......... .......... .......... .......... 80%  788K 5s
+  6350K .......... .......... .......... .......... .......... 81%  338K 4s
+  6400K .......... .......... .......... .......... .......... 82%  211K 4s
+  6450K .......... .......... .......... .......... .......... 82%  471K 4s
+  6500K .......... .......... .......... .......... .......... 83%  613K 4s
+  6550K .......... .......... .......... .......... .......... 83%  661K 4s
+  6600K .......... .......... .......... .......... .......... 84%  794K 4s
+  6650K .......... .......... .......... .......... .......... 85%  591K 3s
+  6700K .......... .......... .......... .......... .......... 85% 1.28M 3s
+  6750K .......... .......... .......... .......... .......... 86%  972K 3s
+  6800K .......... .......... .......... .......... .......... 87%  439K 3s
+  6850K .......... .......... .......... .......... .......... 87% 1.03M 3s
+  6900K .......... .......... .......... .......... .......... 88%  469K 3s
+  6950K .......... .......... .......... .......... .......... 89%  562K 3s
+  7000K .......... .......... .......... .......... .......... 89%  469K 2s
+  7050K .......... .......... .......... .......... .......... 90% 1.03M 2s
+  7100K .......... .......... .......... .......... .......... 90%  382K 2s
+  7150K .......... .......... .......... .......... .......... 91% 1.01M 2s
+  7200K .......... .......... .......... .......... .......... 92%  284K 2s
+  7250K .......... .......... .......... .......... .......... 92%  618K 2s
+  7300K .......... .......... .......... .......... .......... 93%  674K 1s
+  7350K .......... .......... .......... .......... .......... 94%  571K 1s
+  7400K .......... .......... .......... .......... .......... 94%  552K 1s
+  7450K .......... .......... .......... .......... .......... 95%  858K 1s
+  7500K .......... .......... .......... .......... .......... 96%  467K 1s
+  7550K .......... .......... .......... .......... .......... 96%  619K 1s
+  7600K .......... .......... .......... .......... .......... 97% 1.05M 1s
+  7650K .......... .......... .......... .......... .......... 97%  600K 0s
+  7700K .......... .......... .......... .......... .......... 98%  515K 0s
+  7750K .......... .......... .......... .......... .......... 99%  571K 0s
+  7800K .......... .......... .......... .......... .......... 99%  809K 0s
+  7850K .......... ....                                       100% 65.2K=22s
 
-2018-10-17 17:30:21 (1.08 MB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
+2019-01-06 14:19:45 (353 KB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
 
 thrift-0.9.2/
 thrift-0.9.2/.travis.yml
@@ -8070,11 +8076,11 @@ If something is missing that you think should be present,
 please skim the output of configure to find the missing
 component.  Details are present in config.log.
 make  all-recursive
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
 Making all in compiler/cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
 make  all-am
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wno-sign-compare -Wno-unused -g -O2 -std=c++11 -MT libparse_a-thrifty.o -MD -MP -MF .deps/libparse_a-thrifty.Tpo -c -o libparse_a-thrifty.o `test -f 'thrifty.cc' || echo './'`thrifty.cc
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wno-sign-compare -Wno-unused -g -O2 -std=c++11 -MT libparse_a-thriftl.o -MD -MP -MF .deps/libparse_a-thriftl.Tpo -c -o libparse_a-thriftl.o `test -f 'thriftl.cc' || echo './'`thriftl.cc
 mv -f .deps/libparse_a-thriftl.Tpo .deps/libparse_a-thriftl.Po
@@ -8087,9 +8093,9 @@ mv -f .deps/libparse_a-thrifty.Tpo .deps/libparse_a-thrifty.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_typedef.o -MD -MP -MF .deps/thrift-t_typedef.Tpo -c -o thrift-t_typedef.o `test -f 'src/parse/t_typedef.cc' || echo './'`src/parse/t_typedef.cc
 mv -f .deps/thrift-t_typedef.Tpo .deps/thrift-t_typedef.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-parse.o -MD -MP -MF .deps/thrift-parse.Tpo -c -o thrift-parse.o `test -f 'src/parse/parse.cc' || echo './'`src/parse/parse.cc
-mv -f .deps/thrift-t_generator.Tpo .deps/thrift-t_generator.Po
-g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_c_glib_generator.o -MD -MP -MF .deps/thrift-t_c_glib_generator.Tpo -c -o thrift-t_c_glib_generator.o `test -f 'src/generate/t_c_glib_generator.cc' || echo './'`src/generate/t_c_glib_generator.cc
 mv -f .deps/thrift-parse.Tpo .deps/thrift-parse.Po
+g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_c_glib_generator.o -MD -MP -MF .deps/thrift-t_c_glib_generator.Tpo -c -o thrift-t_c_glib_generator.o `test -f 'src/generate/t_c_glib_generator.cc' || echo './'`src/generate/t_c_glib_generator.cc
+mv -f .deps/thrift-t_generator.Tpo .deps/thrift-t_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_cpp_generator.o -MD -MP -MF .deps/thrift-t_cpp_generator.Tpo -c -o thrift-t_cpp_generator.o `test -f 'src/generate/t_cpp_generator.cc' || echo './'`src/generate/t_cpp_generator.cc
 mv -f .deps/thrift-t_cpp_generator.Tpo .deps/thrift-t_cpp_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_java_generator.o -MD -MP -MF .deps/thrift-t_java_generator.Tpo -c -o thrift-t_java_generator.o `test -f 'src/generate/t_java_generator.cc' || echo './'`src/generate/t_java_generator.cc
@@ -8143,14 +8149,14 @@ ranlib libparse.a
 mv -f .deps/thrift-t_lua_generator.Tpo .deps/thrift-t_lua_generator.Po
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11   -o thrift thrift-main.o thrift-md5.o thrift-t_generator.o thrift-t_typedef.o thrift-parse.o thrift-t_c_glib_generator.o thrift-t_cpp_generator.o thrift-t_java_generator.o thrift-t_json_generator.o thrift-t_as3_generator.o thrift-t_csharp_generator.o thrift-t_py_generator.o thrift-t_rb_generator.o thrift-t_perl_generator.o thrift-t_php_generator.o thrift-t_erl_generator.o thrift-t_cocoa_generator.o thrift-t_st_generator.o thrift-t_ocaml_generator.o thrift-t_hs_generator.o thrift-t_xsd_generator.o thrift-t_html_generator.o thrift-t_js_generator.o thrift-t_javame_generator.o thrift-t_delphi_generator.o thrift-t_go_generator.o thrift-t_gv_generator.o thrift-t_d_generator.o thrift-t_lua_generator.o -lfl libparse.a 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o thrift thrift-main.o thrift-md5.o thrift-t_generator.o thrift-t_typedef.o thrift-parse.o thrift-t_c_glib_generator.o thrift-t_cpp_generator.o thrift-t_java_generator.o thrift-t_json_generator.o thrift-t_as3_generator.o thrift-t_csharp_generator.o thrift-t_py_generator.o thrift-t_rb_generator.o thrift-t_perl_generator.o thrift-t_php_generator.o thrift-t_erl_generator.o thrift-t_cocoa_generator.o thrift-t_st_generator.o thrift-t_ocaml_generator.o thrift-t_hs_generator.o thrift-t_xsd_generator.o thrift-t_html_generator.o thrift-t_js_generator.o thrift-t_javame_generator.o thrift-t_delphi_generator.o thrift-t_go_generator.o thrift-t_gv_generator.o thrift-t_d_generator.o thrift-t_lua_generator.o  -lfl libparse.a
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
 Making all in lib
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
 Making all in cpp
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 Making all in .
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 depbase=`echo src/thrift/concurrency/Mutex.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Mutex.lo src/thrift/concurrency/Mutex.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -8216,8 +8222,8 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/concurrency/ThreadManager.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/ThreadManager.lo src/thrift/concurrency/ThreadManager.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/ThreadManager.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp -o src/thrift/TApplicationException.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/ThreadManager.o
 depbase=`echo src/thrift/concurrency/TimerManager.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/TimerManager.lo src/thrift/concurrency/TimerManager.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -8296,10 +8302,10 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/transport/TSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocket.lo src/thrift/transport/TSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocket.o
 depbase=`echo src/thrift/transport/TPipe.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipe.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipe.lo src/thrift/transport/TPipe.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocket.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipe.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp -o src/thrift/transport/TPipe.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TPipeServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -8389,131 +8395,131 @@ libtool: link: ar cru .libs/libthrift.a  src/thrift/Thrift.o src/thrift/TApplica
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libthrift.a
 libtool: link: ( cd ".libs" && rm -f "libthrift.la" && ln -s "../libthrift.la" "libthrift.la" )
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 Making all in test
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/test'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/test'
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/DebugProtoTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:47] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:115] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:155] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:161] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:47] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:115] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:155] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:161] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for f../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
-../../../compiler/cpp/thrift --gen cpp:dense ../../../test/OptionalRequiredTest.thrift
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for f../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
 ield2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+../../../compiler/cpp/thrift --gen cpp:dense ../../../test/OptionalRequiredTest.thrift
 ../../../compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 ../../../compiler/cpp/thrift --gen cpp ../../../test/TypedefTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 depbase=`echo ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o ThriftTest_extras.lo ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 depbase=`echo DebugProtoTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT DebugProtoTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o DebugProtoTest_extras.lo DebugProtoTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -8626,15 +8632,15 @@ ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libprocessortest.a
 libtool: link: ( cd ".libs" && rm -f "libprocessortest.la" && ln -s "../libprocessortest.la" "libprocessortest.la" )
 /bin/bash ../../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu  -o Benchmark Benchmark.o libtestgencpp.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/Benchmark Benchmark.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtestgencpp.a /home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/Benchmark Benchmark.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtestgencpp.a /home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 /bin/bash ../../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu  -o concurrency_test concurrency/Tests.o ../../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/concurrency_test concurrency/Tests.o  -L/usr/lib/x86_64-linux-gnu ../../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 /bin/bash ../../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu  -o processor_test processor/ProcessorTest.o processor/EventLog.o processor/ServerThread.o libprocessortest.la ../../../lib/cpp/libthrift.la ../../../lib/cpp/libthriftnb.la -L/usr/lib/x86_64-linux-gnu -levent -l:libboost_unit_test_framework.a -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/processor_test processor/ProcessorTest.o processor/EventLog.o processor/ServerThread.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libprocessortest.a ../../../lib/cpp/.libs/libthrift.so ../../../lib/cpp/.libs/libthriftnb.so -levent -l:libboost_unit_test_framework.a -lssl -lcrypto -lrt -lpthread
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/test'
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 Making all in py
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
 /usr/bin/python setup.py build
 running build
 running build_py
@@ -8677,47 +8683,46 @@ creating build/temp.linux-x86_64-2.7/src
 creating build/temp.linux-x86_64-2.7/src/protocol
 x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -fPIC -I/usr/include/python2.7 -c src/protocol/fastbinary.c -o build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o
 x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wl,-Bsymbolic-functions -Wl,-z,relro -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o -o build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
 make[3]: Nothing to be done for 'all-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
 Making all in test
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
 Making all in cpp
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/cpp'
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ThriftTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ThriftTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_types.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
-depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
-/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
-mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 depbase=`echo src/ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o src/ThriftTest_extras.lo src/ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -8732,39 +8737,39 @@ depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_types.lo gen-cpp/StressTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libtestgencpp.la  gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest.lo src/ThriftTest_extras.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: ar cru .libs/libtestgencpp.a gen-cpp/.libs/ThriftTest_constants.o gen-cpp/.libs/ThriftTest_types.o gen-cpp/.libs/ThriftTest.o src/.libs/ThriftTest_extras.o 
-ar: `u' modifier ignored since `D' is the default (see `U')
-libtool: link: ranlib .libs/libtestgencpp.a
-libtool: link: ( cd ".libs" && rm -f "libtestgencpp.la" && ln -s "../libtestgencpp.la" "libtestgencpp.la" )
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libstresstestgencpp.la  gen-cpp/StressTest_constants.lo gen-cpp/StressTest_types.lo gen-cpp/Service.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: ar cru .libs/libstresstestgencpp.a gen-cpp/.libs/StressTest_constants.o gen-cpp/.libs/StressTest_types.o gen-cpp/.libs/Service.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libstresstestgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libstresstestgencpp.la" && ln -s "../libstresstestgencpp.la" "libstresstestgencpp.la" )
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/cpp'
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libtestgencpp.la  gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest.lo src/ThriftTest_extras.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
+libtool: link: ar cru .libs/libtestgencpp.a gen-cpp/.libs/ThriftTest_constants.o gen-cpp/.libs/ThriftTest_types.o gen-cpp/.libs/ThriftTest.o src/.libs/ThriftTest_extras.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+libtool: link: ranlib .libs/libtestgencpp.a
+libtool: link: ( cd ".libs" && rm -f "libtestgencpp.la" && ln -s "../libtestgencpp.la" "libtestgencpp.la" )
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/cpp'
 Making all in py
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py'
 make[3]: Nothing to be done for 'all'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py'
 Making all in py.twisted
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.twisted'
 make[3]: Nothing to be done for 'all'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.twisted'
 Making all in py.tornado
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.tornado'
 make[3]: Nothing to be done for 'all'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
 make[3]: Nothing to be done for 'all-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
 Making all in tutorial
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
 Making all in cpp
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/cpp'
-../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/cpp'
 ../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 depbase=`echo CppServer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT CppServer.o -MD -MP -MF $depbase.Tpo -c -o CppServer.o CppServer.cpp &&\
@@ -8819,49 +8824,49 @@ libtool: link: ar cru .libs/libtutorialgencpp.a gen-cpp/.libs/Calculator.o gen-c
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/cpp'
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/cpp'
 Making all in py
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py'
 ../../compiler/cpp/thrift --gen py -r ../../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py'
 Making all in py.twisted
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.twisted'
 ../../compiler/cpp/thrift --gen py:twisted -r ../../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.twisted'
 Making all in py.tornado
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.tornado'
 ../../compiler/cpp/thrift --gen py:tornado -r ../../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
 ../compiler/cpp/thrift --gen html -r ../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
 Making install in compiler/cpp
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
 make  install-am
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
  /bin/mkdir -p '/usr/local/bin'
   /bin/bash ../../libtool   --mode=install /usr/bin/install -c thrift '/usr/local/bin'
 libtool: install: /usr/bin/install -c thrift /usr/local/bin/thrift
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/compiler/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/compiler/cpp'
 Making install in lib
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
 Making install in cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 Making install in .
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
  /bin/mkdir -p '/usr/local/lib'
  /bin/bash ../../libtool   --mode=install /usr/bin/install -c   libthrift.la libthriftnb.la libthriftz.la '/usr/local/lib'
 libtool: install: /usr/bin/install -c .libs/libthrift-0.9.2.so /usr/local/lib/libthrift-0.9.2.so
@@ -8919,25 +8924,25 @@ more information, such as the ld(1) and ld.so(8) manual pages.
  /usr/bin/install -c -m 644 src/thrift/transport/PlatformSocket.h src/thrift/transport/TFDTransport.h src/thrift/transport/TFileTransport.h src/thrift/transport/TSimpleFileTransport.h src/thrift/transport/TServerSocket.h src/thrift/transport/TSSLServerSocket.h src/thrift/transport/TServerTransport.h src/thrift/transport/THttpTransport.h src/thrift/transport/THttpClient.h src/thrift/transport/THttpServer.h src/thrift/transport/TSocket.h src/thrift/transport/TPipe.h src/thrift/transport/TPipeServer.h src/thrift/transport/TSSLSocket.h src/thrift/transport/TSocketPool.h src/thrift/transport/TVirtualTransport.h src/thrift/transport/TTransport.h src/thrift/transport/TTransportException.h src/thrift/transport/TTransportUtils.h src/thrift/transport/TBufferTransports.h src/thrift/transport/TShortReadTransport.h src/thrift/transport/TZlibTransport.h '/usr/local/include/thrift/transport'
  /bin/mkdir -p '/usr/local/lib/pkgconfig'
  /usr/bin/install -c -m 644 thrift.pc thrift-nb.pc thrift-z.pc '/usr/local/lib/pkgconfig'
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 Making install in test
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/test'
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/test'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/test'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/test'
 make[4]: Nothing to be done for 'install-exec-am'.
 make[4]: Nothing to be done for 'install-data-am'.
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/test'
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp/test'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp/test'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/cpp'
 Making install in py
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
 /usr/bin/python setup.py build
 running build
 running build_py
 running build_ext
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
 make  install-exec-hook
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
 /usr/bin/python setup.py install --root=/ --prefix=/usr 
 running install
 running build
@@ -9002,9 +9007,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.p
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TSerialization.py to TSerialization.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
-writing byte-compilation script '/tmp/tmpN6KD6r.py'
-/usr/bin/python -O /tmp/tmpN6KD6r.py
-removing /tmp/tmpN6KD6r.py
+writing byte-compilation script '/tmp/tmpFRVSZY.py'
+/usr/bin/python -O /tmp/tmpFRVSZY.py
+removing /tmp/tmpFRVSZY.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -9016,99 +9021,99 @@ reading manifest file 'thrift.egg-info/SOURCES.txt'
 writing manifest file 'thrift.egg-info/SOURCES.txt'
 Copying thrift.egg-info to /usr/lib/python2.7/site-packages/thrift-0.9.2-py2.7.egg-info
 running install_scripts
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib/py'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/lib'
 Making install in test
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
 Making install in cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/cpp'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/cpp'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/cpp'
 Making install in py
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py'
 Making install in py.twisted
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.twisted'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.twisted'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.twisted'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.twisted'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.twisted'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.twisted'
 Making install in py.tornado
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.tornado'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.tornado'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test/py.tornado'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.tornado'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/test'
 Making install in tutorial
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
 Making install in cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/cpp'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/cpp'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/cpp'
 Making install in py
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py'
 Making install in py.twisted
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.twisted'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.twisted'
 ../../compiler/cpp/thrift --gen py:twisted -r ../../tutorial/tutorial.thrift
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.twisted'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.twisted'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.twisted'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.twisted'
 Making install in py.tornado
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.tornado'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.tornado'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial/py.tornado'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.tornado'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
 ../compiler/cpp/thrift --gen html -r ../tutorial/tutorial.thrift
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2/tutorial'
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2/tutorial'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
 make[2]: Nothing to be done for 'install-exec-am'.
 make[2]: Nothing to be done for 'install-data-am'.
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.VZCdfRLFp3/thrift-0.9.2'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.maUtX7nDCa/thrift-0.9.2'
 running install
 running bdist_egg
 running egg_info
@@ -9180,14 +9185,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TSerialization.py to TSerialization.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
-writing byte-compilation script '/tmp/tmp0S5DGd.py'
-/usr/bin/python -O /tmp/tmp0S5DGd.py
-removing /tmp/tmp0S5DGd.py
+writing byte-compilation script '/tmp/tmp4JQ8e7.py'
+/usr/bin/python -O /tmp/tmp4JQ8e7.py
+removing /tmp/tmp4JQ8e7.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpg0mjDh.py'
-/usr/bin/python -O /tmp/tmpg0mjDh.py
-removing /tmp/tmpg0mjDh.py
+writing byte-compilation script '/tmp/tmp1S4J40.py'
+/usr/bin/python -O /tmp/tmp1S4J40.py
+removing /tmp/tmp1S4J40.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -9205,26 +9210,26 @@ Adding thrift 0.9.2 to easy-install.pth file
 Installed /usr/local/lib/python2.7/dist-packages/thrift-0.9.2-py2.7-linux-x86_64.egg
 Processing dependencies for thrift==0.9.2
 Finished processing dependencies for thrift==0.9.2
---2018-10-17 17:34:34--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+--2019-01-06 14:24:08--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
 Resolving github.com (github.com)... 192.30.255.112, 192.30.255.113
 Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2018-10-17 17:34:34--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.255.121, 192.30.255.120
-Connecting to codeload.github.com (codeload.github.com)|192.30.255.121|:443... connected.
+--2019-01-06 14:24:08--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 192.30.255.120, 192.30.255.121
+Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  546K
-    50K .......... .......... .......... .......... .......... 1.58M
-   100K .......... .......... .......... .......... .......... 5.25M
-   150K .......... .......... .......... .......... .......... 29.7M
-   200K .......... .......... .......... .......... .......... 1.39M
-   250K .......... .......... .......... .......... .......    41.0M=0.2s
+     0K .......... .......... .......... .......... ..........  331K
+    50K .......... .......... .......... .......... ..........  916K
+   100K .......... .......... .......... .......... ..........  684K
+   150K .......... .......... .......... .......... .......... 1.09M
+   200K .......... .......... .......... .......... ..........  938K
+   250K .......... .......... .......... .......... .......     913K=0.4s
 
-2018-10-17 17:34:35 (1.71 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-01-06 14:24:09 (694 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -9687,7 +9692,7 @@ CMake Warning at CMakeLists.txt:246 (message):
 
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/jafinger/behavioral-model/tmp.VZCdfRLFp3/nanomsg-1.0.0/build
+-- Build files have been written to: /home/jafinger/behavioral-model/tmp.maUtX7nDCa/nanomsg-1.0.0/build
 Scanning dependencies of target nanomsg
 [  0%] Building C object src/CMakeFiles/nanomsg.dir/core/ep.c.o
 [  1%] Building C object src/CMakeFiles/nanomsg.dir/core/epbase.c.o
@@ -10078,7 +10083,7 @@ You are using pip version 8.1.1, however version 18.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
-Processing /home/jafinger/behavioral-model/tmp.VZCdfRLFp3/nnpy
+Processing /home/jafinger/behavioral-model/tmp.maUtX7nDCa/nnpy
 Requirement already satisfied (use --upgrade to upgrade): cffi in /usr/local/lib/python2.7/dist-packages (from nnpy===0.1)
 Requirement already satisfied (use --upgrade to upgrade): pycparser in /usr/local/lib/python2.7/dist-packages (from cffi->nnpy===0.1)
 Installing collected packages: nnpy
@@ -11144,16 +11149,16 @@ make[3]: Leaving directory '/home/jafinger/behavioral-model/targets'
 make[2]: Leaving directory '/home/jafinger/behavioral-model/targets'
 Making all in tools
 make[2]: Entering directory '/home/jafinger/behavioral-model/tools'
-rm -f bm_p4dbg bm_p4dbg.tmp
-sed -e 's|@pythondir[@]|/usr/local/lib/python2.7/dist-packages|g' ./bm_p4dbg.in >bm_p4dbg.tmp
-chmod +x bm_p4dbg.tmp
-chmod a-w bm_p4dbg.tmp
-mv bm_p4dbg.tmp bm_p4dbg
 rm -f bm_CLI bm_CLI.tmp
 sed -e 's|@pythondir[@]|/usr/local/lib/python2.7/dist-packages|g' ./bm_CLI.in >bm_CLI.tmp
 chmod +x bm_CLI.tmp
 chmod a-w bm_CLI.tmp
 mv bm_CLI.tmp bm_CLI
+rm -f bm_p4dbg bm_p4dbg.tmp
+sed -e 's|@pythondir[@]|/usr/local/lib/python2.7/dist-packages|g' ./bm_p4dbg.in >bm_p4dbg.tmp
+chmod +x bm_p4dbg.tmp
+chmod a-w bm_p4dbg.tmp
+mv bm_p4dbg.tmp bm_p4dbg
 rm -f bm_nanomsg_events bm_nanomsg_events.tmp
 sed -e 's|@pythondir[@]|/usr/local/lib/python2.7/dist-packages|g' ./bm_nanomsg_events.in >bm_nanomsg_events.tmp
 chmod +x bm_nanomsg_events.tmp
@@ -11613,13 +11618,13 @@ Making install in tools
 make[1]: Entering directory '/home/jafinger/behavioral-model/tools'
 make[2]: Entering directory '/home/jafinger/behavioral-model/tools'
  /bin/mkdir -p '/usr/local/bin'
- /usr/bin/install -c bm_p4dbg bm_CLI bm_nanomsg_events '/usr/local/bin'
+ /usr/bin/install -c bm_CLI bm_p4dbg bm_nanomsg_events '/usr/local/bin'
  /bin/mkdir -p '/usr/local/lib/python2.7/dist-packages'
- /usr/bin/install -c -m 644 p4dbg.py runtime_CLI.py nanomsg_client.py bmpy_utils.py '/usr/local/lib/python2.7/dist-packages'
+ /usr/bin/install -c -m 644 bmpy_utils.py runtime_CLI.py p4dbg.py nanomsg_client.py '/usr/local/lib/python2.7/dist-packages'
 Byte-compiling python modules...
-p4dbg.pyruntime_CLI.pynanomsg_client.pybmpy_utils.py
+bmpy_utils.pyruntime_CLI.pyp4dbg.pynanomsg_client.py
 Byte-compiling python modules (optimized versions) ...
-p4dbg.pyruntime_CLI.pynanomsg_client.pybmpy_utils.py
+bmpy_utils.pyruntime_CLI.pyp4dbg.pynanomsg_client.py
 make[2]: Leaving directory '/home/jafinger/behavioral-model/tools'
 make[1]: Leaving directory '/home/jafinger/behavioral-model/tools'
 make[1]: Entering directory '/home/jafinger/behavioral-model'
@@ -11937,14 +11942,11 @@ make[3]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switc
 make[2]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Wed Oct 17 17:49:05 PDT 2018
+Sun Jan  6 14:38:51 PST 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Wed Oct 17 17:49:05 PDT 2018
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
+Sun Jan  6 14:38:51 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -11958,8 +11960,9 @@ libfl-dev set to manually installed.
 libgmp-dev is already the newest version (2:6.1.0+dfsg-2).
 libtool is already the newest version (2.4.6-0.1).
 pkg-config is already the newest version (0.29.1-0ubuntu1).
+python-scapy is already the newest version (2.2.0-1).
 cmake is already the newest version (3.5.1-1ubuntu3).
-git is already the newest version (1:2.7.4-0ubuntu1.5).
+git is already the newest version (1:2.7.4-0ubuntu1.6).
 python is already the newest version (2.7.12-1~16.04).
 tcpdump is already the newest version (4.9.2-0ubuntu0.16.04.1).
 The following package was automatically installed and is no longer required:
@@ -11970,17 +11973,14 @@ The following additional packages will be installed:
   libboost-iostreams1.58-dev libboost-regex1.58-dev libboost-regex1.58.0
   libicu-dev
 Suggested packages:
-  graphviz icu-doc python-ply-doc tcpreplay wireshark python-gnuplot
-  python-crypto python-pyx ebtables python-visual sox xpdf gv hexer
-  librsvg2-bin python-pcapy
+  graphviz icu-doc python-ply-doc
 The following NEW packages will be installed:
   icu-devtools libboost-graph-dev libboost-graph1.58-dev libboost-graph1.58.0
   libboost-iostreams-dev libboost-iostreams1.58-dev libboost-regex1.58-dev
   libboost-regex1.58.0 libgc-dev libicu-dev python-ipaddr python-ply
-  python-scapy
-0 upgraded, 13 newly installed, 0 to remove and 14 not upgraded.
-Need to get 10.1 MB of archives.
-After this operation, 49.8 MB of additional disk space will be used.
+0 upgraded, 12 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9,840 kB of archives.
+After this operation, 48.7 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 icu-devtools amd64 55.1-7ubuntu0.4 [166 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libboost-regex1.58.0 amd64 1.58.0+dfsg-5ubuntu3.1 [261 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 libboost-graph1.58.0 amd64 1.58.0+dfsg-5ubuntu3.1 [94.2 kB]
@@ -11993,10 +11993,9 @@ Get:9 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libboost-iostrea
 Get:10 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgc-dev amd64 1:7.4.2-7.3ubuntu0.1 [223 kB]
 Get:11 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddr all 2.1.11-2 [14.9 kB]
 Get:12 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ply all 3.7-1 [46.9 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-scapy all 2.2.0-1 [236 kB]
-Fetched 10.1 MB in 3s (2,939 kB/s)
+Fetched 9,840 kB in 12s (771 kB/s)
 Selecting previously unselected package icu-devtools.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 197604 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 197803 files and directories currently installed.)
 Preparing to unpack .../icu-devtools_55.1-7ubuntu0.4_amd64.deb ...
 Unpacking icu-devtools (55.1-7ubuntu0.4) ...
 Selecting previously unselected package libboost-regex1.58.0:amd64.
@@ -12032,9 +12031,6 @@ Unpacking python-ipaddr (2.1.11-2) ...
 Selecting previously unselected package python-ply.
 Preparing to unpack .../python-ply_3.7-1_all.deb ...
 Unpacking python-ply (3.7-1) ...
-Selecting previously unselected package python-scapy.
-Preparing to unpack .../python-scapy_2.2.0-1_all.deb ...
-Unpacking python-scapy (2.2.0-1) ...
 Processing triggers for man-db (2.7.5-1) ...
 Processing triggers for libc-bin (2.23-0ubuntu10) ...
 Setting up icu-devtools (55.1-7ubuntu0.4) ...
@@ -12049,25 +12045,12 @@ Setting up libboost-iostreams-dev:amd64 (1.58.0.1ubuntu1) ...
 Setting up libgc-dev:amd64 (1:7.4.2-7.3ubuntu0.1) ...
 Setting up python-ipaddr (2.1.11-2) ...
 Setting up python-ply (3.7-1) ...
-Setting up python-scapy (2.2.0-1) ...
 Processing triggers for libc-bin (2.23-0ubuntu10) ...
 Cloning into 'p4c'...
-Submodule 'control-plane/PI' (https://github.com/p4lang/PI.git) registered for path 'control-plane/PI'
+Submodule 'control-plane/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'control-plane/p4runtime'
 Submodule 'test/frameworks/gtest' (https://github.com/google/googletest.git) registered for path 'test/frameworks/gtest'
-Cloning into 'control-plane/PI'...
-Submodule path 'control-plane/PI': checked out 'db8c4b46767f86190a15c638c766946646ba9c03'
-Submodule 'proto/googleapis' (https://github.com/googleapis/googleapis.git) registered for path 'proto/googleapis'
-Submodule 'proto/openconfig/gnmi' (https://github.com/openconfig/gnmi.git) registered for path 'proto/openconfig/gnmi'
-Submodule 'proto/openconfig/public' (https://github.com/openconfig/public.git) registered for path 'proto/openconfig/public'
-Submodule 'third_party/googletest' (https://github.com/google/googletest) registered for path 'third_party/googletest'
-Cloning into 'proto/googleapis'...
-Submodule path 'control-plane/PI/proto/googleapis': checked out '37cc0e5acae50ee91f00827a7010c3b07dfa5311'
-Cloning into 'proto/openconfig/gnmi'...
-Submodule path 'control-plane/PI/proto/openconfig/gnmi': checked out '9c8d9e965b3e854107ea02c12ab11b70717456f2'
-Cloning into 'proto/openconfig/public'...
-Submodule path 'control-plane/PI/proto/openconfig/public': checked out '1040d11c089c74084c64c234bee3691ec70e8a9f'
-Cloning into 'third_party/googletest'...
-Submodule path 'control-plane/PI/third_party/googletest': checked out 'ecd530865cefdfa7dea58e84f6aa1b548950363d'
+Cloning into 'control-plane/p4runtime'...
+Submodule path 'control-plane/p4runtime': checked out 'ef54d874d7bd385b1721a07722c371d02dee245f'
 Cloning into 'test/frameworks/gtest'...
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
 -- The C compiler identification is GNU 5.4.0
@@ -12086,7 +12069,7 @@ Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6
 -- Detecting CXX compile features - done
 -- Found PythonInterp: /usr/bin/python (found version "2.7.12") 
 -- Found FLEX: /usr/bin/flex (found version "2.6.0") 
--- Found BISON: /usr/bin/bison (found version "3.0.4") 
+-- Found BISON: /usr/bin/bison (found suitable version "3.0.4", minimum required is "3.0.2") 
 -- Looking for pthread.h
 -- Looking for pthread.h - found
 -- Looking for pthread_create
@@ -12137,50 +12120,50 @@ Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 313 tests to 'bmv2' (8 xfails)
+-- Added 327 tests to 'bmv2' (9 xfails)
 -- Added 4 tests to 'bmv2' (4 xfails)
 -- LLVM missing, disabling kernel tests...
--- Added 13 tests to 'ebpf-bcc' (0 xfails)
--- Added 13 tests to 'ebpf' (0 xfails)
--- Added 157 tests to 'p4' (0 xfails)
--- Added 446 tests to 'p4' (1 xfails)
--- Added 198 tests to 'p14_to_16' (0 xfails)
+-- Added 14 tests to 'ebpf-bcc' (0 xfails)
+-- Added 14 tests to 'ebpf' (0 xfails)
+-- Added 159 tests to 'p4' (0 xfails)
+-- Added 480 tests to 'p4' (1 xfails)
+-- Added 199 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 4
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/jafinger/p4c/build
 Scanning dependencies of target linkgraphs
-Scanning dependencies of target update_includes
 Scanning dependencies of target linkbmv2
-[  0%] Built target update_includes
+Scanning dependencies of target update_includes
 [  0%] Built target linkgraphs
+[  0%] Built target update_includes
 Scanning dependencies of target linkp4cebpf
 Scanning dependencies of target linkp4test
 [  0%] Built target linkbmv2
 Scanning dependencies of target p4ctoolkit
 [  0%] Built target linkp4test
-Scanning dependencies of target mkp4dirs
 [  1%] Building CXX object lib/CMakeFiles/p4ctoolkit.dir/unified_libp4ctoolkit_srcs_1.cpp.o
 [  1%] Built target linkp4cebpf
+Scanning dependencies of target mkp4dirs
 Scanning dependencies of target mkv1dirs
 [  1%] Built target mkp4dirs
-Scanning dependencies of target mkP4configdir
 [  1%] Built target mkv1dirs
-[  1%] Built target mkP4configdir
-Scanning dependencies of target p4c_driver
+Scanning dependencies of target mkP4configdir
 Scanning dependencies of target gtest
-[  3%] Copying p4c driver
-[  4%] Building CXX object test/CMakeFiles/gtest.dir/frameworks/gtest/googletest/src/gtest-all.cc.o
+[  1%] Built target mkP4configdir
+[  3%] Building CXX object test/CMakeFiles/gtest.dir/frameworks/gtest/googletest/src/gtest-all.cc.o
+Scanning dependencies of target p4c_driver
+[  4%] Copying p4c driver
 [  4%] Built target p4c_driver
-[  6%] Linking CXX static library libp4ctoolkit.a
-[  6%] Built target p4ctoolkit
-[  7%] [BISON][IRgenParser] Building parser with bison 3.0.4
-[  9%] [FLEX][IRgenLexer] Building scanner with flex 2.6.0
-[ 10%] Linking CXX static library libgtest.a
+[  6%] Linking CXX static library libgtest.a
+[  6%] Built target gtest
+[  7%] Linking CXX static library libp4ctoolkit.a
+[  7%] Built target p4ctoolkit
+[  9%] [BISON][IRgenParser] Building parser with bison 3.0.4
+[ 10%] [FLEX][IRgenLexer] Building scanner with flex 2.6.0
 Scanning dependencies of target irgenerator
+[ 12%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/unified_irgenerator_srcs_1.cpp.o
 [ 14%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/ir-generator.cpp.o
-[ 14%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/unified_irgenerator_srcs_1.cpp.o
-[ 14%] Built target gtest
 [ 15%] Linking CXX executable irgenerator
 [ 15%] Built target irgenerator
 Scanning dependencies of target genIR
@@ -12204,42 +12187,42 @@ frontends/CMakeFiles/frontend.dir/build.make:74: warning: ignoring old recipe fo
 [ 31%] Building CXX object ir/CMakeFiles/ir.dir/unified_ir_srcs_2.cpp.o
 [ 32%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_2.cpp.o
 [ 34%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1lexer.cc.o
-[ 35%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
-[ 37%] Linking CXX static library libir.a
-[ 37%] Built target ir
-[ 39%] Generating protobuf files
-Scanning dependencies of target controlplane
-[ 40%] Building CXX object control-plane/CMakeFiles/controlplane.dir/google/rpc/status.pb.cc.o
-[ 42%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4info.pb.cc.o
-[ 43%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
-[ 45%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4types.pb.cc.o
-[ 46%] Linking CXX static library libmidend.a
-[ 46%] Built target midend
+[ 35%] Linking CXX static library libir.a
+[ 35%] Built target ir
+[ 37%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
+[ 39%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
+[ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
+[ 42%] Linking CXX static library libmidend.a
+[ 42%] Built target midend
+[ 43%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_1.cpp.o
+[ 45%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
+[ 46%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_3.cpp.o
+[ 48%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_4.cpp.o
+[ 50%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_5.cpp.o
+[ 51%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_6.cpp.o
+[ 53%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_7.cpp.o
+[ 54%] Linking CXX static library libfrontend.a
+[ 54%] Built target frontend
+[ 56%] Generating protobuf files
 Scanning dependencies of target bmv2backend
-[ 48%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_1.cpp.o
-[ 50%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4runtime.pb.cc.o
-[ 51%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
-[ 53%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4data.pb.cc.o
-[ 54%] Building CXX object control-plane/CMakeFiles/controlplane.dir/unified_controlplane_sources_1.cpp.o
-[ 56%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_2.cpp.o
-[ 57%] Linking CXX static library libcontrolplane.a
-[ 57%] Built target controlplane
-[ 59%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_1.cpp.o
-[ 60%] Linking CXX static library libbmv2backend.a
-[ 60%] Built target bmv2backend
-[ 62%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
-[ 64%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_3.cpp.o
-[ 65%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_4.cpp.o
-[ 67%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_5.cpp.o
-[ 68%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_6.cpp.o
-[ 70%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_7.cpp.o
-[ 71%] Linking CXX static library libfrontend.a
-[ 71%] Built target frontend
+[ 57%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_2.cpp.o
+[ 59%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_1.cpp.o
+Scanning dependencies of target controlplane
+[ 60%] Building CXX object control-plane/CMakeFiles/controlplane.dir/google/rpc/status.pb.cc.o
+[ 62%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4info.pb.cc.o
+[ 64%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4types.pb.cc.o
+[ 65%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4runtime.pb.cc.o
+[ 67%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4data.pb.cc.o
+[ 68%] Linking CXX static library libbmv2backend.a
+[ 68%] Built target bmv2backend
+[ 70%] Building CXX object control-plane/CMakeFiles/controlplane.dir/unified_controlplane_sources_1.cpp.o
+[ 71%] Linking CXX static library libcontrolplane.a
+[ 71%] Built target controlplane
+Scanning dependencies of target p4c-bm2-psa
 Scanning dependencies of target p4c-bm2-ss
 Scanning dependencies of target p4c-ebpf
-[ 73%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/main.cpp.o
-[ 75%] Building CXX object backends/ebpf/CMakeFiles/p4c-ebpf.dir/unified_p4c_ebpf_srcs_1.cpp.o
-Scanning dependencies of target p4c-bm2-psa
+[ 73%] Building CXX object backends/ebpf/CMakeFiles/p4c-ebpf.dir/unified_p4c_ebpf_srcs_1.cpp.o
+[ 75%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/main.cpp.o
 [ 76%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/main.cpp.o
 [ 78%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/midend.cpp.o
 [ 79%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/midend.cpp.o
@@ -12266,42 +12249,44 @@ Scanning dependencies of target gtestp4c
 [100%] Linking CXX executable gtestp4c
 [100%] Built target gtestp4c
 end install p4c:
-Wed Oct 17 17:52:45 PDT 2018
+Sun Jan  6 14:43:01 PST 2019
 ------------------------------------------------------------
 Installing a few Python packages
 start install python packages:
-Wed Oct 17 17:52:45 PDT 2018
+Sun Jan  6 14:43:01 PST 2019
+The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting grpcio
-  Downloading https://files.pythonhosted.org/packages/3d/15/b34114198a2bc9c9bb73b21e2b559468a1a68bb28b373d21da6e51d6204f/grpcio-1.15.0-cp27-cp27mu-manylinux1_x86_64.whl (9.4MB)
+  Downloading https://files.pythonhosted.org/packages/bf/d9/5880e43198f048afbe75348baceafc483e4c3ab657e3e3c1d0b57dacaa0c/grpcio-1.17.1-cp27-cp27mu-manylinux1_x86_64.whl (10.0MB)
 Collecting six>=1.5.2 (from grpcio)
-  Downloading https://files.pythonhosted.org/packages/67/4b/141a581104b1f6397bfa78ac9d43d8ad29a7ca43ea90a2d863fe3056e86a/six-1.11.0-py2.py3-none-any.whl
+  Downloading https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
 Collecting enum34>=1.0.4 (from grpcio)
   Downloading https://files.pythonhosted.org/packages/c5/db/e56e6b4bbac7c4a06de1c50de6fe1ef3810018ae11732a50f15f62c7d050/enum34-1.1.6-py2-none-any.whl
 Collecting futures>=2.2.0 (from grpcio)
   Downloading https://files.pythonhosted.org/packages/2d/99/b2c4e9d5a30f6471e410a146232b4118e697fa3ffc06d6a65efde84debd0/futures-3.2.0-py2-none-any.whl
 Installing collected packages: six, enum34, futures, grpcio
-Successfully installed enum34 futures grpcio six
+Successfully installed enum34-1.1.6 futures-3.2.0 grpcio-1.17.1 six-1.12.0
 You are using pip version 8.1.1, however version 18.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
+The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting protobuf
   Downloading https://files.pythonhosted.org/packages/b8/c2/b7f587c0aaf8bf2201405e8162323037fe8d17aa21d3c7dda811b8d01469/protobuf-3.6.1-cp27-cp27mu-manylinux1_x86_64.whl (1.1MB)
-Collecting setuptools (from protobuf)
-  Downloading https://files.pythonhosted.org/packages/96/06/c8ee69628191285ddddffb277bd5abdf769166e7a14b867c2a172f0175b1/setuptools-40.4.3-py2.py3-none-any.whl (569kB)
-Collecting six>=1.9 (from protobuf)
-  Using cached https://files.pythonhosted.org/packages/67/4b/141a581104b1f6397bfa78ac9d43d8ad29a7ca43ea90a2d863fe3056e86a/six-1.11.0-py2.py3-none-any.whl
-Installing collected packages: setuptools, six, protobuf
-Successfully installed protobuf-3.6.1 setuptools-40.4.3 six-1.11.0
+Requirement already satisfied (use --upgrade to upgrade): setuptools in /usr/lib/python2.7/dist-packages (from protobuf)
+Requirement already satisfied (use --upgrade to upgrade): six>=1.9 in /usr/local/lib/python2.7/dist-packages (from protobuf)
+Installing collected packages: protobuf
+Successfully installed protobuf-3.6.1
 You are using pip version 8.1.1, however version 18.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 end install python packages:
-Wed Oct 17 17:52:51 PDT 2018
+Sun Jan  6 14:43:13 PST 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Wed Oct 17 17:52:51 PDT 2018
+Sun Jan  6 14:43:13 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        36G   11G   24G  32% /
+/dev/sda1        36G   11G   24G  31% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         36157M 10651M    23648M  32% /
+/dev/sda1         36157M 10543M    23755M  31% /
 
 Created files: p4setup.bash p4setup.csh
 
