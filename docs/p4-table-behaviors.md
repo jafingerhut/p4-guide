@@ -398,3 +398,47 @@ developer about.
 Similary, any table invoked as `switch (table_name.apply().action_run)
 ...` where a case of the `switch` statement was found to be impossible
 to execute would be worth warning about.
+
+
+## How these table properties are represented in various files
+
+One quick note: the `@defaultonly` and `@tableonly` annotations are
+not represented at all in the BMv2 JSON files produced by `p4c`, and
+used by `simple_switch`.  They _are_ represented in the P4Info files
+created by a `p4c` command with options like the following:
+
+
+```bash
+% p4c --p4runtime-format text --p4runtime-file foo.p4info.txt foo.p4
+```
+
+or for the JSON format:
+
+```bash
+% p4c --p4runtime-format json --p4runtime-file foo.p4info.json foo.p4
+```
+
+See the key "scope", which can have one of the values "DEFAULT_ONLY",
+"TABLE_ONLY", or "TABLE_AND_DEFAULT".  If the key is not present, its
+default value is "TABLE_AND_DEFAULT", meaning that the action can be
+used for an entry, and it is also allowed to be configured as a
+default action.
+
+The BMv2 JSON file contains sufficient information for all of the
+other table properties discussed here:
+
++ const default action tables have a "default_entry" key whose value
+  is a nested JSON object with keys "action_const" and
+  "action_entry_const" that both have the value `true`.  If the
+  default action is not declared `const` in the P4_16 source code, the
+  value of those two keys is `false`.
++ const entries tables have a key "entries" containing the list of
+  entries for the table.
++ All key fields are represented explicitly, and the list of keys is
+  empty for keyless tables.  Note that despite my observation that
+  keyless tables are effectively const entries tables, keyless tables
+  do not have an "entries" key in the BMv2 JSON file.
+
+Whether a table is hit-only or miss-only can be derived from this
+information in the BMv2 JSON file, but is not already determined and
+recorded there.
