@@ -7,7 +7,7 @@ model all possible behaviors of a P4 program, including when applying
 tables.
 
 The intent is to document cases that one might not think of at first
-when considerig all such possible behaviors, or even after thinking
+when considering all such possible behaviors, or even after thinking
 about it a second or third time.  Please send questions or comments to
 the author if you find anything missing, wrong, or confusing about
 this.
@@ -126,16 +126,16 @@ If in the P4_16 program, the table was applied in this way:
 
 ```
     switch (table_name.apply().action_run) {
-    action_name1: {
-        // code here to execute if table executed action_name1
-    }
-    action_name2: {
-        // code here to execute if table executed action_name2
-    }
-    default: {
-        // Code here to execute if table executed any of the actions
-        // not explicitly mentioned in other cases.
-    }
+        action_name1: {
+            // code here to execute if table executed action_name1
+        }
+        action_name2: {
+            // code here to execute if table executed action_name2
+        }
+        default: {
+            // Code here to execute if table executed any of the
+            // actions not explicitly mentioned in other cases.
+        }
     }
 ```
 
@@ -395,9 +395,10 @@ hit-only or miss-only would imply a code path that was dead,
 i.e. could never be executed.  That would be worth warning the
 developer about.
 
-Similary, any table invoked as `switch (table_name.apply().action_run)
-...` where a case of the `switch` statement was found to be impossible
-to execute would be worth warning about.
+Similarly, any table invoked as `switch
+(table_name.apply().action_run) ...` where a case of the `switch`
+statement was found to be impossible to execute would be worth warning
+about.
 
 
 ## How these table properties are represented in various files
@@ -442,3 +443,90 @@ other table properties discussed here:
 Whether a table is hit-only or miss-only can be derived from this
 information in the BMv2 JSON file, but is not already determined and
 recorded there.
+
+
+## p4pktgen notes
+
+### Tables that use `.hit` attribute
+
+Consider a table like in the P4_16 code below, where there is later
+code that executes conditionally, based on whether the table apply
+operation experienced a hit or a miss.
+
+```
+    if (table_name.apply().hit) {
+        // code here to execute if table experienced a hit
+    } else {
+        // code here to execute if table experienced a miss
+    }
+```
+
+For tables that do not have const entries, I think that `p4pktgen`
+should try to generate test cases that exercise all of these cases:
+
+(a) table hit, once for each of the table actions that does not have a
+    `@defaultonly` annotation.
+(b) table miss, once for each of the table actions that does not have
+    a `@tableonly` annotation.  If the table has a const default
+    action, then only that one default action will be exercised.
+
+While it is true that if there is more than one action that is
+applicable for (a), that all of them would take the "then" branch of
+the "if" statement, they would still exercise different cases in the
+code because each action could have unique code that only it executes.
+Similarly if there are multiple actions that are applicable for (b).
+
+For tables that do have const entries, replace (a) with:
+
+(c) table hit, once for each of the entries specified in the source
+    program.  Each must be qualified with matching the specified
+    entry, and _not_ matching any higher priority entries.  TBD: Are
+    entries always specified from highest matching priority to lowest
+    with 'const entries'?
+
+For (b), every table miss case must be qualified with the condition
+"does not match _any_ of the const entries of the table".
+
+
+### Tables applied in P4 `switch` statement
+
+Consider a table like in the P4_16 code below, where there is later
+code that executes conditionally, based on which action was executed
+by the table.
+
+```
+    switch (table_name.apply().action_run) {
+        action_name1: {
+            // code here to execute if table executed action_name1
+        }
+        action_name2: {
+            // code here to execute if table executed action_name2
+        }
+        default: {
+            // Code here to execute if table executed any of the
+            // actions not explicitly mentioned in other cases.
+        }
+    }
+```
+
+I think that having `p4pktgen` exercise the same cases as mentioned in
+the previous section is a good idea for such tables.  It is true that
+this approach could cause some of the cases of the `switch` statement
+to be executed once for a table hit, and again for a table miss, and
+some people may be consider this to be redundant and unnecessary.  For
+such people, perhaps there could be some options to prefer exercising
+only hit cases, or only miss cases, if both are allowed by the
+`@defaultonly` and `@tableonly` annotations on the table actions.
+Another more fine-grained option, if it meets the requirements of the
+P4 developer, is to add more `@defaultonly` and/or `@tableonly`
+annotations on the table's actions, to reduce the number of test cases
+generated to those actually expected to be used in the actual system.
+
+
+### Other tables
+
+If a table is applied without using the `hit` attribute, and not in a
+`switch` statement, then it seems to make good sense to apply the same
+approach as for the previous section: create test cases that exercise
+all permitted actions on the hit path, and for all permitted actions
+on the miss path.
