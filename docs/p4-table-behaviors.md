@@ -447,7 +447,7 @@ recorded there.
 
 ## p4pktgen notes
 
-### Tables that use `.hit` attribute
+### Tables that use `hit` attribute
 
 Consider a table like in the P4_16 code below, where there is later
 code that executes conditionally, based on whether the table apply
@@ -480,15 +480,17 @@ For tables that do have const entries, replace (a) with:
 
 (c) table hit, once for each of the entries specified in the source
     program.  Each must be qualified with matching the specified
-    entry, and _not_ matching any higher priority entries.  TBD: Are
-    entries always specified from highest matching priority to lowest
-    with 'const entries'?
+    entry, and _not_ matching any higher priority entries.  Note that
+    for tables with const entries, they are always listed in the
+    source code from highest matching priority first, to lowest
+    priority matching last (see Section 13.2.1.4 "Entries" of the
+    P4_16 language specification).
 
 For (b), every table miss case must be qualified with the condition
 "does not match _any_ of the const entries of the table".
 
 
-### Tables applied in P4 `switch` statement
+### Tables applied in a `switch` statement
 
 Consider a table like in the P4_16 code below, where there is later
 code that executes conditionally, based on which action was executed
@@ -530,3 +532,26 @@ If a table is applied without using the `hit` attribute, and not in a
 approach as for the previous section: create test cases that exercise
 all permitted actions on the hit path, and for all permitted actions
 on the miss path.
+
+
+### p4pktgen table transition summary
+
+It seems that representing transitions out of table nodes in
+`p4pktgen` would be well served if every such transition was one of
+the following forms:
+
++ `(table_name, MISS, action_name)` for all kinds of tables
+
++ `(table_name, HIT, action_name)` for tables that do _not_ have const
+  entries.  For such a transition, a table entry to be installed by
+  the control plane software must be created by `p4pktgen`.
+
++ `(table_name, HIT, entry_number)` for tables that do have const
+  entries.  The `entry_number` is an integer in the range `[0, n-1]`,
+  where `n` is the number of const entries.  An alternate form would
+  be to actually include a data representation of the entry's field
+  matching expressions, instead of `entry_number`, but that seems a
+  bit large for human readability when debugging.  Having debug output
+  for each table that _at least one time_ shows the mapping from
+  `entry_number` values to field match expressions for each const
+  entries table seems useful for debugging.
