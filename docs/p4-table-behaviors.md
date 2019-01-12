@@ -64,7 +64,10 @@ Specification.
 As a brief reminder of the behavior of a P4 table when it is applied,
 it is roughly as follows.  For simplicity, we restrict our attention
 here to "direct tables", i.e. ones that do not have an action profile
-or action selector implementation.
+or action selector implementation.  For more authoritative details,
+see the P4_16 language specification, Section 13.2.2 "Match-action
+unit invocation" and Section 13.2.3 "Match-action unit execution
+semantics".
 
 First, determine the set of table entries that match:
 
