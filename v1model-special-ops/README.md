@@ -56,8 +56,8 @@ which causes the values of those fields to be preserved with the
 resubmitted/recirculated/cloned packet.
 
 *WARNING*: See the section "Caveat emptor" below for issues that may
-cause program you write using `recirculate`, `resubmit`, or `clone3`
-to _not_ preserve the metdata fields you specify.
+cause programs you write using `recirculate`, `resubmit`, or `clone3`
+to _not_ preserve the metadata fields you specify.
 
 
 # Compiling
