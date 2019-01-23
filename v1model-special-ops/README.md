@@ -412,11 +412,13 @@ If you do all of these things at the same time:
   January 2019 or earlier, and probably for a while longer until these
   issues are addressed (see below for where to find out up to date
   info).
-+ You write program in the P4_16 variant of P4, with the v1model
-  architecture.
-+ You use the `recirculate`, `resubmit`, and `clone3` operations, with
-  a non-empty list of metadata fields whose values you want to
-  preserve with the recirculated, resubmitted, or cloned packet.
++ You write a program in the P4_16 variant of P4, with the v1model
+  architecture, or you write a program in the P4_14 variant of P4.
++ You use any of the `recirculate`, `resubmit`, or clone operations
+  (called `clone3` in P4_16, or `clone_ingress_pkt_to_egress` or
+  `clone_egress_pkt_to_egress` in P4_14), with a non-empty list of
+  metadata fields whose values you want to preserve with the
+  recirculated, resubmitted, or cloned packet.
 
 Then you may find that the metadata field values are _not_ preserved.
 The current implementation for preserving such metadata field values
@@ -437,18 +439,21 @@ behavior.  One sure sign of a problem is that one or more of the
 fields have constant values in the field list in that file, rather
 than a named field.  Another sign of a problem is if the compiler has
 generated a temporary variable, copied the value of your field into
-it, and used that temporary variable in the field list.  The first
-problem is fairly straightforward to detect with a simple program to
-analyze the BMv2 JSON file.  The second is not.
+it, and used that temporary variable in the field list.  All of these
+problems can be checked for using the program
+[`bmv2-json-check.py`](https://github.com/p4pktgen/p4pktgen/blob/master/tools/bmv2-json-check.py).
+The check is perhaps not 100% reliable for the last problem mentioned,
+but seems to work.
 
 Even when the metadata field values are preserved, they will be the
 values that those fields have when the current ingress or egress
 control block is finished executing.  If any later code in that
 control block modifies the values of the metadata fields after the
-recirculate/resubmit/clone3 call, the modified value will be
-preserved, even though that violates P4_16 language semantics for
-calls to extern methods, which should only have access to the values
-of parameters at the time the call occurs.
+recirculate/resubmit/clone call, the modified value will be preserved.
+That is the behavior specified in the P4_14 language specification for
+these operations.  For P4_16, it violates language semantics for calls
+to extern functions and methods, which should only have access to the
+values of parameters at the time the call occurs.
 
 One or both of the issues linked below will likely be updated, or link
 to further issues or code changes, when these problems are resolved:
