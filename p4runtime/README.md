@@ -20,9 +20,9 @@ The version of the `p4runtime` Git repository that the `.proto` files
 were used had this commit as the most recent one:
 
 ```
-commit d88c4ab58b1b60f952f9523085bf160890ab3c82 (HEAD -> master, origin/master, origin/HEAD)
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Wed Dec 26 19:36:49 2018 -0800
+commit f4d8606062a616ac0e9779298274be5455608fd9 (HEAD -> master, origin/master, origin/HEAD)
+Author: Antonin Bas <antonin@barefootnetworks.com>
+Date:   Tue Jan 15 19:49:41 2019 -0800
 ```
 
 Both of the file `p4info-and-p4types.hand-edited.dot` and
