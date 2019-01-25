@@ -1,0 +1,938 @@
+[21:56:43.865] [bmv2] [D] [thread 17913] Set default default entry for table 't_ing_debug_table1': _nop - 
+[21:56:43.865] [bmv2] [D] [thread 17913] Set default default entry for table 't_do_resubmit': do_resubmit - 
+[21:56:43.865] [bmv2] [D] [thread 17913] Set default default entry for table 't_mark_max_resubmit_packet': mark_max_resubmit_packet - 
+[21:56:43.865] [bmv2] [D] [thread 17913] Set default default entry for table 't_ing_mac_da': set_port_to_mac_da_lsbs - 
+[21:56:43.865] [bmv2] [D] [thread 17913] Set default default entry for table 't_save_ing_instance_type': save_ing_instance_type - 
+[21:56:43.865] [bmv2] [D] [thread 17913] Set default default entry for table 't_ing_debug_table2': _nop - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_egr_debug_table1': _nop - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_egr_mark_resubmit_packet': mark_egr_resubmit_packet - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_do_recirculate': do_recirculate - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_mark_max_recirculate_packet': mark_max_recirculate_packet - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_do_clone_e2e': do_clone_e2e - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_mark_max_clone_e2e_packet': mark_max_clone_e2e_packet - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_mark_vanilla_packet': mark_vanilla_packet - 
+[21:56:43.868] [bmv2] [D] [thread 17913] Set default default entry for table 't_egr_debug_table2': _nop - 
+[21:56:43.881] [bmv2] [D] [thread 17913] Adding interface veth2 as port 0
+[21:56:43.914] [bmv2] [D] [thread 17913] Adding interface veth4 as port 1
+[21:56:43.950] [bmv2] [D] [thread 17913] Adding interface veth6 as port 2
+[21:56:44.042] [bmv2] [D] [thread 17913] Adding interface veth8 as port 3
+[21:56:44.090] [bmv2] [D] [thread 17913] Adding interface veth10 as port 4
+[21:56:44.138] [bmv2] [D] [thread 17913] Adding interface veth12 as port 5
+[21:56:44.203] [bmv2] [D] [thread 17913] Adding interface veth14 as port 6
+[21:56:44.246] [bmv2] [D] [thread 17913] Adding interface veth16 as port 7
+[21:56:44.319] [bmv2] [I] [thread 17913] Starting Thrift server on port 9090
+[21:56:44.319] [bmv2] [I] [thread 17913] Thrift server was started
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Processing packet received on port 0
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Parser 'parser': start
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Parser 'parser' entering state 'start'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Bytes parsed: 0
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Parser 'parser' entering state 'parse_ethernet'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Extracting header 'ethernet'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Parser state 'parse_ethernet' has no switch, going to default next state
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Bytes parsed: 14
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Parser 'parser': end
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Pipeline 'ingress': start
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Applying table 't_ing_debug_table1'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000000
+* intrinsic_metadata.ingress_global_timestamp: 0000005f57c3
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 00
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 00
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : 000000000000
+* ethernet.etherType                         : dead
+
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Table 't_ing_debug_table1': miss
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Action entry is _nop - 
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Action _nop
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] p414-special-ops.p4(206) Condition "==" (node_3) is false
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Applying table 't_ing_mac_da'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Looking up key:
+
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Table 't_ing_mac_da': miss
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Action entry is set_port_to_mac_da_lsbs - 
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Action set_port_to_mac_da_lsbs
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] p414-special-ops.p4(182) Primitive bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf)
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Applying table 't_save_ing_instance_type'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Looking up key:
+
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Table 't_save_ing_instance_type': miss
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Action entry is save_ing_instance_type - 
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Action save_ing_instance_type
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] p414-special-ops.p4(192) Primitive modify_field(mymeta.last_ing_instance_type, ...
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Applying table 't_ing_debug_table2'
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0002
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000000
+* intrinsic_metadata.ingress_global_timestamp: 0000005f57c3
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 00
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 00
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : 000000000000
+* ethernet.etherType                         : dead
+
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Table 't_ing_debug_table2': miss
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Action entry is _nop - 
+[21:56:50.099] [bmv2] [T] [thread 17919] [0.0] [cxt 0] Action _nop
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Pipeline 'ingress': end
+[21:56:50.099] [bmv2] [D] [thread 17919] [0.0] [cxt 0] Egress port is 2
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Pipeline 'egress': start
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] Applying table 't_egr_debug_table1'
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000000
+* intrinsic_metadata.ingress_global_timestamp: 0000005f57c3
+* intrinsic_metadata.egress_global_timestamp : 0000005f5bd4
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 00
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 00
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : 000000000000
+* ethernet.etherType                         : dead
+
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Table 't_egr_debug_table1': miss
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Action entry is _nop - 
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] Action _nop
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(318) Condition "==" (node_13) is false
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(322) Condition "==" (node_15) is true
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(323) Condition "<" (node_16) is true
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] Applying table 't_do_recirculate'
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Looking up key:
+
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Table 't_do_recirculate': miss
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Action entry is do_recirculate - 
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] Action do_recirculate
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(256) Primitive subtract_from_field(ethernet.srcAddr, 19)
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(257) Primitive add_to_field(mymeta.f1, 19)
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(258) Primitive add_to_field(mymeta.recirculate_count, 1)
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] p414-special-ops.p4(259) Primitive recirculate(recirculate_FL)
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] Applying table 't_egr_debug_table2'
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000000
+* intrinsic_metadata.ingress_global_timestamp: 0000005f57c3
+* intrinsic_metadata.egress_global_timestamp : 0000005f5bd4
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 02
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 01
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 13
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffed
+* ethernet.etherType                         : dead
+
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Table 't_egr_debug_table2': miss
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Action entry is _nop - 
+[21:56:50.100] [bmv2] [T] [thread 17922] [0.0] [cxt 0] Action _nop
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Pipeline 'egress': end
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Deparser 'deparser': start
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Deparsing header 'ethernet'
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Deparser 'deparser': end
+[21:56:50.100] [bmv2] [D] [thread 17922] [0.0] [cxt 0] Recirculating packet
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Processing packet received on port 0
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Parser 'parser': start
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Parser 'parser' entering state 'start'
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Parser state 'start' has no switch, going to default next state
+[21:56:50.100] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Bytes parsed: 0
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Parser 'parser' entering state 'parse_ethernet'
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Extracting header 'ethernet'
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Parser state 'parse_ethernet' has no switch, going to default next state
+[21:56:50.100] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Bytes parsed: 14
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Parser 'parser': end
+[21:56:50.100] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Pipeline 'ingress': start
+[21:56:50.100] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Applying table 't_ing_debug_table1'
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 01
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 13
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffed
+* ethernet.etherType                         : dead
+
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Table 't_ing_debug_table1': miss
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Action entry is _nop - 
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Action _nop
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] p414-special-ops.p4(206) Condition "==" (node_3) is false
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Applying table 't_ing_mac_da'
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Looking up key:
+
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Table 't_ing_mac_da': miss
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Action entry is set_port_to_mac_da_lsbs - 
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Action set_port_to_mac_da_lsbs
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] p414-special-ops.p4(182) Primitive bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf)
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Applying table 't_save_ing_instance_type'
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Looking up key:
+
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Table 't_save_ing_instance_type': miss
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Action entry is save_ing_instance_type - 
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Action save_ing_instance_type
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] p414-special-ops.p4(192) Primitive modify_field(mymeta.last_ing_instance_type, ...
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Applying table 't_ing_debug_table2'
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0002
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 01
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 13
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffed
+* ethernet.etherType                         : dead
+
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Table 't_ing_debug_table2': miss
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Action entry is _nop - 
+[21:56:50.101] [bmv2] [T] [thread 17919] [0.1] [cxt 0] Action _nop
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Pipeline 'ingress': end
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.1] [cxt 0] Egress port is 2
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Pipeline 'egress': start
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] Applying table 't_egr_debug_table1'
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6127
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 01
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 13
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffed
+* ethernet.etherType                         : dead
+
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Table 't_egr_debug_table1': miss
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Action entry is _nop - 
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] Action _nop
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(318) Condition "==" (node_13) is false
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(322) Condition "==" (node_15) is true
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(323) Condition "<" (node_16) is true
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] Applying table 't_do_recirculate'
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Looking up key:
+
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Table 't_do_recirculate': miss
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Action entry is do_recirculate - 
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] Action do_recirculate
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(256) Primitive subtract_from_field(ethernet.srcAddr, 19)
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(257) Primitive add_to_field(mymeta.f1, 19)
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(258) Primitive add_to_field(mymeta.recirculate_count, 1)
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] p414-special-ops.p4(259) Primitive recirculate(recirculate_FL)
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] Applying table 't_egr_debug_table2'
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6127
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 02
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 02
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 26
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffda
+* ethernet.etherType                         : dead
+
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Table 't_egr_debug_table2': miss
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Action entry is _nop - 
+[21:56:50.101] [bmv2] [T] [thread 17922] [0.1] [cxt 0] Action _nop
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Pipeline 'egress': end
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Deparser 'deparser': start
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Deparsing header 'ethernet'
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Deparser 'deparser': end
+[21:56:50.101] [bmv2] [D] [thread 17922] [0.1] [cxt 0] Recirculating packet
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Processing packet received on port 0
+[21:56:50.101] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Parser 'parser': start
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Parser 'parser' entering state 'start'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Parser state 'start' has no switch, going to default next state
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Bytes parsed: 0
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Parser 'parser' entering state 'parse_ethernet'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Extracting header 'ethernet'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Parser state 'parse_ethernet' has no switch, going to default next state
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Bytes parsed: 14
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Parser 'parser': end
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Pipeline 'ingress': start
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Applying table 't_ing_debug_table1'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 02
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 26
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffda
+* ethernet.etherType                         : dead
+
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Table 't_ing_debug_table1': miss
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Action entry is _nop - 
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Action _nop
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] p414-special-ops.p4(206) Condition "==" (node_3) is false
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Applying table 't_ing_mac_da'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Looking up key:
+
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Table 't_ing_mac_da': miss
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Action entry is set_port_to_mac_da_lsbs - 
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Action set_port_to_mac_da_lsbs
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] p414-special-ops.p4(182) Primitive bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf)
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Applying table 't_save_ing_instance_type'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Looking up key:
+
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Table 't_save_ing_instance_type': miss
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Action entry is save_ing_instance_type - 
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Action save_ing_instance_type
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] p414-special-ops.p4(192) Primitive modify_field(mymeta.last_ing_instance_type, ...
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Applying table 't_ing_debug_table2'
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0002
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 02
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 26
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffda
+* ethernet.etherType                         : dead
+
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Table 't_ing_debug_table2': miss
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Action entry is _nop - 
+[21:56:50.102] [bmv2] [T] [thread 17919] [0.2] [cxt 0] Action _nop
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Pipeline 'ingress': end
+[21:56:50.102] [bmv2] [D] [thread 17919] [0.2] [cxt 0] Egress port is 2
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Pipeline 'egress': start
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] Applying table 't_egr_debug_table1'
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6583
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 02
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 26
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffda
+* ethernet.etherType                         : dead
+
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Table 't_egr_debug_table1': miss
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Action entry is _nop - 
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] Action _nop
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(318) Condition "==" (node_13) is false
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(322) Condition "==" (node_15) is true
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(323) Condition "<" (node_16) is true
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] Applying table 't_do_recirculate'
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Looking up key:
+
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Table 't_do_recirculate': miss
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Action entry is do_recirculate - 
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] Action do_recirculate
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(256) Primitive subtract_from_field(ethernet.srcAddr, 19)
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(257) Primitive add_to_field(mymeta.f1, 19)
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(258) Primitive add_to_field(mymeta.recirculate_count, 1)
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] p414-special-ops.p4(259) Primitive recirculate(recirculate_FL)
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] Applying table 't_egr_debug_table2'
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6583
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 02
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 03
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 39
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffc7
+* ethernet.etherType                         : dead
+
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Table 't_egr_debug_table2': miss
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Action entry is _nop - 
+[21:56:50.102] [bmv2] [T] [thread 17922] [0.2] [cxt 0] Action _nop
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Pipeline 'egress': end
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Deparser 'deparser': start
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Deparsing header 'ethernet'
+[21:56:50.102] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Deparser 'deparser': end
+[21:56:50.103] [bmv2] [D] [thread 17922] [0.2] [cxt 0] Recirculating packet
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Processing packet received on port 0
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Parser 'parser': start
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Parser 'parser' entering state 'start'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Parser state 'start' has no switch, going to default next state
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Bytes parsed: 0
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Parser 'parser' entering state 'parse_ethernet'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Extracting header 'ethernet'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Parser state 'parse_ethernet' has no switch, going to default next state
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Bytes parsed: 14
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Parser 'parser': end
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Pipeline 'ingress': start
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Applying table 't_ing_debug_table1'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 03
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 39
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffc7
+* ethernet.etherType                         : dead
+
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Table 't_ing_debug_table1': miss
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Action entry is _nop - 
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Action _nop
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] p414-special-ops.p4(206) Condition "==" (node_3) is false
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Applying table 't_ing_mac_da'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Looking up key:
+
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Table 't_ing_mac_da': miss
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Action entry is set_port_to_mac_da_lsbs - 
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Action set_port_to_mac_da_lsbs
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] p414-special-ops.p4(182) Primitive bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf)
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Applying table 't_save_ing_instance_type'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Looking up key:
+
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Table 't_save_ing_instance_type': miss
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Action entry is save_ing_instance_type - 
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Action save_ing_instance_type
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] p414-special-ops.p4(192) Primitive modify_field(mymeta.last_ing_instance_type, ...
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Applying table 't_ing_debug_table2'
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0002
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 03
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 39
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffc7
+* ethernet.etherType                         : dead
+
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Table 't_ing_debug_table2': miss
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Action entry is _nop - 
+[21:56:50.103] [bmv2] [T] [thread 17919] [0.3] [cxt 0] Action _nop
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Pipeline 'ingress': end
+[21:56:50.103] [bmv2] [D] [thread 17919] [0.3] [cxt 0] Egress port is 2
+[21:56:50.103] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Pipeline 'egress': start
+[21:56:50.103] [bmv2] [T] [thread 17922] [0.3] [cxt 0] Applying table 't_egr_debug_table1'
+[21:56:50.103] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6a4e
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 03
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 39
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffc7
+* ethernet.etherType                         : dead
+
+[21:56:50.103] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Table 't_egr_debug_table1': miss
+[21:56:50.103] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Action entry is _nop - 
+[21:56:50.103] [bmv2] [T] [thread 17922] [0.3] [cxt 0] Action _nop
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(318) Condition "==" (node_13) is false
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(322) Condition "==" (node_15) is true
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(323) Condition "<" (node_16) is true
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] Applying table 't_do_recirculate'
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Looking up key:
+
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Table 't_do_recirculate': miss
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Action entry is do_recirculate - 
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] Action do_recirculate
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(256) Primitive subtract_from_field(ethernet.srcAddr, 19)
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(257) Primitive add_to_field(mymeta.f1, 19)
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(258) Primitive add_to_field(mymeta.recirculate_count, 1)
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] p414-special-ops.p4(259) Primitive recirculate(recirculate_FL)
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] Applying table 't_egr_debug_table2'
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6a4e
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 02
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 04
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 4c
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffb4
+* ethernet.etherType                         : dead
+
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Table 't_egr_debug_table2': miss
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Action entry is _nop - 
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.3] [cxt 0] Action _nop
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Pipeline 'egress': end
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Deparser 'deparser': start
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Deparsing header 'ethernet'
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Deparser 'deparser': end
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.3] [cxt 0] Recirculating packet
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Processing packet received on port 0
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Parser 'parser': start
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Parser 'parser' entering state 'start'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Parser state 'start' has no switch, going to default next state
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Bytes parsed: 0
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Parser 'parser' entering state 'parse_ethernet'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Extracting header 'ethernet'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Parser state 'parse_ethernet' has no switch, going to default next state
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Bytes parsed: 14
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Parser 'parser': end
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Pipeline 'ingress': start
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Applying table 't_ing_debug_table1'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 04
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 4c
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffb4
+* ethernet.etherType                         : dead
+
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Table 't_ing_debug_table1': miss
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Action entry is _nop - 
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Action _nop
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] p414-special-ops.p4(206) Condition "==" (node_3) is false
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Applying table 't_ing_mac_da'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Looking up key:
+
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Table 't_ing_mac_da': miss
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Action entry is set_port_to_mac_da_lsbs - 
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Action set_port_to_mac_da_lsbs
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] p414-special-ops.p4(182) Primitive bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf)
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Applying table 't_save_ing_instance_type'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Looking up key:
+
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Table 't_save_ing_instance_type': miss
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Action entry is save_ing_instance_type - 
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Action save_ing_instance_type
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] p414-special-ops.p4(192) Primitive modify_field(mymeta.last_ing_instance_type, ...
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Applying table 't_ing_debug_table2'
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0002
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 04
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 4c
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffb4
+* ethernet.etherType                         : dead
+
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Table 't_ing_debug_table2': miss
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Action entry is _nop - 
+[21:56:50.104] [bmv2] [T] [thread 17919] [0.4] [cxt 0] Action _nop
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Pipeline 'ingress': end
+[21:56:50.104] [bmv2] [D] [thread 17919] [0.4] [cxt 0] Egress port is 2
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Pipeline 'egress': start
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.4] [cxt 0] Applying table 't_egr_debug_table1'
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6e35
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 04
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 4c
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffb4
+* ethernet.etherType                         : dead
+
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Table 't_egr_debug_table1': miss
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Action entry is _nop - 
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.4] [cxt 0] Action _nop
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(318) Condition "==" (node_13) is false
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(322) Condition "==" (node_15) is true
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(323) Condition "<" (node_16) is true
+[21:56:50.104] [bmv2] [T] [thread 17922] [0.4] [cxt 0] Applying table 't_do_recirculate'
+[21:56:50.104] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Looking up key:
+
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Table 't_do_recirculate': miss
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Action entry is do_recirculate - 
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] Action do_recirculate
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(256) Primitive subtract_from_field(ethernet.srcAddr, 19)
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(257) Primitive add_to_field(mymeta.f1, 19)
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(258) Primitive add_to_field(mymeta.recirculate_count, 1)
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] p414-special-ops.p4(259) Primitive recirculate(recirculate_FL)
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] Applying table 't_egr_debug_table2'
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f6e35
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 02
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 05
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 5f
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffa1
+* ethernet.etherType                         : dead
+
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Table 't_egr_debug_table2': miss
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Action entry is _nop - 
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.4] [cxt 0] Action _nop
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Pipeline 'egress': end
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Deparser 'deparser': start
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Deparsing header 'ethernet'
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Deparser 'deparser': end
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.4] [cxt 0] Recirculating packet
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Processing packet received on port 0
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Parser 'parser': start
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Parser 'parser' entering state 'start'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Parser state 'start' has no switch, going to default next state
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Bytes parsed: 0
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Parser 'parser' entering state 'parse_ethernet'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Extracting header 'ethernet'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Parser state 'parse_ethernet' has no switch, going to default next state
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Bytes parsed: 14
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Parser 'parser': end
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Pipeline 'ingress': start
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Applying table 't_ing_debug_table1'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 05
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 5f
+* mymeta.last_ing_instance_type              : 00
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffa1
+* ethernet.etherType                         : dead
+
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Table 't_ing_debug_table1': miss
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Action entry is _nop - 
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Action _nop
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] p414-special-ops.p4(206) Condition "==" (node_3) is false
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Applying table 't_ing_mac_da'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Looking up key:
+
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Table 't_ing_mac_da': miss
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Action entry is set_port_to_mac_da_lsbs - 
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Action set_port_to_mac_da_lsbs
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] p414-special-ops.p4(182) Primitive bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf)
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Applying table 't_save_ing_instance_type'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Looking up key:
+
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Table 't_save_ing_instance_type': miss
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Action entry is save_ing_instance_type - 
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Action save_ing_instance_type
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] p414-special-ops.p4(192) Primitive modify_field(mymeta.last_ing_instance_type, ...
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Applying table 't_ing_debug_table2'
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0002
+* standard_metadata.egress_port              : 0000
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 000000000000
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 05
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 5f
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffa1
+* ethernet.etherType                         : dead
+
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Table 't_ing_debug_table2': miss
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Action entry is _nop - 
+[21:56:50.105] [bmv2] [T] [thread 17919] [0.5] [cxt 0] Action _nop
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Pipeline 'ingress': end
+[21:56:50.105] [bmv2] [D] [thread 17919] [0.5] [cxt 0] Egress port is 2
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Pipeline 'egress': start
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] Applying table 't_egr_debug_table1'
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f7214
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 05
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 5f
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 000000000002
+* ethernet.srcAddr                           : ffffffffffa1
+* ethernet.etherType                         : dead
+
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Table 't_egr_debug_table1': miss
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Action entry is _nop - 
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] Action _nop
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(318) Condition "==" (node_13) is false
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(322) Condition "==" (node_15) is true
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(323) Condition "<" (node_16) is false
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] Applying table 't_mark_max_recirculate_packet'
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Looking up key:
+
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Table 't_mark_max_recirculate_packet': miss
+[21:56:50.105] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Action entry is mark_max_recirculate_packet - 
+[21:56:50.105] [bmv2] [T] [thread 17922] [0.5] [cxt 0] Action mark_max_recirculate_packet
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(226) Primitive modify_field(ethernet.dstAddr, 0)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(227) Primitive shift_left(temporaries.temp1, mymeta.resubmit_count, 40)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(228) Primitive bit_or(ethernet.dstAddr, ethernet.dstAddr, temporaries.temp1)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(229) Primitive shift_left(temporaries.temp1, mymeta.recirculate_count, 32)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(230) Primitive bit_or(ethernet.dstAddr, ethernet.dstAddr, temporaries.temp1)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(231) Primitive shift_left(temporaries.temp1, mymeta.clone_e2e_count, 24)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(232) Primitive bit_or(ethernet.dstAddr, ethernet.dstAddr, temporaries.temp1)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(233) Primitive shift_left(temporaries.temp1, mymeta.f1, 16)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(234) Primitive bit_or(ethernet.dstAddr, ethernet.dstAddr, temporaries.temp1)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(235) Primitive shift_left(temporaries.temp1, mymeta.last_ing_instance_type, 8)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(236) Primitive bit_or(ethernet.dstAddr, ethernet.dstAddr, temporaries.temp1)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] p414-special-ops.p4(270) Primitive modify_field(ethernet.etherType, 0xec14)
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] Applying table 't_egr_debug_table2'
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Looking up key:
+* standard_metadata.ingress_port             : 0000
+* standard_metadata.packet_length            : 0000000e
+* standard_metadata.egress_spec              : 0000
+* standard_metadata.egress_port              : 0002
+* standard_metadata.instance_type            : 00000004
+* intrinsic_metadata.ingress_global_timestamp: 000000000000
+* intrinsic_metadata.egress_global_timestamp : 0000005f7214
+* intrinsic_metadata.lf_field_list           : 00
+* intrinsic_metadata.mcast_grp               : 0000
+* intrinsic_metadata.egress_rid              : 0000
+* intrinsic_metadata.resubmit_flag           : 00
+* intrinsic_metadata.recirculate_flag        : 00
+* mymeta.resubmit_count                      : 00
+* mymeta.recirculate_count                   : 05
+* mymeta.clone_e2e_count                     : 00
+* mymeta.f1                                  : 5f
+* mymeta.last_ing_instance_type              : 04
+* ethernet.dstAddr                           : 0005005f0400
+* ethernet.srcAddr                           : ffffffffffa1
+* ethernet.etherType                         : ec14
+
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Table 't_egr_debug_table2': miss
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Action entry is _nop - 
+[21:56:50.106] [bmv2] [T] [thread 17922] [0.5] [cxt 0] Action _nop
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Pipeline 'egress': end
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Deparser 'deparser': start
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Deparsing header 'ethernet'
+[21:56:50.106] [bmv2] [D] [thread 17922] [0.5] [cxt 0] Deparser 'deparser': end
+[21:56:50.106] [bmv2] [D] [thread 17924] [0.5] [cxt 0] Transmitting packet of size 14 out of port 2
