@@ -790,20 +790,20 @@ ffffffffffa4
 ```
 
 
-----------------------------------------------------------------------
-Filed this p4c issue on Github about resubmit not working:
+# Some details on why some versions of p4c lead to resubmit/recirculate/clone doing nothing
+
+I filed this p4c issue on Github about resubmit not working:
 https://github.com/p4lang/p4c/issues/1694
 
 In the mean time, keep testing and developing the program
 p414-special-ops.p4 using the 2018-11-26 version of p4c, which seems
 to produce a working BMv2 JSON file.
 
-
-p4c-2018-09-01 resubmit works
-p4c-2018-11-01 resubmit works
-p4c-2018-11-14 resubmit works
-p4c-2018-11-28a (commit 22a5a13ee347dd40e6b7b6472e00ea2205db5358) resubmit does not work
-p4c-2018-12-01 resubmit does not work
++ p4c-2018-09-01 resubmit works
++ p4c-2018-11-01 resubmit works
++ p4c-2018-11-14 resubmit works
++ p4c-2018-11-28a (commit 22a5a13ee347dd40e6b7b6472e00ea2205db5358) resubmit does not work
++ p4c-2018-12-01 resubmit does not work
 
 For the cases where resubmit works, the BMv2 JSON file contains a
 header_type like this in the header_types section:
