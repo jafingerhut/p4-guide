@@ -291,10 +291,10 @@ ethernet.srcAddr = <whatever value the packet arrived with>
 ethernet.etherType = ETHERTYPE_MAX_RESUBMIT = 0xe50b
 ```
 
-The value of `etherType` was modified during the last ingress
-processing step above, when executing action
-`mark_max_resubmit_packet`.  The modified value is saved in the packet
-buffer after that ingress processing is complete.
+Recall that the value of `etherType` was modified during the last
+ingress processing step above, when executing action
+`mark_max_resubmit_packet`.  The modified value was saved in the
+packet buffer after ingress processing was complete.
 
 
 ## Recirculated packet
@@ -310,11 +310,28 @@ sendp(recirc_pkt, iface="veth2")
 then here are the processing steps that the packet should go through.
 
 In ingress, the condition `ethernet.dstAddr == MAC_DA_DO_RESUBMIT`
-will be false.  The table `t_ing_mac_da` will be applied.  I will
-assume for the sake of example that no entries have been added to this
-table, so its default action will be executed, which since there is
-none specified in the P4 program, it is by default `NoAction`, a no-op
-action that makes no changes.
+will be false.  The table `t_ing_mac_da` will be applied, causing its
+default action `set_port_to_mac_da_lsbs` to be executed.
+
+```
+action set_port_to_mac_da_lsbs() {
+    bit_and(standard_metadata.egress_spec, ethernet.dstAddr, 0xf);
+}
+```
+
+This action is a bit peculiar.  It ANDs the packet's Ethernet
+`dstAddr` with 0xf and puts the result in
+`standard_metadata.egress_spec`.  I would not expect a typical switch
+to do such a thing.  I did it in this program primarily so that
+different packets would go to different output ports, making it easier
+to write an automated test for `p4c` that checks the output packets,
+and get predictable orders of those output packets appearing on each
+output port.
+
+In this case, it assigns the value 2 to
+`standard_metadata.egress_spec`, so that if it is not changed again,
+and the packet is sent via unicast to egress, it will go out of port
+2.
 
 Then the table `t_save_ing_instance_type` will be applied, causing its
 default action to be executed, which copies the value of
@@ -333,14 +350,14 @@ of `standard_metadata.egress_spec`.  Since its initial value was 0,
 and no assignment has been made to it, the packet is destined to port
 0.
 
-When egress processing beings, since simple_switch by default
+When egress processing begins, since simple_switch by default
 preserves all user-defined metadata field values for P4_14 programs,
 all of them will have the value they did, e.g. `mymeta.f1` is 0, etc.
 
 The condition `ethernet.dstAddr == MAC_DA_DO_RESUBMIT` is false, but
-the condition `ethernet.dstAddr == MAC_DA_DO_RECIRCULATE` is true.
-The condition `mymeta.recirculate_count < MAX_RECIRCULATE_COUNT` is
-the same same as `0 < 5`, which is true.
+`ethernet.dstAddr == MAC_DA_DO_RECIRCULATE` is true.  The condition
+`mymeta.recirculate_count < MAX_RECIRCULATE_COUNT` is the same same as
+`0 < 5`, which is true.
 
 We apply the table `t_do_recirculate`, which executes its default
 action `do_recirculate`:
@@ -369,8 +386,6 @@ field_list recirculate_FL {
 }
 ```
 
-That is the end of egress processing.
-
 That is the end of ingress processing.  When the packet is finished
 with egress processing, the detailed version of what happens next is
 described in pseudocode form at the simple_switch documentation
@@ -392,13 +407,12 @@ processing with `standard_metadata.instance_type` equal to
 `PKT_INSTANCE_TYPE_RECIRC`, which is the number 4.
 
 The recirculated packet in ingress goes through exactly the same steps
-as the original packet received from the port did, with the minor
-difference that the value of `mymeta.last_ing_instance_type` is
-assigned a value of 4, because that is what the value of
-`standard_metadata.instance_type` began as for the recirculated
-packet.
+as the original packet did, with the minor difference that the value
+of `mymeta.last_ing_instance_type` is assigned a value of 4, because
+that is what the value of `standard_metadata.instance_type` began as
+for the recirculated packet.
 
-That packet is sent to the packet buffer destined for port 0, and
+That packet is sent to the packet buffer destined for port 2, and
 egress processing is done for it.  It goes through exactly the same
 steps as described above, except for these changes:
 
@@ -463,7 +477,7 @@ ethernet.dstAddr = 0x0005005f0400
 ```
 
 No more tables are applied during egress processing for the packet, so
-it should go out of port 0 with the following Ethernet header field
+it should go out of port 2 with the following Ethernet header field
 values:
 
 ```
@@ -497,8 +511,11 @@ then here are the processing steps that the packet should go through.
 
 The first time through ingress processing will have the same behavior
 as described for a recirculated packet above, and the first time the
-packet goes through ingress processing it will begin the same way,
-destined toward output port 0.
+packet goes through ingress processing it will begin the same way.
+One small difference is that `standard_metadata.egress_spec` will be
+assigned a value of 3, since that is what is in the least significant
+4 bits of the Ethernet `dstAddr` field of this packet.  Thus the
+packet is destined toward output port 3.
 
 When egress processing beings, since simple_switch by default
 preserves all user-defined metadata field values for P4_14 programs,
@@ -510,7 +527,6 @@ so is `ethernet.dstAddr == MAC_DA_DO_RECIRCULATE`, but
 
 The `mymeta.clone_e2e_count < MAX_CLONE_E2E_COUNT` is the same as `0 <
 4`, which is true.
-
 
 We apply the table `t_do_clone_e2e`, which executes its default action
 `do_clone_e2e`:
@@ -548,17 +564,17 @@ The first `if` condition `clone_spec != 0` in that pseudocode is true,
 because a side effect of executing the `clone_egress_pkt_to_egress` is
 to assign a non-0 value to the `clone_spec` metadata field.  The
 pseudocode says that thus a clone of the packet is created, and sent
-to the egress port configured in the "clone session".  A device can
-have multiple clone sessions, and if so, the clone session to be used
-is determined by the first argument to the
-`clone_egress_pkt_to_egress` operation call, which was 1 in this
+toward the output port configured in the "clone session".  A device
+can have multiple clone sessions, and if so, the clone session to be
+used is determined by the first argument to the
+`clone_egress_pkt_to_egress` operation call, which is 1 in this
 program's execution.
 
 In simple_switch, all clone sessions have an initial configuration
 that causes them to drop any packet that is cloned.  I will assume
 here that before we sent in the packet, we configured the clone
-session with id 1 to send packets to output port 5.  This can be done
-by running the command `simple_switch_CLI` after starting the
+session with id 1 to send packets toward output port 5.  This can be
+done by running the command `simple_switch_CLI` after starting the
 `simple_switch` process, and entering this command at the
 `simple_switch_CLI` `RuntimeCmd: ` prompt:
 
@@ -568,10 +584,8 @@ mirroring_add 1 5
 
 In this case, the cloned packet will have `egress_port` equal to 5,
 and its contents will contain packet headers as modified during
-ingress and egress processing, then deparsed.
-
-In this case the packet header field values at the end of ingress
-processing are:
+ingress and egress processing, then deparsed.  The packet header field
+values at the end of ingress processing are:
 
 ```
 ethernet.dstAddr = 0x000000000003 (as received, not modified)
@@ -597,7 +611,7 @@ further.
 The simple_switch after-egress pseudocode does not stop after creating
 the clone.  There are additional statements in the pseudocode to
 execute.  None of the other `if` conditions are true, so a packet is
-sent to the current `standard_metadata.egress_port` of 0, which was
+sent to the current `standard_metadata.egress_port` of 3, which was
 copied from the end-of-ingress-processing value of
 `standard_metadata.egress_spec` for this packet.  This packet will
 have the same packet header field values as described above for the
@@ -650,7 +664,7 @@ complete.
 This time the not-cloned packet will go out port 5, because that is
 the value of `standard_metadata.egress_port` when egress processing
 began, which came from the clone session configuration.  The only
-other difference between the packet sent out port 0 described above is
+other difference between the packet sent out port 3 described above is
 that the Ethernet `srcAddr` will be 23 less.
 
 If we call the first time egress processing occurred "the original
@@ -664,12 +678,12 @@ packet being received, and all packets that should go out.
 + the original packet egress
   + It starts egress processing with these metadata field values:
     + `standard_metadata.instance_type` = 0 (`PKT_INSTANCE_TYPE_NORMAL`)
-    + `standard_metadata.egress_port` = 0
+    + `standard_metadata.egress_port` = 3 (copied from standard_metadata.egress_pec value of 3, the value it had at end of ingress)
     + `ethernet.srcAddr` = original srcAddr
     + `mymeta.clone_e2e_count` = 0
     + `mymeta.f1` = 0
   + It results in the creation of clone #1 and the following packet sent out:
-    + port=0
+    + port=3
     + Ethernet `dstAddr` = 0x000000000003,
     + Ethernet `srcAddr` = original srcAddr - 23
     + Ethernet `etherType` = 0xdead
