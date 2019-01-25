@@ -10,9 +10,13 @@ vs. a new packet received from an ingress port.  Similarly whether a
 packet being processed in the egress control block is the result of a
 clone operation.
 
-It also demonstrates "debug tables".  When you use the `--log-console`
-or `--log-file` command line options to the `simple_switch` command,
-then whenever _any_ tables are applied, the log output shows:
+See [README-p414.md](README-p414.md) for a P4_14 program that
+exercises similar packet operations.
+
+This program also demonstrates "debug tables".  When you use the
+`--log-console` or `--log-file` command line options to the
+`simple_switch` command, then whenever _any_ tables are applied, the
+log output shows:
 
 + the values of all fields in the key of those tables, with the name
   of each field next to its value,
@@ -82,8 +86,9 @@ using the `simple_switch` command.  You can ignore the file with
 suffix `.p4i` unless you suspect that the preprocessor is doing
 something unexpected with your program.
 
-I have not attempted to create a corresponding P4_14 version of this
-program.
+The file [README-p414.md](README-p414.md) gives instructions and
+details about a P4_14 program that is not the same in behavior to this
+P4_16 program, but does exercise similar operations on packets.
 
 
 # Running

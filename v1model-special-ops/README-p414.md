@@ -1,19 +1,108 @@
+# Introduction
 
+The program `p414-special-ops.p4` demonstrates the use of resubmit,
+recirculate, and clone egress-to-egress operations in BMv2
+simple_switch.
+
+It does not do anything terribly fancy with those operations, but it
+does show how they can be invoked.
+
+Like the P4_16 program in this same directory, it also demonstrates
+"debug tables".  See the description of them [README.md](README.md)
+for more details.
+
+This program has been written so that it can do what is expected of it
+even without adding any table entries.  It does require configuring
+one clone session in order for the clone operation to produce another
+copy of the packet and work as described later.  Below is a detailed
+description of what happens while packets are processed with this
+program, as well as links to log output from `simple_switch` while it
+processes selected packets.
+
+I used these versions of the p4lang/behavioral-model and p4lang/p4c
+repositories in my testing:
+
++ p4lang/behavioral-model - git commit
+  20d37301040e6e1b2f6f50f4f66671448946b898 dated Dec 18 2018
++ p4lang/p4c - git commit d21be8847d900d715a2533e122f33ac8c3bcebdf
+  dated Nov 26 2018
+
+*WARNING*: Compiling this program with version of the open source
+`p4c` compiler from 2018-Nov-26 or somewhat earlier leads to a working
+result in simple_switch, but as of Jan 2019, later versions of `p4c`
+do not produce compiler output that works correctly using BMv2
+simple_switch -- the recirculate, resubmit, and clone operations
+simply do not occur at all, as they should while processing packets.
+See the following issue on Github for status of whether this problem
+becomes fixed: https://github.com/p4lang/p4c/issues/1694
+
+*WARNING*: See the section "Caveat emptor" in the file
+ [README.md](README.md) for issues that may cause programs you write
+ using `recirculate`, `resubmit`, `clone_ingress_pkt_to_egress`, or
+ `clone_egress_pkt_to_egress` operations to _not_ preserve the
+ metadata fields you specify.
+
+
+# Compiling
+
+See [README-using-bmv2.md](../README-using-bmv2.md) for some things
+that are common across different P4 programs executed using bmv2.
 
 ```bash
-~/forks/p4c-2018-11-26/build/p4c --std p4-14 --target bmv2 p414-special-ops.p4 
+p4c --std p4-14 --target bmv2 p414-special-ops.p4
+```
 
+Running that command will create these files:
+
+    p414-special-ops.p4i - the output of running only the preprocessor on
+        the P4 source program.
+    p414-special-ops.json - the JSON file format expected by BMv2
+        behavioral model `simple_switch`.
+
+Only the file with the `.json` suffix is needed to run your P4 program
+using the `simple_switch` command.  You can ignore the file with
+suffix `.p4i` unless you suspect that the preprocessor is doing
+something unexpected with your program.
+
+
+# Running
+
+To run the behavioral model with 8 ports numbered 0 through 7:
+
+```bash
 sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 p414-special-ops.json
+```
 
+To get the log to go to a file instead of the console:
+
+```bash
 sudo simple_switch --log-file ss-log --log-flush -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 p414-special-ops.json
 ```
 
-```
-simple_switch_CLI config needed for egress-to-egress clone to work:
+CHECK THIS: If you see "Add port operation failed" messages in the
+output of the simple_switch command, it means that one or more of the
+virtual Ethernet interfaces veth2, veth4, etc. have not been created
+on your system.  Search for "veth" in the file
+[README-using-bmv2.md](../README-using-bmv2.md) for a command to
+create them.
 
+To run CLI for controlling and examining simple_switch's table
+contents:
+
+```bash
+simple_switch_CLI
+```
+
+The only configuration command needed for this program to work as
+desired is to configure clone session with id 1, so that packets
+cloned there will go to output port 5.
+
+```
 mirroring_add 1 5
 ```
 
+Scapy commands to send 3 packets, each of which exercises different
+parts of the program:
 
 ```python
 sudo scapy
@@ -28,18 +117,21 @@ sendp(recirc_pkt, iface="veth2")
 sendp(e2e_clone_pkt, iface="veth2")
 ```
 
-== How packets should be processed by this program
 
-Below are detailed expectations for how each of several types of
+# How packets should be processed by this program
+
+Below are detailed descriptions for how each of several types of
 packets should be processed by this program.
 
-=== Resubmitted packet
+
+## Resubmitted packet
 
 If you send in a packet constructed via Scapy with these header field
 values:
 
 ```python
-Ether(src='00:00:00:00:00:00', dst='00:00:00:00:00:01', type=0xdead)
+resub_pkt=Ether(src='00:00:00:00:00:00', dst='00:00:00:00:00:01', type=0xdead)
+sendp(resub_pkt, iface="veth2")
 ```
 
 then here are the processing steps that the packet should go through.
@@ -205,13 +297,14 @@ processing step above, when executing action
 buffer after that ingress processing is complete.
 
 
-=== Recirculated packet
+## Recirculated packet
 
 If you send in a packet constructed via Scapy with these header field
 values:
 
 ```python
-Ether(src='00:00:00:00:00:00', dst='00:00:00:00:00:02', type=0xdead)
+recirc_pkt=Ether(src='00:00:00:00:00:00', dst='00:00:00:00:00:02', type=0xdead)
+sendp(recirc_pkt, iface="veth2")
 ```
 
 then here are the processing steps that the packet should go through.
@@ -390,13 +483,14 @@ ffffffffffa1
 ```
 
 
-=== Egress-to-egress cloned packet
+## Egress-to-egress cloned packet
 
 If you send in a packet constructed via Scapy with these header field
 values:
 
 ```python
-Ether(src='00:00:00:00:00:00', dst='00:00:00:00:00:03', type=0xdead)
+e2e_clone_pkt=Ether(src='00:00:00:00:00:00', dst='00:00:00:00:00:03', type=0xdead)
+sendp(e2e_clone_pkt, iface="veth2")
 ```
 
 then here are the processing steps that the packet should go through.
