@@ -3,8 +3,17 @@
 
 ## Color highlighting and auto-indenting
 
-P4 is close enough in syntax to C/C++ that Emacs `c++-mode` works well
-for color highlighting, and auto-indentation of code with the TAB key.
+P4 is close enough in syntax to C/C++ that Emacs `c++-mode` works
+pretty well for color highlighting, and auto-indentation of code with
+the TAB key.  See below for something more tailored to P4.
+
+
+## LSP implementation for P4
+
+[P4LS](https://github.com/dmakarov/p4ls) is a Language Server Protocol
+([LSP](https://microsoft.github.io/language-server-protocol/specification))
+server for P4.  I have not used it personally, but am listing it here
+in case others find it useful.
 
 
 ## Vim color highlighting and auto-indenting
