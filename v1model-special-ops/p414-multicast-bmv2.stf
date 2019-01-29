@@ -1,0 +1,47 @@
+######################################################################
+
+# Note: The 0, 1, and 2 in the first 3 mc_node_associate commands
+# below should be the "handles" created when the first 3
+# mc_node_create commands were performed.  If those were the only such
+# mc_node_create commands performed, and they were done in that order,
+# they should have been assigned handles 0, 1, and 2.
+
+# Similarly for the 3, 4, 5, and 6 in the next group of 4
+# mc_node_associate and mc_node_create commands.
+
+mc_mgrp_create 1
+mc_node_create 400 0
+mc_node_create 401 1
+mc_node_create 402 2
+mc_node_associate 1 0
+mc_node_associate 1 1
+mc_node_associate 1 2
+
+mc_mgrp_create 12
+mc_node_create 501 2
+mc_node_create 502 6
+mc_node_create 503 5
+mc_node_create 504 4
+mc_node_associate 12 3
+mc_node_associate 12 4
+mc_node_associate 12 5
+mc_node_associate 12 6
+
+######################################################################
+
+# test packet sent that will be multicast replicated via mcast_grp=1
+
+packet 0 000000000701 000000000000 dead
+expect 0 000105000190 000000000000 dead
+expect 1 000105000191 000000000000 dead
+expect 2 000105000192 000000000000 dead
+
+######################################################################
+
+# test packet sent that will be multicast replicated via mcast_grp=12=0xc
+
+packet 0 00000000030c 000000000000 dead
+expect 2 000c050001f5 000000000000 dead
+expect 6 000c050001f6 000000000000 dead
+expect 5 000c050001f7 000000000000 dead
+expect 4 000c050001f8 000000000000 dead

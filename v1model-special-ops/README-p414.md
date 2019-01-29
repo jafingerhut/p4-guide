@@ -851,3 +851,60 @@ fields, like in the examaple below from p4c-2018-12-01:
       ]
     },
 ```
+
+
+# `p414-multicast-bmv2.p4`
+
+```bash
+# Compiling
+p4c --std p4-14 --target bmv2 p414-multicast-bmv2.p4
+
+# Running
+sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 p414-special-ops.json
+```
+
+`simple_switch_CLI` configuration commands to set up 2 multicast
+groups.
+
+```
+# Note: The 0, 1, and 2 in the first 3 mc_node_associate commands
+# below should be the "handles" created when the first 3
+# mc_node_create commands were performed.  If those were the only such
+# mc_node_create commands performed, and they were done in that order,
+# they should have been assigned handles 0, 1, and 2.
+
+# Similarly for the 3, 4, 5, and 6 in the next group of 4
+# mc_node_associate and mc_node_create commands.
+
+mc_mgrp_create 1
+mc_node_create 400 0
+mc_node_create 401 1
+mc_node_create 402 2
+mc_node_associate 1 0
+mc_node_associate 1 1
+mc_node_associate 1 2
+
+mc_mgrp_create 12
+mc_node_create 501 2
+mc_node_create 502 6
+mc_node_create 503 5
+mc_node_create 504 4
+mc_node_associate 12 3
+mc_node_associate 12 4
+mc_node_associate 12 5
+mc_node_associate 12 6
+```
+
+Packets to send in that exercise forwarding using the 2 multicast
+groups configured above:
+
+```python
+sudo scapy
+
+g1_pkt=Ether(src='00:00:00:00:00:00', dst='00:00:00:00:07:01', type=0xdead)
+g12_pkt=Ether(src='00:00:00:00:00:00', dst='00:00:00:00:07:0c', type=0xdead)
+
+# Send packet at layer2, specifying interface
+sendp(g1_pkt, iface="veth2")
+sendp(g12_pkt, iface="veth2")
+```
