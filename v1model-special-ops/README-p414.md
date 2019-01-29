@@ -2,22 +2,23 @@
 
 The program `p414-special-ops.p4` demonstrates the use of resubmit,
 recirculate, and clone egress-to-egress operations in BMv2
-simple_switch.
+simple_switch.  The program `p414-multicast-bmv2.p4` demonstrates the
+use of multicast in BMv2 simple_switch.
 
-It does not do anything terribly fancy with those operations, but it
-does show how they can be invoked.
+Neither of them does anything terribly fancy with those operations,
+but they do show how these operations can be invoked.
 
-Like the P4_16 program in this same directory, it also demonstrates
+Like the P4_16 program in this same directory, they also demonstrate
 "debug tables".  See the description of them [README.md](README.md)
 for more details.
 
-This program has been written so that it can do what is expected of it
-even without adding any table entries.  It does require configuring
-one clone session in order for the clone operation to produce another
-copy of the packet and work as described later.  Below is a detailed
-description of what happens while packets are processed with this
-program, as well as links to log output from `simple_switch` while it
-processes selected packets.
+`p414-special-ops.p4` has been written so that it can do what is
+expected of it even without adding any table entries.  It does require
+configuring one clone session in order for the clone operation to
+produce another copy of the packet and work as described later.  Below
+is a detailed description of what happens while packets are processed
+with this program, as well as links to log output from `simple_switch`
+while it processes selected packets.
 
 I used these versions of the p4lang/behavioral-model and p4lang/p4c
 repositories in my testing:
@@ -31,10 +32,10 @@ repositories in my testing:
 `p4c` compiler from 2018-Nov-26 or somewhat earlier leads to a working
 result in simple_switch, but as of Jan 2019, later versions of `p4c`
 do not produce compiler output that works correctly using BMv2
-simple_switch -- the recirculate, resubmit, and clone operations
-simply do not occur at all, as they should while processing packets.
-See the following issue on Github for status of whether this problem
-becomes fixed: https://github.com/p4lang/p4c/issues/1694
+simple_switch -- the recirculate, resubmit, clone, and multicast
+operations simply do not occur at all, as they should while processing
+packets.  See the following issue on Github for status of whether this
+problem becomes fixed: https://github.com/p4lang/p4c/issues/1694
 
 *WARNING*: See the section "Caveat emptor" in the file
  [README.md](README.md) for issues that may cause programs you write
