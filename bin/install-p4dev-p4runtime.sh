@@ -17,12 +17,12 @@
 
 # This script differs from install-p4dev.sh as follows:
 
-# install-p4dev.sh has build steps to build the behavioral-model
-# simple_switch program, which uses only Thrift as the IPC mechanism
-# for other processes to connect to it and make table
-# add/modify/delete requests.
+# install-p4dev.sh executes steps to build the behavioral-model
+# simple_switch program, using only Thrift as the IPC mechanism for
+# other processes to connect to it and make table add/modify/delete
+# requests.
 
-# install-p4dev-p4runtime.sh has build steps to build the
+# install-p4dev-p4runtime.sh executes steps to build the
 # behavioral-model simple_switch_grpc program, which uses the
 # P4Runtime API as the IPC mechanism for other processes to connect to
 # it and make table add/modify/delete requests.  It is built with the
@@ -53,18 +53,19 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_release=`lsb_release -s -r`
 
-echo "This script builds and installs the P4-16 (and also P4-14)"
+echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
-echo "with all Ubuntu software updates as of 2018-Oct-17, and a"
+echo "with all Ubuntu software updates as of 2019-Jan-29, and a"
 echo "similarly updated Ubuntu 18.04 system."
 echo ""
 echo "The files installed by this script consume about 7 GB of disk space."
 echo ""
-echo "On a 2015 MacBook Pro with a decent speed Internet connection and an"
-echo "SSD drive, it took 48 minutes."
+echo "On a 2015 MacBook Pro with a decent speed Internet connection"
+echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
+echo "took 48 minutes."
 echo ""
 echo "You will likely need to enter your password for multiple uses of"
 echo "'sudo' spread throughout this script."
@@ -237,6 +238,7 @@ sudo apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libb
 git clone https://github.com/p4lang/PI
 cd PI
 git submodule update --init --recursive
+git log -n 1
 ./autogen.sh
 ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 --with-sysrepo
 # Output I saw:
@@ -280,6 +282,7 @@ date
 
 git clone https://github.com/p4lang/behavioral-model.git
 cd behavioral-model
+git log -n 1
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
@@ -320,6 +323,7 @@ sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-d
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
 cd p4c
+git log -n 1
 mkdir build
 cd build
 # Configure for a debug build

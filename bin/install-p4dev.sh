@@ -35,18 +35,19 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
-echo "This script builds and installs the P4-16 (and also P4-14)"
+echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
-echo "with all Ubuntu software updates as of 2018-Oct-17, and a"
+echo "with all Ubuntu software updates as of 2019-Jan-30, and a"
 echo "similarly updated Ubuntu 18.04 system."
 echo ""
 echo "The files installed by this script consume about 5 GB of disk space."
 echo ""
-echo "On a 2015 MacBook Pro with a decent speed Internet connection and an"
-echo "SSD drive, it took about 40 minutes."
+echo "On a 2015 MacBook Pro with a decent speed Internet connection"
+echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
+echo "took 40 minutes."
 echo ""
 echo "You will likely need to enter your password for multiple uses of"
 echo "'sudo' spread throughout this script."
@@ -100,6 +101,7 @@ cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/behavioral-model.git
 
 cd behavioral-model
+git log -n 1
 ./install_deps.sh
 
 # Compile and install behavioral-model
@@ -155,6 +157,7 @@ cd "${INSTALL_DIR}"
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
 cd p4c
+git log -n 1
 mkdir build
 cd build
 # Configure for a debug build
