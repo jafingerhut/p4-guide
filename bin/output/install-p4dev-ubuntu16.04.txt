@@ -1,25 +1,45 @@
-This script builds and installs the P4-16 (and also P4-14)
+This script builds and installs the P4_16 (and also P4_14)
 compiler, and the behavioral-model software packet forwarding
 program, that can behave as just about any legal P4 program.
 
 It has been tested on a freshly installed Ubuntu 16.04 system,
-with all Ubuntu software updates as of 2018-Oct-17, and a
+with all Ubuntu software updates as of 2019-Jan-30, and a
 similarly updated Ubuntu 18.04 system.
 
 The files installed by this script consume about 5 GB of disk space.
 
-On a 2015 MacBook Pro with a decent speed Internet connection and an
-SSD drive, it took about 40 minutes.
+On a 2015 MacBook Pro with a decent speed Internet connection
+and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it
+took 40 minutes.
 
 You will likely need to enter your password for multiple uses of
 'sudo' spread throughout this script.
+
+Versions of software that will be installed by this script:
+
++ behavioral-model: github.com/p4lang/behavioral-model latest version
+  which, as of 2019-Jan-13, also installs these things:
+  + thrift version 0.9.2
+  + nanomsg version 1.0.0
+  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065
++ protobuf: github.com/google/protobuf v3.2.0
++ p4c: github.com/p4lang/p4c latest version
+
+Note that anything installed as 'the latest version' can change
+its precise contents from one run of this script to another.
+That is an intentional property of this script -- to get the
+latest version of that software.  If you want particular
+versions that are not the latest, you can modify this script by
+adding 'git checkout <tag>' and/or 'git checkout <commit-sha>'
+command at the appropriate places.
+
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Sun Jan  6 12:56:16 PST 2019
+Wed Jan 30 16:04:07 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda1        36G  4.2G   30G  13% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         36157M 4209M    30089M  13% /
+/dev/sda1         36157M 4214M    30084M  13% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -37,9 +57,9 @@ Need to get 6,199 kB of archives.
 After this operation, 30.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim-runtime all 2:7.4.1689-3ubuntu1.2 [5,164 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim amd64 2:7.4.1689-3ubuntu1.2 [1,036 kB]
-Fetched 6,199 kB in 7s (805 kB/s)
+Fetched 6,199 kB in 1s (4,723 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 178777 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 178778 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a7.4.1689-3ubuntu1.2_all.deb ...
 Adding 'diversion of /usr/share/vim/vim74/doc/help.txt to /usr/share/vim/vim74/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim74/doc/tags to /usr/share/vim/vim74/doc/tags.vim-tiny by vim-runtime'
@@ -84,9 +104,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 automake all 1:1.15-
 Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.11 [139 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl-dev amd64 2.4.6-0.1 [162 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool all 2.4.6-0.1 [193 kB]
-Fetched 1,573 kB in 4s (377 kB/s)
+Fetched 1,573 kB in 1s (902 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180486 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180487 files and directories currently installed.)
 Preparing to unpack .../libsigsegv2_2.10-4_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.10-4) ...
 Selecting previously unselected package m4.
@@ -196,9 +216,9 @@ Get:24 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libgmpxx4ldbl amd64
 Get:25 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libgmp-dev amd64 2:6.1.0+dfsg-2 [314 kB]
 Get:26 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddr all 2.1.11-2 [14.9 kB]
 Get:27 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ply all 3.7-1 [46.9 kB]
-Fetched 21.8 MB in 36s (593 kB/s)
+Fetched 21.8 MB in 7s (3,008 kB/s)
 Selecting previously unselected package cmake-data.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180853 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180854 files and directories currently installed.)
 Preparing to unpack .../cmake-data_3.5.1-1ubuntu3_all.deb ...
 Unpacking cmake-data (3.5.1-1ubuntu3) ...
 Selecting previously unselected package libjsoncpp1:amd64.
@@ -317,8 +337,16 @@ Processing triggers for libc-bin (2.23-0ubuntu10) ...
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Sun Jan  6 12:57:32 PST 2019
+Wed Jan 30 16:04:46 PST 2019
 Cloning into 'behavioral-model'...
+commit 7fd3b39519ca892c2e160b8be358d3f487b1b00e
+Author: Antonin Bas <antonin@barefootnetworks.com>
+Date:   Fri Jan 25 15:35:50 2019 -0800
+
+    Support modifying TTL when modifying the entry with PI
+    
+    This slipped through the cracks when PI idle timeout support was added
+    for simple_switch_grpc.
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -406,9 +434,9 @@ Get:40 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-setuptools a
 Get:41 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-wheel all 0.29.0-1 [48.0 kB]
 Get:42 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libffi-dev amd64 3.2.1-4 [161 kB]
 Extracting templates from packages: 71%Extracting templates from packages: 100%
-Fetched 33.9 MB in 54s (619 kB/s)
+Fetched 33.9 MB in 14s (2,264 kB/s)
 Selecting previously unselected package libboost-atomic1.58.0:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 195287 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 195288 files and directories currently installed.)
 Preparing to unpack .../libboost-atomic1.58.0_1.58.0+dfsg-5ubuntu3.1_amd64.deb ...
 Unpacking libboost-atomic1.58.0:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Selecting previously unselected package libboost-atomic1.58-dev:amd64.
@@ -583,173 +611,173 @@ Setting up python-setuptools (20.7.0-1) ...
 Setting up python-wheel (0.29.0-1) ...
 Setting up libffi-dev:amd64 (3.2.1-4) ...
 Processing triggers for libc-bin (2.23-0ubuntu10) ...
---2019-01-06 12:59:04--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
+--2019-01-30 16:05:18--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
 Resolving archive.apache.org (archive.apache.org)... 163.172.17.199
 Connecting to archive.apache.org (archive.apache.org)|163.172.17.199|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 8053046 (7.7M) [application/x-gzip]
 Saving to: ‘thrift-0.9.2.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  0%  250K 31s
-    50K .......... .......... .......... .......... ..........  1%  539K 23s
-   100K .......... .......... .......... .......... ..........  1%  537K 20s
-   150K .......... .......... .......... .......... ..........  2%  444K 19s
-   200K .......... .......... .......... .......... ..........  3%  720K 17s
-   250K .......... .......... .......... .......... ..........  3%  884K 16s
-   300K .......... .......... .......... .......... ..........  4%  929K 15s
-   350K .......... .......... .......... .......... ..........  5%  860K 14s
-   400K .......... .......... .......... .......... ..........  5% 1.15M 13s
-   450K .......... .......... .......... .......... ..........  6%  667K 13s
-   500K .......... .......... .......... .......... ..........  6% 1.08M 12s
-   550K .......... .......... .......... .......... ..........  7% 1.13M 11s
-   600K .......... .......... .......... .......... ..........  8%  766K 11s
-   650K .......... .......... .......... .......... ..........  8% 1.33M 11s
-   700K .......... .......... .......... .......... ..........  9%  852K 10s
-   750K .......... .......... .......... .......... .......... 10% 1.42M 10s
-   800K .......... .......... .......... .......... .......... 10%  719K 10s
-   850K .......... .......... .......... .......... .......... 11% 1010K 10s
-   900K .......... .......... .......... .......... .......... 12%  832K 10s
-   950K .......... .......... .......... .......... .......... 12% 1.28M 9s
-  1000K .......... .......... .......... .......... .......... 13% 1021K 9s
-  1050K .......... .......... .......... .......... .......... 13% 1.15M 9s
-  1100K .......... .......... .......... .......... .......... 14%  751K 9s
-  1150K .......... .......... .......... .......... .......... 15% 1.47M 9s
-  1200K .......... .......... .......... .......... .......... 15%  736K 9s
-  1250K .......... .......... .......... .......... .......... 16%  765K 8s
-  1300K .......... .......... .......... .......... .......... 17% 1.57M 8s
-  1350K .......... .......... .......... .......... .......... 17% 1.01M 8s
-  1400K .......... .......... .......... .......... .......... 18% 1.05M 8s
-  1450K .......... .......... .......... .......... .......... 19%  975K 8s
-  1500K .......... .......... .......... .......... .......... 19%  680K 8s
-  1550K .......... .......... .......... .......... .......... 20% 1.12M 8s
-  1600K .......... .......... .......... .......... .......... 20%  738K 8s
-  1650K .......... .......... .......... .......... .......... 21%  580K 8s
-  1700K .......... .......... .......... .......... .......... 22% 1.15M 8s
-  1750K .......... .......... .......... .......... .......... 22%  862K 8s
-  1800K .......... .......... .......... .......... .......... 23% 1.28M 7s
-  1850K .......... .......... .......... .......... .......... 24% 1.02M 7s
-  1900K .......... .......... .......... .......... .......... 24% 1.05M 7s
-  1950K .......... .......... .......... .......... .......... 25%  661K 7s
-  2000K .......... .......... .......... .......... .......... 26%  929K 7s
-  2050K .......... .......... .......... .......... .......... 26% 1.08M 7s
-  2100K .......... .......... .......... .......... .......... 27% 1.05M 7s
-  2150K .......... .......... .......... .......... .......... 27%  822K 7s
-  2200K .......... .......... .......... .......... .......... 28%  742K 7s
-  2250K .......... .......... .......... .......... .......... 29%  795K 7s
-  2300K .......... .......... .......... .......... .......... 29%  756K 7s
-  2350K .......... .......... .......... .......... .......... 30% 1.05M 7s
-  2400K .......... .......... .......... .......... .......... 31%  770K 7s
-  2450K .......... .......... .......... .......... .......... 31%  800K 6s
-  2500K .......... .......... .......... .......... .......... 32%  825K 6s
-  2550K .......... .......... .......... .......... .......... 33%  639K 6s
-  2600K .......... .......... .......... .......... .......... 33%  889K 6s
-  2650K .......... .......... .......... .......... .......... 34%  898K 6s
-  2700K .......... .......... .......... .......... .......... 34%  395K 6s
-  2750K .......... .......... .......... .......... .......... 35%  730K 6s
-  2800K .......... .......... .......... .......... .......... 36% 1.01M 6s
-  2850K .......... .......... .......... .......... .......... 36%  630K 6s
-  2900K .......... .......... .......... .......... .......... 37% 1.29M 6s
-  2950K .......... .......... .......... .......... .......... 38%  688K 6s
-  3000K .......... .......... .......... .......... .......... 38% 1.13M 6s
-  3050K .......... .......... .......... .......... .......... 39%  717K 6s
-  3100K .......... .......... .......... .......... .......... 40%  669K 6s
-  3150K .......... .......... .......... .......... .......... 40%  713K 6s
-  3200K .......... .......... .......... .......... .......... 41% 1.14M 6s
-  3250K .......... .......... .......... .......... .......... 41%  592K 6s
-  3300K .......... .......... .......... .......... .......... 42% 1.02M 6s
-  3350K .......... .......... .......... .......... .......... 43%  781K 6s
-  3400K .......... .......... .......... .......... .......... 43% 1.19M 5s
-  3450K .......... .......... .......... .......... .......... 44%  836K 5s
-  3500K .......... .......... .......... .......... .......... 45%  738K 5s
-  3550K .......... .......... .......... .......... .......... 45% 1.14M 5s
-  3600K .......... .......... .......... .......... .......... 46%  929K 5s
-  3650K .......... .......... .......... .......... .......... 47% 1.12M 5s
-  3700K .......... .......... .......... .......... .......... 47%  968K 5s
-  3750K .......... .......... .......... .......... .......... 48% 1.24M 5s
-  3800K .......... .......... .......... .......... .......... 48%  446K 5s
-  3850K .......... .......... .......... .......... .......... 49% 1.28M 5s
-  3900K .......... .......... .......... .......... .......... 50% 1020K 5s
-  3950K .......... .......... .......... .......... .......... 50% 1.12M 5s
-  4000K .......... .......... .......... .......... .......... 51% 1.03M 5s
-  4050K .......... .......... .......... .......... .......... 52%  973K 5s
-  4100K .......... .......... .......... .......... .......... 52% 1.29M 4s
-  4150K .......... .......... .......... .......... .......... 53% 1020K 4s
-  4200K .......... .......... .......... .......... .......... 54% 1.15M 4s
-  4250K .......... .......... .......... .......... .......... 54%  980K 4s
-  4300K .......... .......... .......... .......... .......... 55%  916K 4s
-  4350K .......... .......... .......... .......... .......... 55% 1.01M 4s
-  4400K .......... .......... .......... .......... .......... 56%  946K 4s
-  4450K .......... .......... .......... .......... .......... 57% 1.07M 4s
-  4500K .......... .......... .......... .......... .......... 57%  735K 4s
-  4550K .......... .......... .......... .......... .......... 58% 1.28M 4s
-  4600K .......... .......... .......... .......... .......... 59%  901K 4s
-  4650K .......... .......... .......... .......... .......... 59% 1.14M 4s
-  4700K .......... .......... .......... .......... .......... 60%  875K 4s
-  4750K .......... .......... .......... .......... .......... 61% 1.24M 4s
-  4800K .......... .......... .......... .......... .......... 61% 1.03M 4s
-  4850K .......... .......... .......... .......... .......... 62% 1.08M 3s
-  4900K .......... .......... .......... .......... .......... 62% 1.03M 3s
-  4950K .......... .......... .......... .......... .......... 63%  721K 3s
-  5000K .......... .......... .......... .......... .......... 64% 1.16M 3s
-  5050K .......... .......... .......... .......... .......... 64% 1012K 3s
-  5100K .......... .......... .......... .......... .......... 65% 1.07M 3s
-  5150K .......... .......... .......... .......... .......... 66% 1.17M 3s
-  5200K .......... .......... .......... .......... .......... 66% 1.17M 3s
-  5250K .......... .......... .......... .......... .......... 67%  866K 3s
-  5300K .......... .......... .......... .......... .......... 68% 1.10M 3s
-  5350K .......... .......... .......... .......... .......... 68% 1.14M 3s
-  5400K .......... .......... .......... .......... .......... 69% 1014K 3s
-  5450K .......... .......... .......... .......... .......... 69% 1.26M 3s
-  5500K .......... .......... .......... .......... .......... 70% 1.02M 3s
-  5550K .......... .......... .......... .......... .......... 71% 1.18M 3s
-  5600K .......... .......... .......... .......... .......... 71%  646K 3s
-  5650K .......... .......... .......... .......... .......... 72% 1.00M 2s
-  5700K .......... .......... .......... .......... .......... 73%  855K 2s
-  5750K .......... .......... .......... .......... .......... 73%  814K 2s
-  5800K .......... .......... .......... .......... .......... 74% 1.15M 2s
-  5850K .......... .......... .......... .......... .......... 75%  917K 2s
-  5900K .......... .......... .......... .......... .......... 75%  981K 2s
-  5950K .......... .......... .......... .......... .......... 76% 1.14M 2s
-  6000K .......... .......... .......... .......... .......... 76% 1020K 2s
-  6050K .......... .......... .......... .......... .......... 77%  674K 2s
-  6100K .......... .......... .......... .......... .......... 78%  976K 2s
-  6150K .......... .......... .......... .......... .......... 78%  842K 2s
-  6200K .......... .......... .......... .......... .......... 79%  948K 2s
-  6250K .......... .......... .......... .......... .......... 80% 1.24M 2s
-  6300K .......... .......... .......... .......... .......... 80%  957K 2s
-  6350K .......... .......... .......... .......... .......... 81% 1.05M 2s
-  6400K .......... .......... .......... .......... .......... 82% 1.03M 2s
-  6450K .......... .......... .......... .......... .......... 82% 1.19M 2s
-  6500K .......... .......... .......... .......... .......... 83% 1020K 1s
-  6550K .......... .......... .......... .......... .......... 83%  863K 1s
-  6600K .......... .......... .......... .......... .......... 84% 1.01M 1s
-  6650K .......... .......... .......... .......... .......... 85%  856K 1s
-  6700K .......... .......... .......... .......... .......... 85%  915K 1s
-  6750K .......... .......... .......... .......... .......... 86%  748K 1s
-  6800K .......... .......... .......... .......... .......... 87% 1.16M 1s
-  6850K .......... .......... .......... .......... .......... 87% 1.05M 1s
-  6900K .......... .......... .......... .......... .......... 88%  767K 1s
-  6950K .......... .......... .......... .......... .......... 89%  872K 1s
-  7000K .......... .......... .......... .......... .......... 89%  551K 1s
-  7050K .......... .......... .......... .......... .......... 90%  912K 1s
-  7100K .......... .......... .......... .......... .......... 90%  572K 1s
-  7150K .......... .......... .......... .......... .......... 91% 1.25M 1s
-  7200K .......... .......... .......... .......... .......... 92%  578K 1s
-  7250K .......... .......... .......... .......... .......... 92% 1.04M 1s
-  7300K .......... .......... .......... .......... .......... 93% 1.20M 1s
-  7350K .......... .......... .......... .......... .......... 94%  713K 1s
-  7400K .......... .......... .......... .......... .......... 94% 1.22M 0s
-  7450K .......... .......... .......... .......... .......... 95%  656K 0s
-  7500K .......... .......... .......... .......... .......... 96% 1.02M 0s
-  7550K .......... .......... .......... .......... .......... 96%  556K 0s
-  7600K .......... .......... .......... .......... .......... 97%  948K 0s
-  7650K .......... .......... .......... .......... .......... 97%  671K 0s
-  7700K .......... .......... .......... .......... .......... 98%  957K 0s
-  7750K .......... .......... .......... .......... .......... 99%  699K 0s
-  7800K .......... .......... .......... .......... .......... 99%  786K 0s
-  7850K .......... ....                                       100%  380K=9.0s
+     0K .......... .......... .......... .......... ..........  0% 2.88M 3s
+    50K .......... .......... .......... .......... ..........  1% 4.06M 2s
+   100K .......... .......... .......... .......... ..........  1% 3.81M 2s
+   150K .......... .......... .......... .......... ..........  2% 4.80M 2s
+   200K .......... .......... .......... .......... ..........  3% 7.19M 2s
+   250K .......... .......... .......... .......... ..........  3% 9.81M 2s
+   300K .......... .......... .......... .......... ..........  4% 5.29M 2s
+   350K .......... .......... .......... .......... ..........  5% 11.2M 1s
+   400K .......... .......... .......... .......... ..........  5% 5.11M 1s
+   450K .......... .......... .......... .......... ..........  6% 7.26M 1s
+   500K .......... .......... .......... .......... ..........  6% 4.84M 1s
+   550K .......... .......... .......... .......... ..........  7% 13.0M 1s
+   600K .......... .......... .......... .......... ..........  8% 3.08M 1s
+   650K .......... .......... .......... .......... ..........  8% 18.8M 1s
+   700K .......... .......... .......... .......... ..........  9% 4.34M 1s
+   750K .......... .......... .......... .......... .......... 10% 7.49M 1s
+   800K .......... .......... .......... .......... .......... 10% 6.19M 1s
+   850K .......... .......... .......... .......... .......... 11% 4.92M 1s
+   900K .......... .......... .......... .......... .......... 12% 2.34M 1s
+   950K .......... .......... .......... .......... .......... 12% 25.1M 1s
+  1000K .......... .......... .......... .......... .......... 13% 11.1M 1s
+  1050K .......... .......... .......... .......... .......... 13% 6.92M 1s
+  1100K .......... .......... .......... .......... .......... 14% 3.48M 1s
+  1150K .......... .......... .......... .......... .......... 15% 4.55M 1s
+  1200K .......... .......... .......... .......... .......... 15% 2.92M 1s
+  1250K .......... .......... .......... .......... .......... 16% 7.97M 1s
+  1300K .......... .......... .......... .......... .......... 17% 5.99M 1s
+  1350K .......... .......... .......... .......... .......... 17% 7.73M 1s
+  1400K .......... .......... .......... .......... .......... 18% 5.27M 1s
+  1450K .......... .......... .......... .......... .......... 19% 1.76M 1s
+  1500K .......... .......... .......... .......... .......... 19% 29.6M 1s
+  1550K .......... .......... .......... .......... .......... 20% 58.8M 1s
+  1600K .......... .......... .......... .......... .......... 20% 5.17M 1s
+  1650K .......... .......... .......... .......... .......... 21% 5.16M 1s
+  1700K .......... .......... .......... .......... .......... 22% 6.82M 1s
+  1750K .......... .......... .......... .......... .......... 22% 5.29M 1s
+  1800K .......... .......... .......... .......... .......... 23% 2.79M 1s
+  1850K .......... .......... .......... .......... .......... 24% 4.47M 1s
+  1900K .......... .......... .......... .......... .......... 24% 5.63M 1s
+  1950K .......... .......... .......... .......... .......... 25% 6.87M 1s
+  2000K .......... .......... .......... .......... .......... 26% 3.04M 1s
+  2050K .......... .......... .......... .......... .......... 26% 3.83M 1s
+  2100K .......... .......... .......... .......... .......... 27% 16.0M 1s
+  2150K .......... .......... .......... .......... .......... 27% 7.35M 1s
+  2200K .......... .......... .......... .......... .......... 28% 4.60M 1s
+  2250K .......... .......... .......... .......... .......... 29% 4.11M 1s
+  2300K .......... .......... .......... .......... .......... 29% 7.84M 1s
+  2350K .......... .......... .......... .......... .......... 30% 2.60M 1s
+  2400K .......... .......... .......... .......... .......... 31% 33.8M 1s
+  2450K .......... .......... .......... .......... .......... 31% 13.4M 1s
+  2500K .......... .......... .......... .......... .......... 32% 8.38M 1s
+  2550K .......... .......... .......... .......... .......... 33% 5.63M 1s
+  2600K .......... .......... .......... .......... .......... 33% 2.59M 1s
+  2650K .......... .......... .......... .......... .......... 34% 2.81M 1s
+  2700K .......... .......... .......... .......... .......... 34% 28.0M 1s
+  2750K .......... .......... .......... .......... .......... 35% 5.34M 1s
+  2800K .......... .......... .......... .......... .......... 36% 5.33M 1s
+  2850K .......... .......... .......... .......... .......... 36% 5.29M 1s
+  2900K .......... .......... .......... .......... .......... 37% 5.93M 1s
+  2950K .......... .......... .......... .......... .......... 38% 2.53M 1s
+  3000K .......... .......... .......... .......... .......... 38% 25.5M 1s
+  3050K .......... .......... .......... .......... .......... 39% 10.7M 1s
+  3100K .......... .......... .......... .......... .......... 40% 2.89M 1s
+  3150K .......... .......... .......... .......... .......... 40% 4.14M 1s
+  3200K .......... .......... .......... .......... .......... 41% 9.08M 1s
+  3250K .......... .......... .......... .......... .......... 41% 2.69M 1s
+  3300K .......... .......... .......... .......... .......... 42% 25.1M 1s
+  3350K .......... .......... .......... .......... .......... 43% 5.85M 1s
+  3400K .......... .......... .......... .......... .......... 43% 6.55M 1s
+  3450K .......... .......... .......... .......... .......... 44% 7.04M 1s
+  3500K .......... .......... .......... .......... .......... 45% 4.16M 1s
+  3550K .......... .......... .......... .......... .......... 45% 1.55M 1s
+  3600K .......... .......... .......... .......... .......... 46% 5.30M 1s
+  3650K .......... .......... .......... .......... .......... 47% 1.65M 1s
+  3700K .......... .......... .......... .......... .......... 47% 45.9M 1s
+  3750K .......... .......... .......... .......... .......... 48% 12.9M 1s
+  3800K .......... .......... .......... .......... .......... 48% 3.21M 1s
+  3850K .......... .......... .......... .......... .......... 49% 8.34M 1s
+  3900K .......... .......... .......... .......... .......... 50% 3.52M 1s
+  3950K .......... .......... .......... .......... .......... 50% 3.09M 1s
+  4000K .......... .......... .......... .......... .......... 51%  774K 1s
+  4050K .......... .......... .......... .......... .......... 52% 5.47M 1s
+  4100K .......... .......... .......... .......... .......... 52% 4.73M 1s
+  4150K .......... .......... .......... .......... .......... 53% 4.72M 1s
+  4200K .......... .......... .......... .......... .......... 54% 5.94M 1s
+  4250K .......... .......... .......... .......... .......... 54% 3.04M 1s
+  4300K .......... .......... .......... .......... .......... 55% 5.53M 1s
+  4350K .......... .......... .......... .......... .......... 55% 8.82M 1s
+  4400K .......... .......... .......... .......... .......... 56% 3.39M 1s
+  4450K .......... .......... .......... .......... .......... 57% 3.13M 1s
+  4500K .......... .......... .......... .......... .......... 57% 26.8M 1s
+  4550K .......... .......... .......... .......... .......... 58% 7.21M 1s
+  4600K .......... .......... .......... .......... .......... 59% 5.05M 1s
+  4650K .......... .......... .......... .......... .......... 59% 3.85M 1s
+  4700K .......... .......... .......... .......... .......... 60% 9.06M 1s
+  4750K .......... .......... .......... .......... .......... 61% 8.61M 1s
+  4800K .......... .......... .......... .......... .......... 61% 2.25M 1s
+  4850K .......... .......... .......... .......... .......... 62% 5.25M 1s
+  4900K .......... .......... .......... .......... .......... 62% 12.5M 1s
+  4950K .......... .......... .......... .......... .......... 63% 6.02M 1s
+  5000K .......... .......... .......... .......... .......... 64% 6.18M 1s
+  5050K .......... .......... .......... .......... .......... 64% 5.23M 1s
+  5100K .......... .......... .......... .......... .......... 65% 2.05M 1s
+  5150K .......... .......... .......... .......... .......... 66% 29.9M 1s
+  5200K .......... .......... .......... .......... .......... 66% 45.7M 1s
+  5250K .......... .......... .......... .......... .......... 67% 28.4M 1s
+  5300K .......... .......... .......... .......... .......... 68% 4.36M 1s
+  5350K .......... .......... .......... .......... .......... 68% 3.24M 1s
+  5400K .......... .......... .......... .......... .......... 69% 7.26M 0s
+  5450K .......... .......... .......... .......... .......... 69% 5.28M 0s
+  5500K .......... .......... .......... .......... .......... 70% 7.64M 0s
+  5550K .......... .......... .......... .......... .......... 71% 3.65M 0s
+  5600K .......... .......... .......... .......... .......... 71% 7.11M 0s
+  5650K .......... .......... .......... .......... .......... 72% 5.98M 0s
+  5700K .......... .......... .......... .......... .......... 73% 6.48M 0s
+  5750K .......... .......... .......... .......... .......... 73% 1.96M 0s
+  5800K .......... .......... .......... .......... .......... 74% 30.9M 0s
+  5850K .......... .......... .......... .......... .......... 75% 52.6M 0s
+  5900K .......... .......... .......... .......... .......... 75% 9.75M 0s
+  5950K .......... .......... .......... .......... .......... 76% 2.74M 0s
+  6000K .......... .......... .......... .......... .......... 76% 5.53M 0s
+  6050K .......... .......... .......... .......... .......... 77% 2.30M 0s
+  6100K .......... .......... .......... .......... .......... 78% 45.5M 0s
+  6150K .......... .......... .......... .......... .......... 78% 6.58M 0s
+  6200K .......... .......... .......... .......... .......... 79% 7.03M 0s
+  6250K .......... .......... .......... .......... .......... 80% 12.1M 0s
+  6300K .......... .......... .......... .......... .......... 80% 5.17M 0s
+  6350K .......... .......... .......... .......... .......... 81% 1.74M 0s
+  6400K .......... .......... .......... .......... .......... 82% 32.1M 0s
+  6450K .......... .......... .......... .......... .......... 82% 52.6M 0s
+  6500K .......... .......... .......... .......... .......... 83% 13.1M 0s
+  6550K .......... .......... .......... .......... .......... 83% 2.68M 0s
+  6600K .......... .......... .......... .......... .......... 84% 6.01M 0s
+  6650K .......... .......... .......... .......... .......... 85% 1.98M 0s
+  6700K .......... .......... .......... .......... .......... 85% 33.2M 0s
+  6750K .......... .......... .......... .......... .......... 86% 22.0M 0s
+  6800K .......... .......... .......... .......... .......... 87% 11.2M 0s
+  6850K .......... .......... .......... .......... .......... 87% 4.97M 0s
+  6900K .......... .......... .......... .......... .......... 88% 4.90M 0s
+  6950K .......... .......... .......... .......... .......... 89% 4.13M 0s
+  7000K .......... .......... .......... .......... .......... 89% 2.66M 0s
+  7050K .......... .......... .......... .......... .......... 90% 15.2M 0s
+  7100K .......... .......... .......... .......... .......... 90% 12.3M 0s
+  7150K .......... .......... .......... .......... .......... 91% 5.61M 0s
+  7200K .......... .......... .......... .......... .......... 92% 12.1M 0s
+  7250K .......... .......... .......... .......... .......... 92% 6.26M 0s
+  7300K .......... .......... .......... .......... .......... 93% 6.40M 0s
+  7350K .......... .......... .......... .......... .......... 94% 2.27M 0s
+  7400K .......... .......... .......... .......... .......... 94% 37.2M 0s
+  7450K .......... .......... .......... .......... .......... 95% 40.2M 0s
+  7500K .......... .......... .......... .......... .......... 96% 5.70M 0s
+  7550K .......... .......... .......... .......... .......... 96% 4.83M 0s
+  7600K .......... .......... .......... .......... .......... 97% 2.93M 0s
+  7650K .......... .......... .......... .......... .......... 97% 2.19M 0s
+  7700K .......... .......... .......... .......... .......... 98% 8.81K 0s
+  7750K .......... .......... .......... .......... .......... 99% 4.83M 0s
+  7800K .......... .......... .......... .......... .......... 99% 4.77M 0s
+  7850K .......... ....                                       100% 1.87M=7.2s
 
-2019-01-06 12:59:14 (875 KB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
+2019-01-30 16:05:26 (1.06 MB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
 
 thrift-0.9.2/
 thrift-0.9.2/.travis.yml
@@ -3114,11 +3142,11 @@ If something is missing that you think should be present,
 please skim the output of configure to find the missing
 component.  Details are present in config.log.
 make  all-recursive
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
 Making all in compiler/cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
 make  all-am
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wno-sign-compare -Wno-unused -g -O2 -std=c++11 -MT libparse_a-thrifty.o -MD -MP -MF .deps/libparse_a-thrifty.Tpo -c -o libparse_a-thrifty.o `test -f 'thrifty.cc' || echo './'`thrifty.cc
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wno-sign-compare -Wno-unused -g -O2 -std=c++11 -MT libparse_a-thriftl.o -MD -MP -MF .deps/libparse_a-thriftl.Tpo -c -o libparse_a-thriftl.o `test -f 'thriftl.cc' || echo './'`thriftl.cc
 mv -f .deps/libparse_a-thriftl.Tpo .deps/libparse_a-thriftl.Po
@@ -3153,9 +3181,9 @@ mv -f .deps/thrift-t_rb_generator.Tpo .deps/thrift-t_rb_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_php_generator.o -MD -MP -MF .deps/thrift-t_php_generator.Tpo -c -o thrift-t_php_generator.o `test -f 'src/generate/t_php_generator.cc' || echo './'`src/generate/t_php_generator.cc
 mv -f .deps/thrift-t_perl_generator.Tpo .deps/thrift-t_perl_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_erl_generator.o -MD -MP -MF .deps/thrift-t_erl_generator.Tpo -c -o thrift-t_erl_generator.o `test -f 'src/generate/t_erl_generator.cc' || echo './'`src/generate/t_erl_generator.cc
-mv -f .deps/thrift-t_php_generator.Tpo .deps/thrift-t_php_generator.Po
-g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_cocoa_generator.o -MD -MP -MF .deps/thrift-t_cocoa_generator.Tpo -c -o thrift-t_cocoa_generator.o `test -f 'src/generate/t_cocoa_generator.cc' || echo './'`src/generate/t_cocoa_generator.cc
 mv -f .deps/thrift-t_erl_generator.Tpo .deps/thrift-t_erl_generator.Po
+g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_cocoa_generator.o -MD -MP -MF .deps/thrift-t_cocoa_generator.Tpo -c -o thrift-t_cocoa_generator.o `test -f 'src/generate/t_cocoa_generator.cc' || echo './'`src/generate/t_cocoa_generator.cc
+mv -f .deps/thrift-t_php_generator.Tpo .deps/thrift-t_php_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_st_generator.o -MD -MP -MF .deps/thrift-t_st_generator.Tpo -c -o thrift-t_st_generator.o `test -f 'src/generate/t_st_generator.cc' || echo './'`src/generate/t_st_generator.cc
 mv -f .deps/thrift-t_st_generator.Tpo .deps/thrift-t_st_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_ocaml_generator.o -MD -MP -MF .deps/thrift-t_ocaml_generator.Tpo -c -o thrift-t_ocaml_generator.o `test -f 'src/generate/t_ocaml_generator.cc' || echo './'`src/generate/t_ocaml_generator.cc
@@ -3187,22 +3215,22 @@ ranlib libparse.a
 mv -f .deps/thrift-t_lua_generator.Tpo .deps/thrift-t_lua_generator.Po
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11   -o thrift thrift-main.o thrift-md5.o thrift-t_generator.o thrift-t_typedef.o thrift-parse.o thrift-t_c_glib_generator.o thrift-t_cpp_generator.o thrift-t_java_generator.o thrift-t_json_generator.o thrift-t_as3_generator.o thrift-t_csharp_generator.o thrift-t_py_generator.o thrift-t_rb_generator.o thrift-t_perl_generator.o thrift-t_php_generator.o thrift-t_erl_generator.o thrift-t_cocoa_generator.o thrift-t_st_generator.o thrift-t_ocaml_generator.o thrift-t_hs_generator.o thrift-t_xsd_generator.o thrift-t_html_generator.o thrift-t_js_generator.o thrift-t_javame_generator.o thrift-t_delphi_generator.o thrift-t_go_generator.o thrift-t_gv_generator.o thrift-t_d_generator.o thrift-t_lua_generator.o -lfl libparse.a 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o thrift thrift-main.o thrift-md5.o thrift-t_generator.o thrift-t_typedef.o thrift-parse.o thrift-t_c_glib_generator.o thrift-t_cpp_generator.o thrift-t_java_generator.o thrift-t_json_generator.o thrift-t_as3_generator.o thrift-t_csharp_generator.o thrift-t_py_generator.o thrift-t_rb_generator.o thrift-t_perl_generator.o thrift-t_php_generator.o thrift-t_erl_generator.o thrift-t_cocoa_generator.o thrift-t_st_generator.o thrift-t_ocaml_generator.o thrift-t_hs_generator.o thrift-t_xsd_generator.o thrift-t_html_generator.o thrift-t_js_generator.o thrift-t_javame_generator.o thrift-t_delphi_generator.o thrift-t_go_generator.o thrift-t_gv_generator.o thrift-t_d_generator.o thrift-t_lua_generator.o  -lfl libparse.a
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
 Making all in lib
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
 Making all in cpp
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 Making all in .
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 depbase=`echo src/thrift/concurrency/Mutex.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Mutex.lo src/thrift/concurrency/Mutex.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo src/thrift/concurrency/Monitor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Monitor.lo src/thrift/concurrency/Monitor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Monitor.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Mutex.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Monitor.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp -o src/thrift/concurrency/Mutex.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp -o src/thrift/concurrency/Monitor.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/PosixThreadFactory.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -3257,17 +3285,17 @@ depbase=`echo src/thrift/VirtualProfiling.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp  -fPIC -DPIC -o src/thrift/.libs/VirtualProfiling.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp -o src/thrift/VirtualProfiling.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp -o src/thrift/TApplicationException.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/ThreadManager.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/ThreadManager.lo src/thrift/concurrency/ThreadManager.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp -o src/thrift/TApplicationException.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/ThreadManager.o
 depbase=`echo src/thrift/concurrency/TimerManager.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/TimerManager.lo src/thrift/concurrency/TimerManager.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF src/thrift/concurrency/.deps/TimerManager.Tpo -c src/thrift/concurrency/TimerManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/TimerManager.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF src/thrift/concurrency/.deps/TimerManager.Tpo -c src/thrift/concurrency/TimerManager.cpp -o src/thrift/concurrency/TimerManager.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp -o src/thrift/concurrency/ThreadManager.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF src/thrift/concurrency/.deps/TimerManager.Tpo -c src/thrift/concurrency/TimerManager.cpp -o src/thrift/concurrency/TimerManager.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/Util.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Util.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Util.lo src/thrift/concurrency/Util.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -3386,11 +3414,11 @@ depbase=`echo src/thrift/server/TServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp -o src/thrift/server/TServer.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF src/thrift/transport/.deps/TBufferTransports.Tpo -c src/thrift/transport/TBufferTransports.cpp -o src/thrift/transport/TBufferTransports.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TSimpleServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TSimpleServer.lo src/thrift/server/TSimpleServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF src/thrift/server/.deps/TSimpleServer.Tpo -c src/thrift/server/TSimpleServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TSimpleServer.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF src/thrift/transport/.deps/TBufferTransports.Tpo -c src/thrift/transport/TBufferTransports.cpp -o src/thrift/transport/TBufferTransports.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TThreadPoolServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TThreadPoolServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TThreadPoolServer.lo src/thrift/server/TThreadPoolServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -3410,8 +3438,8 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/processor/PeekProcessor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/processor/PeekProcessor.lo src/thrift/processor/PeekProcessor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -release 0.9.2 -L/usr/lib/x86_64-linux-gnu  -o libthriftnb.la -rpath /usr/local/lib src/thrift/server/libthriftnb_la-TNonblockingServer.lo src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo src/thrift/async/libthriftnb_la-TEvhttpServer.lo src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo  -lssl -lcrypto -lrt -lpthread 
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF src/thrift/processor/.deps/PeekProcessor.Tpo -c src/thrift/processor/PeekProcessor.cpp  -fPIC -DPIC -o src/thrift/processor/.libs/PeekProcessor.o
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -release 0.9.2 -L/usr/lib/x86_64-linux-gnu  -o libthriftnb.la -rpath /usr/local/lib src/thrift/server/libthriftnb_la-TNonblockingServer.lo src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo src/thrift/async/libthriftnb_la-TEvhttpServer.lo src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo  -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/thrift/server/.libs/libthriftnb_la-TNonblockingServer.o src/thrift/async/.libs/libthriftnb_la-TAsyncProtocolProcessor.o src/thrift/async/.libs/libthriftnb_la-TEvhttpServer.o src/thrift/async/.libs/libthriftnb_la-TEvhttpClientChannel.o   -L/usr/lib/x86_64-linux-gnu -lssl -lcrypto -lrt -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -O2   -Wl,-soname -Wl,libthriftnb-0.9.2.so -o .libs/libthriftnb-0.9.2.so
 libtool: link: (cd ".libs" && rm -f "libthriftnb.so" && ln -s "libthriftnb-0.9.2.so" "libthriftnb.so")
 libtool: link: ar cru .libs/libthriftnb.a  src/thrift/server/libthriftnb_la-TNonblockingServer.o src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.o src/thrift/async/libthriftnb_la-TEvhttpServer.o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o
@@ -3433,128 +3461,128 @@ libtool: link: ar cru .libs/libthrift.a  src/thrift/Thrift.o src/thrift/TApplica
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libthrift.a
 libtool: link: ( cd ".libs" && rm -f "libthrift.la" && ln -s "../libthrift.la" "libthrift.la" )
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 Making all in test
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/test'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/test'
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/DebugProtoTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:41] 64-bit constant "10000000000" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:47] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:115] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:155] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:161] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:47] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:115] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:155] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:161] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:173] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:183] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:192] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:201] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:208] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for f../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
-ield2, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:358] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:359] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:360] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:361] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:362] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:363] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:364] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:365] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/OptionalRequiredTest.thrift
 ../../../compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 ../../../compiler/cpp/thrift --gen cpp ../../../test/TypedefTest.thrift
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 depbase=`echo ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o ThriftTest_extras.lo ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -3670,15 +3698,15 @@ ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libprocessortest.a
 libtool: link: ( cd ".libs" && rm -f "libprocessortest.la" && ln -s "../libprocessortest.la" "libprocessortest.la" )
 /bin/bash ../../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu  -o Benchmark Benchmark.o libtestgencpp.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/Benchmark Benchmark.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtestgencpp.a /home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/Benchmark Benchmark.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtestgencpp.a /home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 /bin/bash ../../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu  -o concurrency_test concurrency/Tests.o ../../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/concurrency_test concurrency/Tests.o  -L/usr/lib/x86_64-linux-gnu ../../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 /bin/bash ../../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu  -o processor_test processor/ProcessorTest.o processor/EventLog.o processor/ServerThread.o libprocessortest.la ../../../lib/cpp/libthrift.la ../../../lib/cpp/libthriftnb.la -L/usr/lib/x86_64-linux-gnu -levent -l:libboost_unit_test_framework.a -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/processor_test processor/ProcessorTest.o processor/EventLog.o processor/ServerThread.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libprocessortest.a ../../../lib/cpp/.libs/libthrift.so ../../../lib/cpp/.libs/libthriftnb.so -levent -l:libboost_unit_test_framework.a -lssl -lcrypto -lrt -lpthread
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/test'
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 Making all in py
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
 /usr/bin/python setup.py build
 running build
 running build_py
@@ -3721,51 +3749,49 @@ creating build/temp.linux-x86_64-2.7/src
 creating build/temp.linux-x86_64-2.7/src/protocol
 x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -fPIC -I/usr/include/python2.7 -c src/protocol/fastbinary.c -o build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o
 x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wl,-Bsymbolic-functions -Wl,-z,relro -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o -o build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
 make[3]: Nothing to be done for 'all-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
 Making all in test
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
 Making all in cpp
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/cpp'
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
-depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
-/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
-mv -f $depbase.Tpo $depbase.Plo
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 depbase=`echo gen-cpp/ThriftTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ThriftTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_types.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 depbase=`echo src/ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o src/ThriftTest_extras.lo src/ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF src/.deps/ThriftTest_extras.Tpo -c src/ThriftTest_extras.cpp  -fPIC -DPIC -o src/.libs/ThriftTest_extras.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF src/.deps/ThriftTest_extras.Tpo -c src/ThriftTest_extras.cpp -o src/ThriftTest_extras.o >/dev/null 2>&1
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_constants.lo gen-cpp/StressTest_constants.cpp &&\
@@ -3776,38 +3802,44 @@ depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_types.lo gen-cpp/StressTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
+depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libtestgencpp.la  gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest.lo src/ThriftTest_extras.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: ar cru .libs/libtestgencpp.a gen-cpp/.libs/ThriftTest_constants.o gen-cpp/.libs/ThriftTest_types.o gen-cpp/.libs/ThriftTest.o src/.libs/ThriftTest_extras.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtestgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtestgencpp.la" && ln -s "../libtestgencpp.la" "libtestgencpp.la" )
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libstresstestgencpp.la  gen-cpp/StressTest_constants.lo gen-cpp/StressTest_types.lo gen-cpp/Service.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: ar cru .libs/libstresstestgencpp.a gen-cpp/.libs/StressTest_constants.o gen-cpp/.libs/StressTest_types.o gen-cpp/.libs/Service.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libstresstestgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libstresstestgencpp.la" && ln -s "../libstresstestgencpp.la" "libstresstestgencpp.la" )
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/cpp'
 Making all in py
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py'
 make[3]: Nothing to be done for 'all'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py'
 Making all in py.twisted
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.twisted'
 make[3]: Nothing to be done for 'all'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.twisted'
 Making all in py.tornado
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.tornado'
 make[3]: Nothing to be done for 'all'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
 make[3]: Nothing to be done for 'all-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
 Making all in tutorial
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
 Making all in cpp
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/cpp'
+../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 ../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 depbase=`echo CppServer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT CppServer.o -MD -MP -MF $depbase.Tpo -c -o CppServer.o CppServer.cpp &&\
@@ -3862,49 +3894,49 @@ libtool: link: ar cru .libs/libtutorialgencpp.a gen-cpp/.libs/Calculator.o gen-c
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/cpp'
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/cpp'
 Making all in py
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py'
 ../../compiler/cpp/thrift --gen py -r ../../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py'
 Making all in py.twisted
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.twisted'
 ../../compiler/cpp/thrift --gen py:twisted -r ../../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.twisted'
 Making all in py.tornado
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.tornado'
 ../../compiler/cpp/thrift --gen py:tornado -r ../../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
 ../compiler/cpp/thrift --gen html -r ../tutorial/tutorial.thrift
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
 Making install in compiler/cpp
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
 make  install-am
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
  /bin/mkdir -p '/usr/local/bin'
   /bin/bash ../../libtool   --mode=install /usr/bin/install -c thrift '/usr/local/bin'
 libtool: install: /usr/bin/install -c thrift /usr/local/bin/thrift
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/compiler/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/compiler/cpp'
 Making install in lib
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
 Making install in cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 Making install in .
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
  /bin/mkdir -p '/usr/local/lib'
  /bin/bash ../../libtool   --mode=install /usr/bin/install -c   libthrift.la libthriftnb.la libthriftz.la '/usr/local/lib'
 libtool: install: /usr/bin/install -c .libs/libthrift-0.9.2.so /usr/local/lib/libthrift-0.9.2.so
@@ -3962,25 +3994,25 @@ more information, such as the ld(1) and ld.so(8) manual pages.
  /usr/bin/install -c -m 644 src/thrift/transport/PlatformSocket.h src/thrift/transport/TFDTransport.h src/thrift/transport/TFileTransport.h src/thrift/transport/TSimpleFileTransport.h src/thrift/transport/TServerSocket.h src/thrift/transport/TSSLServerSocket.h src/thrift/transport/TServerTransport.h src/thrift/transport/THttpTransport.h src/thrift/transport/THttpClient.h src/thrift/transport/THttpServer.h src/thrift/transport/TSocket.h src/thrift/transport/TPipe.h src/thrift/transport/TPipeServer.h src/thrift/transport/TSSLSocket.h src/thrift/transport/TSocketPool.h src/thrift/transport/TVirtualTransport.h src/thrift/transport/TTransport.h src/thrift/transport/TTransportException.h src/thrift/transport/TTransportUtils.h src/thrift/transport/TBufferTransports.h src/thrift/transport/TShortReadTransport.h src/thrift/transport/TZlibTransport.h '/usr/local/include/thrift/transport'
  /bin/mkdir -p '/usr/local/lib/pkgconfig'
  /usr/bin/install -c -m 644 thrift.pc thrift-nb.pc thrift-z.pc '/usr/local/lib/pkgconfig'
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 Making install in test
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/test'
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/test'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/test'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/test'
 make[4]: Nothing to be done for 'install-exec-am'.
 make[4]: Nothing to be done for 'install-data-am'.
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/test'
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp/test'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/cpp'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp/test'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/cpp'
 Making install in py
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
 /usr/bin/python setup.py build
 running build
 running build_py
 running build_ext
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
 make  install-exec-hook
-make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
+make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
 /usr/bin/python setup.py install --root=/ --prefix=/usr 
 running install
 running build
@@ -4045,9 +4077,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.p
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TSerialization.py to TSerialization.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
-writing byte-compilation script '/tmp/tmpA8wt43.py'
-/usr/bin/python -O /tmp/tmpA8wt43.py
-removing /tmp/tmpA8wt43.py
+writing byte-compilation script '/tmp/tmp1EhucN.py'
+/usr/bin/python -O /tmp/tmp1EhucN.py
+removing /tmp/tmp1EhucN.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -4059,99 +4091,99 @@ reading manifest file 'thrift.egg-info/SOURCES.txt'
 writing manifest file 'thrift.egg-info/SOURCES.txt'
 Copying thrift.egg-info to /usr/lib/python2.7/site-packages/thrift-0.9.2-py2.7.egg-info
 running install_scripts
-make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
+make[4]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib/py'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/lib'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/lib'
 Making install in test
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
 Making install in cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/cpp'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/cpp'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/cpp'
 Making install in py
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py'
 Making install in py.twisted
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.twisted'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.twisted'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.twisted'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.twisted'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.twisted'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.twisted'
 Making install in py.tornado
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.tornado'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.tornado'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test/py.tornado'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.tornado'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/test'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/test'
 Making install in tutorial
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
 Making install in cpp
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/cpp'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/cpp'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/cpp'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/cpp'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/cpp'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/cpp'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/cpp'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/cpp'
 Making install in py
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py'
 Making install in py.twisted
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.twisted'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.twisted'
 ../../compiler/cpp/thrift --gen py:twisted -r ../../tutorial/tutorial.thrift
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.twisted'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.twisted'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.twisted'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.twisted'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.twisted'
 Making install in py.tornado
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.tornado'
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.tornado'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.tornado'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.tornado'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial/py.tornado'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.tornado'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial/py.tornado'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
 ../compiler/cpp/thrift --gen html -r ../tutorial/tutorial.thrift
-make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
+make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
 make[3]: Nothing to be done for 'install-exec-am'.
 make[3]: Nothing to be done for 'install-data-am'.
-make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2/tutorial'
-make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
-make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
+make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2/tutorial'
+make[1]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
+make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
 make[2]: Nothing to be done for 'install-exec-am'.
 make[2]: Nothing to be done for 'install-data-am'.
-make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
-make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/thrift-0.9.2'
+make[2]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
+make[1]: Leaving directory '/home/jafinger/behavioral-model/tmp.nZUSAahB2r/thrift-0.9.2'
 running install
 running bdist_egg
 running egg_info
@@ -4223,14 +4255,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TSerialization.py to TSerialization.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
-writing byte-compilation script '/tmp/tmpaG2pXS.py'
-/usr/bin/python -O /tmp/tmpaG2pXS.py
-removing /tmp/tmpaG2pXS.py
+writing byte-compilation script '/tmp/tmpxzEDPD.py'
+/usr/bin/python -O /tmp/tmpxzEDPD.py
+removing /tmp/tmpxzEDPD.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpIoVKTT.py'
-/usr/bin/python -O /tmp/tmpIoVKTT.py
-removing /tmp/tmpIoVKTT.py
+writing byte-compilation script '/tmp/tmprzLPOj.py'
+/usr/bin/python -O /tmp/tmprzLPOj.py
+removing /tmp/tmprzLPOj.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -4248,26 +4280,26 @@ Adding thrift 0.9.2 to easy-install.pth file
 Installed /usr/local/lib/python2.7/dist-packages/thrift-0.9.2-py2.7-linux-x86_64.egg
 Processing dependencies for thrift==0.9.2
 Finished processing dependencies for thrift==0.9.2
---2019-01-06 13:03:42--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 192.30.255.113, 192.30.255.112
-Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+--2019-01-30 16:10:06--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112, 192.30.255.113
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-01-06 13:03:43--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.255.121, 192.30.255.120
-Connecting to codeload.github.com (codeload.github.com)|192.30.255.121|:443... connected.
+--2019-01-30 16:10:06--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 192.30.255.120, 192.30.255.121
+Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  290K
-    50K .......... .......... .......... .......... .......... 1.06M
-   100K .......... .......... .......... .......... .......... 1.39M
-   150K .......... .......... .......... .......... .......... 1.32M
-   200K .......... .......... .......... .......... .......... 2.27M
-   250K .......... .......... .......... .......... .......     972K=0.4s
+     0K .......... .......... .......... .......... ..........  552K
+    50K .......... .......... .......... .......... ..........  264K
+   100K .......... .......... .......... .......... ..........  118M
+   150K .......... .......... .......... .......... .......... 1.75M
+   200K .......... .......... .......... .......... ..........  828K
+   250K .......... .......... .......... .......... .......    51.8M=0.4s
 
-2019-01-06 13:03:43 (824 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-01-30 16:10:07 (806 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -4730,7 +4762,7 @@ CMake Warning at CMakeLists.txt:246 (message):
 
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/nanomsg-1.0.0/build
+-- Build files have been written to: /home/jafinger/behavioral-model/tmp.nZUSAahB2r/nanomsg-1.0.0/build
 Scanning dependencies of target nanomsg
 [  0%] Building C object src/CMakeFiles/nanomsg.dir/core/ep.c.o
 [  1%] Building C object src/CMakeFiles/nanomsg.dir/core/epbase.c.o
@@ -5117,18 +5149,18 @@ Installing collected packages: pycparser, cffi
   Running setup.py install for pycparser: started
     Running setup.py install for pycparser: finished with status 'done'
 Successfully installed cffi-1.11.5 pycparser-2.19
-You are using pip version 8.1.1, however version 18.1 is available.
+You are using pip version 8.1.1, however version 19.0.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
-Processing /home/jafinger/behavioral-model/tmp.2OsT3ZMKPg/nnpy
+Processing /home/jafinger/behavioral-model/tmp.nZUSAahB2r/nnpy
 Requirement already satisfied (use --upgrade to upgrade): cffi in /usr/local/lib/python2.7/dist-packages (from nnpy===0.1)
 Requirement already satisfied (use --upgrade to upgrade): pycparser in /usr/local/lib/python2.7/dist-packages (from cffi->nnpy===0.1)
 Installing collected packages: nnpy
   Running setup.py install for nnpy: started
     Running setup.py install for nnpy: finished with status 'done'
 Successfully installed nnpy-0.1
-You are using pip version 8.1.1, however version 18.1 is available.
+You are using pip version 8.1.1, however version 19.0.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 libtoolize: putting auxiliary files in '.'.
 libtoolize: copying file './ltmain.sh'
@@ -5684,6 +5716,11 @@ depbase=`echo pipeline.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie -Wall -Wextra -pthread -O0 -g -std=c++11 -MT pipeline.lo -MD -MP -MF .deps/pipeline.Tpo -c pipeline.cpp  -fPIC -DPIC -o .libs/pipeline.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie -Wall -Wextra -pthread -O0 -g -std=c++11 -MT pipeline.lo -MD -MP -MF .deps/pipeline.Tpo -c pipeline.cpp -o pipeline.o >/dev/null 2>&1
+depbase=`echo periodic_task.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../..  -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES                           -I../../include                           -isystem../../third_party/jsoncpp/include                           -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie  -Wall -Wextra -pthread   -O0 -g -std=c++11 -MT periodic_task.lo -MD -MP -MF $depbase.Tpo -c -o periodic_task.lo periodic_task.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie -Wall -Wextra -pthread -O0 -g -std=c++11 -MT periodic_task.lo -MD -MP -MF .deps/periodic_task.Tpo -c periodic_task.cpp  -fPIC -DPIC -o .libs/periodic_task.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie -Wall -Wextra -pthread -O0 -g -std=c++11 -MT periodic_task.lo -MD -MP -MF .deps/periodic_task.Tpo -c periodic_task.cpp -o periodic_task.o >/dev/null 2>&1
 depbase=`echo port_monitor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../..  -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES                           -I../../include                           -isystem../../third_party/jsoncpp/include                           -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie  -Wall -Wextra -pthread   -O0 -g -std=c++11 -MT port_monitor.lo -MD -MP -MF $depbase.Tpo -c -o port_monitor.lo port_monitor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -5764,8 +5801,8 @@ depbase=`echo core/primitives.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie -Wall -Wextra -pthread -O0 -g -std=c++11 -MT core/primitives.lo -MD -MP -MF core/.deps/primitives.Tpo -c core/primitives.cpp  -fPIC -DPIC -o core/.libs/primitives.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./../BMI -I./../bf_lpm_trie -Wall -Wextra -pthread -O0 -g -std=c++11 -MT core/primitives.lo -MD -MP -MF core/.deps/primitives.Tpo -c core/primitives.cpp -o core/primitives.o >/dev/null 2>&1
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread   -O0 -g -std=c++11   -o libbmsim.la  _assert.lo action_profile.lo actions.lo ageing.lo bytecontainer.lo calculations.lo checksums.lo conditionals.lo context.lo control_action.lo counters.lo crc_map.lo debugger.lo deparser.lo dev_mgr.lo dev_mgr_bmi.lo dev_mgr_packet_in.lo enums.lo event_logger.lo expressions.lo extern.lo fields.lo headers.lo header_unions.lo learning.lo lookup_structures.lo logger.lo match_units.lo match_tables.lo md5.lo meters.lo options_parse.lo P4Objects.lo packet.lo parser.lo parser_error.lo pcap_file.lo pipeline.lo port_monitor.lo phv.lo phv_source.lo stateful.lo switch.lo simple_pre.lo simple_pre_lag.lo source_info.lo stacks.lo tables.lo target_parser.lo transport.lo transport_nn.lo version.lo xxhash.lo core/primitives.lo  -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
-libtool: link: ar cru .libs/libbmsim.a .libs/_assert.o .libs/action_profile.o .libs/actions.o .libs/ageing.o .libs/bytecontainer.o .libs/calculations.o .libs/checksums.o .libs/conditionals.o .libs/context.o .libs/control_action.o .libs/counters.o .libs/crc_map.o .libs/debugger.o .libs/deparser.o .libs/dev_mgr.o .libs/dev_mgr_bmi.o .libs/dev_mgr_packet_in.o .libs/enums.o .libs/event_logger.o .libs/expressions.o .libs/extern.o .libs/fields.o .libs/headers.o .libs/header_unions.o .libs/learning.o .libs/lookup_structures.o .libs/logger.o .libs/match_units.o .libs/match_tables.o .libs/md5.o .libs/meters.o .libs/options_parse.o .libs/P4Objects.o .libs/packet.o .libs/parser.o .libs/parser_error.o .libs/pcap_file.o .libs/pipeline.o .libs/port_monitor.o .libs/phv.o .libs/phv_source.o .libs/stateful.o .libs/switch.o .libs/simple_pre.o .libs/simple_pre_lag.o .libs/source_info.o .libs/stacks.o .libs/tables.o .libs/target_parser.o .libs/transport.o .libs/transport_nn.o .libs/version.o .libs/xxhash.o core/.libs/primitives.o 
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread   -O0 -g -std=c++11   -o libbmsim.la  _assert.lo action_profile.lo actions.lo ageing.lo bytecontainer.lo calculations.lo checksums.lo conditionals.lo context.lo control_action.lo counters.lo crc_map.lo debugger.lo deparser.lo dev_mgr.lo dev_mgr_bmi.lo dev_mgr_packet_in.lo enums.lo event_logger.lo expressions.lo extern.lo fields.lo headers.lo header_unions.lo learning.lo lookup_structures.lo logger.lo match_units.lo match_tables.lo md5.lo meters.lo options_parse.lo P4Objects.lo packet.lo parser.lo parser_error.lo pcap_file.lo pipeline.lo periodic_task.lo port_monitor.lo phv.lo phv_source.lo stateful.lo switch.lo simple_pre.lo simple_pre_lag.lo source_info.lo stacks.lo tables.lo target_parser.lo transport.lo transport_nn.lo version.lo xxhash.lo core/primitives.lo  -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
+libtool: link: ar cru .libs/libbmsim.a .libs/_assert.o .libs/action_profile.o .libs/actions.o .libs/ageing.o .libs/bytecontainer.o .libs/calculations.o .libs/checksums.o .libs/conditionals.o .libs/context.o .libs/control_action.o .libs/counters.o .libs/crc_map.o .libs/debugger.o .libs/deparser.o .libs/dev_mgr.o .libs/dev_mgr_bmi.o .libs/dev_mgr_packet_in.o .libs/enums.o .libs/event_logger.o .libs/expressions.o .libs/extern.o .libs/fields.o .libs/headers.o .libs/header_unions.o .libs/learning.o .libs/lookup_structures.o .libs/logger.o .libs/match_units.o .libs/match_tables.o .libs/md5.o .libs/meters.o .libs/options_parse.o .libs/P4Objects.o .libs/packet.o .libs/parser.o .libs/parser_error.o .libs/pcap_file.o .libs/pipeline.o .libs/periodic_task.o .libs/port_monitor.o .libs/phv.o .libs/phv_source.o .libs/stateful.o .libs/switch.o .libs/simple_pre.o .libs/simple_pre_lag.o .libs/source_info.o .libs/stacks.o .libs/tables.o .libs/target_parser.o .libs/transport.o .libs/transport_nn.o .libs/version.o .libs/xxhash.o core/.libs/primitives.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libbmsim.a
 libtool: link: ( cd ".libs" && rm -f "libbmsim.la" && ln -s "../libbmsim.la" "libbmsim.la" )
@@ -5842,7 +5879,7 @@ libtool: link: (cd .libs/libbmall.lax/libbflpmtrie.a && ar x "/home/jafinger/beh
 libtool: link: (cd .libs/libbmall.lax/libbmi.a && ar x "/home/jafinger/behavioral-model/src/../src/BMI/.libs/libbmi.a")
 libtool: link: (cd .libs/libbmall.lax/libjson.a && ar x "/home/jafinger/behavioral-model/src/../third_party/jsoncpp/.libs/libjson.a")
 libtool: link: (cd .libs/libbmall.lax/libbmruntime.a && ar x "/home/jafinger/behavioral-model/src/../src/bm_runtime/.libs/libbmruntime.a")
-libtool: link: ar cru .libs/libbmall.a   .libs/libbmall.lax/libbmsim.a/P4Objects.o .libs/libbmall.lax/libbmsim.a/_assert.o .libs/libbmall.lax/libbmsim.a/action_profile.o .libs/libbmall.lax/libbmsim.a/actions.o .libs/libbmall.lax/libbmsim.a/ageing.o .libs/libbmall.lax/libbmsim.a/bytecontainer.o .libs/libbmall.lax/libbmsim.a/calculations.o .libs/libbmall.lax/libbmsim.a/checksums.o .libs/libbmall.lax/libbmsim.a/conditionals.o .libs/libbmall.lax/libbmsim.a/context.o .libs/libbmall.lax/libbmsim.a/control_action.o .libs/libbmall.lax/libbmsim.a/counters.o .libs/libbmall.lax/libbmsim.a/crc_map.o .libs/libbmall.lax/libbmsim.a/debugger.o .libs/libbmall.lax/libbmsim.a/deparser.o .libs/libbmall.lax/libbmsim.a/dev_mgr.o .libs/libbmall.lax/libbmsim.a/dev_mgr_bmi.o .libs/libbmall.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libbmall.lax/libbmsim.a/enums.o .libs/libbmall.lax/libbmsim.a/event_logger.o .libs/libbmall.lax/libbmsim.a/expressions.o .libs/libbmall.lax/libbmsim.a/extern.o .libs/libbmall.lax/libbmsim.a/fields.o .libs/libbmall.lax/libbmsim.a/header_unions.o .libs/libbmall.lax/libbmsim.a/headers.o .libs/libbmall.lax/libbmsim.a/learning.o .libs/libbmall.lax/libbmsim.a/logger.o .libs/libbmall.lax/libbmsim.a/lookup_structures.o .libs/libbmall.lax/libbmsim.a/match_tables.o .libs/libbmall.lax/libbmsim.a/match_units.o .libs/libbmall.lax/libbmsim.a/md5.o .libs/libbmall.lax/libbmsim.a/meters.o .libs/libbmall.lax/libbmsim.a/options_parse.o .libs/libbmall.lax/libbmsim.a/packet.o .libs/libbmall.lax/libbmsim.a/parser.o .libs/libbmall.lax/libbmsim.a/parser_error.o .libs/libbmall.lax/libbmsim.a/pcap_file.o .libs/libbmall.lax/libbmsim.a/phv.o .libs/libbmall.lax/libbmsim.a/phv_source.o .libs/libbmall.lax/libbmsim.a/pipeline.o .libs/libbmall.lax/libbmsim.a/port_monitor.o .libs/libbmall.lax/libbmsim.a/primitives.o .libs/libbmall.lax/libbmsim.a/simple_pre.o .libs/libbmall.lax/libbmsim.a/simple_pre_lag.o .libs/libbmall.lax/libbmsim.a/source_info.o .libs/libbmall.lax/libbmsim.a/stacks.o .libs/libbmall.lax/libbmsim.a/stateful.o .libs/libbmall.lax/libbmsim.a/switch.o .libs/libbmall.lax/libbmsim.a/tables.o .libs/libbmall.lax/libbmsim.a/target_parser.o .libs/libbmall.lax/libbmsim.a/transport.o .libs/libbmall.lax/libbmsim.a/transport_nn.o .libs/libbmall.lax/libbmsim.a/version.o .libs/libbmall.lax/libbmsim.a/xxhash.o  .libs/libbmall.lax/libbflpmtrie.a/bf_lpm_trie.o  .libs/libbmall.lax/libbmi.a/bmi_interface.o .libs/libbmall.lax/libbmi.a/bmi_port.o  .libs/libbmall.lax/libjson.a/jsoncpp.o  .libs/libbmall.lax/libbmruntime.a/SimplePreLAG_server.o .libs/libbmall.lax/libbmruntime.a/SimplePre_server.o .libs/libbmall.lax/libbmruntime.a/Standard_server.o .libs/libbmall.lax/libbmruntime.a/server.o 
+libtool: link: ar cru .libs/libbmall.a   .libs/libbmall.lax/libbmsim.a/P4Objects.o .libs/libbmall.lax/libbmsim.a/_assert.o .libs/libbmall.lax/libbmsim.a/action_profile.o .libs/libbmall.lax/libbmsim.a/actions.o .libs/libbmall.lax/libbmsim.a/ageing.o .libs/libbmall.lax/libbmsim.a/bytecontainer.o .libs/libbmall.lax/libbmsim.a/calculations.o .libs/libbmall.lax/libbmsim.a/checksums.o .libs/libbmall.lax/libbmsim.a/conditionals.o .libs/libbmall.lax/libbmsim.a/context.o .libs/libbmall.lax/libbmsim.a/control_action.o .libs/libbmall.lax/libbmsim.a/counters.o .libs/libbmall.lax/libbmsim.a/crc_map.o .libs/libbmall.lax/libbmsim.a/debugger.o .libs/libbmall.lax/libbmsim.a/deparser.o .libs/libbmall.lax/libbmsim.a/dev_mgr.o .libs/libbmall.lax/libbmsim.a/dev_mgr_bmi.o .libs/libbmall.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libbmall.lax/libbmsim.a/enums.o .libs/libbmall.lax/libbmsim.a/event_logger.o .libs/libbmall.lax/libbmsim.a/expressions.o .libs/libbmall.lax/libbmsim.a/extern.o .libs/libbmall.lax/libbmsim.a/fields.o .libs/libbmall.lax/libbmsim.a/header_unions.o .libs/libbmall.lax/libbmsim.a/headers.o .libs/libbmall.lax/libbmsim.a/learning.o .libs/libbmall.lax/libbmsim.a/logger.o .libs/libbmall.lax/libbmsim.a/lookup_structures.o .libs/libbmall.lax/libbmsim.a/match_tables.o .libs/libbmall.lax/libbmsim.a/match_units.o .libs/libbmall.lax/libbmsim.a/md5.o .libs/libbmall.lax/libbmsim.a/meters.o .libs/libbmall.lax/libbmsim.a/options_parse.o .libs/libbmall.lax/libbmsim.a/packet.o .libs/libbmall.lax/libbmsim.a/parser.o .libs/libbmall.lax/libbmsim.a/parser_error.o .libs/libbmall.lax/libbmsim.a/pcap_file.o .libs/libbmall.lax/libbmsim.a/periodic_task.o .libs/libbmall.lax/libbmsim.a/phv.o .libs/libbmall.lax/libbmsim.a/phv_source.o .libs/libbmall.lax/libbmsim.a/pipeline.o .libs/libbmall.lax/libbmsim.a/port_monitor.o .libs/libbmall.lax/libbmsim.a/primitives.o .libs/libbmall.lax/libbmsim.a/simple_pre.o .libs/libbmall.lax/libbmsim.a/simple_pre_lag.o .libs/libbmall.lax/libbmsim.a/source_info.o .libs/libbmall.lax/libbmsim.a/stacks.o .libs/libbmall.lax/libbmsim.a/stateful.o .libs/libbmall.lax/libbmsim.a/switch.o .libs/libbmall.lax/libbmsim.a/tables.o .libs/libbmall.lax/libbmsim.a/target_parser.o .libs/libbmall.lax/libbmsim.a/transport.o .libs/libbmall.lax/libbmsim.a/transport_nn.o .libs/libbmall.lax/libbmsim.a/version.o .libs/libbmall.lax/libbmsim.a/xxhash.o  .libs/libbmall.lax/libbflpmtrie.a/bf_lpm_trie.o  .libs/libbmall.lax/libbmi.a/bmi_interface.o .libs/libbmall.lax/libbmi.a/bmi_port.o  .libs/libbmall.lax/libjson.a/jsoncpp.o  .libs/libbmall.lax/libbmruntime.a/SimplePreLAG_server.o .libs/libbmall.lax/libbmruntime.a/SimplePre_server.o .libs/libbmall.lax/libbmruntime.a/Standard_server.o .libs/libbmall.lax/libbmruntime.a/server.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libbmall.a
 libtool: link: rm -fr .libs/libbmall.lax
@@ -5874,7 +5911,7 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_O
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -DBMLOG_DEBUG_ON -DBMLOG_TRACE_ON -DBMELOG_ON -DBM_WP4_16_STACKS -DBMTHRIFT_ON -DBMNANOMSG_ON -DBM_HAVE_DLOPEN -DBM_ENABLE_MODULES -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../src/bm_sim -I../src/BMI -isystem ../third_party/gtest/include -isystem ../third_party/jsoncpp/include -DTESTDATADIR=\"/home/jafinger/behavioral-model/tests/testdata\" -Wall -Wextra -pthread -O0 -g -std=c++11 -MT utils.lo -MD -MP -MF .deps/utils.Tpo -c utils.cpp -o utils.o >/dev/null 2>&1
 /bin/bash ../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g -std=c++11   -o libtestutils.la  utils.lo ../src/bm_sim/libbmsim.la -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
 libtool: link: (cd .libs/libtestutils.lax/libbmsim.a && ar x "/home/jafinger/behavioral-model/tests/../src/bm_sim/.libs/libbmsim.a")
-libtool: link: ar cru .libs/libtestutils.a .libs/utils.o   .libs/libtestutils.lax/libbmsim.a/P4Objects.o .libs/libtestutils.lax/libbmsim.a/_assert.o .libs/libtestutils.lax/libbmsim.a/action_profile.o .libs/libtestutils.lax/libbmsim.a/actions.o .libs/libtestutils.lax/libbmsim.a/ageing.o .libs/libtestutils.lax/libbmsim.a/bytecontainer.o .libs/libtestutils.lax/libbmsim.a/calculations.o .libs/libtestutils.lax/libbmsim.a/checksums.o .libs/libtestutils.lax/libbmsim.a/conditionals.o .libs/libtestutils.lax/libbmsim.a/context.o .libs/libtestutils.lax/libbmsim.a/control_action.o .libs/libtestutils.lax/libbmsim.a/counters.o .libs/libtestutils.lax/libbmsim.a/crc_map.o .libs/libtestutils.lax/libbmsim.a/debugger.o .libs/libtestutils.lax/libbmsim.a/deparser.o .libs/libtestutils.lax/libbmsim.a/dev_mgr.o .libs/libtestutils.lax/libbmsim.a/dev_mgr_bmi.o .libs/libtestutils.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libtestutils.lax/libbmsim.a/enums.o .libs/libtestutils.lax/libbmsim.a/event_logger.o .libs/libtestutils.lax/libbmsim.a/expressions.o .libs/libtestutils.lax/libbmsim.a/extern.o .libs/libtestutils.lax/libbmsim.a/fields.o .libs/libtestutils.lax/libbmsim.a/header_unions.o .libs/libtestutils.lax/libbmsim.a/headers.o .libs/libtestutils.lax/libbmsim.a/learning.o .libs/libtestutils.lax/libbmsim.a/logger.o .libs/libtestutils.lax/libbmsim.a/lookup_structures.o .libs/libtestutils.lax/libbmsim.a/match_tables.o .libs/libtestutils.lax/libbmsim.a/match_units.o .libs/libtestutils.lax/libbmsim.a/md5.o .libs/libtestutils.lax/libbmsim.a/meters.o .libs/libtestutils.lax/libbmsim.a/options_parse.o .libs/libtestutils.lax/libbmsim.a/packet.o .libs/libtestutils.lax/libbmsim.a/parser.o .libs/libtestutils.lax/libbmsim.a/parser_error.o .libs/libtestutils.lax/libbmsim.a/pcap_file.o .libs/libtestutils.lax/libbmsim.a/phv.o .libs/libtestutils.lax/libbmsim.a/phv_source.o .libs/libtestutils.lax/libbmsim.a/pipeline.o .libs/libtestutils.lax/libbmsim.a/port_monitor.o .libs/libtestutils.lax/libbmsim.a/primitives.o .libs/libtestutils.lax/libbmsim.a/simple_pre.o .libs/libtestutils.lax/libbmsim.a/simple_pre_lag.o .libs/libtestutils.lax/libbmsim.a/source_info.o .libs/libtestutils.lax/libbmsim.a/stacks.o .libs/libtestutils.lax/libbmsim.a/stateful.o .libs/libtestutils.lax/libbmsim.a/switch.o .libs/libtestutils.lax/libbmsim.a/tables.o .libs/libtestutils.lax/libbmsim.a/target_parser.o .libs/libtestutils.lax/libbmsim.a/transport.o .libs/libtestutils.lax/libbmsim.a/transport_nn.o .libs/libtestutils.lax/libbmsim.a/version.o .libs/libtestutils.lax/libbmsim.a/xxhash.o 
+libtool: link: ar cru .libs/libtestutils.a .libs/utils.o   .libs/libtestutils.lax/libbmsim.a/P4Objects.o .libs/libtestutils.lax/libbmsim.a/_assert.o .libs/libtestutils.lax/libbmsim.a/action_profile.o .libs/libtestutils.lax/libbmsim.a/actions.o .libs/libtestutils.lax/libbmsim.a/ageing.o .libs/libtestutils.lax/libbmsim.a/bytecontainer.o .libs/libtestutils.lax/libbmsim.a/calculations.o .libs/libtestutils.lax/libbmsim.a/checksums.o .libs/libtestutils.lax/libbmsim.a/conditionals.o .libs/libtestutils.lax/libbmsim.a/context.o .libs/libtestutils.lax/libbmsim.a/control_action.o .libs/libtestutils.lax/libbmsim.a/counters.o .libs/libtestutils.lax/libbmsim.a/crc_map.o .libs/libtestutils.lax/libbmsim.a/debugger.o .libs/libtestutils.lax/libbmsim.a/deparser.o .libs/libtestutils.lax/libbmsim.a/dev_mgr.o .libs/libtestutils.lax/libbmsim.a/dev_mgr_bmi.o .libs/libtestutils.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libtestutils.lax/libbmsim.a/enums.o .libs/libtestutils.lax/libbmsim.a/event_logger.o .libs/libtestutils.lax/libbmsim.a/expressions.o .libs/libtestutils.lax/libbmsim.a/extern.o .libs/libtestutils.lax/libbmsim.a/fields.o .libs/libtestutils.lax/libbmsim.a/header_unions.o .libs/libtestutils.lax/libbmsim.a/headers.o .libs/libtestutils.lax/libbmsim.a/learning.o .libs/libtestutils.lax/libbmsim.a/logger.o .libs/libtestutils.lax/libbmsim.a/lookup_structures.o .libs/libtestutils.lax/libbmsim.a/match_tables.o .libs/libtestutils.lax/libbmsim.a/match_units.o .libs/libtestutils.lax/libbmsim.a/md5.o .libs/libtestutils.lax/libbmsim.a/meters.o .libs/libtestutils.lax/libbmsim.a/options_parse.o .libs/libtestutils.lax/libbmsim.a/packet.o .libs/libtestutils.lax/libbmsim.a/parser.o .libs/libtestutils.lax/libbmsim.a/parser_error.o .libs/libtestutils.lax/libbmsim.a/pcap_file.o .libs/libtestutils.lax/libbmsim.a/periodic_task.o .libs/libtestutils.lax/libbmsim.a/phv.o .libs/libtestutils.lax/libbmsim.a/phv_source.o .libs/libtestutils.lax/libbmsim.a/pipeline.o .libs/libtestutils.lax/libbmsim.a/port_monitor.o .libs/libtestutils.lax/libbmsim.a/primitives.o .libs/libtestutils.lax/libbmsim.a/simple_pre.o .libs/libtestutils.lax/libbmsim.a/simple_pre_lag.o .libs/libtestutils.lax/libbmsim.a/source_info.o .libs/libtestutils.lax/libbmsim.a/stacks.o .libs/libtestutils.lax/libbmsim.a/stateful.o .libs/libtestutils.lax/libbmsim.a/switch.o .libs/libtestutils.lax/libbmsim.a/tables.o .libs/libtestutils.lax/libbmsim.a/target_parser.o .libs/libtestutils.lax/libbmsim.a/transport.o .libs/libtestutils.lax/libbmsim.a/transport_nn.o .libs/libtestutils.lax/libbmsim.a/version.o .libs/libtestutils.lax/libbmsim.a/xxhash.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtestutils.a
 libtool: link: rm -fr .libs/libtestutils.lax
@@ -5956,7 +5993,7 @@ libtool: link: (cd .libs/libsimpleswitch.lax/libbmi.a && ar x "/home/jafinger/be
 libtool: link: (cd .libs/libsimpleswitch.lax/libjson.a && ar x "/home/jafinger/behavioral-model/targets/simple_switch/../../third_party/jsoncpp/.libs/libjson.a")
 copying selected object files to avoid basename conflicts...
 libtool: link: ln .libs/libsimpleswitch.lax/libbmsim.a/primitives.o .libs/libsimpleswitch.lax/lt1-primitives.o || cp .libs/libsimpleswitch.lax/libbmsim.a/primitives.o .libs/libsimpleswitch.lax/lt1-primitives.o
-libtool: link: ar cru .libs/libsimpleswitch.a .libs/simple_switch.o .libs/primitives.o thrift/src/.libs/SimpleSwitch_server.o .libs/libsimpleswitch.lax/libbmsim.a/P4Objects.o .libs/libsimpleswitch.lax/libbmsim.a/_assert.o .libs/libsimpleswitch.lax/libbmsim.a/action_profile.o .libs/libsimpleswitch.lax/libbmsim.a/actions.o .libs/libsimpleswitch.lax/libbmsim.a/ageing.o .libs/libsimpleswitch.lax/libbmsim.a/bytecontainer.o .libs/libsimpleswitch.lax/libbmsim.a/calculations.o .libs/libsimpleswitch.lax/libbmsim.a/checksums.o .libs/libsimpleswitch.lax/libbmsim.a/conditionals.o .libs/libsimpleswitch.lax/libbmsim.a/context.o .libs/libsimpleswitch.lax/libbmsim.a/control_action.o .libs/libsimpleswitch.lax/libbmsim.a/counters.o .libs/libsimpleswitch.lax/libbmsim.a/crc_map.o .libs/libsimpleswitch.lax/libbmsim.a/debugger.o .libs/libsimpleswitch.lax/libbmsim.a/deparser.o .libs/libsimpleswitch.lax/libbmsim.a/dev_mgr.o .libs/libsimpleswitch.lax/libbmsim.a/dev_mgr_bmi.o .libs/libsimpleswitch.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libsimpleswitch.lax/libbmsim.a/enums.o .libs/libsimpleswitch.lax/libbmsim.a/event_logger.o .libs/libsimpleswitch.lax/libbmsim.a/expressions.o .libs/libsimpleswitch.lax/libbmsim.a/extern.o .libs/libsimpleswitch.lax/libbmsim.a/fields.o .libs/libsimpleswitch.lax/libbmsim.a/header_unions.o .libs/libsimpleswitch.lax/libbmsim.a/headers.o .libs/libsimpleswitch.lax/libbmsim.a/learning.o .libs/libsimpleswitch.lax/libbmsim.a/logger.o .libs/libsimpleswitch.lax/libbmsim.a/lookup_structures.o .libs/libsimpleswitch.lax/libbmsim.a/match_tables.o .libs/libsimpleswitch.lax/libbmsim.a/match_units.o .libs/libsimpleswitch.lax/libbmsim.a/md5.o .libs/libsimpleswitch.lax/libbmsim.a/meters.o .libs/libsimpleswitch.lax/libbmsim.a/options_parse.o .libs/libsimpleswitch.lax/libbmsim.a/packet.o .libs/libsimpleswitch.lax/libbmsim.a/parser.o .libs/libsimpleswitch.lax/libbmsim.a/parser_error.o .libs/libsimpleswitch.lax/libbmsim.a/pcap_file.o .libs/libsimpleswitch.lax/libbmsim.a/phv.o .libs/libsimpleswitch.lax/libbmsim.a/phv_source.o .libs/libsimpleswitch.lax/libbmsim.a/pipeline.o .libs/libsimpleswitch.lax/libbmsim.a/port_monitor.o .libs/libsimpleswitch.lax/lt1-primitives.o .libs/libsimpleswitch.lax/libbmsim.a/simple_pre.o .libs/libsimpleswitch.lax/libbmsim.a/simple_pre_lag.o .libs/libsimpleswitch.lax/libbmsim.a/source_info.o .libs/libsimpleswitch.lax/libbmsim.a/stacks.o .libs/libsimpleswitch.lax/libbmsim.a/stateful.o .libs/libsimpleswitch.lax/libbmsim.a/switch.o .libs/libsimpleswitch.lax/libbmsim.a/tables.o .libs/libsimpleswitch.lax/libbmsim.a/target_parser.o .libs/libsimpleswitch.lax/libbmsim.a/transport.o .libs/libsimpleswitch.lax/libbmsim.a/transport_nn.o .libs/libsimpleswitch.lax/libbmsim.a/version.o .libs/libsimpleswitch.lax/libbmsim.a/xxhash.o .libs/libsimpleswitch.lax/libbflpmtrie.a/bf_lpm_trie.o .libs/libsimpleswitch.lax/libbmi.a/bmi_interface.o .libs/libsimpleswitch.lax/libbmi.a/bmi_port.o .libs/libsimpleswitch.lax/libjson.a/jsoncpp.o
+libtool: link: ar cru .libs/libsimpleswitch.a .libs/simple_switch.o .libs/primitives.o thrift/src/.libs/SimpleSwitch_server.o .libs/libsimpleswitch.lax/libbmsim.a/P4Objects.o .libs/libsimpleswitch.lax/libbmsim.a/_assert.o .libs/libsimpleswitch.lax/libbmsim.a/action_profile.o .libs/libsimpleswitch.lax/libbmsim.a/actions.o .libs/libsimpleswitch.lax/libbmsim.a/ageing.o .libs/libsimpleswitch.lax/libbmsim.a/bytecontainer.o .libs/libsimpleswitch.lax/libbmsim.a/calculations.o .libs/libsimpleswitch.lax/libbmsim.a/checksums.o .libs/libsimpleswitch.lax/libbmsim.a/conditionals.o .libs/libsimpleswitch.lax/libbmsim.a/context.o .libs/libsimpleswitch.lax/libbmsim.a/control_action.o .libs/libsimpleswitch.lax/libbmsim.a/counters.o .libs/libsimpleswitch.lax/libbmsim.a/crc_map.o .libs/libsimpleswitch.lax/libbmsim.a/debugger.o .libs/libsimpleswitch.lax/libbmsim.a/deparser.o .libs/libsimpleswitch.lax/libbmsim.a/dev_mgr.o .libs/libsimpleswitch.lax/libbmsim.a/dev_mgr_bmi.o .libs/libsimpleswitch.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libsimpleswitch.lax/libbmsim.a/enums.o .libs/libsimpleswitch.lax/libbmsim.a/event_logger.o .libs/libsimpleswitch.lax/libbmsim.a/expressions.o .libs/libsimpleswitch.lax/libbmsim.a/extern.o .libs/libsimpleswitch.lax/libbmsim.a/fields.o .libs/libsimpleswitch.lax/libbmsim.a/header_unions.o .libs/libsimpleswitch.lax/libbmsim.a/headers.o .libs/libsimpleswitch.lax/libbmsim.a/learning.o .libs/libsimpleswitch.lax/libbmsim.a/logger.o .libs/libsimpleswitch.lax/libbmsim.a/lookup_structures.o .libs/libsimpleswitch.lax/libbmsim.a/match_tables.o .libs/libsimpleswitch.lax/libbmsim.a/match_units.o .libs/libsimpleswitch.lax/libbmsim.a/md5.o .libs/libsimpleswitch.lax/libbmsim.a/meters.o .libs/libsimpleswitch.lax/libbmsim.a/options_parse.o .libs/libsimpleswitch.lax/libbmsim.a/packet.o .libs/libsimpleswitch.lax/libbmsim.a/parser.o .libs/libsimpleswitch.lax/libbmsim.a/parser_error.o .libs/libsimpleswitch.lax/libbmsim.a/pcap_file.o .libs/libsimpleswitch.lax/libbmsim.a/periodic_task.o .libs/libsimpleswitch.lax/libbmsim.a/phv.o .libs/libsimpleswitch.lax/libbmsim.a/phv_source.o .libs/libsimpleswitch.lax/libbmsim.a/pipeline.o .libs/libsimpleswitch.lax/libbmsim.a/port_monitor.o .libs/libsimpleswitch.lax/lt1-primitives.o .libs/libsimpleswitch.lax/libbmsim.a/simple_pre.o .libs/libsimpleswitch.lax/libbmsim.a/simple_pre_lag.o .libs/libsimpleswitch.lax/libbmsim.a/source_info.o .libs/libsimpleswitch.lax/libbmsim.a/stacks.o .libs/libsimpleswitch.lax/libbmsim.a/stateful.o .libs/libsimpleswitch.lax/libbmsim.a/switch.o .libs/libsimpleswitch.lax/libbmsim.a/tables.o .libs/libsimpleswitch.lax/libbmsim.a/target_parser.o .libs/libsimpleswitch.lax/libbmsim.a/transport.o .libs/libsimpleswitch.lax/libbmsim.a/transport_nn.o .libs/libsimpleswitch.lax/libbmsim.a/version.o .libs/libsimpleswitch.lax/libbmsim.a/xxhash.o .libs/libsimpleswitch.lax/libbflpmtrie.a/bf_lpm_trie.o .libs/libsimpleswitch.lax/libbmi.a/bmi_interface.o .libs/libsimpleswitch.lax/libbmi.a/bmi_port.o .libs/libsimpleswitch.lax/libjson.a/jsoncpp.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libsimpleswitch.a
 libtool: link: rm -fr .libs/libsimpleswitch.lax .libs/libsimpleswitch.lax
@@ -5966,7 +6003,7 @@ libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/
 libtool: link: (cd ".libs" && rm -f "libsimpleswitch_runner.so.0" && ln -s "libsimpleswitch_runner.so.0.0.0" "libsimpleswitch_runner.so.0")
 libtool: link: (cd ".libs" && rm -f "libsimpleswitch_runner.so" && ln -s "libsimpleswitch_runner.so.0.0.0" "libsimpleswitch_runner.so")
 libtool: link: (cd .libs/libsimpleswitch_runner.lax/libsimpleswitch.a && ar x "/home/jafinger/behavioral-model/targets/simple_switch/./.libs/libsimpleswitch.a")
-libtool: link: ar cru .libs/libsimpleswitch_runner.a  runner.o  .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/P4Objects.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/SimpleSwitch_server.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/_assert.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/action_profile.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/actions.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/ageing.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bf_lpm_trie.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bmi_interface.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bmi_port.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bytecontainer.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/calculations.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/checksums.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/conditionals.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/context.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/control_action.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/counters.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/crc_map.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/debugger.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/deparser.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/dev_mgr.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/dev_mgr_bmi.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/dev_mgr_packet_in.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/enums.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/event_logger.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/expressions.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/extern.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/fields.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/header_unions.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/headers.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/jsoncpp.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/learning.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/logger.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/lookup_structures.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/lt1-primitives.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/match_tables.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/match_units.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/md5.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/meters.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/options_parse.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/packet.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/parser.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/parser_error.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/pcap_file.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/phv.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/phv_source.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/pipeline.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/port_monitor.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/primitives.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/simple_pre.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/simple_pre_lag.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/simple_switch.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/source_info.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/stacks.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/stateful.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/switch.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/tables.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/target_parser.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/transport.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/transport_nn.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/version.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/xxhash.o 
+libtool: link: ar cru .libs/libsimpleswitch_runner.a  runner.o  .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/P4Objects.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/SimpleSwitch_server.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/_assert.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/action_profile.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/actions.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/ageing.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bf_lpm_trie.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bmi_interface.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bmi_port.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/bytecontainer.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/calculations.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/checksums.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/conditionals.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/context.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/control_action.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/counters.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/crc_map.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/debugger.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/deparser.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/dev_mgr.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/dev_mgr_bmi.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/dev_mgr_packet_in.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/enums.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/event_logger.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/expressions.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/extern.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/fields.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/header_unions.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/headers.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/jsoncpp.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/learning.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/logger.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/lookup_structures.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/lt1-primitives.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/match_tables.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/match_units.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/md5.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/meters.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/options_parse.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/packet.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/parser.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/parser_error.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/pcap_file.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/periodic_task.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/phv.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/phv_source.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/pipeline.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/port_monitor.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/primitives.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/simple_pre.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/simple_pre_lag.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/simple_switch.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/source_info.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/stacks.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/stateful.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/switch.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/tables.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/target_parser.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/transport.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/transport_nn.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/version.o .libs/libsimpleswitch_runner.lax/libsimpleswitch.a/xxhash.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libsimpleswitch_runner.a
 libtool: link: rm -fr .libs/libsimpleswitch_runner.lax
@@ -6076,7 +6113,7 @@ libtool: link: (cd .libs/libpsaswitch.lax/libbmi.a && ar x "/home/jafinger/behav
 libtool: link: (cd .libs/libpsaswitch.lax/libjson.a && ar x "/home/jafinger/behavioral-model/targets/psa_switch/../../third_party/jsoncpp/.libs/libjson.a")
 copying selected object files to avoid basename conflicts...
 libtool: link: ln .libs/libpsaswitch.lax/libbmsim.a/primitives.o .libs/libpsaswitch.lax/lt1-primitives.o || cp .libs/libpsaswitch.lax/libbmsim.a/primitives.o .libs/libpsaswitch.lax/lt1-primitives.o
-libtool: link: ar cru .libs/libpsaswitch.a .libs/psa_switch.o .libs/primitives.o thrift/src/.libs/PsaSwitch_server.o .libs/libpsaswitch.lax/libbmsim.a/P4Objects.o .libs/libpsaswitch.lax/libbmsim.a/_assert.o .libs/libpsaswitch.lax/libbmsim.a/action_profile.o .libs/libpsaswitch.lax/libbmsim.a/actions.o .libs/libpsaswitch.lax/libbmsim.a/ageing.o .libs/libpsaswitch.lax/libbmsim.a/bytecontainer.o .libs/libpsaswitch.lax/libbmsim.a/calculations.o .libs/libpsaswitch.lax/libbmsim.a/checksums.o .libs/libpsaswitch.lax/libbmsim.a/conditionals.o .libs/libpsaswitch.lax/libbmsim.a/context.o .libs/libpsaswitch.lax/libbmsim.a/control_action.o .libs/libpsaswitch.lax/libbmsim.a/counters.o .libs/libpsaswitch.lax/libbmsim.a/crc_map.o .libs/libpsaswitch.lax/libbmsim.a/debugger.o .libs/libpsaswitch.lax/libbmsim.a/deparser.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_bmi.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libpsaswitch.lax/libbmsim.a/enums.o .libs/libpsaswitch.lax/libbmsim.a/event_logger.o .libs/libpsaswitch.lax/libbmsim.a/expressions.o .libs/libpsaswitch.lax/libbmsim.a/extern.o .libs/libpsaswitch.lax/libbmsim.a/fields.o .libs/libpsaswitch.lax/libbmsim.a/header_unions.o .libs/libpsaswitch.lax/libbmsim.a/headers.o .libs/libpsaswitch.lax/libbmsim.a/learning.o .libs/libpsaswitch.lax/libbmsim.a/logger.o .libs/libpsaswitch.lax/libbmsim.a/lookup_structures.o .libs/libpsaswitch.lax/libbmsim.a/match_tables.o .libs/libpsaswitch.lax/libbmsim.a/match_units.o .libs/libpsaswitch.lax/libbmsim.a/md5.o .libs/libpsaswitch.lax/libbmsim.a/meters.o .libs/libpsaswitch.lax/libbmsim.a/options_parse.o .libs/libpsaswitch.lax/libbmsim.a/packet.o .libs/libpsaswitch.lax/libbmsim.a/parser.o .libs/libpsaswitch.lax/libbmsim.a/parser_error.o .libs/libpsaswitch.lax/libbmsim.a/pcap_file.o .libs/libpsaswitch.lax/libbmsim.a/phv.o .libs/libpsaswitch.lax/libbmsim.a/phv_source.o .libs/libpsaswitch.lax/libbmsim.a/pipeline.o .libs/libpsaswitch.lax/libbmsim.a/port_monitor.o .libs/libpsaswitch.lax/lt1-primitives.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre_lag.o .libs/libpsaswitch.lax/libbmsim.a/source_info.o .libs/libpsaswitch.lax/libbmsim.a/stacks.o .libs/libpsaswitch.lax/libbmsim.a/stateful.o .libs/libpsaswitch.lax/libbmsim.a/switch.o .libs/libpsaswitch.lax/libbmsim.a/tables.o .libs/libpsaswitch.lax/libbmsim.a/target_parser.o .libs/libpsaswitch.lax/libbmsim.a/transport.o .libs/libpsaswitch.lax/libbmsim.a/transport_nn.o .libs/libpsaswitch.lax/libbmsim.a/version.o .libs/libpsaswitch.lax/libbmsim.a/xxhash.o .libs/libpsaswitch.lax/libbflpmtrie.a/bf_lpm_trie.o .libs/libpsaswitch.lax/libbmi.a/bmi_interface.o .libs/libpsaswitch.lax/libbmi.a/bmi_port.o .libs/libpsaswitch.lax/libjson.a/jsoncpp.o
+libtool: link: ar cru .libs/libpsaswitch.a .libs/psa_switch.o .libs/primitives.o thrift/src/.libs/PsaSwitch_server.o .libs/libpsaswitch.lax/libbmsim.a/P4Objects.o .libs/libpsaswitch.lax/libbmsim.a/_assert.o .libs/libpsaswitch.lax/libbmsim.a/action_profile.o .libs/libpsaswitch.lax/libbmsim.a/actions.o .libs/libpsaswitch.lax/libbmsim.a/ageing.o .libs/libpsaswitch.lax/libbmsim.a/bytecontainer.o .libs/libpsaswitch.lax/libbmsim.a/calculations.o .libs/libpsaswitch.lax/libbmsim.a/checksums.o .libs/libpsaswitch.lax/libbmsim.a/conditionals.o .libs/libpsaswitch.lax/libbmsim.a/context.o .libs/libpsaswitch.lax/libbmsim.a/control_action.o .libs/libpsaswitch.lax/libbmsim.a/counters.o .libs/libpsaswitch.lax/libbmsim.a/crc_map.o .libs/libpsaswitch.lax/libbmsim.a/debugger.o .libs/libpsaswitch.lax/libbmsim.a/deparser.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_bmi.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libpsaswitch.lax/libbmsim.a/enums.o .libs/libpsaswitch.lax/libbmsim.a/event_logger.o .libs/libpsaswitch.lax/libbmsim.a/expressions.o .libs/libpsaswitch.lax/libbmsim.a/extern.o .libs/libpsaswitch.lax/libbmsim.a/fields.o .libs/libpsaswitch.lax/libbmsim.a/header_unions.o .libs/libpsaswitch.lax/libbmsim.a/headers.o .libs/libpsaswitch.lax/libbmsim.a/learning.o .libs/libpsaswitch.lax/libbmsim.a/logger.o .libs/libpsaswitch.lax/libbmsim.a/lookup_structures.o .libs/libpsaswitch.lax/libbmsim.a/match_tables.o .libs/libpsaswitch.lax/libbmsim.a/match_units.o .libs/libpsaswitch.lax/libbmsim.a/md5.o .libs/libpsaswitch.lax/libbmsim.a/meters.o .libs/libpsaswitch.lax/libbmsim.a/options_parse.o .libs/libpsaswitch.lax/libbmsim.a/packet.o .libs/libpsaswitch.lax/libbmsim.a/parser.o .libs/libpsaswitch.lax/libbmsim.a/parser_error.o .libs/libpsaswitch.lax/libbmsim.a/pcap_file.o .libs/libpsaswitch.lax/libbmsim.a/periodic_task.o .libs/libpsaswitch.lax/libbmsim.a/phv.o .libs/libpsaswitch.lax/libbmsim.a/phv_source.o .libs/libpsaswitch.lax/libbmsim.a/pipeline.o .libs/libpsaswitch.lax/libbmsim.a/port_monitor.o .libs/libpsaswitch.lax/lt1-primitives.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre_lag.o .libs/libpsaswitch.lax/libbmsim.a/source_info.o .libs/libpsaswitch.lax/libbmsim.a/stacks.o .libs/libpsaswitch.lax/libbmsim.a/stateful.o .libs/libpsaswitch.lax/libbmsim.a/switch.o .libs/libpsaswitch.lax/libbmsim.a/tables.o .libs/libpsaswitch.lax/libbmsim.a/target_parser.o .libs/libpsaswitch.lax/libbmsim.a/transport.o .libs/libpsaswitch.lax/libbmsim.a/transport_nn.o .libs/libpsaswitch.lax/libbmsim.a/version.o .libs/libpsaswitch.lax/libbmsim.a/xxhash.o .libs/libpsaswitch.lax/libbflpmtrie.a/bf_lpm_trie.o .libs/libpsaswitch.lax/libbmi.a/bmi_interface.o .libs/libpsaswitch.lax/libbmi.a/bmi_port.o .libs/libpsaswitch.lax/libjson.a/jsoncpp.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpsaswitch.a
 libtool: link: rm -fr .libs/libpsaswitch.lax .libs/libpsaswitch.lax
@@ -6328,7 +6365,7 @@ make[2]: Nothing to be done for 'install-exec-am'.
  /bin/mkdir -p '/usr/local/include/bm/thrift'
  /usr/bin/install -c -m 644  bm/thrift/stdcxx.h '/usr/local/include/bm/thrift'
  /bin/mkdir -p '/usr/local/include/bm/bm_sim'
- /usr/bin/install -c -m 644  bm/bm_sim/packet.h bm/bm_sim/packet_buffer.h bm/bm_sim/packet_handler.h bm/bm_sim/parser.h bm/bm_sim/parser_error.h bm/bm_sim/pcap_file.h bm/bm_sim/phv.h bm/bm_sim/phv_forward.h bm/bm_sim/phv_source.h bm/bm_sim/pipeline.h bm/bm_sim/port_monitor.h bm/bm_sim/pre.h bm/bm_sim/queue.h bm/bm_sim/queueing.h bm/bm_sim/ras.h bm/bm_sim/runtime_interface.h bm/bm_sim/short_alloc.h bm/bm_sim/stateful.h bm/bm_sim/switch.h bm/bm_sim/simple_pre.h bm/bm_sim/simple_pre_lag.h bm/bm_sim/source_info.h bm/bm_sim/stacks.h bm/bm_sim/tables.h bm/bm_sim/target_parser.h bm/bm_sim/transport.h bm/bm_sim/header_unions.h '/usr/local/include/bm/bm_sim'
+ /usr/bin/install -c -m 644  bm/bm_sim/packet.h bm/bm_sim/packet_buffer.h bm/bm_sim/packet_handler.h bm/bm_sim/parser.h bm/bm_sim/parser_error.h bm/bm_sim/pcap_file.h bm/bm_sim/periodic_task.h bm/bm_sim/phv.h bm/bm_sim/phv_forward.h bm/bm_sim/phv_source.h bm/bm_sim/pipeline.h bm/bm_sim/port_monitor.h bm/bm_sim/pre.h bm/bm_sim/queue.h bm/bm_sim/queueing.h bm/bm_sim/ras.h bm/bm_sim/runtime_interface.h bm/bm_sim/short_alloc.h bm/bm_sim/stateful.h bm/bm_sim/switch.h bm/bm_sim/simple_pre.h bm/bm_sim/simple_pre_lag.h bm/bm_sim/source_info.h bm/bm_sim/stacks.h bm/bm_sim/tables.h bm/bm_sim/target_parser.h bm/bm_sim/transport.h bm/bm_sim/header_unions.h '/usr/local/include/bm/bm_sim'
  /bin/mkdir -p '/usr/local/include/bm/bm_apps'
  /usr/bin/install -c -m 644  bm/bm_apps/notifications.h bm/bm_apps/packet_pipe.h bm/bm_apps/learn.h '/usr/local/include/bm/bm_apps'
  /bin/mkdir -p '/usr/local/include/bm/bm_sim/core'
@@ -6553,11 +6590,11 @@ make[2]: Nothing to be done for 'install-data-am'.
 make[2]: Leaving directory '/home/jafinger/behavioral-model'
 make[1]: Leaving directory '/home/jafinger/behavioral-model'
 end install behavioral-model:
-Sun Jan  6 13:15:30 PST 2019
+Wed Jan 30 16:22:49 PST 2019
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c
 start install protobuf:
-Sun Jan  6 13:15:30 PST 2019
+Wed Jan 30 16:22:49 PST 2019
 Cloning into 'protobuf'...
 Note: checking out 'v3.2.0'.
 
@@ -6574,12 +6611,12 @@ HEAD is now at 593e917... Bump version number to 3.2.0
 Google Mock not present.  Fetching gmock-1.7.0 from the web...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    157      0 --:--:-- --:--:-- --:--:--   157
-100 13823    0 13823    0     0   9245      0 --:--:--  0:00:01 --:--:--  9245100  362k    0  362k    0     0   195k      0 --:--:--  0:00:01 --:--:--  977k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    393      0 --:--:-- --:--:-- --:--:--   394
+100  362k    0  362k    0     0   561k      0 --:--:-- --:--:-- --:--:--  561k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    260      0 --:--:-- --:--:-- --:--:--   261
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  439k    0  439k    0     0   281k      0 --:--:--  0:00:01 --:--:--  437k100  618k    0  618k    0     0   350k      0 --:--:--  0:00:01 --:--:--  514k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    425      0 --:--:-- --:--:-- --:--:--   425
+100  618k  100  618k    0     0   975k      0 --:--:-- --:--:-- --:--:--  975k
 + autoreconf -f -i -Wall,no-obsolete
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
 libtoolize: copying file 'build-aux/ltmain.sh'
@@ -8182,11 +8219,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/jafinger/protobuf/src'
 end install protobuf:
-Sun Jan  6 13:24:39 PST 2019
+Wed Jan 30 16:31:45 PST 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Sun Jan  6 13:24:39 PST 2019
+Wed Jan 30 16:31:45 PST 2019
 Cloning into 'p4c'...
 Submodule 'control-plane/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'control-plane/p4runtime'
 Submodule 'test/frameworks/gtest' (https://github.com/google/googletest.git) registered for path 'test/frameworks/gtest'
@@ -8194,6 +8231,14 @@ Cloning into 'control-plane/p4runtime'...
 Submodule path 'control-plane/p4runtime': checked out 'ef54d874d7bd385b1721a07722c371d02dee245f'
 Cloning into 'test/frameworks/gtest'...
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
+commit 43ad67020ca773900b45dcf1beee9acc9d2d6d6c
+Author: Chris Dodd <cdodd@acm.org>
+Date:   Mon Jan 28 12:53:21 2019 -0800
+
+    Avoid warning about negative unsigned value from add_to_field (#1702)
+    
+    - add_to_field(field, -1) is commonly used to decrement an unsigned
+      field in P4_14, so its good to avoid warning about it.
 -- The C compiler identification is GNU 5.4.0
 -- The CXX compiler identification is GNU 5.4.0
 -- Check for working C compiler: /usr/bin/cc
@@ -8261,14 +8306,14 @@ Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 327 tests to 'bmv2' (9 xfails)
+-- Added 340 tests to 'bmv2' (9 xfails)
 -- Added 4 tests to 'bmv2' (4 xfails)
 -- LLVM missing, disabling kernel tests...
 -- Added 14 tests to 'ebpf-bcc' (0 xfails)
 -- Added 14 tests to 'ebpf' (0 xfails)
--- Added 159 tests to 'p4' (0 xfails)
--- Added 479 tests to 'p4' (1 xfails)
--- Added 199 tests to 'p14_to_16' (0 xfails)
+-- Added 160 tests to 'p4' (0 xfails)
+-- Added 490 tests to 'p4' (1 xfails)
+-- Added 201 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 4
 -- Configuring done
 -- Generating done
@@ -8278,22 +8323,22 @@ Scanning dependencies of target linkbmv2
 Scanning dependencies of target linkgraphs
 [  0%] Built target update_includes
 [  0%] Built target linkgraphs
-Scanning dependencies of target linkp4test
 Scanning dependencies of target linkp4cebpf
+Scanning dependencies of target linkp4test
 [  0%] Built target linkbmv2
-[  0%] Built target linkp4test
-Scanning dependencies of target mkp4dirs
 Scanning dependencies of target p4ctoolkit
-[  0%] Built target mkp4dirs
-[  0%] Built target linkp4cebpf
+[  0%] Built target linkp4test
 [  1%] Building CXX object lib/CMakeFiles/p4ctoolkit.dir/unified_libp4ctoolkit_srcs_1.cpp.o
+Scanning dependencies of target mkp4dirs
+[  1%] Built target linkp4cebpf
+[  1%] Built target mkp4dirs
 Scanning dependencies of target mkv1dirs
 Scanning dependencies of target mkP4configdir
-[  1%] Built target mkv1dirs
 [  1%] Built target mkP4configdir
+[  1%] Built target mkv1dirs
 Scanning dependencies of target p4c_driver
-[  3%] Copying p4c driver
 Scanning dependencies of target gtest
+[  3%] Copying p4c driver
 [  4%] Building CXX object test/CMakeFiles/gtest.dir/frameworks/gtest/googletest/src/gtest-all.cc.o
 [  4%] Built target p4c_driver
 [  6%] Linking CXX static library libgtest.a
@@ -8330,8 +8375,8 @@ frontends/CMakeFiles/frontend.dir/build.make:74: warning: ignoring old recipe fo
 [ 34%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1lexer.cc.o
 [ 35%] Linking CXX static library libir.a
 [ 35%] Built target ir
-[ 37%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
-[ 39%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
+[ 37%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
+[ 39%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
 [ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
 [ 42%] Linking CXX static library libmidend.a
 [ 42%] Built target midend
@@ -8346,8 +8391,8 @@ frontends/CMakeFiles/frontend.dir/build.make:74: warning: ignoring old recipe fo
 [ 54%] Built target frontend
 [ 56%] Generating protobuf files
 Scanning dependencies of target bmv2backend
-[ 57%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_2.cpp.o
-[ 59%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_1.cpp.o
+[ 57%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_1.cpp.o
+[ 59%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_2.cpp.o
 Scanning dependencies of target controlplane
 [ 60%] Building CXX object control-plane/CMakeFiles/controlplane.dir/google/rpc/status.pb.cc.o
 [ 62%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4info.pb.cc.o
@@ -8359,8 +8404,8 @@ Scanning dependencies of target controlplane
 [ 70%] Building CXX object control-plane/CMakeFiles/controlplane.dir/unified_controlplane_sources_1.cpp.o
 [ 71%] Linking CXX static library libcontrolplane.a
 [ 71%] Built target controlplane
-Scanning dependencies of target p4c-ebpf
 Scanning dependencies of target p4c-bm2-psa
+Scanning dependencies of target p4c-ebpf
 Scanning dependencies of target p4c-bm2-ss
 [ 73%] Building CXX object backends/ebpf/CMakeFiles/p4c-ebpf.dir/unified_p4c_ebpf_srcs_1.cpp.o
 [ 75%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/main.cpp.o
@@ -8390,14 +8435,14 @@ Scanning dependencies of target gtestp4c
 [100%] Linking CXX executable gtestp4c
 [100%] Built target gtestp4c
 end install p4c:
-Sun Jan  6 13:29:11 PST 2019
+Wed Jan 30 16:35:24 PST 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Sun Jan  6 13:29:11 PST 2019
+Wed Jan 30 16:35:24 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        36G  8.6G   25G  26% /
+/dev/sda1        36G  8.8G   25G  27% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         36157M 8764M    25534M  26% /
+/dev/sda1         36157M 9009M    25289M  27% /
 
 Created files: p4setup.bash p4setup.csh
 
