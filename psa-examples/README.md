@@ -57,7 +57,7 @@ with the name "deparser".  Again it is up to us, the PSA implementers,
 to choose two names for the two deparsers in PSA, but I would
 recommend "ingress_deparser" and "egress_deparser".
 
-The file `psa-example-drop-all.hand-edited.json` is a copy of
+The file `psa-example-drop-all.hand-edited2.json` is a copy of
 `psa-example-drop-all.json`, except with the changes above made, using
 a text editor.
 
@@ -67,7 +67,7 @@ message, as shown below:
 
 ```bash
 $ make run2
-psa_switch --log-console -i 1@veth2 -i 2@veth4 psa-example-drop-all.hand-edited.json
+psa_switch --log-console -i 1@veth2 -i 2@veth4 psa-example-drop-all.hand-edited2.json
 Calling target program-options parser
 Field standard_metadata.clone_spec is required by switch target but is not defined
 Makefile:8: recipe for target 'run2' failed
@@ -90,3 +90,12 @@ file for `psa_switch`.  If any fields with particular names are
 required to be present in the JSON input file for `psa_switch`, they
 should be the names of PSA standard metadata fields defined in the PSA
 specification, and `clone_spec` is not one of these.
+
+As a quick hack, I created another file
+`psa-example-drop-all.hand-edited3.json` that I copied and pasted a
+definition of the v1model `standard_metadata` struct from the BMv2
+JSON file for a simple_switch v1model program, just to see what might
+go wrong next.  It starts up fine, but as soon as you send a packet in
+for it to process, it crashes, I believe because like simple_switch it
+is looking for a parser named "parser" in the JSON file, not
+"ingress_parser" as I have changed it to.
