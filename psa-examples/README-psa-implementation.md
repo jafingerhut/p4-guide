@@ -261,10 +261,10 @@ this?  Note that there is a similar issue with references to
 architecture today, so hopefully this is a solved problem that merely
 needs some small changes in `p4c`.
 
-The of the type of the parameter `resubmit_meta` above is user-defined
-in PSA.  It will typically be a `struct` type defined by the user,
+The type of the parameter `resubmit_meta` above is user-defined in
+PSA.  It will typically be a `struct` type defined by the user,
 perhaps with 0 fields in it, but can have any number of fields.  As
-for `istd`, the name `resubmit_meta` could be any other legal P4_16
+for `istd`, the name `resubmit_meta` could be any other legal
 identifier name in a user's P4_16 program.
 
 TBD: Should all occurrences of "resubmit_meta.<field_name>" be
