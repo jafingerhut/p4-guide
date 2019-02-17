@@ -253,13 +253,30 @@ parser IngressParser<H, M, RESUBM, RECIRCM>(
 the user is free to use the name `istd` where it is shown in that
 example, or to use any other name they wish.
 
-TBD: Is it straightforward in `p4c` to accomodate any such name,
-whether `istd` or some other name, and replace all occurrences of such
-fields with the fixed names proposed above?  How exactly should p4c do
-this?  Note that there is a similar issue with references to
-`standard_metadata` fields in P4_16 programs for the v1model
-architecture today, so hopefully this is a solved problem that merely
-needs some small changes in `p4c`.
+It is straightforward in `p4c` to accomodate any such name, whether
+`istd` or some other name.  Han Wang refers us to function
+`isStandardMetadataParameter` in the p4c back end code here for an
+example of how p4c recognizes the v1model-defined parameters today:
+https://github.com/p4lang/p4c/blob/master/backends/bmv2/simple_switch/simpleSwitch.h#L72
+
+Antonin Bas recommends keeping the original user-defined parameter
+names from the source code in the JSON file, and then using the BMv2
+JSON `"field_aliases"` feature to give these fields fixed names
+proposed above, by which `psa_switch` can find them using `get_field`:
+https://github.com/p4lang/behavioral-model/blob/master/docs/JSON_format.md#field_aliases
+
+By following that approach, it may enhance debuggability by enabling
+the user-defined names to appear in the JSON file, and thus also
+logging/debug messages from `psa_switch`.
+
+TBD: For P4_16 v1model architecture programs, as of 2019-Feb
+p4c-bm2-ss produces v1model BMv2 JSON files that do not include the
+parameter names _at all_, except in source_fragment strings, as far as
+I can tell.  They appear in the last midend pass P4_16 program that
+you can dump from p4c via debugging options, but then do not appear in
+the JSON file.  I do not know if it is worth trying to _add_ them in a
+PSA BMv2 JSON file if they are not present in the v1model BMv2 JSON
+files.
 
 The type of the parameter `resubmit_meta` above is user-defined in
 PSA.  It will typically be a `struct` type defined by the user,
@@ -267,20 +284,39 @@ perhaps with 0 fields in it, but can have any number of fields.  As
 for `istd`, the name `resubmit_meta` could be any other legal
 identifier name in a user's P4_16 program.
 
-TBD: Should all occurrences of "resubmit_meta.<field_name>" be
-replaced with a fixed prefix instead "resubmit_meta." in a JSON file?
-It seems that there must be _some_ kind of naming convention in place
-in order for `psa_switch` to know the contents of `resubmit_meta`,
-vs. the contents of `recirculate_meta`, vs. the contents of other
-fields that are outside of either of those.
-
-If a fixed name in the JSON file is judged to be a good idea here, I
-would propose these names:
+Recommendation: Use the `"field_aliases"` feature, mentioned above, so
+that the user-defined name `resubmit_meta.<rest_of_user_defined_name>`
+is used in the BMv2 JSON file, but in addition aliases are created
+with names mentioned below by which `psa_switch` can find them.
 
 ```
-psa_stdmeta.resubmit.<user_defined_field_name>
-psa_stdmeta.recirculate.<user_defined_field_name>
-psa_stdmeta.normal.<user_defined_field_name>
-psa_stdmeta.clone_i2e.<user_defined_field_name>
-psa_stdmeta.clone_e2e.<user_defined_field_name>
+psa_stdmeta.resubmit.<rest_of_user_defined_name>
+psa_stdmeta.recirculate.<rest_of_user_defined_name>
+psa_stdmeta.normal.<rest_of_user_defined_name>
+psa_stdmeta.clone_i2e.<rest_of_user_defined_name>
+psa_stdmeta.clone_e2e.<rest_of_user_defined_name>
 ```
+
+Note that the user's program could have the same parameter name,
+e.g. `user_meta` for both the ingress and egress control block.  These
+two parameters could have the same type, or different types from each
+other.  Even if they do have the same types, the egress `user_meta`
+contents must be determined by the egress parser, and should _never_
+have their values carried over from an ingress packet processing
+results, the way they are in the v1model architecture.  Since all
+header names in BMv2 JSON files are effectively "global" for the
+entire program, these parameter names should be uniquified, e.g. by
+always prefacing all ingress parameter names with `ingress` and all
+egress parameter names with `egres.`.
+
+Also note that while it would be fairly odd for a programmer to do so,
+a P4_16 source program could have an ingress parser and an ingress
+control block with _different_ parameter names for the user-defined
+metadata, e.g. `user_meta` for the ingress control block, but `foo`
+for the ingress parser.
+
+As mentioned in a note above, p4c appears as of 2019-Feb appears to
+remove these parameter names while generateing the v1model BMv2 JSON
+files.  This seems reasonable to continue to do with PSA, as long as
+the `ingress` and `egress` prefixes are added to the names to keep
+ingress and egress values separate.
