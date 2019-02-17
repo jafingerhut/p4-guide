@@ -82,11 +82,11 @@ Then add lines like these to your `$HOME/.emacs.d/init.el` file:
 
 (setq auto-mode-alist
       (append '(
-		("p4_14.*[.]p4" . p4_14-mode)
-		("p4_16.*[.]p4" . p4_16-mode)
+		("p4_14.*\\.p4$" . p4_14-mode)
+		("p4_16.*\\.p4$" . p4_16-mode)
 		;; Use p4_14-mode on the next line if most of your .p4
 		;; files use P4_14.
-		(".*[.]p4"      . p4_16-mode))
+		("\\.p4$"      . p4_16-mode))
 	      auto-mode-alist))
 ```
 
