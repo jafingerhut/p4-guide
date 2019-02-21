@@ -31,7 +31,7 @@ then
     exit 1
 fi
 
-for frontendpass in `seq 1 53`
+for frontendpass in `seq 1 100`
 do
     for n in ${BNAME}-FrontEnd_${frontendpass}_*.p4
     do
@@ -42,11 +42,17 @@ do
         1>&2 echo "No such file: ${curname}"
         exit 1
     fi
+    if [ ! -e "${curname}" ]
+    then
+	echo "# No file with name ${curname}.  Probably no such compiler pass."
+	break
+    fi
     diff "${lastkeptfile}" "${curname}" > /dev/null
     status=$?
     if [ ${status} == 0 ]
     then
 	# Identical files, so remove the next one
+	echo "# Deleting ${curname} as duplicate of ${lastkeptfile}"
 	/bin/rm -f "${curname}"
     else
 	# Files differ, so remember the current one as the last kept
@@ -56,7 +62,7 @@ do
     fi
 done
 
-for midendpass in `seq 0 37`
+for midendpass in `seq 0 100`
 do
     for n in ${BNAME}-*MidEnd_${midendpass}_*.p4
     do
@@ -67,15 +73,22 @@ do
         1>&2 echo "No such file: ${curname}"
         exit 1
     fi
+    if [ ! -e "${curname}" ]
+    then
+	echo "# No file with name ${curname}.  Probably no such compiler pass."
+	break
+    fi
     diff "${lastkeptfile}" "${curname}" > /dev/null
     status=$?
     if [ ${status} == 0 ]
     then
 	# Identical files, so remove the next one
+	echo "# Deleting ${curname} as duplicate of ${lastkeptfile}"
 	/bin/rm -f "${curname}"
     else
 	# Files differ, so remember the current one as the last kept
 	# one.
+	echo "ediff ${DUMP_DIR}/${lastkeptfile} ${DUMP_DIR}/${curname}"
 	lastkeptfile="${curname}"
     fi
 done
