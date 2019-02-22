@@ -17,10 +17,10 @@ invalid, and those two emit statements will do nothing.
 # Test results
 
 Commit of https://github.com/p4lang/p4c last tested with:
-3ed8915a899730c5a65a2cfdda363a9609d769df 2019-Feb-16
+5ae390430bd025b301854cd04c78b1ff9902180f 2019-Feb-20
 
 Commit of https://github.com/p4lang/behavioral-model last tested with:
-bd92b9c0f019ca8350b38313f47f2e798edf62a9 2019-Feb-14
+258341e1f4354bda3ec5c3710b405c19c81c31c1 2019-Feb-21
 
 The command:
 ```bash
@@ -35,43 +35,9 @@ command produced the error message shown below:
 $ make run
 psa_switch --log-console -i 1@veth2 -i 2@veth4 psa-example-drop-all.json
 Calling target program-options parser
-Duplicate objects of type 'parser' with name 'parser'
+Field standard_metadata.clone_spec is required by switch target but is not defined
 Makefile:5: recipe for target 'run' failed
 make: *** [run] Error 1
-```
-
-That error message looks correct to me.  It occurs because in the file
-`psa-example-drop-all.json`, the value of the key "parsers" is a list
-of two parsers, and both have the same name "parser".
-
-For PSA, there should always be two parsers as the value of the
-"parsers" key, but they should have distinct names.  The names chosen
-are up to us, the implementers of PSA, but I would suggest
-"ingress_parser" and "egress_parser".
-
-Even if you hand-edit the JSON file to make those two names different,
-and try again, you will get an error message that there are duplicate
-objects of type 'deparser' with name 'deparser'.  Similar to the
-above, the value of the key "deparsers" is a list of two objects, both
-with the name "deparser".  Again it is up to us, the PSA implementers,
-to choose two names for the two deparsers in PSA, but I would
-recommend "ingress_deparser" and "egress_deparser".
-
-The file `psa-example-drop-all.hand-edited2.json` is a copy of
-`psa-example-drop-all.json`, except with the changes above made, using
-a text editor.
-
-If you run the command `make run2` it attempts to run `psa_switch`
-with this hand-edited BMv2 JSON file, but it still produces an error
-message, as shown below:
-
-```bash
-$ make run2
-psa_switch --log-console -i 1@veth2 -i 2@veth4 psa-example-drop-all.hand-edited2.json
-Calling target program-options parser
-Field standard_metadata.clone_spec is required by switch target but is not defined
-Makefile:8: recipe for target 'run2' failed
-make: *** [run2] Error 1
 ```
 
 This is an error message produced by this line of behavioral-model
