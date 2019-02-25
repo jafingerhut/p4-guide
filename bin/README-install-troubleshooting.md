@@ -4,11 +4,15 @@ This page gives a few tips for those having difficulties using one of
 these installation scripts to install the open source P4 development
 tools:
 
-+ [install-p4dev.sh](install-p4dev.sh)
-+ [install-p4dev-p4runtime.sh](install-p4dev-p4runtime.sh)
++ [install-p4dev-p4runtime.sh](install-p4dev-p4runtime.sh) - If you
+  want to use the P4Runtime API from controller software to configure
+  the P4 program tables.
++ [install-p4dev.sh](install-p4dev.sh) - If you do not want to bother
+  installing the P4Runtime API software, and can get by with older
+  controller APIs, e.g. the API based upon Thrift.
 
 I have most recently tested them and found them working on
-2019-Jan-06.
+2019-Feb-23.
 
 Things I did that helped this process go smoothly:
 
