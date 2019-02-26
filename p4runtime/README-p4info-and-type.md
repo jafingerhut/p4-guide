@@ -117,55 +117,55 @@ type_info {
     key: "MulticastGroup_t"
     value {
       representation {
-	translated_type {
+        translated_type {
           uri: "p4.org/psa/v1/MulticastGroup_t"
           sdn_bitwidth: 32
-	}
+        }
       }
     }
     key: "CloneSessionId_t"
     value {
       representation {
-	translated_type {
+        translated_type {
           uri: "p4.org/psa/v1/CloneSessionId_t"
           sdn_bitwidth: 16
-	}
+        }
       }
     }
     key: "ClassOfService_t"
     value {
       representation {
-	translated_type {
+        translated_type {
           uri: "p4.org/psa/v1/ClassOfService_t"
           sdn_bitwidth: 8
-	}
+        }
       }
     }
     key: "PacketLength_t_t"
     value {
       representation {
-	translated_type {
+        translated_type {
           uri: "p4.org/psa/v1/PacketLength_t_t"
           sdn_bitwidth: 16
-	}
+        }
       }
     }
     key: "EgressInstance_t_t"
     value {
       representation {
-	translated_type {
+        translated_type {
           uri: "p4.org/psa/v1/EgressInstance_t_t"
           sdn_bitwidth: 16
-	}
+        }
       }
     }
     key: "Timestamp_t_t"
     value {
       representation {
-	translated_type {
+        translated_type {
           uri: "p4.org/psa/v1/Timestamp_t_t"
           sdn_bitwidth: 64
-	}
+        }
       }
     }
   }
@@ -311,7 +311,7 @@ type_list(x) {
             T = B;
         } else {
             ret = ret + [T];   // append T to end of ret
-	    return ret;
+            return ret;
         }
     }
 }
@@ -404,14 +404,16 @@ type_name: "T2_t"
 bitwidth: 32
 
     Reason: There is a type T1_t with a p4runtime_translation
-    annotation, it is the first such type with such an annotation in
+    annotation, it is the first type with such an annotation in
     type_list(f2), and that annotation specifies a control plane width
     of 32 for T1_t.
 ```
 
 Based on the P4 code snippet above (copied below for easy reference),
-the following value should be in the P4Info message describing the
-program, because of the custom type definitions.
+the value below starting with `type_info {` should be in the P4Info
+message describing the program, because of the `type` definitions.
+There is never anything put into a P4Info message because of `typedef`
+definitions in a P4 program.
 
 Note that the bit width of 10 should not appear anywhere in the P4Info
 file, based on this P4 code snippet alone.  It should appear if there
@@ -432,6 +434,8 @@ type_info {
     key: "T1_t"
     value {
       representation {
+        // translated_type for type T1_t because it has
+        // p4runtime_translation annotation
         translated_type {
           uri: "mycompany.com/psa/v1/T1_t"
           sdn_bitwidth: 32
@@ -441,6 +445,8 @@ type_info {
     key: "T2_t"
     value {
       representation {
+        // original_type for type T2_t because it does not have
+        // a p4runtime_translation annotation
         original_type {
           type_spec {
             new_type {
@@ -466,16 +472,15 @@ a program was ever useful to write, it would be good to document:
 + why it is useful for there to be more than one
   `p4runtime_translation` in such a `type_list(x)`, and
 + what that means for how the P4Runtime server should perform
-  numerical runtime translation for that search key field or action
-  parameter.
+  numerical runtime translation for that bit-constrained value.
 
 Below is an example of a P4 code snippet that demonstrates one example
 of the above, but I do _not_ claim that it is useful for any actual
 production P4 program to be written this way.
 
 In the absence of a useful example of P4 code like this, it seems like
-it may be a good idea for a P4 compiler to issue a warning if such a
-`type_list` is found.
+it may be a good idea for a P4 compiler to issue a warning or error if
+such a `type_list` is found.
 
 ```
 @p4runtime_translation("mycompany.com/psa/v1/T1_t", 32)
@@ -499,9 +504,8 @@ to declare a bit-constrained value with type `T1_t`.
 
 Let T1_uri be the name of a variable or constant with the value equal
 to the string "mycompany.com/psa/v1/T1_t".  I introduce this name to
-keep some of the expressions below shorter.
-
-Similarly T2_uri has the value "mycompany.com/psa/v1/T2_t".
+keep some of the expressions below shorter.  Similarly T2_uri has the
+value "mycompany.com/psa/v1/T2_t".
 
 Suppose the P4Runtime server has two functions:
 
@@ -517,11 +521,12 @@ Suppose the P4Runtime server has two functions:
 When the controller sends a P4Runtime message with a 32-bit value `a`
 intended as the value of a bit-constrained value with type `T1_t`, the
 P4Runtime server calls `xlate_c_to_d(T1_uri, a)`, resulting in a
-10-bit value `b` which is used when configuring the data plane.
+10-bit value `b` which is then used to configure the data plane.
 
 Similarly when the data plane has a 10-bit data plane value `b` of
 type `T1_t` that we want to send to the controller, the P4Runtime
-server calls `xlate_d_to_c(T1_uri, b)`, returning a 32-bit value `a`.
+server calls `xlate_d_to_c(T1_uri, b)`, returning a 32-bit value `a`,
+which is sent in a message to the controller.
 
 Now that we have that case described fairly precisely, let me make up
 a possible behavior for what happens with bit-constrained values of
@@ -532,8 +537,8 @@ server uses to translate values between the controller and the data
 plane.
 
 When the controller sends a P4Runtime message with a 32-bit value `a`
-intended as the value of a bit-constrained value with type `T2_a`, the
-P4Runtime server does this:
+intended as the value for a bit-constrained value with type `T2_a`,
+the P4Runtime server does this:
 
 ```
     // a and tmp_val are 32 bits wide
