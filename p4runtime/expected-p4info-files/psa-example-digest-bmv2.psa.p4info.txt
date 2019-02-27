@@ -65,7 +65,9 @@ actions {
     id: 1
     name: "egress_port"
     bitwidth: 32
-    type_name: "PortId_t"
+    type_name {
+      name: "PortId_t"
+    }
   }
 }
 digests {
@@ -84,20 +86,18 @@ type_info {
   new_types {
     key: "PortId_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/PortId_t"
-          sdn_bitwidth: 32
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/PortId_t"
+        sdn_bitwidth: 32
       }
     }
+  }
+  new_types {
     key: "ClassOfService_t"
     value {
-      representation {
-	translated_type {
-          uri: "p4.org/psa/v1/ClassOfService_t"
-          sdn_bitwidth: 8
-	}
+      translated_type {
+        uri: "p4.org/psa/v1/ClassOfService_t"
+        sdn_bitwidth: 8
       }
     }
   }
