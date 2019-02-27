@@ -8,6 +8,13 @@
         ["srcAddr", 48, false],
         ["etherType", 16, false]
       ]
+    },
+    {
+      "name" : "scalars_0",
+      "id" : 1,
+      "fields" : [
+        ["tmp", 32, false]
+      ]
     }
   ],
   "headers" : [
@@ -16,6 +23,13 @@
       "id" : 0,
       "header_type" : "ethernet_t",
       "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "scalars",
+      "id" : 1,
+      "header_type" : "scalars_0",
+      "metadata" : true,
       "pi_omit" : true
     }
   ],
@@ -121,7 +135,76 @@
   "register_arrays" : [],
   "calculations" : [],
   "learn_lists" : [],
-  "actions" : [],
+  "actions" : [
+    {
+      "name" : "act",
+      "id" : 0,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ethernet", "dstAddr"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "psa-indexed-counter.p4",
+            "line" : 61,
+            "column" : 28,
+            "source_fragment" : "index"
+          }
+        },
+        {
+          "op" : "count",
+          "parameters" : [
+            {
+              "type" : "counter_array",
+              "value" : "cIngress.my_pkt_counts"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "psa-indexed-counter.p4",
+            "line" : 61,
+            "column" : 8,
+            "source_fragment" : "my_pkt_counts.count(index)"
+          }
+        }
+      ]
+    }
+  ],
   "pipelines" : [
     {
       "name" : "ingress",
@@ -132,8 +215,32 @@
         "column" : 8,
         "source_fragment" : "cIngress"
       },
-      "init_table" : null,
-      "tables" : [],
+      "init_table" : "tbl_act",
+      "tables" : [
+        {
+          "name" : "tbl_act",
+          "id" : 0,
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [0],
+          "actions" : ["act"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "act" : null
+          },
+          "default_entry" : {
+            "action_id" : 0,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        }
+      ],
       "action_profiles" : [],
       "conditionals" : []
     },

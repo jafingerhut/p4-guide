@@ -65,3 +65,37 @@ go wrong next.  It starts up fine, but as soon as you send a packet in
 for it to process, it crashes, I believe because like simple_switch it
 is looking for a parser named "parser" in the JSON file, not
 "ingress_parser" as I have changed it to.
+
+
+# psa-indexed-counter
+
+`psa-indexed-counter.p4` is about the simplest PSA program one could
+write that updates an (indexed) counter and drops all received
+packets.  The choice of which counter index to update is based on the
+least significant 8 bits of the Ethernet destination address.
+
+`v1model-indexed-counter.p4` should behave the same way in processing
+all packets, but is written for the v1model architecture.  I wrote it
+because as of now, p4c produces more complete results for more v1model
+architecture programs than it does for the PSA architecture.
+
+Commit of https://github.com/p4lang/p4c used to create these files:
+```
+commit b79021f377e5e6689c30a697c12bdd55b0d8d713
+Author: hemant-avatar3 <48018461+hemant-avatar3@users.noreply.github.com>
+Date:   Tue Feb 26 13:30:27 2019 -0500
+```
+
+Commands run:
+```
+$ p4c-bm2-ss v1model-indexed-counter.p4 -o v1model-indexed-counter.json
+$ p4c-bm2-psa psa-indexed-counter.p4 -o psa-indexed-counter.json
+$ cp psa-indexed-counter.json psa-indexed-counter.hand-edited.json
+```
+
+I then hand-edited the file `psa-indexed-counter.hand-edited.json` to
+add some content based on the v1model-indexed-counter.json file for
+the ingress pipeline code to update the counter, because the original
+`psa-indexed-counter.json` did nothing during ingress to update the
+counter.  That is a bug in p4c-bm2-psa that should be fixed at some
+point, but I have not attempted to analyze the cause.
