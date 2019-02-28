@@ -161,7 +161,7 @@ to run on a P4-programmable switch device, what those tests do _not_
 check is: does the compiled version of the program behave as it
 should?
 
-Some of the test programs are accompanies by another file that has the
+Some of the test programs are accompanied by another file that has the
 same name, except the suffix `.p4` is replaced with `.stf`.  For these
 P4 programs, if you have earlier installed BMv2 `simple_switch` on the
 system, then not only is the P4 program compiled, but it is also
@@ -171,8 +171,8 @@ executed using `simple_switch`, and exercised as follows:
 + Make other kinds of runtime configurations e.g. create mirror/clone
   sessions, or assign lists of output ports to multicast configuration
   groups (optional)
-+ Send packets with contents specified in the STF file into the switch
-  input port numbers, also specified in the file.
++ Send packets, with contents specified in the STF file, into the
+  switch on a particular input port, also specified in the STF file.
 + Record any packets sent by the switch to its output ports.  For each
   one, compare its contents against the expected contents specified in
   the STF file.
@@ -197,17 +197,19 @@ with `expect`.
 
 Here are the contents of a few simple test packets for the program
 `v1model-unicast-or-drop.p4`.  It does not ever change the contents of
-packets.  It either sends the packet as received out of the port
-number that is the least significant 2 bits of the destination
-Ethernet address, unless those 2 bits are 0, in which case it drops
-the packet.
+packets.  It sends the packet as received out of the port number that
+is the least significant 2 bits of the destination Ethernet address,
+unless those 2 bits are 0, in which case it drops the packet.
 
 This simple set of packet tests tries packets with all 4 possible
 values for the least significant 2 bits of the Ethernet destination
 address.
 
 Blank lines are ignored, as are comments starting with a `#`
-character, continuing up to the end of the line.
+character, continuing up to the end of the line.  You may add spaces
+anywhere you wish inside of the packet contents, and they will be
+ignored.  In this case I have chosen to insert spaces between the 3
+fields of the Ethernet header.
 
 ```
 packet 4 000000000001 000000000000 ffff
@@ -224,10 +226,9 @@ packet 2 000000000000 000000000000 ffff
 ```
 
 I am assuming you have created a clone of this repository on your
-local machine: https://github.com/p4lang/p4c repository in the
-directory p4c, and you have already installed `simple_switch`.  If you
-have not done this, you can do so with one of the install scripts
-described
+local machine: https://github.com/p4lang/p4c in the directory p4c, and
+you have already installed `simple_switch`.  If you have not done
+this, you can do so with one of the install scripts described
 [here](https://github.com/jafingerhut/p4-guide/blob/master/bin/README-install-troubleshooting.md).
 
 These are the commands to build `p4c` from source code for the first
@@ -253,8 +254,8 @@ Create a file in that same directory named
 
 The `cmake` command is the one that creates the small test scripts, so
 if you have already built `p4c` from source code, and have not made
-any changes to its source code, you can cause the test scripts to be
-created again with only these commands, which is significantly faster:
+any changes to that code, you can cause the test scripts to be created
+again with only these commands, which is significantly faster:
 
 ```
 $ cd p4c/build
@@ -271,13 +272,14 @@ $ find . | grep v1model-unicast-or-drop
 ```
 
 You can copy and paste either of those path names as a command to run.
-They are executable scripts.  The second one only runs the P4 compiler
-on the code.  The first compiles the code and run BMv2
-`simple_switch`.
+They are very short executable shell scripts.  The second one only
+runs the P4 compiler on the code.  The first compiles the code and
+runs BMv2 `simple_switch`.
 
 Below is sample output when there are no failures:
 ```
-$ ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.testCheck for  /home/jafinger/p4c/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.stf
+$ ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test
+Check for  /home/jafinger/p4c/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.stf
 Calling target program-options parser
 Adding interface pcap1 as port 1 (files)
 Adding interface pcap2 as port 2 (files)
@@ -291,6 +293,9 @@ WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
 WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
 WARNING: more PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
 ```
+
+The last 3 WARNING lines are harmless.  There is no "Test failed"
+output line at the end, so that means the test passed.
 
 You can edit the STF file to make a test that should fail.  For
 example, in the first expect line, change any of the hex digits for
