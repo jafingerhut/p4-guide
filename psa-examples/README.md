@@ -100,6 +100,11 @@ the ingress pipeline code to update the counter, because the original
 counter.  That is a bug in p4c-bm2-psa that should be fixed at some
 point, but I have not attempted to analyze the cause.
 
+Antonin Bas then created his own edited version of that, and the
+result of his changes is called
+`psa-indexed-counter.hand-edited.antonin.json`.  It shows the desired
+additions to the `"extern_instances"` data.
+
 
 # psa-unicast-or-drop.p4
 
