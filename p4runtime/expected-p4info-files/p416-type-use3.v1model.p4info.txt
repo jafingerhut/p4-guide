@@ -331,8 +331,10 @@ type_info {
     key: "CustomTT_t"
     value {
       original_type {
-        new_type {
-          name: "CustomT_t"
+        bitstring {
+          bit {
+            bitwidth: 8
+          }
         }
       }
     }
@@ -353,8 +355,10 @@ type_info {
     key: "CustomDTT_t"
     value {
       original_type {
-        new_type {
-          name: "CustomDT_t"
+        bitstring {
+          bit {
+            bitwidth: 8
+          }
         }
       }
     }
@@ -363,8 +367,10 @@ type_info {
     key: "CustomTDT_t"
     value {
       original_type {
-        new_type {
-          name: "CustomT_t"
+        bitstring {
+          bit {
+            bitwidth: 8
+          }
         }
       }
     }
@@ -373,8 +379,10 @@ type_info {
     key: "CustomTTT_t"
     value {
       original_type {
-        new_type {
-          name: "CustomTT_t"
+        bitstring {
+          bit {
+            bitwidth: 8
+          }
         }
       }
     }

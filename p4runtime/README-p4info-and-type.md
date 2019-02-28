@@ -107,65 +107,63 @@ type_info {
   new_types {
     key: "PortId_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/PortId_t"
-          sdn_bitwidth: 32
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/PortId_t"
+        sdn_bitwidth: 32
       }
     }
+  }
+  new_types {
     key: "MulticastGroup_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/MulticastGroup_t"
-          sdn_bitwidth: 32
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/MulticastGroup_t"
+        sdn_bitwidth: 32
       }
     }
+  }
+  new_types {
     key: "CloneSessionId_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/CloneSessionId_t"
-          sdn_bitwidth: 16
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/CloneSessionId_t"
+        sdn_bitwidth: 16
       }
     }
+  }
+  new_types {
     key: "ClassOfService_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/ClassOfService_t"
-          sdn_bitwidth: 8
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/ClassOfService_t"
+        sdn_bitwidth: 8
       }
     }
+  }
+  new_types {
     key: "PacketLength_t_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/PacketLength_t_t"
-          sdn_bitwidth: 16
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/PacketLength_t_t"
+        sdn_bitwidth: 16
       }
     }
+  }
+  new_types {
     key: "EgressInstance_t_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/EgressInstance_t_t"
-          sdn_bitwidth: 16
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/EgressInstance_t_t"
+        sdn_bitwidth: 16
       }
     }
+  }
+  new_types {
     key: "Timestamp_t_t"
     value {
-      representation {
-        translated_type {
-          uri: "p4.org/psa/v1/Timestamp_t_t"
-          sdn_bitwidth: 64
-        }
+      translated_type {
+        uri: "p4.org/psa/v1/Timestamp_t_t"
+        sdn_bitwidth: 64
       }
     }
   }
@@ -276,6 +274,7 @@ for the following kinds of things:
   from controller to the data plane, defined in the P4Info file in a
   `Metadata` message, if a recently proposed PR is merged in [1].
 
+
 [1] https://github.com/p4lang/p4runtime/pull/188
 
 Later in this section, I will say "bit-constrained values" for
@@ -330,22 +329,27 @@ If the last type is not `bit<W>` or `enum bit<W>`, that is an error
 for P4Runtime v1.0.  The "base" type must always be one of those for
 every bit-constrained value.
 
-If `type_list(x)` contains any `type` names in it, before the `bit<W>`
-or `enum bit<W>` type at the end, then the value of the P4Info
-`type_name` field should be `{name = "first_type_name"}`, where
-`first_type_name` is the first `type` name in `type_list`.
 
-Otherwise, it must be that `type_list` contains only one element, and
-it must be `bit<W>` or `enum bit<W>`.  In this case, the `type_name`
-field should be unset in the P4info message describing the
-bit-constrained value.
+### `type_name` field
 
-If `type_list(x)` contains any `type` names where the `type B T`
-definition in the P4_16 program has a
-`p4runtime_translation(url_string, n)` annotation on it, then find the
-first type name in `type_list(x)` that has such an annotation.  The
-P4Info `bitwidth` field should be assigned the value `n` that is the
-second parameter of that `p4runtime_translation` annotation.
+Let `first_type` be the first element of the list `type_list(x)`.
+
+If `first_type` is a `type` name (i.e. not `bit<W>` or `enum bit<W>`),
+then the value of the P4Info `type_name` field should be `{name =
+"first_type_name"}`, where `first_type_name` is the name of
+`first_type`.
+
+Otherwise, the `type_name` field should be unset in the P4info
+message.
+
+
+### `bitwidth` field
+
+If `first_type` is a `type` name, _and_ if the `type` definition for
+this type has a `p4runtime_translation(uri_string, n)` annotation in
+the source code, then the P4Info `bitwidth` field should be assigned
+the value `n` that is the second parameter of that
+`p4runtime_translation` annotation.
 
 Otherwise, `bitwidth` should be equal to `W` where `bit<W>` or `enum
 bit<W>` is the last element of `type_list(x)`.
@@ -401,12 +405,12 @@ type_name: "T2_t"
 
     Reason: T2_t is the first type name in type_list(f2)
 
-bitwidth: 32
+bitwidth: 10
 
-    Reason: There is a type T1_t with a p4runtime_translation
-    annotation, it is the first type with such an annotation in
-    type_list(f2), and that annotation specifies a control plane width
-    of 32 for T1_t.
+    Reason: Type T2_t is the first type name in type_list(f2), but it
+    has no p4runtime_translation on it, so even though T1_t does, that
+    is ignored.  Use the width 10 from the last element of
+    type_list(f2).
 ```
 
 Based on the P4 code snippet above (copied below for easy reference),
@@ -415,10 +419,9 @@ message describing the program, because of the `type` definitions.
 There is never anything put into a P4Info message because of `typedef`
 definitions in a P4 program.
 
-Note that the bit width of 10 should not appear anywhere in the P4Info
-file, based on this P4 code snippet alone.  It should appear if there
-was another value declared with type `T1uint_t`, but not if no fields
-are declared with that type.
+Note that the bit width of 10 appears in the P4Info file for any
+`type`s "built on top of" a `bit<10>`, _unless that type has its own
+`p4runtime_translation` annotation_.
 
 ```
 typedef bit<10> T1uint_t;
@@ -433,25 +436,23 @@ type_info {
   new_types {
     key: "T1_t"
     value {
-      representation {
-        // translated_type for type T1_t because it has
-        // p4runtime_translation annotation
-        translated_type {
-          uri: "mycompany.com/psa/v1/T1_t"
-          sdn_bitwidth: 32
-        }
+      // translated_type for type T1_t because it has
+      // p4runtime_translation annotation
+      translated_type {
+        uri: "mycompany.com/psa/v1/T1_t"
+        sdn_bitwidth: 32
       }
     }
+  }
+  new_types {
     key: "T2_t"
     value {
-      representation {
-        // original_type for type T2_t because it does not have
-        // a p4runtime_translation annotation
-        original_type {
-          type_spec {
-            new_type {
-              name: "T1_t"
-            }
+      // original_type for type T2_t because it does not have
+      // a p4runtime_translation annotation
+      original_type {
+        bitstring {
+          bit {
+            bitwidth: 10
           }
         }
       }
@@ -463,106 +464,64 @@ type_info {
 
 ## Example 3
 
-It seems to me that it would be very odd if a P4_16 program had a
-bit-constrained value where its `type_list(x)` had more than one
-`type` name in it with a `p4runtime_translation` annotation.  If such
-a program was ever useful to write, it would be good to document:
+It is not clear whether there are strong use cases for declaring a
+`type` based upon another `type` in a P4_16 program.
 
-+ an example of one
-+ why it is useful for there to be more than one
-  `p4runtime_translation` in such a `type_list(x)`, and
-+ what that means for how the P4Runtime server should perform
-  numerical runtime translation for that bit-constrained value.
+However, assuming that the language and compiler allows it, it seems
+to be a good idea to have predictable rules to follow for what the
+P4Info file contents should be, and how the resulting system should
+behave.
 
-Below is an example of a P4 code snippet that demonstrates one example
-of the above, but I do _not_ claim that it is useful for any actual
+In this proposal, the basic idea is to try to keep things fairly
+straightforward to explain and understand if a P4_16 program does so.
+
+If a bit-constrained value is declared with a `type` that has a
+`p4runtime_translation` on it, that one is used.
+
+In the absence of such an annotation on that `type`, no P4runtime
+translation is done for that type, _even if a later type in
+`type_list(x)` does have such an annotation_.  The final type in
+`type_list(x)` is used.
+
+Below is an example of a P4 code snippet that demonstrates one
+example, but I do _not_ claim that it is useful for any actual
 production P4 program to be written this way.
 
 In the absence of a useful example of P4 code like this, it seems like
-it may be a good idea for a P4 compiler to issue a warning or error if
-such a `type_list` is found.
+perhaps it may be a good idea for a P4 compiler to issue a warning or
+error if such a `type_list` is found.
 
 ```
 @p4runtime_translation("mycompany.com/psa/v1/T1_t", 32)
 type bit<10> T1_t;
-@p4runtime_translation("mycompany.com/psa/v1/T2_t", 32)
+@p4runtime_translation("mycompany.com/psa/v1/T2_t", 18)
 type T1_t T2_t;
 T2_t f2;
 ```
 
-Aside: Even stranger than the above example would be one where one of
-the values 32 was a different number, e.g. 16.  Another slightly more
-odd example would be one where more than one type in the same
-`type_list(x)` list had the same URI string on a
-`p4runtime_translation` annotation.
-
-_Perhaps_ there might be one useful way to interpret such an example,
-which I will attempt to describe below.
-
-First, ignore the type `T2_t` for a moment, and focus on what it means
-to declare a bit-constrained value with type `T1_t`.
-
-Let T1_uri be the name of a variable or constant with the value equal
-to the string "mycompany.com/psa/v1/T1_t".  I introduce this name to
-keep some of the expressions below shorter.  Similarly T2_uri has the
-value "mycompany.com/psa/v1/T2_t".
-
-Suppose the P4Runtime server has two functions:
-
-+ `xlate_c_to_d` is an abbrevation for "translate controller value to
-  data plane value".  It takes a URI string as the first parameter,
-  and a controller value as the second, and returns a data plane value
-  as the result.
-+ `xlate_d_to_c` is an abbrevation for "translate data plane value to
-  controller value".  It takes a URI string as the first parameter,
-  and a data plane value as the second, and returns a controller value
-  as the result.
-
-When the controller sends a P4Runtime message with a 32-bit value `a`
-intended as the value of a bit-constrained value with type `T1_t`, the
-P4Runtime server calls `xlate_c_to_d(T1_uri, a)`, resulting in a
-10-bit value `b` which is then used to configure the data plane.
-
-Similarly when the data plane has a 10-bit data plane value `b` of
-type `T1_t` that we want to send to the controller, the P4Runtime
-server calls `xlate_d_to_c(T1_uri, b)`, returning a 32-bit value `a`,
-which is sent in a message to the controller.
-
-Now that we have that case described fairly precisely, let me make up
-a possible behavior for what happens with bit-constrained values of
-type `T2_t`.  I do not know if it is _useful_ in any cases to do the
-following.  The basic idea is that the "stack" of types in the P4
-program defines a "stack" of numeric translations that the P4Runtime
-server uses to translate values between the controller and the data
-plane.
-
-When the controller sends a P4Runtime message with a 32-bit value `a`
-intended as the value for a bit-constrained value with type `T2_a`,
-the P4Runtime server does this:
-
 ```
-    // a and tmp_val are 32 bits wide
-    tmp_val = xlate_c_to_d(T2_uri, a);
-    // b is 10 bits wide
-    b = xlate_c_to_d(T1_uri, tmp_val);
+type_info {
+  new_types {
+    key: "T1_t"
+    value {
+      // translated_type for type T1_t because it has
+      // p4runtime_translation annotation
+      translated_type {
+        uri: "mycompany.com/psa/v1/T1_t"
+        sdn_bitwidth: 32
+      }
+    }
+  }
+  new_types {
+    key: "T2_t"
+    value {
+      // translated_type for type T2_t because it has
+      // p4runtime_translation annotation
+      translated_type {
+        uri: "mycompany.com/psa/v1/T2_t"
+        sdn_bitwidth: 18
+      }
+    }
+  }
+}
 ```
-
-and then uses the value `b` to configure the data plane.
-
-Similarly when the data plane has a 10-bit data plane value `b` of
-type `T2_t` that we want to send to the controller, the P4Runtime
-server does this:
-
-```
-    // b is 10 bits wide, tmp_val is 32 bits wide
-    tmp_val = xlate_d_to_c(T1_uri, b);
-    // a is 32 bits wide
-    a = xlate_d_to_c(T2_uri, tmp_val);
-```
-
-and then uses the value `a` to send in a P4Runtime message to the
-controller.
-
-As I said above, it seems reasonable to me to at least give a warning
-for such cases, and/or simply declare that P4Runtime v1.0 does not
-support such P4 programs.
