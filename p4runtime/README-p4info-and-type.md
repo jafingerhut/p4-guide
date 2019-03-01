@@ -485,11 +485,8 @@ translation is done for that type, _even if a later type in
 
 Below is an example of a P4 code snippet that demonstrates one
 example, but I do _not_ claim that it is useful for any actual
-production P4 program to be written this way.
-
-In the absence of a useful example of P4 code like this, it seems like
-perhaps it may be a good idea for a P4 compiler to issue a warning or
-error if such a `type_list` is found.
+production P4 program to be written this way (until and unless some
+demonstrates a reason why it would be useful).
 
 ```
 @p4runtime_translation("mycompany.com/psa/v1/T1_t", 32)
