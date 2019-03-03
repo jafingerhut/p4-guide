@@ -123,7 +123,7 @@ Date:   Tue Feb 26 13:30:27 2019 -0500
 ```
 
 Commands run:
-```
+```bash
 $ p4c-bm2-ss v1model-unicast-or-drop.p4 -o v1model-unicast-or-drop.json
 $ p4c-bm2-psa psa-unicast-or-drop.p4 -o psa-unicast-or-drop.json
 ```
@@ -135,7 +135,7 @@ I believe that STF is an acronym for Simple Test Framework.
 There are programs that are part of the `p4c` automated test suite
 that, when you build `p4c` on that system, and then run the commands:
 
-```
+```bash
 $ cd p4c/build
 $ make check
 ```
@@ -235,7 +235,7 @@ These are the commands to build `p4c` from source code for the first
 time, assuming you have all of the necessary dependencies installed
 first.
 
-```
+```bash
 $ cd p4c
 $ mkdir build
 $ cd build
@@ -257,7 +257,7 @@ if you have already built `p4c` from source code, and have not made
 any changes to that code, you can cause the test scripts to be created
 again with only these commands, which is significantly faster:
 
-```
+```bash
 $ cd p4c/build
 $ cmake .. -DCMAKE_BUILD_TYPE=DEBUG
 ```
@@ -265,7 +265,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=DEBUG
 One way to find the name of the test script for the program and STF
 file you added above is this:
 
-```
+```bash
 $ find . | grep v1model-unicast-or-drop
 ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test
 ./p4/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test
@@ -277,7 +277,7 @@ runs the P4 compiler on the code.  The first compiles the code and
 runs BMv2 `simple_switch`.
 
 Below is sample output when there are no failures:
-```
+```bash
 $ ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test
 Check for  /home/jafinger/p4c/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.stf
 Calling target program-options parser
@@ -314,7 +314,7 @@ expect 1 200000000001 000000000000 ffff
 You can then run the test script again and see what a failure looks
 like, with some error messages briefly describing why it failed:
 
-```
+```bash
 $ ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test
 Check for  /home/jafinger/p4c/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.stf
 Calling target program-options parser
@@ -335,4 +335,91 @@ WARNING: more PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
 *** Full received packet is  000000000001000000000000FFFF
 *** Packet 0 on port 1 differs
 *** Test failed
+```
+
+There are also options that can be supplied for the command to run one
+test.  To see what they are, you can provide the `-h` option, like
+this:
+
+```bash
+$ ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test -h
+*** Unknown option  -h
+/home/jafinger/p4c/backends/bmv2/run-bmv2-test.py usage:
+/home/jafinger/p4c/backends/bmv2/run-bmv2-test.py rootdir [options] file.p4
+Invokes compiler on the supplied file, possibly adding extra arguments
+`rootdir` is the root directory of the compiler source tree
+options:
+          -b: do not remove temporary results for failing tests
+          -v: verbose operation
+          -p: use psa switch
+          -f: replace reference outputs with newly generated ones
+          -a option: pass this option to the compiler
+          --switch-arg option: pass this general option to the switch
+          --target-specific-switch-arg option: pass this target-specific option to the switch
+          -gdb: run compiler under gdb
+          --pp file: pass this option to the compiler
+          -observation-log <file>: save packet output to <file>
+          --init <cmd>: Run <cmd> before the start of the test
+```
+
+Using the `-v` verbose option causes more messages to appear when you
+run the command, and using the `-b` option causes some temporary files
+to _not_ be deleted when the test is complete.  These temporary files
+are created in a directory named `tmpXXXXXX` where the `XXXXXX` are 6
+randomly generated characters every time a test command is run.  Among
+the files created are `tmpXXXXXX/switch.log.txt`, which is the output
+produced by `simple_switch` when run with the `--log-console` option.
+That output can help greatly in debugging why a particular packet is
+being processed in a different way than you expect.
+
+```bash
+$ ./bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4.test -b -v
+Writing temporary files into  ./tmpCQTDZ5
+Executing  ./p4c-bm2-ss -o bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.json /home/jafinger/p4c/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.p4
+Exit code  0
+Check for  /home/jafinger/p4c/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.stf
+Running model
+Running /home/jafinger/behavioral-model/targets/simple_switch/simple_switch --log-file switch.log --log-flush --use-files 0 --thrift-port 9201 --device-id 111 -i 1@pcap1 -i 2@pcap2 -i 3@pcap3 -i 4@pcap4 ../bmv2/testdata/p4_16_samples/v1model-unicast-or-drop-bmv2.json
+Calling target program-options parser
+Adding interface pcap1 as port 1 (files)
+Adding interface pcap2 as port 2 (files)
+Adding interface pcap3 as port 3 (files)
+Adding interface pcap4 as port 4 (files)
+Running /home/jafinger/behavioral-model/targets/simple_switch/simple_switch_CLI --thrift-port 9201
+STF Command: packet 4 000000000001 000000000000 ffff
+STF Command: expect 1 200000000001 000000000000 ffff
+STF Command: packet 4 000000000002 000000000000 ffff
+STF Command: expect 2 000000000002 000000000000 ffff
+STF Command: packet 4 000000000003 000000000000 ffff
+STF Command: expect 3 000000000003 000000000000 ffff
+STF Command: packet 2 000000000000 000000000000 ffff
+Obtaining JSON from switch...
+Done
+Control utility for runtime P4 table manipulation
+RuntimeCmd: 
+simple_switch exit code -15
+Execution completed
+Comparing outputs
+WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+WARNING: PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+WARNING: more PcapReader: unknown LL type [0]/[0x0]. Using Raw packets
+*** Received packet  000000000001000000000000FFFF
+*** Packet different at position 0 : expected 2 , received 0
+*** Full expected packet is  200000000001000000000000FFFF
+*** Full received packet is  000000000001000000000000FFFF
+*** Packet 0 on port 1 differs
+*** Test failed
+
+$ ls -l tmpCQTDZ5
+total 24
+ 0 prw-r--r-- 1 jafinger jafinger    0 Mar  3 12:48 pcap1_in.pcap|
+ 4 -rw-r--r-- 1 jafinger jafinger   54 Mar  3 12:48 pcap1_out.pcap
+ 0 prw-r--r-- 1 jafinger jafinger    0 Mar  3 12:48 pcap2_in.pcap|
+ 4 -rw-r--r-- 1 jafinger jafinger   54 Mar  3 12:48 pcap2_out.pcap
+ 0 prw-r--r-- 1 jafinger jafinger    0 Mar  3 12:48 pcap3_in.pcap|
+ 4 -rw-r--r-- 1 jafinger jafinger   54 Mar  3 12:48 pcap3_out.pcap
+ 0 prw-r--r-- 1 jafinger jafinger    0 Mar  3 12:48 pcap4_in.pcap|
+ 0 -rw-r--r-- 1 jafinger jafinger    0 Mar  3 12:48 pcap4_out.pcap
+12 -rw-r--r-- 1 jafinger jafinger 9810 Mar  3 12:48 switch.log.txt
+ 0 -rw-r--r-- 1 jafinger jafinger    0 Mar  3 12:48 v1model-unicast-or-drop-bmv2.p4-stderr
 ```
