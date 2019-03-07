@@ -1,11 +1,25 @@
 #! /usr/bin/env python
 
+from __future__ import print_function
 import argparse
 import sys
 
-import google.protobuf.text_format as text_format
-import google.protobuf.pyext as pyext
-import p4.config.v1.p4info_pb2 as p4info_pb2
+try:
+    import google.protobuf.text_format as text_format
+    import google.protobuf.pyext as pyext
+    import p4.config.v1.p4info_pb2 as p4info_pb2
+except Exception as e:
+    print(e)
+    print("""
+Missing one or more Python packages required by this program.
+One way to install them on an Ubuntu 16.04 or 18.04 Linux system is to
+follow the instructions here for running the installation script
+called 'install-p4dev-p4runtime.sh':
+
+https://github.com/jafingerhut/p4-guide/blob/master/bin/README-install-troubleshooting.md
+""")
+    sys.exit(1)
+
 
 def read_p4info_text_format_from_file(fname):
     p4info = p4info_pb2.P4Info()
@@ -67,12 +81,25 @@ def is_p4info_repeated_field_name(x):
         return False
     return True
 
-#fname='/home/jafinger/p4-guide/p4runtime/expected-p4info-files/psa-example-digest-bmv2.psa.p4info.txt'
-fname=sys.argv[1]
-p4info = read_p4info_text_format_from_file(fname)
+parser = argparse.ArgumentParser(description="""
+Read and perform some sanity checks, and summarize some of the contents
+of a P4Runtime P4Info file.
+""")
+parser.add_argument(
+    '-d',
+    '--debug',
+    dest='debug',
+    action='store_true',
+    default=False,
+    help='Print debug information')
+parser.add_argument(
+    dest='input_file', type=str, help='The P4Info input file')
 
-#verbose = False
-verbose = True
+# Parse the input arguments
+args = parser.parse_args()
+
+fname=args.input_file
+p4info = read_p4info_text_format_from_file(fname)
 
 # TBD: Is there a way to get a list of all second parameter values p
 # for which getattr(p4info, p) will return something useful?
@@ -114,35 +141,6 @@ for i1 in range(len(p4info_fields)):
             name = getattr(t1[0], 'name')
             type_info_counts[name] = len(t1[1])
             type_info_names[name] = sorted(t1[1].keys())
-
-
-#    for i2 in range(len(m1)):
-#        if is_field_descriptor(m1[i2]):
-#            assert hasattr(m1[i2], 'name')
-#            assert hasattr(m1[i2], 'full_name')
-#            if verbose:
-#                print('    i2 %d type field name %s full_name %s'
-#                      '' % (i2,
-#                            getattr(m1[i2], 'name', '(none)'),
-#                            getattr(m1[i2], 'full_name', '(none)')))
-#        elif is_composite_container(m1[i2]):
-#            if verbose:
-#                print('    i2 %d type container' % (i2))
-#            assert hasattr(m1[i2], 'name') == False
-#            assert hasattr(m1[i2], 'full_name') == False
-#            for i3 in range(len(m1[i2])):
-#                m2 = m1[i2][i3]
-#                if verbose:
-#                    print('        i3 %d type %s name %s full_name %s'
-#                          '' % (i3, type(m2),
-#                                getattr(m2, 'name', '(none)'),
-#                                getattr(m2, 'full_name', '(none)')))
-#        else:
-#            if verbose:
-#                print('    i2 %d type %s name %s full_name %s'
-#                      '' % (i2, type(m1[i2]),
-#                            getattr(m1[i2], 'name', '(none)'),
-#                            getattr(m1[i2], 'full_name', '(none)')))
 
 for name in sorted(object_counts.keys()):
     assert object_counts[name] == len(object_names[name])
