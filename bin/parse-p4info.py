@@ -55,6 +55,9 @@ def is_field_descriptor_and_value(x):
 def is_composite_container(x):
     return (type(x) is pyext._message.RepeatedCompositeContainer)
 
+def is_scalar_container(x):
+    return (type(x) is pyext._message.RepeatedScalarContainer)
+
 def is_table(x):
     return (type(x) is p4.config.v1.p4info_pb2.Table)
 
@@ -234,7 +237,13 @@ for m1 in p4info.ListFields():
     if field_name == 'type_info':
         for t1 in m1[1].ListFields():
             name = t1[0].name
-            type_info_names[name] = sorted(t1[1].keys())
+            if name == 'error':
+                # The 'error' field inside of the 'type_info' message
+                # has a different type than the others.
+                for e1 in t1[1].ListFields():
+                    type_info_names[name] = list(e1[1])
+            else:
+                type_info_names[name] = sorted(t1[1].keys())
 
 for name in sorted(object_names.keys()):
     print("%d %s - %s" % (len(object_names[name]), name,
