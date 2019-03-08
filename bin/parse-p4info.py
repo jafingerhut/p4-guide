@@ -17,6 +17,10 @@ follow the instructions here for running the installation script
 called 'install-p4dev-p4runtime.sh':
 
 https://github.com/jafingerhut/p4-guide/blob/master/bin/README-install-troubleshooting.md
+
+There are likely smaller sets of software packages one can install to
+enable this script to work, too, but I do not know what the smallest
+set it.
 """)
     sys.exit(1)
 
@@ -25,6 +29,7 @@ def read_p4info_text_format_from_file(fname):
     p4info = p4info_pb2.P4Info()
     f = argparse.FileType('r')(fname)
     text = f.read()
+    # TBD: Better to close file f here?
     text_format.Merge(text, p4info)
     return p4info
 
@@ -32,7 +37,7 @@ def is_field_descriptor(x):
     return (type(x) is pyext._message.FieldDescriptor)
 
 def name_in_preamble(x):
-    return getattr(getattr(x, 'preamble'), 'name')
+    return x.preamble.name
 
 def is_field_descriptor_and_value(x):
     if not (type(x) is tuple):
@@ -81,6 +86,9 @@ def is_p4info_repeated_field_name(x):
         return False
     return True
 
+######################################################################
+# Parse command line arguments
+
 parser = argparse.ArgumentParser(description="""
 Read and perform some sanity checks, and summarize some of the contents
 of a P4Runtime P4Info file.
@@ -95,33 +103,107 @@ parser.add_argument(
 parser.add_argument(
     dest='input_file', type=str, help='The P4Info input file')
 
-# Parse the input arguments
 args = parser.parse_args()
-
 fname=args.input_file
+
+######################################################################
+# Try reading the input file
+
+# Note that this will do a fair amount of checking the syntax and the
+# 'schema' of the input file, e.g. that the P4Info message names are
+# correct, nested in the way that they should be, and that the types
+# of the values are integer/string/etc. as they should be.
+
+######################################################################
+# Here are some things that read_p4info_text_format_from_file _does_
+# raise an exception for, if it detects it while reading a text format
+# P4Info file:
+
+# Any field name present that is not one of those defined in the
+# .proto file, e.g. 'tales' instead of 'tables' at the top level, or
+# 'preable' instead of 'preamble' inside of any message that has a
+# 'preamble' field.  Also 'preamble' correctly spelled at the top
+# level, since a P4Info message has no such field.
+
+# If a value is expected of any one of the following types, but a
+# different one is found, then an exception is raised:
+# + a string, which in the text file has double quotes around it
+# + an integer, which must not have quotes around it
+# + an 'enum' value, e.g. EXACT, LPM, which must not have quotes around it
+
+######################################################################
+# Here are some things that read_p4info_text_format_from_file _does
+# not_ raise an exception for:
+
+# If a valid field name is repeated, the last value is kept, and the
+# earlier ones are silently ignored.
+
+# This example is probably a special case of this is inside of the
+# type_info message, where its fields are Protobuf 'map' type values.
+
+# If you read a text format P4Info file with the text below for its
+# 'type_info' message, it will have two entries in the 'new_types'
+# map:
+
+# type_info {
+#   new_types {
+#     key: "PortId_t"
+#     value {
+#       translated_type {
+#         uri: "p4.org/psa/v1/PortId_t"
+#         sdn_bitwidth: 32
+#       }
+#     }
+#   }
+#   new_types {
+#     key: "ClassOfService_t"
+#     value {
+#       translated_type {
+#         uri: "p4.org/psa/v1/ClassOfService_t"
+#         sdn_bitwidth: 8
+#       }
+#     }
+#   }
+# }
+
+# However, if you delete the second 'new_types {' line and the one
+# right above that, the file will be read with no errors, but the map
+# will only contain the key "ClassOfService_t", not "PortId_t".
+
+# If an action_refs field of a table has an id with a number X, but X
+# appears nowhere else in the file, no exception is raised, even
+# though a correct P4Info message should have an 'actions' message
+# elsewhere in the file with a 'preamble' field, containing an 'id'
+# field with that number X.
+
+# The above is merely one example of such a 'reference' relationship
+# of id values that is not checked by
+# read_p4info_text_format_from_file.  It is likely that no such
+# constraints are checked by that function.
+
 p4info = read_p4info_text_format_from_file(fname)
+
+
+######################################################################
+# Do some minimal sanity checks.  All of them are very fast to
+# perform.  Although some are likely redundant given the checks done
+# by read_p4info_text_format_from_file above, writing them helped me
+# learn the form of the Python data structures used to represent the
+# data.
 
 # TBD: Is there a way to get a list of all second parameter values p
 # for which getattr(p4info, p) will return something useful?
 # ('tables' in dir(p4info)) is False, for example, so dir() does not help there.
 
-object_counts = {}
-object_names = {}
-type_info_counts = {}
-type_info_names = {}
-
-p4info_fields = list(p4info.ListFields())
-for i1 in range(len(p4info_fields)):
-    m1 = p4info_fields[i1]
+for m1 in p4info.ListFields():
     assert is_field_descriptor_and_value(m1)
-    field_name = getattr(m1[0], 'name')
+    field_name = m1[0].name
     if not is_p4info_field_name(field_name):
         print("field_name=%s type %s failed assertion"
               "" % (field_name, type(field_name)))
     assert is_p4info_field_name(field_name)
     if is_composite_container(m1[1]):
-        object_counts[field_name] = len(m1[1])
-        object_names[field_name] = sorted(list(map(name_in_preamble, m1[1])))
+        pass
     else:
         # All fields of a P4Info message are declared 'repeated'
         # except pkg_info and type_info.  It appears that in the
@@ -134,24 +216,31 @@ for i1 in range(len(p4info_fields)):
         assert is_p4info_repeated_field_name(field_name) == False
 
     if field_name == 'type_info':
-        type_info_list = list(m1[1].ListFields())
-        for i2 in range(len(type_info_list)):
-            t1 = type_info_list[i2]
+        for t1 in m1[1].ListFields():
             assert is_field_descriptor_and_value(t1)
-            name = getattr(t1[0], 'name')
-            type_info_counts[name] = len(t1[1])
+
+
+######################################################################
+# Extract and print some summary information about the contents of the
+# P4Info file.
+
+object_names = {}
+type_info_names = {}
+
+for m1 in p4info.ListFields():
+    field_name = m1[0].name
+    if is_composite_container(m1[1]):
+        object_names[field_name] = sorted(list(map(name_in_preamble, m1[1])))
+    if field_name == 'type_info':
+        for t1 in m1[1].ListFields():
+            name = t1[0].name
             type_info_names[name] = sorted(t1[1].keys())
 
-for name in sorted(object_counts.keys()):
-    assert object_counts[name] == len(object_names[name])
-    print("%d %s - %s"
-          "" % (len(object_names[name]), name,
-                ' '.join(object_names[name])))
-if len(type_info_counts) != 0:
+for name in sorted(object_names.keys()):
+    print("%d %s - %s" % (len(object_names[name]), name,
+                          ' '.join(object_names[name])))
+if len(type_info_names) != 0:
     print("type_info details:")
     for name in sorted(type_info_names.keys()):
-        assert type_info_counts[name] == len(type_info_names[name])
-        print("    %d %s - %s"
-              "" % (len(type_info_names[name]),
-                    name,
-                    ' '.join(type_info_names[name])))
+        print("    %d %s - %s" % (len(type_info_names[name]), name,
+                                  ' '.join(type_info_names[name])))
