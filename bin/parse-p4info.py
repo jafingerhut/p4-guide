@@ -18,6 +18,15 @@ from __future__ import print_function
 import argparse
 import sys
 
+# Note for future hackers: Here are a couple of other example Python
+# programs that also extract data out of P4Info files.  They may
+# contain useful code snippets that can be adapted for use in this
+# program.
+
+# https://github.com/p4lang/PI/blob/master/proto/p4info/xform/xform_anno.py
+# https://github.com/p4lang/tutorials/blob/master/utils/p4runtime_lib/helper.py
+# https://github.com/p4lang/tutorials/blob/master/utils/p4runtime_lib/simple_controller.py
+
 try:
     import google.protobuf.text_format as text_format
     import google.protobuf.pyext as pyext
