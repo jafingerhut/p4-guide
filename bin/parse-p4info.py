@@ -34,7 +34,7 @@ https://github.com/jafingerhut/p4-guide/blob/master/bin/README-install-troublesh
 
 There are likely smaller sets of software packages one can install to
 enable this script to work, too, but I do not know what the smallest
-set it.
+set is.
 """)
     sys.exit(1)
 
@@ -155,9 +155,6 @@ fname=args.input_file
 # If a valid field name is repeated, the last value is kept, and the
 # earlier ones are silently ignored.
 
-# This example is probably a special case of this is inside of the
-# type_info message, where its fields are Protobuf 'map' type values.
-
 # If you read a text format P4Info file with the text below for its
 # 'type_info' message, it will have two entries in the 'new_types'
 # map:
@@ -185,7 +182,10 @@ fname=args.input_file
 
 # However, if you delete the second 'new_types {' line and the one
 # right above that, the file will be read with no errors, but the map
-# will only contain the key "ClassOfService_t", not "PortId_t".
+# will only contain the key "ClassOfService_t", not "PortId_t".  This
+# is probably just a special case of the previous not about repeated
+# field names causing only the last occurrence to be preserved, and
+# earlier ones silently ignored.
 
 # If an action_refs field of a table has an id with a number X, but X
 # appears nowhere else in the file, no exception is raised, even
