@@ -1,0 +1,61 @@
+*** v1model-demo.json	2019-03-13 21:32:18.389001000 -0700
+--- v1model-demo.hand-edited.json	2019-03-13 21:34:41.961001000 -0700
+***************
+*** 358,364 ****
+            "parameters" : [
+              {
+                "type" : "field",
+!               "value" : ["scalars", "metadata._fwd_metadata_l2ptr0"]
+              },
+              {
+                "type" : "runtime_data",
+--- 358,364 ----
+            "parameters" : [
+              {
+                "type" : "field",
+!               "value" : ["ig", "meta.fwd_metadata.l2ptr"]
+              },
+              {
+                "type" : "runtime_data",
+***************
+*** 604,610 ****
+              {
+                "match_type" : "exact",
+                "name" : "meta.fwd_metadata.l2ptr",
+!               "target" : ["scalars", "metadata._fwd_metadata_l2ptr0"],
+                "mask" : null
+              }
+            ],
+--- 604,610 ----
+              {
+                "match_type" : "exact",
+                "name" : "meta.fwd_metadata.l2ptr",
+!               "target" : ["ig", "meta.fwd_metadata.l2ptr"],
+                "mask" : null
+              }
+            ],
+***************
+*** 783,788 ****
+--- 783,792 ----
+    "extern_instances" : [],
+    "field_aliases" : [
+      [
++       "ig.meta.fwd_metadata.l2ptr",
++       ["scalars", "metadata._fwd_metadata_l2ptr0"]
++     ],
++     [
+        "queueing_metadata.enq_timestamp",
+        ["standard_metadata", "enq_timestamp"]
+      ],
+***************
+*** 832,835 ****
+      "version" : [2, 18],
+      "compiler" : "https://github.com/p4lang/p4c"
+    }
+! }
+\ No newline at end of file
+--- 836,839 ----
+      "version" : [2, 18],
+      "compiler" : "https://github.com/p4lang/p4c"
+    }
+! }
