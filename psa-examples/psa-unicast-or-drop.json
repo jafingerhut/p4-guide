@@ -258,6 +258,12 @@
         {
           "name" : "tbl_send_to_port",
           "id" : 0,
+          "source_info" : {
+            "filename" : "psa-unicast-or-drop.p4",
+            "line" : 61,
+            "column" : 8,
+            "source_fragment" : "send_to_port(ostd, ..."
+          },
           "key" : [],
           "match_type" : "exact",
           "type" : "simple",
@@ -281,6 +287,12 @@
         {
           "name" : "tbl_ingress_drop",
           "id" : 1,
+          "source_info" : {
+            "filename" : "psa-unicast-or-drop.p4",
+            "line" : 68,
+            "column" : 12,
+            "source_fragment" : "ingress_drop(ostd)"
+          },
           "key" : [],
           "match_type" : "exact",
           "type" : "simple",

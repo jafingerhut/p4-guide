@@ -214,6 +214,12 @@
         {
           "name" : "tbl_act",
           "id" : 0,
+          "source_info" : {
+            "filename" : "v1model-unicast-or-drop.p4",
+            "line" : 55,
+            "column" : 28,
+            "source_fragment" : "="
+          },
           "key" : [],
           "match_type" : "exact",
           "type" : "simple",
@@ -237,6 +243,12 @@
         {
           "name" : "tbl_act_0",
           "id" : 1,
+          "source_info" : {
+            "filename" : "v1model-unicast-or-drop.p4",
+            "line" : 60,
+            "column" : 12,
+            "source_fragment" : "mark_to_drop()"
+          },
           "key" : [],
           "match_type" : "exact",
           "type" : "simple",
