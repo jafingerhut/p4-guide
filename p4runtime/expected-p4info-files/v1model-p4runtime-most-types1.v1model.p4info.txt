@@ -225,7 +225,7 @@ tables {
     name: "hdr.custom.s0"
     bitwidth: 8
     match_type: EXACT
-    type_name {
+    type_name {    # Note: still open question whether this type_name should be here
       name: "serenum_t"
     }
   }
@@ -457,7 +457,7 @@ actions {
     id: 26
     name: "s0"
     bitwidth: 8
-    type_name {
+    type_name {    # Note: still open question whether this type_name should be here
       name: "serenum_t"
     }
   }
