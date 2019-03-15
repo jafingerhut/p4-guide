@@ -106,7 +106,7 @@ type    Custom20_t Custom201_t;
 @p4runtime_translation("mycompany.com/My_Byte8", 18)
 type    Custom20_t Custom202_t;
 
-type    Custom22_t Custom220_t;
+typedef Custom22_t Custom220_t;
 
 typedef Custom002_t  Custom0020_t;
 typedef Custom0020_t Custom00200_t;
