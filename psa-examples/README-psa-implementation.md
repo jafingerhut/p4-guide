@@ -575,7 +575,7 @@ It is recommended that all user-defined header and metadata variables
 have a prefix of `"ig."` for ingress, and `"eg."` for egress.  There
 is no reason to have separate prefixes for ingress parser vs. ingress
 control vs. ingress deparser, since the type of user-defined metadata
-is requires to be the same for those 3 things in PSA, and it is
+is required to be the same for those 3 things in PSA, and it is
 desired and expected that the values modified by the ingress parser
 are visible and available to the ingress control, and if they are
 modified in the ingress control, those values are visible and
