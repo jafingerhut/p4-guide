@@ -25,7 +25,7 @@ tables {
   match_fields {
     id: 3
     name: "hdr.custom.addr2"
-    bitwidth: 48
+    bitwidth: 49
     match_type: EXACT
     type_name {
       name: "Eth2_t"
@@ -281,7 +281,7 @@ actions {
   params {
     id: 3
     name: "addr2"
-    bitwidth: 48
+    bitwidth: 49
     type_name {
       name: "Eth2_t"
     }
@@ -307,7 +307,7 @@ actions {
   params {
     id: 7
     name: "e2"
-    bitwidth: 8
+    bitwidth: 12
     type_name {
       name: "Custom2_t"
     }
@@ -498,7 +498,7 @@ controller_packet_metadata {
   metadata {
     id: 3
     name: "addr2"
-    bitwidth: 48
+    bitwidth: 49
     type_name {
       name: "Eth2_t"
     }
