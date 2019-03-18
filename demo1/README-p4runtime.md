@@ -275,8 +275,8 @@ Any process that you want to have permission to send and receive
 packets on Ethernet interfaces (such as the veth virtual interfaces)
 must run as the super-user root, hence the use of `sudo`:
 
-```base
-sudo scapy
+```bash
+$ sudo scapy
 ```
 
 ```python
