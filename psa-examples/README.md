@@ -249,6 +249,14 @@ Copy the program `v1model-unicast-or-drop.p4` to the directory
 run the STF test if there is an `.stf` file, but also only if the
 program's name ends with `-bmv2.p4`, not merely `.p4`.
 
+Aside: Besides the name ending with '-bmv2.p4' if you want to create
+an STF test, the `p4c` test infrastructure also search the contents of
+the '-bmv2.p4' file for `#include` statements for `v1model.p4` or
+`psa.p4` to decide whether it should run `simple_switch` or
+`psa_switch` as the software switch.  See
+[here](https://github.com/p4lang/p4c/blob/master/backends/bmv2/CMakeLists.txt#L127-L134),
+for example:
+
 Create a file in that same directory named
 `v1model-unicast-or-drop-bmv2.stf` with the same STF contents above.
 
