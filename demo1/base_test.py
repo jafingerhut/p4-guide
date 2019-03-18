@@ -599,7 +599,7 @@ class P4RuntimeTest():
         return req, self.write_request(req, store=(mk is not None))
 
     # A shorter name for send_request_add_entry_to_action, and also
-    # bundles up table name and key into one tupple, and action name
+    # bundles up table name and key into one tuple, and action name
     # and params into another tuple, for the convenience of the caller
     # using some helper functions that create these tuples.
     def table_add(self, table_name_and_key, action_name_and_params):

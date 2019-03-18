@@ -91,16 +91,40 @@ scapy session for sending packets
 I believe we must run scapy as root for it to have permission to send
 packets on veth interfaces.
 
-    sudo scapy
+```bash
+$ sudo scapy
+```
 
-    fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
-    drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
+```python
+fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
+drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 
-    # Send packet at layer2, specifying interface
-    sendp(fwd_pkt1, iface="veth2")
-    sendp(drop_pkt1, iface="veth2")
+# Send packet at layer2, specifying interface
+sendp(fwd_pkt1, iface="veth2")
+sendp(drop_pkt1, iface="veth2")
 
-    fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
-    sendp(fwd_pkt2, iface="veth2")
+fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
+sendp(fwd_pkt2, iface="veth2")
+```
 
 ----------------------------------------
+
+# Last successfully tested with these software versions
+
+For https://github.com/p4lang/p4c
+
+```
+$ git log -n 1 | head -n 3
+commit 704a8a04bd6b810809fed46539a19bad724a64d1
+Author: hemant_mnkcg <hemant@mnkcg.com>
+Date:   Sat Mar 16 09:07:15 2019 -0400
+```
+
+For https://github.com/p4lang/behavioral-model
+
+```
+$ git log -n 1 | head -n 3
+commit f0d030a924b67cd20646528232b5f55159e740ef
+Author: Peter Li <pl488@cornell.edu>
+Date:   Sun Mar 17 01:20:41 2019 -0400
+```
