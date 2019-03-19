@@ -1,8 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-from __future__ import print_function
+
 import os
-import Queue
+import queue
 import subprocess
 import sys
 import time
@@ -76,7 +76,7 @@ def send_pkts_and_capture(intf_name, packet_list):
     process, while capturing packets sent to simple_switch, and
     output by simple_switch, by Scapy sniff() call.'''
 
-    q = Queue.Queue()
+    q = queue.Queue()
     thd = threading.Thread(name="sniff_thread",
                            target=lambda: sniff_record(q, intf_name))
     thd.start()
@@ -97,7 +97,7 @@ def send_pkts_and_capture(intf_name, packet_list):
 
 
 def scapy_pkt_to_hex_str(pkt):
-    return ''.join(map(lambda x: '%02x' % (ord(x)), str(pkt)))
+    return ''.join(['%02x' % (x) for x in bytes(pkt)])
 
 
 
@@ -125,16 +125,16 @@ print(output.rstrip())
 
 assert len(captured_pkt_list) == 1
 cap_pkt = captured_pkt_list[0]
-cap_pkt_str = str(cap_pkt)
-sent_pkt_str = str(sent_pkt)
-if cap_pkt_str == sent_pkt_str:
+cap_pkt_bytes = bytes(cap_pkt)
+sent_pkt_bytes = bytes(sent_pkt)
+if cap_pkt_bytes == sent_pkt_bytes:
     print("GOOD - Captured packet matches sent packet")
 else:
     mismatch_found = False
-    for i in range(min(len(cap_pkt_str), len(sent_pkt_str))):
-        if cap_pkt_str[i] != sent_pkt_str[i]:
+    for i in range(min(len(cap_pkt_bytes), len(sent_pkt_bytes))):
+        if cap_pkt_bytes[i] != sent_pkt_bytes[i]:
             print("At byte position %d sent packet contains 0x%02x but captured packet contains 0x%02x"
-                  "" % (i, ord(sent_pkt_str[i]), ord(cap_pkt_str[i])))
+                  "" % (i, ord(sent_pkt_bytes[i]), ord(cap_pkt_bytes[i])))
             mismatch_found = True
             break
     if mismatch_found:
@@ -150,6 +150,6 @@ the veth implementation is at fault.
 """)
     else:
         print("BAD - Captured packet is %d bytes longer than sent packet - this looks like a known Linux kernel issue for veth interfaces"
-              "" % (len(cap_pkt_str) - len(sent_pkt_str)))
+              "" % (len(cap_pkt_bytes) - len(sent_pkt_bytes)))
 
 clean_veth_pair(intf_name, peer_intf_name)
