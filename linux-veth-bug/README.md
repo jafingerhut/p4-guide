@@ -62,3 +62,4 @@ Kernel version: As output by the `uname -r` command.
 | GOOD    | 4.15.18-041518-generic  | Ubuntu 16.04.5 | installed via ukuu |
 | GOOD    | 4.16.18-041618-generic  | Ubuntu 16.04.5 | installed via ukuu |
 | GOOD    | 4.18.0-14-generic       | Ubuntu 18.10 | installed from Ubuntu via Software Updater |
+| GOOD    | 4.18.0-16-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
