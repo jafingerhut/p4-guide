@@ -5,7 +5,7 @@ that are common across different P4 programs executed using bmv2.
 
 To compile the P4_16 version of the code, in file `demo1.p4_16.p4`:
 
-    p4c --target bmv2 --arch v1model --p4runtime-file demo1.p4_16.p4rt.txt --p4runtime-format text demo1.p4_16.p4
+    p4c --target bmv2 --arch v1model --p4runtime-files demo1.p4_16.p4rt.txt demo1.p4_16.p4
 
 Running that command will create these files:
 
@@ -51,9 +51,12 @@ provided install script.  You can create a brand new clone of the
 
     sudo $P4_INSTALL/PI/proto/sysrepo/install_yangs.sh
 
-Note: It is _normal_ to see many error messages in the window where
-you started `sysrepod` when this command is run.  To check whether the
-command had the intended side effect, run this command:
+Note: It is _normal_ to see many error (`[ERR]`) and warning (`[WRN]`)
+messages in the window where you started `sysrepod`, and many
+`Resolving dependency` and `Skipping installation of ...` messages in
+the window where you ran the `install_yangs.sh` command, when the
+command above is run.  To check whether the command had the intended
+side effect, run this command:
 
     sysrepoctl -l
 
@@ -73,9 +76,9 @@ To get the log to go to a file instead of the console:
     sudo simple_switch_grpc --log-file ss-log --log-flush -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 --no-p4
 
 CHECK THIS: If you see "Add port operation failed" messages in the
-output of the simple_switch_grpc command, it means that one or more of the
-virtual Ethernet interfaces veth2, veth4, etc. have not been created
-on your system.  Search for "veth" in the file
+output of the `simple_switch_grpc` command, it means that one or more
+of the virtual Ethernet interfaces veth2, veth4, etc. have not been
+created on your system.  Search for "veth" in the file
 [`README-using-bmv2.md`](../README-using-bmv2.md`) (top level
 directory of this repository) for a command to create them.
 
