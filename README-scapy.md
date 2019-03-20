@@ -1,14 +1,17 @@
+# Introduction
+
 Some notes on using the Scapy library for generating and decoding
 packet contents.
 
-Prerequisite for the experiments below, after starting an interactive
-Python session using `python` (or whatever the name of the command is
-on your system for starting Python version 2.x, e.g. on some it might
-be `python2`):
+## Prerequisites
+
+For all of the Python interactive sessions shown below, this Python
+`import` statement was done first:
 
 ```python
 from scapy.all import *
 ```
+
 
 ## Create Scapy packet with IPv4 options
 
