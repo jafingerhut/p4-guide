@@ -1,8 +1,8 @@
 # Introduction
 
-The file [`README-scapy.md`](README-scapy.md) was created while using
-the Scapy library for Python2.  This file attempts to update all of
-the code samples there, updating them for using Scapy with Python3.
+Some notes on using the Scapy library for generating and decoding
+packet contents.  It covers both Python2 and Python3, and versions of
+Scapy 2.2 up to 2.4.
 
 
 ## Versions of Scapy
