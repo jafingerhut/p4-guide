@@ -33,27 +33,25 @@ Python3, I do not see much reason to use it over Scapy.
 In summary, to use the original Scapy, updated as of March 2018 to
 work with Python3, and to avoid using kamene:
 
++ DO use `pip` or `pip3` to install the `scapy` package (instructions below)
 + DO NOT install the Ubuntu package `python3-scapy`
 + DO NOT use `pip` or `pip3` to install the `scapy-python3` package
-+ DO use `pip` or `pip3` to install the `scapy` package
 
-Here are commands that on an Ubuntu 16.04 or 18.04 Linux system will
-install the not-kamene version of Scapy.  With the commands shown
-below, it will install the Scapy code within your `$HOME/.local`
-directory.
+On an Ubuntu 16.04 or 18.04 Linux system:
 
 ```bash
 $ sudo apt-get install python3-pip
 $ pip3 install scapy
 ```
 
-Replace `pip3` with `pip` and it will install the not-kamene version
-of Scapy for Python2.
+With the commands above, it will install the Scapy package within your
+`$HOME/.local` directory.  Replace `pip3` with `pip` and it will
+install Scapy for Python2.
 
 The official Scapy web site contains instructions for installing any
-Scapy verson from source code.  I came across this suggestion to
-install the latest version of Scapy using the following command, if
-you like living on the edge:
+Scapy verson from source code.  I found the command below for
+installing the latest development version of Scapy, if you like living
+on the edge:
 
 ```
 $ pip3 install --upgrade git+git://github.com/secdev/scapy
