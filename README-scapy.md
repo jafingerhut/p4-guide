@@ -12,18 +12,17 @@ versions of Scapy for Python3.  A description of the current situation
 as of 2019-Mar-19 is shown below, copied from https://scapy.net on
 that date:
 
-----------------------------------------------------------------------
-An independent fork of Scapy was created from v2.2.0 in 2015, aimed at
-supporting only Python3
-([scapy3k](https://github.com/phaethon/kamene)).  The fork diverged,
-did not follow evolutions and fixes, and has had its own life without
-contributions back to Scapy.  Unfortunately, it has been packaged as
-`python3-scapy` in some distributions, and as `scapy-python3` on PyPI
-leading to confusion amongst users.  It should not be the case anymore
-soon.  Scapy supports Python3 in addition to Python2 since 2.4.0.
-Scapy v2.4.0 should be favored as the official Scapy code base.  The
-fork has been renamed as kamene.
-----------------------------------------------------------------------
+    An independent fork of Scapy was created from v2.2.0 in 2015,
+    aimed at supporting only Python3
+    ([scapy3k](https://github.com/phaethon/kamene)).  The fork
+    diverged, did not follow evolutions and fixes, and has had its own
+    life without contributions back to Scapy.  Unfortunately, it has
+    been packaged as python3-scapy in some distributions, and as
+    scapy-python3 on PyPI leading to confusion amongst users.  It
+    should not be the case anymore soon.  Scapy supports Python3 in
+    addition to Python2 since 2.4.0.  Scapy v2.4.0 should be favored
+    as the official Scapy code base.  The fork has been renamed as
+    kamene.
 
 As of 2019-Mar-19, the Ubuntu 18.04 Linux package `python3-scapy` is
 the kamene version described above.  I am personally going to avoid
