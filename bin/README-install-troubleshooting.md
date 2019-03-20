@@ -12,7 +12,7 @@ tools:
   controller APIs, e.g. the API based upon Thrift.
 
 I have most recently tested them and found them working on
-2019-Feb-23.
+2019-Mar-14.
 
 Things I did that helped this process go smoothly:
 
@@ -33,7 +33,7 @@ Things I did that helped this process go smoothly:
   different host operating system, or on a bare machine, should also
   work:
   + [Ubuntu Desktop 18.04.1](http://releases.ubuntu.com/18.04.1/ubuntu-18.04.1-desktop-amd64.iso) for the amd64 architecture
-  + [Ubuntu Desktop 16.04.5](http://releases.ubuntu.com/16.04/ubuntu-16.04.5-desktop-amd64.iso) for the adm64 architecture
+  + [Ubuntu Desktop 16.04.5](http://releases.ubuntu.com/16.04/ubuntu-16.04.5-desktop-amd64.iso) for the amd64 architecture
 + My machine had 4 GBytes of RAM available.  Less than 2 Gbytes will
   almost certainly not be enough.
 + My machine had at least 10 Gbytes of free disk space before the
