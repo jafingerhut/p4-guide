@@ -12,12 +12,12 @@ Contents:
   * Two install scripts to assist you in building and installing `p4c`
     and `behavioral-model` projects and their dependencies on an
     Ubuntu 16.04 or 18.04 Linux machine:
-    * The older [shell script](bin/install-p4dev.sh) installs
-      `simple_switch`, which uses the older Thrift API protocol to
-      communicate with a controller.
     * The newer [shell script](bin/install-p4dev-p4runtime.sh) also
       installs `simple_switch_grpc`, which uses the newer P4Runtime
       API protocol to communicate with a controller.
+    * The older [shell script](bin/install-p4dev.sh) installs
+      `simple_switch`, which uses the older Thrift API protocol to
+      communicate with a controller.
     * See [here](bin/README-install-troubleshooting.md) for
       trouble-shooting tips on these scripts.
   * A figure with the [dependencies](dependencies.pdf) between these
@@ -52,6 +52,11 @@ Contents:
 
 * Another useful ['cheat sheet'](https://github.com/p4lang/tutorials/blob/master/p4-cheat-sheet.pdf)
   with example snippets of code is in the p4lang/tutorials repository.
+
+* Some [notes](README-scapy.md) on using the Scapy library for
+  creating, editing, and decoding packets, useful when creating test
+  packets to send to a P4 program being tested, especially within the
+  control of a general purpose programming language (i.e. Python).
 
 * A very brief overview of P4 (in about 500 words), to get a flavor
   for what it is like (assuming you are familiar with the programming
