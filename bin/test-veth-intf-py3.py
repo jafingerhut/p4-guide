@@ -11,7 +11,9 @@ import threading
 try:
     from scapy.all import sniff, sendp, Ether, IP, UDP
 except:
-    print("Install Scapy.  On Ubuntu 16.04 or 18.04: 'sudo apt install python3-scapy'")
+    print("Install Scapy.  On Ubuntu 16.04 or 18.04, you can use these commands:")
+    print("    sudo apt-get install python3-pip")
+    print("    pip3 install scapy")
     sys.exit(1)
 
 def clean_veth_pair(veth0, veth1):
