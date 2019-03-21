@@ -618,16 +618,16 @@ class P4RuntimeTest():
         for response in self.stub.Read(request):
             yield response
 
-    def table_dump_data(self, table_name):
+    def make_table_read_request(self, table_name):
         req = p4runtime_pb2.ReadRequest()
         req.device_id = self.device_id
         entity = req.entities.add()
         table = entity.table_entry
         table.table_id = self.get_table_id(table_name)
-        if table_name is None:
-            table_entry.table_id = 0
-        else:
-            table.table_id = self.get_table_id(table_name)
+        return req, table
+
+    def table_dump_data(self, table_name):
+        req, table = self.make_table_read_request(table_name)
         table_entries = []
         for response in self.table_dump_helper(req):
             for entity in response.entities:
@@ -638,7 +638,28 @@ class P4RuntimeTest():
                 table_entries.append(entry)
                 #print(entry)
                 #print('----')
-        return table_entries
+
+        # Now try to get the default action.  I say 'try' because as
+        # of 2019-Mar-21, this is not yet implemented in the open
+        # source simple_switch_grpc implementation, and in that case
+        # the code above will catch the exception and return 'None'
+        # for the table_default_entry value.
+        table_default_entry = None
+        req, table = self.make_table_read_request(table_name)
+        table.is_default_action = True
+        try:
+            for response in self.table_dump_helper(req):
+                for entity in response.entities:
+                    print('entity.WhichOneof("entity")="%s"'
+                          '' % (entity.WhichOneof('entity')))
+                    assert entity.WhichOneof('entity') == 'table_entry'
+                    entry = entity.table_entry
+                    table_default_entry = entity
+        except grpc._channel._Rendezvous as e:
+            print("Caught exception:")
+            print(e)
+
+        return table_entries, table_default_entry
 
     def push_update_add_entry_to_member(self, req, t_name, mk, mbr_id):
         update = req.updates.add()

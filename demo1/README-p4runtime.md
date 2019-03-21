@@ -230,13 +230,21 @@ interface:
 h.table_add(ipv4_da_lpm_key(h, '10.1.0.200', 32), set_l2ptr(81))
 h.table_add(mac_da_key(h, 81), set_bd_dmac_intf(15, '08:de:ad:be:ef:00', 4))
 h.table_add(send_frame_key(h, 15), rewrite_mac('ca:fe:ba:be:d0:0d'))
+
+# There is preliminary support for reading the entries of a table that
+# you can try like this, but right now it prints the P4Runtime
+# messages returned without performing any translation of table,
+# search key field, action, or parameter ids to the corresponding
+# names, so it is not very convenient.
+
+# If someone wants to beat me to implementing such a thing, take a
+# look at the code in base_test.py, especially the table_dump_data
+# method.
+
+h.table_dump_data('ipv4_da_lpm')
 ```
 
-TBD: Let me know if you find a way to read table entries using the
-P4Runtime API via the interactive Python session created above.  There
-must be a way.
-
-Until then, you can examine the existing entries in a table using the
+You can also examine the existing entries in a table using the
 `simple_switch_CLI` command (best from a separate terminal window)
 with the 'table_dump' command:
 
