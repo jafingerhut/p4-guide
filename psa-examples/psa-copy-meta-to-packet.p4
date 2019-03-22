@@ -100,11 +100,19 @@ struct empty_metadata_t {
 // psa_ingress_parser_input_metadata_t fields into an output packet,
 // for debug/test purposes.
 header psa_ingress_parser_input_header_t {
+    // cookie is just a value filled in with a constant, to ease
+    // finding the boundary between headers visually in hex dump of
+    // output packets.
+    bit<16> cookie;
     bit<32> ingress_port;
     bit<8>  packet_path;
 }
 
 header psa_ingress_input_header_t {
+    // cookie is just a value filled in with a constant, to ease
+    // finding the boundary between headers visually in hex dump of
+    // output packets.
+    bit<16> cookie;
     bit<32> ingress_port;
     bit<8>  packet_path;
     bit<64> ingress_timestamp;
@@ -112,11 +120,19 @@ header psa_ingress_input_header_t {
 }
 
 header psa_egress_parser_input_header_t {
+    // cookie is just a value filled in with a constant, to ease
+    // finding the boundary between headers visually in hex dump of
+    // output packets.
+    bit<16> cookie;
     bit<32> egress_port;
     bit<8>  packet_path;
 }
 
 header psa_egress_input_header_t {
+    // cookie is just a value filled in with a constant, to ease
+    // finding the boundary between headers visually in hex dump of
+    // output packets.
+    bit<16> cookie;
     bit<8>  class_of_service;
     bit<32> egress_port;
     bit<8>  packet_path;
@@ -153,6 +169,7 @@ parser ingressParserImpl(packet_in packet,
         // Copy PSA standard metadata into header that will go out
         // with the packet
         hdr.igpi.setValid();
+        hdr.igpi.cookie = 0xcafe;
         hdr.igpi.ingress_port = (bit<32>) (PortIdUint_t) istd.ingress_port;
         hdr.igpi.packet_path = convert_packetpath_to_bit(istd.packet_path);
 
@@ -176,6 +193,7 @@ control ingressImpl(inout headers_t hdr,
 {
     apply {
         hdr.igi.setValid();
+        hdr.igi.cookie = 0xd00d;
         hdr.igi.ingress_port = (bit<32>) (PortIdUint_t) istd.ingress_port;
         hdr.igi.packet_path = convert_packetpath_to_bit(istd.packet_path);
         hdr.igi.ingress_timestamp = (bit<64>) (TimestampUint_t) istd.ingress_timestamp;
@@ -208,6 +226,7 @@ parser egressParserImpl(packet_in packet,
         // Copy PSA standard metadata into header that will go out
         // with the packet
         hdr.egpi.setValid();
+        hdr.egpi.cookie = 0xdead;
         hdr.egpi.egress_port = (bit<32>) (PortIdUint_t) istd.egress_port;
         hdr.egpi.packet_path = convert_packetpath_to_bit(istd.packet_path);
 
@@ -222,6 +241,7 @@ control egressImpl(inout headers_t hdr,
 {
     apply {
         hdr.egi.setValid();
+        hdr.egi.cookie = 0xbeef;
         hdr.egi.class_of_service = (bit<8>) (ClassOfServiceUint_t) istd.class_of_service;
         hdr.egi.egress_port = (bit<32>) (PortIdUint_t) istd.egress_port;
         hdr.egi.packet_path = convert_packetpath_to_bit(istd.packet_path);
