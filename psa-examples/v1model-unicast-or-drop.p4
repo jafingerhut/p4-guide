@@ -32,24 +32,26 @@ struct headers_t {
 struct metadata_t {
 }
 
-control DeparserI(packet_out packet,
-                  in headers_t hdr) {
+control deparserImpl(packet_out packet,
+                     in headers_t hdr)
+{
     apply { packet.emit(hdr.ethernet); }
 }
 
-parser parserI(packet_in pkt,
-               out headers_t hdr,
-               inout metadata_t meta,
-               inout standard_metadata_t stdmeta) {
+parser parserImpl(packet_in packet,
+                  out headers_t hdr,
+                  inout metadata_t meta,
+                  inout standard_metadata_t stdmeta)
+{
     state start {
-        pkt.extract(hdr.ethernet);
+        packet.extract(hdr.ethernet);
         transition accept;
     }
 }
 
-control cIngress(inout headers_t hdr,
-                 inout metadata_t meta,
-                 inout standard_metadata_t stdmeta)
+control ingressImpl(inout headers_t hdr,
+                    inout metadata_t meta,
+                    inout standard_metadata_t stdmeta)
 {
     apply {
         stdmeta.egress_spec = (bit<9>) hdr.ethernet.dstAddr[1:0];
@@ -62,25 +64,23 @@ control cIngress(inout headers_t hdr,
     }
 }
 
-control cEgress(inout headers_t hdr,
-                inout metadata_t meta,
-                inout standard_metadata_t stdmeta) {
+control egressImpl(inout headers_t hdr,
+                   inout metadata_t meta,
+                   inout standard_metadata_t stdmeta) {
     apply { }
 }
 
-control vc(inout headers_t hdr,
-           inout metadata_t meta) {
+control verifyChecksum(inout headers_t hdr, inout metadata_t meta) {
     apply { }
 }
 
-control uc(inout headers_t hdr,
-           inout metadata_t meta) {
+control updateChecksum(inout headers_t hdr, inout metadata_t meta) {
     apply { }
 }
 
-V1Switch(parserI(),
-    vc(),
-    cIngress(),
-    cEgress(),
-    uc(),
-    DeparserI()) main;
+V1Switch(parserImpl(),
+         verifyChecksum(),
+         ingressImpl(),
+         egressImpl(),
+         updateChecksum(),
+         deparserImpl()) main;
