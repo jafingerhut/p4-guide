@@ -59,7 +59,7 @@ control CommonDeparserImpl(packet_out packet,
     }
 }
 
-control IngressDeparserImpl(packet_out packet,
+control ingressDeparserImpl(packet_out packet,
                             out empty_metadata_t clone_i2e_meta,
                             out empty_metadata_t resubmit_meta,
                             out empty_metadata_t normal_meta,
@@ -73,7 +73,7 @@ control IngressDeparserImpl(packet_out packet,
     }
 }
 
-control EgressDeparserImpl(packet_out packet,
+control egressDeparserImpl(packet_out packet,
                            out empty_metadata_t clone_e2e_meta,
                            out empty_metadata_t recirculate_meta,
                            inout headers_t hdr,
@@ -89,10 +89,10 @@ control EgressDeparserImpl(packet_out packet,
 
 IngressPipeline(ingressParserImpl(),
                 ingressImpl(),
-                IngressDeparserImpl()) ip;
+                ingressDeparserImpl()) ip;
 
 EgressPipeline(egressParserImpl(),
                egressImpl(),
-               EgressDeparserImpl()) ep;
+               egressDeparserImpl()) ep;
 
 PSA_Switch(ip, PacketReplicationEngine(), ep, BufferingQueueingEngine()) main;
