@@ -146,6 +146,8 @@ header psa_egress_deparser_input_header_t {
 }
 
 struct metadata_t {
+    PortId_t parser_input_port;
+    PSA_PacketPath_t parser_input_packet_path;
 }
 
 struct headers_t {
@@ -166,13 +168,8 @@ parser ingressParserImpl(packet_in packet,
                          in empty_metadata_t recirculate_meta)
 {
     state start {
-        // Copy PSA standard metadata into header that will go out
-        // with the packet
-        hdr.igpi.setValid();
-        hdr.igpi.cookie = 0xcafe;
-        hdr.igpi.ingress_port = (bit<32>) (PortIdUint_t) istd.ingress_port;
-        hdr.igpi.packet_path = convert_packetpath_to_bit(istd.packet_path);
-
+        meta.parser_input_port = istd.ingress_port;
+        meta.parser_input_packet_path = istd.packet_path;
         packet.extract(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
             0x0800: parse_ipv4;
@@ -192,6 +189,13 @@ control ingressImpl(inout headers_t hdr,
                     inout psa_ingress_output_metadata_t ostd)
 {
     apply {
+        // Copy PSA standard metadata into header that will go out
+        // with the packet
+        hdr.igpi.setValid();
+        hdr.igpi.cookie = 0xcafe;
+        hdr.igpi.ingress_port = (bit<32>) (PortIdUint_t) meta.parser_input_port;
+        hdr.igpi.packet_path = convert_packetpath_to_bit(meta.parser_input_packet_path);
+
         hdr.igi.setValid();
         hdr.igi.cookie = 0xd00d;
         hdr.igi.ingress_port = (bit<32>) (PortIdUint_t) istd.ingress_port;
@@ -223,13 +227,8 @@ parser egressParserImpl(packet_in packet,
                         in empty_metadata_t clone_e2e_meta)
 {
     state start {
-        // Copy PSA standard metadata into header that will go out
-        // with the packet
-        hdr.egpi.setValid();
-        hdr.egpi.cookie = 0xdead;
-        hdr.egpi.egress_port = (bit<32>) (PortIdUint_t) istd.egress_port;
-        hdr.egpi.packet_path = convert_packetpath_to_bit(istd.packet_path);
-
+        meta.parser_input_port = istd.egress_port;
+        meta.parser_input_packet_path = istd.packet_path;
         transition accept;
     }
 }
@@ -240,6 +239,13 @@ control egressImpl(inout headers_t hdr,
                    inout psa_egress_output_metadata_t ostd)
 {
     apply {
+        // Copy PSA standard metadata into header that will go out
+        // with the packet
+        hdr.egpi.setValid();
+        hdr.egpi.cookie = 0xdead;
+        hdr.egpi.egress_port = (bit<32>) (PortIdUint_t) meta.parser_input_port;
+        hdr.egpi.packet_path = convert_packetpath_to_bit(meta.parser_input_packet_path);
+
         hdr.egi.setValid();
         hdr.egi.cookie = 0xbeef;
         hdr.egi.class_of_service = (bit<8>) (ClassOfServiceUint_t) istd.class_of_service;
