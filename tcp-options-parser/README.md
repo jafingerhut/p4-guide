@@ -20,14 +20,20 @@ parsers:
     arithmetic to modify its value, depending upon the contents of
     various header bytes.
 
-As of 2017-Jul-08, the P4_16 compiler `p4test` in
-https://github.com/p4lang/p4c compiles tcp-options-parser.p4 without
-any errors, but `p4c-bm2-ss` gives an error that Tcp_option_h is not a
-header type.  This is because as of that date the bmv2 back end code
-in `p4c-bm2-ss` code does not yet handle header_union.
+As of 2019-Mar-24, the P4_16 compiler https://github.com/p4lang/p4c
+compiles `tcp-options-parser.p4` without any compilation errors:
 
-tcp-options-parser2.p4 is a somewhat modified version that does not
-use the header_union feature of the P4 language, but as a result it
-also does not parse TCP options correctly.  It can be compiled with
-both `p4test` and `p4c-bm2-ss`, which is the only reason why it was
-created.
+```bash
+p4test tcp-options-parser.p4
+p4c --target bmv2 --arch v1model tcp-options-parser.p4
+```
+
+`p4c` as of that date now has better support for `header_union` than
+it had in 2017.  I have not tested whether the compiled program
+executes correctly using `simple_switch`.
+
+`tcp-options-parser2.p4` is a somewhat modified version that does not
+use the `header_union` feature of the P4 language, but as a result it
+also does not parse TCP options correctly.  The only reason that
+variation was created was that it compiled without error using older
+versions of `p4c` (e.g. circa 2017).
