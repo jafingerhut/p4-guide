@@ -173,6 +173,7 @@ control ingressImpl(inout headers_t hdr,
         hdr.igi.instance_type = stdmeta.instance_type;
         hdr.igi.ingress_global_timestamp = (bit<64>) stdmeta.ingress_global_timestamp;
         hdr.igi.parser_error = convert_error_to_bit(stdmeta.parser_error);
+        hdr.igi.checksum_error = (bit<8>) stdmeta.checksum_error;
 
         stdmeta.egress_spec = (bit<9>) hdr.ethernet.dstAddr[1:0];
         if (hdr.ethernet.dstAddr[1:0] == 0) {
