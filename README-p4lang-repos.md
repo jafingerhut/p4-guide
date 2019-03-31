@@ -22,7 +22,7 @@ all you need:
   (also compiles P4_14 programs)
 * [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
   Rewrite of the behavioral model as a C++ project without
-  auto-generated code (except for the PD interface)
+  auto-generated code
 
 The bash shell script [`bin/install-p4dev.sh`](bin/install-p4dev.sh)
 can do this for an Ubuntu 16.04 Linux machine, with no interaction
@@ -39,20 +39,27 @@ repositories.
 
 [p4lang organization](https://github.com/p4lang/) on Github
 
-All p4lang repositories as of 2017-Mar-10, sorted by name (case
+All p4lang repositories as of 2019-Mar-31, sorted by name (case
 insensitive), with their descriptions:
 
 * [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
   Rewrite of the behavioral model as a C++ project without
-  auto-generated code (except for the PD interface)
+  auto-generated code
+* [`education`](https://github.com/p4lang/education) - P4 for Education
+* [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
+  grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
+  C#) (forked from grpc/grpc)
 * [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
   prototyping of Software Defined Networks http://mininet.org (forked
   from [mininet/mininet](https://github.com/mininet/mininet))
 * [`ntf`](https://github.com/p4lang/ntf) - Network Test Framework
+* [`p4-applications`](https://github.com/p4lang/p4-applications) - P4
+  Applications WG repo
 * [`p4-build`](https://github.com/p4lang/p4-build) - Infrastructure
   needed to generate, build and install the PD library for a given P4
   program
 * [`p4-hlir`](https://github.com/p4lang/p4-hlir) - (No description)
+* [`p4-spec`](https://github.com/p4lang/p4-spec) - (No description)
 * [`p4app`](https://github.com/p4lang/p4app) - (No description)
 * [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
   (also compiles P4_14 programs)
@@ -63,13 +70,23 @@ insensitive), with their descriptions:
   PD code
 * [`p4factory`](https://github.com/p4lang/p4factory) - Compile P4 and
   run the P4 behavioral simulator.  Deprecated.
+* [`p4lang.github.io`](https://github.com/p4lang/p4lang.github.io) -
+  P4.org website
 * [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
   on a P4 dataplane
+* [`p4runtime`](https://github.com/p4lang/p4runtime) - Specification
+  documents for the P4Runtime control-plane API
 * [`papers`](https://github.com/p4lang/papers) - Repository for papers
   related to P4
-* [`PI`](https://github.com/p4lang/PI) - P4 PI headers and
-  target-independent code
+* [`PI`](https://github.com/p4lang/PI) - An implementation framework
+  for a P4Runtime server
+* [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
+  - Google's data interchange format (forked from
+  protocolbuffers/protobuf)
 * [`ptf`](https://github.com/p4lang/ptf) - Packet Test Framework
+* [`rules_protobuf`](https://github.com/p4lang/rules_protobuf) - Bazel
+  rules for building protocol buffers and gRPC services (java, c++,
+  go, ...) (forked from pubref/rules_protobuf)
 * [`SAI`](https://github.com/p4lang/SAI) - Switch Abstraction
   Interface (forked from
   [opencomputeproject/SAI](https://github.com/opencomputeproject/SAI))
@@ -103,20 +120,15 @@ Excerpt from 2017-Mar-07 email from Antonin Bas on p4-dev email list
 A few projects have intentionally been placed into more than one
 category.
 
-Remaining to be categorized:
+Specification documents:
 
-* [`p4-build`](https://github.com/p4lang/p4-build) - Infrastructure
-  needed to generate, build and install the PD library for a given P4
-  program
-* [`p4app`](https://github.com/p4lang/p4app) - (No description)
-* [`p4factory`](https://github.com/p4lang/p4factory) - Compile P4 and
-  run the P4 behavioral simulator.  Deprecated.
-* [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
-  on a P4 dataplane
-* [`PI`](https://github.com/p4lang/PI) - P4 PI headers and
-  target-independent code
-* [`switch`](https://github.com/p4lang/switch) - Consolidated switch
-  repo (API, SAI and Netlink)
+* [`p4-spec`](https://github.com/p4lang/p4-spec) - Contains
+  specification documents for the P4_14 language, the P4_16 language,
+  and Portable Switch Architecture (PSA).
+* [`p4runtime`](https://github.com/p4lang/p4runtime) - Specification
+  documents for the P4Runtime control-plane API
+* [`p4-applications`](https://github.com/p4lang/p4-applications) - P4
+  Applications WG repo
 
 Documentation, research papers, and tutorials:
 
@@ -124,6 +136,9 @@ Documentation, research papers, and tutorials:
   related to P4
 * [`tutorials`](https://github.com/p4lang/tutorials) - P4 language
   tutorials
+* [`education`](https://github.com/p4lang/education) - P4 for Education
+* [`p4lang.github.io`](https://github.com/p4lang/p4lang.github.io) -
+  P4.org website
 
 P4 compilers, some only front end, some front end plus back end for
 one or more P4 targets:
@@ -145,14 +160,36 @@ computers:
 
 * [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
   Rewrite of the behavioral model as a C++ project without
-  auto-generated code (except for the PD interface).  Also known as
-  `bmv2`.
+  auto-generated code.  Also known as `bmv2`.
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
   compiler for the behavioral model.  Deprecated.
+
+P4Runtime API specification and some implementation code, both client
+and server code:
+
+* [`p4runtime`](https://github.com/p4lang/p4runtime) - Specification
+  documents for the P4Runtime control-plane API
+* [`PI`](https://github.com/p4lang/PI) - An implementation framework
+  for a P4Runtime server
+* [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
+  grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
+  C#) (forked from grpc/grpc)
+* [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
+  - Google's data interchange format (forked from
+  protocolbuffers/protobuf)
 
 Open source tools created by organizations other than p4.org, used by
 one or more `p4lang` repositories:
 
+* [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
+  grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
+  C#) (forked from grpc/grpc)
+* [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
+  - Google's data interchange format (forked from
+  protocolbuffers/protobuf)
+* [`rules_protobuf`](https://github.com/p4lang/rules_protobuf) - Bazel
+  rules for building protocol buffers and gRPC services (java, c++,
+  go, ...) (forked from pubref/rules_protobuf)
 * [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
   prototyping of Software Defined Networks http://mininet.org (forked
   from [mininet/mininet](https://github.com/mininet/mininet))
@@ -177,6 +214,21 @@ For creating and running automated tests:
 * [`scapy-vxlan`](https://github.com/p4lang/scapy-vxlan) - A scapy
   clone, with support for additional packet headers
 
+Remaining to be categorized, but as they have not been updated in
+quite some time as of 2019-Mar-31, they are most likely no longer
+maintained:
+
+* [`p4-build`](https://github.com/p4lang/p4-build) - Infrastructure
+  needed to generate, build and install the PD library for a given P4
+  program
+* [`p4app`](https://github.com/p4lang/p4app) - (No description)
+* [`p4factory`](https://github.com/p4lang/p4factory) - Compile P4 and
+  run the P4 behavioral simulator.  Deprecated.
+* [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
+  on a P4 dataplane
+* [`switch`](https://github.com/p4lang/switch) - Consolidated switch
+  repo (API, SAI and Netlink)
+
 
 ## `p4lang` repository descriptions
 
@@ -188,26 +240,23 @@ Glossary:
 * `bmv2 JSON configuration file` - a data file produced by some of the
   compilers below that is read by the bmv2 behavioral model during
   initialization.  Contains all data about a particular source P4
-  program that is needed by the behavioral model code to forward
+  program that is needed by the behavioral model code to process
   packets as that P4 program specifies.
 * `HLIR` - High Level Intermediate Representation.  See IR.
 * `IR` - Intermediate Representation - data structures created as a
   result of parsing P4 source code, representing all relevant details
   about the source code needed for the back end portion of a compiler
   to generate configuration specific to a particular P4 target.
-* `PD API` - Protocol Dependent API ?  TBD where to find out more
+* `PD API` - Program Dependent API ?  TBD where to find out more
   about this.
-* `PI API` - Protocol Independent API.  See `PI` repository [docs
+* `PI API` - Program Independent API.  See `PI` repository [docs
   directory](https://github.com/p4lang/PI/blob/master/docs/msg_format.md)
   for some more about this, although I do not know if that particular
   document is up to date with the code.
-* `v1.0.x` - As of 2017-Mar-12, v1.0.3 is the latest version of the P4
-  specification in the v1.0.x series, although there is a v1.0.4
-  planned by the P4 language design committee to clarify a few things,
-  e.g. eliminating the portion of the specification that says that
-  primitive actions within a compound action are to be performed in
-  parallel -- v1.0.4 will specify sequential behavior within a
-  compound action.
+* `v1.0.x` - As of 2019-Mar-31, v1.0.5 is the latest version of the
+  P4_14 specification in the v1.0.x series.  Since v1.0.3 the updates
+  have been small, and primarily modify the specification to make it
+  more closely match existing implementations.
 * `v1.1.x` - As of 2016-Dec-14 when a draft version of the P4_16
   language specification was released, the v1.1.x series of
   specifications was no longer publicized and effectively deprecated.
