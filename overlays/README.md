@@ -15,7 +15,7 @@ for creating an overlay is of this form:
 <type_specifier> <alias_name> = <call_to_overlay_function> (<parameters>);
 ```
 
-Here is a more fleshed out code snippet:
+Here is a more fleshed out block of code:
 
 ```
 // code block (A)
@@ -247,3 +247,149 @@ code block (B) above:
 // code block (F)
 storage1 = alias1;
 ```
+
+
+## "Stacking" overlays, and determining whether an overlay alias can be an L-value
+
+If overlays can "stack" on top of each other, that seems to make it
+more subtle for a human to determine whether the overlay makes
+multiple aliases of "original storage bits", and thus whether the
+alias can be used as an L-value or not.  It appears to me that it
+should be straightforward for the compiler to determine this.
+
+```
+// code block (A)
+T1 x = myOverlayFunction(param1, param2, ...);
+```
+
+Terminology:
+
+`x` is an "alias".  It does not have its own separate storage.  It is
+another name for storage bits that were already allocated before the
+statement above occurred.
+
+`myOverlayFunction` is an overlay "function", or OF for short.
+
+`param1` and `param2` are OF parameters.  In the simplest case where
+there is no stacking, they are always names of storage bits,
+i.e. ordinary P4 variables.
+
+So now all names are either names of ordinary variables, i.e. storage
+bits, or they are aliases.
+
+A non-stacked alias can be represented as a graph, with one node for
+each bit of the alias, and another node for each storage bit.
+
+Every alias node has one out-edge that leads to the storage bit for
+which it is an alias.
+
+The out-degree of every alias node is always 1.
+
+The in-degree of a storage bit can be 0 if the overlay does not refer
+to it at all, 1 if it is aliased by only one alias bit, or more than
+one if it is aliased by multiple alias bits.
+
+According to the current overlay proposal, the in-degree of storage
+bits can be more than one, but if this is true for an OF, then the
+aliases created using that OF cannot be used as L-values.
+
+Reason: If different values were assigned to different aliases of the
+same original storage bit, we would need to define some rule for which
+of several bit values would be written to the storage bit.  Or, we
+could say that the final value of the storage bit was unspecified
+after such an assignment.  Either way, it seems confusing to allow
+such an alias as an L-value.
+
+If for a single OF the in-degree of all storage bits is at most one,
+then aliases created by that OF can be used as L-values.  It is
+well-defined what should be written into each storage bit when a value
+is assigned to the alias.
+
+Now, suppose we also allow the seemingly reasonable flexibility that
+the same OF, or multiple different OFs, can be called on the same
+original storage bits, and each creates its own alias.  Thus a storage
+bit can have an in-degree more than one not because a single OF causes
+it, but because across multiple aliases, the storage bit has multiple
+aliases.  Disallowing this would seem to prevent the
+multiple-field-lists-chosen-by-hash-extern proposal of Calin and
+Antonin.
+
+TBD: Give link to Github comment containing this proposal.
+
+Even so, as long as OFs cannot stack on top of each other, we can look
+at the definition of a single OF and know whether aliases created by
+it can be L-values or not.
+
+Now suppose we generalize things a bit more, and allow OFs to take
+_alias names_ as parameters.
+
+Now the aliasing graphs can have alias bit nodes that have out-edges
+leading to other alias bit nodes.  For each alias bit node, there is a
+unique path following out-edges only that eventually leads to a single
+storage bit node.  The path lengths are always exactly one without
+stacking, but can be length two or more if stacking is allowed.
+
+Furthermore, even if no individual OF causes in-degree larger than one
+to a storage bit node, a stack could.
+
+Example:
+
+```
+// code block (B)
+
+struct T1_t {
+    bit<1> a;
+    bit<1> b;
+    bit<1> c;
+}
+
+struct T2_t {
+    bit<1> p;
+    bit<1> q;
+}
+
+struct T3_t {
+    bit<1> i;
+    bit<1> j;
+    bit<1> k;
+    bit<1> l;
+}
+
+T2_t MyOF1 (T1_t p1) {
+    p = p1.a;
+    q = p1.b;
+}
+
+T2_t MyOF2 (T1_t p1) {
+    p = p1.b;
+    q = p1.c;
+}
+
+T3_t MyOF3 (T2_t p1, T2_t p2) {
+    i = p1.p;
+    j = p1.q;
+    k = p2.p;
+    l = p2.q;
+}
+
+T1_t storage1;
+T2_t alias1 = MyOF1(storage1);
+T2_t alias2 = MyOF2(storage1);
+T3_t alias3 = MyOF3(alias1, alias2);
+```
+
+The alias graph looks like this:
+
+```
+    alias3.i ----> alias1.p ----> storage1.a
+
+    alias3.j ----> alias1.q ----> storage1.b
+                              /
+    alias3.k ----> alias2.p --
+
+    alias3.l ----> alias2.q ----> storage1.c
+```
+
+Each individual OF by itself cannot create multiple aliases for the
+same storage bit.  But in combination, with stacking allowed, they
+can.
