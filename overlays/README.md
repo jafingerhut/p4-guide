@@ -312,9 +312,8 @@ bit can have an in-degree more than one not because a single OF causes
 it, but because across multiple aliases, the storage bit has multiple
 aliases.  Disallowing this would seem to prevent the
 multiple-field-lists-chosen-by-hash-extern proposal of Calin and
-Antonin.
-
-TBD: Give link to Github comment containing this proposal.
+Antonin.  See the heading "2. Overlays" in [this Github
+comment](https://github.com/p4lang/p4-spec/issues/744#issuecomment-473160745).
 
 Even so, as long as OFs cannot stack on top of each other, we can look
 at the definition of a single OF and know whether aliases created by
