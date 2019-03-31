@@ -32,9 +32,10 @@ Contents:
     carefully one may learn some things about the P4_16 language.
   * Each of the demo directories includes its own README.md file with
     instructions for compiling the program and running it with the
-    `simple_switch` emulator from the `behavioral-model` repository,
-    including interactively adding table entries to the tables, and
-    send packets using Scapy that will be processed by the emulator.
+    `simple_switch` software switch from the `behavioral-model`
+    repository, including interactively adding table entries to the
+    tables, and send packets using Scapy that will be processed by the
+    software switch.
 
 * [Instructions](README-editor-support.md) for setting up several text
   editing programs for color highlighting P4 programs, and quickly
