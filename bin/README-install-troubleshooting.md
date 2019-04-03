@@ -52,14 +52,14 @@ Things I did that helped this process go smoothly:
   of the scripts -- some occur near the end of running the script.
 
 Below are the commands I ran in a terminal window, after booting up
-the fresh Ubuntu Linux installation.  Replace `install-p4dev.sh` with
-`install-p4dev-p4runtime.sh` if you want to install the P4Runtime
-software, too.
+the fresh Ubuntu Linux installation.  Replace
+`install-p4dev-p4runtime.sh` with `install-p4dev.sh` if you do not
+want to install the P4Runtime software.
 
 ```
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
-$ ./p4-guide/bin/install-p4dev.sh |& tee log.txt
+$ ./p4-guide/bin/install-p4dev-p4runtime.sh |& tee log.txt
 ```
 
 The `|& tee log.txt` part of the command is not necessary for the
