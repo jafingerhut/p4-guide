@@ -20,8 +20,8 @@ limitations under the License.
 // finish ingress processing for a newly received packet from a switch
 // port.
 
-// To continue processing the packet after resubmitting, each has a
-// minimum requirement for a different subset of metadata calculated
+// To continue processing the packet after resubmitting, each case has
+// a minimum requirement for a different subset of metadata calculated
 // during the previous pass to be preserved.
 
 // Each of these subsets of metadata is large enough that we want to
@@ -223,7 +223,7 @@ control ingress {
         // t_first_pass_t2.  In general, the last resubmit() call
         // should have its field list preserved.  Each resubmit() call
         // causes any earlier resubmit() calls made during the same
-        // call to the ingress control to be "forgotten".
+        // execution of the ingress control to be "forgotten".
         apply(t_first_pass_t2);
         // Also note that any modifications made to field values in a
         // field_list given to resubmit(), _after_ the resubmit call

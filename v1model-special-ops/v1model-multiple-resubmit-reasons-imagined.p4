@@ -262,8 +262,30 @@ control ingress(inout headers hdr,
     }
     apply {
         if (meta.mymeta.resubmit_reason == 0) {
+            // This is a new packet, not a resubmitted one
             t_first_pass_t1.apply();
+            // Note that even if a resubmit() call was performed while
+            // executing an action for table t_first_pass_t1, we may
+            // do another resubmit() call while executing an action
+            // for table t_first_pass_t2.  In general, the last
+            // resubmit() call should have its field list preserved.
+            // Each resubmit() call causes any earlier resubmit()
+            // calls made during the same execution of the ingress
+            // control to be "forgotten".
             t_first_pass_t2.apply();
+            // Since in this imagined version of the program, we are
+            // only passing integer id values to the resubmit() calls,
+            // and waiting until the end of the ingress control to
+            // actually preserve the desired list of fields, we are
+            // not introducing new P4_16 language semantics in order
+            // to preserve those final values of the fields.
+            
+            // recirculate and clone operations, and perhaps also
+            // digest calls (TBD what their "timing" is for copying
+            // the field values is relative to the call to
+            // generate_digest() in P4_14), should be handled
+            // similarly in P4_16, in order to match their P4_14
+            // behavior.
             t_first_pass_t3.apply();
         }
         else if (meta.mymeta.resubmit_reason == 1) {
@@ -290,6 +312,21 @@ control ingress(inout headers hdr,
         // returns 0 if no resubmit operation was performed during
         // ingress, or the value passed to the most recent resubmit()
         // extern function call that was executed.
+
+        // Note that it would be nice if the source code made it
+        // straightforward for a compiler to implement this in such a
+        // way that the "encoding" of the preserved metadata fields
+        // could vary in size across the different cases.  This could
+        // improve average performance of a system where attaching
+        // extra data to a resubmitted packet was a significant cost.
+
+        // For example, if resubmit_field_list_id is 4, only 64+3 bits
+        // of metadata field data need to be preserved with the
+        // resubmitted packet, whereas if it is 3, 256+3 bits need to
+        // be preserved with the packet.  If case 4 is frequent enough
+        // relative to case 3, there could be a performance advantage
+        // to optimizing case 3 _not_ to preserve 64+3 bits, plus
+        // (256-64)=192 bits of "padding".
         resubmit_meta.resubmit_field_list_id = resubmit_field_list_id();
         switch (resubmit_meta.resubmit_field_list_id) {
             1: {
