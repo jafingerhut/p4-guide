@@ -141,11 +141,21 @@ control ingress(inout headers hdr,
     action do_resubmit_reason1() {
         meta.mymeta.resubmit_reason = 1;
         meta.mymeta.f1 = meta.mymeta.f1 + 17;
+        // NEW: resubmit() calls take an integer, not a list of
+        // fields.  The _only_ effect this has is to immediately copy
+        // this integer into a per-packet hidden field.  In the
+        // current BMv2 simple_switch implementation, this field isn't
+        // even hidden -- it is field 'resubmit_flag' in the standard
+        // metadata structure.
+
+        // This integer value will be used later near the end of the
+        // ingress control.  See there for details.
         resubmit(1);
     }
     action do_resubmit_reason2(bit<160> f2_val) {
         meta.mymeta.resubmit_reason = 2;
         meta.mymeta.f2 = f2_val;
+        // NEW: resubmit() calls take an integer
         resubmit(2);
     }
     action nop() {
@@ -157,11 +167,13 @@ control ingress(inout headers hdr,
         meta.mymeta.resubmit_reason = 3;
         meta.mymeta.f3 = (bit<256>) hdr.ethernet.srcAddr;
         meta.mymeta.f3 = meta.mymeta.f3 + (bit<256>) hdr.ethernet.dstAddr;
+        // NEW: resubmit() calls take an integer
         resubmit(3);
     }
     action do_resubmit_reason4() {
         meta.mymeta.resubmit_reason = 4;
         meta.mymeta.f4 = (bit<64>) hdr.ethernet.etherType;
+        // NEW: resubmit() calls take an integer
         resubmit(4);
     }
     action update_metadata(bit<64> x) {
@@ -274,10 +286,10 @@ control ingress(inout headers hdr,
         // compiler would have no way in general of knowing that such
         // a code change was correct.
 
-        // NEW: resubmit_field_list_id() returns 0 if no resubmit
-        // operation was performed during ingress, or the non-0 value
-        // passed to the most recent resubmit() operation that was
-        // executed.
+        // NEW: resubmit_field_list_id() is a new extern function that
+        // returns 0 if no resubmit operation was performed during
+        // ingress, or the value passed to the most recent resubmit()
+        // extern function call that was executed.
         resubmit_meta.resubmit_field_list_id = resubmit_field_list_id();
         switch (resubmit_meta.resubmit_field_list_id) {
             1: {
