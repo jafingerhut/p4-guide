@@ -38,3 +38,10 @@ might write a P4_16+modified_v1model program, one that behaves the
 same as the original P4_14 program does.  Search for comments
 containing "NEW" for the differences between this program and the
 previous one.
+
+[`v1model-multiple-resubmit-reasons-imagined-annotations.p4`](v1model-multiple-resubmit-reasons-imagined-annotations.p4)
+- An edited version of the `-hand-edited.p4` program above, which
+imagines how one might write a P4_16+modified_v1model program, one
+that behaves the same as the original P4_14 program does.  Search for
+comments containing "NEW" for the differences between this program and
+the `-hand-edited.p4` one.
