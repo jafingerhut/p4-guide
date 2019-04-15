@@ -60,7 +60,7 @@ Disadvantages of RESUBMIT_ANNOT:
 
 + The explicit code for copying values into the new output parameter
   at the end of the ingress control, and to copy them from the new
-  parser input parmaeter into the desired places at the beginning of
+  parser input parameter into the desired places at the beginning of
   the parser, is somewhat long and tedious to write.
 
 

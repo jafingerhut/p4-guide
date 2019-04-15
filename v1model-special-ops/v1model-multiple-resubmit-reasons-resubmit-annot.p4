@@ -22,9 +22,9 @@
 
 // Preserving a user-defined metadata field means that whatever value
 // it has at the end of executing the ingress control block will be
-// "saved" with the packet to be resubmitted, and when the resubmitted
-// packet begins executing the ingress parser, all such preserved
-// fields will be initialized to that saved value.
+// "saved" with the packet to be resubmitted, and just before the
+// resubmitted packet begins executing the ingress parser, all such
+// preserved fields will be initialized to that saved value.
 
 // Any field that is not preserved for a resubmitted packet will begin
 // ingress parsing with its default value that it has for a new packet
