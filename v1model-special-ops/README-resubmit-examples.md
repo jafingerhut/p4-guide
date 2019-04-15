@@ -32,6 +32,23 @@ A slightly hand-edited version of the previous program, just to make
 it slightly closer to something I might write by hand in P4_16.
 
 
+Refer to Mihai Budiu's slides
+[`recirculate.pdf`](https://github.com/p4lang/p4c/files/2928911/recirculate.pdf)
+which Mihai published on 2019-Mar-05 with this [Github
+comment](https://github.com/p4lang/p4c/pull/1698#issuecomment-469500117).
+
+Those slides contain three proposals:
+
+1. Using an explicit input/output - corresponds to my example PARAMS.
+2. Using annotations on the user metadata - corresponds to my example
+   RESUBMIT_ANNOT.  My example FIELD_LIST_ANNOT is a variation on this
+   proposal.
+3. Using explicit functions for input & output - I do not have a code
+   example for this proposal.  This does not suggest that this is a
+   bad idea in any way -- I simply have not written a program to
+   demonstrate what it would look like.
+
+
 ## PARAMS - Preserve metadata via extra parser/control parameters
 
 [`v1model-multiple-resubmit-reasons-params.p4`](v1model-multiple-resubmit-reasons-params.p4) (abbreviation: PARAMS)
