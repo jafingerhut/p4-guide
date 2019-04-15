@@ -22,7 +22,7 @@ P4_16 + v1model program generated via the `p4test` command in the
 script [`compile-cmd.sh`](compile-cmd.sh).  It uses `resubmit` calls
 with lists of fields, that according to P4_16 language semantics
 cannot behave in the same way as the original P4_14 program resubmit
-oeprations can, because in P4_14 the value of metadata fields
+operations can, because in P4_14 the value of metadata fields
 preserved are those that they have at the end of executing the ingress
 control, not the value those fields have at the time of the call to
 `resubmit`.
@@ -35,11 +35,32 @@ it slightly closer to something I might write by hand in P4_16.
 ## PARAMS - Preserve metadata via extra parser/control parameters
 
 [`v1model-multiple-resubmit-reasons-imagined.p4`](v1model-multiple-resubmit-reasons-imagined.p4) (abbreviation: PARAMS) -
-An edited version of the previous program, which imagines how one
-might write a P4_16+modified_v1model program, one that behaves the
-same as the original P4_14 program does.  Search for comments
-containing "NEW" for the differences between this program and the
-previous one.
+- An edited version of the `-hand-edited.p4` program above, which
+imagines how one might write a P4_16+modified_v1model program, one
+that behaves the same as the original P4_14 program does.  Search for
+comments containing "NEW" for the differences between this program and
+the previous one.
+
+Advantages of PARAMS:
+
++ While the extra code for copying data to the new ingress out
+  parameter and from the new parser in parameter is a bit tedious, it
+  is very explicit in how it behaves.  There is no "magic" in the
+  implementation to explain as there is for RESUBMIT_ANNOT or
+  FIELD_LIST_ANNOT.
+
++ This solution supports preservation of arbitrary data, whether it is
+  from user-defined metadata fields, standard_metadata fields, or
+  packet header fields.  Also, it is possible to "restore" it after
+  resubmit into a different place than it was copied from originally,
+  if there is any advantage to you in doing so.
+
+Disadvantages of RESUBMIT_ANNOT:
+
++ The explicit code for copying values into the new output parameter
+  at the end of the ingress control, and to copy them from the new
+  parser input parmaeter into the desired places at the beginning of
+  the parser, is somewhat long and tedious to write.
 
 
 ## RESUBMIT_ANNOT - Preserve metadata via `@resubmit` annotation on user-defined metadata fields

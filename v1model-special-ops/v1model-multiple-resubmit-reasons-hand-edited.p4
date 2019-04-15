@@ -164,8 +164,25 @@ control ingress(inout headers hdr,
     }
     apply {
         if (meta.mymeta.resubmit_reason == 0) {
+            // This is a new packet, not a resubmitted one
             t_first_pass_t1.apply();
+            // Note that even if a resubmit() call was performed while
+            // executing an action for table t_first_pass_t1, we may
+            // do another resubmit() call while executing an action
+            // for table t_first_pass_t2.  In general, the last
+            // resubmit() call should have its field list preserved.
+            // Each resubmit() call causes any earlier resubmit()
+            // calls made during the same execution of the ingress
+            // control to be "forgotten".
             t_first_pass_t2.apply();
+            // Also note that any modifications made to field values
+            // in a field_list given to resubmit(), _after_ the
+            // resubmit call is made, should be preserved in the
+            // recirculated packet.  That is, the value of the fields
+            // that they have when ingress processing is complete is
+            // the value that should be preserved with the resubmitted
+            // packet, _not_ the value that the field had when the
+            // resubmit() call was made.
             t_first_pass_t3.apply();
         }
         else if (meta.mymeta.resubmit_reason == 1) {
