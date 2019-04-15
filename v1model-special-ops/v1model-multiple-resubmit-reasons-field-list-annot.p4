@@ -1,6 +1,6 @@
 // This program is hand-edited starting from the file:
 
-// v1model-multiple-resubmit-reasons-imagined-annotations.p4
+// v1model-multiple-resubmit-reasons-resubmit-annot.p4
 
 // It changes the annotations from @resubmit to @field_list, and uses
 // names instead of integers to identify field lists, which is more
