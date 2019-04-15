@@ -13,18 +13,26 @@
 #include <core.p4>
 #include <v1model.p4>
 
-// NEW: An annotation of @resubmit(j) on a field means that its value
-// will be saved at the end of ingress processing if there was a
-// resubmit(j) operation performed, and if multiple resubmit
-// operations were performed during ingress processing, then j was the
-// value given as a parameter for the last such resubmit operation
-// performed on the packet.  When the resubmitted packet begins
-// parsing, all fields marked with @resubmit(j) will be set equal to
-// the saved value.
+// NEW: If a packet executes at least one resubmit(j) operation while
+// the ingress control is executed, let j be the value given as the
+// parameter of the last such resubmit() call.  For such packets,
+// every user-defined metadata field with a @resubmit(resubmit_index1,
+// resubmit_index2, ...) will be preserved if j is one of the values
+// in the list of resubmit_indexes.
 
-// The field resubmit_reason has 4 such annotations, since we want to
-// preserve its value if a resubmit(j) operation is done for any value
-// of j in the range [1, 4].
+// Preserving a user-defined metadata field means that whatever value
+// it has at the end of executing the ingress control block will be
+// "saved" with the packet to be resubmitted, and when the resubmitted
+// packet begins executing the ingress parser, all such preserved
+// fields will be initialized to that saved value.
+
+// Any field that is not preserved for a resubmitted packet will begin
+// ingress parsing with its default value that it has for a new packet
+// arriving on a switch port (see below for some questions on this topic).
+
+// The field resubmit_reason has a list of 4 such values, since we
+// want to preserve its value if a resubmit(j) operation is done for
+// any value of j in the range [1, 4].
 
 // Note that if a resubmit(3) operation was the last one done during
 // ingress, the values of f1, f2, and f4 should _not_ be preserved in
@@ -32,9 +40,20 @@
 // initialized to 0, as they would for a newly arriving packet from an
 // input port.
 
+// TBD: Should P4_16 + v1model architecture guarantee that
+// user-defined metadata fields are initialized when the ingress
+// parser begins, as the P4_14 specification says that such fields
+// should always be initialized to 0?  I know that Vladimir Gurevich
+// was arguing against this requirement in the P4_16 language
+// specification itself, but perhaps making it a requirement of a
+// particular architecture is not so onerous.
+
+// TBD: Mihai Budiu proposed that if an annotation @resubmit() with an
+// empty resubmit_index list is given on a field, then it should be
+// preserved for all possible resubmit_index values.
+
 struct mymeta_t {
-    @resubmit(1) @resubmit(2) @resubmit(3) @resubmit(4)
-    bit<3>   resubmit_reason;
+    @resubmit(1, 2, 3, 4) bit<3> resubmit_reason;
     @resubmit(1) bit<128> f1;
     @resubmit(2) bit<160> f2;
     @resubmit(3) bit<256> f3;
