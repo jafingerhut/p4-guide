@@ -34,7 +34,7 @@ it slightly closer to something I might write by hand in P4_16.
 
 ## PARAMS - Preserve metadata via extra parser/control parameters
 
-[`v1model-multiple-resubmit-reasons-imagined.p4`](v1model-multiple-resubmit-reasons-imagined.p4) (abbreviation: PARAMS) -
+[`v1model-multiple-resubmit-reasons-params.p4`](v1model-multiple-resubmit-reasons-params.p4) (abbreviation: PARAMS) -
 - An edited version of the `-hand-edited.p4` program above, which
 imagines how one might write a P4_16+modified_v1model program, one
 that behaves the same as the original P4_14 program does.  Search for
@@ -65,7 +65,7 @@ Disadvantages of RESUBMIT_ANNOT:
 
 ## RESUBMIT_ANNOT - Preserve metadata via `@resubmit` annotation on user-defined metadata fields
 
-[`v1model-multiple-resubmit-reasons-imagined-annotations.p4`](v1model-multiple-resubmit-reasons-imagined-annotations.p4) (abbreviation: RESUBMIT_ANNOT)
+[`v1model-multiple-resubmit-reasons-resubmit-annot.p4`](v1model-multiple-resubmit-reasons-resubmit-annot.p4) (abbreviation: RESUBMIT_ANNOT)
 - An edited version of the `-hand-edited.p4` program above, which
 imagines how one might write a P4_16+modified_v1model program, one
 that behaves the same as the original P4_14 program does.  Search for
@@ -101,7 +101,7 @@ Neither advantage nor disadvantage of RESUBMIT_ANNOT:
 
 ## FIELD_LIST_ANNOT - Preserve metadata via `@field_list` annotation on user-defined metadata fields
 
-[`v1model-multiple-resubmit-reasons-imagined-annotations2.p4`](v1model-multiple-resubmit-reasons-imagined-annotations2.p4) (abbreviation: FIELD_LIST_ANNOT)
+[`v1model-multiple-resubmit-reasons-field-list-annot.p4`](v1model-multiple-resubmit-reasons-field-list-annot.p4) (abbreviation: FIELD_LIST_ANNOT)
 - Very similar to the previous program, except that it uses names
 instead of integers to "mark" fields to be preserved.  This allows the
 annotation to change from `@resubmit` to something more generic like
