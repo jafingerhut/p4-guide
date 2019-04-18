@@ -25,11 +25,10 @@ fi
 set -x
 if [ ${GEN_P4RT} == 1 ]
 then
-    for FORMAT in text json
-    do
-	P4RT_OPTS="--p4runtime-format $FORMAT --p4runtime-file ${P4_SRC_FNAME}.p4info.$FORMAT"
-	p4c --target bmv2 --arch v1model ${PASSES_OPTS} ${P4RT_OPTS} "${P4_SRC_FNAME}"
-    done
+    P4RT_FILE1="${P4_SRC_FNAME}.p4info.txt"
+    P4RT_FILE2="${P4_SRC_FNAME}.p4info.json"
+    P4RT_OPTS="--p4runtime-files ${P4RT_FILE1},${P4RT_FILE2}"
+    p4c --target bmv2 --arch v1model ${PASSES_OPTS} ${P4RT_OPTS} "${P4_SRC_FNAME}"
 else
     p4c --target bmv2 --arch v1model ${PASSES_OPTS} "${P4_SRC_FNAME}"
 fi
