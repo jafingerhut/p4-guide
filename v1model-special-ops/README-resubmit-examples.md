@@ -80,6 +80,12 @@ Disadvantages of RESUBMIT_ANNOT:
   parser input parameter into the desired places at the beginning of
   the parser, is somewhat long and tedious to write.
 
++ The example as given does not strictly require adding tagged or
+  untagged unions to the P4_16 language, and a `switch` statement, but
+  adding those language features makes it easy to avoid writing a
+  "sufficiently smart compiler" that can figure out the space
+  optimizations on its own.
+
 
 ## RESUBMIT_ANNOT - Preserve metadata via `@resubmit` annotation on user-defined metadata fields
 
