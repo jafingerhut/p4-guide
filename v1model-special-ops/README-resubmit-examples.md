@@ -103,6 +103,13 @@ Advantages of RESUBMIT_ANNOT:
 
 Disadvantages of RESUBMIT_ANNOT:
 
++ Changing `@resubmit` annotations on the user-defined metadata fields changes
+  the run time behavior of the program. There are other annotations that can do
+  this, too (e.g. removing `@defaultonly` and `@tableonly` annotations increases
+  the set of possible configurations that the control plane can make in data
+  plane tables, thus increasing the set of data plane behaviors possible. Also
+  `@atomic`). However, these should be introduced into the language and/or
+  architectures with great care.
 + No way to preserve standard metadata fields.  Workaround: copy
   desired standard metadata fields to user-defined metadata fields and
   then preserve those instead.
@@ -139,7 +146,7 @@ operations.
 
 Advantages of FIELD_LIST_ANNOT:
 
-+ A single new annotation @field_list is enough to cover all of
++ A single new annotation `@field_list` is enough to cover all of
   resubmit, recirculate, and clone operations.  Names can be used
   instead of integers for sets of fields to preserve, similar to
   P4_14, and unlike RESUBMIT_ANNOT.
