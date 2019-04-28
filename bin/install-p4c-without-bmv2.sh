@@ -29,7 +29,7 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
-echo "This script builds and installs the P4-16 (and also P4-14)"
+echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, but _not_ the behavioral-model software packet"
 echo "forwarding program, that can behave as just about any legal P4"
 echo "program."
@@ -103,6 +103,7 @@ cd "${INSTALL_DIR}"
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
 cd p4c
+git log -n 1
 mkdir build
 cd build
 # Configure for a debug build
