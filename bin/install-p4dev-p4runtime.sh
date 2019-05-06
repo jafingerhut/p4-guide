@@ -105,6 +105,12 @@ df -BM .
 # my own convenience):
 sudo apt-get --yes install git vim
 
+# Install Python2.  This is required for p4c, but there are several earlier
+# packages that check for python in their configure scripts, and on a
+# minimal Ubuntu 18.04 Desktop Linux system find Python3, not Python2,
+# unless we install Python2.  Most Python code in open source P4 projects
+# is written for Python2.
+sudo apt-get --yes install python
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
