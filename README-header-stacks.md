@@ -27,6 +27,35 @@ I will use "bottom" or "end" to refer to the point just after the
 maximum index in a header stack that contains a valid header.
 
 
+## Resolution of the issues
+
+This section was written on 2019-May-07, at least a year after all of
+the issues have been discussed in the P4 language design working
+group, and resolved.  I wanted to record those decisions here.
+You can also find a summary of changes made in [this Github
+comment](https://github.com/p4lang/p4-spec/issues/284#issuecomment-364785580).
+
+The P4_14 language specification, version 1.0.5, contains several
+small changes from version 1.0.4 regarding the behavior of operations
+on header stacks.
+
+The working group decided to go with the "P4_16 v1.0.0 is right"
+approach described below.  `push` operations in P4_14 still create
+valid headers at the smallest index(es) of the header stack array, for
+backwards compatibility with existing P4_14 programs that expected
+this behavior, whereas in P4_16 it creates invalid headers at the
+smallest index(es) of the array.
+
+The bmv2 implementation was also updated to shift the entire header
+stack array for `push` and `pop` operations for both P4_14 and P4_16
+programs, not only the ones in indices from 0 up through
+`[nextIndex-1]`.
+
+`add_header` and `remove_header` in P4_14 v1.0.5 do not cause any
+"shifting" of other header stack elements at all, just as they do not
+in P4_16.
+
+
 ## Related Github issues
 
 + https://github.com/p4lang/behavioral-model/issues/111
