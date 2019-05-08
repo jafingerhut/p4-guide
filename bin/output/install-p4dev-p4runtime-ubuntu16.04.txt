@@ -3,7 +3,7 @@ compiler, and the behavioral-model software packet forwarding
 program, that can behave as just about any legal P4 program.
 
 It has been tested on a freshly installed Ubuntu 16.04 system,
-with all Ubuntu software updates as of 2019-Mar-14, and a
+with all Ubuntu software updates as of 2019-Apr-21, and a
 similarly updated Ubuntu 18.04 system.
 
 The files installed by this script consume about 7 GB of disk space.
@@ -26,7 +26,7 @@ Versions of software that will be installed by this script:
   which, as of 2019-Jan-13, also installs these things:
   + thrift version 0.9.2
   + nanomsg version 1.0.0
-  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065
+  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22
 + p4c: github.com/p4lang/p4c latest version
 + Python packages: grpcio, protobuf, latest versions
 
@@ -40,11 +40,11 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Sun Apr 21 10:40:50 PDT 2019
+Tue May  7 22:42:24 PDT 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1       196G  4.2G  182G   3% /
+/dev/sda1        58G  4.6G   51G   9% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1        200495M 4242M   186046M   3% /
+/dev/sda1         59385M 4679M    51667M   9% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -57,14 +57,14 @@ Suggested packages:
   | vim-athena-py2 | vim-nox-py2
 The following NEW packages will be installed:
   vim vim-runtime
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 4 not upgraded.
 Need to get 6,199 kB of archives.
 After this operation, 30.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim-runtime all 2:7.4.1689-3ubuntu1.2 [5,164 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim amd64 2:7.4.1689-3ubuntu1.2 [1,036 kB]
-Fetched 6,199 kB in 3s (1,902 kB/s)
+Fetched 6,199 kB in 9s (687 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177939 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 213561 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a7.4.1689-3ubuntu1.2_all.deb ...
 Adding 'diversion of /usr/share/vim/vim74/doc/help.txt to /usr/share/vim/vim74/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim74/doc/tags to /usr/share/vim/vim74/doc/tags.vim-tiny by vim-runtime'
@@ -85,6 +85,14 @@ update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/ex (ex) in aut
 Reading package lists...
 Building dependency tree...
 Reading state information...
+python is already the newest version (2.7.12-1~16.04).
+The following package was automatically installed and is no longer required:
+  snapd-login-service
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
 g++ is already the newest version (4:5.3.1-1ubuntu1).
 make is already the newest version (4.1-6).
 unzip is already the newest version (6.0-20ubuntu1).
@@ -98,7 +106,7 @@ Suggested packages:
   | fortran95-compiler gcj-jdk
 The following NEW packages will be installed:
   autoconf automake autotools-dev curl libltdl-dev libsigsegv2 libtool m4
-0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 8 newly installed, 0 to remove and 4 not upgraded.
 Need to get 1,573 kB of archives.
 After this operation, 6,193 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libsigsegv2 amd64 2.10-4 [14.1 kB]
@@ -109,9 +117,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 automake all 1:1.15-
 Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.12 [139 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl-dev amd64 2.4.6-0.1 [162 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool all 2.4.6-0.1 [193 kB]
-Fetched 1,573 kB in 4s (389 kB/s)
+Fetched 1,573 kB in 2s (745 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 179648 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 215270 files and directories currently installed.)
 Preparing to unpack .../libsigsegv2_2.10-4_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.10-4) ...
 Selecting previously unselected package m4.
@@ -156,11 +164,11 @@ pkg-config is already the newest version (0.29.1-0ubuntu1).
 The following package was automatically installed and is no longer required:
   snapd-login-service
 Use 'sudo apt autoremove' to remove it.
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Sun Apr 21 10:41:10 PDT 2019
+Tue May  7 22:42:47 PDT 2019
 Cloning into 'protobuf'...
 Note: checking out 'v3.2.0'.
 
@@ -177,12 +185,12 @@ HEAD is now at 593e917... Bump version number to 3.2.0
 Google Mock not present.  Fetching gmock-1.7.0 from the web...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:04 --:--:--     0100   129    0   129    0     0     26      0 --:--:--  0:00:04 --:--:--    26
-  0     0    0     0    0     0      0      0 --:--:--  0:00:05 --:--:--     0100  362k    0  362k    0     0  63231      0 --:--:--  0:00:05 --:--:--  479k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0100   129    0   129    0     0     34      0 --:--:--  0:00:03 --:--:--    34
+100  362k  100  362k    0     0  83717      0  0:00:04  0:00:04 --:--:-- 83717
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    171      0 --:--:-- --:--:-- --:--:--   171
-  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0100  618k    0  618k    0     0   321k      0 --:--:--  0:00:01 --:--:--  787k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    257      0 --:--:-- --:--:-- --:--:--   256
+ 87  618k   87  542k    0     0   448k      0  0:00:01  0:00:01 --:--:--  448k100  618k  100  618k    0     0   501k      0  0:00:01  0:00:01 --:--:-- 3145k
 + autoreconf -f -i -Wall,no-obsolete
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
 libtoolize: copying file 'build-aux/ltmain.sh'
@@ -1784,11 +1792,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/jafinger/protobuf/src'
 end install protobuf:
-Sun Apr 21 10:49:57 PDT 2019
+Tue May  7 22:52:00 PDT 2019
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Sun Apr 21 10:49:57 PDT 2019
+Tue May  7 22:52:00 PDT 2019
 Cloning into 'grpc'...
 Note: checking out 'tags/v1.3.2'.
 
@@ -2661,7 +2669,7 @@ make: Circular /home/jafinger/grpc/libs/opt/libares.a <- /home/jafinger/grpc/lib
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Sun Apr 21 10:55:52 PDT 2019
+Tue May  7 23:04:17 PDT 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -2678,7 +2686,7 @@ The following NEW packages will be installed:
   cmake cmake-data libavl-dev libavl1 libev-dev libev4 libjsoncpp1
   libpcre3-dev libpcre32-3 libpcrecpp0v5 libprotobuf-c-dev libprotobuf-c1
   libprotoc9v5 protobuf-c-compiler
-0 upgraded, 14 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 14 newly installed, 0 to remove and 4 not upgraded.
 Need to get 5,033 kB of archives.
 After this operation, 25.4 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 cmake-data all 3.5.1-1ubuntu3 [1,121 kB]
@@ -2695,9 +2703,9 @@ Get:11 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libprotoc9v5 amd64 
 Get:12 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 protobuf-c-compiler amd64 1.2.1-1 [68.6 kB]
 Get:13 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libev4 amd64 1:4.22-1 [26.3 kB]
 Get:14 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libev-dev amd64 1:4.22-1 [116 kB]
-Fetched 5,033 kB in 1s (2,739 kB/s)
+Fetched 5,033 kB in 1min 9s (72.1 kB/s)
 Selecting previously unselected package cmake-data.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180015 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 215637 files and directories currently installed.)
 Preparing to unpack .../cmake-data_3.5.1-1ubuntu3_all.deb ...
 Unpacking cmake-data (3.5.1-1ubuntu3) ...
 Selecting previously unselected package libjsoncpp1:amd64.
@@ -2759,7 +2767,7 @@ Processing triggers for libc-bin (2.23-0ubuntu11) ...
 ------------------------------------------------------------
 Installing libyang, needed for installing p4lang/PI
 start install libyang:
-Sun Apr 21 10:55:59 PDT 2019
+Tue May  7 23:05:33 PDT 2019
 Cloning into 'libyang'...
 Note: checking out 'v0.16-r1'.
 
@@ -2928,11 +2936,11 @@ Install the project...
 -- Installing: /usr/local/lib/libyang/user_types/user_date_and_time.so
 -- Set runtime path of "/usr/local/lib/libyang/user_types/user_date_and_time.so" to ""
 end install libyang:
-Sun Apr 21 10:56:14 PDT 2019
+Tue May  7 23:06:15 PDT 2019
 ------------------------------------------------------------
 Installing sysrepo, needed for installing p4lang/PI
 start install sysrepo:
-Sun Apr 21 10:56:14 PDT 2019
+Tue May  7 23:06:15 PDT 2019
 Cloning into 'sysrepo'...
 Note: checking out 'v0.7.5'.
 
@@ -3155,14 +3163,14 @@ Install the project...
 -- Installing: /usr/local/share/man/man1/sysrepoctl.1
 -- Installing: /usr/local/share/man/man1/sysrepocfg.1
 -- Installing: /usr/local/share/yang
--- Installing: /usr/local/share/yang/sysrepo-module-dependencies.yang
--- Installing: /usr/local/share/yang/sysrepo-persistent-data.yang
--- Installing: /usr/local/share/yang/nc-notifications.yang
--- Installing: /usr/local/share/yang/sysrepo-notification-store.yang
 -- Installing: /usr/local/share/yang/notifications.yang
--- Installing: /usr/local/share/yang/ietf-netconf-notifications.yang
+-- Installing: /usr/local/share/yang/sysrepo-persistent-data.yang
 -- Installing: /usr/local/share/yang/ietf-netconf@2011-06-01.yang
 -- Installing: /usr/local/share/yang/ietf-netconf-acm@2018-02-14.yang
+-- Installing: /usr/local/share/yang/sysrepo-module-dependencies.yang
+-- Installing: /usr/local/share/yang/ietf-netconf-notifications.yang
+-- Installing: /usr/local/share/yang/sysrepo-notification-store.yang
+-- Installing: /usr/local/share/yang/nc-notifications.yang
 -- Installation commands were written to /home/jafinger/sysrepo/build/install-yang.sh
 -- Installing: /usr/local/lib/libsysrepo.so.0.7.5
 -- Installing: /usr/local/lib/libsysrepo.so.0.7
@@ -3178,12 +3186,12 @@ Install the project...
 -- Installing: /usr/local/bin/sysrepocfg
 -- Set runtime path of "/usr/local/bin/sysrepocfg" to ""
 -- Up-to-date: /usr/local/include
+-- Installing: /usr/local/include/sysrepo.h
 -- Installing: /usr/local/include/sysrepo
 -- Installing: /usr/local/include/sysrepo/values.h
 -- Installing: /usr/local/include/sysrepo/xpath.h
--- Installing: /usr/local/include/sysrepo/trees.h
 -- Installing: /usr/local/include/sysrepo/plugins.h
--- Installing: /usr/local/include/sysrepo.h
+-- Installing: /usr/local/include/sysrepo/trees.h
 -- Installing: /usr/local/lib/libSysrepo-cpp.so.0.7.5
 -- Installing: /usr/local/lib/libSysrepo-cpp.so.0.7
 -- Installing: /usr/local/lib/libSysrepo-cpp.so
@@ -3197,11 +3205,11 @@ Install the project...
 -- Installing: /usr/local/include/sysrepo-cpp/Internal.h
 -- Installing: /usr/local/lib/pkgconfig/libSysrepo-cpp.pc
 end install sysrepo:
-Sun Apr 21 10:56:54 PDT 2019
+Tue May  7 23:07:17 PDT 2019
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Sun Apr 21 10:56:54 PDT 2019
+Tue May  7 23:07:17 PDT 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -3234,7 +3242,7 @@ The following NEW packages will be installed:
   libboost-thread1.58-dev libboost-thread1.58.0 libboost1.58-dev libjudy-dev
   libjudydebian1 libreadline-dev libreadline6-dev libtinfo-dev libtool-bin
   valgrind
-0 upgraded, 21 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 21 newly installed, 0 to remove and 4 not upgraded.
 Need to get 18.4 MB of archives.
 After this operation, 179 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libboost1.58-dev amd64 1.58.0+dfsg-5ubuntu3.1 [6,222 kB]
@@ -3258,9 +3266,9 @@ Get:18 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline6-dev am
 Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline-dev amd64 6.3-8ubuntu2 [992 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool-bin amd64 2.4.6-0.1 [79.2 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 valgrind amd64 1:3.11.0-1ubuntu4.2 [11.2 MB]
-Fetched 18.4 MB in 4s (4,537 kB/s)
+Fetched 18.4 MB in 27s (675 kB/s)
 Selecting previously unselected package libboost1.58-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 182263 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 217885 files and directories currently installed.)
 Preparing to unpack .../libboost1.58-dev_1.58.0+dfsg-5ubuntu3.1_amd64.deb ...
 Unpacking libboost1.58-dev:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Selecting previously unselected package libboost-atomic1.58.0:amd64.
@@ -3363,21 +3371,11 @@ Cloning into 'proto/p4runtime'...
 Submodule path 'proto/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Cloning into 'third_party/googletest'...
 Submodule path 'third_party/googletest': checked out 'ecd530865cefdfa7dea58e84f6aa1b548950363d'
-commit 9f6c1f23843b99fb582a9b893be628e5ae820b53
-Author: Antonin Bas <antonin@barefootnetworks.com>
-Date:   Wed Apr 10 15:42:40 2019 -0700
+commit f9a5c6c74f7dcde382e27c63af2fe5dffc755364
+Author: pudelkoM <pudelkoM@users.noreply.github.com>
+Date:   Fri May 3 14:22:39 2019 -0700
 
-    Deprecate temporary P4DeviceConfig message
-    
-    The assumption was always that this was a temporary message. It was
-    required when using bmv2 simple_switch, but is no longer needed with
-    simple_switch_grpc.
-    
-    As a result of this change, the
-    ForwardingPipelineConfig::p4_device_config binary string is passed on
-    directly to PI. For backward compatibility, the DeviceMgr still tests
-    whether this field is a serialized P4DeviceConfig message (and behaves
-    as before).
+    Migrate to new http_archive bazel rule for deps
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
@@ -3432,12 +3430,12 @@ libtoolize: copying file 'm4/ltsugar.m4'
 libtoolize: copying file 'm4/ltversion.m4'
 libtoolize: copying file 'm4/lt~obsolete.m4'
 configure.ac:10: installing './compile'
-configure.ac:81: installing './config.guess'
-configure.ac:81: installing './config.sub'
+configure.ac:85: installing './config.guess'
+configure.ac:85: installing './config.sub'
 configure.ac:7: installing './install-sh'
 configure.ac:7: installing './missing'
 CLI/Makefile.am: installing './depcomp'
-generators/pd/Makefile.am:3: installing './py-compile'
+generators/pd/Makefile.am:5: installing './py-compile'
 parallel-tests: installing './test-driver'
 checking for a BSD-compatible install... /usr/bin/install -c
 checking whether build environment is sane... yes
@@ -3463,12 +3461,12 @@ checking for g++... g++
 checking whether we are using the GNU C++ compiler... yes
 checking whether g++ accepts -g... yes
 checking dependency style of g++... gcc3
-checking for a Python interpreter with version >= 2.7... python
-checking for python... /usr/bin/python
-checking for python version... 2.7
-checking for python platform... linux2
-checking for python script directory... ${prefix}/lib/python2.7/dist-packages
-checking for python extension module directory... ${exec_prefix}/lib/python2.7/dist-packages
+checking for a Python interpreter with version >= 2.7... python2
+checking for python2... /usr/bin/python2
+checking for python2 version... 2.7
+checking for python2 platform... linux2
+checking for python2 script directory... ${prefix}/lib/python2.7/dist-packages
+checking for python2 extension module directory... ${exec_prefix}/lib/python2.7/dist-packages
 checking for doxygen... no
 configure: WARNING: doxygen not found - will not generate any doxygen documentation
 checking for perl... /usr/bin/perl
@@ -5352,22 +5350,20 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/jafinger/PI'
 end install PI:
-Sun Apr 21 11:02:17 PDT 2019
+Tue May  7 23:13:34 PDT 2019
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Sun Apr 21 11:02:17 PDT 2019
+Tue May  7 23:13:34 PDT 2019
 Cloning into 'behavioral-model'...
-commit fff3171f2a7e3fcbb2ae8dec9aa425e282025b10
-Author: Antonin Bas <antonin@barefootnetworks.com>
-Date:   Thu Apr 18 18:55:54 2019 -0700
+commit 25d0d747d57662d2fc1cfde2118620f80bf6d139
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Mon May 6 11:11:07 2019 -0700
 
-    More recent compiler versions for CI
+    Initialize egress_port before egress parser for PSA
     
-     * added clang-6.0
-     * replaced gcc-6 with gcc-7
-    
-    These are the default versions in Ubuntu 18.04
+    Also add/update a few BM_DEBUG_PKT messages to make it more similar to
+    simple_switch log messages.
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -5404,7 +5400,7 @@ The following NEW packages will be installed:
   libpython-all-dev libpython-dev libpython2.7-dev libssl-dev libssl-doc
   python-all python-all-dev python-dev python-pip python-pip-whl
   python-pkg-resources python-setuptools python-wheel python2.7-dev zlib1g-dev
-0 upgraded, 38 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 38 newly installed, 0 to remove and 4 not upgraded.
 Need to get 35.1 MB of archives.
 After this operation, 70.5 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libfl-dev amd64 2.6.0-11 [12.5 kB]
@@ -5446,9 +5442,9 @@ Get:36 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-setuptools a
 Get:37 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-wheel all 0.29.0-1 [48.0 kB]
 Get:38 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libffi-dev amd64 3.2.1-4 [161 kB]
 Extracting templates from packages: 78%Extracting templates from packages: 100%
-Fetched 35.1 MB in 9s (3,644 kB/s)
+Fetched 35.1 MB in 39s (886 kB/s)
 Selecting previously unselected package libfl-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 194326 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 229948 files and directories currently installed.)
 Preparing to unpack .../libfl-dev_2.6.0-11_amd64.deb ...
 Unpacking libfl-dev:amd64 (2.6.0-11) ...
 Selecting previously unselected package flex.
@@ -5607,173 +5603,173 @@ Setting up python-setuptools (20.7.0-1) ...
 Setting up python-wheel (0.29.0-1) ...
 Setting up libffi-dev:amd64 (3.2.1-4) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
---2019-04-21 11:03:02--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
+--2019-05-07 23:15:18--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
 Resolving archive.apache.org (archive.apache.org)... 163.172.17.199
 Connecting to archive.apache.org (archive.apache.org)|163.172.17.199|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 8053046 (7.7M) [application/x-gzip]
 Saving to: ‘thrift-0.9.2.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  0%  149K 52s
-    50K .......... .......... .......... .......... ..........  1%  295K 39s
-   100K .......... .......... .......... .......... ..........  1%  305K 34s
-   150K .......... .......... .......... .......... ..........  2% 4.40M 26s
-   200K .......... .......... .......... .......... ..........  3%  362K 25s
-   250K .......... .......... .......... .......... ..........  3% 3.59M 21s
-   300K .......... .......... .......... .......... ..........  4% 1.80M 18s
-   350K .......... .......... .......... .......... ..........  5%  438K 18s
-   400K .......... .......... .......... .......... ..........  5% 5.28M 16s
-   450K .......... .......... .......... .......... ..........  6% 1.33M 15s
-   500K .......... .......... .......... .......... ..........  6% 5.77M 14s
-   550K .......... .......... .......... .......... ..........  7%  429K 14s
-   600K .......... .......... .......... .......... ..........  8%  142M 13s
-   650K .......... .......... .......... .......... ..........  8% 4.43M 12s
-   700K .......... .......... .......... .......... ..........  9% 2.03M 11s
-   750K .......... .......... .......... .......... .......... 10% 3.49M 11s
-   800K .......... .......... .......... .......... .......... 10%  526K 11s
-   850K .......... .......... .......... .......... .......... 11% 5.32M 10s
-   900K .......... .......... .......... .......... .......... 12% 5.99M 10s
-   950K .......... .......... .......... .......... .......... 12% 2.73M 9s
-  1000K .......... .......... .......... .......... .......... 13% 45.0M 9s
-  1050K .......... .......... .......... .......... .......... 13% 4.22M 8s
-  1100K .......... .......... .......... .......... .......... 14%  291M 8s
-  1150K .......... .......... .......... .......... .......... 15% 5.22M 7s
-  1200K .......... .......... .......... .......... .......... 15%  511K 8s
-  1250K .......... .......... .......... .......... .......... 16% 8.08M 7s
-  1300K .......... .......... .......... .......... .......... 17% 10.5M 7s
-  1350K .......... .......... .......... .......... .......... 17% 9.80M 7s
-  1400K .......... .......... .......... .......... .......... 18% 10.6M 6s
-  1450K .......... .......... .......... .......... .......... 19% 1.75M 6s
-  1500K .......... .......... .......... .......... .......... 19% 25.6M 6s
-  1550K .......... .......... .......... .......... .......... 20% 7.72M 6s
-  1600K .......... .......... .......... .......... .......... 20% 11.9M 6s
-  1650K .......... .......... .......... .......... .......... 21% 13.8M 5s
-  1700K .......... .......... .......... .......... .......... 22%  514K 6s
-  1750K .......... .......... .......... .......... .......... 22% 6.04M 5s
-  1800K .......... .......... .......... .......... .......... 23% 66.1M 5s
-  1850K .......... .......... .......... .......... .......... 24% 11.0M 5s
-  1900K .......... .......... .......... .......... .......... 24% 6.29M 5s
-  1950K .......... .......... .......... .......... .......... 25% 1.98M 5s
-  2000K .......... .......... .......... .......... .......... 26% 12.5M 5s
-  2050K .......... .......... .......... .......... .......... 26% 11.9M 5s
-  2100K .......... .......... .......... .......... .......... 27% 3.58M 4s
-  2150K .......... .......... .......... .......... .......... 27% 15.9M 4s
-  2200K .......... .......... .......... .......... .......... 28% 7.75M 4s
-  2250K .......... .......... .......... .......... .......... 29%  514K 4s
-  2300K .......... .......... .......... .......... .......... 29% 10.7M 4s
-  2350K .......... .......... .......... .......... .......... 30% 3.34M 4s
-  2400K .......... .......... .......... .......... .......... 31% 8.12M 4s
-  2450K .......... .......... .......... .......... .......... 31% 3.54M 4s
-  2500K .......... .......... .......... .......... .......... 32% 3.30M 4s
-  2550K .......... .......... .......... .......... .......... 33% 19.7M 4s
-  2600K .......... .......... .......... .......... .......... 33% 12.0M 4s
-  2650K .......... .......... .......... .......... .......... 34% 7.93M 4s
-  2700K .......... .......... .......... .......... .......... 34% 9.23M 3s
-  2750K .......... .......... .......... .......... .......... 35%  477K 4s
-  2800K .......... .......... .......... .......... .......... 36% 10.8M 3s
-  2850K .......... .......... .......... .......... .......... 36% 6.34M 3s
-  2900K .......... .......... .......... .......... .......... 37% 4.90M 3s
-  2950K .......... .......... .......... .......... .......... 38% 27.9M 3s
-  3000K .......... .......... .......... .......... .......... 38% 3.09M 3s
-  3050K .......... .......... .......... .......... .......... 39% 3.68M 3s
-  3100K .......... .......... .......... .......... .......... 40% 17.4M 3s
-  3150K .......... .......... .......... .......... .......... 40% 7.68M 3s
-  3200K .......... .......... .......... .......... .......... 41% 5.35M 3s
-  3250K .......... .......... .......... .......... .......... 41%  564K 3s
-  3300K .......... .......... .......... .......... .......... 42% 8.86M 3s
-  3350K .......... .......... .......... .......... .......... 43% 7.25M 3s
-  3400K .......... .......... .......... .......... .......... 43% 3.41M 3s
-  3450K .......... .......... .......... .......... .......... 44% 10.1M 3s
-  3500K .......... .......... .......... .......... .......... 45% 7.62M 3s
-  3550K .......... .......... .......... .......... .......... 45% 94.5K 3s
-  3600K .......... .......... .......... .......... .......... 46% 95.0K 4s
-  3650K .......... .......... .......... .......... .......... 47% 25.8K 6s
-  3700K .......... .......... .......... .......... .......... 47% 35.7K 7s
-  3750K .......... .......... .......... .......... .......... 48% 88.5M 7s
-  3800K .......... .......... .......... .......... .......... 48% 67.5M 7s
-  3850K .......... .......... .......... .......... .......... 49% 4.31M 7s
-  3900K .......... .......... .......... .......... .......... 50% 11.4M 7s
-  3950K .......... .......... .......... .......... .......... 50% 41.0M 6s
-  4000K .......... .......... .......... .......... .......... 51% 95.1M 6s
-  4050K .......... .......... .......... .......... .......... 52% 78.0M 6s
-  4100K .......... .......... .......... .......... .......... 52% 44.9M 6s
-  4150K .......... .......... .......... .......... .......... 53% 93.9M 6s
-  4200K .......... .......... .......... .......... .......... 54% 76.7M 6s
-  4250K .......... .......... .......... .......... .......... 54% 82.7M 5s
-  4300K .......... .......... .......... .......... .......... 55% 94.2M 5s
-  4350K .......... .......... .......... .......... .......... 55% 93.6M 5s
-  4400K .......... .......... .......... .......... .......... 56%  105M 5s
-  4450K .......... .......... .......... .......... .......... 57% 82.0M 5s
-  4500K .......... .......... .......... .......... .......... 57% 92.4M 5s
-  4550K .......... .......... .......... .......... .......... 58% 70.9M 5s
-  4600K .......... .......... .......... .......... .......... 59%  488K 5s
-  4650K .......... .......... .......... .......... .......... 59% 3.15M 5s
-  4700K .......... .......... .......... .......... .......... 60% 1019K 4s
-  4750K .......... .......... .......... .......... .......... 61% 5.43M 4s
-  4800K .......... .......... .......... .......... .......... 61% 36.7M 4s
-  4850K .......... .......... .......... .......... .......... 62% 36.4M 4s
-  4900K .......... .......... .......... .......... .......... 62% 16.5M 4s
-  4950K .......... .......... .......... .......... .......... 63%  582K 4s
-  5000K .......... .......... .......... .......... .......... 64% 5.00M 4s
-  5050K .......... .......... .......... .......... .......... 64% 2.69M 4s
-  5100K .......... .......... .......... .......... .......... 65%  962K 4s
-  5150K .......... .......... .......... .......... .......... 66% 6.79M 4s
-  5200K .......... .......... .......... .......... .......... 66% 3.55M 3s
-  5250K .......... .......... .......... .......... .......... 67% 52.8M 3s
-  5300K .......... .......... .......... .......... .......... 68% 53.9M 3s
-  5350K .......... .......... .......... .......... .......... 68%  848K 3s
-  5400K .......... .......... .......... .......... .......... 69% 3.09M 3s
-  5450K .......... .......... .......... .......... .......... 69% 1.10M 3s
-  5500K .......... .......... .......... .......... .......... 70% 1.48M 3s
-  5550K .......... .......... .......... .......... .......... 71% 12.4M 3s
-  5600K .......... .......... .......... .......... .......... 71% 11.4M 3s
-  5650K .......... .......... .......... .......... .......... 72% 7.19M 3s
-  5700K .......... .......... .......... .......... .......... 73% 97.8M 3s
-  5750K .......... .......... .......... .......... .......... 73%  798K 3s
-  5800K .......... .......... .......... .......... .......... 74% 4.22M 2s
-  5850K .......... .......... .......... .......... .......... 75% 1.34M 2s
-  5900K .......... .......... .......... .......... .......... 75% 1.25M 2s
-  5950K .......... .......... .......... .......... .......... 76% 6.55M 2s
-  6000K .......... .......... .......... .......... .......... 76% 3.17M 2s
-  6050K .......... .......... .......... .......... .......... 77% 6.10M 2s
-  6100K .......... .......... .......... .......... .......... 78% 4.90M 2s
-  6150K .......... .......... .......... .......... .......... 78% 1.71M 2s
-  6200K .......... .......... .......... .......... .......... 79% 1.92M 2s
-  6250K .......... .......... .......... .......... .......... 80% 2.03M 2s
-  6300K .......... .......... .......... .......... .......... 80% 1.56M 2s
-  6350K .......... .......... .......... .......... .......... 81% 1.69M 2s
-  6400K .......... .......... .......... .......... .......... 82% 9.35M 2s
-  6450K .......... .......... .......... .......... .......... 82% 7.14M 2s
-  6500K .......... .......... .......... .......... .......... 83% 1.83M 1s
-  6550K .......... .......... .......... .......... .......... 83% 7.51M 1s
-  6600K .......... .......... .......... .......... .......... 84% 3.61M 1s
-  6650K .......... .......... .......... .......... .......... 85% 1.54M 1s
-  6700K .......... .......... .......... .......... .......... 85% 1.39M 1s
-  6750K .......... .......... .......... .......... .......... 86% 2.73M 1s
-  6800K .......... .......... .......... .......... .......... 87% 2.40M 1s
-  6850K .......... .......... .......... .......... .......... 87% 7.60M 1s
-  6900K .......... .......... .......... .......... .......... 88% 1.91M 1s
-  6950K .......... .......... .......... .......... .......... 89% 3.16M 1s
-  7000K .......... .......... .......... .......... .......... 89% 42.0M 1s
-  7050K .......... .......... .......... .......... .......... 90% 2.99M 1s
-  7100K .......... .......... .......... .......... .......... 90% 1.97M 1s
-  7150K .......... .......... .......... .......... .......... 91% 1.21M 1s
-  7200K .......... .......... .......... .......... .......... 92% 2.13M 1s
-  7250K .......... .......... .......... .......... .......... 92% 1.47M 1s
-  7300K .......... .......... .......... .......... .......... 93% 7.92M 1s
-  7350K .......... .......... .......... .......... .......... 94% 2.42M 0s
-  7400K .......... .......... .......... .......... .......... 94% 4.17M 0s
-  7450K .......... .......... .......... .......... .......... 95% 10.4M 0s
-  7500K .......... .......... .......... .......... .......... 96% 7.78M 0s
-  7550K .......... .......... .......... .......... .......... 96% 2.18M 0s
-  7600K .......... .......... .......... .......... .......... 97% 1.69M 0s
-  7650K .......... .......... .......... .......... .......... 97% 2.32M 0s
-  7700K .......... .......... .......... .......... .......... 98% 1.34M 0s
-  7750K .......... .......... .......... .......... .......... 99% 4.74M 0s
-  7800K .......... .......... .......... .......... .......... 99% 3.91M 0s
-  7850K .......... ....                                       100% 1.56M=8.0s
+     0K .......... .......... .......... .......... ..........  0%  143K 55s
+    50K .......... .......... .......... .......... ..........  1%  290K 40s
+   100K .......... .......... .......... .......... ..........  1% 3.41M 28s
+   150K .......... .......... .......... .......... ..........  2%  429K 25s
+   200K .......... .......... .......... .......... ..........  3%  976K 21s
+   250K .......... .......... .......... .......... ..........  3%  431K 21s
+   300K .......... .......... .......... .......... ..........  4% 1.07M 19s
+   350K .......... .......... .......... .......... ..........  5% 3.64M 16s
+   400K .......... .......... .......... .......... ..........  5% 2.30M 15s
+   450K .......... .......... .......... .......... ..........  6% 6.75M 13s
+   500K .......... .......... .......... .......... ..........  6%  483K 13s
+   550K .......... .......... .......... .......... ..........  7% 1000K 13s
+   600K .......... .......... .......... .......... ..........  8% 10.3M 12s
+   650K .......... .......... .......... .......... ..........  8% 2.17M 11s
+   700K .......... .......... .......... .......... ..........  9% 9.58M 10s
+   750K .......... .......... .......... .......... .......... 10%  548K 10s
+   800K .......... .......... .......... .......... .......... 10%  813K 10s
+   850K .......... .......... .......... .......... .......... 11% 4.29M 10s
+   900K .......... .......... .......... .......... .......... 12% 47.5M 9s
+   950K .......... .......... .......... .......... .......... 12% 5.95M 9s
+  1000K .......... .......... .......... .......... .......... 13%  234K 10s
+  1050K .......... .......... .......... .......... .......... 13% 3.29M 9s
+  1100K .......... .......... .......... .......... .......... 14% 30.5M 9s
+  1150K .......... .......... .......... .......... .......... 15%  108M 8s
+  1200K .......... .......... .......... .......... .......... 15% 64.1M 8s
+  1250K .......... .......... .......... .......... .......... 16% 37.4M 8s
+  1300K .......... .......... .......... .......... .......... 17%  265M 7s
+  1350K .......... .......... .......... .......... .......... 17%  102M 7s
+  1400K .......... .......... .......... .......... .......... 18% 73.2M 7s
+  1450K .......... .......... .......... .......... .......... 19%  250K 7s
+  1500K .......... .......... .......... .......... .......... 19%  701K 7s
+  1550K .......... .......... .......... .......... .......... 20%  104K 9s
+  1600K .......... .......... .......... .......... .......... 20% 2.43M 9s
+  1650K .......... .......... .......... .......... .......... 21%  154K 9s
+  1700K .......... .......... .......... .......... .......... 22% 1.86M 9s
+  1750K .......... .......... .......... .......... .......... 22% 11.0K 24s
+  1800K .......... .......... .......... .......... .......... 23% 10.5M 23s
+  1850K .......... .......... .......... .......... .......... 24%  267K 23s
+  1900K .......... .......... .......... .......... .......... 24%  283K 23s
+  1950K .......... .......... .......... .......... .......... 25%  269K 23s
+  2000K .......... .......... .......... .......... .......... 26%  799K 22s
+  2050K .......... .......... .......... .......... .......... 26%  351K 22s
+  2100K .......... .......... .......... .......... .......... 27%  298K 22s
+  2150K .......... .......... .......... .......... .......... 27%  106K 22s
+  2200K .......... .......... .......... .......... .......... 28%  115M 21s
+  2250K .......... .......... .......... .......... .......... 29%  248K 21s
+  2300K .......... .......... .......... .......... .......... 29% 1.56M 21s
+  2350K .......... .......... .......... .......... .......... 30%  344K 20s
+  2400K .......... .......... .......... .......... .......... 31% 1.67M 20s
+  2450K .......... .......... .......... .......... .......... 31%  348K 20s
+  2500K .......... .......... .......... .......... .......... 32% 1.71M 19s
+  2550K .......... .......... .......... .......... .......... 33%  328K 19s
+  2600K .......... .......... .......... .......... .......... 33% 1.87M 18s
+  2650K .......... .......... .......... .......... .......... 34%  366K 18s
+  2700K .......... .......... .......... .......... .......... 34% 1.83M 18s
+  2750K .......... .......... .......... .......... .......... 35%  253K 18s
+  2800K .......... .......... .......... .......... .......... 36% 4.05M 17s
+  2850K .......... .......... .......... .......... .......... 36%  336K 17s
+  2900K .......... .......... .......... .......... .......... 37% 1.52M 16s
+  2950K .......... .......... .......... .......... .......... 38% 4.51M 16s
+  3000K .......... .......... .......... .......... .......... 38%  312K 16s
+  3050K .......... .......... .......... .......... .......... 39% 1.07M 16s
+  3100K .......... .......... .......... .......... .......... 40%  517K 15s
+  3150K .......... .......... .......... .......... .......... 40% 1.24M 15s
+  3200K .......... .......... .......... .......... .......... 41% 1015K 15s
+  3250K .......... .......... .......... .......... .......... 41%  416K 14s
+  3300K .......... .......... .......... .......... .......... 42% 2.06M 14s
+  3350K .......... .......... .......... .......... .......... 43% 1.21M 14s
+  3400K .......... .......... .......... .......... .......... 43%  420K 14s
+  3450K .......... .......... .......... .......... .......... 44% 2.16M 13s
+  3500K .......... .......... .......... .......... .......... 45% 1.13M 13s
+  3550K .......... .......... .......... .......... .......... 45%  366K 13s
+  3600K .......... .......... .......... .......... .......... 46% 2.00M 12s
+  3650K .......... .......... .......... .......... .......... 47%  859K 12s
+  3700K .......... .......... .......... .......... .......... 47%  546K 12s
+  3750K .......... .......... .......... .......... .......... 48% 2.63M 12s
+  3800K .......... .......... .......... .......... .......... 48%  814K 12s
+  3850K .......... .......... .......... .......... .......... 49%  395K 11s
+  3900K .......... .......... .......... .......... .......... 50% 1.40M 11s
+  3950K .......... .......... .......... .......... .......... 50% 52.7M 11s
+  4000K .......... .......... .......... .......... .......... 51%  359K 11s
+  4050K .......... .......... .......... .......... .......... 52% 1.07M 10s
+  4100K .......... .......... .......... .......... .......... 52% 2.23M 10s
+  4150K .......... .......... .......... .......... .......... 53% 1.15M 10s
+  4200K .......... .......... .......... .......... .......... 54%  465K 10s
+  4250K .......... .......... .......... .......... .......... 54%  470K 10s
+  4300K .......... .......... .......... .......... .......... 55% 1.19M 9s
+  4350K .......... .......... .......... .......... .......... 55% 11.9M 9s
+  4400K .......... .......... .......... .......... .......... 56%  913K 9s
+  4450K .......... .......... .......... .......... .......... 57%  605K 9s
+  4500K .......... .......... .......... .......... .......... 57%  299K 9s
+  4550K .......... .......... .......... .......... .......... 58% 3.47M 9s
+  4600K .......... .......... .......... .......... .......... 59% 10.4K 12s
+  4650K .......... .......... .......... .......... .......... 59% 23.9M 11s
+  4700K .......... .......... .......... .......... .......... 60% 6.75M 11s
+  4750K .......... .......... .......... .......... .......... 61% 40.7M 11s
+  4800K .......... .......... .......... .......... .......... 61% 71.9M 10s
+  4850K .......... .......... .......... .......... .......... 62% 60.8M 10s
+  4900K .......... .......... .......... .......... .......... 62%  244K 10s
+  4950K .......... .......... .......... .......... .......... 63% 4.52M 10s
+  5000K .......... .......... .......... .......... .......... 64%  234K 10s
+  5050K .......... .......... .......... .......... .......... 64%  223K 9s
+  5100K .......... .......... .......... .......... .......... 65%  310K 9s
+  5150K .......... .......... .......... .......... .......... 66%  211K 9s
+  5200K .......... .......... .......... .......... .......... 66%  193K 9s
+  5250K .......... .......... .......... .......... .......... 67%  295K 9s
+  5300K .......... .......... .......... .......... .......... 68%  772K 9s
+  5350K .......... .......... .......... .......... .......... 68%  414K 8s
+  5400K .......... .......... .......... .......... .......... 69%  231K 8s
+  5450K .......... .......... .......... .......... .......... 69% 1.41M 8s
+  5500K .......... .......... .......... .......... .......... 70%  303K 8s
+  5550K .......... .......... .......... .......... .......... 71%  305K 8s
+  5600K .......... .......... .......... .......... .......... 71% 1.15M 7s
+  5650K .......... .......... .......... .......... .......... 72% 87.2K 7s
+  5700K .......... .......... .......... .......... .......... 73% 12.7M 7s
+  5750K .......... .......... .......... .......... .......... 73%  215K 7s
+  5800K .......... .......... .......... .......... .......... 74%  776K 7s
+  5850K .......... .......... .......... .......... .......... 75%  327K 7s
+  5900K .......... .......... .......... .......... .......... 75%  389K 7s
+  5950K .......... .......... .......... .......... .......... 76%  604K 6s
+  6000K .......... .......... .......... .......... .......... 76%  454K 6s
+  6050K .......... .......... .......... .......... .......... 77%  605K 6s
+  6100K .......... .......... .......... .......... .......... 78%  566K 6s
+  6150K .......... .......... .......... .......... .......... 78%  570K 6s
+  6200K .......... .......... .......... .......... .......... 79%  679K 5s
+  6250K .......... .......... .......... .......... .......... 80%  710K 5s
+  6300K .......... .......... .......... .......... .......... 80%  516K 5s
+  6350K .......... .......... .......... .......... .......... 81%  578K 5s
+  6400K .......... .......... .......... .......... .......... 82%  973K 5s
+  6450K .......... .......... .......... .......... .......... 82%  429K 4s
+  6500K .......... .......... .......... .......... .......... 83%  936K 4s
+  6550K .......... .......... .......... .......... .......... 83%  942K 4s
+  6600K .......... .......... .......... .......... .......... 84%  490K 4s
+  6650K .......... .......... .......... .......... .......... 85% 1.61M 4s
+  6700K .......... .......... .......... .......... .......... 85%  392K 4s
+  6750K .......... .......... .......... .......... .......... 86%  557K 3s
+  6800K .......... .......... .......... .......... .......... 87% 2.77M 3s
+  6850K .......... .......... .......... .......... .......... 87%  391K 3s
+  6900K .......... .......... .......... .......... .......... 88%  171K 3s
+  6950K .......... .......... .......... .......... .......... 89%  205K 3s
+  7000K .......... .......... .......... .......... .......... 89%  484K 3s
+  7050K .......... .......... .......... .......... .......... 90% 33.3M 2s
+  7100K .......... .......... .......... .......... .......... 90%  365K 2s
+  7150K .......... .......... .......... .......... .......... 91%  440K 2s
+  7200K .......... .......... .......... .......... .......... 92% 54.1M 2s
+  7250K .......... .......... .......... .......... .......... 92%  851K 2s
+  7300K .......... .......... .......... .......... .......... 93% 11.8K 2s
+  7350K .......... .......... .......... .......... .......... 94%  187K 2s
+  7400K .......... .......... .......... .......... .......... 94% 62.0M 2s
+  7450K .......... .......... .......... .......... .......... 95% 94.7M 1s
+  7500K .......... .......... .......... .......... .......... 96% 3.18M 1s
+  7550K .......... .......... .......... .......... .......... 96% 12.4M 1s
+  7600K .......... .......... .......... .......... .......... 97%  296K 1s
+  7650K .......... .......... .......... .......... .......... 97% 1.78M 1s
+  7700K .......... .......... .......... .......... .......... 98%  375K 0s
+  7750K .......... .......... .......... .......... .......... 99%  538K 0s
+  7800K .......... .......... .......... .......... .......... 99% 8.72M 0s
+  7850K .......... ....                                       100% 50.6M=28s
 
-2019-04-21 11:03:11 (986 KB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
+2019-05-07 23:15:46 (284 KB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
 
 thrift-0.9.2/
 thrift-0.9.2/.travis.yml
@@ -8155,9 +8151,9 @@ mv -f .deps/libparse_a-thrifty.Tpo .deps/libparse_a-thrifty.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_typedef.o -MD -MP -MF .deps/thrift-t_typedef.Tpo -c -o thrift-t_typedef.o `test -f 'src/parse/t_typedef.cc' || echo './'`src/parse/t_typedef.cc
 mv -f .deps/thrift-t_typedef.Tpo .deps/thrift-t_typedef.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-parse.o -MD -MP -MF .deps/thrift-parse.Tpo -c -o thrift-parse.o `test -f 'src/parse/parse.cc' || echo './'`src/parse/parse.cc
-mv -f .deps/thrift-parse.Tpo .deps/thrift-parse.Po
-g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_c_glib_generator.o -MD -MP -MF .deps/thrift-t_c_glib_generator.Tpo -c -o thrift-t_c_glib_generator.o `test -f 'src/generate/t_c_glib_generator.cc' || echo './'`src/generate/t_c_glib_generator.cc
 mv -f .deps/thrift-t_generator.Tpo .deps/thrift-t_generator.Po
+g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_c_glib_generator.o -MD -MP -MF .deps/thrift-t_c_glib_generator.Tpo -c -o thrift-t_c_glib_generator.o `test -f 'src/generate/t_c_glib_generator.cc' || echo './'`src/generate/t_c_glib_generator.cc
+mv -f .deps/thrift-parse.Tpo .deps/thrift-parse.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_cpp_generator.o -MD -MP -MF .deps/thrift-t_cpp_generator.Tpo -c -o thrift-t_cpp_generator.o `test -f 'src/generate/t_cpp_generator.cc' || echo './'`src/generate/t_cpp_generator.cc
 mv -f .deps/thrift-t_cpp_generator.Tpo .deps/thrift-t_cpp_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT thrift-t_java_generator.o -MD -MP -MF .deps/thrift-t_java_generator.Tpo -c -o thrift-t_java_generator.o `test -f 'src/generate/t_java_generator.cc' || echo './'`src/generate/t_java_generator.cc
@@ -8225,8 +8221,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo src/thrift/concurrency/Monitor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Monitor.lo src/thrift/concurrency/Monitor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Mutex.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Monitor.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Mutex.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp -o src/thrift/concurrency/Mutex.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp -o src/thrift/concurrency/Monitor.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/PosixThreadFactory.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -8284,14 +8280,14 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/concurrency/ThreadManager.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/ThreadManager.lo src/thrift/concurrency/ThreadManager.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/ThreadManager.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp -o src/thrift/TApplicationException.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/ThreadManager.o
 depbase=`echo src/thrift/concurrency/TimerManager.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/TimerManager.lo src/thrift/concurrency/TimerManager.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF src/thrift/concurrency/.deps/TimerManager.Tpo -c src/thrift/concurrency/TimerManager.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/TimerManager.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp -o src/thrift/concurrency/ThreadManager.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/TimerManager.lo -MD -MP -MF src/thrift/concurrency/.deps/TimerManager.Tpo -c src/thrift/concurrency/TimerManager.cpp -o src/thrift/concurrency/TimerManager.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/ThreadManager.lo -MD -MP -MF src/thrift/concurrency/.deps/ThreadManager.Tpo -c src/thrift/concurrency/ThreadManager.cpp -o src/thrift/concurrency/ThreadManager.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/Util.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/concurrency/Util.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Util.lo src/thrift/concurrency/Util.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -8373,8 +8369,8 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/transport/TPipeServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipeServer.lo src/thrift/transport/TPipeServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipeServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp -o src/thrift/transport/TSocket.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipeServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp -o src/thrift/transport/TPipeServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TSSLSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSSLSocket.lo src/thrift/transport/TSSLSocket.cpp &&\
@@ -8434,8 +8430,8 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/processor/PeekProcessor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/processor/PeekProcessor.lo src/thrift/processor/PeekProcessor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF src/thrift/processor/.deps/PeekProcessor.Tpo -c src/thrift/processor/PeekProcessor.cpp  -fPIC -DPIC -o src/thrift/processor/.libs/PeekProcessor.o
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -release 0.9.2 -L/usr/lib/x86_64-linux-gnu  -o libthriftnb.la -rpath /usr/local/lib src/thrift/server/libthriftnb_la-TNonblockingServer.lo src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo src/thrift/async/libthriftnb_la-TEvhttpServer.lo src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo  -lssl -lcrypto -lrt -lpthread 
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF src/thrift/processor/.deps/PeekProcessor.Tpo -c src/thrift/processor/PeekProcessor.cpp  -fPIC -DPIC -o src/thrift/processor/.libs/PeekProcessor.o
 libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/thrift/server/.libs/libthriftnb_la-TNonblockingServer.o src/thrift/async/.libs/libthriftnb_la-TAsyncProtocolProcessor.o src/thrift/async/.libs/libthriftnb_la-TEvhttpServer.o src/thrift/async/.libs/libthriftnb_la-TEvhttpClientChannel.o   -L/usr/lib/x86_64-linux-gnu -lssl -lcrypto -lrt -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -O2   -Wl,-soname -Wl,libthriftnb-0.9.2.so -o .libs/libthriftnb-0.9.2.so
 libtool: link: (cd ".libs" && rm -f "libthriftnb.so" && ln -s "libthriftnb-0.9.2.so" "libthriftnb.so")
 libtool: link: ar cru .libs/libthriftnb.a  src/thrift/server/libthriftnb_la-TNonblockingServer.o src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.o src/thrift/async/libthriftnb_la-TEvhttpServer.o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o
@@ -8549,6 +8545,7 @@ make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thri
 
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for f../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/OptionalRequiredTest.thrift
+../../../compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 ield2, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
@@ -8571,7 +8568,6 @@ ield2, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-../../../compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
@@ -8585,8 +8581,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo DebugProtoTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT DebugProtoTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o DebugProtoTest_extras.lo DebugProtoTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT ThriftTest_extras.lo -MD -MP -MF .deps/ThriftTest_extras.Tpo -c ThriftTest_extras.cpp  -fPIC -DPIC -o .libs/ThriftTest_extras.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT DebugProtoTest_extras.lo -MD -MP -MF .deps/DebugProtoTest_extras.Tpo -c DebugProtoTest_extras.cpp  -fPIC -DPIC -o .libs/DebugProtoTest_extras.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT ThriftTest_extras.lo -MD -MP -MF .deps/ThriftTest_extras.Tpo -c ThriftTest_extras.cpp  -fPIC -DPIC -o .libs/ThriftTest_extras.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT DebugProtoTest_extras.lo -MD -MP -MF .deps/DebugProtoTest_extras.Tpo -c DebugProtoTest_extras.cpp -o DebugProtoTest_extras.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT ThriftTest_extras.lo -MD -MP -MF .deps/ThriftTest_extras.Tpo -c ThriftTest_extras.cpp -o ThriftTest_extras.o >/dev/null 2>&1
 ../../../compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
@@ -8602,10 +8598,10 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thr
 depbase=`echo gen-cpp/DebugProtoTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/DebugProtoTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/DebugProtoTest_types.lo gen-cpp/DebugProtoTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/DebugProtoTest_types.lo -MD -MP -MF gen-cpp/.deps/DebugProtoTest_types.Tpo -c gen-cpp/DebugProtoTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/DebugProtoTest_types.o
 depbase=`echo gen-cpp/EnumTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/EnumTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/EnumTest_types.lo gen-cpp/EnumTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/DebugProtoTest_types.lo -MD -MP -MF gen-cpp/.deps/DebugProtoTest_types.Tpo -c gen-cpp/DebugProtoTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/DebugProtoTest_types.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/EnumTest_types.lo -MD -MP -MF gen-cpp/.deps/EnumTest_types.Tpo -c gen-cpp/EnumTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/EnumTest_types.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/EnumTest_types.lo -MD -MP -MF gen-cpp/.deps/EnumTest_types.Tpo -c gen-cpp/EnumTest_types.cpp -o gen-cpp/EnumTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/OptionalRequiredTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -8643,10 +8639,10 @@ depbase=`echo gen-cpp/ParentService.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ParentService.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ParentService.lo gen-cpp/ParentService.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ParentService.lo -MD -MP -MF gen-cpp/.deps/ParentService.Tpo -c gen-cpp/ParentService.cpp  -fPIC -DPIC -o gen-cpp/.libs/ParentService.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ParentService.lo -MD -MP -MF gen-cpp/.deps/ParentService.Tpo -c gen-cpp/ParentService.cpp -o gen-cpp/ParentService.o >/dev/null 2>&1
 depbase=`echo processor/ProcessorTest.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT processor/ProcessorTest.o -MD -MP -MF $depbase.Tpo -c -o processor/ProcessorTest.o processor/ProcessorTest.cpp &&\
 mv -f $depbase.Tpo $depbase.Po
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ParentService.lo -MD -MP -MF gen-cpp/.deps/ParentService.Tpo -c gen-cpp/ParentService.cpp -o gen-cpp/ParentService.o >/dev/null 2>&1
 depbase=`echo processor/EventLog.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT processor/EventLog.o -MD -MP -MF $depbase.Tpo -c -o processor/EventLog.o processor/EventLog.cpp &&\
 mv -f $depbase.Tpo $depbase.Po
@@ -8709,35 +8705,35 @@ running build_py
 creating build
 creating build/lib.linux-x86_64-2.7
 creating build/lib.linux-x86_64-2.7/thrift
-copying src/TTornado.py -> build/lib.linux-x86_64-2.7/thrift
-copying src/TSerialization.py -> build/lib.linux-x86_64-2.7/thrift
 copying src/__init__.py -> build/lib.linux-x86_64-2.7/thrift
 copying src/Thrift.py -> build/lib.linux-x86_64-2.7/thrift
-copying src/TSCons.py -> build/lib.linux-x86_64-2.7/thrift
+copying src/TTornado.py -> build/lib.linux-x86_64-2.7/thrift
 copying src/TMultiplexedProcessor.py -> build/lib.linux-x86_64-2.7/thrift
+copying src/TSCons.py -> build/lib.linux-x86_64-2.7/thrift
+copying src/TSerialization.py -> build/lib.linux-x86_64-2.7/thrift
 creating build/lib.linux-x86_64-2.7/thrift/protocol
-copying src/protocol/TProtocolDecorator.py -> build/lib.linux-x86_64-2.7/thrift/protocol
+copying src/protocol/TBinaryProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
+copying src/protocol/__init__.py -> build/lib.linux-x86_64-2.7/thrift/protocol
 copying src/protocol/TProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
 copying src/protocol/TJSONProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
-copying src/protocol/TCompactProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
 copying src/protocol/TMultiplexedProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
-copying src/protocol/__init__.py -> build/lib.linux-x86_64-2.7/thrift/protocol
+copying src/protocol/TCompactProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
+copying src/protocol/TProtocolDecorator.py -> build/lib.linux-x86_64-2.7/thrift/protocol
 copying src/protocol/TBase.py -> build/lib.linux-x86_64-2.7/thrift/protocol
-copying src/protocol/TBinaryProtocol.py -> build/lib.linux-x86_64-2.7/thrift/protocol
 creating build/lib.linux-x86_64-2.7/thrift/transport
-copying src/transport/TTwisted.py -> build/lib.linux-x86_64-2.7/thrift/transport
-copying src/transport/THttpClient.py -> build/lib.linux-x86_64-2.7/thrift/transport
-copying src/transport/TZlibTransport.py -> build/lib.linux-x86_64-2.7/thrift/transport
-copying src/transport/__init__.py -> build/lib.linux-x86_64-2.7/thrift/transport
-copying src/transport/TSocket.py -> build/lib.linux-x86_64-2.7/thrift/transport
 copying src/transport/TSSLSocket.py -> build/lib.linux-x86_64-2.7/thrift/transport
 copying src/transport/TTransport.py -> build/lib.linux-x86_64-2.7/thrift/transport
+copying src/transport/__init__.py -> build/lib.linux-x86_64-2.7/thrift/transport
+copying src/transport/TZlibTransport.py -> build/lib.linux-x86_64-2.7/thrift/transport
+copying src/transport/THttpClient.py -> build/lib.linux-x86_64-2.7/thrift/transport
+copying src/transport/TSocket.py -> build/lib.linux-x86_64-2.7/thrift/transport
+copying src/transport/TTwisted.py -> build/lib.linux-x86_64-2.7/thrift/transport
 creating build/lib.linux-x86_64-2.7/thrift/server
-copying src/server/TServer.py -> build/lib.linux-x86_64-2.7/thrift/server
-copying src/server/THttpServer.py -> build/lib.linux-x86_64-2.7/thrift/server
 copying src/server/__init__.py -> build/lib.linux-x86_64-2.7/thrift/server
-copying src/server/TProcessPoolServer.py -> build/lib.linux-x86_64-2.7/thrift/server
 copying src/server/TNonblockingServer.py -> build/lib.linux-x86_64-2.7/thrift/server
+copying src/server/THttpServer.py -> build/lib.linux-x86_64-2.7/thrift/server
+copying src/server/TProcessPoolServer.py -> build/lib.linux-x86_64-2.7/thrift/server
+copying src/server/TServer.py -> build/lib.linux-x86_64-2.7/thrift/server
 running build_ext
 building 'thrift.protocol.fastbinary' extension
 creating build/temp.linux-x86_64-2.7
@@ -8758,12 +8754,10 @@ make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thri
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
@@ -8772,6 +8766,8 @@ make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thri
 depbase=`echo gen-cpp/ThriftTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+[WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 depbase=`echo gen-cpp/ThriftTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -8836,7 +8832,6 @@ make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thri
 Making all in cpp
 make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/tutorial/cpp'
 ../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
-../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 depbase=`echo CppServer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT CppServer.o -MD -MP -MF $depbase.Tpo -c -o CppServer.o CppServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Po
@@ -8890,8 +8885,8 @@ libtool: link: ar cru .libs/libtutorialgencpp.a gen-cpp/.libs/Calculator.o gen-c
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.HXFEoGpfDU/thrift-0.9.2/tutorial/cpp'
@@ -9017,65 +9012,65 @@ running build_ext
 running install_lib
 creating /usr/lib/python2.7/site-packages
 creating /usr/lib/python2.7/site-packages/thrift
-creating /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TTwisted.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/THttpClient.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TZlibTransport.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/__init__.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TSocket.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TSSLSocket.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TTransport.py -> /usr/lib/python2.7/site-packages/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/TTornado.py -> /usr/lib/python2.7/site-packages/thrift
-copying build/lib.linux-x86_64-2.7/thrift/TSerialization.py -> /usr/lib/python2.7/site-packages/thrift
 copying build/lib.linux-x86_64-2.7/thrift/__init__.py -> /usr/lib/python2.7/site-packages/thrift
+copying build/lib.linux-x86_64-2.7/thrift/Thrift.py -> /usr/lib/python2.7/site-packages/thrift
+creating /usr/lib/python2.7/site-packages/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/__init__.py -> /usr/lib/python2.7/site-packages/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/TNonblockingServer.py -> /usr/lib/python2.7/site-packages/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/THttpServer.py -> /usr/lib/python2.7/site-packages/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/TProcessPoolServer.py -> /usr/lib/python2.7/site-packages/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/TServer.py -> /usr/lib/python2.7/site-packages/thrift/server
 creating /usr/lib/python2.7/site-packages/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/TProtocolDecorator.py -> /usr/lib/python2.7/site-packages/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/TBinaryProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/__init__.py -> /usr/lib/python2.7/site-packages/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TJSONProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/TCompactProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TMultiplexedProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/__init__.py -> /usr/lib/python2.7/site-packages/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/TCompactProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/TProtocolDecorator.py -> /usr/lib/python2.7/site-packages/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TBase.py -> /usr/lib/python2.7/site-packages/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/TBinaryProtocol.py -> /usr/lib/python2.7/site-packages/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so -> /usr/lib/python2.7/site-packages/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/Thrift.py -> /usr/lib/python2.7/site-packages/thrift
-copying build/lib.linux-x86_64-2.7/thrift/TSCons.py -> /usr/lib/python2.7/site-packages/thrift
-creating /usr/lib/python2.7/site-packages/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/TServer.py -> /usr/lib/python2.7/site-packages/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/THttpServer.py -> /usr/lib/python2.7/site-packages/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/__init__.py -> /usr/lib/python2.7/site-packages/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/TProcessPoolServer.py -> /usr/lib/python2.7/site-packages/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/TNonblockingServer.py -> /usr/lib/python2.7/site-packages/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/TTornado.py -> /usr/lib/python2.7/site-packages/thrift
+creating /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TSSLSocket.py -> /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TTransport.py -> /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/__init__.py -> /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TZlibTransport.py -> /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/THttpClient.py -> /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TSocket.py -> /usr/lib/python2.7/site-packages/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TTwisted.py -> /usr/lib/python2.7/site-packages/thrift/transport
 copying build/lib.linux-x86_64-2.7/thrift/TMultiplexedProcessor.py -> /usr/lib/python2.7/site-packages/thrift
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TTwisted.py to TTwisted.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/THttpClient.py to THttpClient.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TZlibTransport.py to TZlibTransport.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/__init__.py to __init__.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSocket.py to TSocket.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TTransport.py to TTransport.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/TTornado.py to TTornado.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/TSerialization.py to TSerialization.pyc
+copying build/lib.linux-x86_64-2.7/thrift/TSCons.py -> /usr/lib/python2.7/site-packages/thrift
+copying build/lib.linux-x86_64-2.7/thrift/TSerialization.py -> /usr/lib/python2.7/site-packages/thrift
 byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TProtocolDecorator.py to TProtocolDecorator.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/server/__init__.py to __init__.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/server/TNonblockingServer.py to TNonblockingServer.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/server/THttpServer.py to THttpServer.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/server/TProcessPoolServer.py to TProcessPoolServer.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/server/TServer.py to TServer.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TBinaryProtocol.py to TBinaryProtocol.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/__init__.py to __init__.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TProtocol.py to TProtocol.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TJSONProtocol.py to TJSONProtocol.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TCompactProtocol.py to TCompactProtocol.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TMultiplexedProtocol.py to TMultiplexedProtocol.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/__init__.py to __init__.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TCompactProtocol.py to TCompactProtocol.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TProtocolDecorator.py to TProtocolDecorator.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TBase.py to TBase.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TBinaryProtocol.py to TBinaryProtocol.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/TSCons.py to TSCons.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/server/TServer.py to TServer.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/server/THttpServer.py to THttpServer.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/server/__init__.py to __init__.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/server/TProcessPoolServer.py to TProcessPoolServer.pyc
-byte-compiling /usr/lib/python2.7/site-packages/thrift/server/TNonblockingServer.py to TNonblockingServer.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/TTornado.py to TTornado.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TTransport.py to TTransport.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/__init__.py to __init__.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TZlibTransport.py to TZlibTransport.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/THttpClient.py to THttpClient.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSocket.py to TSocket.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TTwisted.py to TTwisted.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
-writing byte-compilation script '/tmp/tmpGfENqP.py'
-/usr/bin/python -O /tmp/tmpGfENqP.py
-removing /tmp/tmpGfENqP.py
+byte-compiling /usr/lib/python2.7/site-packages/thrift/TSCons.py to TSCons.pyc
+byte-compiling /usr/lib/python2.7/site-packages/thrift/TSerialization.py to TSerialization.pyc
+writing byte-compilation script '/tmp/tmpUDTkom.py'
+/usr/bin/python -O /tmp/tmpUDTkom.py
+removing /tmp/tmpUDTkom.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -9195,70 +9190,70 @@ running build_ext
 creating build/bdist.linux-x86_64
 creating build/bdist.linux-x86_64/egg
 creating build/bdist.linux-x86_64/egg/thrift
-creating build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TTwisted.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/THttpClient.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TZlibTransport.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/__init__.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TSocket.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TSSLSocket.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/transport/TTransport.py -> build/bdist.linux-x86_64/egg/thrift/transport
-copying build/lib.linux-x86_64-2.7/thrift/TTornado.py -> build/bdist.linux-x86_64/egg/thrift
-copying build/lib.linux-x86_64-2.7/thrift/TSerialization.py -> build/bdist.linux-x86_64/egg/thrift
 copying build/lib.linux-x86_64-2.7/thrift/__init__.py -> build/bdist.linux-x86_64/egg/thrift
+copying build/lib.linux-x86_64-2.7/thrift/Thrift.py -> build/bdist.linux-x86_64/egg/thrift
+creating build/bdist.linux-x86_64/egg/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/__init__.py -> build/bdist.linux-x86_64/egg/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/TNonblockingServer.py -> build/bdist.linux-x86_64/egg/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/THttpServer.py -> build/bdist.linux-x86_64/egg/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/TProcessPoolServer.py -> build/bdist.linux-x86_64/egg/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/server/TServer.py -> build/bdist.linux-x86_64/egg/thrift/server
 creating build/bdist.linux-x86_64/egg/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/TProtocolDecorator.py -> build/bdist.linux-x86_64/egg/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/TBinaryProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/__init__.py -> build/bdist.linux-x86_64/egg/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TJSONProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/TCompactProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TMultiplexedProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/__init__.py -> build/bdist.linux-x86_64/egg/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/TCompactProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
+copying build/lib.linux-x86_64-2.7/thrift/protocol/TProtocolDecorator.py -> build/bdist.linux-x86_64/egg/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/TBase.py -> build/bdist.linux-x86_64/egg/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/protocol/TBinaryProtocol.py -> build/bdist.linux-x86_64/egg/thrift/protocol
 copying build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so -> build/bdist.linux-x86_64/egg/thrift/protocol
-copying build/lib.linux-x86_64-2.7/thrift/Thrift.py -> build/bdist.linux-x86_64/egg/thrift
-copying build/lib.linux-x86_64-2.7/thrift/TSCons.py -> build/bdist.linux-x86_64/egg/thrift
-creating build/bdist.linux-x86_64/egg/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/TServer.py -> build/bdist.linux-x86_64/egg/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/THttpServer.py -> build/bdist.linux-x86_64/egg/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/__init__.py -> build/bdist.linux-x86_64/egg/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/TProcessPoolServer.py -> build/bdist.linux-x86_64/egg/thrift/server
-copying build/lib.linux-x86_64-2.7/thrift/server/TNonblockingServer.py -> build/bdist.linux-x86_64/egg/thrift/server
+copying build/lib.linux-x86_64-2.7/thrift/TTornado.py -> build/bdist.linux-x86_64/egg/thrift
+creating build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TSSLSocket.py -> build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TTransport.py -> build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/__init__.py -> build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TZlibTransport.py -> build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/THttpClient.py -> build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TSocket.py -> build/bdist.linux-x86_64/egg/thrift/transport
+copying build/lib.linux-x86_64-2.7/thrift/transport/TTwisted.py -> build/bdist.linux-x86_64/egg/thrift/transport
 copying build/lib.linux-x86_64-2.7/thrift/TMultiplexedProcessor.py -> build/bdist.linux-x86_64/egg/thrift
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TTwisted.py to TTwisted.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/THttpClient.py to THttpClient.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TZlibTransport.py to TZlibTransport.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/__init__.py to __init__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSocket.py to TSocket.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TTransport.py to TTransport.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/TTornado.py to TTornado.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/TSerialization.py to TSerialization.pyc
+copying build/lib.linux-x86_64-2.7/thrift/TSCons.py -> build/bdist.linux-x86_64/egg/thrift
+copying build/lib.linux-x86_64-2.7/thrift/TSerialization.py -> build/bdist.linux-x86_64/egg/thrift
 byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TProtocolDecorator.py to TProtocolDecorator.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/server/__init__.py to __init__.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/server/TNonblockingServer.py to TNonblockingServer.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/server/THttpServer.py to THttpServer.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/server/TProcessPoolServer.py to TProcessPoolServer.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/server/TServer.py to TServer.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TBinaryProtocol.py to TBinaryProtocol.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/__init__.py to __init__.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TProtocol.py to TProtocol.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TJSONProtocol.py to TJSONProtocol.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TCompactProtocol.py to TCompactProtocol.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TMultiplexedProtocol.py to TMultiplexedProtocol.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/__init__.py to __init__.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TCompactProtocol.py to TCompactProtocol.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TProtocolDecorator.py to TProtocolDecorator.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TBase.py to TBase.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TBinaryProtocol.py to TBinaryProtocol.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/TSCons.py to TSCons.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/server/TServer.py to TServer.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/server/THttpServer.py to THttpServer.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/server/__init__.py to __init__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/server/TProcessPoolServer.py to TProcessPoolServer.pyc
-byte-compiling build/bdist.linux-x86_64/egg/thrift/server/TNonblockingServer.py to TNonblockingServer.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/TTornado.py to TTornado.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TTransport.py to TTransport.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/__init__.py to __init__.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TZlibTransport.py to TZlibTransport.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/THttpClient.py to THttpClient.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSocket.py to TSocket.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TTwisted.py to TTwisted.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
-writing byte-compilation script '/tmp/tmpCjH8nN.py'
-/usr/bin/python -O /tmp/tmpCjH8nN.py
-removing /tmp/tmpCjH8nN.py
+byte-compiling build/bdist.linux-x86_64/egg/thrift/TSCons.py to TSCons.pyc
+byte-compiling build/bdist.linux-x86_64/egg/thrift/TSerialization.py to TSerialization.pyc
+writing byte-compilation script '/tmp/tmp2ZQoO9.py'
+/usr/bin/python -O /tmp/tmp2ZQoO9.py
+removing /tmp/tmp2ZQoO9.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpqlUvFC.py'
-/usr/bin/python -O /tmp/tmpqlUvFC.py
-removing /tmp/tmpqlUvFC.py
+writing byte-compilation script '/tmp/tmpKWO3u4.py'
+/usr/bin/python -O /tmp/tmpKWO3u4.py
+removing /tmp/tmpKWO3u4.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -9276,26 +9271,26 @@ Adding thrift 0.9.2 to easy-install.pth file
 Installed /usr/local/lib/python2.7/dist-packages/thrift-0.9.2-py2.7-linux-x86_64.egg
 Processing dependencies for thrift==0.9.2
 Finished processing dependencies for thrift==0.9.2
---2019-04-21 11:07:26--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 192.30.255.113, 192.30.255.112
-Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+--2019-05-07 23:20:10--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-04-21 11:07:26--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.255.121, 192.30.255.120
+--2019-05-07 23:20:10--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 192.30.255.121
 Connecting to codeload.github.com (codeload.github.com)|192.30.255.121|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  562K
-    50K .......... .......... .......... .......... .......... 4.22M
-   100K .......... .......... .......... .......... .......... 1.42M
-   150K .......... .......... .......... .......... .......... 39.5M
-   200K .......... .......... .......... .......... .......... 1.96M
-   250K .......... .......... .......... .......... .......    1.99M=0.2s
+     0K .......... .......... .......... .......... ..........  431K
+    50K .......... .......... .......... .......... .......... 1.15M
+   100K .......... .......... .......... .......... .......... 2.49M
+   150K .......... .......... .......... .......... .......... 2.08M
+   200K .......... .......... .......... .......... .......... 2.46M
+   250K .......... .......... .......... .......... .......    3.62M=0.2s
 
-2019-04-21 11:07:27 (1.58 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-05-07 23:20:12 (1.24 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -10145,7 +10140,7 @@ Installing collected packages: pycparser, cffi
   Running setup.py install for pycparser: started
     Running setup.py install for pycparser: finished with status 'done'
 Successfully installed cffi-1.12.3 pycparser-2.19
-You are using pip version 8.1.1, however version 19.0.3 is available.
+You are using pip version 8.1.1, however version 19.1.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
@@ -10156,7 +10151,7 @@ Installing collected packages: nnpy
   Running setup.py install for nnpy: started
     Running setup.py install for nnpy: finished with status 'done'
 Successfully installed nnpy-0.1
-You are using pip version 8.1.1, however version 19.0.3 is available.
+You are using pip version 8.1.1, however version 19.1.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 libtoolize: putting auxiliary files in '.'.
 libtoolize: copying file './ltmain.sh'
@@ -11192,19 +11187,24 @@ depbase=`echo primitives.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp -Wall -Wextra -pthread -O0 -g -std=c++11 -MT primitives.lo -MD -MP -MF .deps/primitives.Tpo -c primitives.cpp  -fPIC -DPIC -o .libs/primitives.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp -Wall -Wextra -pthread -O0 -g -std=c++11 -MT primitives.lo -MD -MP -MF .deps/primitives.Tpo -c primitives.cpp -o primitives.o >/dev/null 2>&1
+depbase=`echo externs/psa_counter.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../..  -I../../include                           -I../../include                           -isystem../../third_party/jsoncpp/include                           -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp  -Wall -Wextra -pthread -O0 -g -std=c++11 -MT externs/psa_counter.lo -MD -MP -MF $depbase.Tpo -c -o externs/psa_counter.lo externs/psa_counter.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp -Wall -Wextra -pthread -O0 -g -std=c++11 -MT externs/psa_counter.lo -MD -MP -MF externs/.deps/psa_counter.Tpo -c externs/psa_counter.cpp  -fPIC -DPIC -o externs/.libs/psa_counter.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp -Wall -Wextra -pthread -O0 -g -std=c++11 -MT externs/psa_counter.lo -MD -MP -MF externs/.deps/psa_counter.Tpo -c externs/psa_counter.cpp -o externs/psa_counter.o >/dev/null 2>&1
 depbase=`echo thrift/src/PsaSwitch_server.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../..  -I../../include                           -I../../include                           -isystem../../third_party/jsoncpp/include                           -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp  -Wall -Wextra -pthread -O0 -g -std=c++11 -MT thrift/src/PsaSwitch_server.lo -MD -MP -MF $depbase.Tpo -c -o thrift/src/PsaSwitch_server.lo thrift/src/PsaSwitch_server.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp -Wall -Wextra -pthread -O0 -g -std=c++11 -MT thrift/src/PsaSwitch_server.lo -MD -MP -MF thrift/src/.deps/PsaSwitch_server.Tpo -c thrift/src/PsaSwitch_server.cpp  -fPIC -DPIC -o thrift/src/.libs/PsaSwitch_server.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../include -I../../include -isystem../../third_party/jsoncpp/include -isystem../../third_party/spdlog -I./thrift/src/ -I./gen-cpp -Wall -Wextra -pthread -O0 -g -std=c++11 -MT thrift/src/PsaSwitch_server.lo -MD -MP -MF thrift/src/.deps/PsaSwitch_server.Tpo -c thrift/src/PsaSwitch_server.cpp -o thrift/src/PsaSwitch_server.o >/dev/null 2>&1
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g -std=c++11   -o libpsaswitch.la  psa_switch.lo primitives.lo thrift/src/PsaSwitch_server.lo ../../src/bm_sim/libbmsim.la ../../src/bf_lpm_trie/libbflpmtrie.la ../../src/BMI/libbmi.la ../../third_party/jsoncpp/libjson.la -lboost_system -lthrift -lboost_program_options -lboost_filesystem -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g -std=c++11   -o libpsaswitch.la  psa_switch.lo primitives.lo externs/psa_counter.lo thrift/src/PsaSwitch_server.lo ../../src/bm_sim/libbmsim.la ../../src/bf_lpm_trie/libbflpmtrie.la ../../src/BMI/libbmi.la ../../third_party/jsoncpp/libjson.la -lboost_system -lthrift -lboost_program_options -lboost_filesystem -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
 libtool: link: (cd .libs/libpsaswitch.lax/libbmsim.a && ar x "/home/jafinger/behavioral-model/targets/psa_switch/../../src/bm_sim/.libs/libbmsim.a")
 libtool: link: (cd .libs/libpsaswitch.lax/libbflpmtrie.a && ar x "/home/jafinger/behavioral-model/targets/psa_switch/../../src/bf_lpm_trie/.libs/libbflpmtrie.a")
 libtool: link: (cd .libs/libpsaswitch.lax/libbmi.a && ar x "/home/jafinger/behavioral-model/targets/psa_switch/../../src/BMI/.libs/libbmi.a")
 libtool: link: (cd .libs/libpsaswitch.lax/libjson.a && ar x "/home/jafinger/behavioral-model/targets/psa_switch/../../third_party/jsoncpp/.libs/libjson.a")
 copying selected object files to avoid basename conflicts...
 libtool: link: ln .libs/libpsaswitch.lax/libbmsim.a/primitives.o .libs/libpsaswitch.lax/lt1-primitives.o || cp .libs/libpsaswitch.lax/libbmsim.a/primitives.o .libs/libpsaswitch.lax/lt1-primitives.o
-libtool: link: ar cru .libs/libpsaswitch.a .libs/psa_switch.o .libs/primitives.o thrift/src/.libs/PsaSwitch_server.o .libs/libpsaswitch.lax/libbmsim.a/P4Objects.o .libs/libpsaswitch.lax/libbmsim.a/_assert.o .libs/libpsaswitch.lax/libbmsim.a/action_profile.o .libs/libpsaswitch.lax/libbmsim.a/actions.o .libs/libpsaswitch.lax/libbmsim.a/ageing.o .libs/libpsaswitch.lax/libbmsim.a/bytecontainer.o .libs/libpsaswitch.lax/libbmsim.a/calculations.o .libs/libpsaswitch.lax/libbmsim.a/checksums.o .libs/libpsaswitch.lax/libbmsim.a/conditionals.o .libs/libpsaswitch.lax/libbmsim.a/context.o .libs/libpsaswitch.lax/libbmsim.a/control_action.o .libs/libpsaswitch.lax/libbmsim.a/counters.o .libs/libpsaswitch.lax/libbmsim.a/crc_map.o .libs/libpsaswitch.lax/libbmsim.a/debugger.o .libs/libpsaswitch.lax/libbmsim.a/deparser.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_bmi.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libpsaswitch.lax/libbmsim.a/enums.o .libs/libpsaswitch.lax/libbmsim.a/event_logger.o .libs/libpsaswitch.lax/libbmsim.a/expressions.o .libs/libpsaswitch.lax/libbmsim.a/extern.o .libs/libpsaswitch.lax/libbmsim.a/fields.o .libs/libpsaswitch.lax/libbmsim.a/header_unions.o .libs/libpsaswitch.lax/libbmsim.a/headers.o .libs/libpsaswitch.lax/libbmsim.a/learning.o .libs/libpsaswitch.lax/libbmsim.a/logger.o .libs/libpsaswitch.lax/libbmsim.a/lookup_structures.o .libs/libpsaswitch.lax/libbmsim.a/match_tables.o .libs/libpsaswitch.lax/libbmsim.a/match_units.o .libs/libpsaswitch.lax/libbmsim.a/md5.o .libs/libpsaswitch.lax/libbmsim.a/meters.o .libs/libpsaswitch.lax/libbmsim.a/options_parse.o .libs/libpsaswitch.lax/libbmsim.a/packet.o .libs/libpsaswitch.lax/libbmsim.a/parser.o .libs/libpsaswitch.lax/libbmsim.a/parser_error.o .libs/libpsaswitch.lax/libbmsim.a/pcap_file.o .libs/libpsaswitch.lax/libbmsim.a/periodic_task.o .libs/libpsaswitch.lax/libbmsim.a/phv.o .libs/libpsaswitch.lax/libbmsim.a/phv_source.o .libs/libpsaswitch.lax/libbmsim.a/pipeline.o .libs/libpsaswitch.lax/libbmsim.a/port_monitor.o .libs/libpsaswitch.lax/lt1-primitives.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre_lag.o .libs/libpsaswitch.lax/libbmsim.a/source_info.o .libs/libpsaswitch.lax/libbmsim.a/stacks.o .libs/libpsaswitch.lax/libbmsim.a/stateful.o .libs/libpsaswitch.lax/libbmsim.a/switch.o .libs/libpsaswitch.lax/libbmsim.a/tables.o .libs/libpsaswitch.lax/libbmsim.a/target_parser.o .libs/libpsaswitch.lax/libbmsim.a/transport.o .libs/libpsaswitch.lax/libbmsim.a/transport_nn.o .libs/libpsaswitch.lax/libbmsim.a/version.o .libs/libpsaswitch.lax/libbmsim.a/xxhash.o .libs/libpsaswitch.lax/libbflpmtrie.a/bf_lpm_trie.o .libs/libpsaswitch.lax/libbmi.a/bmi_interface.o .libs/libpsaswitch.lax/libbmi.a/bmi_port.o .libs/libpsaswitch.lax/libjson.a/jsoncpp.o
+libtool: link: ar cru .libs/libpsaswitch.a .libs/psa_switch.o .libs/primitives.o externs/.libs/psa_counter.o thrift/src/.libs/PsaSwitch_server.o .libs/libpsaswitch.lax/libbmsim.a/P4Objects.o .libs/libpsaswitch.lax/libbmsim.a/_assert.o .libs/libpsaswitch.lax/libbmsim.a/action_profile.o .libs/libpsaswitch.lax/libbmsim.a/actions.o .libs/libpsaswitch.lax/libbmsim.a/ageing.o .libs/libpsaswitch.lax/libbmsim.a/bytecontainer.o .libs/libpsaswitch.lax/libbmsim.a/calculations.o .libs/libpsaswitch.lax/libbmsim.a/checksums.o .libs/libpsaswitch.lax/libbmsim.a/conditionals.o .libs/libpsaswitch.lax/libbmsim.a/context.o .libs/libpsaswitch.lax/libbmsim.a/control_action.o .libs/libpsaswitch.lax/libbmsim.a/counters.o .libs/libpsaswitch.lax/libbmsim.a/crc_map.o .libs/libpsaswitch.lax/libbmsim.a/debugger.o .libs/libpsaswitch.lax/libbmsim.a/deparser.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_bmi.o .libs/libpsaswitch.lax/libbmsim.a/dev_mgr_packet_in.o .libs/libpsaswitch.lax/libbmsim.a/enums.o .libs/libpsaswitch.lax/libbmsim.a/event_logger.o .libs/libpsaswitch.lax/libbmsim.a/expressions.o .libs/libpsaswitch.lax/libbmsim.a/extern.o .libs/libpsaswitch.lax/libbmsim.a/fields.o .libs/libpsaswitch.lax/libbmsim.a/header_unions.o .libs/libpsaswitch.lax/libbmsim.a/headers.o .libs/libpsaswitch.lax/libbmsim.a/learning.o .libs/libpsaswitch.lax/libbmsim.a/logger.o .libs/libpsaswitch.lax/libbmsim.a/lookup_structures.o .libs/libpsaswitch.lax/libbmsim.a/match_tables.o .libs/libpsaswitch.lax/libbmsim.a/match_units.o .libs/libpsaswitch.lax/libbmsim.a/md5.o .libs/libpsaswitch.lax/libbmsim.a/meters.o .libs/libpsaswitch.lax/libbmsim.a/options_parse.o .libs/libpsaswitch.lax/libbmsim.a/packet.o .libs/libpsaswitch.lax/libbmsim.a/parser.o .libs/libpsaswitch.lax/libbmsim.a/parser_error.o .libs/libpsaswitch.lax/libbmsim.a/pcap_file.o .libs/libpsaswitch.lax/libbmsim.a/periodic_task.o .libs/libpsaswitch.lax/libbmsim.a/phv.o .libs/libpsaswitch.lax/libbmsim.a/phv_source.o .libs/libpsaswitch.lax/libbmsim.a/pipeline.o .libs/libpsaswitch.lax/libbmsim.a/port_monitor.o .libs/libpsaswitch.lax/lt1-primitives.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre.o .libs/libpsaswitch.lax/libbmsim.a/simple_pre_lag.o .libs/libpsaswitch.lax/libbmsim.a/source_info.o .libs/libpsaswitch.lax/libbmsim.a/stacks.o .libs/libpsaswitch.lax/libbmsim.a/stateful.o .libs/libpsaswitch.lax/libbmsim.a/switch.o .libs/libpsaswitch.lax/libbmsim.a/tables.o .libs/libpsaswitch.lax/libbmsim.a/target_parser.o .libs/libpsaswitch.lax/libbmsim.a/transport.o .libs/libpsaswitch.lax/libbmsim.a/transport_nn.o .libs/libpsaswitch.lax/libbmsim.a/version.o .libs/libpsaswitch.lax/libbmsim.a/xxhash.o .libs/libpsaswitch.lax/libbflpmtrie.a/bf_lpm_trie.o .libs/libpsaswitch.lax/libbmi.a/bmi_interface.o .libs/libpsaswitch.lax/libbmi.a/bmi_port.o .libs/libpsaswitch.lax/libjson.a/jsoncpp.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpsaswitch.a
 libtool: link: rm -fr .libs/libpsaswitch.lax .libs/libpsaswitch.lax
@@ -12030,11 +12030,11 @@ make[3]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switc
 make[2]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Sun Apr 21 11:22:04 PDT 2019
+Tue May  7 23:34:27 PDT 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Sun Apr 21 11:22:04 PDT 2019
+Tue May  7 23:34:28 PDT 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -12068,7 +12068,7 @@ The following NEW packages will be installed:
   libboost-iostreams-dev libboost-iostreams1.58-dev libboost-regex1.58-dev
   libboost-regex1.58.0 libgc-dev libicu-dev python-ipaddr python-ply
   python-scapy
-0 upgraded, 13 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 13 newly installed, 0 to remove and 4 not upgraded.
 Need to get 10.1 MB of archives.
 After this operation, 49.8 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 icu-devtools amd64 55.1-7ubuntu0.4 [166 kB]
@@ -12084,9 +12084,9 @@ Get:10 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgc-dev a
 Get:11 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddr all 2.1.11-2 [14.9 kB]
 Get:12 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ply all 3.7-1 [46.9 kB]
 Get:13 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-scapy all 2.2.0-1 [236 kB]
-Fetched 10.1 MB in 8s (1,214 kB/s)
+Fetched 10.1 MB in 47s (214 kB/s)
 Selecting previously unselected package icu-devtools.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 196965 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 232587 files and directories currently installed.)
 Preparing to unpack .../icu-devtools_55.1-7ubuntu0.4_amd64.deb ...
 Unpacking icu-devtools (55.1-7ubuntu0.4) ...
 Selecting previously unselected package libboost-regex1.58.0:amd64.
@@ -12148,11 +12148,15 @@ Cloning into 'control-plane/p4runtime'...
 Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Cloning into 'test/frameworks/gtest'...
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit 20ce8065d361500bfe2e365e14f06fad793fdf44
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Sat Apr 20 19:39:14 2019 -0700
+commit e2934ab32ace8a877bf2b34704950a4da69b6202
+Author: Calin Cascaval <cascaval@barefootnetworks.com>
+Date:   Mon May 6 14:14:13 2019 -0700
 
-    Test for issue #1167 (#1866)
+    defensive programming
+    
+    Check pointers before operating on them. Bug occurs only on Ubuntu 18.04.
+    
+    Fixes #1924.
 -- The C compiler identification is GNU 5.4.0
 -- The CXX compiler identification is GNU 5.4.0
 -- Check for working C compiler: /usr/bin/cc
@@ -12220,22 +12224,22 @@ Date:   Sat Apr 20 19:39:14 2019 -0700
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 367 tests to 'bmv2' (12 xfails)
--- Added 8 tests to 'bmv2' (5 xfails)
+-- Added 372 tests to 'bmv2' (12 xfails)
+-- Added 12 tests to 'bmv2' (2 xfails)
 -- LLVM missing, disabling kernel tests...
 -- Added 14 tests to 'ebpf-bcc' (0 xfails)
 -- Added 14 tests to 'ebpf' (0 xfails)
--- Added 6 tests to 'p4' (0 xfails)
--- Added 523 tests to 'p4' (5 xfails)
--- Added 6 tests to 'err' (0 xfails)
+-- Added 5 tests to 'p4' (0 xfails)
+-- Added 533 tests to 'p4' (5 xfails)
+-- Added 5 tests to 'err' (0 xfails)
 -- Added 160 tests to 'err' (0 xfails)
--- Added 205 tests to 'p14_to_16' (0 xfails)
+-- Added 207 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 4
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/jafinger/p4c/build
-Scanning dependencies of target update_includes
 Scanning dependencies of target linkbmv2
+Scanning dependencies of target update_includes
 Scanning dependencies of target linkgraphs
 [  0%] Built target update_includes
 [  0%] Built target linkgraphs
@@ -12243,9 +12247,9 @@ Scanning dependencies of target linkp4cebpf
 Scanning dependencies of target linkp4test
 [  0%] Built target linkbmv2
 Scanning dependencies of target p4ctoolkit
-[  0%] Built target linkp4test
 [  1%] Building CXX object lib/CMakeFiles/p4ctoolkit.dir/unified_libp4ctoolkit_srcs_1.cpp.o
 [  1%] Built target linkp4cebpf
+[  1%] Built target linkp4test
 Scanning dependencies of target mkp4dirs
 Scanning dependencies of target mkv1dirs
 [  1%] Built target mkp4dirs
@@ -12253,8 +12257,8 @@ Scanning dependencies of target mkv1dirs
 Scanning dependencies of target mkP4configdir
 Scanning dependencies of target gtest
 [  1%] Built target mkP4configdir
-Scanning dependencies of target p4c_driver
 [  3%] Building CXX object test/CMakeFiles/gtest.dir/frameworks/gtest/googletest/src/gtest-all.cc.o
+Scanning dependencies of target p4c_driver
 [  4%] Copying p4c driver
 [  4%] Built target p4c_driver
 [  6%] Linking CXX static library libgtest.a
@@ -12264,8 +12268,8 @@ Scanning dependencies of target p4c_driver
 [  9%] [BISON][IRgenParser] Building parser with bison 3.0.4
 [ 10%] [FLEX][IRgenLexer] Building scanner with flex 2.6.0
 Scanning dependencies of target irgenerator
-[ 14%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/unified_irgenerator_srcs_1.cpp.o
-[ 14%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/ir-generator.cpp.o
+[ 13%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/unified_irgenerator_srcs_1.cpp.o
+[ 13%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/ir-generator.cpp.o
 In file included from ir-generator.ypp:129:0:
 /home/jafinger/p4c/build/tools/ir-generator/ir-generator-lex.c:1730:6: warning: ‘void {anonymous}::yypush_buffer_state({anonymous}::YY_BUFFER_STATE)’ defined but not used [-Wunused-function]
  void yypush_buffer_state (YY_BUFFER_STATE new_buffer )
@@ -12290,8 +12294,8 @@ In file included from ir-generator.ypp:129:0:
 [ 15%] Linking CXX executable irgenerator
 [ 15%] Built target irgenerator
 Scanning dependencies of target genIR
-[ 17%] Generating IR class files
-[ 17%] Built target genIR
+[ 16%] Generating IR class files
+[ 16%] Built target genIR
 frontends/CMakeFiles/frontend.dir/build.make:93: warning: overriding recipe for target 'frontends/parsers/v1/v1parser.output'
 frontends/CMakeFiles/frontend.dir/build.make:74: warning: ignoring old recipe for target 'frontends/parsers/v1/v1parser.output'
 [ 18%] [BISON][v1Parser] Building parser with bison 3.0.4
@@ -12300,63 +12304,64 @@ Scanning dependencies of target midend
 [ 20%] Building CXX object ir/CMakeFiles/ir.dir/unified_ir_srcs_1.cpp.o
 [ 21%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_1.cpp.o
 [ 23%] [BISON][p4Parser] Building parser with bison 3.0.4
-[ 25%] Running Flex on parsers/v1
+[ 24%] Running Flex on parsers/v1
 [ 26%] Running Flex on parsers/p4
 Scanning dependencies of target frontend
 frontends/CMakeFiles/frontend.dir/build.make:93: warning: overriding recipe for target 'frontends/parsers/v1/v1parser.output'
 frontends/CMakeFiles/frontend.dir/build.make:74: warning: ignoring old recipe for target 'frontends/parsers/v1/v1parser.output'
-[ 28%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/p4/p4lexer.cc.o
+[ 27%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/p4/p4lexer.cc.o
 [ 29%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/p4/p4parser.cpp.o
-[ 31%] Building CXX object ir/CMakeFiles/ir.dir/unified_ir_srcs_2.cpp.o
+[ 30%] Building CXX object ir/CMakeFiles/ir.dir/unified_ir_srcs_2.cpp.o
 [ 32%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_2.cpp.o
-[ 34%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1lexer.cc.o
-[ 35%] Linking CXX static library libir.a
-[ 35%] Built target ir
-[ 37%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
-[ 39%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
-[ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
+[ 33%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1lexer.cc.o
+[ 35%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
+[ 36%] Linking CXX static library libir.a
+[ 36%] Built target ir
+[ 38%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_4.cpp.o
+[ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
+[ 41%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
+[ 43%] Linking CXX static library libmidend.a
+[ 43%] Built target midend
+[ 44%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_1.cpp.o
 /home/jafinger/p4c/ir/type.def: In member function ‘virtual bool IR::Type_InfInt::equiv(const IR::Node&) const’:
 /home/jafinger/p4c/ir/type.def:175:15: warning: unused variable ‘a’ [-Wunused-variable]
-[ 42%] Linking CXX static library libmidend.a
-[ 43%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_1.cpp.o
-[ 43%] Built target midend
-[ 45%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
-[ 46%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_3.cpp.o
-[ 48%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_4.cpp.o
+[ 46%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
+[ 47%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_3.cpp.o
+[ 49%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_4.cpp.o
 [ 50%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_5.cpp.o
-[ 51%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_6.cpp.o
+[ 52%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_6.cpp.o
 [ 53%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_7.cpp.o
-[ 54%] Linking CXX static library libfrontend.a
-[ 54%] Built target frontend
+[ 55%] Linking CXX static library libfrontend.a
+[ 55%] Built target frontend
 [ 56%] Generating protobuf files
 Scanning dependencies of target bmv2backend
-[ 57%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_1.cpp.o
-[ 59%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_2.cpp.o
+[ 58%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_1.cpp.o
+[ 60%] Building CXX object backends/bmv2/CMakeFiles/bmv2backend.dir/unified_bmv2_backend_common_srcs_2.cpp.o
 Scanning dependencies of target controlplane
-[ 60%] Building CXX object control-plane/CMakeFiles/controlplane.dir/google/rpc/status.pb.cc.o
-[ 62%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4info.pb.cc.o
+[ 61%] Building CXX object control-plane/CMakeFiles/controlplane.dir/google/rpc/status.pb.cc.o
+[ 63%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4info.pb.cc.o
 [ 64%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/config/v1/p4types.pb.cc.o
-[ 65%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4runtime.pb.cc.o
+[ 66%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4runtime.pb.cc.o
 [ 67%] Building CXX object control-plane/CMakeFiles/controlplane.dir/p4/v1/p4data.pb.cc.o
-[ 68%] Linking CXX static library libbmv2backend.a
-[ 68%] Built target bmv2backend
+[ 69%] Linking CXX static library libbmv2backend.a
+[ 69%] Built target bmv2backend
 [ 70%] Building CXX object control-plane/CMakeFiles/controlplane.dir/unified_controlplane_sources_1.cpp.o
-[ 71%] Linking CXX static library libcontrolplane.a
-[ 71%] Built target controlplane
+[ 72%] Linking CXX static library libcontrolplane.a
+[ 72%] Built target controlplane
 Scanning dependencies of target p4c-bm2-psa
 Scanning dependencies of target p4c-bm2-ss
-[ 73%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/main.cpp.o
-[ 75%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/main.cpp.o
 Scanning dependencies of target p4c-ebpf
+[ 73%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/main.cpp.o
+[ 75%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/main.cpp.o
 [ 76%] Building CXX object backends/ebpf/CMakeFiles/p4c-ebpf.dir/unified_p4c_ebpf_srcs_1.cpp.o
 [ 78%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/midend.cpp.o
-[ 79%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/midend.cpp.o
+[ 80%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/midend.cpp.o
 [ 81%] Linking CXX executable p4c-ebpf
 [ 81%] Built target p4c-ebpf
 Scanning dependencies of target p4test
-[ 82%] Building CXX object backends/p4test/CMakeFiles/p4test.dir/unified_p4test_srcs_1.cpp.o
-[ 84%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/simpleSwitch.cpp.o
-[ 85%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/psaSwitch.cpp.o
+[ 83%] Building CXX object backends/p4test/CMakeFiles/p4test.dir/unified_p4test_srcs_1.cpp.o
+[ 84%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/psaSwitch.cpp.o
+[ 86%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/simpleSwitch.cpp.o
 [ 87%] Linking CXX executable p4test
 [ 87%] Built target p4test
 Scanning dependencies of target p4c-graphs
@@ -12374,15 +12379,15 @@ Scanning dependencies of target gtestp4c
 [100%] Linking CXX executable gtestp4c
 [100%] Built target gtestp4c
 end install p4c:
-Sun Apr 21 11:26:36 PDT 2019
+Tue May  7 23:40:40 PDT 2019
 ------------------------------------------------------------
 Installing a few Python packages
 start install python packages:
-Sun Apr 21 11:26:36 PDT 2019
+Tue May  7 23:40:41 PDT 2019
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting grpcio
-  Downloading https://files.pythonhosted.org/packages/7c/59/4da8df60a74f4af73ede9d92a75ca85c94bc2a109d5f67061496e8d496b2/grpcio-1.20.0-cp27-cp27mu-manylinux1_x86_64.whl (2.1MB)
+  Downloading https://files.pythonhosted.org/packages/71/f4/175dc28565a59860912c11d859d15d829b8f0e6fe0c8dc7405c6560d52e1/grpcio-1.20.1-cp27-cp27mu-manylinux1_x86_64.whl (2.1MB)
 Collecting six>=1.5.2 (from grpcio)
   Downloading https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
 Collecting futures>=2.2.0; python_version < "3.2" (from grpcio)
@@ -12390,8 +12395,8 @@ Collecting futures>=2.2.0; python_version < "3.2" (from grpcio)
 Collecting enum34>=1.0.4; python_version < "3.4" (from grpcio)
   Downloading https://files.pythonhosted.org/packages/c5/db/e56e6b4bbac7c4a06de1c50de6fe1ef3810018ae11732a50f15f62c7d050/enum34-1.1.6-py2-none-any.whl
 Installing collected packages: six, futures, enum34, grpcio
-Successfully installed enum34-1.1.6 futures-3.2.0 grpcio-1.20.0 six-1.12.0
-You are using pip version 8.1.1, however version 19.0.3 is available.
+Successfully installed enum34-1.1.6 futures-3.2.0 grpcio-1.20.1 six-1.12.0
+You are using pip version 8.1.1, however version 19.1.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
@@ -12401,17 +12406,17 @@ Requirement already satisfied (use --upgrade to upgrade): setuptools in /usr/lib
 Requirement already satisfied (use --upgrade to upgrade): six>=1.9 in /usr/local/lib/python2.7/dist-packages (from protobuf)
 Installing collected packages: protobuf
 Successfully installed protobuf-3.7.1
-You are using pip version 8.1.1, however version 19.0.3 is available.
+You are using pip version 8.1.1, however version 19.1.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 end install python packages:
-Sun Apr 21 11:27:01 PDT 2019
+Tue May  7 23:41:04 PDT 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Sun Apr 21 11:27:01 PDT 2019
+Tue May  7 23:41:04 PDT 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1       196G   11G  176G   6% /
+/dev/sda1        58G   11G   45G  20% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1        200495M 10729M   179560M   6% /
+/dev/sda1         59385M 11189M    45157M  20% /
 
 Created files: p4setup.bash p4setup.csh
 
