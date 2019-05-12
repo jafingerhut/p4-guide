@@ -14,17 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-echo "------------------------------------------------------------"
-echo "Time and disk space used before installation begins:"
-date
-df -h .
-df -BM .
+set -x
 
 # Install Ubuntu packages needed for a C compiler, which `opam init`
 # command requires.
 sudo apt-get --yes install curl build-essential
 
+echo "----------------------------------------------------------------------"
+echo "Installing opam:"
 curl --location --output /tmp/opam https://github.com/ocaml/opam/releases/download/2.0.4/opam-2.0.4-x86_64-linux
 sudo /bin/cp /tmp/opam /usr/local/bin/opam
 sudo chmod 755 /usr/local/bin/opam
@@ -37,17 +34,19 @@ opam init
 opam env
 eval `opam env`
 
-# According to Petr4 README, these packages should be installed.
-sudo apt-get install m4 libgmp-dev
-
+# Show version of ocamlc installed, in case it is older than what
+# is required by petr4
 ocamlc -v
 
+echo "----------------------------------------------------------------------"
+echo "Installing petr4:"
+
+# According to petr4 README, these packages should be installed.
+sudo apt-get --yes install m4 libgmp-dev
+# I create a new directory to run the 'ocam pin add petr4 .' command within,
+# because when I tried running it in my $HOME directory, there was an error
+# message, something about home and $HOME and a directory within $HOME/.opam
+# overlapping each other.
 mkdir install
 cd install
 opam pin add petr4 .
-
-echo "------------------------------------------------------------"
-echo "Time and disk space used when installation was complete:"
-date
-df -h .
-df -BM .
