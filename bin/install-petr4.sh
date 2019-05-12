@@ -25,10 +25,26 @@ df -BM .
 # command requires.
 sudo apt-get --yes install curl build-essential
 
-curl --output opam https://github.com/ocaml/opam/releases/download/2.0.4/opam-2.0.4-x86_64-linux
-sudo /bin/cp opam /usr/local/bin/opam
+curl --location --output /tmp/opam https://github.com/ocaml/opam/releases/download/2.0.4/opam-2.0.4-x86_64-linux
+sudo /bin/cp /tmp/opam /usr/local/bin/opam
 sudo chmod 755 /usr/local/bin/opam
-/bin/rm opam
+/bin/rm /tmp/opam
+
+echo "You will need to respond to two prompts during the execution of 'opam init'."
+echo "TBD: Describe the prompts and how one should respond here."
+opam init
+
+opam env
+eval `opam env`
+
+# According to Petr4 README, these packages should be installed.
+sudo apt-get install m4 libgmp-dev
+
+ocamlc -v
+
+mkdir install
+cd install
+opam pin add petr4 .
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
