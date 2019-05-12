@@ -18,3 +18,13 @@ $ ../compile-all.sh *.p4
 After the last command is complete, the results of a `p4test`
 compilation run are categorized and put into a file with a `.txt`
 suffix in its name.
+
+There is also a command to run
+[Petr4](https://github.com/cornell-netlab/petr4) on all test programs:
+
+```
+$ ../petr4-all.sh *.p4
+```
+
+Again, look for results in one of several files with a `.txt` suffix in
+its name.
