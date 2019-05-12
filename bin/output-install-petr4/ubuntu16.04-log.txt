@@ -1,0 +1,71 @@
++ sudo apt-get --yes install curl build-essential
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.1ubuntu2).
+The following package was automatically installed and is no longer required:
+  snapd-login-service
+Use 'sudo apt autoremove' to remove it.
+The following NEW packages will be installed:
+  curl
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 139 kB of archives.
+After this operation, 339 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.12 [139 kB]
+Fetched 139 kB in 0s (150 kB/s)
+Selecting previously unselected package curl.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177945 files and directories currently installed.)
+Preparing to unpack .../curl_7.47.0-1ubuntu2.12_amd64.deb ...
+Unpacking curl (7.47.0-1ubuntu2.12) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up curl (7.47.0-1ubuntu2.12) ...
++ curl --location --output /tmp/opam https://github.com/ocaml/opam/releases/download/2.0.4/opam-2.0.4-x86_64-linux
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   612    0   612    0     0   1547      0 --:--:-- --:--:-- --:--:--  1545
+ 11 5961k   11  705k    0     0   527k      0  0:00:11  0:00:01  0:00:10  527k 49 5961k   49 2948k    0     0  1258k      0  0:00:04  0:00:02  0:00:02 2231k100 5961k  100 5961k    0     0  1970k      0  0:00:03  0:00:03 --:--:-- 3115k
++ sudo /bin/cp /tmp/opam /usr/local/bin/opam
++ sudo chmod 755 /usr/local/bin/opam
++ /bin/rm /tmp/opam
++ echo 'You will need to respond to two prompts during the execution of '\''opam init'\''.'
+You will need to respond to two prompts during the execution of 'opam init'.
++ echo 'TBD: Describe the prompts and how one should respond here.'
+TBD: Describe the prompts and how one should respond here.
++ opam init
+[NOTE] Will configure from built-in defaults.
+Checking for available remotes: rsync and local, git.
+  - you won't be able to use mercurial repositories unless you install the hg command on your system.
+  - you won't be able to use darcs repositories unless you install the darcs command on your system.
+
+[WARNING] Recommended dependencies -- most packages rely on these:
+  - m4
+[ERROR] Missing dependencies -- the following commands are required for opam to operate:
+  - bwrap: Sandboxing tool bwrap was not found. You should install 'bubblewrap'. See http://opam.ocaml.org/doc/2.0/FAQ.html#Why-opam-asks-me-to-install-bwrap.
++ opam env
+[ERROR] Opam has not been initialised, please run `opam init'
+++ opam env
+[ERROR] Opam has not been initialised, please run `opam init'
++ eval
++ sudo apt-get install m4 libgmp-dev
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following package was automatically installed and is no longer required:
+  snapd-login-service
+Use 'sudo apt autoremove' to remove it.
+The following additional packages will be installed:
+  libgmpxx4ldbl libsigsegv2
+Suggested packages:
+  gmp-doc libgmp10-doc libmpfr-dev
+The following NEW packages will be installed:
+  libgmp-dev libgmpxx4ldbl libsigsegv2 m4
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 532 kB of archives.
+After this operation, 2,103 kB of additional disk space will be used.
+Do you want to continue? [Y/n] Abort.
++ ocamlc -v
+./p4-guide/bin/install-petr4.sh: line 44: ocamlc: command not found
++ mkdir install
++ cd install
++ opam pin add petr4 .
+[ERROR] Opam has not been initialised, please run `opam init'
