@@ -111,6 +111,9 @@ df -h .
 df -BM .
 
 cd "${INSTALL_DIR}"
+# Note that single quotes are necessary around the echo string below, otherwise
+# the command 'opam env' will be executed and its output be echoed and written
+# to the petr4setup.bash file.
 echo 'eval `opam env`' > petr4setup.bash
 
 echo ""
