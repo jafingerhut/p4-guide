@@ -54,7 +54,7 @@ df -BM .
 # Install Ubuntu packages needed for a C compiler, which 'opam init'
 # command requires.  The build-essential package might be more than
 # the minimum required by 'opam init', but probably not a lot more.
-sudo apt-get --yes install curl build-essential
+sudo apt-get --yes install curl git build-essential
 
 echo "----------------------------------------------------------------------"
 echo "Installing opam:"
