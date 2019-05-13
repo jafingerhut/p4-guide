@@ -51,9 +51,9 @@ date
 df -h .
 df -BM .
 
-# Install Ubuntu packages needed for a C compiler, which `opam init`
+# Install Ubuntu packages needed for a C compiler, which 'opam init'
 # command requires.  The build-essential package might be more than
-# the minimum required by `opam init`, but probably not a lot more.
+# the minimum required by 'opam init', but probably not a lot more.
 sudo apt-get --yes install curl build-essential
 
 echo "----------------------------------------------------------------------"
@@ -65,11 +65,22 @@ sudo chmod 755 /usr/local/bin/opam
 /bin/rm /tmp/opam
 set +x
 
-echo "Because I do not know how to invoke the `opam init` command in a way"
-echo "that answers the questions as I have tested, you will need to respond"
-echo "to two prompts during the execution of 'opam init'."
+echo "----------------------------------------------------------------------"
+echo "Because I do not know how to invoke the 'opam init' command in a way that"
+echo "avoids asking you several questions that require interactive answers, you"
+echo "will need to respond to two prompts during the execution of 'opam init'."
 echo ""
-echo "TBD: Describe the prompts and how one should respond here."
+echo "When the questions below are asked, you can choose the default answer of"
+echo "'no' by simply pressing return, and this is how I have tested this script."
+echo "You are free to adventure out on your own with different answers, of"
+echo "course, and see what happens."
+echo ""
+echo "    Do you want opam to modify ~/.profile? [N/y/f]"
+echo "    A hook can be added to opam's init scripts to ensure that the shell remains in sync with the opam environment when they are loaded. Set that up? [y/N]"
+echo "----------------------------------------------------------------------"
+echo ""
+echo -n "Press return to proceed after reading the above: "
+read
 
 set -x
 opam init
@@ -90,7 +101,7 @@ set -x
 sudo apt-get --yes install m4 libgmp-dev
 git clone https://github.com/cornell-netlab/petr4
 cd petr4
-opam pin add petr4 .
+opam pin --yes add petr4 .
 set +x
 
 echo "------------------------------------------------------------"
@@ -100,7 +111,7 @@ df -h .
 df -BM .
 
 cd "${INSTALL_DIR}"
-echo "eval `opam env`" > petr4setup.bash
+echo 'eval `opam env`' > petr4setup.bash
 
 echo ""
 echo "Created file: petr4setup.bash"
