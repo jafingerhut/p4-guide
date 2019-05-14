@@ -214,11 +214,14 @@ p4_16_thing_kinds = {
     {'template': 'enum bit<8> {} {{ ENUM_CASE1=3, ENUM_CASE2=12 }}'},
 
     'functionDeclaration':
-    {'template': 'bit<8> {} (in bit<8> x) {{ return (x << 3); }}'},
+    {'template':  'bit<8> {} (in bit<8> x) {{ return (x << 3); }}',
+     'template2': 'bit<8> {} (in bit<8> x) {{ return (x << 4); }}'},
     'actionDeclaration':
-    {'template': 'action {} (in bit<8> x, out bit<8> y) {{ y = (x >> 2); }}'},
+    {'template':  'action {} (in bit<8> x, out bit<8> y) {{ y = (x >> 2); }}',
+     'template2': 'action {} (in bit<8> x, out bit<8> y) {{ y = (x >> 3); }}'},
     'externFunctionDeclaration':
-    {'template': 'extern bit<8> {} (in bit<8> x);'},
+    {'template':  'extern bit<8> {} (in bit<8> x);',
+     'template2': 'extern bit<8> {} (in bit<6> x);'},
 
     'externObjectDeclaration':
     {'template': 'extern {} {{ bit<8> methodbar (in bit<8> x); }}'},
@@ -227,7 +230,8 @@ p4_16_thing_kinds = {
     'controlTypedeclaration':
     {'template': 'control {} (in bit<8> x, out bit<8> y);'},
     'packageTypeDeclaration':
-    {'template': 'package {} ();'},
+    {'template':  'package {} ();',
+     'template2': 'package {} ();'},
 
 #instantiation
 #    : typeRef '(' argumentList ')' name ';'
@@ -236,9 +240,11 @@ p4_16_thing_kinds = {
     'externObjectInstantiation':
     {'template': 'extern MyCksum16 {{ MyCksum16(); bit<16> get<D>(in D data); }}  MyCksum16() {};'},
     'parserDeclaration':
-    {'template': 'parser {} (packet_in pkt) {{ state start {{ transition accept; }} }}'},
+    {'template':  'parser {} (packet_in pkt, in bit<8> port) {{ state start {{ transition accept; }} }}',
+     'template2': 'parser {} (packet_in pkt, in bit<6> port) {{ state start {{ transition accept; }} }}'},
     'controlDeclaration':
-    {'template': 'control {} (in bit<8> x, out bit<8> y) {{ apply {{ y = x + 7; }} }}'},
+    {'template':  'control {} (in bit<8> x, out bit<8> y) {{ apply {{ y = x + 7; }} }}',
+     'template2': 'control {} (in bit<8> x, out bit<8> y) {{ apply {{ y = x + 6; }} }}'},
 
     'parserInstantiation':
     {'template': 'parser myParser1 (packet_in pkt) {{ state start {{ transition accept; }} }}   myParser1() {};'},
@@ -255,7 +261,10 @@ thing_name = 'foo';
 for kind1 in p4_16_thing_kinds:
     template1 = p4_16_thing_kinds[kind1]['template']
     for kind2 in p4_16_thing_kinds:
-        template2 = p4_16_thing_kinds[kind2]['template']
+        if 'template2' in p4_16_thing_kinds[kind2]:
+            template2 = p4_16_thing_kinds[kind2]['template2']
+        else:
+            template2 = p4_16_thing_kinds[kind2]['template']
         assert isinstance(template1, str)
         assert isinstance(template2, str)
         fname = 'nameconflict-{}-{}.p4'.format(kind1, kind2);
