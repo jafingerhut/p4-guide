@@ -151,29 +151,6 @@ struct headers_t {
 }
 
 
-/* Why bother creating an action that just does one primitive action?
- * That is, why not just use 'mark_to_drop' as one of the possible
- * actions when defining a table?  Because the P4_16 compiler does not
- * allow primitive actions to be used directly as actions of tables.
- * You must use 'compound actions', i.e. ones explicitly defined with
- * the 'action' keyword like below.
- *
- * mark_to_drop() is an extern function defined in v1model.h,
- * implemented in the behavioral model by setting an appropriate
- * 'intrinsic metadata' field with a code indicating the packet should
- * be dropped.
- *
- * See the following page if you are interestd in more detailed
- * documentation on the behavior of mark_to_drop and several other
- * operations in the v1model architecture, as implemented in the open
- * source behavioral-model BMv2 software switch:
- * https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md
- */
-
-action my_drop() {
-    mark_to_drop();
-}
-
 /* The ingress parser here is pretty simple.  It assumes every packet
  * starts with a 14-byte Ethernet header, and if the ether type is
  * 0x0800, it proceeds to parse the 20-byte mandatory part of an IPv4
@@ -256,6 +233,29 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    /*
+     * Why bother creating an action that just does one primitive
+     * action?  That is, why not just use 'mark_to_drop' as one of the
+     * possible actions when defining a table?  Because the P4_16
+     * compiler does not allow primitive actions to be used directly
+     * as actions of tables.  You must use 'compound actions',
+     * i.e. ones explicitly defined with the 'action' keyword like
+     * below.
+     *
+     * mark_to_drop is an extern function defined in v1model.h,
+     * implemented in the behavioral model by setting an appropriate
+     * 'standard metadata' field with a code indicating the packet
+     * should be dropped.
+     *
+     * See the following page if you are interested in more detailed
+     * documentation on the behavior of mark_to_drop and several other
+     * operations in the v1model architecture, as implemented in the
+     * open source behavioral-model BMv2 software switch:
+     * https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md
+     */
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
 
     /* Note that there is no direction 'in', 'out', or 'inout' given
      * for the l2ptr parameter for action set_l2ptr.  Such
@@ -372,6 +372,9 @@ control egressImpl(inout headers_t hdr,
                    inout metadata_t meta,
                    inout standard_metadata_t stdmeta)
 {
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }

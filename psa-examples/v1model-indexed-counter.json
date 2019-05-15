@@ -29,10 +29,11 @@
         ["mcast_grp", 16, false],
         ["resubmit_flag", 32, false],
         ["egress_rid", 16, false],
-        ["checksum_error", 1, false],
         ["recirculate_flag", 32, false],
+        ["checksum_error", 1, false],
         ["parser_error", 32, false],
-        ["_padding", 5, false]
+        ["priority", 3, false],
+        ["_padding", 2, false]
       ]
     },
     {
@@ -79,7 +80,8 @@
     ["NoMatch", 3],
     ["StackOutOfBounds", 4],
     ["HeaderTooShort", 5],
-    ["ParserTimeout", 6]
+    ["ParserTimeout", 6],
+    ["ParserInvalidArgument", 7]
   ],
   "enums" : [],
   "parsers" : [
@@ -214,13 +216,18 @@
           }
         },
         {
-          "op" : "drop",
-          "parameters" : [],
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
           "source_info" : {
             "filename" : "v1model-indexed-counter.p4",
             "line" : 58,
             "column" : 8,
-            "source_fragment" : "mark_to_drop()"
+            "source_fragment" : "mark_to_drop(stdmeta)"
           }
         }
       ]
@@ -241,6 +248,12 @@
         {
           "name" : "tbl_act",
           "id" : 0,
+          "source_info" : {
+            "filename" : "v1model-indexed-counter.p4",
+            "line" : 57,
+            "column" : 8,
+            "source_fragment" : "my_pkt_counts.count((bit<32>) index); ..."
+          },
           "key" : [],
           "match_type" : "exact",
           "type" : "simple",
@@ -327,9 +340,13 @@
     [
       "intrinsic_metadata.recirculate_flag",
       ["standard_metadata", "recirculate_flag"]
+    ],
+    [
+      "intrinsic_metadata.priority",
+      ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "v1model-indexed-counter.p4",
+  "program" : "./v1model-indexed-counter.p4i",
   "__meta__" : {
     "version" : [2, 18],
     "compiler" : "https://github.com/p4lang/p4c"

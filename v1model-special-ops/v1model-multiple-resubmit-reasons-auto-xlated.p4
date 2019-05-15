@@ -57,7 +57,7 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     @name(".nop") action nop() {
     }
     @name(".my_drop") action my_drop() {
-        mark_to_drop();
+        mark_to_drop(standard_metadata);
     }
     @name(".do_resubmit_reason3") action do_resubmit_reason3() {
         meta.mymeta.resubmit_reason = 3w3;

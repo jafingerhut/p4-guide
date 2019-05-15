@@ -27,10 +27,11 @@
         ["mcast_grp", 16, false],
         ["resubmit_flag", 32, false],
         ["egress_rid", 16, false],
-        ["checksum_error", 1, false],
         ["recirculate_flag", 32, false],
+        ["checksum_error", 1, false],
         ["parser_error", 32, false],
-        ["_padding", 5, false]
+        ["priority", 3, false],
+        ["_padding", 2, false]
       ]
     },
     {
@@ -77,7 +78,8 @@
     ["NoMatch", 3],
     ["StackOutOfBounds", 4],
     ["HeaderTooShort", 5],
-    ["ParserTimeout", 6]
+    ["ParserTimeout", 6],
+    ["ParserInvalidArgument", 7]
   ],
   "enums" : [],
   "parsers" : [
@@ -121,7 +123,7 @@
         "filename" : "v1model-unicast-or-drop.p4",
         "line" : 35,
         "column" : 8,
-        "source_fragment" : "DeparserI"
+        "source_fragment" : "deparserImpl"
       },
       "order" : ["ethernet"]
     }
@@ -138,13 +140,18 @@
       "runtime_data" : [],
       "primitives" : [
         {
-          "op" : "drop",
-          "parameters" : [],
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
           "source_info" : {
             "filename" : "v1model-unicast-or-drop.p4",
-            "line" : 60,
+            "line" : 62,
             "column" : 12,
-            "source_fragment" : "mark_to_drop()"
+            "source_fragment" : "mark_to_drop(stdmeta)"
           }
         }
       ]
@@ -191,7 +198,7 @@
           ],
           "source_info" : {
             "filename" : "v1model-unicast-or-drop.p4",
-            "line" : 55,
+            "line" : 57,
             "column" : 8,
             "source_fragment" : "stdmeta.egress_spec = (bit<9>) hdr.ethernet.dstAddr[1:0]"
           }
@@ -205,9 +212,9 @@
       "id" : 0,
       "source_info" : {
         "filename" : "v1model-unicast-or-drop.p4",
-        "line" : 50,
+        "line" : 52,
         "column" : 8,
-        "source_fragment" : "cIngress"
+        "source_fragment" : "ingressImpl"
       },
       "init_table" : "tbl_act",
       "tables" : [
@@ -216,7 +223,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "v1model-unicast-or-drop.p4",
-            "line" : 55,
+            "line" : 57,
             "column" : 28,
             "source_fragment" : "="
           },
@@ -245,9 +252,9 @@
           "id" : 1,
           "source_info" : {
             "filename" : "v1model-unicast-or-drop.p4",
-            "line" : 60,
+            "line" : 62,
             "column" : 12,
-            "source_fragment" : "mark_to_drop()"
+            "source_fragment" : "mark_to_drop(stdmeta)"
           },
           "key" : [],
           "match_type" : "exact",
@@ -277,7 +284,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "v1model-unicast-or-drop.p4",
-            "line" : 56,
+            "line" : 58,
             "column" : 12,
             "source_fragment" : "hdr.ethernet.dstAddr[1:0] == 0"
           },
@@ -315,9 +322,9 @@
       "id" : 1,
       "source_info" : {
         "filename" : "v1model-unicast-or-drop.p4",
-        "line" : 65,
+        "line" : 67,
         "column" : 8,
-        "source_fragment" : "cEgress"
+        "source_fragment" : "egressImpl"
       },
       "init_table" : null,
       "tables" : [],
@@ -372,9 +379,13 @@
     [
       "intrinsic_metadata.recirculate_flag",
       ["standard_metadata", "recirculate_flag"]
+    ],
+    [
+      "intrinsic_metadata.priority",
+      ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "v1model-unicast-or-drop.p4",
+  "program" : "./v1model-unicast-or-drop.p4i",
   "__meta__" : {
     "version" : [2, 18],
     "compiler" : "https://github.com/p4lang/p4c"

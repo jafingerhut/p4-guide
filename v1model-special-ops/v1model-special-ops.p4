@@ -85,10 +85,6 @@ struct headers_t {
     ipv4_t     ipv4;
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 parser ParserImpl(packet_in packet,
                   out headers_t hdr,
                   inout meta_t meta,
@@ -199,6 +195,9 @@ control ingress(inout headers_t hdr,
     const bit<32> RESUBMITTED_PKT_L2PTR = 0xe50b;
     const bit<32> RECIRCULATED_PKT_L2PTR = 0xec1c;
 
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action set_l2ptr(bit<32> l2ptr) {
         meta.fwd.l2ptr = l2ptr;
     }
@@ -345,6 +344,9 @@ control egress(inout headers_t hdr,
     debug_std_meta() debug_std_meta_egress_end;
 #endif  // ENABLE_DEBUG_TABLES
 
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action set_out_bd (bit<24> bd) {
         meta.fwd.out_bd = bd;
     }

@@ -44,30 +44,19 @@ struct fwd_metadata_t {
     bit<24> out_bd;
 }
 
-struct metadata {
+struct metadata_t {
     fwd_metadata_t fwd_metadata;
 }
 
-struct headers {
+struct headers_t {
     ethernet_t ethernet;
     ipv4_t     ipv4;
 }
 
-// Why bother creating an action that just does one primitive action?
-// That is, why not just use 'mark_to_drop' as one of the possible
-// actions when defining a table?  Because the P4_16 compiler does not
-// allow primitive actions to be used directly as actions of tables.
-// You must use 'compound actions', i.e. ones explicitly defined with
-// the 'action' keyword like below.
-
-action my_drop() {
-    mark_to_drop();
-}
-
-parser ParserImpl(packet_in packet,
-                  out headers hdr,
-                  inout metadata meta,
-                  inout standard_metadata_t standard_metadata)
+parser parserImpl(packet_in packet,
+                  out headers_t hdr,
+                  inout metadata_t meta,
+                  inout standard_metadata_t stdmeta)
 {
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
 
@@ -87,9 +76,20 @@ parser ParserImpl(packet_in packet,
     }
 }
 
-control ingress(inout headers hdr,
-                inout metadata meta,
-                inout standard_metadata_t standard_metadata) {
+control ingressImpl(inout headers_t hdr,
+                    inout metadata_t meta,
+                    inout standard_metadata_t stdmeta)
+{
+    // Why bother creating an action that just does one function call?
+    // That is, why not just use 'mark_to_drop' as one of the possible
+    // actions when defining a table?  Because the P4_16 compiler does
+    // not allow function calls to be used directly as actions of
+    // tables.  You must use actions explicitly defined with the
+    // 'action' keyword like below.
+
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
 
     action set_l2ptr(bit<32> l2ptr) {
         meta.fwd_metadata.l2ptr = l2ptr;
@@ -108,7 +108,7 @@ control ingress(inout headers hdr,
     action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
         meta.fwd_metadata.out_bd = bd;
         hdr.ethernet.dstAddr = dmac;
-        standard_metadata.egress_spec = intf;
+        stdmeta.egress_spec = intf;
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
     table mac_da {
@@ -128,10 +128,13 @@ control ingress(inout headers hdr,
     }
 }
 
-control egress(inout headers hdr,
-               inout metadata meta,
-               inout standard_metadata_t standard_metadata)
+control egressImpl(inout headers_t hdr,
+                   inout metadata_t meta,
+                   inout standard_metadata_t stdmeta)
 {
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }
@@ -151,14 +154,16 @@ control egress(inout headers hdr,
     }
 }
 
-control DeparserImpl(packet_out packet, in headers hdr) {
+control deparserImpl(packet_out packet,
+                     in headers_t hdr)
+{
     apply {
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv4);
     }
 }
 
-control verifyChecksum(inout headers hdr, inout metadata meta) {
+control verifyChecksum(inout headers_t hdr, inout metadata_t meta) {
     apply {
         verify_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
             { hdr.ipv4.version,
@@ -176,7 +181,7 @@ control verifyChecksum(inout headers hdr, inout metadata meta) {
     }
 }
 
-control computeChecksum(inout headers hdr, inout metadata meta) {
+control updateChecksum(inout headers_t hdr, inout metadata_t meta) {
     apply {
         update_checksum(hdr.ipv4.isValid() && hdr.ipv4.ihl == 5,
             { hdr.ipv4.version,
@@ -194,9 +199,9 @@ control computeChecksum(inout headers hdr, inout metadata meta) {
     }
 }
 
-V1Switch(ParserImpl(),
+V1Switch(parserImpl(),
          verifyChecksum(),
-         ingress(),
-         egress(),
-         computeChecksum(),
-         DeparserImpl()) main;
+         ingressImpl(),
+         egressImpl(),
+         updateChecksum(),
+         deparserImpl()) main;

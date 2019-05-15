@@ -138,7 +138,7 @@ control cIngress(inout Parsed_packet hdr,
         // "always drop" case, desirable when the average queue depth
         // is high enough.
         if ((meta.unicast == 1) && ((bit<9>) rand_val < drop_prob)) {
-            mark_to_drop();
+            mark_to_drop(stdmeta);
         }
     }
 }

@@ -191,10 +191,6 @@ struct headers_t {
     ipv4_t     ipv4;
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 parser ParserImpl(packet_in packet,
                   out headers_t hdr,
                   inout meta_t meta,
@@ -305,6 +301,9 @@ control ingress(inout headers_t hdr,
     const bit<32> RESUBMITTED_PKT_L2PTR = 0xe50b;
     const bit<32> RECIRCULATED_PKT_L2PTR = 0xec1c;
 
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action compute_lkp_ipv4_hash() {
         hash(meta.fwd.hash1, HashAlgorithm.crc16,
              (bit<16>) 0, { hdr.ipv4.srcAddr,
@@ -379,7 +378,7 @@ control ingress(inout headers_t hdr,
     }
     action drop_with_count() {
         ipv4_da_lpm_stats.count();
-        mark_to_drop();
+        mark_to_drop(standard_metadata);
     }
     table ipv4_da_lpm {
         key = {
@@ -487,13 +486,13 @@ control ingress(inout headers_t hdr,
                 MeterColor_t packet_color;
                 ingress_intf_meter.execute_meter(in_port, packet_color);
                 if (packet_color == METER_COLOR_RED) {
-                    mark_to_drop();
+                    mark_to_drop(standard_metadata);
                 } else {
                     truncate(64);
                     bit<16> rand_int;
                     random<bit<16>>(rand_int, 0, (bit<16>) (48*1024-1));
                     if (rand_int < (bit<16>) (32*1024)) {
-                        mark_to_drop();
+                        mark_to_drop(standard_metadata);
                     }
                 }
                 digest(2, standard_metadata.ingress_port);
@@ -520,7 +519,7 @@ control ingress(inout headers_t hdr,
                 egress_color = METER_COLOR_GREEN;
                 egress_intf_meter.apply();
                 if (egress_color == METER_COLOR_RED) {
-                    mark_to_drop();
+                    mark_to_drop(standard_metadata);
                 }
             }
         }
@@ -540,6 +539,9 @@ control egress(inout headers_t hdr,
     debug_std_meta() debug_std_meta_egress_end;
 #endif  // ENABLE_DEBUG_TABLES
 
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action set_out_bd (bit<24> bd) {
         meta.fwd.out_bd = bd;
     }

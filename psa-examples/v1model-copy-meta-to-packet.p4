@@ -180,7 +180,7 @@ control ingressImpl(inout headers_t hdr,
             // This action should overwrite the egress_spec field that
             // was assigned a value via the assignment above, causing
             // this packet to be dropped, _not_ sent out of port 0.
-            mark_to_drop();
+            mark_to_drop(stdmeta);
         }
     }
 }

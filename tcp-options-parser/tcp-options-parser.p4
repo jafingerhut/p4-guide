@@ -263,14 +263,13 @@ parser ParserImpl(packet_in packet,
     }
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 control ingress(inout headers hdr,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
 
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action set_l2ptr(bit<32> l2ptr) {
         meta.fwd_metadata.l2ptr = l2ptr;
     }
@@ -312,6 +311,9 @@ control egress(inout headers hdr,
                inout metadata meta,
                inout standard_metadata_t standard_metadata)
 {
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }

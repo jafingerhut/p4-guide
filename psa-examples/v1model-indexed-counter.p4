@@ -55,7 +55,7 @@ control cIngress(inout headers_t hdr,
     apply {
         bit<8> index = hdr.ethernet.dstAddr[7:0];
         my_pkt_counts.count((bit<32>) index);
-        mark_to_drop();
+        mark_to_drop(stdmeta);
     }
 }
 

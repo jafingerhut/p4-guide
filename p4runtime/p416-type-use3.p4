@@ -80,10 +80,6 @@ struct headers_t {
     custom_t   custom;
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 parser ParserImpl(packet_in packet,
                   out headers_t hdr,
                   inout meta_t meta,
@@ -111,6 +107,9 @@ control ingress(inout headers_t hdr,
                 inout meta_t meta,
                 inout standard_metadata_t standard_metadata)
 {
+    action my_drop() {
+        mark_to_drop(standard_metadata);
+    }
     action set_output(bit<9> out_port) {
         standard_metadata.egress_spec = out_port;
     }
