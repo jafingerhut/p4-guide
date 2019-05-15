@@ -276,10 +276,6 @@ struct metadata_t {
     digest_msg1_t       digest_msg1;
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 parser ParserImpl(packet_in packet,
                   out headers_t hdr,
                   inout metadata_t meta,
@@ -307,6 +303,9 @@ control ingress(inout headers_t hdr,
                 inout metadata_t meta,
                 inout standard_metadata_t stdmeta)
 {
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action set_output(bit<9> out_port) {
         stdmeta.egress_spec = out_port;
     }
