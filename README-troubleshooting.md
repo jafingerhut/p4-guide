@@ -105,3 +105,43 @@ To kill all processes with the name `simple_switch` (but not
 ```
 $ sudo killall -s 9 simple_switch
 ```
+
+
+# Comipler gives error message about `mark_to_drop`
+
+If you see an error message like this when compiling one of these programs:
+```
+demo1.p4_16.p4(92): [--Werror=legacy] error: mark_to_drop: Passing 1 arguments when 0 expected
+        mark_to_drop(stdmeta);
+        ^^^^^^^^^^^^^^^^^^^^^
+demo1.p4_16.p4(137): [--Werror=legacy] error: mark_to_drop: Passing 1 arguments when 0 expected
+        mark_to_drop(stdmeta);
+        ^^^^^^^^^^^^^^^^^^^^^
+```
+
+this is most likely because you are using a version of `p4c` compiled
+from source code from 2019-Apr-18 or sooner.  In particular, it was
+compiled before this change was committed to the compiler:
+
+```
+commit 73f100e460e60d8a872522991603a2b2c3cf77ea
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Thu Apr 18 16:40:56 2019 -0700
+
+    Deprecate mark_to_drop(); replace with mark_to_drop(standard_metadata) function (#1835)
+    
+    * Deprecate @mark_to_drop; replace with mark_to_drop(standard_metadata)
+```
+
+It was discovered shortly before that change was made that the
+`v1model` architecture's definition of `mark_to_drop` should take the
+standard_metadata struct as a parameter, because it locally modifies
+some fields of that structure.
+
+You have two choices for resolving this:
+
++ Change the P4 program so it calls `mark_to_drop()` with no
+  parameters, instead of `mark_to_drop(stdmeta)`.
++ Leave the P4 program unchanged, but update your version of the `p4c`
+  compiler to one built from source from the commit mentioned above,
+  or later.

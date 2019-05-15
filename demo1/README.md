@@ -8,6 +8,11 @@ To compile the P4_16 version of the code:
     p4c --target bmv2 --arch v1model demo1.p4_16.p4
                                      ^^^^^^^^^^^^^^ source code
 
+If you see an error message about `mark_to_drop: Passing 1 arguments
+when 0 expected`, then see
+[`README-troubleshooting.md`](../README-troubleshooting.md) for what
+to do.
+
 Running that command will create these files:
 
     demo1.p4_16.p4i - the output of running only the preprocessor on
@@ -106,16 +111,17 @@ You can examine the existing entries in a table with 'table_dump':
     Dumping entry 0x0
     Match key:
     * ipv4.dstAddr        : LPM       0a010001/32
-    Action entry: set_l2ptr - 3a
+    Action entry: ingressImpl.set_l2ptr - 3a
     **********
     Dumping entry 0x1
     Match key:
     * ipv4.dstAddr        : LPM       0a0100c8/32
-    Action entry: set_l2ptr - 3a
+    Action entry: ingressImpl.set_l2ptr - 51
     ==========
     Dumping default entry
-    Action entry: my_drop - 
+    Action entry: ingressImpl.my_drop - 
     ==========
+
 
 The numbers on the "Dumping entry <number>" lines are 'table entry
 handle ids'.  The table API implementation allocates a unique handle
@@ -187,16 +193,16 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit 704a8a04bd6b810809fed46539a19bad724a64d1
-Author: hemant_mnkcg <hemant@mnkcg.com>
-Date:   Sat Mar 16 09:07:15 2019 -0400
+commit aa60b26b03f5ada7114e468741358320df13ef51
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Fri May 10 13:06:19 2019 -0700
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit f0d030a924b67cd20646528232b5f55159e740ef
-Author: Peter Li <pl488@cornell.edu>
-Date:   Sun Mar 17 01:20:41 2019 -0400
+commit 25d0d747d57662d2fc1cfde2118620f80bf6d139
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Mon May 6 11:11:07 2019 -0700
 ```

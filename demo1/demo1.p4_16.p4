@@ -53,17 +53,6 @@ struct headers_t {
     ipv4_t     ipv4;
 }
 
-// Why bother creating an action that just does one primitive action?
-// That is, why not just use 'mark_to_drop' as one of the possible
-// actions when defining a table?  Because the P4_16 compiler does not
-// allow primitive actions to be used directly as actions of tables.
-// You must use 'compound actions', i.e. ones explicitly defined with
-// the 'action' keyword like below.
-
-action my_drop() {
-    mark_to_drop();
-}
-
 parser parserImpl(packet_in packet,
                   out headers_t hdr,
                   inout metadata_t meta,
@@ -91,6 +80,16 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    // Why bother creating an action that just does one function call?
+    // That is, why not just use 'mark_to_drop' as one of the possible
+    // actions when defining a table?  Because the P4_16 compiler does
+    // not allow function calls to be used directly as actions of
+    // tables.  You must use actions explicitly defined with the
+    // 'action' keyword like below.
+
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
 
     action set_l2ptr(bit<32> l2ptr) {
         meta.fwd_metadata.l2ptr = l2ptr;
@@ -133,6 +132,9 @@ control egressImpl(inout headers_t hdr,
                    inout metadata_t meta,
                    inout standard_metadata_t stdmeta)
 {
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }

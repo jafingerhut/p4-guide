@@ -60,10 +60,6 @@ struct headers_t {
     ipv4_t     ipv4;
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 parser parserImpl(packet_in packet,
                   out headers_t hdr,
                   inout metadata_t meta,
@@ -119,7 +115,7 @@ control ingressImpl(inout headers_t hdr,
     }
     action my_drop_with_stat() {
         ipv4_da_lpm_stats.count();
-        mark_to_drop();
+        mark_to_drop(stdmeta);
     }
     table ipv4_da_lpm {
         key = {
@@ -168,6 +164,9 @@ control ingressImpl(inout headers_t hdr,
         size = 32768;
     }
 
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
         meta.fwd_metadata.out_bd = bd;
         hdr.ethernet.dstAddr = dmac;
@@ -202,6 +201,9 @@ control egressImpl(inout headers_t hdr,
                    inout metadata_t meta,
                    inout standard_metadata_t stdmeta)
 {
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }

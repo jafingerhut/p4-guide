@@ -60,14 +60,10 @@ struct headers {
     ipv4_t     ipv4;
 }
 
-action my_drop() {
-    mark_to_drop();
-}
-
 parser ParserImpl(packet_in packet,
                   out headers hdr,
                   inout metadata meta,
-                  inout standard_metadata_t standard_metadata)
+                  inout standard_metadata_t stdmeta)
 {
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
 
@@ -93,7 +89,7 @@ action top_level_action(inout headers hdr) {
 
 control ingress(inout headers hdr,
                 inout metadata meta,
-                inout standard_metadata_t standard_metadata) {
+                inout standard_metadata_t stdmeta) {
     direct_counter(CounterType.packets) ipv4_da_lpm_stats;
 
     action compute_lkp_ipv4_hash() {
@@ -122,7 +118,7 @@ control ingress(inout headers hdr,
     }
     action my_drop_with_stat() {
         ipv4_da_lpm_stats.count();
-        mark_to_drop();
+        mark_to_drop(stdmeta);
     }
     table ipv4_da_lpm {
         key = {
@@ -176,10 +172,13 @@ control ingress(inout headers hdr,
         hdr.ipv4.diffserv = 5;
     }
 
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action set_bd_dmac_intf(bit<24> bd, bit<48> dmac, bit<9> intf) {
         meta.fwd_metadata.out_bd = bd;
         hdr.ethernet.dstAddr = dmac;
-        standard_metadata.egress_spec = intf;
+        stdmeta.egress_spec = intf;
         // Test if statement with assignments inside of an action, to
         // see whether it preserves filename and line info in bmv2
         // trace output.  I suspect it will not, because the compiler
@@ -225,8 +224,11 @@ control ingress(inout headers hdr,
 
 control egress(inout headers hdr,
                inout metadata meta,
-               inout standard_metadata_t standard_metadata)
+               inout standard_metadata_t stdmeta)
 {
+    action my_drop() {
+        mark_to_drop(stdmeta);
+    }
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }
