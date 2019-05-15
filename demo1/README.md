@@ -10,8 +10,8 @@ To compile the P4_16 version of the code:
 
 If you see an error message about `mark_to_drop: Passing 1 arguments
 when 0 expected`, then see
-[`README-troubleshooting.md`](../README-troubleshooting.md) for what
-to do.
+[`README-troubleshooting.md`](../README-troubleshooting.md#compiler-gives-error-message-about-mark_to_drop)
+for what to do.
 
 Running that command will create these files:
 

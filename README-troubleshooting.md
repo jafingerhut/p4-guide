@@ -107,7 +107,7 @@ $ sudo killall -s 9 simple_switch
 ```
 
 
-# Comipler gives error message about `mark_to_drop`
+# Compiler gives error message about `mark_to_drop`
 
 If you see an error message like this when compiling one of these programs:
 ```
