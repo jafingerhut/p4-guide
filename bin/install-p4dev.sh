@@ -91,6 +91,10 @@ sudo apt-get --yes install python
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
+# zlib is not required to install protobuf, nor do I think it is
+# required by the open source P4 tools for protobuf to be built with
+# support for zlib, but it seems like a reasonable thing to enable.
+sudo apt-get --yes install zlib1g-dev
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2018-Aug-13
 sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
