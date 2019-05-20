@@ -58,7 +58,7 @@ echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
-echo "with all Ubuntu software updates as of 2019-Apr-21, and a"
+echo "with all Ubuntu software updates as of 2019-May-20, and a"
 echo "similarly updated Ubuntu 18.04 system."
 echo ""
 echo "The files installed by this script consume about 7 GB of disk space."
@@ -105,11 +105,11 @@ df -BM .
 # my own convenience):
 sudo apt-get --yes install git vim
 
-# Install Python2.  This is required for p4c, but there are several earlier
-# packages that check for python in their configure scripts, and on a
-# minimal Ubuntu 18.04 Desktop Linux system find Python3, not Python2,
-# unless we install Python2.  Most Python code in open source P4 projects
-# is written for Python2.
+# Install Python2.  This is required for p4c, but there are several
+# earlier packages that check for python in their configure scripts,
+# and on a minimal Ubuntu 18.04 Desktop Linux system they find
+# Python3, not Python2, unless we install Python2.  Most Python code
+# in open source P4 projects is written for Python2.
 sudo apt-get --yes install python
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
