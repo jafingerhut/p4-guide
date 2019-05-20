@@ -139,6 +139,7 @@ git log -n 1
 #./configure
 make
 sudo make install
+sudo ldconfig
 
 echo "end install behavioral-model:"
 date
