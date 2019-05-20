@@ -54,12 +54,12 @@ echo "'sudo' spread throughout this script."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
+echo "+ protobuf: github.com/google/protobuf v3.2.0"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2019-Mar-17, also installs these things:"
 echo "  + thrift version 0.9.2"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
-echo "+ protobuf: github.com/google/protobuf v3.2.0"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -82,6 +82,12 @@ df -BM .
 # my own convenience):
 sudo apt-get --yes install git vim
 
+# Install Python2.  This is required for p4c, but there are several earlier
+# packages that check for python in their configure scripts, and on a
+# minimal Ubuntu 18.04 Desktop Linux system find Python3, not Python2,
+# unless we install Python2.  Most Python code in open source P4 projects
+# is written for Python2.
+sudo apt-get --yes install python
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
@@ -89,6 +95,27 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # Matches latest p4c README.md instructions as of 2018-Aug-13
 sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
 
+
+
+echo "------------------------------------------------------------"
+echo "Installing Google protobuf, needed for p4lang/p4c"
+echo "start install protobuf:"
+date
+
+cd "${INSTALL_DIR}"
+git clone https://github.com/google/protobuf
+cd protobuf
+git checkout v3.2.0
+./autogen.sh
+./configure
+make
+sudo make install
+sudo ldconfig
+# Save about 0.5G of storage by cleaning up protobuf build
+make clean
+
+echo "end install protobuf:"
+date
 
 
 echo "------------------------------------------------------------"
@@ -114,37 +141,6 @@ make
 sudo make install
 
 echo "end install behavioral-model:"
-date
-
-
-echo "------------------------------------------------------------"
-echo "Installing Google protobuf, needed for p4lang/p4c"
-echo "start install protobuf:"
-date
-
-cd "${INSTALL_DIR}"
-git clone https://github.com/google/protobuf
-cd protobuf
-# As of 2017-Dec-06, the p4lang/p4c README recommends v3.0.2 of protobuf.
-#
-# However, that version might not work with the latest version of
-# p4lang/PI.
-#
-# This email message linked below suggests that v3.2.0 should soon
-# become the recommended version for both p4lang/p4c and p4lang/PI.
-#
-# http://lists.p4.org/pipermail/p4-dev_lists.p4.org/2017-December/001655.html
-#git checkout v3.0.2
-git checkout v3.2.0
-./autogen.sh
-./configure
-make
-sudo make install
-sudo ldconfig
-# Save about 0.5G of storage by cleaning up protobuf build
-make clean
-
-echo "end install protobuf:"
 date
 
 
