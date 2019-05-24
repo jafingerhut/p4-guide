@@ -55,6 +55,18 @@ programs, not only the ones in indices from 0 up through
 "shifting" of other header stack elements at all, just as they do not
 in P4_16.
 
+Thus, holes are allowed in both P4_14 and P4_16 header stacks (see the
+section "Are holes allowed in header stacks?" below for details).
+
+Despite the name "header stack", it is reasonable to think of them as
+"header arrays".  Each element can independently be valid or invalid,
+and they can be read or written independently of each other.  There
+happens to be special operations push and pop that shift the entire
+contents of the array, and there is special support while parsing to
+extract into the next header.  However, if you think of those as
+special operations on arrays, that is what header stacks are: arrays
+of headers.
+
 
 ## Related Github issues
 
