@@ -1,0 +1,15 @@
+digraph ingressImpl {
+subgraph cluster {
+graph [
+label="", labeljust=r, style=bold];
+0[label=__START__, margin="", shape=rectangle, style=solid];
+1[label=__EXIT__, margin="", shape=rectangle, style=solid];
+2[label="update_input_port_pkt_count(stdmeta.ingress_port);", margin="", shape=rectangle, style=solid];
+3[label="ingressImpl.ipv4_da_lpm", margin="", shape=ellipse, style=solid];
+4[label="ingressImpl.mac_da", margin="", shape=ellipse, style=solid];
+0 -> 2[label=""];
+2 -> 3[label=""];
+3 -> 4[label=""];
+4 -> 1[label=""];
+}
+}
