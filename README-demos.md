@@ -48,6 +48,11 @@ action profiles, yet still achieves sharing of ECMP table entries
 among many IP prefixes.
 
 
+### `demo6`
+
+The same as demo2, except adds a very simple use of P4 registers.
+
+
 ### `v1model-special-ops`
 
 For P4_16 with the `v1model` architecture implemented in the open
