@@ -7,7 +7,12 @@ terms of forwarding packets.
 `extern-ref.p4` was written as a test of passing references to externs
 to see if the open source P4 compiler would handle it, and since it
 gave an error, Github issue https://github.com/p4lang/p4c/issues/794
-was created with a copy of that program.
+was created with a copy of that program.  The issue was fixed in 2017,
+and from my comment on the issue that year appears to have been fixed
+then, but in 2019 it wasn't working again, so created another issue
+https://github.com/p4lang/p4c/issues/1958 with `extern-ref-2.p4`,
+which only uses v1model.p4, not an early prototype version of the
+psa.p4 include file
 
 
 # General rules for P4_16 instantiations
@@ -103,78 +108,52 @@ PSA_Switch(ParserImpl(),
            DeparserImpl()) main;
 ```
 
+All of the above has been documented in the P4_16 language
+specification, Appendix F: "Restrictions on compile time and run time
+calls" since version 1.1 of that specification was published, and
+perhaps also since version 1.0.  See [here](https://p4.org/specs) for
+the latest published version of the language specification.
+
 + externs can be instantiated in these places:
-  + At the top level, visible every later globally in your program, or
+  + At the top level, visible everywhere later, globally in your program, or
   + Within a parser or control, visible everywhere later within that
     parser or control only.
-  + _Not_ within a parser state, action, table, or control `apply`
-    block.
+  + Such instantiations need _not_ be supported within a parser state,
+    action, table, or control `apply` block.
 + parsers can be instantiated only within other parsers, not at the
   top level, and not within a control.
 + controls can be instantiated only within other controls, not at the
   top level, and not within a parser.
-+ TBD: Is it legal to pass references to externs as parameters from
-  one control to another?  From one parser to another?
-  https://github.com/p4lang/p4-spec/issues/361
-+ TBD: Is it legal to pass references to controls as parameters from
-  one control to another?
-+ TBD: Is it legal to pass references to parsers as parameters from
-  one parser to another?
+
++ It _is_ legal to pass 'references to' or 'names of' externs as
+  parameters from one control to another, or from one parser to
+  another.  See [p4-spec issue
+  #361](https://github.com/p4lang/p4-spec/issues/361), and also the
+  test program `extern-ref-3.p4` in this directory.  With latest open
+  source p4c and behavioral-model as of 2019-May-23, `extern-ref-3.p4`
+  does indeed update a packet counter 2 times for each processed
+  packet, because the same counter object instance is passed twice to
+  the same sub-control, and "each of them" (i.e. the same instance) is
+  updated twice.
++ It _is_ legal to pass references to controls as _constructor_
+  parameters from one control to another (i.e. at compile time, when
+  all instantiations are being processed), but not as a run time
+  parameter.  The same is true for passing parser instances to other
+  parsers.
 
 Controls can be instantiated in these two places: within other
 controls, and as a parameter to a package instantiation.
 
-If they cannot be instantiated in any other ways, and cannot be passed
-as references in any way, then it appears that it is not possible to
-apply() the same instance of a control block from both the ingress and
-egress control blocks, or in general from any two different control
-blocks.  Every control block is either 'owned' by one other control,
-or by the package instantiation.
-
-It is legal in P4_16 for one control to call apply() on a single
-control instance multiple times.  TBD: Verify with a P4 program and
-see if p4test compiles it, and the bigger challenge: whether
-p4c-bm2-ss compiles it to something that simple_switch simulates with
-that behavior.
-
-Similarly it appears legal for one parser to call apply() on a single
-parser instance multiple times.  TBD: Same as above.
-
-
-TBD: Is there any expected use case for having a package instantiation
-other than 'main' in a P4_16 program, even if such a thing is not
-expected to be used in v1model.p4 or psa.p4?
-
-Instantations are only allowed these places:
-
-+ externs can be instantiated at the top level.  These are effectively
-  "global", i.e. visible everywhere in your P4_16 program after they
-  are instantiated.  It is legal in P4_16 to perform method calls on
-  such an extern instance in any parser or control of your program,
-  although an architecture like PSA might impose additional
-  restrictions on where such method calls may be made.
-
-+ externs can be instantiated at "the top level within a control or
-  parser", i.e. outside of any other syntactic elements inside of the
-  enclosing parser or control.  These are only accessible within the
-  parser or control where they are instantiated.
-
-+ 2017-Jul-19 version of p4test and p4c-bm2-ss both give an error if
-  you attempt to instantiate an extern inside of a parser state,
-  action, or control `apply` block.
-
-
-TBD: What is the difference between grammar symbols
-`controlTypeDeclaration` and `controlDeclaration`?
-
-- For one, a `controlDeclaration` contains a `controlTypeDeclaration`.
-
-- A `controlTypeDeclaration` consists only of optional annotations,
-  the keyword 'control', a name, optional type paramters, and a
-  parameter list enclosed in parentheses.  It does _not_ include
-  `optConstructorParameters` and a control body enclosed in braces.
-
-TBD: Similarly for `parserTypeDeclaration` vs. `parserDeclaration`.
+Even so, it is still possible to have the same instance of an extern
+object, control, or parser be used in multiple other places.  A
+demonstration of this is in program `extern-ref-4.p4`.  See near the
+end of that program for an "ASCII art" diagram of the "instantiation
+graph".  That graph shows which instances can make calls on other
+instances.  The basic idea is to create one of those things (extern
+object, control, or parser) via instantiation, and give the
+instantiation a name.  Then pass that name as a constructor parameter
+to instantiations of more than one other thing, e.g. to more than one
+control or parser instantiation.
 
 ----------------------------------------------------------------------
 
@@ -198,9 +177,8 @@ instance names throughout the P4 program.
 The process of instantiation continues with the package instantiation
 named "main".
 
-Its parameters can be instantiations of 0 or more controls and
-parsers.  TBD: Can a package instantiation also take extern
-instantiations as parameters?
+Its parameters can be instantiations of 0 or more controls, parsers,
+and/or extern objects.
 
 Every time a control is instantiated, it causes:
 
@@ -215,94 +193,45 @@ Every time a parser is instantiated, it causes:
 
 ----------------------------------------------------------------------
 
-% cd ~/p4c/testdata/p4_16_samples
-% egrep 'control.*\).*\(' *.p4
-generic1.p4:control c<T>()(T size) {
-inline-control1.p4:control c(out bit<32> x)(Y y) {
-inline-control.p4:control c(out bit<32> x)(Y y) {
-issue496.p4:control C()(D d) {
-pipe.p4:control T_host(inout TArg1 tArg1, in TArg2 aArg2)(bit<32> t2Size) {
-pipe.p4:control P_pipe(inout TArg1 pArg1, inout TArg2 pArg2)(bit<32> t2Size) {
-table-entries-exact-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-table-entries-exact-ternary-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-table-entries-lpm-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-table-entries-priority-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-table-entries-priority-bmv2.p4:            0x1111 &&& 0xF    : a_with_control_params(1) @priority(3);
-table-entries-priority-bmv2.p4:            0x1181 &&& 0xF00F : a_with_control_params(3) @priority(1);
-table-entries-range-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-table-entries-ternary-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-table-entries-valid-bmv2.p4:control deparser(packet_out b, in Header_t h) { apply { b.emit(h.h); } }
-
-Manually trim that set of lines to remove those that are clearly
-within parser state definitions, or are otherwise clearly not a
-control with constructor parameters:
-
-generic1.p4:control c<T>()(T size) {
-inline-control1.p4:control c(out bit<32> x)(Y y) {
-inline-control.p4:control c(out bit<32> x)(Y y) {
-issue496.p4:control C()(D d) {
-pipe.p4:control T_host(inout TArg1 tArg1, in TArg2 aArg2)(bit<32> t2Size) {
-pipe.p4:control P_pipe(inout TArg1 pArg1, inout TArg2 pArg2)(bit<32> t2Size) {
-
-
-----------------------------------------------------------------------
-
 This Github issue comment:
 
 https://github.com/p4lang/p4-spec/issues/361#issuecomment-318778037
 
 asks this question:
 
-Given the P4_16 v1.0.0 definition,
+Given the P4_16 v1.0.0 definition, is this conjecture true or false?
 
-True or false: Suppose control c1 is declared before control c2 in the
-program. There is no way for an instance of c1 to call an instance of
-c2.
+    Conjecture 1: Suppose control c1 is declared before control c2 in
+    the program.  There is no way for an instance of c1 to call an
+    instance of c2.
 
-I believe the answer is true, because: For c1 to call another control
-c2, c1 must either instantiate c2 inside of c1's declaration, or it
-must take an instance of c2 as a constructor parameter. c1 cannot name
-or refer to an instance of c2 in any other way. To do either of those
-things, c2 must be declared before c1, otherwise the type c2 is
-undefined while c1 is being declared.
+As a later comment on that issue shows via an example program, this is
+false.  You can also see this in program `extern-ref-5.p4`, which is
+identical to `extern-ref-4.p4`, except some control definitions have
+been reordered.  The meaning of both programs `extern-ref-4.p4` and
+`extern-ref-5.p4` is exactly the same.
 
-The same reasoning applies to parsers and their instances, too.
+Conjecture 1 _might_ be true in programs that do not use constructor
+parameters for controls and parsers, but it is definitely false when
+you can pass controls to other controls as constructor parameters,
+which P4_16 allows.
 
-----------------------------------------------------------------------
+I believe conjecture 2 is true:
 
-Assume for the moment that the answer to the "True or false"
-proposition above is "True".
+    Conjecture 2: Suppose an instance c1_inst of control c1 is
+    instantiated before an instance c2_inst of control c2 during the
+    instantiation steps for the program, performed in the order
+    described in the P4_16 language specification.  There is no way
+    for c1_inst to call c2_inst.
 
-Are there any ways to invoke the _same_ instance of a control block
-more than one time per packet?
+I believe this is true because if an instantiation of a control,
+parser, package, or extern object X refers to another instantiation Y,
+then Y must fall into one of these cases:
 
-It would be easy if control blocks could be instantiated at the top
-level, but they cannot.
++ Y was instantiated earlier, and is referred to by the name Y.  P4_16
+  does not have any "forward declarations" of any kind, for instance
+  names or any other kinds of names.
 
-Even so, I believe it should be possible using the fact that when
-instantiating a control block, you can pass an instance of another
-control as a contructor parameter.  Here is the skeleton of it:
-
-control c1() { }
-
-control c2() (control c1) {
-    apply {
-        c1.apply();
-    }
-}
-
-control c3() (control c1) {
-    apply {
-        c1.apply();
-    }
-}
-
-control c4() {
-    c1() c1_inst;
-    c2(c1_inst) c2_inst;
-    c2(c1_inst) c3_inst;
-    apply {
-        c2_inst.apply();
-        c3_inst.apply();
-    }
-}
++ Y is instantiated within the instantiation of X itself.  It will be
+  unnamed, but it is logically instantiated "just before" X is
+  instantiated.
