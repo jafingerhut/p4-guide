@@ -6,13 +6,14 @@ terms of forwarding packets.
 
 `extern-ref.p4` was written as a test of passing references to externs
 to see if the open source P4 compiler would handle it, and since it
-gave an error, Github issue https://github.com/p4lang/p4c/issues/794
-was created with a copy of that program.  The issue was fixed in 2017,
-and from my comment on the issue that year appears to have been fixed
-then, but in 2019 it wasn't working again, so created another issue
-https://github.com/p4lang/p4c/issues/1958 with `extern-ref-2.p4`,
-which only uses v1model.p4, not an early prototype version of the
-psa.p4 include file
+gave an error, Github issue
+[p4c/794](https://github.com/p4lang/p4c/issues/794) was created with a
+copy of that program.  The issue was fixed in 2017, and from my
+comment on the issue that year appears to have been fixed then, but in
+2019 it wasn't working again, so created another issue
+[p4c/1958](https://github.com/p4lang/p4c/issues/1958) with
+`extern-ref-2.p4`, which only includes v1model.p4, not an early
+prototype version of the psa.p4 include file.
 
 
 # General rules for P4_16 instantiations
@@ -108,11 +109,11 @@ PSA_Switch(ParserImpl(),
            DeparserImpl()) main;
 ```
 
-All of the above has been documented in the P4_16 language
-specification, Appendix F: "Restrictions on compile time and run time
-calls" since version 1.1 of that specification was published, and
-perhaps also since version 1.0.  See [here](https://p4.org/specs) for
-the latest published version of the language specification.
+All of the restrictions below have been documented in the P4_16
+language specification, Appendix F: "Restrictions on compile time and
+run time calls" since version 1.1 of that specification was published,
+and perhaps also since version 1.0.  See [here](https://p4.org/specs)
+for the latest published version of the language specification.
 
 + externs can be instantiated in these places:
   + At the top level, visible everywhere later, globally in your program, or
@@ -134,7 +135,7 @@ the latest published version of the language specification.
   does indeed update a packet counter 2 times for each processed
   packet, because the same counter object instance is passed twice to
   the same sub-control, and "each of them" (i.e. the same instance) is
-  updated twice.
+  updated once.
 + It _is_ legal to pass references to controls as _constructor_
   parameters from one control to another (i.e. at compile time, when
   all instantiations are being processed), but not as a run time
@@ -149,30 +150,35 @@ object, control, or parser be used in multiple other places.  A
 demonstration of this is in program `extern-ref-4.p4`.  See near the
 end of that program for an "ASCII art" diagram of the "instantiation
 graph".  That graph shows which instances can make calls on other
-instances.  The basic idea is to create one of those things (extern
-object, control, or parser) via instantiation, and give the
-instantiation a name.  Then pass that name as a constructor parameter
-to instantiations of more than one other thing, e.g. to more than one
+instances.  I believe such a graph can be an arbitrary DAG (directed
+acyclic graph), or at least nearly arbitrary.  It is definitely not
+restricted to be a tree.  As stated in Conjecture 2 below, I believe
+an instantiation graph cannot contain cycles.
+
+The basic idea is to create one of those things (extern object,
+control, or parser) via instantiation, and give the instantiation a
+name.  Then pass that name as a constructor parameter to
+instantiations of more than one other thing, e.g. to more than one
 control or parser instantiation.
 
 ----------------------------------------------------------------------
 
-An architecture is probably allowed to have any number of
-already-instantiated externs, controls, and parsers, that are always
-part of every compiled P4 program for that architecture.  Those should
-be documented as part of the architecture description.
+An architecture is allowed to have any number of already-instantiated
+externs, controls, and parsers, that are always part of every compiled
+P4 program for that architecture.  Those should be documented as part
+of the architecture description.
 
 There can be 0 or more top-level instantiations of externs in the P4
-program.  Those occur first.  There can be references to these extern
-instance names throughout the P4 program.
+program.  There can be references to these extern instance names
+throughout the P4 program.
 
-    Aside: I believe that effectively those occur, even if there are
-    no uses of those instances later in the program.  If there are no
-    uses of them, I can't think of any way in which they would be
-    anything other than "dead code".  Perhaps they could "collude" or
-    interact with other extern instantiations behind the scenes, but
-    there is no way to see this in the P4 program source code
-    directly.
+    Aside: I believe that effectively those instantiations "happen",
+    even if there are no uses of those instances later in the program.
+    If there are no uses of those instances, it is not obvious if
+    there is any way in which they would be anything other than "dead
+    code".  Perhaps they could "collude" or interact with other extern
+    instantiations behind the scenes, but there is no way to see this
+    in the P4 program source code directly.
 
 The process of instantiation continues with the package instantiation
 named "main".
