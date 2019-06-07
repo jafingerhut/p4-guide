@@ -11,13 +11,15 @@ tools:
   installing the P4Runtime API software, and can get by with older
   controller APIs, e.g. the API based upon Thrift.
 
-I have most recently tested them and found them working on
-2019-Mar-14.
+You can find the (long) output files from my test runs of these
+scripts that I do about once per month in [the bin/output
+directory](output/) of this repository.  The dates on those files show
+when I last ran them.
 
 Things I did that helped this process go smoothly:
 
 + I started from an _unmodified_ _fresh_ installation of Ubuntu Linux.
-  These install scripts install many packages using `apt`, and
+  These install scripts install many packages using `apt-get`, and
   although I do not know how to determine a complete list of which
   Ubuntu packages conflict with each other, I know there are some that
   when simultaneously installed on a system, _can_ cause problems for
@@ -38,8 +40,8 @@ Things I did that helped this process go smoothly:
   almost certainly not be enough.
 + My machine had at least 10 Gbytes of free disk space before the
   installation process started, on top of the approximately 4 Gbytes
-  consumed by the fresh Ubuntu 16.04.5 installation, or the
-  approximately 6 Gbytes consumed by the fresh Ubutu 18.04.1
+  consumed by the fresh Ubuntu 16.04 installation, or the
+  approximately 6 Gbytes consumed by the fresh Ubutu 18.04
   installation.  You should not need that much free disk space in
   order to succeed running these scripts, but you probably do want
   several Gbytes of free disk space after the installation is
