@@ -160,9 +160,9 @@ demo1.p4_16.p4
 # assign default actions for tables using an empty key, represented by
 # None in Python.
 
-h.table_add(('ipv4_da_lpm', None), ('my_drop', []))
-h.table_add(('mac_da', None), ('my_drop', []))
-h.table_add(('send_frame', None), ('my_drop', []))
+h.table_add(('ipv4_da_lpm', None), ('ingressImpl.my_drop', []))
+h.table_add(('mac_da', None), ('ingressImpl.my_drop', []))
+h.table_add(('send_frame', None), ('egressImpl.my_drop', []))
 
 # add new non-default table entries by filling in at least one key field
 
