@@ -95,6 +95,20 @@ echo "command at the appropriate places."
 echo ""
 
 
+REPO_CACHE_DIR="${INSTALL_DIR}/repository-cache"
+get_from_nearest() {
+    local git_url="$1"
+    local repo_cache_name="$2"
+
+    if [ -e "${REPO_CACHE_DIR}/${repo_cache_name}" ]
+    then
+	tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
+    else
+	git clone "${GIT_URL}"
+    fi
+}
+
+
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
@@ -132,7 +146,7 @@ echo "start install protobuf:"
 date
 
 cd "${INSTALL_DIR}"
-git clone https://github.com/google/protobuf
+get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
 cd protobuf
 git checkout v3.2.0
 ./autogen.sh
@@ -154,7 +168,7 @@ echo "Installing grpc, needed for installing p4lang/PI"
 echo "start install grpc:"
 date
 
-git clone https://github.com/google/grpc.git
+get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04
 git checkout tags/v1.3.2
@@ -198,7 +212,7 @@ echo "Installing libyang, needed for installing p4lang/PI"
 echo "start install libyang:"
 date
 
-git clone https://github.com/CESNET/libyang.git
+get_from_nearest https://github.com/CESNET/libyang.git libyang.tar.gz
 cd libyang
 git checkout v0.16-r1
 mkdir build
@@ -220,7 +234,7 @@ echo "Installing sysrepo, needed for installing p4lang/PI"
 echo "start install sysrepo:"
 date
 
-git clone https://github.com/sysrepo/sysrepo.git
+get_from_nearest https://github.com/sysrepo/sysrepo.git sysrepo.tar.gz
 cd sysrepo
 git checkout v0.7.5
 mkdir build
@@ -290,8 +304,10 @@ date
 # also the `--with-sysrepo` configure flag, which this script will do.
 # That should all have been done by this time, by the script above.
 
-git clone https://github.com/p4lang/behavioral-model.git
+get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
 cd behavioral-model
+# Get latest updates that are not in the repo cache version
+git pull
 git log -n 1
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
