@@ -39,9 +39,12 @@ echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It has been tested on a freshly installed Ubuntu 16.04 system,"
-echo "with all Ubuntu software updates as of 2019-May-20, and a"
-echo "similarly updated Ubuntu 18.04 system."
+echo "It regularly tested on freshly installed Ubuntu 16.04 and Ubuntu"
+echo "18.04 systems, with all Ubuntu software updates as of the date"
+echo "of testing.  See this directory for log files recording the last"
+echo "date this script was tested on its supported operating systems:"
+echo ""
+echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
 echo "The files installed by this script consume about 5 GB of disk space."
 echo ""
@@ -56,7 +59,7 @@ echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ protobuf: github.com/google/protobuf v3.2.0"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2019-Mar-17, also installs these things:"
+echo "  which, as of 2019-Jun-10, also installs these things:"
 echo "  + thrift version 0.9.2"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
@@ -82,11 +85,11 @@ df -BM .
 # my own convenience):
 sudo apt-get --yes install git vim
 
-# Install Python2.  This is required for p4c, but there are several earlier
-# packages that check for python in their configure scripts, and on a
-# minimal Ubuntu 18.04 Desktop Linux system find Python3, not Python2,
-# unless we install Python2.  Most Python code in open source P4 projects
-# is written for Python2.
+# Install Python2.  This is required for p4c, but there are several
+# earlier packages that check for python in their configure scripts,
+# and on a minimal Ubuntu 18.04 Desktop Linux system they find
+# Python3, not Python2, unless we install Python2.  Most Python code
+# in open source P4 projects is written for Python2.
 sudo apt-get --yes install python
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
@@ -96,9 +99,11 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # support for zlib, but it seems like a reasonable thing to enable.
 sudo apt-get --yes install zlib1g-dev
 # Install Ubuntu dependencies needed by p4c, from its README.md
-# Matches latest p4c README.md instructions as of 2018-Aug-13
-sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
-
+# Matches latest p4c README.md instructions as of 2019-Jun-10, except
+# it leaves out the 'llvm' package, which I believe is only necessary
+# if you want to compile and use the EBPF back end of p4c.  This
+# script is focused on the BMv2/simple_switch back ends.
+sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump
 
 
 echo "------------------------------------------------------------"

@@ -3,7 +3,7 @@ compiler, and the behavioral-model software packet forwarding
 program, that can behave as just about any legal P4 program.
 
 It has been tested on a freshly installed Ubuntu 16.04 system,
-with all Ubuntu software updates as of 2019-Apr-21, and a
+with all Ubuntu software updates as of 2019-May-20, and a
 similarly updated Ubuntu 18.04 system.
 
 The files installed by this script consume about 7 GB of disk space.
@@ -40,11 +40,11 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Mon May 20 13:13:46 PDT 2019
+Mon Jun 10 13:32:19 PDT 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G  5.8G   51G  11% /
+/dev/sda1        59G  6.3G   50G  12% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         60218M 5899M    51232M  11% /
+/dev/sda1         60218M 6414M    50717M  12% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -53,14 +53,14 @@ Suggested packages:
   ctags vim-doc vim-scripts
 The following NEW packages will be installed:
   vim vim-runtime
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 37 not upgraded.
 Need to get 6,589 kB of archives.
 After this operation, 32.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 vim-runtime all 2:8.0.1453-1ubuntu1 [5,437 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 vim amd64 2:8.0.1453-1ubuntu1 [1,152 kB]
-Fetched 6,589 kB in 7s (880 kB/s)
+Fetched 6,589 kB in 30s (218 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148006 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148053 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a8.0.1453-1ubuntu1_all.deb ...
 Adding 'diversion of /usr/share/vim/vim80/doc/help.txt to /usr/share/vim/vim80/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim80/doc/tags to /usr/share/vim/vim80/doc/tags.vim-tiny by vim-runtime'
@@ -82,47 +82,64 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 The following additional packages will be installed:
-  libpython-stdlib python-minimal python2.7 python2.7-minimal
+  libpython-stdlib libpython2.7 libpython2.7-minimal libpython2.7-stdlib
+  python-minimal python2.7 python2.7-minimal
 Suggested packages:
   python-doc python-tk python2.7-doc binfmt-support
 The following NEW packages will be installed:
   libpython-stdlib python python-minimal python2.7 python2.7-minimal
-0 upgraded, 5 newly installed, 0 to remove and 0 not upgraded.
-Need to get 1,719 kB of archives.
-After this operation, 5,007 kB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7-minimal amd64 2.7.15~rc1-1ubuntu0.1 [1,304 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-minimal amd64 2.7.15~rc1-1 [28.1 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7 amd64 2.7.15~rc1-1ubuntu0.1 [238 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-stdlib amd64 2.7.15~rc1-1 [7,620 B]
-Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python amd64 2.7.15~rc1-1 [140 kB]
-Fetched 1,719 kB in 3s (513 kB/s)
+The following packages will be upgraded:
+  libpython2.7 libpython2.7-minimal libpython2.7-stdlib
+3 upgraded, 5 newly installed, 0 to remove and 34 not upgraded.
+Need to get 5,012 kB of archives.
+After this operation, 4,994 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7 amd64 2.7.15-4ubuntu4~18.04 [1,053 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-stdlib amd64 2.7.15-4ubuntu4~18.04 [1,915 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-minimal amd64 2.7.15-4ubuntu4~18.04 [335 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7-minimal amd64 2.7.15-4ubuntu4~18.04 [1,295 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-minimal amd64 2.7.15~rc1-1 [28.1 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7 amd64 2.7.15-4ubuntu4~18.04 [239 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-stdlib amd64 2.7.15~rc1-1 [7,620 B]
+Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python amd64 2.7.15~rc1-1 [140 kB]
+Fetched 5,012 kB in 34s (147 kB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149820 files and directories currently installed.)
+Preparing to unpack .../0-libpython2.7_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking libpython2.7:amd64 (2.7.15-4ubuntu4~18.04) over (2.7.15~rc1-1ubuntu0.1) ...
+Preparing to unpack .../1-libpython2.7-stdlib_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.15-4ubuntu4~18.04) over (2.7.15~rc1-1ubuntu0.1) ...
+Preparing to unpack .../2-libpython2.7-minimal_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.15-4ubuntu4~18.04) over (2.7.15~rc1-1ubuntu0.1) ...
 Selecting previously unselected package python2.7-minimal.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149773 files and directories currently installed.)
-Preparing to unpack .../python2.7-minimal_2.7.15~rc1-1ubuntu0.1_amd64.deb ...
-Unpacking python2.7-minimal (2.7.15~rc1-1ubuntu0.1) ...
+Preparing to unpack .../3-python2.7-minimal_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking python2.7-minimal (2.7.15-4ubuntu4~18.04) ...
 Selecting previously unselected package python-minimal.
-Preparing to unpack .../python-minimal_2.7.15~rc1-1_amd64.deb ...
+Preparing to unpack .../4-python-minimal_2.7.15~rc1-1_amd64.deb ...
 Unpacking python-minimal (2.7.15~rc1-1) ...
 Selecting previously unselected package python2.7.
-Preparing to unpack .../python2.7_2.7.15~rc1-1ubuntu0.1_amd64.deb ...
-Unpacking python2.7 (2.7.15~rc1-1ubuntu0.1) ...
+Preparing to unpack .../5-python2.7_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking python2.7 (2.7.15-4ubuntu4~18.04) ...
 Selecting previously unselected package libpython-stdlib:amd64.
-Preparing to unpack .../libpython-stdlib_2.7.15~rc1-1_amd64.deb ...
+Preparing to unpack .../6-libpython-stdlib_2.7.15~rc1-1_amd64.deb ...
 Unpacking libpython-stdlib:amd64 (2.7.15~rc1-1) ...
-Setting up python2.7-minimal (2.7.15~rc1-1ubuntu0.1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.15-4ubuntu4~18.04) ...
+Setting up python2.7-minimal (2.7.15-4ubuntu4~18.04) ...
 Linking and byte-compiling packages for runtime python2.7...
 Setting up python-minimal (2.7.15~rc1-1) ...
 Selecting previously unselected package python.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149829 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149877 files and directories currently installed.)
 Preparing to unpack .../python_2.7.15~rc1-1_amd64.deb ...
 Unpacking python (2.7.15~rc1-1) ...
 Processing triggers for mime-support (3.60ubuntu1) ...
 Processing triggers for desktop-file-utils (0.23-1ubuntu3.18.04.2) ...
-Setting up python2.7 (2.7.15~rc1-1ubuntu0.1) ...
-Setting up libpython-stdlib:amd64 (2.7.15~rc1-1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Processing triggers for gnome-menus (3.13.3-11ubuntu1.1) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.15-4ubuntu4~18.04) ...
+Setting up python2.7 (2.7.15-4ubuntu4~18.04) ...
+Setting up libpython-stdlib:amd64 (2.7.15~rc1-1) ...
+Setting up libpython2.7:amd64 (2.7.15-4ubuntu4~18.04) ...
 Setting up python (2.7.15~rc1-1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -144,7 +161,7 @@ The following NEW packages will be installed:
   libc-dev-bin libc6-dev libcilkrts5 libcurl4 libgcc-7-dev libitm1 liblsan0
   libltdl-dev libmpx2 libquadmath0 libsigsegv2 libstdc++-7-dev libtool
   libtsan0 libubsan0 linux-libc-dev m4 make manpages-dev
-0 upgraded, 29 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 29 newly installed, 0 to remove and 34 not upgraded.
 Need to get 27.9 MB of archives.
 After this operation, 122 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsigsegv2 amd64 2.12-1 [14.7 kB]
@@ -152,8 +169,8 @@ Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 m4 amd64 1.4.18-1 [1
 Get:3 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 autoconf all 2.69-11 [322 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 autotools-dev all 20180224.1 [39.6 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 automake all 1:1.15.1-3ubuntu2 [509 kB]
-Get:6 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libcurl4 amd64 7.58.0-2ubuntu3.6 [214 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 curl amd64 7.58.0-2ubuntu3.6 [159 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libcurl4 amd64 7.58.0-2ubuntu3.7 [214 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 curl amd64 7.58.0-2ubuntu3.7 [159 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libitm1 amd64 8.3.0-6ubuntu1~18.04 [27.9 kB]
 Get:9 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libatomic1 amd64 8.3.0-6ubuntu1~18.04 [9,180 B]
 Get:10 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libasan4 amd64 7.4.0-1ubuntu1~18.04 [359 kB]
@@ -167,7 +184,7 @@ Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libgcc-7-de
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 gcc-7 amd64 7.4.0-1ubuntu1~18.04 [7,462 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 gcc amd64 4:7.4.0-1ubuntu2.2 [5,184 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc-dev-bin amd64 2.27-3ubuntu1 [71.8 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-50.54 [1,007 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-51.55 [1,005 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc6-dev amd64 2.27-3ubuntu1 [2,587 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libstdc++-7-dev amd64 7.4.0-1ubuntu1~18.04 [1,467 kB]
 Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 g++-7 amd64 7.4.0-1ubuntu1~18.04 [7,575 kB]
@@ -176,9 +193,9 @@ Get:26 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libltdl-dev amd64 2
 Get:27 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtool all 2.4.6-2 [194 kB]
 Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 make amd64 4.1-9.1ubuntu1 [154 kB]
 Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 manpages-dev all 4.15-1 [2,217 kB]
-Fetched 27.9 MB in 39s (721 kB/s)
+Fetched 27.9 MB in 1min 57s (239 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149884 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149932 files and directories currently installed.)
 Preparing to unpack .../00-libsigsegv2_2.12-1_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.12-1) ...
 Selecting previously unselected package m4.
@@ -194,11 +211,11 @@ Selecting previously unselected package automake.
 Preparing to unpack .../04-automake_1%3a1.15.1-3ubuntu2_all.deb ...
 Unpacking automake (1:1.15.1-3ubuntu2) ...
 Selecting previously unselected package libcurl4:amd64.
-Preparing to unpack .../05-libcurl4_7.58.0-2ubuntu3.6_amd64.deb ...
-Unpacking libcurl4:amd64 (7.58.0-2ubuntu3.6) ...
+Preparing to unpack .../05-libcurl4_7.58.0-2ubuntu3.7_amd64.deb ...
+Unpacking libcurl4:amd64 (7.58.0-2ubuntu3.7) ...
 Selecting previously unselected package curl.
-Preparing to unpack .../06-curl_7.58.0-2ubuntu3.6_amd64.deb ...
-Unpacking curl (7.58.0-2ubuntu3.6) ...
+Preparing to unpack .../06-curl_7.58.0-2ubuntu3.7_amd64.deb ...
+Unpacking curl (7.58.0-2ubuntu3.7) ...
 Selecting previously unselected package libitm1:amd64.
 Preparing to unpack .../07-libitm1_8.3.0-6ubuntu1~18.04_amd64.deb ...
 Unpacking libitm1:amd64 (8.3.0-6ubuntu1~18.04) ...
@@ -239,8 +256,8 @@ Selecting previously unselected package libc-dev-bin.
 Preparing to unpack .../19-libc-dev-bin_2.27-3ubuntu1_amd64.deb ...
 Unpacking libc-dev-bin (2.27-3ubuntu1) ...
 Selecting previously unselected package linux-libc-dev:amd64.
-Preparing to unpack .../20-linux-libc-dev_4.15.0-50.54_amd64.deb ...
-Unpacking linux-libc-dev:amd64 (4.15.0-50.54) ...
+Preparing to unpack .../20-linux-libc-dev_4.15.0-51.55_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.15.0-51.55) ...
 Selecting previously unselected package libc6-dev:amd64.
 Preparing to unpack .../21-libc6-dev_2.27-3ubuntu1_amd64.deb ...
 Unpacking libc6-dev:amd64 (2.27-3ubuntu1) ...
@@ -275,8 +292,8 @@ Setting up libcilkrts5:amd64 (7.4.0-1ubuntu1~18.04) ...
 Processing triggers for install-info (6.5.0.dfsg.1-2) ...
 Setting up libubsan0:amd64 (7.4.0-1ubuntu1~18.04) ...
 Setting up libtsan0:amd64 (8.3.0-6ubuntu1~18.04) ...
-Setting up libcurl4:amd64 (7.58.0-2ubuntu3.6) ...
-Setting up linux-libc-dev:amd64 (4.15.0-50.54) ...
+Setting up libcurl4:amd64 (7.58.0-2ubuntu3.7) ...
+Setting up linux-libc-dev:amd64 (4.15.0-51.55) ...
 Setting up m4 (1.4.18-1) ...
 Setting up liblsan0:amd64 (8.3.0-6ubuntu1~18.04) ...
 Setting up libmpx2:amd64 (8.3.0-6ubuntu1~18.04) ...
@@ -287,7 +304,7 @@ Setting up libc-dev-bin (2.27-3ubuntu1) ...
 Setting up manpages-dev (4.15-1) ...
 Setting up libc6-dev:amd64 (2.27-3ubuntu1) ...
 Setting up libitm1:amd64 (8.3.0-6ubuntu1~18.04) ...
-Setting up curl (7.58.0-2ubuntu3.6) ...
+Setting up curl (7.58.0-2ubuntu3.7) ...
 Setting up autoconf (2.69-11) ...
 Setting up libgcc-7-dev:amd64 (7.4.0-1ubuntu1~18.04) ...
 Setting up libstdc++-7-dev:amd64 (7.4.0-1ubuntu1~18.04) ...
@@ -305,13 +322,13 @@ Building dependency tree...
 Reading state information...
 The following NEW packages will be installed:
   zlib1g-dev
-0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 1 newly installed, 0 to remove and 34 not upgraded.
 Need to get 176 kB of archives.
 After this operation, 457 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-0ubuntu2 [176 kB]
-Fetched 176 kB in 1s (265 kB/s)
+Fetched 176 kB in 2s (82.9 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 154960 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 155008 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.11.dfsg-0ubuntu2_amd64.deb ...
 Unpacking zlib1g-dev:amd64 (1:1.2.11.dfsg-0ubuntu2) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
@@ -327,7 +344,7 @@ Suggested packages:
 The following NEW packages will be installed:
   build-essential dpkg-dev fakeroot libalgorithm-diff-perl
   libalgorithm-diff-xs-perl libalgorithm-merge-perl libfakeroot pkg-config
-0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 8 newly installed, 0 to remove and 34 not upgraded.
 Need to get 816 kB of archives.
 After this operation, 2,777 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 dpkg-dev all 1.19.0.5ubuntu2.1 [608 kB]
@@ -338,9 +355,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-diff-pe
 Get:6 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-diff-xs-perl amd64 0.04-5 [11.1 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 pkg-config amd64 0.29.1-0ubuntu2 [45.0 kB]
-Fetched 816 kB in 3s (280 kB/s)
+Fetched 816 kB in 3s (269 kB/s)
 Selecting previously unselected package dpkg-dev.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 154988 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 155036 files and directories currently installed.)
 Preparing to unpack .../0-dpkg-dev_1.19.0.5ubuntu2.1_all.deb ...
 Unpacking dpkg-dev (1.19.0.5ubuntu2.1) ...
 Selecting previously unselected package build-essential.
@@ -379,8 +396,7 @@ Processing triggers for libc-bin (2.27-3ubuntu1) ...
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Mon May 20 13:15:44 PDT 2019
-Cloning into 'protobuf'...
+Mon Jun 10 13:36:17 PDT 2019
 Note: checking out 'v3.2.0'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -396,12 +412,12 @@ HEAD is now at 593e917c Bump version number to 3.2.0
 Google Mock not present.  Fetching gmock-1.7.0 from the web...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    297      0 --:--:-- --:--:-- --:--:--   297
-  2  362k    2 10318    0     0  11645      0  0:00:31 --:--:--  0:00:31 11645100  362k  100  362k    0     0   270k      0  0:00:01  0:00:01 --:--:--  778k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    161      0 --:--:-- --:--:-- --:--:--   161
+100  230k    0  230k    0     0   136k      0 --:--:--  0:00:01 --:--:--  136k100  362k    0  362k    0     0   197k      0 --:--:--  0:00:01 --:--:--  908k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    321      0 --:--:-- --:--:-- --:--:--   321
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  618k  100  618k    0     0   528k      0  0:00:01  0:00:01 --:--:--  967k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    386      0 --:--:-- --:--:-- --:--:--   386
+100 44647    0 44647    0     0  56515      0 --:--:-- --:--:-- --:--:-- 56515100  214k    0  214k    0     0  80811      0 --:--:--  0:00:02 --:--:-- 90824100  214k    0  214k    0     0  59001      0 --:--:--  0:00:03 --:--:-- 59671100  214k    0  214k    0     0  46471      0 --:--:--  0:00:04 --:--:-- 44454100  215k    0  215k    0     0  39615      0 --:--:--  0:00:05 --:--:-- 36825100  318k    0  318k    0     0  56324      0 --:--:--  0:00:05 --:--:-- 56294100  618k    0  618k    0     0  95836      0 --:--:--  0:00:06 --:--:--  103k
 + autoreconf -f -i -Wall,no-obsolete
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
 libtoolize: copying file 'build-aux/ltmain.sh'
@@ -2203,12 +2219,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/jafinger/protobuf/src'
 end install protobuf:
-Mon May 20 13:28:05 PDT 2019
+Mon Jun 10 13:45:48 PDT 2019
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Mon May 20 13:28:05 PDT 2019
-Cloning into 'grpc'...
+Mon Jun 10 13:45:48 PDT 2019
 Note: checking out 'tags/v1.3.2'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -3669,7 +3684,7 @@ src/proto/grpc/testing/services.proto: warning: Import src/proto/grpc/testing/st
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Mon May 20 13:35:08 PDT 2019
+Mon Jun 10 14:27:05 PDT 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -3684,7 +3699,7 @@ The following NEW packages will be installed:
   cmake cmake-data libavl-dev libavl1 libev-dev libev4 libjsoncpp1 libpcre16-3
   libpcre3-dev libpcre32-3 libpcrecpp0v5 libprotobuf-c-dev libprotobuf-c1
   libprotoc10 librhash0 libuv1 protobuf-c-compiler
-0 upgraded, 17 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 17 newly installed, 0 to remove and 34 not upgraded.
 Need to get 6,359 kB of archives.
 After this operation, 31.3 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 cmake-data all 3.10.2-1ubuntu2 [1,331 kB]
@@ -3704,9 +3719,9 @@ Get:14 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libprotoc10 amd64 3
 Get:15 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 protobuf-c-compiler amd64 1.2.1-2 [72.6 kB]
 Get:16 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libev4 amd64 1:4.22-1 [26.3 kB]
 Get:17 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libev-dev amd64 1:4.22-1 [116 kB]
-Fetched 6,359 kB in 13s (475 kB/s)
+Fetched 6,359 kB in 1min 28s (72.3 kB/s)
 Selecting previously unselected package cmake-data.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 155316 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 155364 files and directories currently installed.)
 Preparing to unpack .../00-cmake-data_3.10.2-1ubuntu2_all.deb ...
 Unpacking cmake-data (3.10.2-1ubuntu2) ...
 Selecting previously unselected package libjsoncpp1:amd64.
@@ -3780,8 +3795,7 @@ Processing triggers for libc-bin (2.27-3ubuntu1) ...
 ------------------------------------------------------------
 Installing libyang, needed for installing p4lang/PI
 start install libyang:
-Mon May 20 13:35:30 PDT 2019
-Cloning into 'libyang'...
+Mon Jun 10 14:28:42 PDT 2019
 Note: checking out 'v0.16-r1'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -3949,12 +3963,11 @@ Install the project...
 -- Installing: /usr/local/lib/libyang/user_types/user_date_and_time.so
 -- Set runtime path of "/usr/local/lib/libyang/user_types/user_date_and_time.so" to ""
 end install libyang:
-Mon May 20 13:35:54 PDT 2019
+Mon Jun 10 14:28:52 PDT 2019
 ------------------------------------------------------------
 Installing sysrepo, needed for installing p4lang/PI
 start install sysrepo:
-Mon May 20 13:35:54 PDT 2019
-Cloning into 'sysrepo'...
+Mon Jun 10 14:28:52 PDT 2019
 Note: checking out 'v0.7.5'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -4232,11 +4245,11 @@ Install the project...
 -- Installing: /usr/local/include/sysrepo-cpp/Internal.h
 -- Installing: /usr/local/lib/pkgconfig/libSysrepo-cpp.pc
 end install sysrepo:
-Mon May 20 13:36:37 PDT 2019
+Mon Jun 10 14:29:25 PDT 2019
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Mon May 20 13:36:37 PDT 2019
+Mon Jun 10 14:29:25 PDT 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -4267,7 +4280,7 @@ The following NEW packages will be installed:
   libboost-system-dev libboost-system1.65-dev libboost-thread-dev
   libboost-thread1.65-dev libboost1.65-dev libjudy-dev libjudydebian1
   libreadline-dev libtinfo-dev libtool-bin valgrind
-0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 19 newly installed, 0 to remove and 34 not upgraded.
 Need to get 22.4 MB of archives.
 After this operation, 199 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libboost1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [7,218 kB]
@@ -4289,9 +4302,9 @@ Get:16 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtinfo-de
 Get:17 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libreadline-dev amd64 7.0-3 [133 kB]
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtool-bin amd64 2.4.6-2 [79.5 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 valgrind amd64 1:3.13.0-2ubuntu2.1 [14.3 MB]
-Fetched 22.4 MB in 31s (717 kB/s)
+Fetched 22.4 MB in 1min 53s (197 kB/s)
 Selecting previously unselected package libboost1.65-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157906 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157954 files and directories currently installed.)
 Preparing to unpack .../00-libboost1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-atomic1.65.1:amd64.
@@ -4383,14 +4396,44 @@ Cloning into '/home/jafinger/PI/third_party/googletest'...
 Submodule path 'proto/openconfig/gnmi': checked out '9c8d9e965b3e854107ea02c12ab11b70717456f2'
 Submodule path 'proto/openconfig/public': checked out '1040d11c089c74084c64c234bee3691ec70e8a9f'
 Submodule path 'proto/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
-Submodule path 'third_party/googletest': checked out 'ecd530865cefdfa7dea58e84f6aa1b548950363d'
-commit 08eca6fa6a715426f8dcbb32cf2876453e3d83e2
+Submodule path 'third_party/googletest': checked out 'f5edb4f542e155c75bc4b516f227911d99ec167c'
+commit 8b68433807622a409abd6f51a9b8d35b124bade0
 Author: Antonin Bas <antonin@barefootnetworks.com>
-Date:   Tue May 14 14:44:47 2019 -0700
+Date:   Fri May 24 11:02:16 2019 -0700
 
-    Fix AccessArbitration to lock action profile for indirect tables
+    More efficient entry reads and better default entry support in DeviceMgr
     
-    And remove ActionProfMgr lock.
+     * ability to read a single match entry through PI instead of always
+       having to read the entire table
+     * ability to read a single member / group instead of always having to
+       read all members + all groups
+     * ability to read default entry
+     * ability to configure default resources for default entry
+    
+    Fixes #399
+    Fixes #400
+    Fixes #401
+    
+    New PI functions:
+     * pi_table_default_action_get_handle to retrieve the entry handle of
+       the default entry; we assume this handle always exists (one
+       pi_update_device_start returns) and never changes (for a given table)
+       during the lifetime of the P4 forwarding pipeline config.
+     * pi_table_entries_fetch_one to read a single match entry (from handle)
+     * pi_table_entries_fetch_wkey to read a single match entry (from match
+       key)
+     * pi_act_prof_mbr_fetch to retrieve a single member
+     * pi_act_prof_grp_fetch to retrieve a single group
+    
+    We are currently not assuming that PI table functions, which take the
+    entry handle (e.g. pi_table_entries_fetch_one) or the match key
+    (e.g. pi_table_entries_fetch_wkey) as a parameter, work for the default
+    entry (when passing NULL as the match key or the default handle as the
+    entry handle), but that may change in the future (and we may deprecate
+    the current PI functions which specifically exist for the default
+    entry). However, read / write methods for direct resources'
+    configuration are assumed to work when called with the default entry
+    handle.
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
@@ -4434,7 +4477,7 @@ configure.ac:12: installing './config.sub'
 configure.ac:7: installing './install-sh'
 configure.ac:7: installing './missing'
 Makefile.am: installing './depcomp'
-Makefile.am:154: installing './py-compile'
+Makefile.am:165: installing './py-compile'
 parallel-tests: installing './test-driver'
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
@@ -4445,8 +4488,8 @@ libtoolize: copying file 'm4/ltsugar.m4'
 libtoolize: copying file 'm4/ltversion.m4'
 libtoolize: copying file 'm4/lt~obsolete.m4'
 configure.ac:10: installing './compile'
-configure.ac:85: installing './config.guess'
-configure.ac:85: installing './config.sub'
+configure.ac:91: installing './config.guess'
+configure.ac:91: installing './config.sub'
 configure.ac:7: installing './install-sh'
 configure.ac:7: installing './missing'
 CLI/Makefile.am: installing './depcomp'
@@ -4476,6 +4519,7 @@ checking for g++... g++
 checking whether we are using the GNU C++ compiler... yes
 checking whether g++ accepts -g... yes
 checking dependency style of g++... gcc3
+checking whether g++ supports C++11 features by default... yes
 checking for a Python interpreter with version >= 2.7... python2
 checking for python2... /usr/bin/python2
 checking for python2 version... 2.7
@@ -5540,12 +5584,17 @@ depbase=`echo src/idle_timeout_buffer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -pthread -Wall -Wextra -g -O2 -MT src/idle_timeout_buffer.lo -MD -MP -MF src/.deps/idle_timeout_buffer.Tpo -c src/idle_timeout_buffer.cpp  -fPIC -DPIC -o src/.libs/idle_timeout_buffer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -pthread -Wall -Wextra -g -O2 -MT src/idle_timeout_buffer.lo -MD -MP -MF src/.deps/idle_timeout_buffer.Tpo -c src/idle_timeout_buffer.cpp -o src/idle_timeout_buffer.o >/dev/null 2>&1
-/bin/bash ../libtool  --tag=CXX   --mode=link g++ -pthread -Wall -Wextra -g -O2   -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/access_arbitration.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/match_key_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo src/digest_mgr.lo src/idle_timeout_buffer.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang 
-libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o  src/.libs/device_mgr.o src/.libs/access_arbitration.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/match_key_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o src/.libs/digest_mgr.o src/.libs/idle_timeout_buffer.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -Wl,-rpath -Wl,/home/jafinger/PI/frontends_extra/cpp/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/p4info/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/.libs -Wl,-rpath -Wl,/home/jafinger/PI/src/.libs ../../frontends_extra/cpp/.libs/libpifecpp.so ../p4info/.libs/libpiconvertproto.so ../.libs/libpiprotobuf.so ../../src/.libs/libpip4info.so -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
+depbase=`echo src/watch_port_enforcer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I..  -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party  -pthread -Wall -Wextra -g -O2 -MT src/watch_port_enforcer.lo -MD -MP -MF $depbase.Tpo -c -o src/watch_port_enforcer.lo src/watch_port_enforcer.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -pthread -Wall -Wextra -g -O2 -MT src/watch_port_enforcer.lo -MD -MP -MF src/.deps/watch_port_enforcer.Tpo -c src/watch_port_enforcer.cpp  -fPIC -DPIC -o src/.libs/watch_port_enforcer.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../../include -I../cpp_out -I../../frontends_extra/cpp -I.. -I../p4info -I../third_party -pthread -Wall -Wextra -g -O2 -MT src/watch_port_enforcer.lo -MD -MP -MF src/.deps/watch_port_enforcer.Tpo -c src/watch_port_enforcer.cpp -o src/watch_port_enforcer.o >/dev/null 2>&1
+/bin/bash ../libtool  --tag=CXX   --mode=link g++ -pthread -Wall -Wextra -g -O2   -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/access_arbitration.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/match_key_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo src/digest_mgr.lo src/idle_timeout_buffer.lo src/watch_port_enforcer.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang 
+libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o  src/.libs/device_mgr.o src/.libs/access_arbitration.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/match_key_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o src/.libs/digest_mgr.o src/.libs/idle_timeout_buffer.o src/.libs/watch_port_enforcer.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -Wl,-rpath -Wl,/home/jafinger/PI/frontends_extra/cpp/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/p4info/.libs -Wl,-rpath -Wl,/home/jafinger/PI/proto/.libs -Wl,-rpath -Wl,/home/jafinger/PI/src/.libs ../../frontends_extra/cpp/.libs/libpifecpp.so ../p4info/.libs/libpiconvertproto.so ../.libs/libpiprotobuf.so ../../src/.libs/libpip4info.so -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
 libtool: link: (cd ".libs" && rm -f "libpifeproto.so.0" && ln -s "libpifeproto.so.0.0.0" "libpifeproto.so.0")
 libtool: link: (cd ".libs" && rm -f "libpifeproto.so" && ln -s "libpifeproto.so.0.0.0" "libpifeproto.so")
 libtool: link: (cd .libs/libpifeproto.lax/libfmt.a && ar x "/home/jafinger/PI/proto/frontend/../third_party/.libs/libfmt.a")
-libtool: link: ar cru .libs/libpifeproto.a  src/device_mgr.o src/access_arbitration.o src/action_prof_mgr.o src/table_info_store.o src/action_helpers.o src/match_key_helpers.o src/packet_io_mgr.o src/common.o src/logging.o src/pre_mc_mgr.o src/pre_clone_mgr.o src/digest_mgr.o src/idle_timeout_buffer.o  .libs/libpifeproto.lax/libfmt.a/_assert.o .libs/libpifeproto.lax/libfmt.a/format.o .libs/libpifeproto.lax/libfmt.a/ostream.o .libs/libpifeproto.lax/libfmt.a/posix.o .libs/libpifeproto.lax/libfmt.a/printf.o 
+libtool: link: ar cru .libs/libpifeproto.a  src/device_mgr.o src/access_arbitration.o src/action_prof_mgr.o src/table_info_store.o src/action_helpers.o src/match_key_helpers.o src/packet_io_mgr.o src/common.o src/logging.o src/pre_mc_mgr.o src/pre_clone_mgr.o src/digest_mgr.o src/idle_timeout_buffer.o src/watch_port_enforcer.o  .libs/libpifeproto.lax/libfmt.a/_assert.o .libs/libpifeproto.lax/libfmt.a/format.o .libs/libpifeproto.lax/libfmt.a/ostream.o .libs/libpifeproto.lax/libfmt.a/posix.o .libs/libpifeproto.lax/libfmt.a/printf.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libpifeproto.a
 libtool: link: rm -fr .libs/libpifeproto.lax
@@ -5915,11 +5964,11 @@ __init__.py
 Byte-compiling python modules (optimized versions) ...
 __init__.py
  /bin/mkdir -p '/usr/local/lib/python2.7/dist-packages/google/rpc'
- /usr/bin/install -c -m 644 py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py '/usr/local/lib/python2.7/dist-packages/google/rpc'
+ /usr/bin/install -c -m 644 py_out/google/rpc/code_pb2.py py_out/google/rpc/code_pb2_grpc.py py_out/google/rpc/status_pb2.py py_out/google/rpc/status_pb2_grpc.py py_out/google/rpc/__init__.py '/usr/local/lib/python2.7/dist-packages/google/rpc'
 Byte-compiling python modules...
-code_pb2.pystatus_pb2.py__init__.py
+code_pb2.pycode_pb2_grpc.pystatus_pb2.pystatus_pb2_grpc.py__init__.py
 Byte-compiling python modules (optimized versions) ...
-code_pb2.pystatus_pb2.py__init__.py
+code_pb2.pycode_pb2_grpc.pystatus_pb2.pystatus_pb2_grpc.py__init__.py
  /bin/mkdir -p '/usr/local/include/gnmi/'
  /usr/bin/install -c -m 644 cpp_out/gnmi/gnmi.pb.h grpc_out/gnmi/gnmi.grpc.pb.h '/usr/local/include/gnmi/'
  /bin/mkdir -p '/usr/local/include/google/rpc/'
@@ -5937,11 +5986,11 @@ __init__.py
 Byte-compiling python modules (optimized versions) ...
 __init__.py
  /bin/mkdir -p '/usr/local/lib/python2.7/dist-packages/p4/config/v1'
- /usr/bin/install -c -m 644 py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/__init__.py '/usr/local/lib/python2.7/dist-packages/p4/config/v1'
+ /usr/bin/install -c -m 644 py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4info_pb2_grpc.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/p4types_pb2_grpc.py py_out/p4/config/v1/__init__.py '/usr/local/lib/python2.7/dist-packages/p4/config/v1'
 Byte-compiling python modules...
-p4info_pb2.pyp4types_pb2.py__init__.py
+p4info_pb2.pyp4info_pb2_grpc.pyp4types_pb2.pyp4types_pb2_grpc.py__init__.py
 Byte-compiling python modules (optimized versions) ...
-p4info_pb2.pyp4types_pb2.py__init__.py
+p4info_pb2.pyp4info_pb2_grpc.pyp4types_pb2.pyp4types_pb2_grpc.py__init__.py
  /bin/mkdir -p '/usr/local/lib/python2.7/dist-packages/p4'
  /usr/bin/install -c -m 644 py_out/p4/__init__.py '/usr/local/lib/python2.7/dist-packages/p4'
 Byte-compiling python modules...
@@ -5949,17 +5998,17 @@ __init__.py
 Byte-compiling python modules (optimized versions) ...
 __init__.py
  /bin/mkdir -p '/usr/local/lib/python2.7/dist-packages/p4/tmp'
- /usr/bin/install -c -m 644 py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py '/usr/local/lib/python2.7/dist-packages/p4/tmp'
+ /usr/bin/install -c -m 644 py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/p4config_pb2_grpc.py py_out/p4/tmp/__init__.py '/usr/local/lib/python2.7/dist-packages/p4/tmp'
 Byte-compiling python modules...
-p4config_pb2.py__init__.py
+p4config_pb2.pyp4config_pb2_grpc.py__init__.py
 Byte-compiling python modules (optimized versions) ...
-p4config_pb2.py__init__.py
+p4config_pb2.pyp4config_pb2_grpc.py__init__.py
  /bin/mkdir -p '/usr/local/lib/python2.7/dist-packages/p4/v1'
- /usr/bin/install -c -m 644 py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/p4runtime_pb2_grpc.py py_out/p4/v1/__init__.py '/usr/local/lib/python2.7/dist-packages/p4/v1'
+ /usr/bin/install -c -m 644 py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4data_pb2_grpc.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/p4runtime_pb2_grpc.py py_out/p4/v1/__init__.py '/usr/local/lib/python2.7/dist-packages/p4/v1'
 Byte-compiling python modules...
-p4data_pb2.pyp4runtime_pb2.pyp4runtime_pb2_grpc.py__init__.py
+p4data_pb2.pyp4data_pb2_grpc.pyp4runtime_pb2.pyp4runtime_pb2_grpc.py__init__.py
 Byte-compiling python modules (optimized versions) ...
-p4data_pb2.pyp4runtime_pb2.pyp4runtime_pb2_grpc.py__init__.py
+p4data_pb2.pyp4data_pb2_grpc.pyp4runtime_pb2.pyp4runtime_pb2_grpc.py__init__.py
 make[4]: Leaving directory '/home/jafinger/PI/proto'
 make[3]: Leaving directory '/home/jafinger/PI/proto'
 Making install in third_party
@@ -6017,8 +6066,8 @@ make[4]: Entering directory '/home/jafinger/PI/proto/frontend'
  /bin/mkdir -p '/usr/local/lib'
  /bin/bash ../libtool   --mode=install /usr/bin/install -c   libpifeproto.la '/usr/local/lib'
 libtool: warning: relinking 'libpifeproto.la'
-libtool: install: (cd /home/jafinger/PI/proto/frontend; /bin/bash "/home/jafinger/PI/proto/libtool"  --tag CXX --mode=relink g++ -pthread -Wall -Wextra -g -O2 -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/access_arbitration.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/match_key_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo src/digest_mgr.lo src/idle_timeout_buffer.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang )
-libtool: relink: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o  src/.libs/device_mgr.o src/.libs/access_arbitration.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/match_key_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o src/.libs/digest_mgr.o src/.libs/idle_timeout_buffer.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -L/usr/local/lib -lpifecpp -lpiconvertproto -lpiprotobuf -lpip4info -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
+libtool: install: (cd /home/jafinger/PI/proto/frontend; /bin/bash "/home/jafinger/PI/proto/libtool"  --tag CXX --mode=relink g++ -pthread -Wall -Wextra -g -O2 -o libpifeproto.la -rpath /usr/local/lib src/device_mgr.lo src/access_arbitration.lo src/action_prof_mgr.lo src/table_info_store.lo src/action_helpers.lo src/match_key_helpers.lo src/packet_io_mgr.lo src/common.lo src/logging.lo src/pre_mc_mgr.lo src/pre_clone_mgr.lo src/digest_mgr.lo src/idle_timeout_buffer.lo src/watch_port_enforcer.lo ../../frontends_extra/cpp/libpifecpp.la ../p4info/libpiconvertproto.la ../libpiprotobuf.la ../../src/libpip4info.la ../third_party/libfmt.la -lboost_thread -lsysrepo -lyang )
+libtool: relink: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o  src/.libs/device_mgr.o src/.libs/access_arbitration.o src/.libs/action_prof_mgr.o src/.libs/table_info_store.o src/.libs/action_helpers.o src/.libs/match_key_helpers.o src/.libs/packet_io_mgr.o src/.libs/common.o src/.libs/logging.o src/.libs/pre_mc_mgr.o src/.libs/pre_clone_mgr.o src/.libs/digest_mgr.o src/.libs/idle_timeout_buffer.o src/.libs/watch_port_enforcer.o  -Wl,--whole-archive ../third_party/.libs/libfmt.a -Wl,--no-whole-archive  -L/usr/local/lib -lpifecpp -lpiconvertproto -lpiprotobuf -lpip4info -lboost_thread -lsysrepo -lyang -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o  -pthread -g -O2   -pthread -Wl,-soname -Wl,libpifeproto.so.0 -o .libs/libpifeproto.so.0.0.0
 libtool: install: /usr/bin/install -c .libs/libpifeproto.so.0.0.0T /usr/local/lib/libpifeproto.so.0.0.0
 libtool: install: (cd /usr/local/lib && { ln -s -f libpifeproto.so.0.0.0 libpifeproto.so.0 || { rm -f libpifeproto.so.0 && ln -s libpifeproto.so.0.0.0 libpifeproto.so.0; }; })
 libtool: install: (cd /usr/local/lib && { ln -s -f libpifeproto.so.0.0.0 libpifeproto.so || { rm -f libpifeproto.so && ln -s libpifeproto.so.0.0.0 libpifeproto.so; }; })
@@ -6271,7 +6320,7 @@ Making clean in proto
 make[1]: Entering directory '/home/jafinger/PI/proto'
 Making clean in .
 make[2]: Entering directory '/home/jafinger/PI/proto'
-test -z "cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/p4runtime_pb2_grpc.py py_out/p4/v1/__init__.py py_out/p4/config/__init__.py py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py py_out/gnmi/gnmi_pb2_grpc.py proto_files.ts" || rm -f cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/p4runtime_pb2_grpc.py py_out/p4/v1/__init__.py py_out/p4/config/__init__.py py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/status_pb2.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py py_out/gnmi/gnmi_pb2_grpc.py proto_files.ts
+test -z "cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4data_pb2_grpc.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/p4runtime_pb2_grpc.py py_out/p4/v1/__init__.py py_out/p4/config/__init__.py py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4info_pb2_grpc.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/p4types_pb2_grpc.py py_out/p4/config/v1/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/p4config_pb2_grpc.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/code_pb2_grpc.py py_out/google/rpc/status_pb2.py py_out/google/rpc/status_pb2_grpc.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py py_out/gnmi/gnmi_pb2_grpc.py proto_files.ts" || rm -f cpp_out/p4/v1/p4data.pb.cc cpp_out/p4/v1/p4data.pb.h cpp_out/p4/v1/p4runtime.pb.cc cpp_out/p4/v1/p4runtime.pb.h cpp_out/p4/config/v1/p4info.pb.cc cpp_out/p4/config/v1/p4info.pb.h cpp_out/p4/config/v1/p4types.pb.cc cpp_out/p4/config/v1/p4types.pb.h cpp_out/google/rpc/status.pb.cc cpp_out/google/rpc/status.pb.h cpp_out/google/rpc/code.pb.cc cpp_out/google/rpc/code.pb.h cpp_out/p4/tmp/p4config.pb.cc cpp_out/p4/tmp/p4config.pb.h cpp_out/gnmi/gnmi.pb.cc cpp_out/gnmi/gnmi.pb.h grpc_out/p4/v1/p4data.grpc.pb.cc grpc_out/p4/v1/p4data.grpc.pb.h grpc_out/p4/v1/p4runtime.grpc.pb.cc grpc_out/p4/v1/p4runtime.grpc.pb.h grpc_out/p4/config/v1/p4info.grpc.pb.cc grpc_out/p4/config/v1/p4info.grpc.pb.h grpc_out/p4/config/v1/p4types.grpc.pb.cc grpc_out/p4/config/v1/p4types.grpc.pb.h grpc_out/google/rpc/status.grpc.pb.cc grpc_out/google/rpc/status.grpc.pb.h grpc_out/google/rpc/code.grpc.pb.cc grpc_out/google/rpc/code.grpc.pb.h grpc_out/p4/tmp/p4config.grpc.pb.cc grpc_out/p4/tmp/p4config.grpc.pb.h grpc_out/gnmi/gnmi.grpc.pb.cc grpc_out/gnmi/gnmi.grpc.pb.h py_out/p4/__init__.py py_out/p4/v1/p4data_pb2.py py_out/p4/v1/p4data_pb2_grpc.py py_out/p4/v1/p4runtime_pb2.py py_out/p4/v1/p4runtime_pb2_grpc.py py_out/p4/v1/__init__.py py_out/p4/config/__init__.py py_out/p4/config/v1/p4info_pb2.py py_out/p4/config/v1/p4info_pb2_grpc.py py_out/p4/config/v1/p4types_pb2.py py_out/p4/config/v1/p4types_pb2_grpc.py py_out/p4/config/v1/__init__.py py_out/p4/tmp/p4config_pb2.py py_out/p4/tmp/p4config_pb2_grpc.py py_out/p4/tmp/__init__.py py_out/google/__init__.py py_out/google/rpc/code_pb2.py py_out/google/rpc/code_pb2_grpc.py py_out/google/rpc/status_pb2.py py_out/google/rpc/status_pb2_grpc.py py_out/google/rpc/__init__.py py_out/gnmi/__init__.py py_out/gnmi/gnmi_pb2.py py_out/gnmi/gnmi_pb2_grpc.py proto_files.ts
 test -z "libpiprotobuf.la libpiprotogrpc.la" || rm -f libpiprotobuf.la libpiprotogrpc.la
 rm -f ./so_locations
 rm -rf .libs _libs
@@ -6352,12 +6401,12 @@ rm -f *.lo
 make[2]: Leaving directory '/home/jafinger/PI/proto/server'
 Making clean in tests
 make[2]: Entering directory '/home/jafinger/PI/proto/tests'
- rm -f test_p4info_convert test_proto_fe test_proto_fe_digest test_proto_fe_packet_io test_proto_fe_set_pipeline_config test_server_no_pipeline_config test_proto_fe_access_arbitration test_server_gnmi test_server_arbitration test_pi_server test_task_queue
+ rm -f test_p4info_convert test_proto_fe test_proto_fe_digest test_proto_fe_packet_io test_proto_fe_set_pipeline_config test_server_no_pipeline_config test_proto_fe_access_arbitration test_proto_fe_watch_port_enforcer test_server_gnmi test_server_arbitration test_pi_server test_task_queue
 rm -rf .libs _libs
 rm -f *.o
 rm -f server/*.o
-test -z "test_p4info_convert.log test_proto_fe.log test_proto_fe_digest.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_proto_fe_access_arbitration.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log test_task_queue.log" || rm -f test_p4info_convert.log test_proto_fe.log test_proto_fe_digest.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_proto_fe_access_arbitration.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log test_task_queue.log
-test -z "test_p4info_convert.trs test_proto_fe.trs test_proto_fe_digest.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_proto_fe_access_arbitration.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs test_task_queue.trs" || rm -f test_p4info_convert.trs test_proto_fe.trs test_proto_fe_digest.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_proto_fe_access_arbitration.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs test_task_queue.trs
+test -z "test_p4info_convert.log test_proto_fe.log test_proto_fe_digest.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_proto_fe_access_arbitration.log test_proto_fe_watch_port_enforcer.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log test_task_queue.log" || rm -f test_p4info_convert.log test_proto_fe.log test_proto_fe_digest.log test_proto_fe_packet_io.log test_proto_fe_set_pipeline_config.log test_proto_fe_access_arbitration.log test_proto_fe_watch_port_enforcer.log test_server_no_pipeline_config.log test_server_gnmi.log test_server_arbitration.log test_pi_server.log test_task_queue.log
+test -z "test_p4info_convert.trs test_proto_fe.trs test_proto_fe_digest.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_proto_fe_access_arbitration.trs test_proto_fe_watch_port_enforcer.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs test_task_queue.trs" || rm -f test_p4info_convert.trs test_proto_fe.trs test_proto_fe_digest.trs test_proto_fe_packet_io.trs test_proto_fe_set_pipeline_config.trs test_proto_fe_access_arbitration.trs test_proto_fe_watch_port_enforcer.trs test_server_no_pipeline_config.trs test_server_gnmi.trs test_server_arbitration.trs test_pi_server.trs test_task_queue.trs
 test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[2]: Leaving directory '/home/jafinger/PI/proto/tests'
@@ -6368,23 +6417,33 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/jafinger/PI'
 end install PI:
-Mon May 20 13:43:37 PDT 2019
+Mon Jun 10 14:38:14 PDT 2019
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Mon May 20 13:43:37 PDT 2019
-Cloning into 'behavioral-model'...
-commit e90ae599cae840dcbca27aad4e393fdaed780b2b
+Mon Jun 10 14:38:14 PDT 2019
+Already up to date.
+commit 6f700badd1c5040d04dec24f446982ad63fa64c9
 Author: Antonin Bas <antonin@barefootnetworks.com>
-Date:   Wed May 8 19:13:54 2019 -0700
+Date:   Mon Jun 10 11:06:35 2019 -0700
 
-    Make code build with recent Thrift versions (post 0.12.1)
+    Make exit a core primitive
     
-    Starting with version 0.13.0, Thrift removes thrift/stdcxx.h and
-    defaults to std::shared_ptr unconditionally. We handle this case by
-    reading the Thrift version from thrift/config.h in configure.ac.
+    "exit" is a P4_16 built-in statement and should therefore be implemented
+    in a bmv2 target-agnostic way as much as possible. We make exit a bmv2
+    core primitive, and remove the exit definition from simple_switch +
+    psa_switch.
     
-    Fixes #734
+    exit is therefore added to the JSON_format document, and the JSON
+    version number is bumped up to 2.21.
+    
+    Note that at the moment targets are still required to call
+    `Packet::reset_exit` when the pipeline exits to reset the flag. I feel
+    like this could be done just before returning from `Pipeline::apply`,
+    but there may be some historical reason why I did not do it that way (so
+    to be safe I did not change anything...).
+    
+    Fixes #790
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -6428,7 +6487,7 @@ The following NEW packages will be installed:
   python-idna python-ipaddress python-keyring python-keyrings.alt python-pip
   python-pip-whl python-pkg-resources python-secretstorage python-setuptools
   python-six python-wheel python-xdg python2.7-dev
-0 upgraded, 51 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 51 newly installed, 0 to remove and 34 not upgraded.
 Need to get 36.4 MB of archives.
 After this operation, 76.8 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 flex amd64 2.6.4-6 [316 kB]
@@ -6454,12 +6513,14 @@ Get:20 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgmpxx4ldbl amd64
 Get:21 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgmp-dev amd64 2:6.1.2+dfsg-2 [316 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcap0.8-dev amd64 1.8.1-6ubuntu1 [217 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcap-dev amd64 1.8.1-6ubuntu1 [3,480 B]
-Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-dev amd64 2.7.15~rc1-1ubuntu0.1 [28.3 MB]
+Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-dev amd64 2.7.15-4ubuntu4~18.04 [28.3 MB]
+Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-dev amd64 2.7.15-4ubuntu4~18.04 [28.3 MB]
+Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-dev amd64 2.7.15-4ubuntu4~18.04 [28.3 MB]
 Get:25 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-dev amd64 2.7.15~rc1-1 [7,684 B]
 Get:26 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-all-dev amd64 2.7.15~rc1-1 [1,092 B]
 Get:27 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libssl1.0-dev amd64 1.0.2n-1ubuntu5.3 [1,365 kB]
 Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-all amd64 2.7.15~rc1-1 [1,076 B]
-Get:29 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7-dev amd64 2.7.15~rc1-1ubuntu0.1 [286 kB]
+Get:29 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7-dev amd64 2.7.15-4ubuntu4~18.04 [278 kB]
 Get:30 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-dev amd64 2.7.15~rc1-1 [1,256 B]
 Get:31 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-all-dev amd64 2.7.15~rc1-1 [1,100 B]
 Get:32 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-asn1crypto all 0.24.0-1 [72.7 kB]
@@ -6469,7 +6530,7 @@ Get:35 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-enum34 all 1
 Get:36 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-idna all 2.6-1 [32.4 kB]
 Get:37 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ipaddress all 1.0.17-1 [18.2 kB]
 Get:38 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-six all 1.11.0-2 [11.3 kB]
-Get:39 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python-cryptography amd64 2.1.4-1ubuntu1.2 [221 kB]
+Get:39 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python-cryptography amd64 2.1.4-1ubuntu1.3 [221 kB]
 Get:40 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-dbus amd64 1.2.6-1 [90.2 kB]
 Get:41 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python-gi amd64 3.26.1-2ubuntu1 [197 kB]
 Get:42 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-secretstorage all 2.3.1-2 [11.8 kB]
@@ -6482,9 +6543,9 @@ Get:48 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-setuptools a
 Get:49 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-wheel all 0.30.0-0.2 [36.4 kB]
 Get:50 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-xdg all 0.25-4ubuntu1 [31.3 kB]
 Get:51 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libffi-dev amd64 3.2.1-8 [156 kB]
-Fetched 36.4 MB in 49s (749 kB/s)
+Fetched 27.9 MB in 7min 20s (63.4 kB/s)
 Selecting previously unselected package flex.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 172024 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 172072 files and directories currently installed.)
 Preparing to unpack .../00-flex_2.6.4-6_amd64.deb ...
 Unpacking flex (2.6.4-6) ...
 Selecting previously unselected package libbison-dev:amd64.
@@ -6554,8 +6615,8 @@ Selecting previously unselected package libpcap-dev:amd64.
 Preparing to unpack .../22-libpcap-dev_1.8.1-6ubuntu1_amd64.deb ...
 Unpacking libpcap-dev:amd64 (1.8.1-6ubuntu1) ...
 Selecting previously unselected package libpython2.7-dev:amd64.
-Preparing to unpack .../23-libpython2.7-dev_2.7.15~rc1-1ubuntu0.1_amd64.deb ...
-Unpacking libpython2.7-dev:amd64 (2.7.15~rc1-1ubuntu0.1) ...
+Preparing to unpack .../23-libpython2.7-dev_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking libpython2.7-dev:amd64 (2.7.15-4ubuntu4~18.04) ...
 Selecting previously unselected package libpython-dev:amd64.
 Preparing to unpack .../24-libpython-dev_2.7.15~rc1-1_amd64.deb ...
 Unpacking libpython-dev:amd64 (2.7.15~rc1-1) ...
@@ -6569,8 +6630,8 @@ Selecting previously unselected package python-all.
 Preparing to unpack .../27-python-all_2.7.15~rc1-1_amd64.deb ...
 Unpacking python-all (2.7.15~rc1-1) ...
 Selecting previously unselected package python2.7-dev.
-Preparing to unpack .../28-python2.7-dev_2.7.15~rc1-1ubuntu0.1_amd64.deb ...
-Unpacking python2.7-dev (2.7.15~rc1-1ubuntu0.1) ...
+Preparing to unpack .../28-python2.7-dev_2.7.15-4ubuntu4~18.04_amd64.deb ...
+Unpacking python2.7-dev (2.7.15-4ubuntu4~18.04) ...
 Selecting previously unselected package python-dev.
 Preparing to unpack .../29-python-dev_2.7.15~rc1-1_amd64.deb ...
 Unpacking python-dev (2.7.15~rc1-1) ...
@@ -6599,8 +6660,8 @@ Selecting previously unselected package python-six.
 Preparing to unpack .../37-python-six_1.11.0-2_all.deb ...
 Unpacking python-six (1.11.0-2) ...
 Selecting previously unselected package python-cryptography.
-Preparing to unpack .../38-python-cryptography_2.1.4-1ubuntu1.2_amd64.deb ...
-Unpacking python-cryptography (2.1.4-1ubuntu1.2) ...
+Preparing to unpack .../38-python-cryptography_2.1.4-1ubuntu1.3_amd64.deb ...
+Unpacking python-cryptography (2.1.4-1ubuntu1.3) ...
 Selecting previously unselected package python-dbus.
 Preparing to unpack .../39-python-dbus_1.2.6-1_amd64.deb ...
 Unpacking python-dbus (1.2.6-1) ...
@@ -6662,7 +6723,7 @@ Setting up libfl2:amd64 (2.6.4-6) ...
 Setting up libexpat1-dev:amd64 (2.2.5-3) ...
 Setting up libpcap-dev:amd64 (1.8.1-6ubuntu1) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
-Setting up libpython2.7-dev:amd64 (2.7.15~rc1-1ubuntu0.1) ...
+Setting up libpython2.7-dev:amd64 (2.7.15-4ubuntu4~18.04) ...
 Setting up bison (2:3.0.4.dfsg-1build1) ...
 update-alternatives: using /usr/bin/bison.yacc to provide /usr/bin/yacc (yacc) in auto mode
 Setting up libboost-program-options1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
@@ -6671,7 +6732,7 @@ Setting up python-dbus (1.2.6-1) ...
 Setting up python-ipaddress (1.0.17-1) ...
 Setting up libboost-test1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up python-pip (9.0.1-2.3~ubuntu1) ...
-Setting up python2.7-dev (2.7.15~rc1-1ubuntu0.1) ...
+Setting up python2.7-dev (2.7.15-4ubuntu4~18.04) ...
 Setting up python-all (2.7.15~rc1-1) ...
 Setting up python-xdg (0.25-4ubuntu1) ...
 Setting up libevent-extra-2.1-6:amd64 (2.1.8-stable-4build1) ...
@@ -6687,179 +6748,179 @@ Setting up python-keyrings.alt (3.0-1) ...
 Setting up libfl-dev:amd64 (2.6.4-6) ...
 Setting up libevent-dev (2.1.8-stable-4build1) ...
 Setting up python-all-dev (2.7.15~rc1-1) ...
-Setting up python-cryptography (2.1.4-1ubuntu1.2) ...
+Setting up python-cryptography (2.1.4-1ubuntu1.3) ...
 Setting up libboost-test-dev:amd64 (1.65.1.0ubuntu1) ...
 Setting up libboost-program-options-dev:amd64 (1.65.1.0ubuntu1) ...
 Setting up python-secretstorage (2.3.1-2) ...
 Setting up python-keyring (10.6.0-1) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
---2019-05-20 13:44:53--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
+--2019-06-10 14:45:51--  http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz
 Resolving archive.apache.org (archive.apache.org)... 163.172.17.199
 Connecting to archive.apache.org (archive.apache.org)|163.172.17.199|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 8053046 (7.7M) [application/x-gzip]
 Saving to: ‘thrift-0.9.2.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  0%  221K 35s
-    50K .......... .......... .......... .......... ..........  1%  423K 27s
-   100K .......... .......... .......... .......... ..........  1%  426K 24s
-   150K .......... .......... .......... .......... ..........  2%  488K 22s
-   200K .......... .......... .......... .......... ..........  3%  607K 20s
-   250K .......... .......... .......... .......... ..........  3%  654K 18s
-   300K .......... .......... .......... .......... ..........  4%  627K 17s
-   350K .......... .......... .......... .......... ..........  5%  826K 16s
-   400K .......... .......... .......... .......... ..........  5% 1.12M 15s
-   450K .......... .......... .......... .......... ..........  6%  900K 14s
-   500K .......... .......... .......... .......... ..........  6%  957K 14s
-   550K .......... .......... .......... .......... ..........  7% 1.13M 13s
-   600K .......... .......... .......... .......... ..........  8% 1.16M 12s
-   650K .......... .......... .......... .......... ..........  8%  811K 12s
-   700K .......... .......... .......... .......... ..........  9% 1001K 11s
-   750K .......... .......... .......... .......... .......... 10%  914K 11s
-   800K .......... .......... .......... .......... .......... 10%  823K 11s
-   850K .......... .......... .......... .......... .......... 11%  672K 11s
-   900K .......... .......... .......... .......... .......... 12% 1.14M 11s
-   950K .......... .......... .......... .......... .......... 12%  739K 10s
-  1000K .......... .......... .......... .......... .......... 13% 1.06M 10s
-  1050K .......... .......... .......... .......... .......... 13%  886K 10s
-  1100K .......... .......... .......... .......... .......... 14%  883K 10s
-  1150K .......... .......... .......... .......... .......... 15%  923K 10s
-  1200K .......... .......... .......... .......... .......... 15%  738K 9s
-  1250K .......... .......... .......... .......... .......... 16%  781K 9s
-  1300K .......... .......... .......... .......... .......... 17%  792K 9s
-  1350K .......... .......... .......... .......... .......... 17%  889K 9s
-  1400K .......... .......... .......... .......... .......... 18% 1.03M 9s
-  1450K .......... .......... .......... .......... .......... 19%  853K 9s
-  1500K .......... .......... .......... .......... .......... 19%  965K 9s
-  1550K .......... .......... .......... .......... .......... 20%  829K 9s
-  1600K .......... .......... .......... .......... .......... 20% 1.10M 8s
-  1650K .......... .......... .......... .......... .......... 21%  908K 8s
-  1700K .......... .......... .......... .......... .......... 22%  907K 8s
-  1750K .......... .......... .......... .......... .......... 22%  847K 8s
-  1800K .......... .......... .......... .......... .......... 23%  872K 8s
-  1850K .......... .......... .......... .......... .......... 24%  898K 8s
-  1900K .......... .......... .......... .......... .......... 24%  872K 8s
-  1950K .......... .......... .......... .......... .......... 25%  935K 8s
-  2000K .......... .......... .......... .......... .......... 26%  993K 8s
-  2050K .......... .......... .......... .......... .......... 26%  657K 8s
-  2100K .......... .......... .......... .......... .......... 27% 1.01M 7s
-  2150K .......... .......... .......... .......... .......... 27%  593K 7s
-  2200K .......... .......... .......... .......... .......... 28% 1.01M 7s
-  2250K .......... .......... .......... .......... .......... 29%  675K 7s
-  2300K .......... .......... .......... .......... .......... 29%  919K 7s
-  2350K .......... .......... .......... .......... .......... 30%  626K 7s
-  2400K .......... .......... .......... .......... .......... 31%  867K 7s
-  2450K .......... .......... .......... .......... .......... 31%  622K 7s
-  2500K .......... .......... .......... .......... .......... 32%  633K 7s
-  2550K .......... .......... .......... .......... .......... 33%  904K 7s
-  2600K .......... .......... .......... .......... .......... 33%  737K 7s
-  2650K .......... .......... .......... .......... .......... 34%  899K 7s
-  2700K .......... .......... .......... .......... .......... 34%  834K 7s
-  2750K .......... .......... .......... .......... .......... 35%  754K 7s
-  2800K .......... .......... .......... .......... .......... 36%  754K 7s
-  2850K .......... .......... .......... .......... .......... 36%  592K 7s
-  2900K .......... .......... .......... .......... .......... 37%  894K 6s
-  2950K .......... .......... .......... .......... .......... 38%  644K 6s
-  3000K .......... .......... .......... .......... .......... 38% 1002K 6s
-  3050K .......... .......... .......... .......... .......... 39%  740K 6s
-  3100K .......... .......... .......... .......... .......... 40%  888K 6s
-  3150K .......... .......... .......... .......... .......... 40%  791K 6s
-  3200K .......... .......... .......... .......... .......... 41%  848K 6s
-  3250K .......... .......... .......... .......... .......... 41%  738K 6s
-  3300K .......... .......... .......... .......... .......... 42%  824K 6s
-  3350K .......... .......... .......... .......... .......... 43%  638K 6s
-  3400K .......... .......... .......... .......... .......... 43%  829K 6s
-  3450K .......... .......... .......... .......... .......... 44%  638K 6s
-  3500K .......... .......... .......... .......... .......... 45%  750K 6s
-  3550K .......... .......... .......... .......... .......... 45%  815K 6s
-  3600K .......... .......... .......... .......... .......... 46%  858K 6s
-  3650K .......... .......... .......... .......... .......... 47%  751K 5s
-  3700K .......... .......... .......... .......... .......... 47%  715K 5s
-  3750K .......... .......... .......... .......... .......... 48%  700K 5s
-  3800K .......... .......... .......... .......... .......... 48%  988K 5s
-  3850K .......... .......... .......... .......... .......... 49%  802K 5s
-  3900K .......... .......... .......... .......... .......... 50%  811K 5s
-  3950K .......... .......... .......... .......... .......... 50%  928K 5s
-  4000K .......... .......... .......... .......... .......... 51%  814K 5s
-  4050K .......... .......... .......... .......... .......... 52%  937K 5s
-  4100K .......... .......... .......... .......... .......... 52%  805K 5s
-  4150K .......... .......... .......... .......... .......... 53%  911K 5s
-  4200K .......... .......... .......... .......... .......... 54%  834K 5s
-  4250K .......... .......... .......... .......... .......... 54% 1.12M 5s
-  4300K .......... .......... .......... .......... .......... 55%  595K 5s
-  4350K .......... .......... .......... .......... .......... 55%  601K 5s
-  4400K .......... .......... .......... .......... .......... 56%  658K 4s
-  4450K .......... .......... .......... .......... .......... 57%  823K 4s
-  4500K .......... .......... .......... .......... .......... 57%  590K 4s
-  4550K .......... .......... .......... .......... .......... 58%  976K 4s
-  4600K .......... .......... .......... .......... .......... 59%  666K 4s
-  4650K .......... .......... .......... .......... .......... 59%  930K 4s
-  4700K .......... .......... .......... .......... .......... 60%  505K 4s
-  4750K .......... .......... .......... .......... .......... 61%  708K 4s
-  4800K .......... .......... .......... .......... .......... 61%  886K 4s
-  4850K .......... .......... .......... .......... .......... 62% 1.02M 4s
-  4900K .......... .......... .......... .......... .......... 62%  768K 4s
-  4950K .......... .......... .......... .......... .......... 63%  704K 4s
-  5000K .......... .......... .......... .......... .......... 64%  881K 4s
-  5050K .......... .......... .......... .......... .......... 64%  605K 4s
-  5100K .......... .......... .......... .......... .......... 65%  801K 4s
-  5150K .......... .......... .......... .......... .......... 66%  823K 3s
-  5200K .......... .......... .......... .......... .......... 66%  556K 3s
-  5250K .......... .......... .......... .......... .......... 67%  586K 3s
-  5300K .......... .......... .......... .......... .......... 68%  709K 3s
-  5350K .......... .......... .......... .......... .......... 68%  900K 3s
-  5400K .......... .......... .......... .......... .......... 69%  566K 3s
-  5450K .......... .......... .......... .......... .......... 69%  684K 3s
-  5500K .......... .......... .......... .......... .......... 70%  600K 3s
-  5550K .......... .......... .......... .......... .......... 71%  628K 3s
-  5600K .......... .......... .......... .......... .......... 71%  837K 3s
-  5650K .......... .......... .......... .......... .......... 72%  747K 3s
-  5700K .......... .......... .......... .......... .......... 73%  985K 3s
-  5750K .......... .......... .......... .......... .......... 73%  664K 3s
-  5800K .......... .......... .......... .......... .......... 74%  972K 3s
-  5850K .......... .......... .......... .......... .......... 75%  610K 3s
-  5900K .......... .......... .......... .......... .......... 75%  893K 3s
-  5950K .......... .......... .......... .......... .......... 76%  672K 2s
-  6000K .......... .......... .......... .......... .......... 76%  846K 2s
-  6050K .......... .......... .......... .......... .......... 77%  764K 2s
-  6100K .......... .......... .......... .......... .......... 78%  949K 2s
-  6150K .......... .......... .......... .......... .......... 78%  800K 2s
-  6200K .......... .......... .......... .......... .......... 79%  858K 2s
-  6250K .......... .......... .......... .......... .......... 80% 1.14M 2s
-  6300K .......... .......... .......... .......... .......... 80%  828K 2s
-  6350K .......... .......... .......... .......... .......... 81% 1.00M 2s
-  6400K .......... .......... .......... .......... .......... 82%  853K 2s
-  6450K .......... .......... .......... .......... .......... 82% 1.10M 2s
-  6500K .......... .......... .......... .......... .......... 83%  853K 2s
-  6550K .......... .......... .......... .......... .......... 83%  889K 2s
-  6600K .......... .......... .......... .......... .......... 84% 1.08M 2s
-  6650K .......... .......... .......... .......... .......... 85%  763K 2s
-  6700K .......... .......... .......... .......... .......... 85%  818K 1s
-  6750K .......... .......... .......... .......... .......... 86%  757K 1s
-  6800K .......... .......... .......... .......... .......... 87%  813K 1s
-  6850K .......... .......... .......... .......... .......... 87%  669K 1s
-  6900K .......... .......... .......... .......... .......... 88%  719K 1s
-  6950K .......... .......... .......... .......... .......... 89%  803K 1s
-  7000K .......... .......... .......... .......... .......... 89%  682K 1s
-  7050K .......... .......... .......... .......... .......... 90%  873K 1s
-  7100K .......... .......... .......... .......... .......... 90%  648K 1s
-  7150K .......... .......... .......... .......... .......... 91%  890K 1s
-  7200K .......... .......... .......... .......... .......... 92%  605K 1s
-  7250K .......... .......... .......... .......... .......... 92%  953K 1s
-  7300K .......... .......... .......... .......... .......... 93%  588K 1s
-  7350K .......... .......... .......... .......... .......... 94%  704K 1s
-  7400K .......... .......... .......... .......... .......... 94%  677K 1s
-  7450K .......... .......... .......... .......... .......... 95%  663K 0s
-  7500K .......... .......... .......... .......... .......... 96%  522K 0s
-  7550K .......... .......... .......... .......... .......... 96%  499K 0s
-  7600K .......... .......... .......... .......... .......... 97%  762K 0s
-  7650K .......... .......... .......... .......... .......... 97%  549K 0s
-  7700K .......... .......... .......... .......... .......... 98%  813K 0s
-  7750K .......... .......... .......... .......... .......... 99%  577K 0s
-  7800K .......... .......... .......... .......... .......... 99%  751K 0s
-  7850K .......... ....                                       100% 75.4K=11s
+     0K .......... .......... .......... .......... ..........  0% 6.09K 21m22s
+    50K .......... .......... .......... .......... ..........  1% 72.2K 11m31s
+   100K .......... .......... .......... .......... ..........  1%  376K 7m44s
+   150K .......... .......... .......... .......... ..........  2%  232K 5m54s
+   200K .......... .......... .......... .......... ..........  3%  174K 4m50s
+   250K .......... .......... .......... .......... ..........  3%  169K 4m8s
+   300K .......... .......... .......... .......... ..........  4%  152K 3m38s
+   350K .......... .......... .......... .......... ..........  5%  603K 3m11s
+   400K .......... .......... .......... .......... ..........  5% 9.36K 4m17s
+   450K .......... .......... .......... .......... ..........  6%  145K 3m55s
+   500K .......... .......... .......... .......... ..........  6%  417K 3m33s
+   550K .......... .......... .......... .......... ..........  7%  323K 3m16s
+   600K .......... .......... .......... .......... ..........  8%  219K 3m2s
+   650K .......... .......... .......... .......... ..........  8%  403K 2m49s
+   700K .......... .......... .......... .......... ..........  9%  470K 2m38s
+   750K .......... .......... .......... .......... .......... 10%  229K 2m29s
+   800K .......... .......... .......... .......... .......... 10%  359K 2m20s
+   850K .......... .......... .......... .......... .......... 11%  566K 2m12s
+   900K .......... .......... .......... .......... .......... 12%  248K 2m6s
+   950K .......... .......... .......... .......... .......... 12%  453K 2m0s
+  1000K .......... .......... .......... .......... .......... 13%  164K 1m55s
+  1050K .......... .......... .......... .......... .......... 13%  323K 1m50s
+  1100K .......... .......... .......... .......... .......... 14%  692K 1m45s
+  1150K .......... .......... .......... .......... .......... 15%  409K 1m40s
+  1200K .......... .......... .......... .......... .......... 15%  288K 97s
+  1250K .......... .......... .......... .......... .......... 16%  298K 93s
+  1300K .......... .......... .......... .......... .......... 17%  159K 90s
+  1350K .......... .......... .......... .......... .......... 17%  503K 87s
+  1400K .......... .......... .......... .......... .......... 18%  334K 84s
+  1450K .......... .......... .......... .......... .......... 19%  434K 81s
+  1500K .......... .......... .......... .......... .......... 19%  326K 78s
+  1550K .......... .......... .......... .......... .......... 20%  406K 76s
+  1600K .......... .......... .......... .......... .......... 20%  393K 73s
+  1650K .......... .......... .......... .......... .......... 21%  254K 71s
+  1700K .......... .......... .......... .......... .......... 22%  266K 69s
+  1750K .......... .......... .......... .......... .......... 22%  235K 68s
+  1800K .......... .......... .......... .......... .......... 23%  485K 66s
+  1850K .......... .......... .......... .......... .......... 24%  492K 64s
+  1900K .......... .......... .......... .......... .......... 24%  197K 62s
+  1950K .......... .......... .......... .......... .......... 25% 10.5K 74s
+  2000K .......... .......... .......... .......... .......... 26%  202K 73s
+  2050K .......... .......... .......... .......... .......... 26%  193K 71s
+  2100K .......... .......... .......... .......... .......... 27%  248K 69s
+  2150K .......... .......... .......... .......... .......... 27%  440K 67s
+  2200K .......... .......... .......... .......... .......... 28%  675K 65s
+  2250K .......... .......... .......... .......... .......... 29%  323K 64s
+  2300K .......... .......... .......... .......... .......... 29%  705K 62s
+  2350K .......... .......... .......... .......... .......... 30%  301K 61s
+  2400K .......... .......... .......... .......... .......... 31%  746K 59s
+  2450K .......... .......... .......... .......... .......... 31%  396K 58s
+  2500K .......... .......... .......... .......... .......... 32%  356K 56s
+  2550K .......... .......... .......... .......... .......... 33%  244K 55s
+  2600K .......... .......... .......... .......... .......... 33%  351K 54s
+  2650K .......... .......... .......... .......... .......... 34%  380K 52s
+  2700K .......... .......... .......... .......... .......... 34%  409K 51s
+  2750K .......... .......... .......... .......... .......... 35%  501K 50s
+  2800K .......... .......... .......... .......... .......... 36%  523K 49s
+  2850K .......... .......... .......... .......... .......... 36%  613K 48s
+  2900K .......... .......... .......... .......... .......... 37%  254K 47s
+  2950K .......... .......... .......... .......... .......... 38%  216K 46s
+  3000K .......... .......... .......... .......... .......... 38%  691K 45s
+  3050K .......... .......... .......... .......... .......... 39%  494K 44s
+  3100K .......... .......... .......... .......... .......... 40%  245K 43s
+  3150K .......... .......... .......... .......... .......... 40%  389K 42s
+  3200K .......... .......... .......... .......... .......... 41%  343K 41s
+  3250K .......... .......... .......... .......... .......... 41%  262K 40s
+  3300K .......... .......... .......... .......... .......... 42%  195K 40s
+  3350K .......... .......... .......... .......... .......... 43%  435K 39s
+  3400K .......... .......... .......... .......... .......... 43%  329K 38s
+  3450K .......... .......... .......... .......... .......... 44%  469K 37s
+  3500K .......... .......... .......... .......... .......... 45%  316K 36s
+  3550K .......... .......... .......... .......... .......... 45%  318K 36s
+  3600K .......... .......... .......... .......... .......... 46%  783K 35s
+  3650K .......... .......... .......... .......... .......... 47%  253K 34s
+  3700K .......... .......... .......... .......... .......... 47%  689K 33s
+  3750K .......... .......... .......... .......... .......... 48%  739K 33s
+  3800K .......... .......... .......... .......... .......... 48%  338K 32s
+  3850K .......... .......... .......... .......... .......... 49%  468K 31s
+  3900K .......... .......... .......... .......... .......... 50% 11.1K 35s
+  3950K .......... .......... .......... .......... .......... 50% 56.5K 35s
+  4000K .......... .......... .......... .......... .......... 51% 98.9K 34s
+  4050K .......... .......... .......... .......... .......... 52%  275K 34s
+  4100K .......... .......... .......... .......... .......... 52%  252K 33s
+  4150K .......... .......... .......... .......... .......... 53%  530K 32s
+  4200K .......... .......... .......... .......... .......... 54%  509K 32s
+  4250K .......... .......... .......... .......... .......... 54%  441K 31s
+  4300K .......... .......... .......... .......... .......... 55%  416K 30s
+  4350K .......... .......... .......... .......... .......... 55%  454K 30s
+  4400K .......... .......... .......... .......... .......... 56%  326K 29s
+  4450K .......... .......... .......... .......... .......... 57% 73.2K 29s
+  4500K .......... .......... .......... .......... .......... 57%  282K 28s
+  4550K .......... .......... .......... .......... .......... 58%  235K 27s
+  4600K .......... .......... .......... .......... .......... 59%  168K 27s
+  4650K .......... .......... .......... .......... .......... 59%  462K 26s
+  4700K .......... .......... .......... .......... .......... 60%  235K 26s
+  4750K .......... .......... .......... .......... .......... 61%  470K 25s
+  4800K .......... .......... .......... .......... .......... 61%  580K 25s
+  4850K .......... .......... .......... .......... .......... 62%  333K 24s
+  4900K .......... .......... .......... .......... .......... 62%  359K 23s
+  4950K .......... .......... .......... .......... .......... 63%  476K 23s
+  5000K .......... .......... .......... .......... .......... 64%  587K 22s
+  5050K .......... .......... .......... .......... .......... 64%  649K 22s
+  5100K .......... .......... .......... .......... .......... 65%  402K 21s
+  5150K .......... .......... .......... .......... .......... 66%  384K 21s
+  5200K .......... .......... .......... .......... .......... 66%  697K 20s
+  5250K .......... .......... .......... .......... .......... 67%  419K 20s
+  5300K .......... .......... .......... .......... .......... 68%  351K 19s
+  5350K .......... .......... .......... .......... .......... 68%  585K 19s
+  5400K .......... .......... .......... .......... .......... 69%  301K 18s
+  5450K .......... .......... .......... .......... .......... 69% 10.4K 20s
+  5500K .......... .......... .......... .......... .......... 70%  122K 19s
+  5550K .......... .......... .......... .......... .......... 71%  118K 19s
+  5600K .......... .......... .......... .......... .......... 71%  324K 18s
+  5650K .......... .......... .......... .......... .......... 72%  185K 18s
+  5700K .......... .......... .......... .......... .......... 73%  221K 17s
+  5750K .......... .......... .......... .......... .......... 73%  419K 17s
+  5800K .......... .......... .......... .......... .......... 74%  231K 16s
+  5850K .......... .......... .......... .......... .......... 75%  519K 16s
+  5900K .......... .......... .......... .......... .......... 75%  371K 15s
+  5950K .......... .......... .......... .......... .......... 76%  447K 15s
+  6000K .......... .......... .......... .......... .......... 76%  333K 14s
+  6050K .......... .......... .......... .......... .......... 77%  407K 14s
+  6100K .......... .......... .......... .......... .......... 78%  421K 13s
+  6150K .......... .......... .......... .......... .......... 78%  245K 13s
+  6200K .......... .......... .......... .......... .......... 79%  804K 13s
+  6250K .......... .......... .......... .......... .......... 80%  387K 12s
+  6300K .......... .......... .......... .......... .......... 80%  572K 12s
+  6350K .......... .......... .......... .......... .......... 81%  322K 11s
+  6400K .......... .......... .......... .......... .......... 82%  240K 11s
+  6450K .......... .......... .......... .......... .......... 82%  303K 10s
+  6500K .......... .......... .......... .......... .......... 83%  885K 10s
+  6550K .......... .......... .......... .......... .......... 83%  461K 9s
+  6600K .......... .......... .......... .......... .......... 84%  656K 9s
+  6650K .......... .......... .......... .......... .......... 85%  346K 9s
+  6700K .......... .......... .......... .......... .......... 85%  415K 8s
+  6750K .......... .......... .......... .......... .......... 86%  559K 8s
+  6800K .......... .......... .......... .......... .......... 87%  804K 7s
+  6850K .......... .......... .......... .......... .......... 87%  377K 7s
+  6900K .......... .......... .......... .......... .......... 88%  404K 7s
+  6950K .......... .......... .......... .......... .......... 89%  426K 6s
+  7000K .......... .......... .......... .......... .......... 89%  342K 6s
+  7050K .......... .......... .......... .......... .......... 90%  225K 5s
+  7100K .......... .......... .......... .......... .......... 90%  612K 5s
+  7150K .......... .......... .......... .......... .......... 91%  861K 5s
+  7200K .......... .......... .......... .......... .......... 92%  468K 4s
+  7250K .......... .......... .......... .......... .......... 92%  584K 4s
+  7300K .......... .......... .......... .......... .......... 93%  265K 4s
+  7350K .......... .......... .......... .......... .......... 94% 10.5K 4s
+  7400K .......... .......... .......... .......... .......... 94%  161K 3s
+  7450K .......... .......... .......... .......... .......... 95%  370K 3s
+  7500K .......... .......... .......... .......... .......... 96%  236K 2s
+  7550K .......... .......... .......... .......... .......... 96%  456K 2s
+  7600K .......... .......... .......... .......... .......... 97%  363K 2s
+  7650K .......... .......... .......... .......... .......... 97%  194K 1s
+  7700K .......... .......... .......... .......... .......... 98%  367K 1s
+  7750K .......... .......... .......... .......... .......... 99%  346K 0s
+  7800K .......... .......... .......... .......... .......... 99%  311K 0s
+  7850K .......... ....                                       100%  414K=58s
 
-2019-05-20 13:45:04 (744 KB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
+2019-06-10 14:46:50 (136 KB/s) - ‘thrift-0.9.2.tar.gz’ saved [8053046/8053046]
 
 thrift-0.9.2/
 thrift-0.9.2/.travis.yml
@@ -9371,14 +9432,14 @@ mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/Thrift.lo -MD -MP -MF src/thrift/.deps/Thrift.Tpo -c src/thrift/Thrift.cpp  -fPIC -DPIC -o src/thrift/.libs/Thrift.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c src/thrift/transport/TZlibTransport.cpp -o src/thrift/transport/libthriftz_la-TZlibTransport.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/Thrift.lo -MD -MP -MF src/thrift/.deps/Thrift.Tpo -c src/thrift/Thrift.cpp -o src/thrift/Thrift.o >/dev/null 2>&1
+mv -f src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Plo
 depbase=`echo src/thrift/TApplicationException.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/TApplicationException.lo src/thrift/TApplicationException.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-mv -f src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp  -fPIC -DPIC -o src/thrift/.libs/TApplicationException.o
 depbase=`echo src/thrift/VirtualProfiling.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/VirtualProfiling.lo src/thrift/VirtualProfiling.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp  -fPIC -DPIC -o src/thrift/.libs/TApplicationException.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp  -fPIC -DPIC -o src/thrift/.libs/VirtualProfiling.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp -o src/thrift/VirtualProfiling.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp -o src/thrift/TApplicationException.o >/dev/null 2>&1
@@ -9436,10 +9497,10 @@ depbase=`echo src/thrift/transport/TFDTransport.lo | sed 's|[^/]*$|.deps/&|;s|\.
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFDTransport.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TFDTransport.lo src/thrift/transport/TFDTransport.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFDTransport.lo -MD -MP -MF src/thrift/transport/.deps/TFDTransport.Tpo -c src/thrift/transport/TFDTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TFDTransport.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFDTransport.lo -MD -MP -MF src/thrift/transport/.deps/TFDTransport.Tpo -c src/thrift/transport/TFDTransport.cpp -o src/thrift/transport/TFDTransport.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TFileTransport.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFileTransport.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TFileTransport.lo src/thrift/transport/TFileTransport.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFDTransport.lo -MD -MP -MF src/thrift/transport/.deps/TFDTransport.Tpo -c src/thrift/transport/TFDTransport.cpp -o src/thrift/transport/TFDTransport.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFileTransport.lo -MD -MP -MF src/thrift/transport/.deps/TFileTransport.Tpo -c src/thrift/transport/TFileTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TFileTransport.o
 depbase=`echo src/thrift/transport/TSimpleFileTransport.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSimpleFileTransport.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSimpleFileTransport.lo src/thrift/transport/TSimpleFileTransport.cpp &&\
@@ -9541,10 +9602,10 @@ depbase=`echo src/thrift/server/TThreadedServer.lo | sed 's|[^/]*$|.deps/&|;s|\.
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadedServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TThreadedServer.lo src/thrift/server/TThreadedServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadedServer.lo -MD -MP -MF src/thrift/server/.deps/TThreadedServer.Tpo -c src/thrift/server/TThreadedServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TThreadedServer.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadedServer.lo -MD -MP -MF src/thrift/server/.deps/TThreadedServer.Tpo -c src/thrift/server/TThreadedServer.cpp -o src/thrift/server/TThreadedServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/async/TAsyncChannel.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/async/TAsyncChannel.lo src/thrift/async/TAsyncChannel.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadedServer.lo -MD -MP -MF src/thrift/server/.deps/TThreadedServer.Tpo -c src/thrift/server/TThreadedServer.cpp -o src/thrift/server/TThreadedServer.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF src/thrift/async/.deps/TAsyncChannel.Tpo -c src/thrift/async/TAsyncChannel.cpp  -fPIC -DPIC -o src/thrift/async/.libs/TAsyncChannel.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF src/thrift/async/.deps/TAsyncChannel.Tpo -c src/thrift/async/TAsyncChannel.cpp -o src/thrift/async/TAsyncChannel.o >/dev/null 2>&1
 depbase=`echo src/thrift/processor/PeekProcessor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -9663,8 +9724,7 @@ make[4]: Entering directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9
 
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/DebugProtoTest.thrift:355] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for f../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
-ield2, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/DebugProtoTest.thrift:356] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/DebugProtoTest.thrift:357] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -9686,6 +9746,7 @@ ield2, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/DebugProtoTest.thrift:366] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+../../../compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/OptionalRequiredTest.thrift
 ../../../compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 ../../../compiler/cpp/thrift --gen cpp:dense ../../../test/ThriftTest.thrift
@@ -9766,14 +9827,14 @@ mv -f $depbase.Tpo $depbase.Po
 depbase=`echo processor/EventLog.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -MT processor/EventLog.o -MD -MP -MF $depbase.Tpo -c -o processor/EventLog.o processor/EventLog.cpp &&\
 mv -f $depbase.Tpo $depbase.Po
+depbase=`echo processor/ServerThread.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -MT processor/ServerThread.o -MD -MP -MF $depbase.Tpo -c -o processor/ServerThread.o processor/ServerThread.cpp &&\
+mv -f $depbase.Tpo $depbase.Po
 In file included from processor/ProcessorTest.cpp:39:0:
 processor/ServerThread.h: In member function ‘virtual void apache::thrift::test::ServerState::bindSuccessful(uint16_t)’:
 processor/ServerThread.h:64:40: warning: unused parameter ‘port’ [-Wunused-parameter]
    virtual void bindSuccessful(uint16_t port) {
                                         ^~~~
-depbase=`echo processor/ServerThread.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
-g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -MT processor/ServerThread.o -MD -MP -MF $depbase.Tpo -c -o processor/ServerThread.o processor/ServerThread.cpp &&\
-mv -f $depbase.Tpo $depbase.Po
 In file included from processor/ProcessorTest.cpp:40:0:
 processor/Handlers.h: In member function ‘virtual void apache::thrift::test::ServerEventHandler::processContext(void*, boost::shared_ptr<apache::thrift::transport::TTransport>)’:
 processor/Handlers.h:229:13: warning: unused parameter ‘serverContext’ [-Wunused-parameter]
@@ -9865,8 +9926,8 @@ building 'thrift.protocol.fastbinary' extension
 creating build/temp.linux-x86_64-2.7
 creating build/temp.linux-x86_64-2.7/src
 creating build/temp.linux-x86_64-2.7/src/protocol
-x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-3hk45v/python2.7-2.7.15~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -I/usr/include/python2.7 -c src/protocol/fastbinary.c -o build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o
-x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-3hk45v/python2.7-2.7.15~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -Wl,-Bsymbolic-functions -Wl,-z,relro -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-3hk45v/python2.7-2.7.15~rc1=. -fstack-protector-strong -Wformat -Werror=format-security build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o -o build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-MW0004/python2.7-2.7.15=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -I/usr/include/python2.7 -c src/protocol/fastbinary.c -o build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-MW0004/python2.7-2.7.15=. -fstack-protector-strong -Wformat -Werror=format-security -Wl,-Bsymbolic-functions -Wl,-z,relro -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-MW0004/python2.7-2.7.15=. -fstack-protector-strong -Wformat -Werror=format-security build/temp.linux-x86_64-2.7/src/protocol/fastbinary.o -o build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so
 make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/lib/py'
 make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/lib'
 make[3]: Nothing to be done for 'all-am'.
@@ -9880,9 +9941,9 @@ make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
-../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
@@ -9958,6 +10019,7 @@ make[2]: Entering directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9
 Making all in cpp
 make[3]: Entering directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/tutorial/cpp'
 ../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
+../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 depbase=`echo CppServer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT CppServer.o -MD -MP -MF $depbase.Tpo -c -o CppServer.o CppServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Po
@@ -10013,8 +10075,8 @@ libtool: link: ar cru .libs/libtutorialgencpp.a gen-cpp/.libs/Calculator.o gen-c
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 make[3]: Leaving directory '/home/jafinger/behavioral-model/tmp.XXXX/thrift-0.9.2/tutorial/cpp'
@@ -10196,9 +10258,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/__init__.py to _
 byte-compiling /usr/lib/python2.7/site-packages/thrift/protocol/TBase.py to TBase.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.pyc
-writing byte-compilation script '/tmp/tmp58xJ6t.py'
-/usr/bin/python -O /tmp/tmp58xJ6t.py
-removing /tmp/tmp58xJ6t.py
+writing byte-compilation script '/tmp/tmp8ID5Re.py'
+/usr/bin/python -O /tmp/tmp8ID5Re.py
+removing /tmp/tmp8ID5Re.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -10374,14 +10436,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/__init__.py to __ini
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/TBase.py to TBase.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
-writing byte-compilation script '/tmp/tmpANodJF.py'
-/usr/bin/python -O /tmp/tmpANodJF.py
-removing /tmp/tmpANodJF.py
+writing byte-compilation script '/tmp/tmp5atHOs.py'
+/usr/bin/python -O /tmp/tmp5atHOs.py
+removing /tmp/tmp5atHOs.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmp2BNYQJ.py'
-/usr/bin/python -O /tmp/tmp2BNYQJ.py
-removing /tmp/tmp2BNYQJ.py
+writing byte-compilation script '/tmp/tmpMuBGO1.py'
+/usr/bin/python -O /tmp/tmpMuBGO1.py
+removing /tmp/tmpMuBGO1.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -10399,26 +10461,26 @@ Adding thrift 0.9.2 to easy-install.pth file
 Installed /usr/local/lib/python2.7/dist-packages/thrift-0.9.2-py2.7-linux-x86_64.egg
 Processing dependencies for thrift==0.9.2
 Finished processing dependencies for thrift==0.9.2
---2019-05-20 13:49:54--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 192.30.255.113
-Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+--2019-06-10 14:51:28--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-05-20 13:49:55--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.255.120
-Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
+--2019-06-10 14:51:29--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 192.30.255.121
+Connecting to codeload.github.com (codeload.github.com)|192.30.255.121|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  369K
-    50K .......... .......... .......... .......... .......... 1.21M
-   100K .......... .......... .......... .......... .......... 2.18M
-   150K .......... .......... .......... .......... .......... 2.23M
-   200K .......... .......... .......... .......... .......... 1.48M
-   250K .......... .......... .......... .......... .......    3.25M=0.3s
+     0K .......... .......... .......... .......... ..........  284K
+    50K .......... .......... .......... .......... ..........  669K
+   100K .......... .......... .......... .......... ..........  874K
+   150K .......... .......... .......... .......... ..........  690K
+   200K .......... .......... .......... .......... ..........  763K
+   250K .......... .......... .......... .......... .......     260K=0.6s
 
-2019-05-20 13:49:55 (1.09 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-06-10 14:51:30 (473 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -12113,11 +12175,21 @@ depbase=`echo src/direct_res_spec.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../include -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH -Wall -Wextra -pthread -O0 -g -MT src/direct_res_spec.lo -MD -MP -MF src/.deps/direct_res_spec.Tpo -c src/direct_res_spec.cpp  -fPIC -DPIC -o src/.libs/direct_res_spec.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../include -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH -Wall -Wextra -pthread -O0 -g -MT src/direct_res_spec.lo -MD -MP -MF src/.deps/direct_res_spec.Tpo -c src/direct_res_spec.cpp -o src/direct_res_spec.o >/dev/null 2>&1
-/bin/bash ../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g   -o libbmpi.la -rpath /usr/local/lib src/pi.lo src/pi_imp.lo src/pi_tables_imp.lo src/pi_act_prof_imp.lo src/pi_counter_imp.lo src/pi_meter_imp.lo src/pi_learn_imp.lo src/pi_mc_imp.lo src/pi_clone_imp.lo src/common.lo src/action_helpers.lo src/direct_res_spec.lo  -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
-libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o  src/.libs/pi.o src/.libs/pi_imp.o src/.libs/pi_tables_imp.o src/.libs/pi_act_prof_imp.o src/.libs/pi_counter_imp.o src/.libs/pi_meter_imp.o src/.libs/pi_learn_imp.o src/.libs/pi_mc_imp.o src/.libs/pi_clone_imp.o src/.libs/common.o src/.libs/action_helpers.o src/.libs/direct_res_spec.o   -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o  -pthread -O0 -g   -pthread -Wl,-soname -Wl,libbmpi.so.0 -o .libs/libbmpi.so.0.0.0
+depbase=`echo src/group_selection.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I..  -I../include                           -I../include                           -isystem../third_party/jsoncpp/include                           -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH  -Wall -Wextra -pthread -O0 -g -MT src/group_selection.lo -MD -MP -MF $depbase.Tpo -c -o src/group_selection.lo src/group_selection.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../include -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH -Wall -Wextra -pthread -O0 -g -MT src/group_selection.lo -MD -MP -MF src/.deps/group_selection.Tpo -c src/group_selection.cpp  -fPIC -DPIC -o src/.libs/group_selection.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../include -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH -Wall -Wextra -pthread -O0 -g -MT src/group_selection.lo -MD -MP -MF src/.deps/group_selection.Tpo -c src/group_selection.cpp -o src/group_selection.o >/dev/null 2>&1
+depbase=`echo src/device_state.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I..  -I../include                           -I../include                           -isystem../third_party/jsoncpp/include                           -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH  -Wall -Wextra -pthread -O0 -g -MT src/device_state.lo -MD -MP -MF $depbase.Tpo -c -o src/device_state.lo src/device_state.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../include -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH -Wall -Wextra -pthread -O0 -g -MT src/device_state.lo -MD -MP -MF src/.deps/device_state.Tpo -c src/device_state.cpp  -fPIC -DPIC -o src/.libs/device_state.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I../include -I../include -isystem../third_party/jsoncpp/include -isystem../third_party/spdlog -I../targets/simple_switch -DWITH_SIMPLE_SWITCH -Wall -Wextra -pthread -O0 -g -MT src/device_state.lo -MD -MP -MF src/.deps/device_state.Tpo -c src/device_state.cpp -o src/device_state.o >/dev/null 2>&1
+/bin/bash ../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g   -o libbmpi.la -rpath /usr/local/lib src/pi.lo src/pi_imp.lo src/pi_tables_imp.lo src/pi_act_prof_imp.lo src/pi_counter_imp.lo src/pi_meter_imp.lo src/pi_learn_imp.lo src/pi_mc_imp.lo src/pi_clone_imp.lo src/common.lo src/action_helpers.lo src/direct_res_spec.lo src/group_selection.lo src/device_state.lo  -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg 
+libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o  src/.libs/pi.o src/.libs/pi_imp.o src/.libs/pi_tables_imp.o src/.libs/pi_act_prof_imp.o src/.libs/pi_counter_imp.o src/.libs/pi_meter_imp.o src/.libs/pi_learn_imp.o src/.libs/pi_mc_imp.o src/.libs/pi_clone_imp.o src/.libs/common.o src/.libs/action_helpers.o src/.libs/direct_res_spec.o src/.libs/group_selection.o src/.libs/device_state.o   -lboost_thread -ldl -lpcap -lgmp -lJudy -lnanomsg -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o  -pthread -O0 -g   -pthread -Wl,-soname -Wl,libbmpi.so.0 -o .libs/libbmpi.so.0.0.0
 libtool: link: (cd ".libs" && rm -f "libbmpi.so.0" && ln -s "libbmpi.so.0.0.0" "libbmpi.so.0")
 libtool: link: (cd ".libs" && rm -f "libbmpi.so" && ln -s "libbmpi.so.0.0.0" "libbmpi.so")
-libtool: link: ar cru .libs/libbmpi.a  src/pi.o src/pi_imp.o src/pi_tables_imp.o src/pi_act_prof_imp.o src/pi_counter_imp.o src/pi_meter_imp.o src/pi_learn_imp.o src/pi_mc_imp.o src/pi_clone_imp.o src/common.o src/action_helpers.o src/direct_res_spec.o
+libtool: link: ar cru .libs/libbmpi.a  src/pi.o src/pi_imp.o src/pi_tables_imp.o src/pi_act_prof_imp.o src/pi_counter_imp.o src/pi_meter_imp.o src/pi_learn_imp.o src/pi_mc_imp.o src/pi_clone_imp.o src/common.o src/action_helpers.o src/direct_res_spec.o src/group_selection.o src/device_state.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libbmpi.a
 libtool: link: ( cd ".libs" && rm -f "libbmpi.la" && ln -s "../libbmpi.la" "libbmpi.la" )
@@ -13147,11 +13219,11 @@ make[3]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switc
 make[2]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/jafinger/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Mon May 20 14:39:25 PDT 2019
+Mon Jun 10 15:09:05 PDT 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Mon May 20 14:39:25 PDT 2019
+Mon Jun 10 15:09:05 PDT 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -13186,7 +13258,7 @@ The following NEW packages will be installed:
   libglib2.0-dev-bin libgraphite2-dev libharfbuzz-dev libharfbuzz-gobject0
   libicu-dev libicu-le-hb-dev libicu-le-hb0 libiculx60 python-ipaddr
   python-ply python-scapy python3-distutils python3-lib2to3
-0 upgraded, 24 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 24 newly installed, 0 to remove and 34 not upgraded.
 Need to get 12.6 MB of archives.
 After this operation, 65.4 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 gir1.2-harfbuzz-0.0 amd64 1.7.2-1ubuntu1 [18.6 kB]
@@ -13198,10 +13270,10 @@ Get:6 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph-d
 Get:7 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-le-hb0 amd64 1.0.3+git161113-4 [14.3 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libiculx60 amd64 60.2-3ubuntu3 [18.9 kB]
 Get:9 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libharfbuzz-gobject0 amd64 1.7.2-1ubuntu1 [13.4 kB]
-Get:10 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-lib2to3 all 3.6.7-1~18.04 [76.5 kB]
-Get:11 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-distutils all 3.6.7-1~18.04 [141 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev-bin amd64 2.56.4-0ubuntu0.18.04.2 [102 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev amd64 2.56.4-0ubuntu0.18.04.2 [1,384 kB]
+Get:10 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-lib2to3 all 3.6.8-1~18.04 [76.5 kB]
+Get:11 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-distutils all 3.6.8-1~18.04 [141 kB]
+Get:12 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev-bin amd64 2.56.4-0ubuntu0.18.04.3 [102 kB]
+Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev amd64 2.56.4-0ubuntu0.18.04.3 [1,384 kB]
 Get:14 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgraphite2-dev amd64 1.3.11-2 [14.5 kB]
 Get:15 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libharfbuzz-dev amd64 1.7.2-1ubuntu1 [302 kB]
 Get:16 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-le-hb-dev amd64 1.0.3+git161113-4 [29.5 kB]
@@ -13213,9 +13285,9 @@ Get:21 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgc-dev amd64 1:7
 Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ipaddr all 2.2.0-1 [15.5 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ply all 3.11-1 [46.6 kB]
 Get:24 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-scapy all 2.3.3-3 [359 kB]
-Fetched 12.6 MB in 1min 21s (155 kB/s)
+Fetched 12.6 MB in 2min 45s (76.7 kB/s)
 Selecting previously unselected package gir1.2-harfbuzz-0.0:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 173502 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 173550 files and directories currently installed.)
 Preparing to unpack .../00-gir1.2-harfbuzz-0.0_1.7.2-1ubuntu1_amd64.deb ...
 Unpacking gir1.2-harfbuzz-0.0:amd64 (1.7.2-1ubuntu1) ...
 Selecting previously unselected package icu-devtools.
@@ -13243,17 +13315,17 @@ Selecting previously unselected package libharfbuzz-gobject0:amd64.
 Preparing to unpack .../08-libharfbuzz-gobject0_1.7.2-1ubuntu1_amd64.deb ...
 Unpacking libharfbuzz-gobject0:amd64 (1.7.2-1ubuntu1) ...
 Selecting previously unselected package python3-lib2to3.
-Preparing to unpack .../09-python3-lib2to3_3.6.7-1~18.04_all.deb ...
-Unpacking python3-lib2to3 (3.6.7-1~18.04) ...
+Preparing to unpack .../09-python3-lib2to3_3.6.8-1~18.04_all.deb ...
+Unpacking python3-lib2to3 (3.6.8-1~18.04) ...
 Selecting previously unselected package python3-distutils.
-Preparing to unpack .../10-python3-distutils_3.6.7-1~18.04_all.deb ...
-Unpacking python3-distutils (3.6.7-1~18.04) ...
+Preparing to unpack .../10-python3-distutils_3.6.8-1~18.04_all.deb ...
+Unpacking python3-distutils (3.6.8-1~18.04) ...
 Selecting previously unselected package libglib2.0-dev-bin.
-Preparing to unpack .../11-libglib2.0-dev-bin_2.56.4-0ubuntu0.18.04.2_amd64.deb ...
-Unpacking libglib2.0-dev-bin (2.56.4-0ubuntu0.18.04.2) ...
+Preparing to unpack .../11-libglib2.0-dev-bin_2.56.4-0ubuntu0.18.04.3_amd64.deb ...
+Unpacking libglib2.0-dev-bin (2.56.4-0ubuntu0.18.04.3) ...
 Selecting previously unselected package libglib2.0-dev:amd64.
-Preparing to unpack .../12-libglib2.0-dev_2.56.4-0ubuntu0.18.04.2_amd64.deb ...
-Unpacking libglib2.0-dev:amd64 (2.56.4-0ubuntu0.18.04.2) ...
+Preparing to unpack .../12-libglib2.0-dev_2.56.4-0ubuntu0.18.04.3_amd64.deb ...
+Unpacking libglib2.0-dev:amd64 (2.56.4-0ubuntu0.18.04.3) ...
 Selecting previously unselected package libgraphite2-dev:amd64.
 Preparing to unpack .../13-libgraphite2-dev_1.3.11-2_amd64.deb ...
 Unpacking libgraphite2-dev:amd64 (1.3.11-2) ...
@@ -13290,7 +13362,7 @@ Unpacking python-scapy (2.3.3-3) ...
 Setting up libgc-dev:amd64 (1:7.4.2-8ubuntu1) ...
 Setting up python-ipaddr (2.2.0-1) ...
 Setting up python-ply (3.11-1) ...
-Processing triggers for libglib2.0-0:amd64 (2.56.4-0ubuntu0.18.04.2) ...
+Processing triggers for libglib2.0-0:amd64 (2.56.4-0ubuntu0.18.04.3) ...
 Setting up libicu-le-hb0:amd64 (1.0.3+git161113-4) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
 Setting up gir1.2-harfbuzz-0.0:amd64 (1.7.2-1ubuntu1) ...
@@ -13298,14 +13370,14 @@ Setting up python-scapy (2.3.3-3) ...
 Setting up libiculx60:amd64 (60.2-3ubuntu3) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Setting up icu-devtools (60.2-3ubuntu3) ...
-Setting up python3-lib2to3 (3.6.7-1~18.04) ...
+Setting up python3-lib2to3 (3.6.8-1~18.04) ...
 Setting up libgraphite2-dev:amd64 (1.3.11-2) ...
 Setting up libharfbuzz-gobject0:amd64 (1.7.2-1ubuntu1) ...
-Setting up python3-distutils (3.6.7-1~18.04) ...
+Setting up python3-distutils (3.6.8-1~18.04) ...
 Setting up libboost-regex1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
-Setting up libglib2.0-dev-bin (2.56.4-0ubuntu0.18.04.2) ...
+Setting up libglib2.0-dev-bin (2.56.4-0ubuntu0.18.04.3) ...
 Setting up libboost-graph1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
-Setting up libglib2.0-dev:amd64 (2.56.4-0ubuntu0.18.04.2) ...
+Setting up libglib2.0-dev:amd64 (2.56.4-0ubuntu0.18.04.3) ...
 Setting up libboost-graph1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-graph-dev:amd64 (1.65.1.0ubuntu1) ...
 Setting up libharfbuzz-dev:amd64 (1.7.2-1ubuntu1) ...
@@ -13316,17 +13388,13 @@ Setting up libboost-iostreams1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-iostreams-dev:amd64 (1.65.1.0ubuntu1) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
 Cloning into 'p4c'...
-Submodule 'control-plane/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'control-plane/p4runtime'
-Submodule 'test/frameworks/gtest' (https://github.com/google/googletest.git) registered for path 'test/frameworks/gtest'
-Cloning into '/home/jafinger/p4c/control-plane/p4runtime'...
-Cloning into '/home/jafinger/p4c/test/frameworks/gtest'...
-Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
-Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit 3a37c8801c04825b6f0bf962814ab527649be2b6
-Author: Calin Cascaval <cascaval@barefootnetworks.com>
-Date:   Sat May 18 11:22:30 2019 -0700
+commit 4400b0793c12c94b95bfe7cdf27576129cfd8de2
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Fri Jun 7 12:42:25 2019 -0700
 
-    p4c_driver: add missing return in case of success
+    Enhancements to logging and internal error checking for PSA back end (#1922)
+    
+    * Enhancements to logging and internal error checking for PSA back end
 -- The C compiler identification is GNU 7.4.0
 -- The CXX compiler identification is GNU 7.4.0
 -- Check for working C compiler: /usr/bin/cc
@@ -13395,14 +13463,22 @@ Date:   Sat May 18 11:22:30 2019 -0700
 -- Using the GNU gold linker.
 -- Available extensions 
 -- Added 376 tests to 'bmv2' (14 xfails)
--- Added 12 tests to 'bmv2' (2 xfails)
--- LLVM missing, disabling kernel tests...
+-- Added 13 tests to 'bmv2' (2 xfails)
+-- Check LLVM version with 'llvm-config --version'
+CMake Warning at backends/ebpf/CMakeLists.txt:123 (message):
+  Did not find an LLVM version that can compile the eBPF kernel tests...
+
+  'llvm-config' reason: /bin/sh: 1: llvm-config: not found
+
+  'llvm-config' return value: 127
+
+
 -- Added 14 tests to 'ebpf-bcc' (0 xfails)
 -- Added 14 tests to 'ebpf' (0 xfails)
 -- Added 6 tests to 'p4' (0 xfails)
--- Added 541 tests to 'p4' (2 xfails)
+-- Added 544 tests to 'p4' (2 xfails)
 -- Added 6 tests to 'err' (0 xfails)
--- Added 161 tests to 'err' (0 xfails)
+-- Added 162 tests to 'err' (0 xfails)
 -- Added 207 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 4
 -- Configuring done
@@ -13411,8 +13487,8 @@ Date:   Sat May 18 11:22:30 2019 -0700
 Scanning dependencies of target update_includes
 Scanning dependencies of target linkbmv2
 Scanning dependencies of target linkgraphs
-[  0%] Built target linkgraphs
 [  0%] Built target update_includes
+[  0%] Built target linkgraphs
 Scanning dependencies of target linkp4cebpf
 Scanning dependencies of target linkp4test
 [  0%] Built target linkbmv2
@@ -13421,24 +13497,24 @@ Scanning dependencies of target p4ctoolkit
 [  1%] Building CXX object lib/CMakeFiles/p4ctoolkit.dir/unified_libp4ctoolkit_srcs_1.cpp.o
 Scanning dependencies of target mkv1dirs
 [  1%] Built target linkp4cebpf
-Scanning dependencies of target mkp4dirs
 [  1%] Built target mkv1dirs
+Scanning dependencies of target mkp4dirs
 Scanning dependencies of target mkP4configdir
 [  1%] Built target mkp4dirs
 [  1%] Built target mkP4configdir
-Scanning dependencies of target gtest
 Scanning dependencies of target p4c_driver
-[  3%] Building CXX object test/CMakeFiles/gtest.dir/frameworks/gtest/googletest/src/gtest-all.cc.o
-[  4%] Copying p4c driver
+Scanning dependencies of target gtest
+[  3%] Copying p4c driver
+[  4%] Building CXX object test/CMakeFiles/gtest.dir/frameworks/gtest/googletest/src/gtest-all.cc.o
 [  4%] Built target p4c_driver
 [  6%] Linking CXX static library libgtest.a
 [  6%] Built target gtest
 [  7%] Linking CXX static library libp4ctoolkit.a
 [  7%] Built target p4ctoolkit
-[ 10%] [FLEX][IRgenLexer] Building scanner with flex 2.6.4
+[  9%] [FLEX][IRgenLexer] Building scanner with flex 2.6.4
 [ 10%] [BISON][IRgenParser] Building parser with bison 3.0.4
 Scanning dependencies of target irgenerator
-[ 13%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/unified_irgenerator_srcs_1.cpp.o
+[ 12%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/unified_irgenerator_srcs_1.cpp.o
 [ 13%] Building CXX object tools/ir-generator/CMakeFiles/irgenerator.dir/ir-generator.cpp.o
 [ 15%] Linking CXX executable irgenerator
 [ 15%] Built target irgenerator
@@ -13462,17 +13538,17 @@ Scanning dependencies of target frontend
 [ 35%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_3.cpp.o
 [ 36%] Linking CXX static library libir.a
 [ 36%] Built target ir
-[ 38%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
-[ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
+[ 38%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_4.cpp.o
+[ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/parsers/v1/v1parser.cpp.o
+[ 41%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
+[ 43%] Linking CXX static library libmidend.a
+[ 43%] Built target midend
+[ 44%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_1.cpp.o
+[ 46%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
 /home/jafinger/p4c/ir/type.def: In member function ‘virtual bool IR::Type_InfInt::equiv(const IR::Node&) const’:
 /home/jafinger/p4c/ir/type.def:175:15: warning: unused variable ‘a’ [-Wunused-variable]
  
                ^
-[ 41%] Building CXX object midend/CMakeFiles/midend.dir/unified_midend_srcs_4.cpp.o
-[ 43%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_1.cpp.o
-[ 44%] Linking CXX static library libmidend.a
-[ 44%] Built target midend
-[ 46%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
 [ 47%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_3.cpp.o
 [ 49%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_4.cpp.o
 [ 50%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_5.cpp.o
@@ -13498,7 +13574,7 @@ Scanning dependencies of target controlplane
 Scanning dependencies of target p4c-bm2-psa
 Scanning dependencies of target p4c-bm2-ss
 Scanning dependencies of target p4c-ebpf
-[ 75%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/main.cpp.o
+[ 73%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-psa.dir/psa_switch/main.cpp.o
 [ 75%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/main.cpp.o
 [ 76%] Building CXX object backends/ebpf/CMakeFiles/p4c-ebpf.dir/unified_p4c_ebpf_srcs_1.cpp.o
 [ 78%] Building CXX object backends/bmv2/CMakeFiles/p4c-bm2-ss.dir/simple_switch/midend.cpp.o
@@ -13526,38 +13602,38 @@ Scanning dependencies of target gtestp4c
 [100%] Linking CXX executable gtestp4c
 [100%] Built target gtestp4c
 end install p4c:
-Mon May 20 14:46:31 PDT 2019
+Mon Jun 10 15:18:56 PDT 2019
 ------------------------------------------------------------
 Installing a few Python packages
 start install python packages:
-Mon May 20 14:46:31 PDT 2019
+Mon Jun 10 15:18:56 PDT 2019
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting grpcio
-  Downloading https://files.pythonhosted.org/packages/71/f4/175dc28565a59860912c11d859d15d829b8f0e6fe0c8dc7405c6560d52e1/grpcio-1.20.1-cp27-cp27mu-manylinux1_x86_64.whl (2.1MB)
+  Downloading https://files.pythonhosted.org/packages/8e/62/448199c50e05526f7fd336d8a87bd83a0c7d92188ae51ebea23aa5f3c37e/grpcio-1.21.1-cp27-cp27mu-manylinux1_x86_64.whl (2.2MB)
 Requirement already satisfied: enum34>=1.0.4; python_version < "3.4" in /usr/lib/python2.7/dist-packages (from grpcio)
 Requirement already satisfied: six>=1.5.2 in /usr/lib/python2.7/dist-packages (from grpcio)
 Collecting futures>=2.2.0; python_version < "3.2" (from grpcio)
   Downloading https://files.pythonhosted.org/packages/2d/99/b2c4e9d5a30f6471e410a146232b4118e697fa3ffc06d6a65efde84debd0/futures-3.2.0-py2-none-any.whl
 Installing collected packages: futures, grpcio
-Successfully installed futures-3.2.0 grpcio-1.20.1
+Successfully installed futures-3.2.0 grpcio-1.21.1
 The directory '/home/jafinger/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/jafinger/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting protobuf
-  Downloading https://files.pythonhosted.org/packages/ea/72/5eadea03b06ca1320be2433ef2236155da17806b700efc92677ee99ae119/protobuf-3.7.1-cp27-cp27mu-manylinux1_x86_64.whl (1.2MB)
+  Downloading https://files.pythonhosted.org/packages/b2/a8/ad407cd2a56a052d92f602e164a9e16bede22079252af0db3838f375b6a8/protobuf-3.8.0-cp27-cp27mu-manylinux1_x86_64.whl (1.2MB)
 Requirement already satisfied: six>=1.9 in /usr/lib/python2.7/dist-packages (from protobuf)
 Requirement already satisfied: setuptools in /usr/lib/python2.7/dist-packages (from protobuf)
 Installing collected packages: protobuf
-Successfully installed protobuf-3.7.1
+Successfully installed protobuf-3.8.0
 end install python packages:
-Mon May 20 14:46:37 PDT 2019
+Mon Jun 10 15:19:22 PDT 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Mon May 20 14:46:37 PDT 2019
+Mon Jun 10 15:19:22 PDT 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G   13G   44G  23% /
+/dev/sda1        59G   13G   43G  24% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         60218M 12814M    44317M  23% /
+/dev/sda1         60218M 13311M    43820M  24% /
 
 Created files: p4setup.bash p4setup.csh
 
