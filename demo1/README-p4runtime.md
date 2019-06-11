@@ -88,11 +88,13 @@ If you see this error message:
 
 Then you need to run the commands starting with `sysrepod` above.
 
-
 See the file
 [`README-troubleshooting.md`](../README-troubleshooting.md) in case
 you run into troubles.  It describes symptoms of some problems, and
 things you can do to resolve them.
+
+
+# Using a Python interactive session as a controller
 
 To start an interactive Python session that can be used to load the
 compiled P4 program into the running `simple_switch_grpc` process, and
