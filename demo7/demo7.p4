@@ -174,6 +174,8 @@ control egressImpl(inout headers_t hdr,
 {
     action my_drop() {
         mark_to_drop(stdmeta);
+        // Skip the rest of ingress processing.
+        exit;
     }
     // In this demo program, assume that it is enough that the
     // packet's outgoing source MAC address is determined solely by
@@ -192,7 +194,7 @@ control egressImpl(inout headers_t hdr,
             rewrite_mac;
             my_drop;
         }
-        default_action = my_drop;
+        const default_action = my_drop;
     }
 
     apply {

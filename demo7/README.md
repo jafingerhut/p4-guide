@@ -101,16 +101,6 @@ bt.update_config('demo7.bin', 'demo7.p4info.txt', my_dev1_addr, my_dev1_id)
 # Result of successful bt.update_config() call is "P4Runtime
 # SetForwardingPipelineConfig" output from simple_switch_grpc log.
 
-######################################################################
-# TBD: Is it bad if the following message appears on the
-# simple_switch_grpc window output?  Is this a sign of using a newer
-# p4c with an older simple_switch_grpc?
-
-# P4Runtime SetForwardingPipelineConfig
-# Unknown primitive action: mark_to_drop
-######################################################################
-
-
 h=bt.P4RuntimeTest()
 h.setUp(my_dev1_addr, 'demo7.p4info.txt')
 # Result of successful h.setUp() call is "New connection" output from
@@ -129,12 +119,10 @@ different compiled P4 programs into it over time, repeating the
 # these prefixes for you, as long as the table/action name is unique
 # after that point.
 
-# assign default actions for tables using an empty key, represented by
-# None in Python.
-
-h.table_add(('ipv4_da_lpm', None), ('ingressImpl.my_drop', []))
-h.table_add(('mac_da', None), ('ingressImpl.my_drop', []))
-h.table_add(('send_frame', None), ('egressImpl.my_drop', []))
+# The tables all have 'const default_action = <action_name>' in the
+# P4_16 program, so the control plane is not allowed to change them.
+# Do not try.  I have, and you get an appropriate error message if you
+# try.
 
 # add new non-default table entries by filling in at least one key field
 
@@ -165,6 +153,13 @@ h.table_add(('send_frame', None), ('egressImpl.my_drop', []))
 # Define a few small helper functions that help construct parameters
 # for the function table_add()
 
+def ipv4_mc_route_lookup_key(h, ipv4_addr_string, prefix_len):
+    return ('ipv4_mc_route_lookup', [h.Lpm('hdr.ipv4.dstAddr',
+                            bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
+
+def set_mcast_grp(mcast_grp_int_val):
+    return ('set_mcast_grp', [('mcast_grp', bt.int2string(mcast_grp_int_val, 16))])
+
 def ipv4_da_lpm_key(h, ipv4_addr_string, prefix_len):
     return ('ipv4_da_lpm', [h.Lpm('hdr.ipv4.dstAddr',
                             bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
@@ -176,42 +171,45 @@ def mac_da_key(h, l2ptr_int_val):
     return ('mac_da', [h.Exact('meta.fwd_metadata.l2ptr',
                        bt.int2string(l2ptr_int_val, 32))])
 
-def set_bd_dmac_intf(bd_int_val, dmac_string, intf_int_val):
-    return ('set_bd_dmac_intf',
-            [('bd', bt.int2string(bd_int_val, 24)),
-             ('dmac', bt.mac_to_binary(dmac_string)),
+def set_dmac_intf(dmac_string, intf_int_val):
+    return ('set_dmac_intf',
+            [('dmac', bt.mac_to_binary(dmac_string)),
              ('intf', bt.int2string(intf_int_val, 9))])
 
-def send_frame_key(h, bd_int_val):
-    return ('send_frame', [h.Exact('meta.fwd_metadata.out_bd',
-                           bt.int2string(bd_int_val, 24))])
+def send_frame_key(h, port_int_val):
+    return ('send_frame', [h.Exact('stdmeta.egress_port',
+                           bt.int2string(port_int_val, 9))])
 
 def rewrite_mac(smac_string):
     return ('rewrite_mac', [('smac', bt.mac_to_binary(smac_string))])
 
+h.table_add(ipv4_mc_route_lookup_key(h, '224.3.3.3', 32), set_mcast_grp(91))
 h.table_add(ipv4_da_lpm_key(h, '10.1.0.1', 32), set_l2ptr(58))
-h.table_add(mac_da_key(h, 58), set_bd_dmac_intf(9, '02:13:57:ab:cd:ef', 2))
-h.table_add(send_frame_key(h, 9), rewrite_mac('00:11:22:33:44:55'))
+h.table_add(mac_da_key(h, 58), set_dmac_intf('02:13:57:ab:cd:ef', 2))
 
-```
+h.table_add(send_frame_key(h, 0), rewrite_mac('00:de:ad:00:00:ff'))
+h.table_add(send_frame_key(h, 1), rewrite_mac('00:de:ad:11:11:ff'))
+h.table_add(send_frame_key(h, 2), rewrite_mac('00:de:ad:22:22:ff'))
+h.table_add(send_frame_key(h, 3), rewrite_mac('00:de:ad:33:33:ff'))
+h.table_add(send_frame_key(h, 4), rewrite_mac('00:de:ad:44:44:ff'))
+h.table_add(send_frame_key(h, 5), rewrite_mac('00:de:ad:55:55:ff'))
 
-Another set of table entries to forward packets to a different output
-interface:
+# When a packet is sent from ingress to the packet buffer with
+# mcast_grp=91, configure the (egress_port, instance) places to which
+# the packet will be copied.
 
-```python
-h.table_add(ipv4_da_lpm_key(h, '10.1.0.200', 32), set_l2ptr(81))
-h.table_add(mac_da_key(h, 81), set_bd_dmac_intf(15, '08:de:ad:be:ef:00', 4))
-h.table_add(send_frame_key(h, 15), rewrite_mac('ca:fe:ba:be:d0:0d'))
+# The first parameter is the mcast_grp value.
 
-# There is preliminary support for reading the entries of a table that
-# you can try like this, but right now it prints the P4Runtime
-# messages returned without performing any translation of table,
-# search key field, action, or parameter ids to the corresponding
-# names, so it is not very convenient.
+# The second is a list of 2-tuples.  The first element of each
+# 2-tuples is the egress port to which the copy should be sent, and
+# the second is the "replication id", also called "egress_rid" in the
+# P4_16 v1model architecture standard_metadata struct, or "instance"
+# in the P4_16 PSA architecture psa_egress_input_metadata_t struct.
+# That value can be useful if you want to send multiple copies of the
+# same packet out of the same output port, but want each one to be
+# processed differently during egress processing.  If you want that,
+# put multiple pairs with the same egress port in the replication
+# list, but each with a different value of "replication id".
 
-# If someone wants to beat me to implementing such a thing, take a
-# look at the code in base_test.py, especially the table_dump_data
-# method.
-
-h.table_dump_data('ipv4_da_lpm')
+h.pre_add_mcast_group(91, [(2, 5), (5, 75), (1, 111)])
 ```

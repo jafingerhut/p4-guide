@@ -618,6 +618,47 @@ class P4RuntimeTest():
         return self.send_request_add_entry_to_action(table_name, key,
                                                      action_name, action_params)
 
+    def pre_add_mcast_group(self, mcast_grp_id, port_instance_pair_list):
+        """When a packet is sent from ingress to the packet buffer with
+        v1model architecture standard_metadata field "mcast_grp" equal
+        to `mcast_grp_id`, configure the (egress_port, instance)
+        places to which the packet will be copied.
+
+        The first parameter is the `mcast_grp_id` value.
+
+        The second is a list of 2-tuples.  The first element of each
+        2-tuple is the egress port to which the copy should be sent,
+        and the second is the "replication id", also called
+        "egress_rid" in the P4_16 v1model architecture
+        standard_metadata struct, or "instance" in the P4_16 PSA
+        architecture psa_egress_input_metadata_t struct.  That value
+        can be useful if you want to send multiple copies of the same
+        packet out of the same output port, but want each one to be
+        processed differently during egress processing.  If you want
+        that, put multiple pairs with the same egress port in the
+        replication list, but each with a different value of
+        "replication id".
+        """
+        assert isinstance(mcast_grp_id, int)
+        assert isinstance(port_instance_pair_list, list)
+        for x in port_instance_pair_list:
+            assert isinstance(x, tuple)
+            assert len(x) == 2
+            assert isinstance(x[0], int)
+            assert isinstance(x[1], int)
+        req = p4runtime_pb2.WriteRequest()
+        req.device_id = self.device_id
+        update = req.updates.add()
+        update.type = p4runtime_pb2.Update.INSERT
+        pre_entry = update.entity.packet_replication_engine_entry
+        mc_grp_entry = pre_entry.multicast_group_entry
+        mc_grp_entry.multicast_group_id = mcast_grp_id
+        for x in port_instance_pair_list:
+            replica = mc_grp_entry.replicas.add()
+            replica.egress_port = x[0]
+            replica.instance = x[1]
+        return req, self.write_request(req, store=False)
+
     def table_dump_helper(self, request):
         for response in self.stub.Read(request):
             yield response
