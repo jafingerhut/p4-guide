@@ -172,6 +172,14 @@ control egressImpl(inout headers_t hdr,
                    inout metadata_t meta,
                    inout standard_metadata_t stdmeta)
 {
+    table dbg1 {
+        key = {
+            stdmeta.egress_port: exact;
+            stdmeta.egress_rid: exact;
+        }
+        actions = { NoAction; }
+        const default_action = NoAction;
+    }
     action my_drop() {
         mark_to_drop(stdmeta);
         // Skip the rest of ingress processing.
@@ -198,6 +206,13 @@ control egressImpl(inout headers_t hdr,
     }
 
     apply {
+        // This "debug table" is here not to change how the packet is
+        // processed, but only to show the values of its table key
+        // fields in simple_switch_grpc's log when it is run with the
+        // `--log-console` or `--log-file` command line options.  It
+        // is effectively a "debug print statement".
+        dbg1.apply();
+
         send_frame.apply();
     }
 }

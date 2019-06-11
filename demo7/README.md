@@ -65,6 +65,7 @@ install table entries:
 
 ```bash
 cd p4-guide/demo7
+export PYTHONPATH="`realpath ../pylib`:$PYTHONPATH"
 python
 
 # NOTE: For most interactive Python sessions, typing Ctrl-D or the
@@ -212,4 +213,57 @@ h.table_add(send_frame_key(h, 5), rewrite_mac('00:de:ad:55:55:ff'))
 # list, but each with a different value of "replication id".
 
 h.pre_add_mcast_group(91, [(2, 5), (5, 75), (1, 111)])
+```
+
+I do not have Python code right now that uses the P4Runtime API to
+read the multicast groups configured on `simple_switch_grpc`.  In the
+mean time, you can run the `simple_switch_CLI` command in a separate
+terminal window and use its commands to read table entries and/or the
+multicast configuration state.
+
+```bash
+simple_switch_CLI
+```
+
+At the `simple_switch_CLI` prompt `RuntimeCmd: `, type the command
+`mc_dump` to see output like this:
+
+```
+RuntimeCmd: mc_dump
+==========
+MC ENTRIES
+**********
+mgrp(91)
+  -> (L1h=0, rid=111) -> (ports=[1], lags=[])
+  -> (L1h=1, rid=75) -> (ports=[5], lags=[])
+  -> (L1h=2, rid=5) -> (ports=[2], lags=[])
+==========
+LAGS
+==========
+```
+
+The `mgrp(91)` shows the `mcast_grp` value of 91 configured above.
+Each of the next 3 lines of output below that show a list of ports,
+one line for each replication id value.  I do not know precisely what
+the `L1h` values represent.  Likely they are unique id values selected
+inside of `simple_switch_grpc` controller interface code for
+identifying parts of the multicast group configuration.  I believe
+they are invisible to the P4Runtime API, and a P4Runtime controller
+need not concern itself with them.
+
+
+# Scapy session for sending packets
+
+```bash
+$ sudo scapy
+```
+
+The packet below should match the example table entry created above in
+the `ipv4_mc_route_lookup` table, finish its ingress processing with
+`standard_metadata.mcast_grp` equal to 91, and be replicated to the 3
+configured output ports.
+
+```python
+pkt1=Ether(src='00:00:c0:01:d0:0d', dst='ff:ff:ff:ff:ff:ff') / IP(src='10.2.3.5', dst='224.3.3.3') / UDP()
+sendp(pkt1, iface='veth2')
 ```

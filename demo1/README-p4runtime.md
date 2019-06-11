@@ -102,6 +102,7 @@ install table entries:
 
 ```bash
 cd p4-guide/demo1
+export PYTHONPATH="`realpath ../pylib`:$PYTHONPATH"
 python
 
 # NOTE: For most interactive Python sessions, typing Ctrl-D or the
