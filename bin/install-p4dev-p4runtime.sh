@@ -105,8 +105,10 @@ get_from_nearest() {
 
     if [ -e "${REPO_CACHE_DIR}/${repo_cache_name}" ]
     then
+	echo "Creating contents of ${git_url} from local cached copy ${REPO_CACHE_DIR}/${repo_cache_name}"
 	tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
     else
+	echo "git clone ${GIT_URL}"
 	git clone "${GIT_URL}"
     fi
 }
