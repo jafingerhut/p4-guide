@@ -37,6 +37,14 @@ General syntax for table_add commands at simple_switch_CLI prompt:
     RuntimeCmd: help table_add
     Add entry to a match table: table_add <table name> <action name> <match fields> => <action parameters> [priority]
 
+You can find more comprehensive documentation about the `table_add`
+and `table_set_default` commands
+[here](https://github.com/p4lang/behavioral-model/blob/master/docs/runtime_CLI.md#table_add)
+and
+[here](https://github.com/p4lang/behavioral-model/blob/master/docs/runtime_CLI.md#table_set_default),
+but you do not need to know all of that to understand and use the
+example commands here.
+
 ----------------------------------------------------------------------
 simple_switch_CLI commands for demo3 program
 ----------------------------------------------------------------------
