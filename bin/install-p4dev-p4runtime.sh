@@ -335,6 +335,7 @@ cd targets/simple_switch_grpc
 #With Thrift ................... : yes
 make
 sudo make install
+sudo ldconfig
 
 echo "end install behavioral-model:"
 date
