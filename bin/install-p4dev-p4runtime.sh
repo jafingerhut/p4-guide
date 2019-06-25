@@ -108,8 +108,8 @@ get_from_nearest() {
 	echo "Creating contents of ${git_url} from local cached copy ${REPO_CACHE_DIR}/${repo_cache_name}"
 	tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
     else
-	echo "git clone ${GIT_URL}"
-	git clone "${GIT_URL}"
+	echo "git clone ${git_url}"
+	git clone "${git_url}"
     fi
 }
 
