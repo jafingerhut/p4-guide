@@ -72,3 +72,4 @@ Kernel version: As output by the `uname -r` command.
 | GOOD    | 4.18.0-20-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
 | GOOD    | 4.18.0-21-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
 | GOOD    | 4.18.0-22-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
+| GOOD    | 4.18.0-24-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
