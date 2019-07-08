@@ -31,6 +31,8 @@ top level
     instantiation of package (there must be one named 'main')
     function definition
         const, variable decl, assignment, function call, return <expression>
+        if
+            anything allowed directly inside function
         NO: action call
     action - see 'action' below
     NO: instantiation of control block, parser
@@ -60,8 +62,8 @@ top level
         action
             const, variable decl, assignment, function call, action call
             extern object method call
-            return, exit - 2017-Mar-30 p4c-bm2-ss allows exit in action, but not if it is inside 'if'?  It gives no error for 'exit' inside 'if' in control block 'apply'.  TBD: Why allow it unconditionally, but not inside 'if'?  File an issue for this?
-            if
+            return, exit
+            if - Note that P4_16 language spec warns that implementations need not support 'if' inside of actions.
                 anything allowed directly inside action
             block statement { }
                 anything allowed directly inside action
@@ -78,6 +80,7 @@ top level
             <table>.apply()
             <control_name>.apply()
             switch (<table>.apply().action_run) { ... }
+                anything allowed directly inside control body apply { }
             return, exit
             if
                 anything allowed directly inside control body apply { }
