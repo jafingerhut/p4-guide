@@ -62,6 +62,7 @@ Kernel version: As output by the `uname -r` command.
 | GOOD    | 4.15.0-50-generic       | Ubuntu 16.04.6 | installed from Ubuntu via Software Updater |
 | GOOD    | 4.15.0-51-generic       | Ubuntu 16.04.6 | installed from Ubuntu via Software Updater |
 | GOOD    | 4.15.0-52-generic       | Ubuntu 16.04.6 | installed from Ubuntu via Software Updater |
+| GOOD    | 4.15.0-54-generic       | Ubuntu 16.04.6 | installed from Ubuntu via Software Updater |
 | GOOD    | 4.15.1-041501-generic   | Ubuntu 16.04.5 | installed via ukuu |
 | GOOD    | 4.15.18-041518-generic  | Ubuntu 16.04.5 | installed via ukuu |
 | GOOD    | 4.16.18-041618-generic  | Ubuntu 16.04.5 | installed via ukuu |
