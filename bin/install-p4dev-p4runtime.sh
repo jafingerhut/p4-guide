@@ -373,11 +373,11 @@ echo "Installing a few Python packages"
 echo "start install python packages:"
 date
 
-# On 2018-Oct-15 on an Ubuntu 16.04 machine, this installed grpcio
-# 1.15.0
+# On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
+# grpcio 1.24.1
 sudo pip install grpcio
-# On 2018-Oct-15 on an Ubuntu 16.04 machine, this installed protobuf
-# 3.6.1
+# On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
+# protobuf 3.10.0
 sudo pip install protobuf
 
 echo "end install python packages:"
