@@ -99,11 +99,8 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # support for zlib, but it seems like a reasonable thing to enable.
 sudo apt-get --yes install zlib1g-dev
 # Install Ubuntu dependencies needed by p4c, from its README.md
-# Matches latest p4c README.md instructions as of 2019-Jun-10, except
-# it leaves out the 'llvm' package, which I believe is only necessary
-# if you want to compile and use the EBPF back end of p4c.  This
-# script is focused on the BMv2/simple_switch back ends.
-sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump
+# Matches latest p4c README.md instructions as of 2019-Oct-09
+sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply tcpdump
 
 
 echo "------------------------------------------------------------"

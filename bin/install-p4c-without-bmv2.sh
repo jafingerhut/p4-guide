@@ -56,8 +56,8 @@ sudo apt-get --yes install git vim
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # Install Ubuntu dependencies needed by p4c, from its README.md
-# Matches latest p4c README.md instructions as of 2018-Aug-13
-sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev pkg-config python python-scapy python-ipaddr python-ply tcpdump cmake
+# Matches latest p4c README.md instructions as of 2019-Oct-09
+sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply tcpdump
 
 
 
