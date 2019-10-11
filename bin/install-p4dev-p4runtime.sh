@@ -393,6 +393,10 @@ df -h .
 df -BM .
 
 cd "${INSTALL_DIR}"
+DETS="install-details"
+mkdir -p "${DETS}"
+mv usr-local-*.txt "${DETS}"
+cd "${DETS}"
 diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
 diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
 diff usr-local-3-after-grpc.txt usr-local-4-after-libyang.txt > usr-local-file-changes-libyang.txt
