@@ -355,3 +355,35 @@ config = request.config
 with open(p4info_path, 'r') as p4info_f:
     google.protobuf.text_format.Merge(p4info_f.read(), config.p4info)
 ```
+
+
+----------------------------------------
+
+# Last successfully tested with these software versions
+
+For https://github.com/p4lang/p4c
+
+```
+$ git log -n 1 | head -n 3
+commit 474ea783d2adf41c1b424e04cb0dc1981ce4b124
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Wed Oct 9 17:59:46 2019 -0700
+```
+
+For https://github.com/p4lang/behavioral-model
+
+```
+$ git log -n 1 | head -n 3
+commit 33e221fd879c1aa2f16b04ab0adbf341619003ae
+Author: Antonin Bas <abas@vmware.com>
+Date:   Fri Sep 20 08:55:10 2019 -0700
+```
+
+For https://github.com/p4lang/PI
+
+```
+$ git log -n 1 | head -n 3
+commit 6de16af2fe432f874dc427bad15fe31bbdf32980
+Author: Antonin Bas <abas@vmware.com>
+Date:   Fri Sep 27 08:35:58 2019 -0700
+```

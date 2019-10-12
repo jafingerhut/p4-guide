@@ -218,16 +218,16 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit aa60b26b03f5ada7114e468741358320df13ef51
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Fri May 10 13:06:19 2019 -0700
+commit 474ea783d2adf41c1b424e04cb0dc1981ce4b124
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Wed Oct 9 17:59:46 2019 -0700
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit 25d0d747d57662d2fc1cfde2118620f80bf6d139
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Mon May 6 11:11:07 2019 -0700
+commit 33e221fd879c1aa2f16b04ab0adbf341619003ae
+Author: Antonin Bas <abas@vmware.com>
+Date:   Fri Sep 20 08:55:10 2019 -0700
 ```
