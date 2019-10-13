@@ -75,6 +75,22 @@ echo "command at the appropriate places."
 echo ""
 
 
+REPO_CACHE_DIR="${INSTALL_DIR}/repository-cache"
+get_from_nearest() {
+    local git_url="$1"
+    local repo_cache_name="$2"
+
+    if [ -e "${REPO_CACHE_DIR}/${repo_cache_name}" ]
+    then
+	echo "Creating contents of ${git_url} from local cached copy ${REPO_CACHE_DIR}/${repo_cache_name}"
+	tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
+    else
+	echo "git clone ${git_url}"
+	git clone "${git_url}"
+    fi
+}
+
+
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
 date
@@ -109,7 +125,7 @@ echo "start install protobuf:"
 date
 
 cd "${INSTALL_DIR}"
-git clone https://github.com/google/protobuf
+get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
 cd protobuf
 git checkout v3.2.0
 ./autogen.sh
@@ -131,9 +147,10 @@ date
 
 cd "${INSTALL_DIR}"
 # Clone Github repo
-git clone https://github.com/p4lang/behavioral-model.git
-
+get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
 cd behavioral-model
+# Get latest updates that are not in the repo cache version
+git pull
 git log -n 1
 ./install_deps.sh
 
