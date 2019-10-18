@@ -174,22 +174,31 @@ echo "start install grpc:"
 date
 
 # From BUILDING.md of grpc source repository
-sudo apt-get install build-essential autoconf libtool pkg-config
-# These may only be needed for running grpc tests, which I do
+sudo apt-get --yes install build-essential autoconf libtool pkg-config
+# Perhaps these packages are only needed for running grpc tests, which I do
 # not plan to do in this script.  Try building with these dependencies,
 # and if it works, try building without them.
-sudo apt-get install libgflags-dev libgtest-dev clang libc++-dev
-`
+#sudo apt-get --yes install libgflags-dev libgtest-dev clang libc++-dev
 
 get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04
 git checkout tags/v1.17.2
 git submodule update --init --recursive
+if [[ "${ubuntu_release}" > "19" ]]
+then
+    # Apply patches that seem to be necessary in order for grpc v1.17.2
+    # to compile and install successfully on an Ubuntu 19.04 system
+    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
+    for PATCH_FILE in "${PATCH_DIR}/*.diff"
+    do
+        patch -p1 < "${PATCH_FILE}"
+    done
+fi
 make
 sudo make install
 sudo ldconfig
-# Save about 0.1G of storage by cleaning up grpc v1.17.2 build
+# Save about 0.3G of storage by cleaning up grpc v1.17.2 build
 make clean
 
 echo "end install grpc:"
