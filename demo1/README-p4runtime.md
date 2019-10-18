@@ -268,7 +268,7 @@ Action entry: set_l2ptr - 3a
 Dumping entry 0x1
 Match key:
 * ipv4.dstAddr        : LPM       0a0100c8/32
-Action entry: set_l2ptr - 3a
+Action entry: set_l2ptr - 51
 ==========
 Dumping default entry
 Action entry: my_drop - 
