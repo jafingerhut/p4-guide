@@ -142,6 +142,12 @@ sudo apt-get --yes install zlib1g-dev
 # installation to succeed.
 sudo apt-get --yes install pkg-config
 
+# It appears that some part of the build process for Thrift 0.12.0
+# requires that pip3 has been installed first.  Without this, there is
+# an error during building Thrift 0.12.0 where a Python 3 program
+# cannot import from the setuptools package.
+sudo apt-get --yes install python3-pip
+
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local > usr-local-1-before-protobuf.txt
 
