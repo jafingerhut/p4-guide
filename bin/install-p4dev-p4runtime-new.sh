@@ -64,11 +64,11 @@ echo "date this script was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 7 GB of disk space."
+echo "The files installed by this script consume about 8 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
-echo "took about 55 minutes."
+echo "took about 80 minutes."
 echo ""
 echo "You will likely need to enter your password for multiple uses of"
 echo "'sudo' spread throughout this script."
@@ -146,7 +146,12 @@ sudo apt-get --yes install pkg-config
 # requires that pip3 has been installed first.  Without this, there is
 # an error during building Thrift 0.12.0 where a Python 3 program
 # cannot import from the setuptools package.
-sudo apt-get --yes install python3-pip
+#
+# Also in earlier versions of this script on Ubuntu 16.04 and 18.04,
+# the pip package was being installed as a dependency of some other
+# package somewhere, but this appears not to be the case on Ubuntu
+# 19.10, so install it explicitly here.
+sudo apt-get --yes install python3-pip python-pip
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local > usr-local-1-before-protobuf.txt
