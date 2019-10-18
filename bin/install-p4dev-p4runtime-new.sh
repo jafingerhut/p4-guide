@@ -313,6 +313,8 @@ cd behavioral-model
 # Get latest updates that are not in the repo cache version
 git pull
 git log -n 1
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch"
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
