@@ -190,7 +190,7 @@ then
     # Apply patches that seem to be necessary in order for grpc v1.17.2
     # to compile and install successfully on an Ubuntu 19.04 system
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
-    for PATCH_FILE in "${PATCH_DIR}/*.diff"
+    for PATCH_FILE in ${PATCH_DIR}/*.diff
     do
         patch -p1 < "${PATCH_FILE}"
     done
