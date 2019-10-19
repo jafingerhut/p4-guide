@@ -32,9 +32,9 @@
 
 # Size of the largest 3 source trees, after being built on an x86_64
 # machine, without documentation:
-# grpc - 0.7G
-# p4c - 1.4G
-# behavioral-model - 2.5G
+# grpc - 1.2G
+# p4c - 1.6G
+# behavioral-model - 4.1G
 
 
 # The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
@@ -68,7 +68,7 @@ echo "The files installed by this script consume about 8 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
-echo "took about 80 minutes."
+echo "took about 65 minutes."
 echo ""
 echo "You will likely need to enter your password for multiple uses of"
 echo "'sudo' spread throughout this script."
@@ -76,13 +76,13 @@ echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ protobuf: github.com/google/protobuf v3.6.1"
-echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 18.04"
+echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 19.10"
 echo "+ libyang: github.com/CESNET/libyang.git v0.16-r1"
 echo "+ sysrepo: github.com/sysrepo/sysrepo.git v0.7.5"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2019-Jun-10, also installs these things:"
-echo "  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script)"
+echo "  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script that changes behavioral-model to install thrift 0.12.0 instead)"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
@@ -186,10 +186,6 @@ date
 
 # From BUILDING.md of grpc source repository
 sudo apt-get --yes install build-essential autoconf libtool pkg-config
-# Perhaps these packages are only needed for running grpc tests, which I do
-# not plan to do in this script.  Try building with these dependencies,
-# and if it works, try building without them.
-#sudo apt-get --yes install libgflags-dev libgtest-dev clang libc++-dev
 
 get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
