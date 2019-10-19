@@ -9,8 +9,8 @@ Contents:
 * An overview of the [p4lang organization Github
   repositories](README-p4lang-repos.md)
 
-  * Two install scripts to assist you in building and installing `p4c`
-    and `behavioral-model` projects and their dependencies on an
+  * Three install scripts to assist you in building and installing
+    `p4c` and `behavioral-model` projects and their dependencies on an
     Ubuntu 16.04 or 18.04 Linux machine:
     * The newer [shell script](bin/install-p4dev-p4runtime.sh) also
       installs `simple_switch_grpc`, which uses the newer P4Runtime
@@ -18,6 +18,12 @@ Contents:
     * The older [shell script](bin/install-p4dev.sh) installs
       `simple_switch`, which uses the older Thrift API protocol to
       communicate with a controller.
+    * The newest [shell script](bin/install-p4dev-v2.sh) is probably
+      still a bit early for wider use.  It is like the first one above
+      in that it also installs `simple_switch_grpc` and P4Runtime.  It
+      installs more recent versions of Protobuf, Thrift, and gRPC
+      libraries than the script above does, and has been successfully
+      run on all of Ubuntu 16.04, 18.04, and 19.10 systems.
     * See [here](bin/README-install-troubleshooting.md) for
       trouble-shooting tips on these scripts.
   * A figure with the [dependencies](dependencies.pdf) between these
