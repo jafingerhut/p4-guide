@@ -10,33 +10,64 @@ of running the install script -- it will download approximately 1 to 2
 GByte of data.
 
 Then run the commands below in a terminal.  Note:
-
 + You may run the commands from any directory you wish -- I typically
   run it from the home directory of my account.  Whichever directory
   is your current directory when you start the script, is where new
   directories with names like `p4c`, `behavioral-model`, `protobuf`,
-  etc. will be created.
-+ I have tested the install scripts most often when running as a
-  normal user, i.e. not as the superuser `root`.  There are several
-  `sudo` commands in the install script, some of which will prompt you
-  to enter your password before the script can continue.  This can
-  occur multiple times during the execution of the script, so check it
-  every 15 minutes or so until it is finished, to see if it is waiting
-  for you to enter your password.
+  `grpc`, etc. will be created.
++ I have only tried these install scripts when running as a normal
+  user, i.e. not as the superuser `root`.  There are several `sudo`
+  commands in the install script, some of which will prompt you to
+  enter your password before the script can continue.  The only
+  commands run as superuser are those that install files in
+  system-wide directories such as `/usr/local/bin`.  This password
+  prompting can occur multiple times during the execution of the
+  script, so check it every 15 minutes or so until it is finished, to
+  see if it is waiting for you to enter your password.
 ```
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-p4runtime.sh |& tee log.txt
 ```
-(Replace `install-p4dev-p4runtime.sh` with `install-p4dev.sh` or
+Replace `install-p4dev-p4runtime.sh` with `install-p4dev.sh` or
 `install-p4dev-v2.sh` if you prefer to use those install scripts
-instead.)
+instead.  More details on the differences between them are in the next
+section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
 the file `log.txt`, as well as appear in the terminal window.  The
 output is about 10,000 lines long on a good run, so saving it to a
 file is good if you want to see what it did.
+
+
+## Which install script should I use?
+
+I would recommend using `install-p4dev-p4runtime.sh` if you have no
+preferences.  See the differences below if you want to make a more
+informed decision.
+
+* The shell script
+  [`install-p4dev-p4runtime.sh`](bin/install-p4dev-p4runtime.sh)
+  installs everything that the next on below does, plus
+  `simple_switch_grpc`, which can use the P4Runtime API protocol to
+  communicate with a controller (in addition to the older Thrift API).
+* The older shell script [`install-p4dev.sh`](bin/install-p4dev.sh)
+  installs `simple_switch`, which uses the Thrift API protocol to
+  communicate with a controller.  This install script does not install
+  the software necessary to use the P4Runtime API.
+* The newest shell script
+  [`install-p4dev-v2.sh`](bin/install-p4dev-v2.sh) is still fairly new
+  and less tested than the ones above, so consider it "bleeding edge"
+  for now.  It is like `install-p4dev-p4runtime.sh` in that it also
+  installs `simple_switch_grpc` and P4Runtime software.
+  `install-p4dev-v2.sh` installs more recent versions of Protobuf,
+  Thrift, and gRPC libraries than the scripts above do.  It has been
+  successfully run on all of Ubuntu 16.04, 18.04, and 19.10 systems,
+  with good test results from running `p4c`'s included tests (which
+  exercise little or none of the P4Runtime API code), and a basic
+  "install a few table entries via the P4Runtime API in Python" hand
+  test.
 
 
 ## Testing your installation
