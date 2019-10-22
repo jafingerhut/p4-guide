@@ -48,16 +48,16 @@ preferences.  See the differences below if you want to make a more
 informed decision.
 
 * The shell script
-  [`install-p4dev-p4runtime.sh`](bin/install-p4dev-p4runtime.sh)
+  [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh)
   installs everything that the next on below does, plus
   `simple_switch_grpc`, which can use the P4Runtime API protocol to
   communicate with a controller (in addition to the older Thrift API).
-* The older shell script [`install-p4dev.sh`](bin/install-p4dev.sh)
+* The older shell script [`install-p4dev.sh`](install-p4dev.sh)
   installs `simple_switch`, which uses the Thrift API protocol to
   communicate with a controller.  This install script does not install
   the software necessary to use the P4Runtime API.
 * The newest shell script
-  [`install-p4dev-v2.sh`](bin/install-p4dev-v2.sh) is still fairly new
+  [`install-p4dev-v2.sh`](install-p4dev-v2.sh) is still fairly new
   and less tested than the ones above, so consider it "bleeding edge"
   for now.  It is like `install-p4dev-p4runtime.sh` in that it also
   installs `simple_switch_grpc` and P4Runtime software.
