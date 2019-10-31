@@ -53,9 +53,9 @@ get_package_info simple_switch_CLI
 get_package_info p4c
 
 echo ""
-echo "$ find /usr -ls | grep p4runtime"
-find /usr -ls | grep p4runtime
+echo "$ find /usr | grep p4runtime | sort | xargs ls -ld"
+find /usr | grep p4runtime | sort | xargs ls -ld
 
 echo ""
-echo "$ find /usr/local/lib -ls | grep grpc"
-find /usr/local/lib -ls | grep grpc
+echo "$ find /usr/local/lib | grep grpc | sort | xargs ls -ld"
+find /usr/local/lib | grep grpc | sort | xargs ls -ld
