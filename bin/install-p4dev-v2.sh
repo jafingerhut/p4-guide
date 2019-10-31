@@ -37,12 +37,11 @@
 # behavioral-model - 4.1G
 
 
-# The maximum number of gcc/g++ jobs to run in parallel.  3 can easily
-# take 1 to 1.5G of RAM, and the build will fail if you run out of RAM,
-# so don't make this number huge on a machine with 4G of RAM, for example.
-# 3 will work on a machine with 2 GB of RAM as long as you are not
-# running any other processes using significant memory.
-MAX_PARALLEL_JOBS=3
+# The maximum number of gcc/g++ jobs to run in parallel.  1 is the
+# safest number that enables compiling p4c even on machines with only
+# 2 GB of RAM, and even on machines with significantly more RAM, it
+# does not speed things up a lot to run multiple jobs in parallel.
+MAX_PARALLEL_JOBS=1
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
