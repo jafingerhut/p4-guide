@@ -182,6 +182,8 @@ cd build
 # Configure for a debug build
 cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
 make -j${MAX_PARALLEL_JOBS}
+sudo make install
+sudo ldconfig
 
 echo "end install p4c:"
 date
@@ -194,27 +196,34 @@ df -BM .
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
+echo "----------------------------------------------------------------------"
+echo "CONSIDER READING WHAT IS BELOW"
+echo "----------------------------------------------------------------------"
+echo ""
+
 cd "${INSTALL_DIR}"
 echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
-echo "P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.bash
 echo "BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.bash
 echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.bash
-echo "export PATH=\"\$P4GUIDE_BIN:\$P4C/build:\$BMV2/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
+echo "export PATH=\"\$P4GUIDE_BIN:\$BMV2/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
 
 echo "set P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.csh
-echo "set P4C=\"\$P4_INSTALL/p4c\"" >> p4setup.csh
 echo "set BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.csh
 echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.csh
-echo "set path = ( \$P4GUIDE_BIN \$P4C/build \$BMV2/tools /usr/local/bin \$path )" >> p4setup.csh
+echo "set path = ( \$P4GUIDE_BIN \$BMV2/tools /usr/local/bin \$path )" >> p4setup.csh
 
 echo ""
 echo "Created files: p4setup.bash p4setup.csh"
 echo ""
 echo "If you use a Bash-like command shell, you may wish to copy the lines"
 echo "of the file p4setup.bash to your .bashrc or .profile files in your"
-echo "home directory to add commands like p4c and simple_switch_grpc to your"
+echo "home directory to add some useful commands to your"
 echo "command path every time you log in or create a new shell."
 echo ""
 echo "If you use the tcsh or csh shells, instead copy the contents of the"
 echo "file p4setup.csh to your .tcshrc or .cshrc file in your home"
 echo "directory."
+
+echo "----------------------------------------------------------------------"
+echo "CONSIDER READING WHAT IS ABOVE"
+echo "----------------------------------------------------------------------"
