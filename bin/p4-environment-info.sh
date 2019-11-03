@@ -9,7 +9,7 @@ get_package_info() {
     exit_status=$?
     if [ $exit_status != 0 ]
     then
-	echo "[ No such program found ]"
+	echo "[ No such program found in your PATH -- it might still be elsewhere on the system ]"
     else
         get_version=1
 	get_version_opts="--version"
