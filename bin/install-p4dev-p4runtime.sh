@@ -211,10 +211,6 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
 
-# Dependencies recommended to install libyang, from proto/README.md in
-# p4lang/PI repo:
-sudo apt-get --yes install build-essential cmake libpcre3-dev libavl-dev libev-dev libprotobuf-c-dev protobuf-c-compiler
-
 echo "------------------------------------------------------------"
 echo "Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc"
 echo "start install PI:"
