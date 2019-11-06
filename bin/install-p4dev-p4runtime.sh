@@ -355,7 +355,7 @@ sudo pip install grpcio
 # protobuf 3.10.0
 sudo pip install protobuf
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
-sudo apt-get install python-psutil libgflags-dev net-tools
+sudo apt-get --yes install python-psutil libgflags-dev net-tools
 sudo pip install crcmod
 
 echo "end install miscellaneous packages:"
