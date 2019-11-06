@@ -327,8 +327,25 @@ cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-p4c.txt
 
 echo "------------------------------------------------------------"
-echo "Installing a few Python packages"
-echo "start install python packages:"
+
+echo "Installing Mininet - not necessary to run P4 programs, but useful if"
+echo "you want to run tutorials from https://github.com/p4lang/tutorials"
+echo "repository."
+echo "start install mininet:"
+date
+
+git clone git://github.com/mininet/mininet mininet
+sudo ./mininet/util/install.sh -nwv
+
+echo "end install mininet:"
+date
+
+cd "${INSTALL_DIR}"
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
+
+echo "------------------------------------------------------------"
+echo "Installing a few miscellaneous packages"
+echo "start install miscellaneous packages:"
 date
 
 # On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
@@ -337,12 +354,15 @@ sudo pip install grpcio
 # On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
 # protobuf 3.10.0
 sudo pip install protobuf
+# Things needed for `cd tutorials/exercises/basic ; make run` to work:
+sudo apt-get install python-psutil libgflags-dev net-tools
+sudo pip install crcmod
 
-echo "end install python packages:"
+echo "end install miscellaneous packages:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-pip-install.txt
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
@@ -360,7 +380,8 @@ diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-
 diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-changes-PI.txt
 diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
 diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
-diff usr-local-6-after-p4c.txt usr-local-7-after-pip-install.txt > usr-local-file-changes-pip-install.txt
+diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
+diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
