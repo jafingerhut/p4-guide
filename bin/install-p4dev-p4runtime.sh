@@ -176,6 +176,9 @@ echo "Installing grpc, needed for installing p4lang/PI"
 echo "start install grpc:"
 date
 
+# From BUILDING.md of grpc source repository
+sudo apt-get --yes install build-essential autoconf libtool pkg-config
+
 get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04

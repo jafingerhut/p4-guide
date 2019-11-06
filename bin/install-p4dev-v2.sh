@@ -76,8 +76,6 @@ echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ protobuf: github.com/google/protobuf v3.6.1"
 echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 19.10"
-echo "+ libyang: github.com/CESNET/libyang.git v0.16-r1"
-echo "+ sysrepo: github.com/sysrepo/sysrepo.git v0.7.5"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2019-Jun-10, also installs these things:"
@@ -213,54 +211,6 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
 
-# Dependencies recommended to install libyang, from proto/README.md in
-# p4lang/PI repo:
-sudo apt-get --yes install build-essential cmake libpcre3-dev libavl-dev libev-dev libprotobuf-c-dev protobuf-c-compiler
-
-echo "------------------------------------------------------------"
-echo "Installing libyang, needed for installing p4lang/PI"
-echo "start install libyang:"
-date
-
-get_from_nearest https://github.com/CESNET/libyang.git libyang.tar.gz
-cd libyang
-git checkout v0.16-r1
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-# This step might not be necessary, but if not, it should be harmless and quick
-sudo ldconfig
-
-echo "end install libyang:"
-date
-
-cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-4-after-libyang.txt
-
-echo "------------------------------------------------------------"
-echo "Installing sysrepo, needed for installing p4lang/PI"
-echo "start install sysrepo:"
-date
-
-get_from_nearest https://github.com/sysrepo/sysrepo.git sysrepo.tar.gz
-cd sysrepo
-git checkout v0.7.5
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=Off -DCALL_TARGET_BINS_DIRECTLY=Off ..
-make
-sudo make install
-# This step might not be necessary, but if not, it should be harmless and quick
-sudo ldconfig
-
-echo "end install sysrepo:"
-date
-
-cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-5-after-sysrepo.txt
-
 echo "------------------------------------------------------------"
 echo "Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc"
 echo "start install PI:"
@@ -274,10 +224,10 @@ cd PI
 git submodule update --init --recursive
 git log -n 1
 ./autogen.sh
-./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 --with-sysrepo
+./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 # Output I saw:
 #Features recap ......................................
-#Use sysrepo gNMI implementation .............. : yes
+#Use sysrepo gNMI implementation .............. : no
 #Compile demo_grpc ............................ : no
 #
 #Features recap ......................................
@@ -296,7 +246,7 @@ echo "end install PI:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-PI.txt
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-4-after-PI.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/behavioral-model"
@@ -310,9 +260,10 @@ date
 
 # It says to first follow the instructions here:
 # https://github.com/p4lang/PI#dependencies to install required
-# dependencies for the `--with-proto` configure flag, and optionally
-# also the `--with-sysrepo` configure flag, which this script will do.
-# That should all have been done by this time, by the script above.
+# dependencies for the `--with-proto` configure flag.  This script
+# does _not_ use the option `--with-sysrepo` configure flag, which is
+# needed for experimental gNMI support.  That should all have been
+# done by this time, by the script above.
 
 get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
 cd behavioral-model
@@ -335,10 +286,10 @@ sudo make install
 cd targets/simple_switch_grpc
 ./autogen.sh
 # Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-sysrepo --with-thrift 'CXXFLAGS=-O0 -g'
+./configure --with-thrift 'CXXFLAGS=-O0 -g'
 # I saw the following near end of output of 'configure' command:
 #Features recap ......................
-#With Sysrepo .................. : yes
+#With Sysrepo .................. : no
 #With Thrift ................... : yes
 make
 sudo make install
@@ -348,7 +299,7 @@ echo "end install behavioral-model:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-behavioral-model.txt
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-5-after-behavioral-model.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
@@ -375,11 +326,28 @@ echo "end install p4c:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-p4c.txt
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-p4c.txt
 
 echo "------------------------------------------------------------"
-echo "Installing a few Python packages"
-echo "start install python packages:"
+
+echo "Installing Mininet - not necessary to run P4 programs, but useful if"
+echo "you want to run tutorials from https://github.com/p4lang/tutorials"
+echo "repository."
+echo "start install mininet:"
+date
+
+git clone git://github.com/mininet/mininet mininet
+sudo ./mininet/util/install.sh -nwv
+
+echo "end install mininet:"
+date
+
+cd "${INSTALL_DIR}"
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
+
+echo "------------------------------------------------------------"
+echo "Installing a few miscellaneous packages"
+echo "start install miscellaneous packages:"
 date
 
 # On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
@@ -388,12 +356,15 @@ sudo pip install grpcio
 # On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
 # protobuf 3.10.0
 sudo pip install protobuf
+# Things needed for `cd tutorials/exercises/basic ; make run` to work:
+sudo apt-get --yes install python-psutil libgflags-dev net-tools
+sudo pip install crcmod
 
-echo "end install python packages:"
+echo "end install miscellaneous packages:"
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-9-after-pip-install.txt
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
@@ -408,12 +379,11 @@ mv usr-local-*.txt "${DETS}"
 cd "${DETS}"
 diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
 diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
-diff usr-local-3-after-grpc.txt usr-local-4-after-libyang.txt > usr-local-file-changes-libyang.txt
-diff usr-local-4-after-libyang.txt usr-local-5-after-sysrepo.txt > usr-local-file-changes-sysrepo.txt
-diff usr-local-5-after-sysrepo.txt usr-local-6-after-PI.txt > usr-local-file-changes-PI.txt
-diff usr-local-6-after-PI.txt usr-local-7-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
-diff usr-local-7-after-behavioral-model.txt usr-local-8-after-p4c.txt > usr-local-file-changes-p4c.txt
-diff usr-local-8-after-p4c.txt usr-local-9-after-pip-install.txt > usr-local-file-changes-pip-install.txt
+diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-changes-PI.txt
+diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
+diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
+diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
+diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
