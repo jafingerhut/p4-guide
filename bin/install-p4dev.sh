@@ -20,6 +20,30 @@
 # p4c - 1.3G
 # behavioral-model - 2.0G
 
+echo "As of August 2019, and perhaps even earlier, running the exercises in"
+echo "this repository:"
+echo ""
+echo "    https://github.com/p4lang/tutorials"
+echo ""
+echo "requires installing code to enable the use of the P4Runtime API, which"
+echo "this install script does _not_ install."
+echo ""
+echo "If you want an install script that will install enough software to"
+echo "enable running the exercises in that tutorials repository, consider"
+echo "using one of these scripts instead:"
+echo ""
+echo "+ install-p4dev-p4runtime.sh"
+echo "+ install-p4dev-v2.sh - The primary difference between this and the"
+echo "  previous one is that this one is more recent and a bit experimental,"
+echo "  installing somewhat later versions of the Protobuf and gRPC"
+echo "  libraries.  Use the previous one for now if you do not want to stick"
+echo "  with older but more-tested versions."
+echo ""
+echo "If you understand that this install script is _not_ sufficient for"
+echo "running the tutorials, and you want to use it anyway, edit the script"
+echo "to delete or comment out the line 'exit 1', and run it again."
+
+exit 1
 
 # The maximum number of gcc/g++ jobs to run in parallel.  1 is the
 # safest number that enables compiling p4c even on machines with only
