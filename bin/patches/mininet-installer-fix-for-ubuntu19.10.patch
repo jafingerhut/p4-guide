@@ -1,0 +1,13 @@
+diff --git a/util/install.sh b/util/install.sh
+index 44280ee..56ed02d 100755
+--- a/util/install.sh
++++ b/util/install.sh
+@@ -160,7 +160,7 @@ function mn_deps {
+                         python-pep8 ${PYPKG}-pexpect ${PYPKG}-tk
+     else  # Debian/Ubuntu
+         $install gcc make socat psmisc xterm ssh iperf telnet \
+-                 cgroup-bin ethtool help2man pyflakes pylint pep8 \
++                 cgroup-tools ethtool help2man pyflakes pylint pep8 \
+                  ${PYPKG}-setuptools ${PYPKG}-pexpect ${PYPKG}-tk
+         $install iproute2 || $install iproute
+     fi
