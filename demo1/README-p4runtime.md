@@ -33,38 +33,6 @@ The `-I` option is only necessary if you did _not_ install the P4
 compiler in your system-wide /usr/local/bin directory.
 
 
-# One-time setup
-
-Once after booting your system, you should run the `sysrepod` daemon
-using the command below, preferably in a separate terminal window
-where you can watch for error messages in its output:
-
-    sudo sysrepod -d
-
-Run the next command to install some YANG data models into the running
-`sysrepo` process.  `$P4_INSTALL` is just the directory above the one
-where you created your copy of the `PI` repository.  A shell variable
-with that name is created for you if you have done `source
-p4setup.bash` on the `p4setup.bash` file that was created using the
-provided install script.  You can create a brand new clone of the
-`p4lang/PI` repository if you do not have one handy.
-
-    sudo $P4_INSTALL/PI/proto/sysrepo/install_yangs.sh
-
-Note: It is _normal_ to see many error (`[ERR]`) and warning (`[WRN]`)
-messages in the window where you started `sysrepod`, and many
-`Resolving dependency` and `Skipping installation of ...` messages in
-the window where you ran the `install_yangs.sh` command, when the
-command above is run.  To check whether the command had the intended
-side effect, run this command:
-
-    sysrepoctl -l
-
-and compare to see if it is at least similar to the output here: 
-
-    https://github.com/p4lang/PI/blob/master/proto/README.md
-
-
 # Running simple_switch_grpc
 
 To run the behavioral model with 8 ports numbered 0 through 7:
@@ -81,12 +49,6 @@ of the virtual Ethernet interfaces veth2, veth4, etc. have not been
 created on your system.  Search for "veth" in the file
 [`README-using-bmv2.md`](../README-using-bmv2.md`) (top level
 directory of this repository) for a command to create them.
-
-If you see this error message:
-
-    [16:36:10.433] [bmv2] [E] [thread 7845] Error by sr_module_change_subscribe for 'openconfig-interfaces': Requested schema model is not known
-
-Then you need to run the commands starting with `sysrepod` above.
 
 See the file
 [`README-troubleshooting.md`](../README-troubleshooting.md) in case
@@ -365,25 +327,25 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit 474ea783d2adf41c1b424e04cb0dc1981ce4b124
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Wed Oct 9 17:59:46 2019 -0700
+commit b3798b95f3e407ef269ed4d5eb02843e78b35754
+Author: Chris Dodd <cdodd@barefootnetworks.com>
+Date:   Wed Nov 6 18:15:47 2019 -0800
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit 33e221fd879c1aa2f16b04ab0adbf341619003ae
-Author: Antonin Bas <abas@vmware.com>
-Date:   Fri Sep 20 08:55:10 2019 -0700
+commit 971732f48570f848a27a8f54b25b7447732d8591
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Sat Oct 26 13:26:13 2019 -0700
 ```
 
 For https://github.com/p4lang/PI
 
 ```
 $ git log -n 1 | head -n 3
-commit 6de16af2fe432f874dc427bad15fe31bbdf32980
+commit 33e15ea4cbc292a532cf3f5db61d0f5ea94e6c36
 Author: Antonin Bas <abas@vmware.com>
-Date:   Fri Sep 27 08:35:58 2019 -0700
+Date:   Sat Nov 2 15:08:32 2019 -0700
 ```
