@@ -50,7 +50,7 @@ informed decision.
 
 * The shell script
   [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh) installs
-  everything that the next one below does, plus `simple_switch_grpc`,
+  everything that `install-p4dev.sh` does, plus `simple_switch_grpc`,
   which can use the P4Runtime API protocol to communicate with a
   controller (in addition to the older Thrift API).  It also installs
   Mininet and a few other small packages that enable you to run the
