@@ -49,26 +49,31 @@ preferences.  See the differences below if you want to make a more
 informed decision.
 
 * The shell script
-  [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh)
-  installs everything that the next on below does, plus
-  `simple_switch_grpc`, which can use the P4Runtime API protocol to
-  communicate with a controller (in addition to the older Thrift API).
+  [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh) installs
+  everything that the next one below does, plus `simple_switch_grpc`,
+  which can use the P4Runtime API protocol to communicate with a
+  controller (in addition to the older Thrift API).  It also installs
+  Mininet and a few other small packages that enable you to run the
+  exercises in the master branch of the
+  [tutorials](https://github.com/p4lang/tutorials) repository.
+* The newest shell script [`install-p4dev-v2.sh`](install-p4dev-v2.sh)
+  is still fairly new and less tested than the ones above, so consider
+  it "bleeding edge" for now.  It is like `install-p4dev-p4runtime.sh`
+  in that it also installs `simple_switch_grpc` and P4Runtime
+  software.  `install-p4dev-v2.sh` installs more recent versions of
+  Protobuf, Thrift, and gRPC libraries than the scripts above do.  It
+  has been successfully run on all of Ubuntu 16.04, 18.04, and 19.10
+  systems, with good test results from running `p4c`'s included tests
+  (which exercise little or none of the P4Runtime API code), and
+  running the basic exercise in the
+  [tutorials](https://github.com/p4lang/tutorials) repository.
 * The older shell script [`install-p4dev.sh`](install-p4dev.sh)
   installs `simple_switch`, which uses the Thrift API protocol to
-  communicate with a controller.  This install script does not install
-  the software necessary to use the P4Runtime API.
-* The newest shell script
-  [`install-p4dev-v2.sh`](install-p4dev-v2.sh) is still fairly new
-  and less tested than the ones above, so consider it "bleeding edge"
-  for now.  It is like `install-p4dev-p4runtime.sh` in that it also
-  installs `simple_switch_grpc` and P4Runtime software.
-  `install-p4dev-v2.sh` installs more recent versions of Protobuf,
-  Thrift, and gRPC libraries than the scripts above do.  It has been
-  successfully run on all of Ubuntu 16.04, 18.04, and 19.10 systems,
-  with good test results from running `p4c`'s included tests (which
-  exercise little or none of the P4Runtime API code), and a basic
-  "install a few table entries via the P4Runtime API in Python" hand
-  test.
+  communicate with a controller.  This install script does _not_
+  install the software necessary to use the P4Runtime API, and thus is
+  insufficient by itself to enable you to run the exercises in August
+  2019 or later versions of the
+  [tutorials](https://github.com/p4lang/tutorials) repository.
 
 
 ## Testing your installation
