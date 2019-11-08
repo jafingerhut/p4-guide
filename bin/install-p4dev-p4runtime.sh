@@ -49,6 +49,23 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
+# Run a child process in the background that will keep sudo
+# credentials fresh.  The hope is that after a user enters their
+# password once, they will not need to do so again for the entire
+# duration of running this install script.
+"${THIS_SCRIPT_DIR_ABSOLUTE}/keep-sudo-credentials-fresh.sh" &
+CHILD_PROCESS_PID=$!
+
+clean_up() {
+    kill ${CHILD_PROCESS_PID}
+    # Invalidate the user's cached credentials
+    sudo --reset-timestamp
+    exit
+}
+
+# Kill the child process
+trap clean_up SIGHUP SIGINT SIGTERM
+
 ubuntu_release=`lsb_release -s -r`
 
 echo "This script builds and installs the P4_16 (and also P4_14)"
@@ -67,9 +84,6 @@ echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
 echo "took about 60 minutes."
-echo ""
-echo "You will likely need to enter your password for multiple uses of"
-echo "'sudo' spread throughout this script."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
