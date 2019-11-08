@@ -94,10 +94,15 @@ then
 	exit 1
     else
 	UNPRIVILEGED_USER=$SUDO_USER
+	echo "Most commands will be run as user '$UNPRIVILEGED_USER'"
     fi
 else
     STARTED_AS_ROOT=0
+    echo "All commands will be run as user '$USER', with sudo for commands"
+    echo "needing superuser privileges, which may require you to entre your"
+    echo "password."
 fi
+echo "----------------------------------------------------------------------"
 
 unpriv() {
     if [ $STARTED_AS_ROOT == 1 ]
@@ -238,25 +243,25 @@ unpriv date
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
 cd protobuf
-git checkout v3.2.0
-./autogen.sh
-./configure
-make
+unpriv git checkout v3.2.0
+unpriv ./autogen.sh
+unpriv ./configure
+unpriv make
 priv make install
 priv ldconfig
 # Save about 0.5G of storage by cleaning up protobuf build
-make clean
+unpriv make clean
 
 echo "end install protobuf:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-2-after-protobuf.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-2-after-protobuf.txt
 
 echo "------------------------------------------------------------"
 echo "Installing grpc, needed for installing p4lang/PI"
 echo "start install grpc:"
-date
+unpriv date
 
 # From BUILDING.md of grpc source repository
 priv apt-get --yes install build-essential autoconf libtool pkg-config
