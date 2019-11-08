@@ -45,11 +45,92 @@ MAX_PARALLEL_JOBS=1
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
 
+# I believe that if this script is run as "sudo <scriptname>", then
+# the environment variable SUDO_USER will always have a value, and it
+# will be the string that is the name of the normal user that used
+# that sudo command.  If this script is run as "<scriptname>", then
+# the environment variable SUDO_USER will not be in the environment at
+# all.
+
+# If this script is run as "sudo <scriptname>", I want most commands
+# to be executed as the user SUDO_USER, to avoid running most of these
+# commands as the superuser, with privileges those commands do not
+# need, and only run the few that require superuser privileges as
+# root.
+
+# After defining functions priv and unpriv below, I will use one of
+# functions to execute all later commands in this script, with the
+# following exceptions:
+
+# cd commands, which modify the environment of the shell running the
+# command, and have no useful effect when run inside of 'sudo'.
+
+# setting environment variables and if/then/else/fi, for the same
+# reason as cd.
+
+# echo, just because that seems pretty safe to run that as root.  If
+# we want to change that, I'd rather create a function with a name
+# like 'ech' that runs unprivileged, rather than prefixing all of the
+# many many uses of 'echo' with 'unpriv'.
+
+if [ `id --user` == 0 ]
+then
+    STARTED_AS_ROOT=1
+    if [ -z "$SUDO_USER" ]
+    then
+	echo "This script $0 was started as the superuser, but the"
+	echo "environment variable SUDO_USER is empty or unset.  It is"
+	echo "intended that you run this script as shown below, as a"
+	echo "normal user.  This enables the majority of the commands"
+	echo "in this script to run as a normal user, since most do"
+	echo "not need superuser privileges."
+	echo ""
+	echo "    # As a normal user:"
+	echo "    sudo $0"
+	echo ""
+        echo "If for some reason you truly wish to run every command"
+	echo "in this script as a superuser, then you are free to edit"
+	echo "this install script to do it."
+	exit 1
+    else
+	UNPRIVILEGED_USER=$SUDO_USER
+    fi
+else
+    STARTED_AS_ROOT=0
+fi
+
+unpriv() {
+    if [ $STARTED_AS_ROOT == 1 ]
+    then
+	# Run the command as a normal user, not root.
+	# TBD: Init code at beginning of this script sets up value for
+	# UNPRIVILEGED_USER
+	sudo -u $UNPRIVILEGED_USER $*
+    else
+	# We are not root now, so just run the command normally.
+	$*
+    fi
+}
+
+priv() {
+    if [ $STARTED_AS_ROOT == 1 ]
+    then
+	# We are root now, so just run the command normally.
+	$*
+    else
+	# Invoke the command using sudo to root.  This might require
+	# prompting the user for their password.  So be it -- they
+	# chose to start this script as a normal user, and thus we
+	# won't make it any more convenient for them.
+	sudo $*
+    fi
+}
+
 THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
-ubuntu_release=`lsb_release -s -r`
+ubuntu_release=`unpriv lsb_release -s -r`
 
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
@@ -110,49 +191,49 @@ get_from_nearest() {
     if [ -e "${REPO_CACHE_DIR}/${repo_cache_name}" ]
     then
 	echo "Creating contents of ${git_url} from local cached copy ${REPO_CACHE_DIR}/${repo_cache_name}"
-	tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
+	unpriv tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
     else
 	echo "git clone ${git_url}"
-	git clone "${git_url}"
+	unpriv git clone "${git_url}"
     fi
 }
 
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
-date
-df -h .
-df -BM .
+unpriv date
+unpriv df -h .
+unpriv df -BM .
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
-sudo apt-get --yes install git vim
+priv apt-get --yes install git vim
 
 # Install Python2.  This is required for p4c, but there are several
 # earlier packages that check for python in their configure scripts,
 # and on a minimal Ubuntu 18.04 Desktop Linux system they find
 # Python3, not Python2, unless we install Python2.  Most Python code
 # in open source P4 projects is written for Python2.
-sudo apt-get --yes install python
+priv apt-get --yes install python
 
 # Install Ubuntu packages needed by protobuf v3.2.0, from its src/README.md
-sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
+priv apt-get --yes install autoconf automake libtool curl make g++ unzip
 # zlib is not required to install protobuf, nor do I think it is
 # required by the open source P4 tools for protobuf to be built with
 # support for zlib, but it seems like a reasonable thing to enable.
-sudo apt-get --yes install zlib1g-dev
+priv apt-get --yes install zlib1g-dev
 
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
-sudo apt-get --yes install pkg-config
+priv apt-get --yes install pkg-config
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
 
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
 echo "start install protobuf:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
@@ -161,8 +242,8 @@ git checkout v3.2.0
 ./autogen.sh
 ./configure
 make
-sudo make install
-sudo ldconfig
+priv make install
+priv ldconfig
 # Save about 0.5G of storage by cleaning up protobuf build
 make clean
 
@@ -178,12 +259,12 @@ echo "start install grpc:"
 date
 
 # From BUILDING.md of grpc source repository
-sudo apt-get --yes install build-essential autoconf libtool pkg-config
+priv apt-get --yes install build-essential autoconf libtool pkg-config
 
 get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04
-git checkout tags/v1.3.2
+unpriv git checkout tags/v1.3.2
 if [[ "${ubuntu_release}" > "18" ]]
 then
     # Apply patches that seem to be necessary in order for grpc v1.3.2
@@ -199,36 +280,36 @@ then
 
     for PATCH_FILE in no-werror.diff unvendor-zlib.diff fix-libgrpc++-soname.diff make-pkg-config-files-nonexecutable.diff add-wrap-memcpy-flags.diff
     do
-        patch -p1 < "${PATCH_DIR}/${PATCH_FILE}"
+        unpriv patch -p1 < "${PATCH_DIR}/${PATCH_FILE}"
     done
 fi
-git submodule update --init --recursive
-make
-sudo make install
-sudo ldconfig
+unpriv git submodule update --init --recursive
+unpriv make
+priv make install
+priv ldconfig
 # Save about 0.1G of storage by cleaning up grpc v1.3.2 build
-make clean
+unpriv make clean
 
 echo "end install grpc:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc"
 echo "start install PI:"
-date
+unpriv date
 
 # Deps needed to build PI:
-sudo apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+priv apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 
-git clone https://github.com/p4lang/PI
+unpriv git clone https://github.com/p4lang/PI
 cd PI
-git submodule update --init --recursive
-git log -n 1
-./autogen.sh
-./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
+unpriv git submodule update --init --recursive
+unpriv git log -n 1
+unpriv ./autogen.sh
+unpriv ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 # Output I saw:
 #Features recap ......................................
 #Use sysrepo gNMI implementation .............. : no
@@ -240,22 +321,22 @@ git log -n 1
 #Compile p4runtime.proto and associated fe .... : yes
 #Compile internal RPC ......................... : no
 #Compile PI C CLI ............................. : no
-make
-sudo make install
+unpriv make
+priv make install
 
 # Save about 0.25G of storage by cleaning up PI build
-make clean
+unpriv make clean
 
 echo "end install PI:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-4-after-PI.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-4-after-PI.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/behavioral-model"
 echo "start install behavioral-model:"
-date
+unpriv date
 
 # Following instructions in the file
 # targets/simple_switch_grpc/README.md in the p4lang/behavioral-model
@@ -272,63 +353,63 @@ date
 get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
 cd behavioral-model
 # Get latest updates that are not in the repo cache version
-git pull
-git log -n 1
+unpriv git pull
+unpriv git log -n 1
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
-./install_deps.sh
+unpriv ./install_deps.sh
 # simple_switch_grpc README.md says to configure and build the bmv2
 # code first, using these commands:
-./autogen.sh
+unpriv ./autogen.sh
 # Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-pi 'CXXFLAGS=-O0 -g'
-make
-sudo make install
+unpriv ./configure --with-pi 'CXXFLAGS=-O0 -g'
+unpriv make
+priv make install
 # Now build simple_switch_grpc
 cd targets/simple_switch_grpc
-./autogen.sh
+unpriv ./autogen.sh
 # Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-thrift 'CXXFLAGS=-O0 -g'
+unpriv ./configure --with-thrift 'CXXFLAGS=-O0 -g'
 # I saw the following near end of output of 'configure' command:
 #Features recap ......................
 #With Sysrepo .................. : no
 #With Thrift ................... : yes
-make
-sudo make install
-sudo ldconfig
+unpriv make
+priv make install
+priv ldconfig
 
 echo "end install behavioral-model:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-5-after-behavioral-model.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-5-after-behavioral-model.txt
 
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
 echo "start install p4c:"
-date
+unpriv date
 
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2019-Oct-09
-sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply tcpdump
+priv apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply tcpdump
 
 # Clone p4c and its submodules:
-git clone --recursive https://github.com/p4lang/p4c.git
+unpriv git clone --recursive https://github.com/p4lang/p4c.git
 cd p4c
-git log -n 1
-mkdir build
+unpriv git log -n 1
+unpriv mkdir build
 cd build
 # Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
-make -j${MAX_PARALLEL_JOBS}
-sudo make install
-sudo ldconfig
+unpriv cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
+unpriv make -j${MAX_PARALLEL_JOBS}
+priv make install
+priv ldconfig
 
 echo "end install p4c:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-p4c.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-p4c.txt
 
 echo "------------------------------------------------------------"
 
@@ -336,56 +417,56 @@ echo "Installing Mininet - not necessary to run P4 programs, but useful if"
 echo "you want to run tutorials from https://github.com/p4lang/tutorials"
 echo "repository."
 echo "start install mininet:"
-date
+unpriv date
 
-git clone git://github.com/mininet/mininet mininet
-sudo ./mininet/util/install.sh -nwv
+unpriv git clone git://github.com/mininet/mininet mininet
+priv ./mininet/util/install.sh -nwv
 
 echo "end install mininet:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
 
 echo "------------------------------------------------------------"
 echo "Installing a few miscellaneous packages"
 echo "start install miscellaneous packages:"
-date
+unpriv date
 
 # On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
 # grpcio 1.24.1
-sudo pip install grpcio
+priv pip install grpcio
 # On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
 # protobuf 3.10.0
-sudo pip install protobuf
+priv pip install protobuf
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
-sudo apt-get --yes install python-psutil libgflags-dev net-tools
-sudo pip install crcmod
+priv apt-get --yes install python-psutil libgflags-dev net-tools
+priv pip install crcmod
 
 echo "end install miscellaneous packages:"
-date
+unpriv date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
+unpriv find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
-date
-df -h .
-df -BM .
+unpriv date
+unpriv df -h .
+unpriv df -BM .
 
 cd "${INSTALL_DIR}"
 DETS="install-details"
-mkdir -p "${DETS}"
-mv usr-local-*.txt "${DETS}"
+unpriv mkdir -p "${DETS}"
+unpriv mv usr-local-*.txt "${DETS}"
 cd "${DETS}"
-diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
-diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
-diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-changes-PI.txt
-diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
-diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
-diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
-diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
+unpriv diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
+unpriv diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
+unpriv diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-changes-PI.txt
+unpriv diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
+unpriv diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
+unpriv diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
+unpriv diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
