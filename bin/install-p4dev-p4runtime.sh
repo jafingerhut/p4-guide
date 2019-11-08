@@ -49,23 +49,6 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
-# Run a child process in the background that will keep sudo
-# credentials fresh.  The hope is that after a user enters their
-# password once, they will not need to do so again for the entire
-# duration of running this install script.
-"${THIS_SCRIPT_DIR_ABSOLUTE}/keep-sudo-credentials-fresh.sh" &
-CHILD_PROCESS_PID=$!
-
-clean_up() {
-    kill ${CHILD_PROCESS_PID}
-    # Invalidate the user's cached credentials
-    sudo --reset-timestamp
-    exit
-}
-
-# Kill the child process
-trap clean_up SIGHUP SIGINT SIGTERM
-
 ubuntu_release=`lsb_release -s -r`
 
 echo "This script builds and installs the P4_16 (and also P4_14)"
@@ -141,6 +124,29 @@ df -BM .
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
 sudo apt-get --yes install git vim
+
+# Run a child process in the background that will keep sudo
+# credentials fresh.  The hope is that after a user enters their
+# password once, they will not need to do so again for the entire
+# duration of running this install script.
+
+# However, since it runs in the background, do _not_ start it until
+# after the first command in this script that uses 'sudo', so the
+# foreground 'sudo' command will cause the password prompt to be
+# waited for, if it is needed.
+"${THIS_SCRIPT_DIR_ABSOLUTE}/keep-sudo-credentials-fresh.sh" &
+CHILD_PROCESS_PID=$!
+
+clean_up() {
+    echo "Killing child process"
+    kill ${CHILD_PROCESS_PID}
+    # Invalidate the user's cached credentials
+    sudo --reset-timestamp
+    exit
+}
+
+# Kill the child process
+trap clean_up SIGHUP SIGINT SIGTERM
 
 # Install Python2.  This is required for p4c, but there are several
 # earlier packages that check for python in their configure scripts,
