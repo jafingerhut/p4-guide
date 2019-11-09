@@ -16,16 +16,15 @@ Then run the commands below in a terminal.  Note:
   is your current directory when you start the script, is where new
   directories with names like `p4c`, `behavioral-model`, `protobuf`,
   `grpc`, etc. will be created.
+
 + I have only tried these install scripts when running as a normal
   user, i.e. not as the superuser `root`.  There are several `sudo`
-  commands in the install script, some of which will prompt you to
-  enter your password before the script can continue.  The only
-  commands run as superuser are those that install files in
-  system-wide directories such as `/usr/local/bin`.  The first such
-  command occurs very soon after you start the script, and you should
-  enter your password to authorize it.  The script should then refresh
-  that authorization itself while it is running, so you should not
-  need to enter you password for any later commands that use sudo.
+  commands in the install script.  I have tried to write this script
+  so that you should be prompted to enter your password once very soon
+  after you start the script, and then never need to enter it again
+  while the script runs.  The only commands run as superuser are those
+  that install files in system-wide directories such as
+  `/usr/local/bin`.
 ```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
