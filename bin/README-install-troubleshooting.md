@@ -21,11 +21,12 @@ Then run the commands below in a terminal.  Note:
   commands in the install script, some of which will prompt you to
   enter your password before the script can continue.  The only
   commands run as superuser are those that install files in
-  system-wide directories such as `/usr/local/bin`.  This password
-  prompting can occur multiple times during the execution of the
-  script, so check it every 15 minutes or so until it is finished, to
-  see if it is waiting for you to enter your password.
-```
+  system-wide directories such as `/usr/local/bin`.  The first such
+  command occurs very soon after you start the script, and you should
+  enter your password to authorize it.  The script should then refresh
+  that authorization itself while it is running, so you should not
+  need to enter you password for any later commands that use sudo.
+```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-p4runtime.sh |& tee log.txt
@@ -50,11 +51,11 @@ informed decision.
 
 * The shell script
   [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh) installs
-  everything that `install-p4dev.sh` does, plus `simple_switch_grpc`,
-  which can use the P4Runtime API protocol to communicate with a
-  controller (in addition to the older Thrift API).  It also installs
-  Mininet and a few other small packages that enable you to run the
-  exercises in the master branch of the
+  `p4c`, `behavioral-model` `simple_switch`, plus
+  `simple_switch_grpc`, that can use the P4Runtime API protocol to
+  communicate with a controller (in addition to the older Thrift API).
+  It also installs Mininet and a few other small packages that enable
+  you to run the exercises in the master branch of the
   [tutorials](https://github.com/p4lang/tutorials) repository.
 * The newest shell script [`install-p4dev-v2.sh`](install-p4dev-v2.sh)
   is still fairly new and less tested than the ones above, so consider
@@ -67,10 +68,11 @@ informed decision.
   (which exercise little or none of the P4Runtime API code), and
   running the basic exercise in the
   [tutorials](https://github.com/p4lang/tutorials) repository.
-* The older shell script [`install-p4dev.sh`](install-p4dev.sh)
-  installs `simple_switch`, which uses the Thrift API protocol to
-  communicate with a controller.  This install script does _not_
-  install the software necessary to use the P4Runtime API, and thus is
+* The older shell script [`install-p4dev.sh`](install-p4dev.sh) does
+  not install anything unless you edit it.  The messages that appear
+  when you run it explain why, and how to change it if you really want
+  to run it despite its limitations.  This script does _not_ install
+  the software necessary to use the P4Runtime API, and thus is
   insufficient by itself to enable you to run the exercises in August
   2019 or later versions of the
   [tutorials](https://github.com/p4lang/tutorials) repository.
@@ -85,9 +87,33 @@ for several hundred of them it also runs the compiled code on
 
 Starting from the directory where you ran the install script, enter
 these commands in a terminal.  No superuser privileges are required.
-```
+```bash
 $ cd p4c/build
 $ make check
+```
+
+Another is to try running one of the exercises in the tutorials
+repository, which you can do with these steps if you wish:
+
+```bash
+$ git clone https://github.com/p4lang/tutorials
+$ cd tutorials/exercises/basic
+$ cp solution/basic.p4 basic.p4
+$ make run
+```
+
+If at the end of many lines of logging output you see a prompt
+`mininet>`, you can try `h1 ping h2` to ping from virtual host `h1` in
+the exercise to `h2`, and it should report a successful ping every
+second.  It will not stop on its own.  You can type Control-C to stop
+it and return to the `mininet>` prompt, and you can type Control-D to
+exit from mininet and get back to the original shell prompt.
+
+You may restore the modified `basic.p4` program back to its original
+contents with the command:
+
+```bash
+$ git checkout basic.p4
 ```
 
 
