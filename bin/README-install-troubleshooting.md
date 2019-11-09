@@ -16,7 +16,6 @@ Then run the commands below in a terminal.  Note:
   is your current directory when you start the script, is where new
   directories with names like `p4c`, `behavioral-model`, `protobuf`,
   `grpc`, etc. will be created.
-
 + I have only tried these install scripts when running as a normal
   user, i.e. not as the superuser `root`.  There are several `sudo`
   commands in the install script.  I have tried to write this script
