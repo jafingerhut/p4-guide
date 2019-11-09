@@ -75,9 +75,6 @@ echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
 echo "took about 40 minutes."
 echo ""
-echo "You will likely need to enter your password for multiple uses of"
-echo "'sudo' spread throughout this script."
-echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ protobuf: github.com/google/protobuf v3.2.0"
@@ -123,6 +120,29 @@ df -BM .
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
 sudo apt-get --yes install git vim
+
+# Run a child process in the background that will keep sudo
+# credentials fresh.  The hope is that after a user enters their
+# password once, they will not need to do so again for the entire
+# duration of running this install script.
+
+# However, since it runs in the background, do _not_ start it until
+# after the first command in this script that uses 'sudo', so the
+# foreground 'sudo' command will cause the password prompt to be
+# waited for, if it is needed.
+"${THIS_SCRIPT_DIR_ABSOLUTE}/keep-sudo-credentials-fresh.sh" &
+CHILD_PROCESS_PID=$!
+
+clean_up() {
+    echo "Killing child process"
+    kill ${CHILD_PROCESS_PID}
+    # Invalidate the user's cached credentials
+    sudo --reset-timestamp
+    exit
+}
+
+# Kill the child process
+trap clean_up SIGHUP SIGINT SIGTERM
 
 # Install Python2.  This is required for p4c, but there are several
 # earlier packages that check for python in their configure scripts,
@@ -251,3 +271,5 @@ echo "directory."
 echo "----------------------------------------------------------------------"
 echo "CONSIDER READING WHAT IS ABOVE"
 echo "----------------------------------------------------------------------"
+
+clean_up
