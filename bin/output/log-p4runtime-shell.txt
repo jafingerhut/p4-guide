@@ -1,0 +1,505 @@
+Disk space before installing docker
+Mon Nov 11 07:57:00 PST 2019
+Filesystem     1M-blocks  Used Available Use% Mounted on
+/dev/sda1         59385M 4297M    52049M   8% /
+fatal: destination path 'p4runtime-shell' already exists and is not an empty directory.
+Sending build context to Docker daemon    363kB
+Step 1/25 : FROM p4lang/third-party:stable AS deps
+stable: Pulling from p4lang/third-party
+16c48d79e9cc: Pulling fs layer
+3c654ad3ed7d: Pulling fs layer
+6276f4f9c29d: Pulling fs layer
+a4bd43ad48ce: Pulling fs layer
+1a8e58271b39: Pulling fs layer
+782a28f793e1: Pulling fs layer
+105a54eac271: Pulling fs layer
+e5b66eba932f: Pulling fs layer
+d8c5bcbd7342: Pulling fs layer
+b35d24e5d815: Pulling fs layer
+6b0487ebd141: Pulling fs layer
+33f124930634: Pulling fs layer
+1375f4af37f9: Pulling fs layer
+ca62519c07ec: Pulling fs layer
+f26f3e7e0e2c: Pulling fs layer
+90a8a001d67a: Pulling fs layer
+26f4060f9c3b: Pulling fs layer
+bd7963f754b1: Pulling fs layer
+e5b66eba932f: Waiting
+d8c5bcbd7342: Waiting
+b35d24e5d815: Waiting
+6b0487ebd141: Waiting
+1a8e58271b39: Waiting
+33f124930634: Waiting
+782a28f793e1: Waiting
+105a54eac271: Waiting
+1375f4af37f9: Waiting
+ca62519c07ec: Waiting
+f26f3e7e0e2c: Waiting
+bd7963f754b1: Waiting
+90a8a001d67a: Waiting
+26f4060f9c3b: Waiting
+a4bd43ad48ce: Waiting
+3c654ad3ed7d: Verifying Checksum
+3c654ad3ed7d: Download complete
+6276f4f9c29d: Verifying Checksum
+6276f4f9c29d: Download complete
+a4bd43ad48ce: Verifying Checksum
+a4bd43ad48ce: Download complete
+782a28f793e1: Download complete
+105a54eac271: Verifying Checksum
+105a54eac271: Download complete
+e5b66eba932f: Verifying Checksum
+d8c5bcbd7342: Verifying Checksum
+d8c5bcbd7342: Download complete
+b35d24e5d815: Verifying Checksum
+b35d24e5d815: Download complete
+6b0487ebd141: Verifying Checksum
+6b0487ebd141: Download complete
+1a8e58271b39: Verifying Checksum
+1a8e58271b39: Download complete
+16c48d79e9cc: Download complete
+33f124930634: Verifying Checksum
+33f124930634: Download complete
+ca62519c07ec: Verifying Checksum
+ca62519c07ec: Download complete
+16c48d79e9cc: Pull complete
+3c654ad3ed7d: Pull complete
+6276f4f9c29d: Pull complete
+90a8a001d67a: Verifying Checksum
+90a8a001d67a: Download complete
+a4bd43ad48ce: Pull complete
+f26f3e7e0e2c: Verifying Checksum
+f26f3e7e0e2c: Download complete
+26f4060f9c3b: Verifying Checksum
+26f4060f9c3b: Download complete
+bd7963f754b1: Verifying Checksum
+bd7963f754b1: Download complete
+1a8e58271b39: Pull complete
+782a28f793e1: Pull complete
+105a54eac271: Pull complete
+e5b66eba932f: Pull complete
+d8c5bcbd7342: Pull complete
+b35d24e5d815: Pull complete
+6b0487ebd141: Pull complete
+33f124930634: Pull complete
+1375f4af37f9: Verifying Checksum
+1375f4af37f9: Download complete
+1375f4af37f9: Pull complete
+ca62519c07ec: Pull complete
+f26f3e7e0e2c: Pull complete
+90a8a001d67a: Pull complete
+26f4060f9c3b: Pull complete
+bd7963f754b1: Pull complete
+Digest: sha256:63484783513983b178b72afd7920c9bb90fa4c0536334d4e8eaed656906f127e
+Status: Downloaded newer image for p4lang/third-party:stable
+ ---> 4e14fc14bf1c
+Step 2/25 : SHELL ["/bin/bash", "-c"]
+ ---> Running in a2c16c4f8675
+Removing intermediate container a2c16c4f8675
+ ---> 28be7473c4f5
+Step 3/25 : COPY . /p4runtime-sh/
+ ---> 99570b78177e
+Step 4/25 : WORKDIR /p4runtime-sh/
+ ---> Running in bced50e31a27
+Removing intermediate container bced50e31a27
+ ---> ac1cfb5ba051
+Step 5/25 : ENV PKG_DEPS git python3 python3-venv
+ ---> Running in bf0b74a12c9a
+Removing intermediate container bf0b74a12c9a
+ ---> 7cccc18ad6ff
+Step 6/25 : ENV VENV /p4runtime-sh/venv
+ ---> Running in 3e0db0bcd4ac
+Removing intermediate container 3e0db0bcd4ac
+ ---> 1d6dc700a7ae
+Step 7/25 : RUN apt-get update &&     apt-get install -y --no-install-recommends $PKG_DEPS &&     rm -rf /var/cache/apt/* /var/lib/apt/lists/*
+ ---> Running in c6f0ae2e27db
+Get:1 http://security.ubuntu.com/ubuntu xenial-security InRelease [109 kB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial InRelease [247 kB]
+Get:3 http://security.ubuntu.com/ubuntu xenial-security/main amd64 Packages [985 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Get:5 http://security.ubuntu.com/ubuntu xenial-security/restricted amd64 Packages [12.7 kB]
+Get:6 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 Packages [589 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:8 http://security.ubuntu.com/ubuntu xenial-security/multiverse amd64 Packages [6281 B]
+Get:9 http://archive.ubuntu.com/ubuntu xenial/main amd64 Packages [1558 kB]
+Get:10 http://archive.ubuntu.com/ubuntu xenial/restricted amd64 Packages [14.1 kB]
+Get:11 http://archive.ubuntu.com/ubuntu xenial/universe amd64 Packages [9827 kB]
+Get:12 http://archive.ubuntu.com/ubuntu xenial/multiverse amd64 Packages [176 kB]
+Get:13 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [1363 kB]
+Get:14 http://archive.ubuntu.com/ubuntu xenial-updates/restricted amd64 Packages [13.1 kB]
+Get:15 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [993 kB]
+Get:16 http://archive.ubuntu.com/ubuntu xenial-updates/multiverse amd64 Packages [19.3 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial-backports/main amd64 Packages [7942 B]
+Get:18 http://archive.ubuntu.com/ubuntu xenial-backports/universe amd64 Packages [8807 B]
+Fetched 16.1 MB in 19s (813 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  ca-certificates dh-python git-man libasn1-8-heimdal libcurl3-gnutls
+  liberror-perl libgdbm3 libgmp10 libgnutls30 libgssapi-krb5-2
+  libgssapi3-heimdal libhcrypto4-heimdal libheimbase1-heimdal
+  libheimntlm0-heimdal libhogweed4 libhx509-5-heimdal libidn11 libk5crypto3
+  libkeyutils1 libkrb5-26-heimdal libkrb5-3 libkrb5support0 libldap-2.4-2
+  libmpdec2 libnettle6 libp11-kit0 libperl5.22 libpython3-stdlib
+  libpython3.5-minimal libpython3.5-stdlib libroken18-heimdal librtmp1
+  libtasn1-6 libwind0-heimdal openssl perl perl-modules-5.22 python-pip-whl
+  python3-minimal python3.5 python3.5-minimal python3.5-venv
+Suggested packages:
+  libdpkg-perl gettext-base git-daemon-run | git-daemon-sysvinit git-doc
+  git-el git-email git-gui gitk gitweb git-arch git-cvs git-mediawiki git-svn
+  gnutls-bin krb5-doc krb5-user perl-doc libterm-readline-gnu-perl
+  | libterm-readline-perl-perl make python3-doc python3-tk python3.5-doc
+  binutils binfmt-support
+Recommended packages:
+  patch less rsync ssh-client krb5-locales netbase rename
+The following NEW packages will be installed:
+  ca-certificates dh-python git git-man libasn1-8-heimdal libcurl3-gnutls
+  liberror-perl libgdbm3 libgmp10 libgnutls30 libgssapi-krb5-2
+  libgssapi3-heimdal libhcrypto4-heimdal libheimbase1-heimdal
+  libheimntlm0-heimdal libhogweed4 libhx509-5-heimdal libidn11 libk5crypto3
+  libkeyutils1 libkrb5-26-heimdal libkrb5-3 libkrb5support0 libldap-2.4-2
+  libmpdec2 libnettle6 libp11-kit0 libperl5.22 libpython3-stdlib
+  libpython3.5-minimal libpython3.5-stdlib libroken18-heimdal librtmp1
+  libtasn1-6 libwind0-heimdal openssl perl perl-modules-5.22 python-pip-whl
+  python3 python3-minimal python3-venv python3.5 python3.5-minimal
+  python3.5-venv
+0 upgraded, 45 newly installed, 0 to remove and 16 not upgraded.
+Need to get 19.5 MB of archives.
+After this operation, 101 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython3.5-minimal amd64 3.5.2-2ubuntu0~16.04.9 [524 kB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python3.5-minimal amd64 3.5.2-2ubuntu0~16.04.9 [1593 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial/main amd64 python3-minimal amd64 3.5.1-3 [23.3 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial/main amd64 libmpdec2 amd64 2.4.2-1 [82.6 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython3.5-stdlib amd64 3.5.2-2ubuntu0~16.04.9 [2137 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python3.5 amd64 3.5.2-2ubuntu0~16.04.9 [165 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial/main amd64 libpython3-stdlib amd64 3.5.1-3 [6818 B]
+Get:8 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 dh-python all 2.20151103ubuntu1.2 [73.9 kB]
+Get:9 http://archive.ubuntu.com/ubuntu xenial/main amd64 python3 amd64 3.5.1-3 [8710 B]
+Get:10 http://archive.ubuntu.com/ubuntu xenial/main amd64 libgdbm3 amd64 1.8.3-13.1 [16.9 kB]
+Get:11 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 perl-modules-5.22 all 5.22.1-9ubuntu0.6 [2629 kB]
+Get:12 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libperl5.22 amd64 5.22.1-9ubuntu0.6 [3405 kB]
+Get:13 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 perl amd64 5.22.1-9ubuntu0.6 [237 kB]
+Get:14 http://archive.ubuntu.com/ubuntu xenial/main amd64 libgmp10 amd64 2:6.1.0+dfsg-2 [240 kB]
+Get:15 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libnettle6 amd64 3.2-1ubuntu0.16.04.1 [93.5 kB]
+Get:16 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libhogweed4 amd64 3.2-1ubuntu0.16.04.1 [136 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libidn11 amd64 1.32-3ubuntu1.2 [46.5 kB]
+Get:18 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libp11-kit0 amd64 0.23.2-5~ubuntu16.04.1 [105 kB]
+Get:19 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libtasn1-6 amd64 4.7-3ubuntu0.16.04.3 [43.5 kB]
+Get:20 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgnutls30 amd64 3.4.10-4ubuntu1.5 [548 kB]
+Get:21 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssl amd64 1.0.2g-1ubuntu4.15 [492 kB]
+Get:22 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 ca-certificates all 20170717~16.04.2 [167 kB]
+Get:23 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libroken18-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [41.4 kB]
+Get:24 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libasn1-8-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [174 kB]
+Get:25 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libkrb5support0 amd64 1.13.2+dfsg-5ubuntu2.1 [31.2 kB]
+Get:26 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libk5crypto3 amd64 1.13.2+dfsg-5ubuntu2.1 [81.3 kB]
+Get:27 http://archive.ubuntu.com/ubuntu xenial/main amd64 libkeyutils1 amd64 1.5.9-8ubuntu1 [9904 B]
+Get:28 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libkrb5-3 amd64 1.13.2+dfsg-5ubuntu2.1 [273 kB]
+Get:29 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgssapi-krb5-2 amd64 1.13.2+dfsg-5ubuntu2.1 [120 kB]
+Get:30 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libhcrypto4-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [85.0 kB]
+Get:31 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libheimbase1-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [29.3 kB]
+Get:32 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libwind0-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [47.8 kB]
+Get:33 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libhx509-5-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [107 kB]
+Get:34 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libkrb5-26-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [202 kB]
+Get:35 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libheimntlm0-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [15.1 kB]
+Get:36 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgssapi3-heimdal amd64 1.7~git20150920+dfsg-4ubuntu1.16.04.1 [96.1 kB]
+Get:37 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libldap-2.4-2 amd64 2.4.42+dfsg-2ubuntu3.7 [160 kB]
+Get:38 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d-1ubuntu0.1 [54.4 kB]
+Get:39 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libcurl3-gnutls amd64 7.47.0-1ubuntu2.14 [184 kB]
+Get:40 http://archive.ubuntu.com/ubuntu xenial/main amd64 liberror-perl all 0.17-1.2 [19.6 kB]
+Get:41 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 git-man all 1:2.7.4-0ubuntu1.6 [736 kB]
+Get:42 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 git amd64 1:2.7.4-0ubuntu1.6 [3176 kB]
+Get:43 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python-pip-whl all 8.1.1-2ubuntu0.4 [1110 kB]
+Get:44 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python3.5-venv amd64 3.5.2-2ubuntu0~16.04.9 [6020 B]
+Get:45 http://archive.ubuntu.com/ubuntu xenial/universe amd64 python3-venv amd64 3.5.1-3 [1106 B]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 19.5 MB in 56s (346 kB/s)
+Selecting previously unselected package libpython3.5-minimal:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7499 files and directories currently installed.)
+Preparing to unpack .../libpython3.5-minimal_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking libpython3.5-minimal:amd64 (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package python3.5-minimal.
+Preparing to unpack .../python3.5-minimal_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking python3.5-minimal (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package python3-minimal.
+Preparing to unpack .../python3-minimal_3.5.1-3_amd64.deb ...
+Unpacking python3-minimal (3.5.1-3) ...
+Selecting previously unselected package libmpdec2:amd64.
+Preparing to unpack .../libmpdec2_2.4.2-1_amd64.deb ...
+Unpacking libmpdec2:amd64 (2.4.2-1) ...
+Selecting previously unselected package libpython3.5-stdlib:amd64.
+Preparing to unpack .../libpython3.5-stdlib_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking libpython3.5-stdlib:amd64 (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package python3.5.
+Preparing to unpack .../python3.5_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking python3.5 (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package libpython3-stdlib:amd64.
+Preparing to unpack .../libpython3-stdlib_3.5.1-3_amd64.deb ...
+Unpacking libpython3-stdlib:amd64 (3.5.1-3) ...
+Selecting previously unselected package dh-python.
+Preparing to unpack .../dh-python_2.20151103ubuntu1.2_all.deb ...
+Unpacking dh-python (2.20151103ubuntu1.2) ...
+Processing triggers for libc-bin (2.23-0ubuntu11) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up libpython3.5-minimal:amd64 (3.5.2-2ubuntu0~16.04.9) ...
+Setting up python3.5-minimal (3.5.2-2ubuntu0~16.04.9) ...
+Setting up python3-minimal (3.5.1-3) ...
+Selecting previously unselected package python3.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 8412 files and directories currently installed.)
+Preparing to unpack .../python3_3.5.1-3_amd64.deb ...
+Unpacking python3 (3.5.1-3) ...
+Selecting previously unselected package libgdbm3:amd64.
+Preparing to unpack .../libgdbm3_1.8.3-13.1_amd64.deb ...
+Unpacking libgdbm3:amd64 (1.8.3-13.1) ...
+Selecting previously unselected package perl-modules-5.22.
+Preparing to unpack .../perl-modules-5.22_5.22.1-9ubuntu0.6_all.deb ...
+Unpacking perl-modules-5.22 (5.22.1-9ubuntu0.6) ...
+Selecting previously unselected package libperl5.22:amd64.
+Preparing to unpack .../libperl5.22_5.22.1-9ubuntu0.6_amd64.deb ...
+Unpacking libperl5.22:amd64 (5.22.1-9ubuntu0.6) ...
+Selecting previously unselected package perl.
+Preparing to unpack .../perl_5.22.1-9ubuntu0.6_amd64.deb ...
+Unpacking perl (5.22.1-9ubuntu0.6) ...
+Selecting previously unselected package libgmp10:amd64.
+Preparing to unpack .../libgmp10_2%3a6.1.0+dfsg-2_amd64.deb ...
+Unpacking libgmp10:amd64 (2:6.1.0+dfsg-2) ...
+Selecting previously unselected package libnettle6:amd64.
+Preparing to unpack .../libnettle6_3.2-1ubuntu0.16.04.1_amd64.deb ...
+Unpacking libnettle6:amd64 (3.2-1ubuntu0.16.04.1) ...
+Selecting previously unselected package libhogweed4:amd64.
+Preparing to unpack .../libhogweed4_3.2-1ubuntu0.16.04.1_amd64.deb ...
+Unpacking libhogweed4:amd64 (3.2-1ubuntu0.16.04.1) ...
+Selecting previously unselected package libidn11:amd64.
+Preparing to unpack .../libidn11_1.32-3ubuntu1.2_amd64.deb ...
+Unpacking libidn11:amd64 (1.32-3ubuntu1.2) ...
+Selecting previously unselected package libp11-kit0:amd64.
+Preparing to unpack .../libp11-kit0_0.23.2-5~ubuntu16.04.1_amd64.deb ...
+Unpacking libp11-kit0:amd64 (0.23.2-5~ubuntu16.04.1) ...
+Selecting previously unselected package libtasn1-6:amd64.
+Preparing to unpack .../libtasn1-6_4.7-3ubuntu0.16.04.3_amd64.deb ...
+Unpacking libtasn1-6:amd64 (4.7-3ubuntu0.16.04.3) ...
+Selecting previously unselected package libgnutls30:amd64.
+Preparing to unpack .../libgnutls30_3.4.10-4ubuntu1.5_amd64.deb ...
+Unpacking libgnutls30:amd64 (3.4.10-4ubuntu1.5) ...
+Selecting previously unselected package openssl.
+Preparing to unpack .../openssl_1.0.2g-1ubuntu4.15_amd64.deb ...
+Unpacking openssl (1.0.2g-1ubuntu4.15) ...
+Selecting previously unselected package ca-certificates.
+Preparing to unpack .../ca-certificates_20170717~16.04.2_all.deb ...
+Unpacking ca-certificates (20170717~16.04.2) ...
+Selecting previously unselected package libroken18-heimdal:amd64.
+Preparing to unpack .../libroken18-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libroken18-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libasn1-8-heimdal:amd64.
+Preparing to unpack .../libasn1-8-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libasn1-8-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libkrb5support0:amd64.
+Preparing to unpack .../libkrb5support0_1.13.2+dfsg-5ubuntu2.1_amd64.deb ...
+Unpacking libkrb5support0:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Selecting previously unselected package libk5crypto3:amd64.
+Preparing to unpack .../libk5crypto3_1.13.2+dfsg-5ubuntu2.1_amd64.deb ...
+Unpacking libk5crypto3:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Selecting previously unselected package libkeyutils1:amd64.
+Preparing to unpack .../libkeyutils1_1.5.9-8ubuntu1_amd64.deb ...
+Unpacking libkeyutils1:amd64 (1.5.9-8ubuntu1) ...
+Selecting previously unselected package libkrb5-3:amd64.
+Preparing to unpack .../libkrb5-3_1.13.2+dfsg-5ubuntu2.1_amd64.deb ...
+Unpacking libkrb5-3:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Selecting previously unselected package libgssapi-krb5-2:amd64.
+Preparing to unpack .../libgssapi-krb5-2_1.13.2+dfsg-5ubuntu2.1_amd64.deb ...
+Unpacking libgssapi-krb5-2:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Selecting previously unselected package libhcrypto4-heimdal:amd64.
+Preparing to unpack .../libhcrypto4-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libhcrypto4-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libheimbase1-heimdal:amd64.
+Preparing to unpack .../libheimbase1-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libheimbase1-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libwind0-heimdal:amd64.
+Preparing to unpack .../libwind0-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libwind0-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libhx509-5-heimdal:amd64.
+Preparing to unpack .../libhx509-5-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libhx509-5-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libkrb5-26-heimdal:amd64.
+Preparing to unpack .../libkrb5-26-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libkrb5-26-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libheimntlm0-heimdal:amd64.
+Preparing to unpack .../libheimntlm0-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libheimntlm0-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libgssapi3-heimdal:amd64.
+Preparing to unpack .../libgssapi3-heimdal_1.7~git20150920+dfsg-4ubuntu1.16.04.1_amd64.deb ...
+Unpacking libgssapi3-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Selecting previously unselected package libldap-2.4-2:amd64.
+Preparing to unpack .../libldap-2.4-2_2.4.42+dfsg-2ubuntu3.7_amd64.deb ...
+Unpacking libldap-2.4-2:amd64 (2.4.42+dfsg-2ubuntu3.7) ...
+Selecting previously unselected package librtmp1:amd64.
+Preparing to unpack .../librtmp1_2.4+20151223.gitfa8646d-1ubuntu0.1_amd64.deb ...
+Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d-1ubuntu0.1) ...
+Selecting previously unselected package libcurl3-gnutls:amd64.
+Preparing to unpack .../libcurl3-gnutls_7.47.0-1ubuntu2.14_amd64.deb ...
+Unpacking libcurl3-gnutls:amd64 (7.47.0-1ubuntu2.14) ...
+Selecting previously unselected package liberror-perl.
+Preparing to unpack .../liberror-perl_0.17-1.2_all.deb ...
+Unpacking liberror-perl (0.17-1.2) ...
+Selecting previously unselected package git-man.
+Preparing to unpack .../git-man_1%3a2.7.4-0ubuntu1.6_all.deb ...
+Unpacking git-man (1:2.7.4-0ubuntu1.6) ...
+Selecting previously unselected package git.
+Preparing to unpack .../git_1%3a2.7.4-0ubuntu1.6_amd64.deb ...
+Unpacking git (1:2.7.4-0ubuntu1.6) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../python-pip-whl_8.1.1-2ubuntu0.4_all.deb ...
+Unpacking python-pip-whl (8.1.1-2ubuntu0.4) ...
+Selecting previously unselected package python3.5-venv.
+Preparing to unpack .../python3.5-venv_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking python3.5-venv (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package python3-venv.
+Preparing to unpack .../python3-venv_3.5.1-3_amd64.deb ...
+Unpacking python3-venv (3.5.1-3) ...
+Processing triggers for libc-bin (2.23-0ubuntu11) ...
+Setting up libmpdec2:amd64 (2.4.2-1) ...
+Setting up libpython3.5-stdlib:amd64 (3.5.2-2ubuntu0~16.04.9) ...
+Setting up python3.5 (3.5.2-2ubuntu0~16.04.9) ...
+Setting up libpython3-stdlib:amd64 (3.5.1-3) ...
+Setting up libgdbm3:amd64 (1.8.3-13.1) ...
+Setting up perl-modules-5.22 (5.22.1-9ubuntu0.6) ...
+Setting up libperl5.22:amd64 (5.22.1-9ubuntu0.6) ...
+Setting up perl (5.22.1-9ubuntu0.6) ...
+update-alternatives: using /usr/bin/prename to provide /usr/bin/rename (rename) in auto mode
+Setting up libgmp10:amd64 (2:6.1.0+dfsg-2) ...
+Setting up libnettle6:amd64 (3.2-1ubuntu0.16.04.1) ...
+Setting up libhogweed4:amd64 (3.2-1ubuntu0.16.04.1) ...
+Setting up libidn11:amd64 (1.32-3ubuntu1.2) ...
+Setting up libp11-kit0:amd64 (0.23.2-5~ubuntu16.04.1) ...
+Setting up libtasn1-6:amd64 (4.7-3ubuntu0.16.04.3) ...
+Setting up libgnutls30:amd64 (3.4.10-4ubuntu1.5) ...
+Setting up openssl (1.0.2g-1ubuntu4.15) ...
+Setting up ca-certificates (20170717~16.04.2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Setting up libroken18-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libasn1-8-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libkrb5support0:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Setting up libk5crypto3:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Setting up libkeyutils1:amd64 (1.5.9-8ubuntu1) ...
+Setting up libkrb5-3:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Setting up libgssapi-krb5-2:amd64 (1.13.2+dfsg-5ubuntu2.1) ...
+Setting up libhcrypto4-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libheimbase1-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libwind0-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libhx509-5-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libkrb5-26-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libheimntlm0-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libgssapi3-heimdal:amd64 (1.7~git20150920+dfsg-4ubuntu1.16.04.1) ...
+Setting up libldap-2.4-2:amd64 (2.4.42+dfsg-2ubuntu3.7) ...
+Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d-1ubuntu0.1) ...
+Setting up libcurl3-gnutls:amd64 (7.47.0-1ubuntu2.14) ...
+Setting up liberror-perl (0.17-1.2) ...
+Setting up git-man (1:2.7.4-0ubuntu1.6) ...
+Setting up git (1:2.7.4-0ubuntu1.6) ...
+Setting up python-pip-whl (8.1.1-2ubuntu0.4) ...
+Setting up python3.5-venv (3.5.2-2ubuntu0~16.04.9) ...
+Setting up dh-python (2.20151103ubuntu1.2) ...
+Setting up python3 (3.5.1-3) ...
+running python rtupdate hooks for python3.5...
+running python post-rtupdate hooks for python3.5...
+Setting up python3-venv (3.5.1-3) ...
+Processing triggers for libc-bin (2.23-0ubuntu11) ...
+Processing triggers for ca-certificates (20170717~16.04.2) ...
+Updating certificates in /etc/ssl/certs...
+148 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+Removing intermediate container c6f0ae2e27db
+ ---> ef9bac3161cc
+Step 8/25 : RUN python3 -m venv $VENV &&     source $VENV/bin/activate &&     pip3 install --upgrade pip &&     pip3 install --upgrade setuptools &&     pip3 install -r requirements.txt &&     rm -rf ~/.cache/pip
+ ---> Running in 3eafd00b653e
+Collecting pip
+  Downloading https://files.pythonhosted.org/packages/00/b6/9cfa56b4081ad13874b0c6f96af8ce16cfbc1cb06bedf8e9164ce5551ec1/pip-19.3.1-py2.py3-none-any.whl (1.4MB)
+Installing collected packages: pip
+  Found existing installation: pip 8.1.1
+    Uninstalling pip-8.1.1:
+      Successfully uninstalled pip-8.1.1
+Successfully installed pip-19.3.1
+Collecting setuptools
+  Downloading https://files.pythonhosted.org/packages/d9/de/554b6310ac87c5b921bc45634b07b11394fe63bc4cb5176f5240addf18ab/setuptools-41.6.0-py2.py3-none-any.whl (582kB)
+Installing collected packages: setuptools
+  Found existing installation: setuptools 20.7.0
+    Uninstalling setuptools-20.7.0:
+      Successfully uninstalled setuptools-20.7.0
+Successfully installed setuptools-41.6.0
+Collecting ipaddr
+  Downloading https://files.pythonhosted.org/packages/9d/a7/1b39a16cb90dfe491f57e1cab3103a15d4e8dd9a150872744f531b1106c1/ipaddr-2.2.0.tar.gz
+Collecting jedi
+  Downloading https://files.pythonhosted.org/packages/55/54/da994f359e4e7da4776a200e76dbc85ba5fc319eefc22e33d55296d95a1d/jedi-0.15.1-py2.py3-none-any.whl (1.0MB)
+Collecting ipython
+  Downloading https://files.pythonhosted.org/packages/81/2e/59cdacea6476a4c21b7c090a91250ffbcd085900f5eb9f4e4d68dd2ee4e3/ipython-7.9.0-py3-none-any.whl (775kB)
+Collecting protobuf
+  Downloading https://files.pythonhosted.org/packages/27/1c/ccf7810d5d02bdaafc223af032e8ac7f5ad6d23c5d0a44682a5a85fdda25/protobuf-3.10.0-cp35-cp35m-manylinux1_x86_64.whl (1.3MB)
+Collecting grpcio
+  Downloading https://files.pythonhosted.org/packages/2b/dd/ad8ae8e63b4ec93058dec07c3fdd2b702a34c43744dd84060abe20213fed/grpcio-1.25.0-cp35-cp35m-manylinux2010_x86_64.whl (2.4MB)
+Collecting parso>=0.5.0
+  Downloading https://files.pythonhosted.org/packages/a3/bd/bf4e5bd01d79906e5b945a7af033154da49fd2b0d5b5c705a21330323305/parso-0.5.1-py2.py3-none-any.whl (95kB)
+Collecting prompt-toolkit<2.1.0,>=2.0.0
+  Downloading https://files.pythonhosted.org/packages/87/61/2dfea88583d5454e3a64f9308a686071d58d59a55db638268a6413e1eb6d/prompt_toolkit-2.0.10-py3-none-any.whl (340kB)
+Collecting decorator
+  Downloading https://files.pythonhosted.org/packages/8f/b7/f329cfdc75f3d28d12c65980e4469e2fa373f1953f5df6e370e84ea2e875/decorator-4.4.1-py2.py3-none-any.whl
+Requirement already satisfied: setuptools>=18.5 in ./venv/lib/python3.5/site-packages (from ipython->-r requirements.txt (line 3)) (41.6.0)
+Collecting backcall
+  Downloading https://files.pythonhosted.org/packages/84/71/c8ca4f5bb1e08401b916c68003acf0a0655df935d74d93bf3f3364b310e0/backcall-0.1.0.tar.gz
+Collecting pexpect; sys_platform != "win32"
+  Downloading https://files.pythonhosted.org/packages/0e/3e/377007e3f36ec42f1b84ec322ee12141a9e10d808312e5738f52f80a232c/pexpect-4.7.0-py2.py3-none-any.whl (58kB)
+Collecting pygments
+  Downloading https://files.pythonhosted.org/packages/5c/73/1dfa428150e3ccb0fa3e68db406e5be48698f2a979ccbcec795f28f44048/Pygments-2.4.2-py2.py3-none-any.whl (883kB)
+Collecting traitlets>=4.2
+  Downloading https://files.pythonhosted.org/packages/ca/ab/872a23e29cec3cf2594af7e857f18b687ad21039c1f9b922fac5b9b142d5/traitlets-4.3.3-py2.py3-none-any.whl (75kB)
+Collecting pickleshare
+  Downloading https://files.pythonhosted.org/packages/9a/41/220f49aaea88bc6fa6cba8d05ecf24676326156c23b991e80b3f2fc24c77/pickleshare-0.7.5-py2.py3-none-any.whl
+Collecting six>=1.9
+  Downloading https://files.pythonhosted.org/packages/65/26/32b8464df2a97e6dd1b656ed26b2c194606c16fe163c695a992b36c11cdf/six-1.13.0-py2.py3-none-any.whl
+Collecting wcwidth
+  Downloading https://files.pythonhosted.org/packages/7e/9f/526a6947247599b084ee5232e4f9190a38f398d7300d866af3ab571a5bfe/wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting ptyprocess>=0.5
+  Downloading https://files.pythonhosted.org/packages/d1/29/605c2cc68a9992d18dada28206eeada56ea4bd07a239669da41674648b6f/ptyprocess-0.6.0-py2.py3-none-any.whl
+Collecting ipython-genutils
+  Downloading https://files.pythonhosted.org/packages/fa/bc/9bd3b5c2b4774d5f33b2d544f1460be9df7df2fe42f352135381c347c69a/ipython_genutils-0.2.0-py2.py3-none-any.whl
+Installing collected packages: ipaddr, parso, jedi, six, wcwidth, prompt-toolkit, decorator, backcall, ptyprocess, pexpect, pygments, ipython-genutils, traitlets, pickleshare, ipython, protobuf, grpcio
+    Running setup.py install for ipaddr: started
+    Running setup.py install for ipaddr: finished with status 'done'
+    Running setup.py install for backcall: started
+    Running setup.py install for backcall: finished with status 'done'
+Successfully installed backcall-0.1.0 decorator-4.4.1 grpcio-1.25.0 ipaddr-2.2.0 ipython-7.9.0 ipython-genutils-0.2.0 jedi-0.15.1 parso-0.5.1 pexpect-4.7.0 pickleshare-0.7.5 prompt-toolkit-2.0.10 protobuf-3.10.0 ptyprocess-0.6.0 pygments-2.4.2 six-1.13.0 traitlets-4.3.3 wcwidth-0.1.7
+Removing intermediate container 3eafd00b653e
+ ---> 107cc3f85021
+Step 9/25 : ENV PROTO_DIR /p4runtime-sh/p4runtime/proto
+ ---> Running in e118c7abe4b6
+Removing intermediate container e118c7abe4b6
+ ---> 995a22cb679e
+Step 10/25 : ENV GOOGLE_PROTO_DIR /p4runtime-sh/googleapis
+ ---> Running in 0a78328631f2
+Removing intermediate container 0a78328631f2
+ ---> 386150307a82
+Step 11/25 : ENV PROTOS="$PROTO_DIR/p4/v1/p4data.proto $PROTO_DIR/p4/v1/p4runtime.proto $PROTO_DIR/p4/config/v1/p4info.proto $PROTO_DIR/p4/config/v1/p4types.proto $GOOGLE_PROTO_DIR/google/rpc/status.proto $GOOGLE_PROTO_DIR/google/rpc/code.proto"
+ ---> Running in a29fb89c62c9
+Removing intermediate container a29fb89c62c9
+ ---> 3f0f1f06f334
+Step 12/25 : ENV PROTOFLAGS "-I$GOOGLE_PROTO_DIR -I$PROTO_DIR"
+ ---> Running in c251e6456e06
+Removing intermediate container c251e6456e06
+ ---> 3b080987a2a6
+Step 13/25 : ENV PROTO_BUILD_DIR /p4runtime-sh/py_out
+ ---> Running in 923d30d08eae
+Removing intermediate container 923d30d08eae
+ ---> e0bb679f63c7
+Step 14/25 : RUN source $VENV/bin/activate &&     mkdir -p $PROTO_BUILD_DIR &&     git clone --depth 1 https://github.com/googleapis/googleapis.git $GOOGLE_PROTO_DIR &&     protoc $PROTOS --python_out $PROTO_BUILD_DIR $PROTOFLAGS         --grpc_out $PROTO_BUILD_DIR --plugin=protoc-gen-grpc=$(which grpc_python_plugin) &&     touch $PROTO_BUILD_DIR/__init__.py $PROTO_BUILD_DIR/p4/__init__.py         $PROTO_BUILD_DIR/p4/v1/__init__.py $PROTO_BUILD_DIR/p4/config/__init__.py         $PROTO_BUILD_DIR/p4/config/v1/__init__.py $PROTO_BUILD_DIR/google/__init__.py         $PROTO_BUILD_DIR/google/rpc/__init__.py &&     rm -rf $GOOGLE_PROTO_DIR
+ ---> Running in 2fa85e258a2b
+[91mCloning into '/p4runtime-sh/googleapis'...
+[0m[91m/p4runtime-sh/p4runtime/proto: warning: directory does not exist.
+[0m[91m/p4runtime-sh/p4runtime/proto/p4/v1/p4data.proto[0m[91m: No such file or directory
+[0mThe command '/bin/bash -c source $VENV/bin/activate &&     mkdir -p $PROTO_BUILD_DIR &&     git clone --depth 1 https://github.com/googleapis/googleapis.git $GOOGLE_PROTO_DIR &&     protoc $PROTOS --python_out $PROTO_BUILD_DIR $PROTOFLAGS         --grpc_out $PROTO_BUILD_DIR --plugin=protoc-gen-grpc=$(which grpc_python_plugin) &&     touch $PROTO_BUILD_DIR/__init__.py $PROTO_BUILD_DIR/p4/__init__.py         $PROTO_BUILD_DIR/p4/v1/__init__.py $PROTO_BUILD_DIR/p4/config/__init__.py         $PROTO_BUILD_DIR/p4/config/v1/__init__.py $PROTO_BUILD_DIR/google/__init__.py         $PROTO_BUILD_DIR/google/rpc/__init__.py &&     rm -rf $GOOGLE_PROTO_DIR' returned a non-zero code: 1
+Disk space after installing docker
+Mon Nov 11 07:59:40 PST 2019
+Filesystem     1M-blocks  Used Available Use% Mounted on
+/dev/sda1         59385M 4781M    51565M   9% /

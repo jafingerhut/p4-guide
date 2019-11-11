@@ -11,6 +11,7 @@ echo "Disk space before installing docker"
 date
 df -BM .
 
+sudo apt-get --yes install curl
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker $USER

@@ -1,0 +1,74 @@
+Disk space before installing docker
+Mon Nov 11 07:54:35 PST 2019
+Filesystem     1M-blocks  Used Available Use% Mounted on
+/dev/sda1         59385M 3846M    52500M   7% /
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  curl
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 139 kB of archives.
+After this operation, 340 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.14 [139 kB]
+Fetched 139 kB in 0s (184 kB/s)
+Selecting previously unselected package curl.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 174794 files and directories currently installed.)
+Preparing to unpack .../curl_7.47.0-1ubuntu2.14_amd64.deb ...
+Unpacking curl (7.47.0-1ubuntu2.14) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up curl (7.47.0-1ubuntu2.14) ...
+# Executing docker install script, commit: f45d7c11389849ff46a6b4d94e0dd1ffebca32c1
++ sh -c apt-get update -qq >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null
++ sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | apt-key add -qq - >/dev/null
++ sh -c echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" > /etc/apt/sources.list.d/docker.list
++ sh -c apt-get update -qq >/dev/null
++ [ -n  ]
++ sh -c apt-get install -y -qq --no-install-recommends docker-ce >/dev/null
++ sh -c docker version
+Client: Docker Engine - Community
+ Version:           19.03.4
+ API version:       1.40
+ Go version:        go1.12.10
+ Git commit:        9013bf583a
+ Built:             Fri Oct 18 15:53:51 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          19.03.4
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.12.10
+  Git commit:       9013bf583a
+  Built:            Fri Oct 18 15:52:23 2019
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.2.10
+  GitCommit:        b34a5c8af56e510852c35414db4c1f4fa6172339
+ runc:
+  Version:          1.0.0-rc8+dev
+  GitCommit:        3e425f80a8c931f88e6d94a8c831b9d5aa481657
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+If you would like to use Docker as a non-root user, you should now consider
+adding your user to the "docker" group with something like:
+
+  sudo usermod -aG docker your-user
+
+Remember that you will have to log out and back in for this to take effect!
+
+WARNING: Adding a user to the "docker" group will grant the ability to run
+         containers which can be used to obtain root privileges on the
+         docker host.
+         Refer to https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface
+         for more information.
+Disk space after installing docker
+Mon Nov 11 07:55:33 PST 2019
+Filesystem     1M-blocks  Used Available Use% Mounted on
+/dev/sda1         59385M 4344M    52002M   8% /
+You must log off and back on for the last 'usermod' command to take
+effect, or reboot your system.
