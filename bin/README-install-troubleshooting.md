@@ -3,12 +3,17 @@
 
 ## Quick instructions for successful install script run
 
-Start with an unmodified fresh installation of Ubuntu Linux 16.04 or
-18.04, with at least 2 GB of RAM (4 GB recommended), at least 10 GB of
-free disk space (not 10 GB of disk space total for the VM, but 10 GB
-free disk space after the OS has been installed), and a reliable
-Internet connection that is up for the entire duration of running the
-install script -- it will download approximately 1 to 2 GByte of data.
+Start with:
+
++ an unmodified fresh installation of Ubuntu Linux 16.04 or 18.04,
+  with ...
+  + at least 2 GB of RAM (4 GB recommended)
+  + at least 10 GB of free disk space (not 10 GB of disk space total
+    for the VM, but 10 GB free disk space after the OS has been
+    installed), and
+  + a reliable Internet connection that is up for the entire duration
+    of running the install script -- it will download approximately 1
+    to 2 GByte of data.
 
 Then run the commands below in a terminal.  Note:
 + You may run the commands from any directory you wish -- I typically
