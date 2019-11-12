@@ -83,75 +83,19 @@ to debug when things are not behaving as you expect.
 
 # What to install for compiling P4 programs and running them on bmv2
 
-Recommendations for a machine (or virtual machine) that you use solely
-for the purpose of building P4 open source tools:
+See [here](bin/README-install-troubleshooting.md) for a choice among a
+couple of scripts included in this repository that, on a freshly
+installed Ubuntu Linux machine, will download, compile, and install
+the open source P4 development tools on that Linux machine.
 
-+ RAM - At least 2 GB, 4 GB recommended (1 GB is definitely too small)
-+ disk - 13 GB is barely enough for Ubuntu 18.04 Desktop Linux OS plus
-  a full build of p4lang/behavioral-model and p4lang/p4c, leaving
-  intermediate build files on disk for quicker rebuilding.  Add more
-  as you wish for other programs, data files, and room to grow.
-  Before running the `install-p4dev.sh` script linked below, you must
-  have at least 4 GB of disk space free on the Ubuntu machine's disk
-  (7 GB free is required for `install-p4dev-p4runtime.sh`)
-+ number of CPU cores / virtual CPUs - 1 is enough, but the p4c build
-  can take advantage of 4 CPU cores in parallel, so 2 or 4 will speed
-  up some things.
-
-Clone the p4lang git repositories named below and follow their README
-build/install instructions, or run one of these shell scripts to do it
-for you on an Ubuntu 16.04 or 18.04 Linux system:
-
-+ [bin/install-p4dev.sh](bin/install-p4dev.sh) - Builds
-  `simple_switch` that requires a Thrift API connection from a
-  controller, like the `simple_switch_CLI` process.
-+ [bin/install-p4dev-p4runtime.sh](bin/install-p4dev-p4runtime.sh) -
-  Builds the above, but also a `simple_switch_grpc` program that can
-  accept connections from controller programs that use the newer
-  P4Runtime API.
-
-From following install instructions for `p4lang/behavioral-model`
-repository (including the `sudo make install` step), all of these
-should exist in /usr/local/bin:
-
-    simple_switch
-    simple_switch_CLI
-    simple_switch_grpc (if you follow instructions or use the script
-        that installs this program)
-
-From following install instructions for `p4lang/p4c` repository, these
-should exist in `$P4C/build`, where `P4C` is a shell variable
-containing the path to your copy of the `p4lang/p4c` repository.
+That install script will install the following programs into your
+`/usr/local/bin` directory (plus more that will rarely or never be
+mentioned in the demos in this repository):
 
     p4c
-
-[Historical note: There is also a `p4lang/p4c-bm` repository whose
-install instructions will result in the following file in
-/usr/local/bin:
-
-    p4c-bmv2
-
-However, note that p4c-bmv2 only compiles P4_14 programs, whereas p4c
-can compile both P4_14 and P4_16 programs.  As of October 2018, p4c
-should have implemented most or all of the features that p4c-bmv2
-has.]
-
-
-# Recommended path changes for your shell
-
-It can be convenient to have all of these commands in your shell's
-command path, e.g. for bash:
-
-```bash
-P4C=/path/to/your/copy/of/p4c
-BMV2=/path/to/your/copy/of/behavioral-model
-export PATH=$P4C/build:$BMV2/tools:/usr/local/bin:$PATH
-```
-
-If you use one of the shell scripts linked above to do the install
-steps for you, they create `p4setup.bash` and `p4setup.csh` files you
-can `source` or copy into your shell's init scripts, that do the above
-and a bit more.
+    simple_switch
+    simple_switch_grpc
+    simple_switch_CLI
 
 
 # Other useful commands
@@ -166,10 +110,11 @@ Useful for quickly creating multiple terminal windows and tabs:
 create-terminal-windows.sh
 ```
 
-To create veth interfaces:
+To create veth interfaces (replace `p4-guide` with the path to your
+copy of the `p4-guide` repository on your machine):
 
 ```bash
-sudo $BMV2/tools/veth_setup.sh
+sudo p4-guide/bin/veth_setup.sh
 # Verify that it created many veth<number> interfaces
 ip link show | grep veth
 ```
@@ -220,7 +165,10 @@ source p4c compiler.
 
 If you have followed the instructions above to install both the `p4c`
 and `behavioral-model` repositories, you should have these two files
-of Python code as part of the p4lang/p4c repository:
+of Python code as part of your local copy of the p4lang/p4c
+repository, where `$P4C` is the root directory of your copy of the p4c
+repository (e.g. if you ran the install script from your home
+directory, then `$P4C` is `$HOME/p4c`):
 
 ```bash
 $P4C/backends/bmv2/run-bmv2-test.py
