@@ -159,7 +159,10 @@ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 sudo apt-get --yes install zlib1g-dev
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2019-Oct-09
-sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply tcpdump
+sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply python3-pip tcpdump
+# Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
+# p4c/build ; make check` to succeed.
+pip3 install scapy
 
 
 echo "------------------------------------------------------------"
