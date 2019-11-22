@@ -73,5 +73,10 @@ fi
 #./configure --enable-WP4-16-stacks 'CXXFLAGS=-O0 -g'
 # Without debug enabled:
 #./configure
+# With more aggressive C++ compiler optimization enabled, but I believe
+# that with all of these options, the resulting simple_switch binary
+# cannot be used to achieve passing results on all p4c tests.
+#./configure 'CXXFLAGS=-g -O3' 'CFLAGS=-g -O3' --disable-logging-macros --disable-elogger
+
 make
 sudo make install
