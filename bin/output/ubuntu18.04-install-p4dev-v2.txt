@@ -2,21 +2,19 @@ This script builds and installs the P4_16 (and also P4_14)
 compiler, and the behavioral-model software packet forwarding
 program, that can behave as just about any legal P4 program.
 
-It regularly tested on freshly installed Ubuntu 16.04 and Ubuntu
-18.04 systems, with all Ubuntu software updates as of the date
-of testing.  See this directory for log files recording the last
-date this script was tested on its supported operating systems:
+It regularly tested on freshly installed Ubuntu 16.04, 18.04,
+and 19.10 systems, with all Ubuntu software updates as of the
+date of testing.  See this directory for log files recording the
+last date this script was tested on its supported operating
+systems:
 
     https://github.com/jafingerhut/p4-guide/tree/master/bin/output
 
-The files installed by this script consume about 8 GB of disk space.
+The files installed by this script consume about 9 GB of disk space.
 
 On a 2015 MacBook Pro with a decent speed Internet connection
 and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it
-took about 65 minutes.
-
-You will likely need to enter your password for multiple uses of
-'sudo' spread throughout this script.
+took about 70 to 80 minutes.
 
 Versions of software that will be installed by this script:
 
@@ -29,7 +27,8 @@ Versions of software that will be installed by this script:
   + nanomsg version 1.0.0
   + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22
 + p4c: github.com/p4lang/p4c latest version
-+ Python packages: grpcio, protobuf, latest versions
++ Mininet: github.com/mininet/mininet latest version
++ Python packages: grpcio, protobuf, crcmod, latest versions
 
 Note that anything installed as 'the latest version' can change
 its precise contents from one run of this script to another.
@@ -41,11 +40,11 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Wed Nov  6 19:20:07 PST 2019
+Fri Nov 22 15:15:27 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G  6.3G   50G  12% /
+/dev/sda1        59G  6.2G   50G  12% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         60218M 6366M    50764M  12% /
+/dev/sda1         60218M 6305M    50826M  12% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -59,9 +58,9 @@ Need to get 6,587 kB of archives.
 After this operation, 32.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-runtime all 2:8.0.1453-1ubuntu1.1 [5,435 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim amd64 2:8.0.1453-1ubuntu1.1 [1,152 kB]
-Fetched 6,587 kB in 5s (1,429 kB/s)
+Fetched 6,587 kB in 5s (1,201 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 114478 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 114511 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a8.0.1453-1ubuntu1.1_all.deb ...
 Adding 'diversion of /usr/share/vim/vim80/doc/help.txt to /usr/share/vim/vim80/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim80/doc/tags to /usr/share/vim/vim80/doc/tags.vim-tiny by vim-runtime'
@@ -96,9 +95,9 @@ Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-minimal amd64
 Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7 amd64 2.7.15-4ubuntu4~18.04.2 [239 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-stdlib amd64 2.7.15~rc1-1 [7,620 B]
 Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python amd64 2.7.15~rc1-1 [140 kB]
-Fetched 1,710 kB in 3s (526 kB/s)
+Fetched 1,710 kB in 2s (955 kB/s)
 Selecting previously unselected package python2.7-minimal.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116245 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116278 files and directories currently installed.)
 Preparing to unpack .../python2.7-minimal_2.7.15-4ubuntu4~18.04.2_amd64.deb ...
 Unpacking python2.7-minimal (2.7.15-4ubuntu4~18.04.2) ...
 Selecting previously unselected package python-minimal.
@@ -114,7 +113,7 @@ Setting up python2.7-minimal (2.7.15-4ubuntu4~18.04.2) ...
 Linking and byte-compiling packages for runtime python2.7...
 Setting up python-minimal (2.7.15~rc1-1) ...
 Selecting previously unselected package python.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116302 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116335 files and directories currently installed.)
 Preparing to unpack .../python_2.7.15~rc1-1_amd64.deb ...
 Unpacking python (2.7.15~rc1-1) ...
 Setting up python2.7 (2.7.15-4ubuntu4~18.04.2) ...
@@ -147,7 +146,7 @@ The following NEW packages will be installed:
   libltdl-dev libmpx2 libquadmath0 libsigsegv2 libstdc++-7-dev libtool
   libtsan0 libubsan0 linux-libc-dev m4 make manpages-dev
 0 upgraded, 29 newly installed, 0 to remove and 0 not upgraded.
-Need to get 28.0 MB of archives.
+Need to get 27.9 MB of archives.
 After this operation, 122 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsigsegv2 amd64 2.12-1 [14.7 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 m4 amd64 1.4.18-1 [197 kB]
@@ -169,7 +168,7 @@ Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libgcc-7-de
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 gcc-7 amd64 7.4.0-1ubuntu1~18.04.1 [7,463 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 gcc amd64 4:7.4.0-1ubuntu2.3 [5,184 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc-dev-bin amd64 2.27-3ubuntu1 [71.8 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-66.75 [1,139 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-70.79 [1,079 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc6-dev amd64 2.27-3ubuntu1 [2,587 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libstdc++-7-dev amd64 7.4.0-1ubuntu1~18.04.1 [1,468 kB]
 Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 g++-7 amd64 7.4.0-1ubuntu1~18.04.1 [7,574 kB]
@@ -178,9 +177,9 @@ Get:26 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libltdl-dev amd64 2
 Get:27 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtool all 2.4.6-2 [194 kB]
 Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 make amd64 4.1-9.1ubuntu1 [154 kB]
 Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 manpages-dev all 4.15-1 [2,217 kB]
-Fetched 28.0 MB in 30s (939 kB/s)
+Fetched 27.9 MB in 20s (1,366 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116355 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116388 files and directories currently installed.)
 Preparing to unpack .../00-libsigsegv2_2.12-1_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.12-1) ...
 Selecting previously unselected package m4.
@@ -241,8 +240,8 @@ Selecting previously unselected package libc-dev-bin.
 Preparing to unpack .../19-libc-dev-bin_2.27-3ubuntu1_amd64.deb ...
 Unpacking libc-dev-bin (2.27-3ubuntu1) ...
 Selecting previously unselected package linux-libc-dev:amd64.
-Preparing to unpack .../20-linux-libc-dev_4.15.0-66.75_amd64.deb ...
-Unpacking linux-libc-dev:amd64 (4.15.0-66.75) ...
+Preparing to unpack .../20-linux-libc-dev_4.15.0-70.79_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.15.0-70.79) ...
 Selecting previously unselected package libc6-dev:amd64.
 Preparing to unpack .../21-libc6-dev_2.27-3ubuntu1_amd64.deb ...
 Unpacking libc6-dev:amd64 (2.27-3ubuntu1) ...
@@ -277,7 +276,7 @@ Setting up libcilkrts5:amd64 (7.4.0-1ubuntu1~18.04.1) ...
 Setting up libubsan0:amd64 (7.4.0-1ubuntu1~18.04.1) ...
 Setting up libtsan0:amd64 (8.3.0-6ubuntu1~18.04.1) ...
 Setting up libcurl4:amd64 (7.58.0-2ubuntu3.8) ...
-Setting up linux-libc-dev:amd64 (4.15.0-66.75) ...
+Setting up linux-libc-dev:amd64 (4.15.0-70.79) ...
 Setting up m4 (1.4.18-1) ...
 Setting up liblsan0:amd64 (8.3.0-6ubuntu1~18.04.1) ...
 Setting up libmpx2:amd64 (8.3.0-6ubuntu1~18.04.1) ...
@@ -310,9 +309,9 @@ The following NEW packages will be installed:
 Need to get 176 kB of archives.
 After this operation, 457 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-0ubuntu2 [176 kB]
-Fetched 176 kB in 1s (227 kB/s)
+Fetched 176 kB in 1s (320 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121431 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121464 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.11.dfsg-0ubuntu2_amd64.deb ...
 Unpacking zlib1g-dev:amd64 (1:1.2.11.dfsg-0ubuntu2) ...
 Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-0ubuntu2) ...
@@ -339,9 +338,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-diff-pe
 Get:6 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-diff-xs-perl amd64 0.04-5 [11.1 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 pkg-config amd64 0.29.1-0ubuntu2 [45.0 kB]
-Fetched 816 kB in 5s (163 kB/s)
+Fetched 816 kB in 4s (225 kB/s)
 Selecting previously unselected package dpkg-dev.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121459 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121492 files and directories currently installed.)
 Preparing to unpack .../0-dpkg-dev_1.19.0.5ubuntu2.3_all.deb ...
 Unpacking dpkg-dev (1.19.0.5ubuntu2.3) ...
 Selecting previously unselected package build-essential.
@@ -404,9 +403,9 @@ The following NEW packages will be installed:
   python3-setuptools python3-wheel python3.6-dev
 0 upgraded, 37 newly installed, 0 to remove and 0 not upgraded.
 Need to get 78.1 MB of archives.
-After this operation, 135 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-lib2to3 all 3.6.8-1~18.04 [76.5 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-distutils all 3.6.8-1~18.04 [141 kB]
+After this operation, 136 MB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-lib2to3 all 3.6.9-1~18.04 [77.4 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-distutils all 3.6.9-1~18.04 [144 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 dh-python all 3.20180325ubuntu2 [89.2 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libexpat1-dev amd64 2.2.5-3ubuntu0.2 [122 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-dev amd64 2.7.15-4ubuntu4~18.04.2 [28.3 MB]
@@ -442,14 +441,14 @@ Get:34 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-dev
 Get:35 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 python3-pip all 9.0.1-2.3~ubuntu1.18.04.1 [114 kB]
 Get:36 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python3-setuptools all 39.0.1-2 [248 kB]
 Get:37 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python3-wheel all 0.30.0-0.2 [36.5 kB]
-Fetched 78.1 MB in 50s (1,574 kB/s)
+Fetched 78.1 MB in 2min 2s (642 kB/s)
 Selecting previously unselected package python3-lib2to3.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121787 files and directories currently installed.)
-Preparing to unpack .../00-python3-lib2to3_3.6.8-1~18.04_all.deb ...
-Unpacking python3-lib2to3 (3.6.8-1~18.04) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121820 files and directories currently installed.)
+Preparing to unpack .../00-python3-lib2to3_3.6.9-1~18.04_all.deb ...
+Unpacking python3-lib2to3 (3.6.9-1~18.04) ...
 Selecting previously unselected package python3-distutils.
-Preparing to unpack .../01-python3-distutils_3.6.8-1~18.04_all.deb ...
-Unpacking python3-distutils (3.6.8-1~18.04) ...
+Preparing to unpack .../01-python3-distutils_3.6.9-1~18.04_all.deb ...
+Unpacking python3-distutils (3.6.9-1~18.04) ...
 Selecting previously unselected package dh-python.
 Preparing to unpack .../02-dh-python_3.20180325ubuntu2_all.deb ...
 Unpacking dh-python (3.20180325ubuntu2) ...
@@ -569,12 +568,12 @@ Setting up python-enum34 (1.1.6-2) ...
 Setting up libexpat1-dev:amd64 (2.2.5-3ubuntu0.2) ...
 Setting up libpython2.7-dev:amd64 (2.7.15-4ubuntu4~18.04.2) ...
 Setting up python-dbus (1.2.6-1) ...
-Setting up python3-lib2to3 (3.6.8-1~18.04) ...
+Setting up python3-lib2to3 (3.6.9-1~18.04) ...
 Setting up python-ipaddress (1.0.17-1) ...
 Setting up python-pip (9.0.1-2.3~ubuntu1.18.04.1) ...
 Setting up python2.7-dev (2.7.15-4ubuntu4~18.04.2) ...
 Setting up python-all (2.7.15~rc1-1) ...
-Setting up python3-distutils (3.6.8-1~18.04) ...
+Setting up python3-distutils (3.6.9-1~18.04) ...
 Setting up python-xdg (0.25-4ubuntu1) ...
 Setting up libpython-dev:amd64 (2.7.15~rc1-1) ...
 Setting up python-setuptools (39.0.1-2) ...
@@ -596,7 +595,7 @@ Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Wed Nov  6 19:22:46 PST 2019
+Fri Nov 22 15:19:17 PST 2019
 git clone https://github.com/google/protobuf
 Cloning into 'protobuf'...
 Note: checking out 'v3.6.1'.
@@ -1817,11 +1816,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/andy/protobuf/src'
 end install protobuf:
-Wed Nov  6 19:35:47 PST 2019
+Fri Nov 22 15:32:37 PST 2019
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Wed Nov  6 19:35:47 PST 2019
+Fri Nov 22 15:32:37 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -1833,6 +1832,7 @@ pkg-config is already the newest version (0.29.1-0ubuntu2).
 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 git clone https://github.com/google/grpc.git
 Cloning into 'grpc'...
+Checking out files:  90% (9440/10403)   Checking out files:  91% (9467/10403)   Checking out files:  92% (9571/10403)   Checking out files:  93% (9675/10403)   Checking out files:  94% (9779/10403)   Checking out files:  95% (9883/10403)   Checking out files:  96% (9987/10403)   Checking out files:  97% (10091/10403)   Checking out files:  98% (10195/10403)   Checking out files:  99% (10299/10403)   Checking out files: 100% (10403/10403)   Checking out files: 100% (10403/10403), done.
 Note: checking out 'tags/v1.17.2'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -2780,11 +2780,11 @@ Submodule path 'third_party/zlib': checked out 'cacf7f1d4e3d44d871b605da3b647f07
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Wed Nov  6 19:54:39 PST 2019
+Fri Nov 22 15:49:07 PST 2019
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Wed Nov  6 19:54:39 PST 2019
+Fri Nov 22 15:49:07 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -2838,9 +2838,9 @@ Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtinfo-de
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libreadline-dev amd64 7.0-3 [133 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtool-bin amd64 2.4.6-2 [79.5 kB]
 Get:20 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 valgrind amd64 1:3.13.0-2ubuntu2.1 [14.3 MB]
-Fetched 22.4 MB in 20s (1,129 kB/s)
+Fetched 22.4 MB in 15s (1,460 kB/s)
 Selecting previously unselected package libboost1.65-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 123424 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 123588 files and directories currently installed.)
 Preparing to unpack .../00-libboost1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-atomic1.65.1:amd64.
@@ -2936,42 +2936,14 @@ Submodule path 'proto/openconfig/gnmi': checked out '9c8d9e965b3e854107ea02c12ab
 Submodule path 'proto/openconfig/public': checked out '1040d11c089c74084c64c234bee3691ec70e8a9f'
 Submodule path 'proto/p4runtime': checked out '09a02842321aecd224cfdbbcea95b1dbc6255266'
 Submodule path 'third_party/googletest': checked out 'f5edb4f542e155c75bc4b516f227911d99ec167c'
-commit 33e15ea4cbc292a532cf3f5db61d0f5ea94e6c36
+commit 1539ecd8a50c159b011d9c5a9c0eba99f122a845
 Author: Antonin Bas <abas@vmware.com>
-Date:   Sat Nov 2 15:08:32 2019 -0700
+Date:   Wed Nov 6 22:17:37 2019 -0800
 
-    Support dynamic configuration for P4Runtime implementation
+    Update README with the new officially-supported versions of Protobuf / gRPC
     
-    The server now exposes a new gRPC service that allows changing some
-    configuration parameters of the P4Runtime implementation. At the moment
-    we only support enabling / disabling stream error-reporting (recently
-    added to the P4Runtime specification).
-    
-    For software that consumes DeviceMgr directly and does not use the
-    server code included in this project, we have added a new method to the
-    DeviceMgr PIMPL which enables updating the configuration.
-    
-    This change also implements support for stream error-reporting (when
-    enabled through the configuration mechanism described above). At the
-    moment we only report errors for invalid PacketOut messages. StreamError
-    messages could have been "injected in the stream" in 3 different places:
-    (1) in the PacketIOMgr, (2) in the DeviceMgr, or (3) in the DeviceMgr
-    client. In this patch we went with (2) to avoid changing the DeviceMgr
-    interface (3) and to avoid making the assumption that components which
-    handle PacketOut messages must also have the ability to send PacketIn
-    messages (1), even though this is currently the case for all the
-    components we have.
-    
-    The P4Runtime spec states that StreamError messages may be dropped if
-    the StreamChannel is too busy. We consider that this is not the
-    responsibility of DeviceMgr, but of the DeviceMgr client (e.g. P4Runtime
-    service implementation). This is probably a good idea for the client to
-    implement such a mechanism. Our current P4Runtime service implementation
-    does not, and if a StreamError message needs to be sent to the P4Runtime
-    client, we will not accept a new StreamMessageRequest until the
-    StreamError message is sent. This could impact PacketOut performance,
-    but then again stream error-reporting is only meant to be enabled for
-    debugging purposes.
+    Protobuf 3.6.1 and gRPC 1.17.2
+    These are the versions installed by p4lang/third-party and used for CI.
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
@@ -4947,27 +4919,27 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/andy/PI'
 end install PI:
-Wed Nov  6 20:01:50 PST 2019
+Fri Nov 22 15:56:10 PST 2019
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Wed Nov  6 20:01:50 PST 2019
+Fri Nov 22 15:56:11 PST 2019
 git clone https://github.com/p4lang/behavioral-model.git
 Cloning into 'behavioral-model'...
 Already up to date.
-commit 971732f48570f848a27a8f54b25b7447732d8591
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Sat Oct 26 13:26:13 2019 -0700
+commit 16c699953ee02306731ebf9a9241ea9fe3bbdc8c
+Author: Antonin Bas <abas@vmware.com>
+Date:   Sun Nov 17 14:09:11 2019 -0800
 
-    V1model notes on register extern (#817)
+    Document bmv2 performance caveats
     
-    * Add runtime_CLI docs on table_add and a few other commands
+     * bmv2 is not a production-grade software switch
+     * how to run provided benchmark
+     * how to build bmv2 for maximum throughput
+     * what affects performance
+     * what kind of performance to expect
     
-    * Additional implementation notes on registers in simple_switch
-    Some of this material comes from this comment by Antonin Bas:
-    https://github.com/p4lang/p4c/issues/2055#issuecomment-541863460
-    
-    * Add missing backquote markup
+    Fixes #823
 patching file install_deps.sh
 patching file travis/install-thrift.sh
 Reading package lists...
@@ -5038,9 +5010,9 @@ Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcap0.8-dev amd6
 Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcap-dev amd64 1.8.1-6ubuntu1 [3,480 B]
 Get:30 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libssl1.0-dev amd64 1.0.2n-1ubuntu5.3 [1,365 kB]
 Get:31 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libffi-dev amd64 3.2.1-8 [156 kB]
-Fetched 9,189 kB in 26s (357 kB/s)
+Fetched 9,189 kB in 13s (691 kB/s)
 Selecting previously unselected package flex.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 137547 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 137711 files and directories currently installed.)
 Preparing to unpack .../00-flex_2.6.4-6_amd64.deb ...
 Unpacking flex (2.6.4-6) ...
 Selecting previously unselected package libbison-dev:amd64.
@@ -5711,9 +5683,9 @@ mv -f src/thrift/generate/.deps/thrift-t_go_generator.Tpo src/thrift/generate/.d
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_rs_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_rs_generator.Tpo -c -o src/thrift/generate/thrift-t_rs_generator.o `test -f 'src/thrift/generate/t_rs_generator.cc' || echo './'`src/thrift/generate/t_rs_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_lua_generator.Tpo src/thrift/generate/.deps/thrift-t_lua_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_cl_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_cl_generator.Tpo -c -o src/thrift/generate/thrift-t_cl_generator.o `test -f 'src/thrift/generate/t_cl_generator.cc' || echo './'`src/thrift/generate/t_cl_generator.cc
-mv -f src/thrift/generate/.deps/thrift-t_rs_generator.Tpo src/thrift/generate/.deps/thrift-t_rs_generator.Po
-g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/parse/thrift-t_typedef.o -MD -MP -MF src/thrift/parse/.deps/thrift-t_typedef.Tpo -c -o src/thrift/parse/thrift-t_typedef.o `test -f 'src/thrift/parse/t_typedef.cc' || echo './'`src/thrift/parse/t_typedef.cc
 mv -f src/thrift/generate/.deps/thrift-t_cl_generator.Tpo src/thrift/generate/.deps/thrift-t_cl_generator.Po
+g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/parse/thrift-t_typedef.o -MD -MP -MF src/thrift/parse/.deps/thrift-t_typedef.Tpo -c -o src/thrift/parse/thrift-t_typedef.o `test -f 'src/thrift/parse/t_typedef.cc' || echo './'`src/thrift/parse/t_typedef.cc
+mv -f src/thrift/generate/.deps/thrift-t_rs_generator.Tpo src/thrift/generate/.deps/thrift-t_rs_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/parse/thrift-parse.o -MD -MP -MF src/thrift/parse/.deps/thrift-parse.Tpo -c -o src/thrift/parse/thrift-parse.o `test -f 'src/thrift/parse/parse.cc' || echo './'`src/thrift/parse/parse.cc
 mv -f src/thrift/parse/.deps/thrift-parse.Tpo src/thrift/parse/.deps/thrift-parse.Po
 mv -f src/thrift/parse/.deps/thrift-t_typedef.Tpo src/thrift/parse/.deps/thrift-t_typedef.Po
@@ -5756,8 +5728,8 @@ depbase=`echo src/thrift/concurrency/PosixThreadFactory.lo | sed 's|[^/]*$|.deps
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/PosixThreadFactory.lo src/thrift/concurrency/PosixThreadFactory.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF src/thrift/concurrency/.deps/PosixThreadFactory.Tpo -c src/thrift/concurrency/PosixThreadFactory.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/PosixThreadFactory.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF src/thrift/concurrency/.deps/PosixThreadFactory.Tpo -c src/thrift/concurrency/PosixThreadFactory.cpp -o src/thrift/concurrency/PosixThreadFactory.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp -o src/thrift/concurrency/Mutex.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF src/thrift/concurrency/.deps/PosixThreadFactory.Tpo -c src/thrift/concurrency/PosixThreadFactory.cpp -o src/thrift/concurrency/PosixThreadFactory.o >/dev/null 2>&1
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c -o src/thrift/server/libthriftnb_la-TNonblockingServer.lo `test -f 'src/thrift/server/TNonblockingServer.cpp' || echo './'`src/thrift/server/TNonblockingServer.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c src/thrift/server/TNonblockingServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/libthriftnb_la-TNonblockingServer.o
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpServer.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpServer.Tpo -c -o src/thrift/async/libthriftnb_la-TEvhttpServer.lo `test -f 'src/thrift/async/TEvhttpServer.cpp' || echo './'`src/thrift/async/TEvhttpServer.cpp
@@ -6120,10 +6092,11 @@ make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/TypedefTest.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp OneWayTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp OneWayTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp OneWayTest.thrift
 make  all-am
@@ -6391,17 +6364,17 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 make  all-am
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/cpp'
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6410,8 +6383,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_types.lo gen-cpp/StressTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF gen-cpp/.deps/StressTest_constants.Tpo -c gen-cpp/StressTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_constants.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF gen-cpp/.deps/StressTest_constants.Tpo -c gen-cpp/StressTest_constants.cpp -o gen-cpp/StressTest_constants.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6437,8 +6410,8 @@ depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 depbase=`echo src/ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT src/ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o src/ThriftTest_extras.lo src/ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6550,7 +6523,6 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py  ../DoubleConstantsTest.thrift
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -6571,6 +6543,7 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py  ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py  ../Recursive.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
 
@@ -6592,6 +6565,8 @@ test -d gen-py-default || /bin/mkdir -p gen-py-default
 test -d gen-py-default || /bin/mkdir -p gen-py-default
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DebugProtoTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -6680,10 +6655,7 @@ test -d gen-py-default || /bin/mkdir -p gen-py-default
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-default || /bin/mkdir -p gen-py-default
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DoubleConstantsTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-default || /bin/mkdir -p gen-py-default
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -6705,6 +6677,7 @@ test -d gen-py-default || /bin/mkdir -p gen-py-default
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
 test -d gen-py-default || /bin/mkdir -p gen-py-default
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../Recursive.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
 
@@ -6723,8 +6696,8 @@ test -d gen-py-default || /bin/mkdir -p gen-py-default
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
 
 test -d gen-py-slots || /bin/mkdir -p gen-py-slots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../ThriftTest.thrift
 test -d gen-py-slots || /bin/mkdir -p gen-py-slots
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
@@ -6770,7 +6743,9 @@ test -d gen-py-slots || /bin/mkdir -p gen-py-slots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6814,10 +6789,7 @@ test -d gen-py-slots || /bin/mkdir -p gen-py-slots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-slots || /bin/mkdir -p gen-py-slots
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6837,26 +6809,27 @@ test -d gen-py-slots || /bin/mkdir -p gen-py-slots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DoubleConstantsTest.thrift
 test -d gen-py-slots || /bin/mkdir -p gen-py-slots
+test -d gen-py-slots || /bin/mkdir -p gen-py-slots
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../Recursive.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
 test -d gen-py-oldstyle || /bin/mkdir -p gen-py-oldstyle
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
 test -d gen-py-oldstyle || /bin/mkdir -p gen-py-oldstyle
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../DebugProtoTest.thrift
@@ -7046,7 +7019,9 @@ test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7090,10 +7065,7 @@ test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7113,6 +7085,7 @@ test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
 test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../Recursive.thrift
@@ -7180,7 +7153,9 @@ test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7224,8 +7199,7 @@ test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -7246,7 +7220,6 @@ test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
 test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../Recursive.thrift
@@ -7314,7 +7287,9 @@ test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7358,7 +7333,8 @@ test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
+.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7378,28 +7354,25 @@ test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DoubleConstantsTest.thrift
+test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../Recursive.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
 make  all-am
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/py'
 make[4]: Nothing to be done for 'all-am'.
@@ -7445,10 +7418,10 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo gen-cpp/shared_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/shared_types.lo gen-cpp/shared_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF gen-cpp/.deps/shared_types.Tpo -c gen-cpp/shared_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/shared_types.o
 depbase=`echo gen-cpp/tutorial_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/tutorial_constants.lo gen-cpp/tutorial_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF gen-cpp/.deps/shared_types.Tpo -c gen-cpp/shared_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/shared_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_constants.lo -MD -MP -MF gen-cpp/.deps/tutorial_constants.Tpo -c gen-cpp/tutorial_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/tutorial_constants.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_constants.lo -MD -MP -MF gen-cpp/.deps/tutorial_constants.Tpo -c gen-cpp/tutorial_constants.cpp -o gen-cpp/tutorial_constants.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF gen-cpp/.deps/shared_types.Tpo -c gen-cpp/shared_types.cpp -o gen-cpp/shared_types.o >/dev/null 2>&1
@@ -7462,10 +7435,10 @@ libtool: link: ar cru .libs/libtutorialgencpp.a gen-cpp/.libs/Calculator.o gen-c
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
-libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
 libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
+libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 make[4]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial/cpp'
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial/cpp'
 Making all in py
@@ -7485,6 +7458,7 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial'
 make[2]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial'
 make[2]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0'
+make[2]: Nothing to be done for 'all-am'.
 make[2]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0'
 make[1]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0'
 Making install in compiler/cpp
@@ -7707,9 +7681,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/THeaderTranspor
 byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/sslcompat.py to sslcompat.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/THttpClient.py to THttpClient.pyc
-writing byte-compilation script '/tmp/tmpC7kjGt.py'
-/usr/bin/python -O /tmp/tmpC7kjGt.py
-removing /tmp/tmpC7kjGt.py
+writing byte-compilation script '/tmp/tmpUOEXCZ.py'
+/usr/bin/python -O /tmp/tmpUOEXCZ.py
+removing /tmp/tmpUOEXCZ.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -7908,14 +7882,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/THeaderTransport.py
 byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/sslcompat.py to sslcompat.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/THttpClient.py to THttpClient.pyc
-writing byte-compilation script '/tmp/tmpKXTkGM.py'
-/usr/bin/python -O /tmp/tmpKXTkGM.py
-removing /tmp/tmpKXTkGM.py
+writing byte-compilation script '/tmp/tmphEqmcQ.py'
+/usr/bin/python -O /tmp/tmphEqmcQ.py
+removing /tmp/tmphEqmcQ.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpFovRdq.py'
-/usr/bin/python -O /tmp/tmpFovRdq.py
-removing /tmp/tmpFovRdq.py
+writing byte-compilation script '/tmp/tmpKa33MQ.py'
+/usr/bin/python -O /tmp/tmpKa33MQ.py
+removing /tmp/tmpKa33MQ.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -7940,26 +7914,26 @@ Adding six 1.11.0 to easy-install.pth file
 
 Using /usr/lib/python2.7/dist-packages
 Finished processing dependencies for thrift==0.12.0
---2019-11-06 20:10:25--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 192.30.255.112
-Connecting to github.com (github.com)|192.30.255.112|:443... connected.
+--2019-11-22 16:07:14--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 140.82.114.3
+Connecting to github.com (github.com)|140.82.114.3|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-11-06 20:10:25--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.253.120
-Connecting to codeload.github.com (codeload.github.com)|192.30.253.120|:443... connected.
+--2019-11-22 16:07:14--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 140.82.114.10
+Connecting to codeload.github.com (codeload.github.com)|140.82.114.10|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  230K
-    50K .......... .......... .......... .......... ..........  452K
-   100K .......... .......... .......... .......... ..........  567K
-   150K .......... .......... .......... .......... ..........  574K
-   200K .......... .......... .......... .......... .......... 2.88M
-   250K .......... .......... .......... .......... .......     569K=0.6s
+     0K .......... .......... .......... .......... .......... 1.31M
+    50K .......... .......... .......... .......... .......... 1.73M
+   100K .......... .......... .......... .......... .......... 1.71M
+   150K .......... .......... .......... .......... .......... 1.73M
+   200K .......... .......... .......... .......... .......... 1.69M
+   250K .......... .......... .......... .......... .......    1.58M=0.2s
 
-2019-11-06 20:10:26 (493 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-11-22 16:07:14 (1.61 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -10559,14 +10533,6 @@ depbase=`echo switch_runner.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ./libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog  -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out  -Wall -Wextra -pthread -O0 -g -MT switch_runner.lo -MD -MP -MF $depbase.Tpo -c -o switch_runner.lo switch_runner.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out -Wall -Wextra -pthread -O0 -g -MT switch_runner.lo -MD -MP -MF .deps/switch_runner.Tpo -c switch_runner.cpp  -fPIC -DPIC -o .libs/switch_runner.o
-switch_runner.cpp: In constructor ‘sswitch_grpc::SimpleSwitchGrpcRunner::SimpleSwitchGrpcRunner(bool, std::__cxx11::string, bm::DevMgrIface::port_t, std::__cxx11::string, bm::DevMgrIface::port_t)’:
-switch_runner.cpp:509:22: warning: ‘static void pi::fe::proto::DeviceMgr::init(size_t)’ is deprecated [-Wdeprecated-declarations]
-   DeviceMgr::init(256);
-                      ^
-In file included from switch_runner.cpp:28:0:
-/usr/local/include/PI/frontends/proto/device_mgr.h:93:15: note: declared here
-   static void init(size_t max_devices);
-               ^~~~
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out -Wall -Wextra -pthread -O0 -g -MT switch_runner.lo -MD -MP -MF .deps/switch_runner.Tpo -c switch_runner.cpp -o switch_runner.o >/dev/null 2>&1
 /bin/bash ./libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g   -o libsimple_switch_grpc.la  switch_runner.lo  ./../simple_switch/libsimpleswitch.la ./../../PI/libbmpi.la libbm_grpc_dataplane.la ./../../src/bm_runtime/libbmruntime.la ./../../thrift_src/libruntimestubs.la ./../simple_switch/libsimpleswitch_thrift.la -lpifeproto -lpigrpcserver -lpi -L/usr/local/lib -lgrpc++ -lgrpc -L/usr/local/lib -lprotobuf -pthread 
 libtool: link: (cd .libs/libsimple_switch_grpc.lax/libsimpleswitch.a && ar x "/home/andy/behavioral-model/targets/simple_switch_grpc/./../simple_switch/.libs/libsimpleswitch.a")
@@ -10700,11 +10666,11 @@ make[3]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_gr
 make[2]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Wed Nov  6 20:28:11 PST 2019
+Fri Nov 22 16:30:53 PST 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Wed Nov  6 20:28:11 PST 2019
+Fri Nov 22 16:30:53 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -10723,6 +10689,7 @@ tcpdump set to manually installed.
 cmake is already the newest version (3.10.2-1ubuntu2.18.04.1).
 g++ is already the newest version (4:7.4.0-1ubuntu2.3).
 git is already the newest version (1:2.17.1-1ubuntu0.4).
+python3-pip is already the newest version (9.0.1-2.3~ubuntu1.18.04.1).
 The following additional packages will be installed:
   binfmt-support gir1.2-harfbuzz-0.0 icu-devtools libboost-graph1.65-dev
   libboost-graph1.65.1 libboost-iostreams1.65-dev libboost-iostreams1.65.1
@@ -10781,9 +10748,9 @@ Get:31 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0-dev amd64 
 Get:32 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ipaddr all 2.2.0-1 [15.5 kB]
 Get:33 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ply all 3.11-1 [46.6 kB]
 Get:34 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-scapy all 2.3.3-3 [359 kB]
-Fetched 41.5 MB in 43s (962 kB/s)
+Fetched 41.5 MB in 27s (1,560 kB/s)
 Selecting previously unselected package binfmt-support.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 140456 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 140620 files and directories currently installed.)
 Preparing to unpack .../00-binfmt-support_2.1.8-2_amd64.deb ...
 Unpacking binfmt-support (2.1.8-2) ...
 Selecting previously unselected package gir1.2-harfbuzz-0.0:amd64.
@@ -10925,6 +10892,15 @@ Setting up libicu-dev (60.2-3ubuntu3) ...
 Setting up libboost-regex1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-iostreams1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-iostreams-dev:amd64 (1.65.1.0ubuntu1) ...
+Collecting scapy
+  Downloading https://files.pythonhosted.org/packages/52/e7/464079606a9cf97ad04936c52a5324d14dae36215f9319bf3faa46a7907d/scapy-2.4.3.tar.gz (905kB)
+Building wheels for collected packages: scapy
+  Running setup.py bdist_wheel for scapy: started
+  Running setup.py bdist_wheel for scapy: finished with status 'done'
+  Stored in directory: /home/andy/.cache/pip/wheels/95/bf/51/905b3e84ec4ca910ce4ae92173c7334623105a265bdd1d9438
+Successfully built scapy
+Installing collected packages: scapy
+Successfully installed scapy-2.4.3
 Cloning into 'p4c'...
 Submodule 'control-plane/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'control-plane/p4runtime'
 Submodule 'test/frameworks/gtest' (https://github.com/google/googletest.git) registered for path 'test/frameworks/gtest'
@@ -10932,11 +10908,11 @@ Cloning into '/home/andy/p4c/control-plane/p4runtime'...
 Cloning into '/home/andy/p4c/test/frameworks/gtest'...
 Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit b3798b95f3e407ef269ed4d5eb02843e78b35754
-Author: Chris Dodd <cdodd@barefootnetworks.com>
-Date:   Wed Nov 6 18:15:47 2019 -0800
+commit fbe395bbf1eed9653323ac73b20cf6c06af2121e
+Author: Han Wang <hanw@users.noreply.github.com>
+Date:   Thu Nov 21 14:09:41 2019 +0800
 
-    IR/json support for bitvec fields (#2078)
+    fix type inference for IR::Neg and IR::Cmpl (#2093)
 -- The C compiler identification is GNU 7.4.0
 -- The CXX compiler identification is GNU 7.4.0
 -- Check for working C compiler: /usr/bin/cc
@@ -10951,7 +10927,7 @@ Date:   Wed Nov 6 18:15:47 2019 -0800
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Found PythonInterp: /usr/bin/python (found version "2.7.15") 
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.6.8", minimum required is "3") 
 -- Found FLEX: /usr/bin/flex (found version "2.6.4") 
 -- Found BISON: /usr/bin/bison (found suitable version "3.0.4", minimum required is "3.0.2") 
 -- Looking for pthread.h
@@ -10984,15 +10960,17 @@ Date:   Wed Nov 6 18:15:47 2019 -0800
 -- Looking for pipe2 - found
 -- Looking for GC_print_stats
 -- Looking for GC_print_stats - found
--- Found PY_difflib: /usr/lib/python2.7/difflib.pyc  
--- Found PY_shutil: /usr/lib/python2.7/shutil.pyc  
--- Found PY_tempfile: /usr/lib/python2.7/tempfile.pyc  
--- Found PY_subprocess: /usr/lib/python2.7/subprocess.pyc  
--- Found PY_re: /usr/lib/python2.7/re.pyc  
+-- Could NOT find PY_difflib (missing: PY_DIFFLIB) 
+-- Could NOT find PY_shutil (missing: PY_SHUTIL) 
+-- Could NOT find PY_tempfile (missing: PY_TEMPFILE) 
+-- Could NOT find PY_subprocess (missing: PY_SUBPROCESS) 
+-- Could NOT find PY_re (missing: PY_RE) 
 -- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) 
--- Found PY_scapy: /usr/lib/python2.7/dist-packages/scapy  
--- Found PY_ipaddr: /usr/lib/python2.7/dist-packages/ipaddr.pyc  
+-- Could NOT find PY_scapy (missing: PY_SCAPY) 
+-- Could NOT find PY_ipaddr (missing: PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/simple_switch  
+-- Could NOT find PY_scapy (missing: PY_SCAPY) 
+-- Could NOT find PY_ipaddr (missing: PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/psa_switch  
 -- Performing Test _HAVE_OPTION_Wall_
 -- Performing Test _HAVE_OPTION_Wall_ - Success
@@ -11011,11 +10989,11 @@ Date:   Wed Nov 6 18:15:47 2019 -0800
 -- Added 16 tests to 'ebpf-bcc' (0 xfails)
 -- Added 16 tests to 'ebpf' (0 xfails)
 -- Added 6 tests to 'p4' (0 xfails)
--- Added 561 tests to 'p4' (2 xfails)
+-- Added 563 tests to 'p4' (2 xfails)
 -- Added 6 tests to 'err' (0 xfails)
 -- Added 173 tests to 'err' (0 xfails)
 -- Added 208 tests to 'p14_to_16' (0 xfails)
--- CTest parallel: -j 4
+-- CTest parallel: -j 1
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/andy/p4c/build
@@ -11133,6 +11111,8 @@ Scanning dependencies of target gtestp4c
 [ 98%] Building CXX object test/CMakeFiles/gtestp4c.dir/unified_gtest_base_sources_3.cpp.o
 [100%] Linking CXX executable gtestp4c
 [100%] Built target gtestp4c
+Sorry, try again.
+Sorry, try again.
 [  0%] Built target update_includes
 [  0%] Built target linkgraphs
 [  0%] Built target linkbmv2
@@ -11181,811 +11161,49 @@ Install the project...
 -- Installing: /usr/local/bin/p4test
 -- Installing: /usr/local/bin/p4c-graphs
 end install p4c:
-Wed Nov  6 20:39:58 PST 2019
+Fri Nov 22 19:15:10 PST 2019
 ------------------------------------------------------------
 Installing Mininet - not necessary to run P4 programs, but useful if
 you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
-Wed Nov  6 20:39:59 PST 2019
+Fri Nov 22 19:15:11 PST 2019
 Cloning into 'mininet'...
-patching file util/install.sh
-Detected Linux distribution: Ubuntu 18.04 bionic amd64
-python is version 2
-Installing Mininet dependencies
-Reading package lists...
-Building dependency tree...
-Reading state information...
-make is already the newest version (4.1-9.1ubuntu1).
-python-setuptools is already the newest version (39.0.1-2).
-python-setuptools set to manually installed.
-telnet is already the newest version (0.17-41).
-telnet set to manually installed.
-gcc is already the newest version (4:7.4.0-1ubuntu2.3).
-gcc set to manually installed.
-psmisc is already the newest version (23.1-1ubuntu0.1).
-psmisc set to manually installed.
-The following additional packages will be installed:
-  blt javascript-common libcgroup1 libjs-jquery libjs-sphinxdoc
-  libjs-underscore libtcl8.6 libtk8.6 libutempter0 ncurses-term openssh-server
-  openssh-sftp-server pycodestyle pyflakes3 python-astroid
-  python-backports.functools-lru-cache python-concurrent.futures
-  python-configparser python-egenix-mxdatetime python-egenix-mxtools
-  python-isort python-lazy-object-proxy python-logilab-common python-mccabe
-  python-ptyprocess python-pyflakes python-singledispatch python-wrapt
-  python3-pycodestyle python3-pyflakes ssh-import-id tk8.6-blt2.5
-Suggested packages:
-  blt-demo apache2 | lighttpd | httpd tcl8.6 tk8.6 molly-guard monkeysphere
-  rssh ssh-askpass pylint-doc python-egenix-mxdatetime-dbg
-  python-egenix-mxdatetime-doc python-egenix-mxtools-dbg
-  python-egenix-mxtools-doc pyro python-unittest2 python-pexpect-doc tix
-  python-tk-dbg xfonts-cyrillic
-The following NEW packages will be installed:
-  blt cgroup-tools ethtool help2man iperf javascript-common libcgroup1
-  libjs-jquery libjs-sphinxdoc libjs-underscore libtcl8.6 libtk8.6
-  libutempter0 ncurses-term openssh-server openssh-sftp-server pep8
-  pycodestyle pyflakes pyflakes3 pylint python-astroid
-  python-backports.functools-lru-cache python-concurrent.futures
-  python-configparser python-egenix-mxdatetime python-egenix-mxtools
-  python-isort python-lazy-object-proxy python-logilab-common python-mccabe
-  python-pexpect python-ptyprocess python-pyflakes python-singledispatch
-  python-tk python-wrapt python3-pycodestyle python3-pyflakes socat ssh
-  ssh-import-id tk8.6-blt2.5 xterm
-0 upgraded, 44 newly installed, 0 to remove and 0 not upgraded.
-Need to get 5,928 kB of archives.
-After this operation, 32.2 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openssh-sftp-server amd64 1:7.6p1-4ubuntu0.3 [45.6 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openssh-server amd64 1:7.6p1-4ubuntu0.3 [333 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 ssh all 1:7.6p1-4ubuntu0.3 [5,204 B]
-Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtcl8.6 amd64 8.6.8+dfsg-3 [881 kB]
-Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtk8.6 amd64 8.6.8-4 [693 kB]
-Get:6 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 tk8.6-blt2.5 amd64 2.5.3+dfsg-4 [572 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 blt amd64 2.5.3+dfsg-4 [4,944 B]
-Get:8 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libcgroup1 amd64 0.41-8ubuntu2 [42.0 kB]
-Get:9 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 cgroup-tools amd64 0.41-8ubuntu2 [66.2 kB]
-Get:10 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 ethtool amd64 1:4.15-0ubuntu1 [114 kB]
-Get:11 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 help2man amd64 1.47.6 [162 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 iperf amd64 2.0.10+dfsg1-1ubuntu0.18.04.2 [60.5 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 javascript-common all 11 [6,066 B]
-Get:14 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libjs-jquery all 3.2.1-1 [152 kB]
-Get:15 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libjs-underscore all 1.8.3~dfsg-1 [59.9 kB]
-Get:16 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libjs-sphinxdoc all 1.6.7-1ubuntu1 [85.6 kB]
-Get:17 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libutempter0 amd64 1.1.6-3 [7,898 B]
-Get:18 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 ncurses-term all 6.1-1ubuntu1.18.04 [248 kB]
-Get:19 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python3-pycodestyle all 2.3.1-2 [32.9 kB]
-Get:20 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 pycodestyle all 2.3.1-2 [4,978 B]
-Get:21 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 pep8 all 1.7.1-1ubuntu1 [5,700 B]
-Get:22 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-pyflakes all 1.6.0-1 [41.7 kB]
-Get:23 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 pyflakes all 1.6.0-1 [3,296 B]
-Get:24 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python3-pyflakes all 1.6.0-1 [41.8 kB]
-Get:25 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 pyflakes3 all 1.6.0-1 [3,332 B]
-Get:26 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-lazy-object-proxy amd64 1.3.1-1 [20.8 kB]
-Get:27 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-wrapt amd64 1.9.0-3 [27.5 kB]
-Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-singledispatch all 3.4.0.3-2 [9,848 B]
-Get:29 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-backports.functools-lru-cache all 1.4-2 [5,960 B]
-Get:30 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-astroid all 1.6.0-1 [108 kB]
-Get:31 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-concurrent.futures all 3.2.0-1 [34.2 kB]
-Get:32 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-isort all 4.3.4+ds1-1 [30.4 kB]
-Get:33 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-mccabe all 0.6.1-2 [8,092 B]
-Get:34 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-configparser all 3.5.0-1 [59.6 kB]
-Get:35 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-logilab-common all 1.4.1-1 [369 kB]
-Get:36 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 pylint all 1.8.3-1 [342 kB]
-Get:37 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-egenix-mxtools amd64 3.2.9-1 [75.3 kB]
-Get:38 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-egenix-mxdatetime amd64 3.2.9-1 [68.3 kB]
-Get:39 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-ptyprocess all 0.5.2-1 [12.6 kB]
-Get:40 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-pexpect all 4.2.1-1 [41.7 kB]
-Get:41 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python-tk amd64 2.7.16-2~18.04 [26.0 kB]
-Get:42 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 xterm amd64 330-1ubuntu2 [661 kB]
-Get:43 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 socat amd64 1.7.3.2-2ubuntu2 [342 kB]
-Get:44 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 ssh-import-id all 5.7-0ubuntu1.1 [10.9 kB]
-Preconfiguring packages ...
-Fetched 5,928 kB in 41s (143 kB/s)
-Selecting previously unselected package openssh-sftp-server.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 143220 files and directories currently installed.)
-Preparing to unpack .../00-openssh-sftp-server_1%3a7.6p1-4ubuntu0.3_amd64.deb ...
-Unpacking openssh-sftp-server (1:7.6p1-4ubuntu0.3) ...
-Selecting previously unselected package openssh-server.
-Preparing to unpack .../01-openssh-server_1%3a7.6p1-4ubuntu0.3_amd64.deb ...
-Unpacking openssh-server (1:7.6p1-4ubuntu0.3) ...
-Selecting previously unselected package ssh.
-Preparing to unpack .../02-ssh_1%3a7.6p1-4ubuntu0.3_all.deb ...
-Unpacking ssh (1:7.6p1-4ubuntu0.3) ...
-Selecting previously unselected package libtcl8.6:amd64.
-Preparing to unpack .../03-libtcl8.6_8.6.8+dfsg-3_amd64.deb ...
-Unpacking libtcl8.6:amd64 (8.6.8+dfsg-3) ...
-Selecting previously unselected package libtk8.6:amd64.
-Preparing to unpack .../04-libtk8.6_8.6.8-4_amd64.deb ...
-Unpacking libtk8.6:amd64 (8.6.8-4) ...
-Selecting previously unselected package tk8.6-blt2.5.
-Preparing to unpack .../05-tk8.6-blt2.5_2.5.3+dfsg-4_amd64.deb ...
-Unpacking tk8.6-blt2.5 (2.5.3+dfsg-4) ...
-Selecting previously unselected package blt.
-Preparing to unpack .../06-blt_2.5.3+dfsg-4_amd64.deb ...
-Unpacking blt (2.5.3+dfsg-4) ...
-Selecting previously unselected package libcgroup1:amd64.
-Preparing to unpack .../07-libcgroup1_0.41-8ubuntu2_amd64.deb ...
-Unpacking libcgroup1:amd64 (0.41-8ubuntu2) ...
-Selecting previously unselected package cgroup-tools.
-Preparing to unpack .../08-cgroup-tools_0.41-8ubuntu2_amd64.deb ...
-Unpacking cgroup-tools (0.41-8ubuntu2) ...
-Selecting previously unselected package ethtool.
-Preparing to unpack .../09-ethtool_1%3a4.15-0ubuntu1_amd64.deb ...
-Unpacking ethtool (1:4.15-0ubuntu1) ...
-Selecting previously unselected package help2man.
-Preparing to unpack .../10-help2man_1.47.6_amd64.deb ...
-Unpacking help2man (1.47.6) ...
-Selecting previously unselected package iperf.
-Preparing to unpack .../11-iperf_2.0.10+dfsg1-1ubuntu0.18.04.2_amd64.deb ...
-Unpacking iperf (2.0.10+dfsg1-1ubuntu0.18.04.2) ...
-Selecting previously unselected package javascript-common.
-Preparing to unpack .../12-javascript-common_11_all.deb ...
-Unpacking javascript-common (11) ...
-Selecting previously unselected package libjs-jquery.
-Preparing to unpack .../13-libjs-jquery_3.2.1-1_all.deb ...
-Unpacking libjs-jquery (3.2.1-1) ...
-Selecting previously unselected package libjs-underscore.
-Preparing to unpack .../14-libjs-underscore_1.8.3~dfsg-1_all.deb ...
-Unpacking libjs-underscore (1.8.3~dfsg-1) ...
-Selecting previously unselected package libjs-sphinxdoc.
-Preparing to unpack .../15-libjs-sphinxdoc_1.6.7-1ubuntu1_all.deb ...
-Unpacking libjs-sphinxdoc (1.6.7-1ubuntu1) ...
-Selecting previously unselected package libutempter0:amd64.
-Preparing to unpack .../16-libutempter0_1.1.6-3_amd64.deb ...
-Unpacking libutempter0:amd64 (1.1.6-3) ...
-Selecting previously unselected package ncurses-term.
-Preparing to unpack .../17-ncurses-term_6.1-1ubuntu1.18.04_all.deb ...
-Unpacking ncurses-term (6.1-1ubuntu1.18.04) ...
-Selecting previously unselected package python3-pycodestyle.
-Preparing to unpack .../18-python3-pycodestyle_2.3.1-2_all.deb ...
-Unpacking python3-pycodestyle (2.3.1-2) ...
-Selecting previously unselected package pycodestyle.
-Preparing to unpack .../19-pycodestyle_2.3.1-2_all.deb ...
-Unpacking pycodestyle (2.3.1-2) ...
-Selecting previously unselected package pep8.
-Preparing to unpack .../20-pep8_1.7.1-1ubuntu1_all.deb ...
-Unpacking pep8 (1.7.1-1ubuntu1) ...
-Selecting previously unselected package python-pyflakes.
-Preparing to unpack .../21-python-pyflakes_1.6.0-1_all.deb ...
-Unpacking python-pyflakes (1.6.0-1) ...
-Selecting previously unselected package pyflakes.
-Preparing to unpack .../22-pyflakes_1.6.0-1_all.deb ...
-Unpacking pyflakes (1.6.0-1) ...
-Selecting previously unselected package python3-pyflakes.
-Preparing to unpack .../23-python3-pyflakes_1.6.0-1_all.deb ...
-Unpacking python3-pyflakes (1.6.0-1) ...
-Selecting previously unselected package pyflakes3.
-Preparing to unpack .../24-pyflakes3_1.6.0-1_all.deb ...
-Unpacking pyflakes3 (1.6.0-1) ...
-Selecting previously unselected package python-lazy-object-proxy.
-Preparing to unpack .../25-python-lazy-object-proxy_1.3.1-1_amd64.deb ...
-Unpacking python-lazy-object-proxy (1.3.1-1) ...
-Selecting previously unselected package python-wrapt.
-Preparing to unpack .../26-python-wrapt_1.9.0-3_amd64.deb ...
-Unpacking python-wrapt (1.9.0-3) ...
-Selecting previously unselected package python-singledispatch.
-Preparing to unpack .../27-python-singledispatch_3.4.0.3-2_all.deb ...
-Unpacking python-singledispatch (3.4.0.3-2) ...
-Selecting previously unselected package python-backports.functools-lru-cache.
-Preparing to unpack .../28-python-backports.functools-lru-cache_1.4-2_all.deb ...
-Unpacking python-backports.functools-lru-cache (1.4-2) ...
-Selecting previously unselected package python-astroid.
-Preparing to unpack .../29-python-astroid_1.6.0-1_all.deb ...
-Unpacking python-astroid (1.6.0-1) ...
-Selecting previously unselected package python-concurrent.futures.
-Preparing to unpack .../30-python-concurrent.futures_3.2.0-1_all.deb ...
-Unpacking python-concurrent.futures (3.2.0-1) ...
-Selecting previously unselected package python-isort.
-Preparing to unpack .../31-python-isort_4.3.4+ds1-1_all.deb ...
-Unpacking python-isort (4.3.4+ds1-1) ...
-Selecting previously unselected package python-mccabe.
-Preparing to unpack .../32-python-mccabe_0.6.1-2_all.deb ...
-Unpacking python-mccabe (0.6.1-2) ...
-Selecting previously unselected package python-configparser.
-Preparing to unpack .../33-python-configparser_3.5.0-1_all.deb ...
-Unpacking python-configparser (3.5.0-1) ...
-Selecting previously unselected package python-logilab-common.
-Preparing to unpack .../34-python-logilab-common_1.4.1-1_all.deb ...
-Unpacking python-logilab-common (1.4.1-1) ...
-Selecting previously unselected package pylint.
-Preparing to unpack .../35-pylint_1.8.3-1_all.deb ...
-Unpacking pylint (1.8.3-1) ...
-Selecting previously unselected package python-egenix-mxtools.
-Preparing to unpack .../36-python-egenix-mxtools_3.2.9-1_amd64.deb ...
-Unpacking python-egenix-mxtools (3.2.9-1) ...
-Selecting previously unselected package python-egenix-mxdatetime.
-Preparing to unpack .../37-python-egenix-mxdatetime_3.2.9-1_amd64.deb ...
-Unpacking python-egenix-mxdatetime (3.2.9-1) ...
-Selecting previously unselected package python-ptyprocess.
-Preparing to unpack .../38-python-ptyprocess_0.5.2-1_all.deb ...
-Unpacking python-ptyprocess (0.5.2-1) ...
-Selecting previously unselected package python-pexpect.
-Preparing to unpack .../39-python-pexpect_4.2.1-1_all.deb ...
-Unpacking python-pexpect (4.2.1-1) ...
-Selecting previously unselected package python-tk.
-Preparing to unpack .../40-python-tk_2.7.16-2~18.04_amd64.deb ...
-Unpacking python-tk (2.7.16-2~18.04) ...
-Selecting previously unselected package xterm.
-Preparing to unpack .../41-xterm_330-1ubuntu2_amd64.deb ...
-Unpacking xterm (330-1ubuntu2) ...
-Selecting previously unselected package socat.
-Preparing to unpack .../42-socat_1.7.3.2-2ubuntu2_amd64.deb ...
-Unpacking socat (1.7.3.2-2ubuntu2) ...
-Selecting previously unselected package ssh-import-id.
-Preparing to unpack .../43-ssh-import-id_5.7-0ubuntu1.1_all.deb ...
-Unpacking ssh-import-id (5.7-0ubuntu1.1) ...
-Setting up python-wrapt (1.9.0-3) ...
-Setting up libcgroup1:amd64 (0.41-8ubuntu2) ...
-Setting up libjs-jquery (3.2.1-1) ...
-Setting up ncurses-term (6.1-1ubuntu1.18.04) ...
-Setting up python-lazy-object-proxy (1.3.1-1) ...
-Setting up python-logilab-common (1.4.1-1) ...
-Setting up iperf (2.0.10+dfsg1-1ubuntu0.18.04.2) ...
-Setting up python-egenix-mxtools (3.2.9-1) ...
-Setting up libjs-underscore (1.8.3~dfsg-1) ...
-Setting up python-backports.functools-lru-cache (1.4-2) ...
-Setting up socat (1.7.3.2-2ubuntu2) ...
-Setting up libjs-sphinxdoc (1.6.7-1ubuntu1) ...
-Setting up libutempter0:amd64 (1.1.6-3) ...
-Setting up python-configparser (3.5.0-1) ...
-Setting up python3-pycodestyle (2.3.1-2) ...
-Setting up python-ptyprocess (0.5.2-1) ...
-Setting up openssh-sftp-server (1:7.6p1-4ubuntu0.3) ...
-Setting up python-pyflakes (1.6.0-1) ...
-Setting up help2man (1.47.6) ...
-Setting up python-egenix-mxdatetime (3.2.9-1) ...
-Setting up python-concurrent.futures (3.2.0-1) ...
-Setting up python-singledispatch (3.4.0.3-2) ...
-Setting up libtcl8.6:amd64 (8.6.8+dfsg-3) ...
-Setting up javascript-common (11) ...
-Setting up ethtool (1:4.15-0ubuntu1) ...
-Setting up python-astroid (1.6.0-1) ...
-Setting up python3-pyflakes (1.6.0-1) ...
-Setting up ssh-import-id (5.7-0ubuntu1.1) ...
-Setting up cgroup-tools (0.41-8ubuntu2) ...
-Setting up python-mccabe (0.6.1-2) ...
-Setting up python-isort (4.3.4+ds1-1) ...
-Setting up pycodestyle (2.3.1-2) ...
-Setting up pyflakes3 (1.6.0-1) ...
-Setting up pylint (1.8.3-1) ...
-Setting up libtk8.6:amd64 (8.6.8-4) ...
-Setting up pep8 (1.7.1-1ubuntu1) ...
-Setting up pyflakes (1.6.0-1) ...
-Setting up python-pexpect (4.2.1-1) ...
-Setting up xterm (330-1ubuntu2) ...
-Setting up openssh-server (1:7.6p1-4ubuntu0.3) ...
+fatal: Could not read from remote repository.
 
-Creating config file /etc/ssh/sshd_config with new version
-Creating SSH2 RSA key; this may take some time ...
-2048 SHA256:Pmw/J/qbdJSD1716RrGjl9NIJRITPV1jM2RgoFSgEys root@andyvm (RSA)
-Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:cILce3/NwLl3oNUuAe5rzerOw9GTb+7BwXuYVif3cJY root@andyvm (ECDSA)
-Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:NCXjGjx4JFSDfS/akBcNXjiAkVwzu2oBMtxEWM0vfQ8 root@andyvm (ED25519)
-Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
-Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
-Setting up tk8.6-blt2.5 (2.5.3+dfsg-4) ...
-Setting up blt (2.5.3+dfsg-4) ...
-Setting up ssh (1:7.6p1-4ubuntu0.3) ...
-Setting up python-tk (2.7.16-2~18.04) ...
-Processing triggers for ufw (0.36-0ubuntu0.18.04.1) ...
-Processing triggers for mime-support (3.60ubuntu1) ...
-Processing triggers for ureadahead (0.100.0-21) ...
-Processing triggers for desktop-file-utils (0.23-1ubuntu3.18.04.2) ...
-Processing triggers for install-info (6.5.0.dfsg.1-2) ...
-Processing triggers for libc-bin (2.27-3ubuntu1) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
-Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
-Processing triggers for gnome-menus (3.13.3-11ubuntu1.1) ...
-Processing triggers for hicolor-icon-theme (0.17-2) ...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-iproute2 is already the newest version (4.15.0-2ubuntu1).
-iproute2 set to manually installed.
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
-Installing Mininet core
-~/mininet ~
-cc -Wall -Wextra  -DVERSION=\"`PYTHONPATH=. python -B bin/mn --version`\" mnexec.c -o mnexec
-2.3.0d6
-install -D mnexec /usr/bin/mnexec
-PYTHONPATH=. help2man -N -n "create a Mininet network." \
---no-discard-stderr "python -B bin/mn" -o mn.1
-help2man -N -n "execution utility for Mininet." \
--h "-h" -v "-v" --no-discard-stderr ./mnexec -o mnexec.1
-install -D -t /usr/share/man/man1 mn.1 mnexec.1
-python setup.py install
-/usr/lib/python2.7/dist-packages/setuptools/dist.py:406: UserWarning: The version specified ('2.3.0d6') is an invalid version, this may not work as expected with newer versions of setuptools, pip, and PyPI. Please see PEP 440 for more details.
-  "details." % self.metadata.version
-running install
-running bdist_egg
-running egg_info
-creating mininet.egg-info
-writing requirements to mininet.egg-info/requires.txt
-writing mininet.egg-info/PKG-INFO
-writing top-level names to mininet.egg-info/top_level.txt
-writing dependency_links to mininet.egg-info/dependency_links.txt
-writing manifest file 'mininet.egg-info/SOURCES.txt'
-reading manifest file 'mininet.egg-info/SOURCES.txt'
-writing manifest file 'mininet.egg-info/SOURCES.txt'
-installing library code to build/bdist.linux-x86_64/egg
-running install_lib
-running build_py
-creating build
-creating build/lib.linux-x86_64-2.7
-creating build/lib.linux-x86_64-2.7/mininet
-copying mininet/log.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/nodelib.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/topo.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/moduledeps.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/topolib.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/cli.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/link.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/node.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/net.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/clean.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/util.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/__init__.py -> build/lib.linux-x86_64-2.7/mininet
-copying mininet/term.py -> build/lib.linux-x86_64-2.7/mininet
-creating build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/scratchnetuser.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/linuxrouter.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/intfoptions.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/linearbandwidth.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/hwintf.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/clusterdemo.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/scratchnet.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/limit.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/multilink.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/tree1024.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/popen.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/baresshd.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/mobility.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/clusterperf.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/treeping64.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/nat.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/bind.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/cpu.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/controllers.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/clusterSanity.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/cluster.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/controllers2.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/vlanhost.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/multiping.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/__init__.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/sshd.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/popenpoll.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/consoles.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/simpleperf.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/clustercli.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/numberedports.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/controlnet.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/emptynet.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/natnet.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/multitest.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/miniedit.py -> build/lib.linux-x86_64-2.7/mininet/examples
-copying mininet/examples/multipoll.py -> build/lib.linux-x86_64-2.7/mininet/examples
-creating build/bdist.linux-x86_64
-creating build/bdist.linux-x86_64/egg
-creating build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/log.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/nodelib.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/topo.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/moduledeps.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/topolib.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/cli.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/link.py -> build/bdist.linux-x86_64/egg/mininet
-creating build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/scratchnetuser.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/linuxrouter.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/intfoptions.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/linearbandwidth.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/hwintf.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/clusterdemo.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/scratchnet.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/limit.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/multilink.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/tree1024.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/popen.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/baresshd.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/mobility.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/clusterperf.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/treeping64.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/nat.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/bind.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/cpu.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/controllers.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/clusterSanity.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/cluster.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/controllers2.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/vlanhost.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/multiping.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/__init__.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/sshd.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/popenpoll.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/consoles.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/simpleperf.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/clustercli.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/numberedports.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/controlnet.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/emptynet.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/natnet.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/multitest.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/miniedit.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/examples/multipoll.py -> build/bdist.linux-x86_64/egg/mininet/examples
-copying build/lib.linux-x86_64-2.7/mininet/node.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/net.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/clean.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/util.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/__init__.py -> build/bdist.linux-x86_64/egg/mininet
-copying build/lib.linux-x86_64-2.7/mininet/term.py -> build/bdist.linux-x86_64/egg/mininet
-byte-compiling build/bdist.linux-x86_64/egg/mininet/log.py to log.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/nodelib.py to nodelib.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/topo.py to topo.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/moduledeps.py to moduledeps.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/topolib.py to topolib.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/cli.py to cli.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/link.py to link.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/scratchnetuser.py to scratchnetuser.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/linuxrouter.py to linuxrouter.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/intfoptions.py to intfoptions.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/linearbandwidth.py to linearbandwidth.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/hwintf.py to hwintf.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/clusterdemo.py to clusterdemo.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/scratchnet.py to scratchnet.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/limit.py to limit.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/multilink.py to multilink.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/tree1024.py to tree1024.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/popen.py to popen.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/baresshd.py to baresshd.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/mobility.py to mobility.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/clusterperf.py to clusterperf.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/treeping64.py to treeping64.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/nat.py to nat.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/bind.py to bind.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/cpu.py to cpu.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/controllers.py to controllers.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/clusterSanity.py to clusterSanity.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/cluster.py to cluster.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/controllers2.py to controllers2.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/vlanhost.py to vlanhost.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/multiping.py to multiping.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/__init__.py to __init__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/sshd.py to sshd.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/popenpoll.py to popenpoll.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/consoles.py to consoles.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/simpleperf.py to simpleperf.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/clustercli.py to clustercli.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/numberedports.py to numberedports.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/controlnet.py to controlnet.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/emptynet.py to emptynet.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/natnet.py to natnet.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/multitest.py to multitest.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/miniedit.py to miniedit.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/examples/multipoll.py to multipoll.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/node.py to node.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/net.py to net.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/clean.py to clean.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/util.py to util.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/__init__.py to __init__.pyc
-byte-compiling build/bdist.linux-x86_64/egg/mininet/term.py to term.pyc
-creating build/bdist.linux-x86_64/egg/EGG-INFO
-installing scripts to build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-running install_scripts
-running build_scripts
-creating build/scripts-2.7
-copying and adjusting bin/mn -> build/scripts-2.7
-changing mode of build/scripts-2.7/mn from 644 to 755
-creating build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-copying build/scripts-2.7/mn -> build/bdist.linux-x86_64/egg/EGG-INFO/scripts
-changing mode of build/bdist.linux-x86_64/egg/EGG-INFO/scripts/mn to 755
-copying mininet.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
-copying mininet.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
-copying mininet.egg-info/dependency_links.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
-copying mininet.egg-info/requires.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
-copying mininet.egg-info/top_level.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
-zip_safe flag not set; analyzing archive contents...
-creating dist
-creating 'dist/mininet-2.3.0d6-py2.7.egg' and adding 'build/bdist.linux-x86_64/egg' to it
-removing 'build/bdist.linux-x86_64/egg' (and everything under it)
-Processing mininet-2.3.0d6-py2.7.egg
-Copying mininet-2.3.0d6-py2.7.egg to /usr/local/lib/python2.7/dist-packages
-Adding mininet 2.3.0d6 to easy-install.pth file
-Installing mn script to /usr/local/bin
-
-Installed /usr/local/lib/python2.7/dist-packages/mininet-2.3.0d6-py2.7.egg
-Processing dependencies for mininet===2.3.0d6
-Searching for setuptools==39.0.1
-Best match: setuptools 39.0.1
-Adding setuptools 39.0.1 to easy-install.pth file
-Installing easy_install script to /usr/local/bin
-
-Using /usr/lib/python2.7/dist-packages
-Finished processing dependencies for mininet===2.3.0d6
-~
-Installing Wireshark
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  libc-ares2 libdouble-conversion1 liblua5.2-0 libmaxminddb0 libnl-route-3-200
-  libqgsttools-p1 libqt5core5a libqt5dbus5 libqt5gui5 libqt5multimedia5
-  libqt5multimedia5-plugins libqt5multimediawidgets5 libqt5network5
-  libqt5opengl5 libqt5printsupport5 libqt5svg5 libqt5widgets5 libsmi2ldbl
-  libsnappy1v5 libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark11
-  libwiretap8 libwscodecs2 libwsutil9 libxcb-xinerama0 qt5-gtk-platformtheme
-  qttranslations5-l10n wireshark-common wireshark-qt
-Suggested packages:
-  mmdb-bin qt5-image-formats-plugins qtwayland5 snmp-mibs-downloader
-  wireshark-doc
-The following NEW packages will be installed:
-  libc-ares2 libdouble-conversion1 liblua5.2-0 libmaxminddb0 libnl-route-3-200
-  libqgsttools-p1 libqt5core5a libqt5dbus5 libqt5gui5 libqt5multimedia5
-  libqt5multimedia5-plugins libqt5multimediawidgets5 libqt5network5
-  libqt5opengl5 libqt5printsupport5 libqt5svg5 libqt5widgets5 libsmi2ldbl
-  libsnappy1v5 libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark11
-  libwiretap8 libwscodecs2 libwsutil9 libxcb-xinerama0 qt5-gtk-platformtheme
-  qttranslations5-l10n tshark wireshark wireshark-common wireshark-qt
-0 upgraded, 33 newly installed, 0 to remove and 0 not upgraded.
-Need to get 30.4 MB of archives.
-After this operation, 149 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libdouble-conversion1 amd64 2.0.1-4ubuntu1 [33.0 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5core5a amd64 5.9.5+dfsg-0ubuntu2.3 [2,036 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5dbus5 amd64 5.9.5+dfsg-0ubuntu2.3 [195 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5network5 amd64 5.9.5+dfsg-0ubuntu2.3 [634 kB]
-Get:5 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libxcb-xinerama0 amd64 1.13-2~ubuntu18.04 [5,264 B]
-Get:6 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5gui5 amd64 5.9.5+dfsg-0ubuntu2.3 [2,569 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5widgets5 amd64 5.9.5+dfsg-0ubuntu2.3 [2,204 kB]
-Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libqt5svg5 amd64 5.9.5-0ubuntu1 [128 kB]
-Get:9 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 liblua5.2-0 amd64 5.2.4-1.1build1 [108 kB]
-Get:10 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libmaxminddb0 amd64 1.3.1-1 [25.6 kB]
-Get:11 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libnl-route-3-200 amd64 3.2.29-0ubuntu3 [146 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqt5multimedia5 amd64 5.9.5-0ubuntu1 [293 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5opengl5 amd64 5.9.5+dfsg-0ubuntu2.3 [132 kB]
-Get:14 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqt5multimediawidgets5 amd64 5.9.5-0ubuntu1 [36.6 kB]
-Get:15 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqgsttools-p1 amd64 5.9.5-0ubuntu1 [72.4 kB]
-Get:16 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqt5multimedia5-plugins amd64 5.9.5-0ubuntu1 [194 kB]
-Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5printsupport5 amd64 5.9.5+dfsg-0ubuntu2.3 [178 kB]
-Get:18 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsmi2ldbl amd64 0.4.8+dfsg2-15 [100 kB]
-Get:19 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libspandsp2 amd64 0.0.6+dfsg-0.1 [273 kB]
-Get:20 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libssh-gcrypt-4 amd64 0.8.0~20170825.94fa1e38-1ubuntu0.2 [171 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwireshark-data all 2.6.10-1~ubuntu18.04.0 [1,425 kB]
-Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc-ares2 amd64 1.14.0-1 [37.1 kB]
-Get:23 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsnappy1v5 amd64 1.1.7-1 [16.0 kB]
-Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwsutil9 amd64 2.6.10-1~ubuntu18.04.0 [55.5 kB]
-Get:25 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwiretap8 amd64 2.6.10-1~ubuntu18.04.0 [177 kB]
-Get:26 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwscodecs2 amd64 2.6.10-1~ubuntu18.04.0 [17.8 kB]
-Get:27 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwireshark11 amd64 2.6.10-1~ubuntu18.04.0 [13.6 MB]
-Get:28 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 qt5-gtk-platformtheme amd64 5.9.5+dfsg-0ubuntu2.3 [117 kB]
-Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 qttranslations5-l10n all 5.9.5-0ubuntu1 [1,485 kB]
-Get:30 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 wireshark-common amd64 2.6.10-1~ubuntu18.04.0 [391 kB]
-Get:31 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 tshark amd64 2.6.10-1~ubuntu18.04.0 [134 kB]
-Get:32 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 wireshark-qt amd64 2.6.10-1~ubuntu18.04.0 [3,429 kB]
-Get:33 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 wireshark amd64 2.6.10-1~ubuntu18.04.0 [4,516 B]
-Preconfiguring packages ...
-Fetched 30.4 MB in 45s (671 kB/s)
-Selecting previously unselected package libdouble-conversion1:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148438 files and directories currently installed.)
-Preparing to unpack .../00-libdouble-conversion1_2.0.1-4ubuntu1_amd64.deb ...
-Unpacking libdouble-conversion1:amd64 (2.0.1-4ubuntu1) ...
-Selecting previously unselected package libqt5core5a:amd64.
-Preparing to unpack .../01-libqt5core5a_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5core5a:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libqt5dbus5:amd64.
-Preparing to unpack .../02-libqt5dbus5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5dbus5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libqt5network5:amd64.
-Preparing to unpack .../03-libqt5network5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5network5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libxcb-xinerama0:amd64.
-Preparing to unpack .../04-libxcb-xinerama0_1.13-2~ubuntu18.04_amd64.deb ...
-Unpacking libxcb-xinerama0:amd64 (1.13-2~ubuntu18.04) ...
-Selecting previously unselected package libqt5gui5:amd64.
-Preparing to unpack .../05-libqt5gui5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5gui5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libqt5widgets5:amd64.
-Preparing to unpack .../06-libqt5widgets5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5widgets5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libqt5svg5:amd64.
-Preparing to unpack .../07-libqt5svg5_5.9.5-0ubuntu1_amd64.deb ...
-Unpacking libqt5svg5:amd64 (5.9.5-0ubuntu1) ...
-Selecting previously unselected package liblua5.2-0:amd64.
-Preparing to unpack .../08-liblua5.2-0_5.2.4-1.1build1_amd64.deb ...
-Unpacking liblua5.2-0:amd64 (5.2.4-1.1build1) ...
-Selecting previously unselected package libmaxminddb0:amd64.
-Preparing to unpack .../09-libmaxminddb0_1.3.1-1_amd64.deb ...
-Unpacking libmaxminddb0:amd64 (1.3.1-1) ...
-Selecting previously unselected package libnl-route-3-200:amd64.
-Preparing to unpack .../10-libnl-route-3-200_3.2.29-0ubuntu3_amd64.deb ...
-Unpacking libnl-route-3-200:amd64 (3.2.29-0ubuntu3) ...
-Selecting previously unselected package libqt5multimedia5:amd64.
-Preparing to unpack .../11-libqt5multimedia5_5.9.5-0ubuntu1_amd64.deb ...
-Unpacking libqt5multimedia5:amd64 (5.9.5-0ubuntu1) ...
-Selecting previously unselected package libqt5opengl5:amd64.
-Preparing to unpack .../12-libqt5opengl5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5opengl5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libqt5multimediawidgets5:amd64.
-Preparing to unpack .../13-libqt5multimediawidgets5_5.9.5-0ubuntu1_amd64.deb ...
-Unpacking libqt5multimediawidgets5:amd64 (5.9.5-0ubuntu1) ...
-Selecting previously unselected package libqgsttools-p1:amd64.
-Preparing to unpack .../14-libqgsttools-p1_5.9.5-0ubuntu1_amd64.deb ...
-Unpacking libqgsttools-p1:amd64 (5.9.5-0ubuntu1) ...
-Selecting previously unselected package libqt5multimedia5-plugins:amd64.
-Preparing to unpack .../15-libqt5multimedia5-plugins_5.9.5-0ubuntu1_amd64.deb ...
-Unpacking libqt5multimedia5-plugins:amd64 (5.9.5-0ubuntu1) ...
-Selecting previously unselected package libqt5printsupport5:amd64.
-Preparing to unpack .../16-libqt5printsupport5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5printsupport5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package libsmi2ldbl:amd64.
-Preparing to unpack .../17-libsmi2ldbl_0.4.8+dfsg2-15_amd64.deb ...
-Unpacking libsmi2ldbl:amd64 (0.4.8+dfsg2-15) ...
-Selecting previously unselected package libspandsp2:amd64.
-Preparing to unpack .../18-libspandsp2_0.0.6+dfsg-0.1_amd64.deb ...
-Unpacking libspandsp2:amd64 (0.0.6+dfsg-0.1) ...
-Selecting previously unselected package libssh-gcrypt-4:amd64.
-Preparing to unpack .../19-libssh-gcrypt-4_0.8.0~20170825.94fa1e38-1ubuntu0.2_amd64.deb ...
-Unpacking libssh-gcrypt-4:amd64 (0.8.0~20170825.94fa1e38-1ubuntu0.2) ...
-Selecting previously unselected package libwireshark-data.
-Preparing to unpack .../20-libwireshark-data_2.6.10-1~ubuntu18.04.0_all.deb ...
-Unpacking libwireshark-data (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package libc-ares2:amd64.
-Preparing to unpack .../21-libc-ares2_1.14.0-1_amd64.deb ...
-Unpacking libc-ares2:amd64 (1.14.0-1) ...
-Selecting previously unselected package libsnappy1v5:amd64.
-Preparing to unpack .../22-libsnappy1v5_1.1.7-1_amd64.deb ...
-Unpacking libsnappy1v5:amd64 (1.1.7-1) ...
-Selecting previously unselected package libwsutil9:amd64.
-Preparing to unpack .../23-libwsutil9_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking libwsutil9:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package libwiretap8:amd64.
-Preparing to unpack .../24-libwiretap8_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking libwiretap8:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package libwscodecs2:amd64.
-Preparing to unpack .../25-libwscodecs2_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking libwscodecs2:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package libwireshark11:amd64.
-Preparing to unpack .../26-libwireshark11_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking libwireshark11:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package qt5-gtk-platformtheme:amd64.
-Preparing to unpack .../27-qt5-gtk-platformtheme_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking qt5-gtk-platformtheme:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Selecting previously unselected package qttranslations5-l10n.
-Preparing to unpack .../28-qttranslations5-l10n_5.9.5-0ubuntu1_all.deb ...
-Unpacking qttranslations5-l10n (5.9.5-0ubuntu1) ...
-Selecting previously unselected package wireshark-common.
-Preparing to unpack .../29-wireshark-common_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking wireshark-common (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package tshark.
-Preparing to unpack .../30-tshark_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking tshark (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package wireshark-qt.
-Preparing to unpack .../31-wireshark-qt_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking wireshark-qt (2.6.10-1~ubuntu18.04.0) ...
-Selecting previously unselected package wireshark.
-Preparing to unpack .../32-wireshark_2.6.10-1~ubuntu18.04.0_amd64.deb ...
-Unpacking wireshark (2.6.10-1~ubuntu18.04.0) ...
-Setting up libxcb-xinerama0:amd64 (1.13-2~ubuntu18.04) ...
-Setting up libdouble-conversion1:amd64 (2.0.1-4ubuntu1) ...
-Setting up libssh-gcrypt-4:amd64 (0.8.0~20170825.94fa1e38-1ubuntu0.2) ...
-Setting up libspandsp2:amd64 (0.0.6+dfsg-0.1) ...
-Setting up libnl-route-3-200:amd64 (3.2.29-0ubuntu3) ...
-Setting up libsmi2ldbl:amd64 (0.4.8+dfsg2-15) ...
-Setting up libwsutil9:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Setting up libsnappy1v5:amd64 (1.1.7-1) ...
-Setting up qttranslations5-l10n (5.9.5-0ubuntu1) ...
-Setting up libwireshark-data (2.6.10-1~ubuntu18.04.0) ...
-Setting up libwscodecs2:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Setting up liblua5.2-0:amd64 (5.2.4-1.1build1) ...
-Setting up libc-ares2:amd64 (1.14.0-1) ...
-Setting up libmaxminddb0:amd64 (1.3.1-1) ...
-Setting up libqt5core5a:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5dbus5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5network5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libwiretap8:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Setting up libqt5gui5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up qt5-gtk-platformtheme:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5widgets5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libwireshark11:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Setting up libqt5printsupport5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5opengl5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5multimedia5:amd64 (5.9.5-0ubuntu1) ...
-Setting up libqt5svg5:amd64 (5.9.5-0ubuntu1) ...
-Setting up libqt5multimediawidgets5:amd64 (5.9.5-0ubuntu1) ...
-Setting up libqgsttools-p1:amd64 (5.9.5-0ubuntu1) ...
-Setting up wireshark-common (2.6.10-1~ubuntu18.04.0) ...
-Setting up libqt5multimedia5-plugins:amd64 (5.9.5-0ubuntu1) ...
-Setting up tshark (2.6.10-1~ubuntu18.04.0) ...
-Setting up wireshark-qt (2.6.10-1~ubuntu18.04.0) ...
-Setting up wireshark (2.6.10-1~ubuntu18.04.0) ...
-Processing triggers for desktop-file-utils (0.23-1ubuntu3.18.04.2) ...
-Processing triggers for libc-bin (2.27-3ubuntu1) ...
-Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
-Processing triggers for shared-mime-info (1.9-2) ...
-Processing triggers for gnome-menus (3.13.3-11ubuntu1.1) ...
-Processing triggers for hicolor-icon-theme (0.17-2) ...
-Processing triggers for mime-support (3.60ubuntu1) ...
-Optionally installing wireshark color filters
-Checking Wireshark version
-Wireshark version 2.6.10 >= 1.12 - returning
-Installing Open vSwitch...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  openvswitch-common
-Suggested packages:
-  openvswitch-doc
-The following NEW packages will be installed:
-  openvswitch-common openvswitch-switch
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 2,321 kB of archives.
-After this operation, 10.3 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openvswitch-common amd64 2.9.2-0ubuntu0.18.04.3 [814 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openvswitch-switch amd64 2.9.2-0ubuntu0.18.04.3 [1,506 kB]
-Fetched 2,321 kB in 4s (605 kB/s)
-Selecting previously unselected package openvswitch-common.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149363 files and directories currently installed.)
-Preparing to unpack .../openvswitch-common_2.9.2-0ubuntu0.18.04.3_amd64.deb ...
-Unpacking openvswitch-common (2.9.2-0ubuntu0.18.04.3) ...
-Selecting previously unselected package openvswitch-switch.
-Preparing to unpack .../openvswitch-switch_2.9.2-0ubuntu0.18.04.3_amd64.deb ...
-Unpacking openvswitch-switch (2.9.2-0ubuntu0.18.04.3) ...
-Setting up openvswitch-common (2.9.2-0ubuntu0.18.04.3) ...
-Setting up openvswitch-switch (2.9.2-0ubuntu0.18.04.3) ...
-update-alternatives: using /usr/lib/openvswitch-switch/ovs-vswitchd to provide /usr/sbin/ovs-vswitchd (ovs-vswitchd) in auto mode
-Created symlink /etc/systemd/system/multi-user.target.wants/openvswitch-switch.service → /lib/systemd/system/openvswitch-switch.service.
-ovs-vswitchd.service is a disabled or a static unit, not starting it.
-ovsdb-server.service is a disabled or a static unit, not starting it.
-Processing triggers for ureadahead (0.100.0-21) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
-Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-E: Unable to locate package openvswitch-controller
-Attempting to install openvswitch-testcontroller
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  openvswitch-pki
-The following NEW packages will be installed:
-  openvswitch-pki openvswitch-testcontroller
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 554 kB of archives.
-After this operation, 1,712 kB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openvswitch-pki all 2.9.2-0ubuntu0.18.04.3 [13.3 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openvswitch-testcontroller amd64 2.9.2-0ubuntu0.18.04.3 [541 kB]
-Fetched 554 kB in 1s (511 kB/s)
-Selecting previously unselected package openvswitch-pki.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149447 files and directories currently installed.)
-Preparing to unpack .../openvswitch-pki_2.9.2-0ubuntu0.18.04.3_all.deb ...
-Unpacking openvswitch-pki (2.9.2-0ubuntu0.18.04.3) ...
-Selecting previously unselected package openvswitch-testcontroller.
-Preparing to unpack .../openvswitch-testcontroller_2.9.2-0ubuntu0.18.04.3_amd64.deb ...
-Unpacking openvswitch-testcontroller (2.9.2-0ubuntu0.18.04.3) ...
-Setting up openvswitch-pki (2.9.2-0ubuntu0.18.04.3) ...
-Creating controllerca...
-Creating switchca...
-Setting up openvswitch-testcontroller (2.9.2-0ubuntu0.18.04.3) ...
-Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
-Processing triggers for ureadahead (0.100.0-21) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
-Stopped running controller
+Please make sure you have the correct access rights
+and the repository exists.
+./p4-guide/bin/install-p4dev-v2.sh: line 365: cd: mininet: No such file or directory
+can't find file to patch at input line 5
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|diff --git a/util/install.sh b/util/install.sh
+|index 44280ee..56ed02d 100755
+|--- a/util/install.sh
+|+++ b/util/install.sh
+--------------------------
+File to patch: 
+Skip this patch? [y] 
+Skipping patch.
+1 out of 1 hunk ignored
+sudo: ./mininet/util/install.sh: command not found
 end install mininet:
-Wed Nov  6 20:42:34 PST 2019
+Fri Nov 22 19:16:12 PST 2019
 ------------------------------------------------------------
 Installing a few miscellaneous packages
 start install miscellaneous packages:
-Wed Nov  6 20:42:34 PST 2019
+Fri Nov 22 19:16:12 PST 2019
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting grpcio
   Downloading https://files.pythonhosted.org/packages/69/46/ebd21ce467ab87f2cf825413273936f9b1ee0e6cd4e2f2ee62e0516c771f/grpcio-1.25.0-cp27-cp27mu-manylinux1_x86_64.whl (2.5MB)
 Requirement already satisfied: enum34>=1.0.4; python_version < "3.4" in /usr/lib/python2.7/dist-packages (from grpcio)
 Requirement already satisfied: six>=1.5.2 in /usr/lib/python2.7/dist-packages (from grpcio)
-Requirement already satisfied: futures>=2.2.0; python_version < "3.2" in /usr/lib/python2.7/dist-packages (from grpcio)
-Installing collected packages: grpcio
-Successfully installed grpcio-1.25.0
+Collecting futures>=2.2.0; python_version < "3.2" (from grpcio)
+  Downloading https://files.pythonhosted.org/packages/d8/a6/f46ae3f1da0cd4361c344888f59ec2f5785e69c872e175a748ef6071cdb5/futures-3.3.0-py2-none-any.whl
+Installing collected packages: futures, grpcio
+Successfully installed futures-3.3.0 grpcio-1.25.0
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting protobuf
@@ -12010,9 +11228,9 @@ Get:1 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libgflags2.2 amd
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libgflags-dev amd64 2.2.1-1 [86.1 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 net-tools amd64 1.60+git20161116.90da8a0-1ubuntu1 [194 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-psutil amd64 5.4.2-1 [135 kB]
-Fetched 488 kB in 2s (201 kB/s)
+Fetched 488 kB in 1s (443 kB/s)
 Selecting previously unselected package libgflags2.2.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149460 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 143384 files and directories currently installed.)
 Preparing to unpack .../libgflags2.2_2.2.1-1_amd64.deb ...
 Unpacking libgflags2.2 (2.2.1-1) ...
 Selecting previously unselected package libgflags-dev.
@@ -12039,14 +11257,14 @@ Installing collected packages: crcmod
     Running setup.py install for crcmod: finished with status 'done'
 Successfully installed crcmod-1.7
 end install miscellaneous packages:
-Wed Nov  6 20:42:53 PST 2019
+Fri Nov 22 19:16:31 PST 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Wed Nov  6 20:42:53 PST 2019
+Fri Nov 22 19:16:31 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda1        59G   15G   42G  26% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         60218M 14749M    42382M  26% /
+/dev/sda1         60218M 14588M    42543M  26% /
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS BELOW
 ----------------------------------------------------------------------
@@ -12065,3 +11283,4 @@ directory.
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS ABOVE
 ----------------------------------------------------------------------
+Killing child process
