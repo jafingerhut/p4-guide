@@ -45,7 +45,7 @@ simple_switch_CLI commands for demo2 program
 ----------------------------------------------------------------------
 
 ----------------------------------------------------------------------
-demo1.p4_16.p4 only
+demo2.p4_16.p4 only
 ----------------------------------------------------------------------
 
 The `table_set_default` commands without the `ingressImpl.` and
@@ -58,7 +58,7 @@ around June 2019 this is no longer the case.
     table_set_default send_frame egressImpl.my_drop
 
 ----------------------------------------------------------------------
-demo1.p4_14.p4 only
+demo2.p4_14.p4 only
 ----------------------------------------------------------------------
 
     table_set_default ipv4_da_lpm my_drop
@@ -66,7 +66,7 @@ demo1.p4_14.p4 only
     table_set_default send_frame my_drop
 
 ----------------------------------------------------------------------
-demo1.p4_14.p4 or demo1.p4_16.p4 (same commands work for both)
+demo2.p4_14.p4 or demo2.p4_16.p4 (same commands work for both)
 ----------------------------------------------------------------------
 
 Add both sets of entries below:
