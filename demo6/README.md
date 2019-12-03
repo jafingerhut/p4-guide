@@ -13,7 +13,7 @@ The .dot and .png files in the subdirectory 'graphs' were created with
 the p4c-graphs program, which is also installed when you build and
 install p4c-bm2-ss:
 
-     p4c-graphs -I $HOME/p4c/p4include demo6.p4_16.p4
+    p4c-graphs -I $HOME/p4c/p4include demo6.p4_16.p4
 
 The '-I' option is only necessary if you did _not_ install the P4
 compiler in your system-wide /usr/local/bin directory.
@@ -45,12 +45,28 @@ Yes, it is certainly possible to use a P4 counter to do this, so this
 example does not demonstrate the full power of P4 registers.  I only
 created it to have a minimal working example that uses P4 registers.
 
-All of these, except for the counter-specific ones, also work for
-demo1.
+All of these, except for the register-specific ones, also work for
+demo2.
+
+----------------------------------------------------------------------
+demo6.p4_16.p4 only
+----------------------------------------------------------------------
+
+    table_set_default ipv4_da_lpm ingressImpl.drop_with_count
+    table_set_default mac_da ingressImpl.my_drop
+    table_set_default send_frame egressImpl.my_drop
+
+----------------------------------------------------------------------
+demo6.p4_14.p4 only
+----------------------------------------------------------------------
 
     table_set_default ipv4_da_lpm my_drop
     table_set_default mac_da my_drop
     table_set_default send_frame my_drop
+
+----------------------------------------------------------------------
+demo6.p4_14.p4 or demo6.p4_16.p4 (same commands work for both)
+----------------------------------------------------------------------
 
 Add both sets of entries below:
 
@@ -82,29 +98,34 @@ counter name and a handle id.  Because ipv4_da_lpm_stats is declared
 one in ipv4_da_lpm, use the handle id for the corresponding
 ipv4_da_lpm table entry that you want stats for.
 
-[ There is a bug with some versions of p4c-bm2-ss that prevents
-counter_read commands from succeeding, roughly corresponding to p4c
-source code from 2017-Nov-07 until 2017-Nov-20. ]
+[ There was a bug with some versions of p4c that prevents counter_read
+commands from succeeding, roughly corresponding to p4c source code
+from 2017-Nov-07 until 2017-Nov-20.
+
+The "ingressImpl." prefix in the output of some commands below appears
+when using the P4_16 version of the program, but not the P4_14
+version, due to how p4c names instances based upon the hierarchy of
+controls they are instantiated within. ]
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
-    this is the direct counter for table ipv4_da_lpm
+    this is the direct counter for table ingressImpl.ipv4_da_lpm
     ipv4_da_lpm_stats[0]=  BmCounterValue(packets=1, bytes=54)
 
 After sending another packet matching the same ipv4_da_lpm entry,
 reading the counter entry gives different values:
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
-    this is the direct counter for table ipv4_da_lpm
+    this is the direct counter for table ingressImpl.ipv4_da_lpm
     ipv4_da_lpm_stats[0]=  BmCounterValue(packets=2, bytes=108)
 
 The command `counter_reset <name>` clears all counters in the named
 collection of counters.
 
     RuntimeCmd: counter_reset ipv4_da_lpm_stats
-    this is the direct counter for table ipv4_da_lpm
+    this is the direct counter for table ingressImpl.ipv4_da_lpm
 
     RuntimeCmd: counter_read ipv4_da_lpm_stats 0
-    this is the direct counter for table ipv4_da_lpm
+    this is the direct counter for table ingressImpl.ipv4_da_lpm
     ipv4_da_lpm_stats[0]=  BmCounterValue(packets=0, bytes=0)
 
 ----------------------------------------------------------------------
@@ -129,24 +150,22 @@ fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The qui
 sendp(fwd_pkt2, iface="veth2")
 ```
 
-----------------------------------------
-
 # Last successfully tested with these software versions
 
 For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit b806cecb70c19620acbb86c963d4f84b48c0a51f
-Author: fruffy <5960321+fruffy@users.noreply.github.com>
-Date:   Thu May 23 23:26:23 2019 +0200
+commit 75df2526b6d9fa1146dfe41c73fc24224baf4502
+Author: Chris Dodd <cdodd@barefootnetworks.com>
+Date:   Sun Dec 1 09:13:08 2019 -0800
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit 4d14161917095b69adaff99f3a3e056a2a150003
-Author: Kevin Ye <kevinye2@users.noreply.github.com>
-Date:   Sun Jun 2 19:31:53 2019 -0400
+commit 16c699953ee02306731ebf9a9241ea9fe3bbdc8c
+Author: Antonin Bas <abas@vmware.com>
+Date:   Sun Nov 17 14:09:11 2019 -0800
 ```
