@@ -138,8 +138,6 @@ fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The qui
 sendp(fwd_pkt2, iface="veth2")
 ```
 
-----------------------------------------
-
 # Last successfully tested with these software versions
 
 For https://github.com/p4lang/p4c

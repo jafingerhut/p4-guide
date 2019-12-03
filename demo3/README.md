@@ -15,7 +15,7 @@ The .dot and .png files in the subdirectory 'graphs' were created with
 the p4c-graphs program, which is also installed when you build and
 install p4c-bm2-ss:
 
-     p4c-graphs -I $HOME/p4c/p4include demo3.p4_16.p4
+    p4c-graphs -I $HOME/p4c/p4include demo3.p4_16.p4
 
 The '-I' option is only necessary if you did _not_ install the P4
 compiler in your system-wide /usr/local/bin directory.
@@ -113,27 +113,31 @@ scapy session for sending packets
 I believe we must run scapy as root for it to have permission to send
 packets on veth interfaces.
 
-    sudo scapy
+```bash
+$ sudo scapy
+```
 
-    fwd_to_p1=Ether() / IP(dst='10.1.0.200') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
-    fwd_to_p2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
-    drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
+```python
+fwd_to_p1=Ether() / IP(dst='10.1.0.200') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
+fwd_to_p2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
+drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 
-    # Send packet at layer2, specifying interface
-    sendp(fwd_to_p1, iface="veth2")
-    sendp(fwd_to_p2, iface="veth2")
-    sendp(drop_pkt1, iface="veth2")
+# Send packet at layer2, specifying interface
+sendp(fwd_to_p1, iface="veth2")
+sendp(fwd_to_p2, iface="veth2")
+sendp(drop_pkt1, iface="veth2")
 
-    # For packets going to the ECMP group, vary the source IP address
-    # so that each will likely get different hash values.
+# For packets going to the ECMP group, vary the source IP address
+# so that each will likely get different hash values.
 
-    # The hash value for this one caused it to go out port 2 in my
-    # testing.
-    fwd_to_ecmp_grp1=Ether() / IP(dst='11.1.0.1', src='1.2.3.4') / TCP(sport=5793, dport=80)
-    # output port 1 for this packet
-    fwd_to_ecmp_grp2=Ether() / IP(dst='11.1.0.1', src='1.2.3.5') / TCP(sport=5793, dport=80)
-    # output port 3 for this packet
-    fwd_to_ecmp_grp3=Ether() / IP(dst='11.1.0.1', src='1.2.3.7') / TCP(sport=5793, dport=80)
+# The hash value for this one caused it to go out port 2 in my
+# testing.
+fwd_to_ecmp_grp1=Ether() / IP(dst='11.1.0.1', src='1.2.3.4') / TCP(sport=5793, dport=80)
+# output port 1 for this packet
+fwd_to_ecmp_grp2=Ether() / IP(dst='11.1.0.1', src='1.2.3.5') / TCP(sport=5793, dport=80)
+# output port 3 for this packet
+fwd_to_ecmp_grp3=Ether() / IP(dst='11.1.0.1', src='1.2.3.7') / TCP(sport=5793, dport=80)
+```
 
 ----------------------------------------
 
@@ -227,3 +231,24 @@ When checking the output packet, it is correct to receive an output
 packet for any of the <num_paths> possible paths.  If the test
 environment wants to narrow it down to 1 possible output packet, it
 must do the same hash function that the data path code is doing.
+
+
+# Last successfully tested with these software versions
+
+For https://github.com/p4lang/p4c
+
+```
+$ git log -n 1 | head -n 3
+commit 75df2526b6d9fa1146dfe41c73fc24224baf4502
+Author: Chris Dodd <cdodd@barefootnetworks.com>
+Date:   Sun Dec 1 09:13:08 2019 -0800
+```
+
+For https://github.com/p4lang/behavioral-model
+
+```
+$ git log -n 1 | head -n 3
+commit 16c699953ee02306731ebf9a9241ea9fe3bbdc8c
+Author: Antonin Bas <abas@vmware.com>
+Date:   Sun Nov 17 14:09:11 2019 -0800
+```
