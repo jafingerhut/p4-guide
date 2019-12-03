@@ -40,25 +40,28 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Fri 22 Nov 2019 02:57:58 PM PST
+Mon 02 Dec 2019 11:02:19 AM PST
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda1        59G  6.6G   50G  12% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         60218M 6735M    50396M  12% /
+/dev/sda1         60218M 6749M    50382M  12% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
 git is already the newest version (1:2.20.1-2ubuntu1).
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 Suggested packages:
   ctags vim-doc vim-scripts
 The following NEW packages will be installed:
   vim vim-runtime
-0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 6,878 kB of archives.
 After this operation, 33.4 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 vim-runtime all 2:8.1.0875-5ubuntu2 [5,669 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 vim amd64 2:8.1.0875-5ubuntu2 [1,209 kB]
-Fetched 6,878 kB in 4s (1,670 kB/s)
+Fetched 6,878 kB in 4s (1,890 kB/s)
 Selecting previously unselected package vim-runtime.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 124779 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a8.1.0875-5ubuntu2_all.deb ...
@@ -81,6 +84,9 @@ Processing triggers for man-db (2.8.7-3) ...
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   libpython-stdlib libpython2-stdlib libpython2.7-minimal libpython2.7-stdlib
   python-minimal python2 python2-minimal python2.7 python2.7-minimal
@@ -89,7 +95,7 @@ Suggested packages:
 The following NEW packages will be installed:
   libpython-stdlib libpython2-stdlib libpython2.7-minimal libpython2.7-stdlib
   python python-minimal python2 python2-minimal python2.7 python2.7-minimal
-0 upgraded, 10 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 10 newly installed, 0 to remove and 0 not upgraded.
 Need to get 3,862 kB of archives.
 After this operation, 16.6 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2.7-minimal amd64 2.7.17~rc1-1 [335 kB]
@@ -102,7 +108,7 @@ Get:7 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2-stdlib 
 Get:8 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython-stdlib amd64 2.7.17-1 [5,836 B]
 Get:9 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2 amd64 2.7.17-1 [26.5 kB]
 Get:10 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python amd64 2.7.17-1 [7,836 B]
-Fetched 3,862 kB in 3s (1,114 kB/s)
+Fetched 3,862 kB in 2s (1,735 kB/s)
 Selecting previously unselected package libpython2.7-minimal:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 126582 files and directories currently installed.)
 Preparing to unpack .../0-libpython2.7-minimal_2.7.17~rc1-1_amd64.deb ...
@@ -161,12 +167,15 @@ make is already the newest version (4.2.1-1.2).
 make set to manually installed.
 unzip is already the newest version (6.0-25ubuntu1).
 unzip set to manually installed.
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 Suggested packages:
   autoconf-archive gnu-standards autoconf-doc gettext libtool-doc gfortran
   | fortran95-compiler gcj-jdk m4-doc
 The following NEW packages will be installed:
   autoconf automake autotools-dev libltdl-dev libsigsegv2 libtool m4
-0 upgraded, 7 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 7 newly installed, 0 to remove and 0 not upgraded.
 Need to get 1,452 kB of archives.
 After this operation, 6,261 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libsigsegv2 amd64 2.12-2 [13.9 kB]
@@ -176,7 +185,7 @@ Get:4 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 autotools-dev all 2018
 Get:5 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 automake all 1:1.16.1-4ubuntu3 [522 kB]
 Get:6 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libltdl-dev amd64 2.4.6-11 [162 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libtool all 2.4.6-11 [194 kB]
-Fetched 1,452 kB in 2s (667 kB/s)
+Fetched 1,452 kB in 1s (1,246 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127381 files and directories currently installed.)
 Preparing to unpack .../0-libsigsegv2_2.12-2_amd64.deb ...
@@ -213,13 +222,16 @@ Processing triggers for install-info (6.6.0.dfsg.1-2ubuntu2) ...
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following NEW packages will be installed:
   zlib1g-dev
-0 upgraded, 1 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
 Need to get 172 kB of archives.
 After this operation, 439 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-1ubuntu3 [172 kB]
-Fetched 172 kB in 0s (551 kB/s)
+Fetched 172 kB in 1s (314 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127740 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.11.dfsg-1ubuntu3_amd64.deb ...
@@ -231,10 +243,16 @@ Building dependency tree...
 Reading state information...
 pkg-config is already the newest version (0.29.1-0ubuntu3).
 pkg-config set to manually installed.
-0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   dh-python javascript-common libexpat1-dev libjs-jquery libjs-sphinxdoc
   libjs-underscore libpython-all-dev libpython-dev libpython2-dev libpython2.7
@@ -262,9 +280,9 @@ The following NEW packages will be installed:
   python-six python-wheel python-xdg python2-dev python2.7-dev python3-crypto
   python3-dev python3-distutils python3-keyrings.alt python3-lib2to3
   python3-pip python3-setuptools python3-wheel python3.7-dev
-0 upgraded, 47 newly installed, 0 to remove and 2 not upgraded.
-Need to get 12.9 MB of archives.
-After this operation, 56.3 MB of additional disk space will be used.
+0 upgraded, 47 newly installed, 0 to remove and 0 not upgraded.
+Need to get 13.0 MB of archives.
+After this operation, 56.2 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 python3-lib2to3 all 3.7.5-1build1 [75.6 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 python3-distutils all 3.7.5-1build1 [142 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 dh-python all 4.20190722ubuntu1 [94.2 kB]
@@ -278,7 +296,7 @@ Get:10 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2.7-dev 
 Get:11 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2-dev amd64 2.7.17-1 [7,456 B]
 Get:12 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython-dev amd64 2.7.17-1 [5,892 B]
 Get:13 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython-all-dev amd64 2.7.17-1 [1,112 B]
-Get:14 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpython3.7-dev amd64 3.7.5~rc1-2 [3,629 kB]
+Get:14 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 libpython3.7-dev amd64 3.7.5-2~19.10 [3,633 kB]
 Get:15 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpython3-dev amd64 3.7.5-1 [6,944 B]
 Get:16 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-all amd64 2.7.17-1 [1,088 B]
 Get:17 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2.7-dev amd64 2.7.17~rc1-1 [278 kB]
@@ -306,13 +324,13 @@ Get:38 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-setuptools
 Get:39 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-wheel all 0.32.3-2 [19.3 kB]
 Get:40 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-xdg all 0.25-5 [31.4 kB]
 Get:41 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-crypto amd64 2.6.1-10 [238 kB]
-Get:42 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3.7-dev amd64 3.7.5~rc1-2 [514 kB]
+Get:42 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 python3.7-dev amd64 3.7.5-2~19.10 [514 kB]
 Get:43 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-dev amd64 3.7.5-1 [1,312 B]
 Get:44 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-keyrings.alt all 3.1.1-1 [17.4 kB]
 Get:45 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-pip all 18.1-5 [135 kB]
 Get:46 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-setuptools all 41.1.0-1 [253 kB]
 Get:47 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-wheel all 0.32.3-2 [19.4 kB]
-Fetched 12.9 MB in 20s (652 kB/s)
+Fetched 13.0 MB in 8s (1,630 kB/s)
 Selecting previously unselected package python3-lib2to3.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127768 files and directories currently installed.)
 Preparing to unpack .../00-python3-lib2to3_3.7.5-1build1_all.deb ...
@@ -354,8 +372,8 @@ Selecting previously unselected package libpython-all-dev:amd64.
 Preparing to unpack .../12-libpython-all-dev_2.7.17-1_amd64.deb ...
 Unpacking libpython-all-dev:amd64 (2.7.17-1) ...
 Selecting previously unselected package libpython3.7-dev:amd64.
-Preparing to unpack .../13-libpython3.7-dev_3.7.5~rc1-2_amd64.deb ...
-Unpacking libpython3.7-dev:amd64 (3.7.5~rc1-2) ...
+Preparing to unpack .../13-libpython3.7-dev_3.7.5-2~19.10_amd64.deb ...
+Unpacking libpython3.7-dev:amd64 (3.7.5-2~19.10) ...
 Selecting previously unselected package libpython3-dev:amd64.
 Preparing to unpack .../14-libpython3-dev_3.7.5-1_amd64.deb ...
 Unpacking libpython3-dev:amd64 (3.7.5-1) ...
@@ -438,8 +456,8 @@ Selecting previously unselected package python3-crypto.
 Preparing to unpack .../40-python3-crypto_2.6.1-10_amd64.deb ...
 Unpacking python3-crypto (2.6.1-10) ...
 Selecting previously unselected package python3.7-dev.
-Preparing to unpack .../41-python3.7-dev_3.7.5~rc1-2_amd64.deb ...
-Unpacking python3.7-dev (3.7.5~rc1-2) ...
+Preparing to unpack .../41-python3.7-dev_3.7.5-2~19.10_amd64.deb ...
+Unpacking python3.7-dev (3.7.5-2~19.10) ...
 Selecting previously unselected package python3-dev.
 Preparing to unpack .../42-python3-dev_3.7.5-1_amd64.deb ...
 Unpacking python3-dev (3.7.5-1) ...
@@ -482,9 +500,9 @@ Setting up dh-python (4.20190722ubuntu1) ...
 Setting up libpython2.7-dev:amd64 (2.7.17~rc1-1) ...
 Setting up python-keyrings.alt (3.1.1-1) ...
 Setting up python3-setuptools (41.1.0-1) ...
-Setting up libpython3.7-dev:amd64 (3.7.5~rc1-2) ...
+Setting up libpython3.7-dev:amd64 (3.7.5-2~19.10) ...
 Setting up python-cryptography (2.6.1-3.1) ...
-Setting up python3.7-dev (3.7.5~rc1-2) ...
+Setting up python3.7-dev (3.7.5-2~19.10) ...
 Setting up python-pip (18.1-5) ...
 Setting up python3-pip (18.1-5) ...
 Setting up libjs-sphinxdoc (1.8.5-3) ...
@@ -507,7 +525,7 @@ Processing triggers for libc-bin (2.30-0ubuntu2) ...
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Fri 22 Nov 2019 02:59:10 PM PST
+Mon 02 Dec 2019 11:03:28 AM PST
 git clone https://github.com/google/protobuf
 Cloning into 'protobuf'...
 Note: checking out 'v3.6.1'.
@@ -1766,11 +1784,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/andy/protobuf/src'
 end install protobuf:
-Fri 22 Nov 2019 03:16:18 PM PST
+Mon 02 Dec 2019 11:18:21 AM PST
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Fri 22 Nov 2019 03:16:18 PM PST
+Mon 02 Dec 2019 11:18:22 AM PST
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -1779,7 +1797,10 @@ build-essential is already the newest version (12.8ubuntu1).
 build-essential set to manually installed.
 libtool is already the newest version (2.4.6-11).
 pkg-config is already the newest version (0.29.1-0ubuntu3).
-0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 git clone https://github.com/google/grpc.git
 Cloning into 'grpc'...
 Note: checking out 'tags/v1.17.2'.
@@ -1812,18 +1833,18 @@ Submodule 'third_party/zlib' (https://github.com/madler/zlib) registered for pat
 Cloning into '/home/andy/grpc/third_party/abseil-cpp'...
 Cloning into '/home/andy/grpc/third_party/benchmark'...
 Cloning into '/home/andy/grpc/third_party/bloaty'...
+Cloning into '/home/andy/grpc/third_party/boringssl'...
 Cloning into '/home/andy/grpc/third_party/boringssl-with-bazel'...
 Cloning into '/home/andy/grpc/third_party/cares/cares'...
 Cloning into '/home/andy/grpc/third_party/data-plane-api'...
 Cloning into '/home/andy/grpc/third_party/gflags'...
+Cloning into '/home/andy/grpc/third_party/googleapis'...
 Cloning into '/home/andy/grpc/third_party/googletest'...
 Cloning into '/home/andy/grpc/third_party/libcxx'...
 Cloning into '/home/andy/grpc/third_party/libcxxabi'...
 Cloning into '/home/andy/grpc/third_party/protobuf'...
-Cloning into '/home/andy/grpc/third_party/boringssl'...
 Cloning into '/home/andy/grpc/third_party/protoc-gen-validate'...
 Cloning into '/home/andy/grpc/third_party/zlib'...
-Cloning into '/home/andy/grpc/third_party/googleapis'...
 Submodule path 'third_party/abseil-cpp': checked out 'cc4bed2d74f7c8717e31f9579214ab52a9c9c610'
 Submodule path 'third_party/benchmark': checked out '5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8'
 Submodule path 'third_party/bloaty': checked out '73594cde8c9a52a102c4341c244c833aa61b9c06'
@@ -3102,14 +3123,17 @@ In file included from ./src/core/lib/transport/transport.h:34,
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Fri 22 Nov 2019 03:39:37 PM PST
+Mon 02 Dec 2019 11:33:32 AM PST
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Fri 22 Nov 2019 03:39:38 PM PST
+Mon 02 Dec 2019 11:33:33 AM PST
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   libboost-atomic1.67-dev libboost-atomic1.67.0 libboost-chrono1.67-dev
   libboost-chrono1.67.0 libboost-date-time1.67-dev libboost-date-time1.67.0
@@ -3137,7 +3161,7 @@ The following NEW packages will be installed:
   libboost-system-dev libboost-system1.67-dev libboost-thread-dev
   libboost-thread1.67-dev libboost1.67-dev libjudy-dev libjudydebian1
   libncurses-dev libreadline-dev libtool-bin valgrind
-0 upgraded, 20 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 20 newly installed, 0 to remove and 0 not upgraded.
 Need to get 31.8 MB of archives.
 After this operation, 249 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libboost1.67-dev amd64 1.67.0-13ubuntu1 [8,361 kB]
@@ -3160,7 +3184,7 @@ Get:17 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libncurses-dev amd64 
 Get:18 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libreadline-dev amd64 8.0-3 [141 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libtool-bin amd64 2.4.6-11 [79.8 kB]
 Get:20 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 valgrind amd64 1:3.15.0-1ubuntu3 [20.3 MB]
-Fetched 31.8 MB in 55s (577 kB/s)
+Fetched 31.8 MB in 13s (2,477 kB/s)
 Selecting previously unselected package libboost1.67-dev:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 129792 files and directories currently installed.)
 Preparing to unpack .../00-libboost1.67-dev_1.67.0-13ubuntu1_amd64.deb ...
@@ -5241,11 +5265,11 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/andy/PI'
 end install PI:
-Fri 22 Nov 2019 03:50:26 PM PST
+Mon 02 Dec 2019 11:41:16 AM PST
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Fri 22 Nov 2019 03:50:26 PM PST
+Mon 02 Dec 2019 11:41:16 AM PST
 git clone https://github.com/p4lang/behavioral-model.git
 Cloning into 'behavioral-model'...
 Already up to date.
@@ -5280,6 +5304,9 @@ libjudy-dev is already the newest version (1.0.5-5).
 python-dev is already the newest version (2.7.17-1).
 python-dev set to manually installed.
 python-pip is already the newest version (18.1-5).
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   cmake-data libboost-filesystem1.67-dev libboost-filesystem1.67.0
   libboost-program-options1.67-dev libboost-program-options1.67.0
@@ -5298,7 +5325,7 @@ The following NEW packages will be installed:
   libevent-extra-2.1-6 libevent-openssl-2.1-6 libevent-pthreads-2.1-6
   libffi-dev libfl-dev libfl2 libgmp-dev libgmpxx4ldbl libjsoncpp1 libpcap-dev
   libpcap0.8-dev librhash0 libssl-dev libuv1
-0 upgraded, 30 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 30 newly installed, 0 to remove and 0 not upgraded.
 Need to get 11.3 MB of archives.
 After this operation, 64.6 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 flex amd64 2.6.4-6.2 [317 kB]
@@ -5331,7 +5358,7 @@ Get:27 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpcap0.8-dev amd64 
 Get:28 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpcap-dev amd64 1.9.1-2 [3,480 B]
 Get:29 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libssl-dev amd64 1.1.1c-1ubuntu4 [1,578 kB]
 Get:30 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libffi-dev amd64 3.2.1-9 [157 kB]
-Fetched 11.3 MB in 10s (1,140 kB/s)
+Fetched 11.3 MB in 6s (1,972 kB/s)
 Selecting previously unselected package flex.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 144911 files and directories currently installed.)
 Preparing to unpack .../00-flex_2.6.4-6.2_amd64.deb ...
@@ -5896,7 +5923,7 @@ Python Library:
    Using Python .............. : /usr/bin/python
    Using Python version ...... : Python 2.7.17rc1
    Using Python3 ............. : /usr/bin/python3
-   Using Python3 version ..... : Python 3.7.5rc1
+   Using Python3 version ..... : Python 3.7.5
 
 If something is missing that you think should be present,
 please skim the output of configure to find the missing
@@ -5969,9 +5996,9 @@ mv -f src/thrift/generate/.deps/thrift-t_rb_generator.Tpo src/thrift/generate/.d
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_php_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_php_generator.Tpo -c -o src/thrift/generate/thrift-t_php_generator.o `test -f 'src/thrift/generate/t_php_generator.cc' || echo './'`src/thrift/generate/t_php_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_perl_generator.Tpo src/thrift/generate/.deps/thrift-t_perl_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_erl_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_erl_generator.Tpo -c -o src/thrift/generate/thrift-t_erl_generator.o `test -f 'src/thrift/generate/t_erl_generator.cc' || echo './'`src/thrift/generate/t_erl_generator.cc
-mv -f src/thrift/generate/.deps/thrift-t_php_generator.Tpo src/thrift/generate/.deps/thrift-t_php_generator.Po
-g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_cocoa_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_cocoa_generator.Tpo -c -o src/thrift/generate/thrift-t_cocoa_generator.o `test -f 'src/thrift/generate/t_cocoa_generator.cc' || echo './'`src/thrift/generate/t_cocoa_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_erl_generator.Tpo src/thrift/generate/.deps/thrift-t_erl_generator.Po
+g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_cocoa_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_cocoa_generator.Tpo -c -o src/thrift/generate/thrift-t_cocoa_generator.o `test -f 'src/thrift/generate/t_cocoa_generator.cc' || echo './'`src/thrift/generate/t_cocoa_generator.cc
+mv -f src/thrift/generate/.deps/thrift-t_php_generator.Tpo src/thrift/generate/.deps/thrift-t_php_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_swift_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_swift_generator.Tpo -c -o src/thrift/generate/thrift-t_swift_generator.o `test -f 'src/thrift/generate/t_swift_generator.cc' || echo './'`src/thrift/generate/t_swift_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_swift_generator.Tpo src/thrift/generate/.deps/thrift-t_swift_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_st_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_st_generator.Tpo -c -o src/thrift/generate/thrift-t_st_generator.o `test -f 'src/thrift/generate/t_st_generator.cc' || echo './'`src/thrift/generate/t_st_generator.cc
@@ -6059,14 +6086,14 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 mv -f src/thrift/async/.deps/libthriftnb_la-TEvhttpServer.Tpo src/thrift/async/.deps/libthriftnb_la-TEvhttpServer.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c -o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo `test -f 'src/thrift/async/TEvhttpClientChannel.cpp' || echo './'`src/thrift/async/TEvhttpClientChannel.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c src/thrift/async/TEvhttpClientChannel.cpp  -fPIC -DPIC -o src/thrift/async/.libs/libthriftnb_la-TEvhttpClientChannel.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c src/thrift/async/TEvhttpClientChannel.cpp -o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o >/dev/null 2>&1
 mv -f src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c -o src/thrift/transport/libthriftz_la-TZlibTransport.lo `test -f 'src/thrift/transport/TZlibTransport.cpp' || echo './'`src/thrift/transport/TZlibTransport.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c src/thrift/transport/TZlibTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/libthriftz_la-TZlibTransport.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c src/thrift/async/TEvhttpClientChannel.cpp -o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o >/dev/null 2>&1
 mv -f src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-THeaderTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-THeaderTransport.Tpo -c -o src/thrift/transport/libthriftz_la-THeaderTransport.lo `test -f 'src/thrift/transport/THeaderTransport.cpp' || echo './'`src/thrift/transport/THeaderTransport.cpp
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c src/thrift/transport/TZlibTransport.cpp -o src/thrift/transport/libthriftz_la-TZlibTransport.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-THeaderTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-THeaderTransport.Tpo -c src/thrift/transport/THeaderTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/libthriftz_la-THeaderTransport.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c src/thrift/transport/TZlibTransport.cpp -o src/thrift/transport/libthriftz_la-TZlibTransport.o >/dev/null 2>&1
 mv -f src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/libthriftz_la-THeaderProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/libthriftz_la-THeaderProtocol.Tpo -c -o src/thrift/protocol/libthriftz_la-THeaderProtocol.lo `test -f 'src/thrift/protocol/THeaderProtocol.cpp' || echo './'`src/thrift/protocol/THeaderProtocol.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/libthriftz_la-THeaderProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/libthriftz_la-THeaderProtocol.Tpo -c src/thrift/protocol/THeaderProtocol.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/libthriftz_la-THeaderProtocol.o
@@ -6075,8 +6102,8 @@ mv -f src/thrift/transport/.deps/libthriftz_la-THeaderTransport.Tpo src/thrift/t
 depbase=`echo src/thrift/TApplicationException.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/TApplicationException.lo src/thrift/TApplicationException.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/libthriftz_la-THeaderProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/libthriftz_la-THeaderProtocol.Tpo -c src/thrift/protocol/THeaderProtocol.cpp -o src/thrift/protocol/libthriftz_la-THeaderProtocol.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp  -fPIC -DPIC -o src/thrift/.libs/TApplicationException.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/libthriftz_la-THeaderProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/libthriftz_la-THeaderProtocol.Tpo -c src/thrift/protocol/THeaderProtocol.cpp -o src/thrift/protocol/libthriftz_la-THeaderProtocol.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TApplicationException.lo -MD -MP -MF src/thrift/.deps/TApplicationException.Tpo -c src/thrift/TApplicationException.cpp -o src/thrift/TApplicationException.o >/dev/null 2>&1
 depbase=`echo src/thrift/TOutput.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/TOutput.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/TOutput.lo src/thrift/TOutput.cpp &&\
@@ -6093,11 +6120,11 @@ depbase=`echo src/thrift/async/TAsyncChannel.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF src/thrift/async/.deps/TAsyncChannel.Tpo -c src/thrift/async/TAsyncChannel.cpp  -fPIC -DPIC -o src/thrift/async/.libs/TAsyncChannel.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp -o src/thrift/VirtualProfiling.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF src/thrift/async/.deps/TAsyncChannel.Tpo -c src/thrift/async/TAsyncChannel.cpp -o src/thrift/async/TAsyncChannel.o >/dev/null 2>&1
 depbase=`echo src/thrift/async/TAsyncProtocolProcessor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncProtocolProcessor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/async/TAsyncProtocolProcessor.lo src/thrift/async/TAsyncProtocolProcessor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncProtocolProcessor.lo -MD -MP -MF src/thrift/async/.deps/TAsyncProtocolProcessor.Tpo -c src/thrift/async/TAsyncProtocolProcessor.cpp  -fPIC -DPIC -o src/thrift/async/.libs/TAsyncProtocolProcessor.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF src/thrift/async/.deps/TAsyncChannel.Tpo -c src/thrift/async/TAsyncChannel.cpp -o src/thrift/async/TAsyncChannel.o >/dev/null 2>&1
 depbase=`echo src/thrift/async/TConcurrentClientSyncInfo.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TConcurrentClientSyncInfo.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/async/TConcurrentClientSyncInfo.lo src/thrift/async/TConcurrentClientSyncInfo.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6118,10 +6145,10 @@ depbase=`echo src/thrift/concurrency/Util.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Util.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Util.lo src/thrift/concurrency/Util.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Util.lo -MD -MP -MF src/thrift/concurrency/.deps/Util.Tpo -c src/thrift/concurrency/Util.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Util.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Util.lo -MD -MP -MF src/thrift/concurrency/.deps/Util.Tpo -c src/thrift/concurrency/Util.cpp -o src/thrift/concurrency/Util.o >/dev/null 2>&1
 depbase=`echo src/thrift/processor/PeekProcessor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/processor/PeekProcessor.lo src/thrift/processor/PeekProcessor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Util.lo -MD -MP -MF src/thrift/concurrency/.deps/Util.Tpo -c src/thrift/concurrency/Util.cpp -o src/thrift/concurrency/Util.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF src/thrift/processor/.deps/PeekProcessor.Tpo -c src/thrift/processor/PeekProcessor.cpp  -fPIC -DPIC -o src/thrift/processor/.libs/PeekProcessor.o
 depbase=`echo src/thrift/protocol/TDebugProtocol.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TDebugProtocol.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/protocol/TDebugProtocol.lo src/thrift/protocol/TDebugProtocol.cpp &&\
@@ -6202,10 +6229,10 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo src/thrift/transport/TSSLSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSSLSocket.lo src/thrift/transport/TSSLSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLSocket.o
 depbase=`echo src/thrift/transport/TSocketPool.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocketPool.lo src/thrift/transport/TSocketPool.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLSocket.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF src/thrift/transport/.deps/TSocketPool.Tpo -c src/thrift/transport/TSocketPool.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocketPool.o
 src/thrift/transport/TSSLSocket.cpp: In function ‘void apache::thrift::transport::cleanupOpenSSL()’:
 src/thrift/transport/TSSLSocket.cpp:154:21: warning: ‘void ERR_remove_state(long unsigned int)’ is deprecated [-Wdeprecated-declarations]
@@ -6333,10 +6360,10 @@ src/thrift/transport/TSSLSocket.cpp:72:13: warning: ‘void apache::thrift::tran
    72 | static void callbackLocking(int mode, int n, const char*, int) {
       |             ^~~~~~~~~~~~~~~
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF src/thrift/transport/.deps/TSocketPool.Tpo -c src/thrift/transport/TSocketPool.cpp -o src/thrift/transport/TSocketPool.o >/dev/null 2>&1
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp -o src/thrift/transport/TSSLSocket.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TServerSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TServerSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TServerSocket.lo src/thrift/transport/TServerSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp -o src/thrift/transport/TSSLSocket.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TServerSocket.Tpo -c src/thrift/transport/TServerSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TServerSocket.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TServerSocket.Tpo -c src/thrift/transport/TServerSocket.cpp -o src/thrift/transport/TServerSocket.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TSSLServerSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6420,10 +6447,6 @@ Making all in test
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/test'
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/AnnotationTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/DebugProtoTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
-
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -6468,7 +6491,11 @@ make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
+
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6644,11 +6671,11 @@ depbase=`echo gen-cpp/AnnotationTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/AnnotationTest_types.lo -MD -MP -MF gen-cpp/.deps/AnnotationTest_types.Tpo -c gen-cpp/AnnotationTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/AnnotationTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/proc_types.lo -MD -MP -MF gen-cpp/.deps/proc_types.Tpo -c gen-cpp/proc_types.cpp -o gen-cpp/proc_types.o >/dev/null 2>&1
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/AnnotationTest_types.lo -MD -MP -MF gen-cpp/.deps/AnnotationTest_types.Tpo -c gen-cpp/AnnotationTest_types.cpp -o gen-cpp/AnnotationTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/DebugProtoTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/DebugProtoTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/DebugProtoTest_types.lo gen-cpp/DebugProtoTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/DebugProtoTest_types.lo -MD -MP -MF gen-cpp/.deps/DebugProtoTest_types.Tpo -c gen-cpp/DebugProtoTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/DebugProtoTest_types.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/AnnotationTest_types.lo -MD -MP -MF gen-cpp/.deps/AnnotationTest_types.Tpo -c gen-cpp/AnnotationTest_types.cpp -o gen-cpp/AnnotationTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/DoubleConstantsTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/DoubleConstantsTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/DoubleConstantsTest_constants.lo gen-cpp/DoubleConstantsTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6819,10 +6846,10 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 make  all-am
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/cpp'
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6969,10 +6996,7 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py  ../DoubleConstantsTest.thrift
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6992,6 +7016,9 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py  ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py  ../Recursive.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
 
@@ -7013,140 +7040,6 @@ test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DebugProtoTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:48] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:120] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:160] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:166] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DoubleConstantsTest.thrift
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
-
-test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../Recursive.thrift
-test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../ThriftTest.thrift
-test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -7237,9 +7130,7 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DoubleConstantsTest.thrift
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7259,27 +7150,163 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
+test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DoubleConstantsTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../Recursive.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
 test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../ThriftTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DebugProtoTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
 
-test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:48] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:120] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:160] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:166] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
+test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../Recursive.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../ThriftTest.thrift
 test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
@@ -7325,7 +7352,11 @@ test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7339,92 +7370,6 @@ test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:120] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:160] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:166] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
-test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../DoubleConstantsTest.thrift
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
-test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../Recursive.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
-
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
-test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../ThriftTest.thrift
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
-test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../DebugProtoTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
-
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
@@ -7475,6 +7420,90 @@ test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
+test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
+test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../DoubleConstantsTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../Recursive.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:17] 64-bit constant "-9223372036854775807" may not work in all languages.
+
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
+test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
+test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../ThriftTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../DebugProtoTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+s or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:48] Consider using the more efficient "binary" type instead of "list<byte>".
@@ -7511,9 +7540,7 @@ test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -7647,7 +7674,6 @@ test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -7668,6 +7694,7 @@ test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../Recursive.thrift
@@ -7735,7 +7762,9 @@ test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7779,7 +7808,8 @@ test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
+.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7799,9 +7829,6 @@ test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../Recursive.thrift
@@ -7867,11 +7894,11 @@ depbase=`echo gen-cpp/shared_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/shared_types.lo gen-cpp/shared_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF gen-cpp/.deps/shared_types.Tpo -c gen-cpp/shared_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/shared_types.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF gen-cpp/.deps/shared_types.Tpo -c gen-cpp/shared_types.cpp -o gen-cpp/shared_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/tutorial_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/tutorial_constants.lo gen-cpp/tutorial_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_constants.lo -MD -MP -MF gen-cpp/.deps/tutorial_constants.Tpo -c gen-cpp/tutorial_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/tutorial_constants.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/shared_types.lo -MD -MP -MF gen-cpp/.deps/shared_types.Tpo -c gen-cpp/shared_types.cpp -o gen-cpp/shared_types.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_constants.lo -MD -MP -MF gen-cpp/.deps/tutorial_constants.Tpo -c gen-cpp/tutorial_constants.cpp -o gen-cpp/tutorial_constants.o >/dev/null 2>&1
 depbase=`echo gen-cpp/tutorial_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/tutorial_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/tutorial_types.lo gen-cpp/tutorial_types.cpp &&\
@@ -7885,8 +7912,8 @@ libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
-libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
+libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 make[4]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial/cpp'
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial/cpp'
 Making all in py
@@ -8128,9 +8155,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/sslcompat.py to
 byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TRecursive.py to TRecursive.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.pyc
-writing byte-compilation script '/tmp/tmp6W8PEA.py'
-/usr/bin/python -O /tmp/tmp6W8PEA.py
-removing /tmp/tmp6W8PEA.py
+writing byte-compilation script '/tmp/tmpzXMoUw.py'
+/usr/bin/python -O /tmp/tmpzXMoUw.py
+removing /tmp/tmpzXMoUw.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -8329,14 +8356,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/sslcompat.py to ssl
 byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TRecursive.py to TRecursive.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
-writing byte-compilation script '/tmp/tmpQjX6Je.py'
-/usr/bin/python -O /tmp/tmpQjX6Je.py
-removing /tmp/tmpQjX6Je.py
+writing byte-compilation script '/tmp/tmpGinjVe.py'
+/usr/bin/python -O /tmp/tmpGinjVe.py
+removing /tmp/tmpGinjVe.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpwNiPq5.py'
-/usr/bin/python -O /tmp/tmpwNiPq5.py
-removing /tmp/tmpwNiPq5.py
+writing byte-compilation script '/tmp/tmp9LUFWQ.py'
+/usr/bin/python -O /tmp/tmp9LUFWQ.py
+removing /tmp/tmp9LUFWQ.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -8361,26 +8388,26 @@ Adding six 1.12.0 to easy-install.pth file
 
 Using /usr/lib/python2.7/dist-packages
 Finished processing dependencies for thrift==0.12.0
---2019-11-22 15:59:39--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 140.82.114.4
-Connecting to github.com (github.com)|140.82.114.4|:443... connected.
+--2019-12-02 11:55:03--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-11-22 15:59:39--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 140.82.114.10
-Connecting to codeload.github.com (codeload.github.com)|140.82.114.10|:443... connected.
+--2019-12-02 11:55:04--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 192.30.255.120
+Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  293K
-    50K .......... .......... .......... .......... ..........  974K
-   100K .......... .......... .......... .......... ..........  328K
-   150K .......... .......... .......... .......... .......... 1.81M
-   200K .......... .......... .......... .......... .......... 1.49M
-   250K .......... .......... .......... .......... .......    1.14M=0.5s
+     0K .......... .......... .......... .......... ..........  343K
+    50K .......... .......... .......... .......... .......... 13.7M
+   100K .......... .......... .......... .......... ..........  191K
+   150K .......... .......... .......... .......... .......... 2.86M
+   200K .......... .......... .......... .......... ..........  156K
+   250K .......... .......... .......... .......... .......    2.65M=0.8s
 
-2019-11-22 15:59:40 (627 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-12-02 11:55:05 (389 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -9237,7 +9264,7 @@ Requirement already satisfied: pycparser in /usr/local/lib/python2.7/dist-packag
 Building wheels for collected packages: nnpy
   Running setup.py bdist_wheel for nnpy: started
   Running setup.py bdist_wheel for nnpy: finished with status 'done'
-  Stored in directory: /tmp/pip-ephem-wheel-cache-uxOfsj/wheels/42/88/86/b6ce68244de51de3edf393b14e400e379edc9d1128f4c6c99b
+  Stored in directory: /tmp/pip-ephem-wheel-cache-z7YNBV/wheels/94/15/d6/7a74f2a208e6246aa26e1557f621f245c82f00bb88443128b2
 Successfully built nnpy
 Installing collected packages: nnpy
 Successfully installed nnpy-0.1
@@ -11541,6 +11568,7 @@ chmod a-w bm_nanomsg_events.tmp
 mv bm_nanomsg_events.tmp bm_nanomsg_events
 make[2]: Leaving directory '/home/andy/behavioral-model/tools'
 make[2]: Entering directory '/home/andy/behavioral-model'
+make[2]: Nothing to be done for 'all-am'.
 make[2]: Leaving directory '/home/andy/behavioral-model'
 make[1]: Leaving directory '/home/andy/behavioral-model'
 Making install in thrift_src
@@ -12346,11 +12374,11 @@ make[3]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_gr
 make[2]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Fri 22 Nov 2019 04:26:59 PM PST
+Mon 02 Dec 2019 12:17:20 PM PST
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Fri 22 Nov 2019 04:26:59 PM PST
+Mon 02 Dec 2019 12:17:21 PM PST
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -12370,6 +12398,9 @@ tcpdump is already the newest version (4.9.3-2).
 tcpdump set to manually installed.
 python is already the newest version (2.7.17-1).
 python3-pip is already the newest version (18.1-5).
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   binfmt-support icu-devtools libboost-graph1.67-dev libboost-graph1.67.0
   libboost-iostreams1.67-dev libboost-iostreams1.67.0 libboost-regex1.67-dev
@@ -12388,7 +12419,7 @@ The following NEW packages will be installed:
   libgc-dev libgc1c2 libicu-dev libpfm4 llvm llvm-9 llvm-9-dev llvm-9-runtime
   llvm-9-tools llvm-runtime python-chardet python-ipaddr python-ply
   python-pygments python-scapy python-yaml python3-pygments
-0 upgraded, 27 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.
 Need to get 43.7 MB of archives.
 After this operation, 284 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 binfmt-support amd64 2.2.0-2 [58.2 kB]
@@ -12418,7 +12449,7 @@ Get:24 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-chardet al
 Get:25 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-ipaddr all 2.2.0-2 [15.5 kB]
 Get:26 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-ply all 3.11-3 [46.5 kB]
 Get:27 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-scapy all 2.4.2-1 [614 kB]
-Fetched 43.7 MB in 27s (1,618 kB/s)
+Fetched 43.7 MB in 18s (2,449 kB/s)
 Selecting previously unselected package binfmt-support.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148074 files and directories currently installed.)
 Preparing to unpack .../00-binfmt-support_2.2.0-2_amd64.deb ...
@@ -12530,7 +12561,7 @@ Setting up libboost-iostreams1.67-dev:amd64 (1.67.0-13ubuntu1) ...
 Setting up llvm-9-dev (1:9-2) ...
 Setting up libboost-iostreams-dev:amd64 (1.67.0.2) ...
 Processing triggers for libc-bin (2.30-0ubuntu2) ...
-Processing triggers for systemd (242-7ubuntu3) ...
+Processing triggers for systemd (242-7ubuntu3.2) ...
 Processing triggers for man-db (2.8.7-3) ...
 Collecting scapy
   Downloading https://files.pythonhosted.org/packages/52/e7/464079606a9cf97ad04936c52a5324d14dae36215f9319bf3faa46a7907d/scapy-2.4.3.tar.gz (905kB)
@@ -12550,11 +12581,14 @@ Cloning into '/home/andy/p4c/control-plane/p4runtime'...
 Cloning into '/home/andy/p4c/test/frameworks/gtest'...
 Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit fbe395bbf1eed9653323ac73b20cf6c06af2121e
-Author: Han Wang <hanw@users.noreply.github.com>
-Date:   Thu Nov 21 14:09:41 2019 +0800
+commit 75df2526b6d9fa1146dfe41c73fc24224baf4502
+Author: Chris Dodd <cdodd@barefootnetworks.com>
+Date:   Sun Dec 1 09:13:08 2019 -0800
 
-    fix type inference for IR::Neg and IR::Cmpl (#2093)
+    Stack backtrace in exceptions (#2100)
+    
+    - print the backtrace when unexpected exceptions are caught at the top
+      level
 -- The C compiler identification is GNU 9.2.1
 -- The CXX compiler identification is GNU 9.2.1
 -- Check for working C compiler: /usr/bin/cc
@@ -12594,16 +12628,15 @@ Date:   Thu Nov 21 14:09:41 2019 +0800
 -- Looking for pipe2 - found
 -- Looking for GC_print_stats
 -- Looking for GC_print_stats - found
--- Could NOT find PY_difflib (missing: PY_DIFFLIB) 
--- Could NOT find PY_shutil (missing: PY_SHUTIL) 
--- Could NOT find PY_tempfile (missing: PY_TEMPFILE) 
--- Could NOT find PY_subprocess (missing: PY_SUBPROCESS) 
--- Could NOT find PY_re (missing: PY_RE) 
+-- Found PY_difflib: /usr/lib/python3.7/difflib.py  
+-- Found PY_shutil: /usr/lib/python3.7/shutil.py  
+-- Found PY_tempfile: /usr/lib/python3.7/tempfile.py  
+-- Found PY_subprocess: /usr/lib/python3.7/subprocess.py  
+-- Found PY_re: /usr/lib/python3.7/re.py  
 -- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) 
--- Could NOT find PY_scapy (missing: PY_SCAPY) 
+-- Found PY_scapy: /home/andy/.local/lib/python3.7/site-packages/scapy  
 -- Could NOT find PY_ipaddr (missing: PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/simple_switch  
--- Could NOT find PY_scapy (missing: PY_SCAPY) 
 -- Could NOT find PY_ipaddr (missing: PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/psa_switch  
 -- Performing Test _HAVE_OPTION_Wall_
@@ -12627,7 +12660,7 @@ Date:   Thu Nov 21 14:09:41 2019 +0800
 -- Added 6 tests to 'err' (0 xfails)
 -- Added 173 tests to 'err' (0 xfails)
 -- Added 208 tests to 'p14_to_16' (0 xfails)
--- CTest parallel: -j 4
+-- CTest parallel: -j 1
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/andy/p4c/build
@@ -12650,7 +12683,7 @@ In file included from /home/andy/p4c/lib/error_helper.h:27,
                  from /home/andy/p4c/lib/error_reporter.h:20,
                  from /home/andy/p4c/lib/compile_context.h:24,
                  from /home/andy/p4c/lib/compile_context.cpp:17,
-                 from /home/andy/p4c/build/lib/unified_libp4ctoolkit_srcs_1.cpp:3:
+                 from /home/andy/p4c/build/lib/unified_libp4ctoolkit_srcs_1.cpp:4:
 /home/andy/p4c/lib/source_file.h: In member function ‘Util::SourceInfo& Util::SourceInfo::operator+=(const Util::SourceInfo&)’:
 /home/andy/p4c/lib/source_file.h:182:40: warning: implicitly-declared ‘Util::SourcePosition& Util::SourcePosition::operator=(const Util::SourcePosition&)’ is deprecated [-Wdeprecated-copy]
   182 |             start = start.min(rhs.start);
@@ -14449,17 +14482,19 @@ Install the project...
 -- Installing: /usr/local/bin/p4test
 -- Installing: /usr/local/bin/p4c-graphs
 end install p4c:
-Fri 22 Nov 2019 04:38:53 PM PST
+Mon 02 Dec 2019 12:29:13 PM PST
 ------------------------------------------------------------
 Installing Mininet - not necessary to run P4 programs, but useful if
 you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
-Fri 22 Nov 2019 04:38:53 PM PST
+Mon 02 Dec 2019 12:29:14 PM PST
 Cloning into 'mininet'...
 patching file util/install.sh
+Hunk #1 succeeded at 172 (offset 12 lines).
 Detected Linux distribution: Ubuntu 19.10 eoan amd64
-python is version 2
+sys.version_info(major=2, minor=7, micro=17, releaselevel='candidate', serial=1)
+Detected Python (python) version 2
 Installing Mininet dependencies
 Reading package lists...
 Building dependency tree...
@@ -14475,6 +14510,9 @@ telnet is already the newest version (0.17-41.2).
 telnet set to manually installed.
 python-setuptools is already the newest version (41.1.0-1).
 python-setuptools set to manually installed.
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   blt libcgroup1 libtcl8.6 libtk8.6 libutempter0 ncurses-term openssh-server
   openssh-sftp-server pycodestyle pyflakes3 python-ptyprocess python-pyflakes
@@ -14491,7 +14529,7 @@ The following NEW packages will be installed:
   python3-astroid python3-isort python3-lazy-object-proxy
   python3-logilab-common python3-mccabe python3-pycodestyle python3-pyflakes
   python3-tk python3-wrapt socat ssh ssh-import-id tk8.6-blt2.5 xterm
-0 upgraded, 34 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 34 newly installed, 0 to remove and 0 not upgraded.
 Need to get 5,347 kB of archives.
 After this operation, 25.9 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 openssh-sftp-server amd64 1:8.0p1-6build1 [47.7 kB]
@@ -14529,7 +14567,7 @@ Get:32 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 xterm amd64 348-2
 Get:33 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 socat amd64 1.7.3.2-2ubuntu3 [343 kB]
 Get:34 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 ssh-import-id all 5.7-24-g4001a38e-0ubuntu1 [11.5 kB]
 Preconfiguring packages ...
-Fetched 5,347 kB in 7s (766 kB/s)
+Fetched 5,347 kB in 5s (1,148 kB/s)
 Selecting previously unselected package openssh-sftp-server.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 151458 files and directories currently installed.)
 Preparing to unpack .../00-openssh-sftp-server_1%3a8.0p1-6build1_amd64.deb ...
@@ -14638,11 +14676,11 @@ Setting up openssh-server (1:8.0p1-6build1) ...
 
 Creating config file /etc/ssh/sshd_config with new version
 Creating SSH2 RSA key; this may take some time ...
-3072 SHA256:LngFI+eXYgSMN3QarfkKkAApdicSiBKSuTrnuQ4AxQw root@andy-vm (RSA)
+3072 SHA256:YN9VSBPOitDxZ7g4p6oBCeFzlVt+UF3+ToItLQcD4H4 root@andy-vm (RSA)
 Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:0a/F9g3Y9M9O5rtiiyNpqH76OmeWhKz5kENtGEvAB4o root@andy-vm (ECDSA)
+256 SHA256:gZkGWS32EH0vV9Gzmptrdta/QV0oBXEIyknPhmvtdUk root@andy-vm (ECDSA)
 Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:4t3jhbZUNorHqOyYRW0cG5P+lKy4+ISRTbvOqGvkWB4 root@andy-vm (ED25519)
+256 SHA256:ZcczSsiXH2AaUV3lnDl+GFh9mtPjZ9/JFfEjTmKnDEI root@andy-vm (ED25519)
 Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
 rescue-ssh.target is a disabled or a static unit, not starting it.
@@ -14685,7 +14723,7 @@ Processing triggers for hicolor-icon-theme (0.17-2) ...
 Processing triggers for gnome-menus (3.32.0-1ubuntu1) ...
 Processing triggers for libc-bin (2.30-0ubuntu2) ...
 Processing triggers for ufw (0.36-1ubuntu3) ...
-Processing triggers for systemd (242-7ubuntu3) ...
+Processing triggers for systemd (242-7ubuntu3.2) ...
 Processing triggers for man-db (2.8.7-3) ...
 Processing triggers for install-info (6.6.0.dfsg.1-2ubuntu2) ...
 Reading package lists...
@@ -14693,7 +14731,10 @@ Building dependency tree...
 Reading state information...
 iproute2 is already the newest version (5.2.0-1ubuntu2).
 iproute2 set to manually installed.
-0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 Installing Mininet core
 /home/andy/mininet /home/andy
 cc -Wall -Wextra  -DVERSION=\"`PYTHONPATH=. python -B bin/mn --version`\" mnexec.c -o mnexec
@@ -14917,6 +14958,9 @@ Installing Wireshark
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   libc-ares2 libdouble-conversion3 liblua5.2-0 libmaxminddb0 libpcre2-16-0
   libqt5core5a libqt5dbus5 libqt5gui5 libqt5multimedia5
@@ -14939,7 +14983,7 @@ The following NEW packages will be installed:
   libwireshark12 libwiretap9 libwscodecs2 libwsutil10 libxcb-xinerama0
   libxcb-xinput0 qt5-gtk-platformtheme qttranslations5-l10n tshark wireshark
   wireshark-common wireshark-qt
-0 upgraded, 34 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 34 newly installed, 0 to remove and 0 not upgraded.
 Need to get 32.3 MB of archives.
 After this operation, 160 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libdouble-conversion3 amd64 3.1.5-2 [38.0 kB]
@@ -14977,7 +15021,7 @@ Get:32 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 tshark amd64 3.0.
 Get:33 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 wireshark-qt amd64 3.0.5-1 [3,592 kB]
 Get:34 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 wireshark amd64 3.0.5-1 [5,072 B]
 Preconfiguring packages ...
-Fetched 32.3 MB in 22s (1,445 kB/s)
+Fetched 32.3 MB in 15s (2,198 kB/s)
 Selecting previously unselected package libdouble-conversion3:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 156358 files and directories currently installed.)
 Preparing to unpack .../00-libdouble-conversion3_3.1.5-2_amd64.deb ...
@@ -15129,6 +15173,9 @@ Installing Open vSwitch...
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   libunbound8 openvswitch-common python3-openvswitch python3-sortedcontainers
 Suggested packages:
@@ -15136,7 +15183,7 @@ Suggested packages:
 The following NEW packages will be installed:
   libunbound8 openvswitch-common openvswitch-switch python3-openvswitch
   python3-sortedcontainers
-0 upgraded, 5 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 5 newly installed, 0 to remove and 0 not upgraded.
 Need to get 3,088 kB of archives.
 After this operation, 13.7 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libunbound8 amd64 1.9.0-2ubuntu1 [346 kB]
@@ -15144,7 +15191,7 @@ Get:2 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-sortedcontaine
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 openvswitch-common amd64 2.12.0-0ubuntu1 [942 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-openvswitch all 2.12.0-0ubuntu1 [84.7 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 openvswitch-switch amd64 2.12.0-0ubuntu1 [1,688 kB]
-Fetched 3,088 kB in 2s (1,366 kB/s)
+Fetched 3,088 kB in 2s (1,254 kB/s)
 Selecting previously unselected package libunbound8:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157268 files and directories currently installed.)
 Preparing to unpack .../libunbound8_1.9.0-2ubuntu1_amd64.deb ...
@@ -15168,7 +15215,7 @@ Setting up openvswitch-common (2.12.0-0ubuntu1) ...
 Setting up openvswitch-switch (2.12.0-0ubuntu1) ...
 update-alternatives: using /usr/lib/openvswitch-switch/ovs-vswitchd to provide /usr/sbin/ovs-vswitchd (ovs-vswitchd) in auto mode
 Created symlink /etc/systemd/system/multi-user.target.wants/openvswitch-switch.service → /lib/systemd/system/openvswitch-switch.service.
-Processing triggers for systemd (242-7ubuntu3) ...
+Processing triggers for systemd (242-7ubuntu3.2) ...
 Processing triggers for man-db (2.8.7-3) ...
 Processing triggers for libc-bin (2.30-0ubuntu2) ...
 Reading package lists...
@@ -15179,16 +15226,19 @@ Attempting to install openvswitch-testcontroller
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   openvswitch-pki
 The following NEW packages will be installed:
   openvswitch-pki openvswitch-testcontroller
-0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 677 kB of archives.
 After this operation, 2,236 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 openvswitch-pki all 2.12.0-0ubuntu1 [2,748 B]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 openvswitch-testcontroller amd64 2.12.0-0ubuntu1 [674 kB]
-Fetched 677 kB in 1s (1,153 kB/s)
+Fetched 677 kB in 1s (772 kB/s)
 Selecting previously unselected package openvswitch-pki.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157420 files and directories currently installed.)
 Preparing to unpack .../openvswitch-pki_2.12.0-0ubuntu1_all.deb ...
@@ -15201,14 +15251,14 @@ Creating controllerca...
 Creating switchca...
 Setting up openvswitch-testcontroller (2.12.0-0ubuntu1) ...
 Processing triggers for man-db (2.8.7-3) ...
-Processing triggers for systemd (242-7ubuntu3) ...
+Processing triggers for systemd (242-7ubuntu3.2) ...
 Stopped running controller
 end install mininet:
-Fri 22 Nov 2019 04:40:23 PM PST
+Mon 02 Dec 2019 12:30:43 PM PST
 ------------------------------------------------------------
 Installing a few miscellaneous packages
 start install miscellaneous packages:
-Fri 22 Nov 2019 04:40:24 PM PST
+Mon 02 Dec 2019 12:30:43 PM PST
 Collecting grpcio
   Downloading https://files.pythonhosted.org/packages/69/46/ebd21ce467ab87f2cf825413273936f9b1ee0e6cd4e2f2ee62e0516c771f/grpcio-1.25.0-cp27-cp27mu-manylinux1_x86_64.whl (2.5MB)
 Requirement already satisfied: six>=1.5.2 in /usr/lib/python2.7/dist-packages (from grpcio) (1.12.0)
@@ -15218,28 +15268,31 @@ Requirement already satisfied: enum34>=1.0.4; python_version < "3.4" in /usr/lib
 Installing collected packages: futures, grpcio
 Successfully installed futures-3.3.0 grpcio-1.25.0
 Collecting protobuf
-  Downloading https://files.pythonhosted.org/packages/c5/49/ffa7ab9c52ec56b535cffec3bc844254c073888e6d4aeee464671ac97480/protobuf-3.10.0-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
+  Downloading https://files.pythonhosted.org/packages/15/c8/b55cff970507d28cca487b644c738effbd4cbfb4065318f2e6b67f27944f/protobuf-3.11.0-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
 Requirement already satisfied: six>=1.9 in /usr/lib/python2.7/dist-packages (from protobuf) (1.12.0)
 Requirement already satisfied: setuptools in /usr/lib/python2.7/dist-packages (from protobuf) (41.1.0)
 Installing collected packages: protobuf
-Successfully installed protobuf-3.10.0
+Successfully installed protobuf-3.11.0
 Reading package lists...
 Building dependency tree...
 Reading state information...
+The following package was automatically installed and is no longer required:
+  libdumbnet1
+Use 'sudo apt autoremove' to remove it.
 The following additional packages will be installed:
   libgflags2.2
 Suggested packages:
   python-psutil-doc
 The following NEW packages will be installed:
   libgflags-dev libgflags2.2 net-tools python-psutil
-0 upgraded, 4 newly installed, 0 to remove and 2 not upgraded.
-Need to get 495 kB of archives.
-After this operation, 2,711 kB of additional disk space will be used.
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 496 kB of archives.
+After this operation, 2,715 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libgflags2.2 amd64 2.2.2-1 [70.6 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libgflags-dev amd64 2.2.2-1 [87.3 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 net-tools amd64 1.60+git20180626.aebd88e-1ubuntu1 [196 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-psutil amd64 5.5.1-1build1 [141 kB]
-Fetched 495 kB in 1s (552 kB/s)
+Get:4 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 python-psutil amd64 5.5.1-1ubuntu0.19.10.1 [141 kB]
+Fetched 496 kB in 1s (477 kB/s)
 Selecting previously unselected package libgflags2.2.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157433 files and directories currently installed.)
 Preparing to unpack .../libgflags2.2_2.2.2-1_amd64.deb ...
@@ -15251,10 +15304,10 @@ Selecting previously unselected package net-tools.
 Preparing to unpack .../net-tools_1.60+git20180626.aebd88e-1ubuntu1_amd64.deb ...
 Unpacking net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
 Selecting previously unselected package python-psutil.
-Preparing to unpack .../python-psutil_5.5.1-1build1_amd64.deb ...
-Unpacking python-psutil (5.5.1-1build1) ...
+Preparing to unpack .../python-psutil_5.5.1-1ubuntu0.19.10.1_amd64.deb ...
+Unpacking python-psutil (5.5.1-1ubuntu0.19.10.1) ...
 Setting up net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
-Setting up python-psutil (5.5.1-1build1) ...
+Setting up python-psutil (5.5.1-1ubuntu0.19.10.1) ...
 Setting up libgflags2.2 (2.2.2-1) ...
 Setting up libgflags-dev (2.2.2-1) ...
 Processing triggers for man-db (2.8.7-3) ...
@@ -15269,14 +15322,14 @@ Successfully built crcmod
 Installing collected packages: crcmod
 Successfully installed crcmod-1.7
 end install miscellaneous packages:
-Fri 22 Nov 2019 04:40:38 PM PST
+Mon 02 Dec 2019 12:30:59 PM PST
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Fri 22 Nov 2019 04:40:38 PM PST
+Mon 02 Dec 2019 12:30:59 PM PST
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda1        59G   16G   41G  28% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         60218M 15741M    41390M  28% /
+/dev/sda1         60218M 15760M    41371M  28% /
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS BELOW
 ----------------------------------------------------------------------
