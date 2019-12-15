@@ -9,14 +9,11 @@ date this script was tested on its supported operating systems:
 
     https://github.com/jafingerhut/p4-guide/tree/master/bin/output
 
-The files installed by this script consume about 7 GB of disk space.
+The files installed by this script consume about 8 GB of disk space.
 
 On a 2015 MacBook Pro with a decent speed Internet connection
 and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it
-took about 55 minutes.
-
-You will likely need to enter your password for multiple uses of
-'sudo' spread throughout this script.
+took about 60 minutes.
 
 Versions of software that will be installed by this script:
 
@@ -29,7 +26,8 @@ Versions of software that will be installed by this script:
   + nanomsg version 1.0.0
   + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22
 + p4c: github.com/p4lang/p4c latest version
-+ Python packages: grpcio, protobuf, latest versions
++ Mininet: github.com/mininet/mininet latest version
++ Python packages: grpcio, protobuf, crcmod, latest versions
 
 Note that anything installed as 'the latest version' can change
 its precise contents from one run of this script to another.
@@ -41,15 +39,15 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Wed Nov  6 12:52:07 PST 2019
+Sat Dec 14 13:08:34 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        14G  4.1G  9.0G  32% /
+/dev/sda1        14G  4.1G  8.9G  32% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         14028M 4178M     9115M  32% /
+/dev/sda1         14028M 4187M     9106M  32% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
-git is already the newest version (1:2.7.4-0ubuntu1.6).
+git is already the newest version (1:2.7.4-0ubuntu1.7).
 Suggested packages:
   ctags vim-doc vim-scripts vim-gnome-py2 | vim-gtk-py2 | vim-gtk3-py2
   | vim-athena-py2 | vim-nox-py2
@@ -60,9 +58,9 @@ Need to get 6,214 kB of archives.
 After this operation, 30.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim-runtime all 2:7.4.1689-3ubuntu1.3 [5,179 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim amd64 2:7.4.1689-3ubuntu1.3 [1,036 kB]
-Fetched 6,214 kB in 3s (1,787 kB/s)
+Fetched 6,214 kB in 3s (1,864 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 179066 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 179076 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a7.4.1689-3ubuntu1.3_all.deb ...
 Adding 'diversion of /usr/share/vim/vim74/doc/help.txt to /usr/share/vim/vim74/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim74/doc/tags to /usr/share/vim/vim74/doc/tags.vim-tiny by vim-runtime'
@@ -109,9 +107,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 automake all 1:1.15-
 Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.14 [139 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl-dev amd64 2.4.6-0.1 [162 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool all 2.4.6-0.1 [193 kB]
-Fetched 1,573 kB in 4s (352 kB/s)
+Fetched 1,573 kB in 1s (1,086 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180775 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 180785 files and directories currently installed.)
 Preparing to unpack .../libsigsegv2_2.10-4_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.10-4) ...
 Selecting previously unselected package m4.
@@ -159,9 +157,9 @@ The following NEW packages will be installed:
 Need to get 168 kB of archives.
 After this operation, 425 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-2ubuntu4.1 [168 kB]
-Fetched 168 kB in 1s (161 kB/s)
+Fetched 168 kB in 0s (251 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 181142 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 181152 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.8.dfsg-2ubuntu4.1_amd64.deb ...
 Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
 Processing triggers for man-db (2.7.5-1) ...
@@ -174,7 +172,7 @@ pkg-config is already the newest version (0.29.1-0ubuntu1).
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Wed Nov  6 12:52:35 PST 2019
+Sat Dec 14 13:09:02 PST 2019
 git clone https://github.com/google/protobuf
 Cloning into 'protobuf'...
 Note: checking out 'v3.2.0'.
@@ -192,12 +190,12 @@ HEAD is now at 593e917... Bump version number to 3.2.0
 Google Mock not present.  Fetching gmock-1.7.0 from the web...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    230      0 --:--:-- --:--:-- --:--:--   230
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  362k  100  362k    0     0   203k      0  0:00:01  0:00:01 --:--:--  377k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    282      0 --:--:-- --:--:-- --:--:--   282
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  362k    0  362k    0     0   305k      0 --:--:--  0:00:01 --:--:--  593k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    142      0 --:--:-- --:--:-- --:--:--   142
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 30  618k   30  189k    0     0  99969      0  0:00:06  0:00:01  0:00:05  194k100  618k  100  618k    0     0   233k      0  0:00:02  0:00:02 --:--:--  369k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    195      0 --:--:-- --:--:-- --:--:--   194
+100  352k    0  352k    0     0   268k      0 --:--:--  0:00:01 --:--:--  268k100  618k    0  618k    0     0   440k      0 --:--:--  0:00:01 --:--:-- 2801k
 + autoreconf -f -i -Wall,no-obsolete
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
 libtoolize: copying file 'build-aux/ltmain.sh'
@@ -1800,11 +1798,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/andy/protobuf/src'
 end install protobuf:
-Wed Nov  6 13:26:27 PST 2019
+Sat Dec 14 13:18:51 PST 2019
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Wed Nov  6 13:26:27 PST 2019
+Sat Dec 14 13:18:52 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -2668,11 +2666,11 @@ src/proto/grpc/testing/services.proto: warning: Import src/proto/grpc/testing/st
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Wed Nov  6 13:34:33 PST 2019
+Sat Dec 14 13:30:04 PST 2019
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Wed Nov  6 13:34:33 PST 2019
+Sat Dec 14 13:30:05 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -2726,9 +2724,9 @@ Get:18 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline6-dev am
 Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline-dev amd64 6.3-8ubuntu2 [992 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool-bin amd64 2.4.6-0.1 [79.2 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 valgrind amd64 1:3.11.0-1ubuntu4.2 [11.2 MB]
-Fetched 18.4 MB in 22s (830 kB/s)
+Fetched 18.4 MB in 8s (2,158 kB/s)
 Selecting previously unselected package libboost1.58-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 181170 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 181180 files and directories currently installed.)
 Preparing to unpack .../libboost1.58-dev_1.58.0+dfsg-5ubuntu3.1_amd64.deb ...
 Unpacking libboost1.58-dev:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Selecting previously unselected package libboost-atomic1.58.0:amd64.
@@ -2832,42 +2830,14 @@ Cloning into 'proto/p4runtime'...
 Submodule path 'proto/p4runtime': checked out '09a02842321aecd224cfdbbcea95b1dbc6255266'
 Cloning into 'third_party/googletest'...
 Submodule path 'third_party/googletest': checked out 'f5edb4f542e155c75bc4b516f227911d99ec167c'
-commit 33e15ea4cbc292a532cf3f5db61d0f5ea94e6c36
+commit 1539ecd8a50c159b011d9c5a9c0eba99f122a845
 Author: Antonin Bas <abas@vmware.com>
-Date:   Sat Nov 2 15:08:32 2019 -0700
+Date:   Wed Nov 6 22:17:37 2019 -0800
 
-    Support dynamic configuration for P4Runtime implementation
+    Update README with the new officially-supported versions of Protobuf / gRPC
     
-    The server now exposes a new gRPC service that allows changing some
-    configuration parameters of the P4Runtime implementation. At the moment
-    we only support enabling / disabling stream error-reporting (recently
-    added to the P4Runtime specification).
-    
-    For software that consumes DeviceMgr directly and does not use the
-    server code included in this project, we have added a new method to the
-    DeviceMgr PIMPL which enables updating the configuration.
-    
-    This change also implements support for stream error-reporting (when
-    enabled through the configuration mechanism described above). At the
-    moment we only report errors for invalid PacketOut messages. StreamError
-    messages could have been "injected in the stream" in 3 different places:
-    (1) in the PacketIOMgr, (2) in the DeviceMgr, or (3) in the DeviceMgr
-    client. In this patch we went with (2) to avoid changing the DeviceMgr
-    interface (3) and to avoid making the assumption that components which
-    handle PacketOut messages must also have the ability to send PacketIn
-    messages (1), even though this is currently the case for all the
-    components we have.
-    
-    The P4Runtime spec states that StreamError messages may be dropped if
-    the StreamChannel is too busy. We consider that this is not the
-    responsibility of DeviceMgr, but of the DeviceMgr client (e.g. P4Runtime
-    service implementation). This is probably a good idea for the client to
-    implement such a mechanism. Our current P4Runtime service implementation
-    does not, and if a StreamError message needs to be sent to the P4Runtime
-    client, we will not accept a new StreamMessageRequest until the
-    StreamError message is sent. This could impact PacketOut performance,
-    but then again stream error-reporting is only meant to be enabled for
-    debugging purposes.
+    Protobuf 3.6.1 and gRPC 1.17.2
+    These are the versions installed by p4lang/third-party and used for CI.
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
@@ -4846,27 +4816,21 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/andy/PI'
 end install PI:
-Wed Nov  6 13:40:59 PST 2019
+Sat Dec 14 13:36:47 PST 2019
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Wed Nov  6 13:41:00 PST 2019
+Sat Dec 14 13:36:47 PST 2019
 git clone https://github.com/p4lang/behavioral-model.git
 Cloning into 'behavioral-model'...
 Already up-to-date.
-commit 971732f48570f848a27a8f54b25b7447732d8591
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Sat Oct 26 13:26:13 2019 -0700
+commit 9ef324838b29419040b4f677a3ff65bc72405c44
+Author: Antonin Bas <abas@vmware.com>
+Date:   Wed Dec 11 08:30:32 2019 -0800
 
-    V1model notes on register extern (#817)
+    Document command-line options for simple_switch_grpc
     
-    * Add runtime_CLI docs on table_add and a few other commands
-    
-    * Additional implementation notes on registers in simple_switch
-    Some of this material comes from this comment by Antonin Bas:
-    https://github.com/p4lang/p4c/issues/2055#issuecomment-541863460
-    
-    * Add missing backquote markup
+    Fixes #831
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -4928,8 +4892,8 @@ Get:20 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-de
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libexpat1-dev amd64 2.1.0-7ubuntu0.16.04.5 [115 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libgmpxx4ldbl amd64 2:6.1.0+dfsg-2 [8,948 B]
 Get:23 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libgmp-dev amd64 2:6.1.0+dfsg-2 [314 kB]
-Get:24 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libpcap0.8-dev amd64 1.7.4-2 [212 kB]
-Get:25 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libpcap-dev all 1.7.4-2 [3,394 B]
+Get:24 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpcap0.8-dev amd64 1.7.4-2ubuntu0.1 [212 kB]
+Get:25 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpcap-dev all 1.7.4-2ubuntu0.1 [3,402 B]
 Get:26 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-dev amd64 2.7.12-1ubuntu0~16.04.9 [27.8 MB]
 Get:27 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-dev amd64 2.7.12-1~16.04 [7,840 B]
 Get:28 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-all-dev amd64 2.7.12-1~16.04 [1,006 B]
@@ -4946,9 +4910,9 @@ Get:38 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-setuptools a
 Get:39 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-wheel all 0.29.0-1 [48.0 kB]
 Get:40 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libffi-dev amd64 3.2.1-4 [161 kB]
 Extracting templates from packages: 75%Extracting templates from packages: 100%
-Fetched 38.8 MB in 35s (1,084 kB/s)
+Fetched 38.8 MB in 19s (1,959 kB/s)
 Selecting previously unselected package cmake-data.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 193233 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 193243 files and directories currently installed.)
 Preparing to unpack .../cmake-data_3.5.1-1ubuntu3_all.deb ...
 Unpacking cmake-data (3.5.1-1ubuntu3) ...
 Selecting previously unselected package libjsoncpp1:amd64.
@@ -5018,11 +4982,11 @@ Selecting previously unselected package libgmp-dev:amd64.
 Preparing to unpack .../libgmp-dev_2%3a6.1.0+dfsg-2_amd64.deb ...
 Unpacking libgmp-dev:amd64 (2:6.1.0+dfsg-2) ...
 Selecting previously unselected package libpcap0.8-dev.
-Preparing to unpack .../libpcap0.8-dev_1.7.4-2_amd64.deb ...
-Unpacking libpcap0.8-dev (1.7.4-2) ...
+Preparing to unpack .../libpcap0.8-dev_1.7.4-2ubuntu0.1_amd64.deb ...
+Unpacking libpcap0.8-dev (1.7.4-2ubuntu0.1) ...
 Selecting previously unselected package libpcap-dev.
-Preparing to unpack .../libpcap-dev_1.7.4-2_all.deb ...
-Unpacking libpcap-dev (1.7.4-2) ...
+Preparing to unpack .../libpcap-dev_1.7.4-2ubuntu0.1_all.deb ...
+Unpacking libpcap-dev (1.7.4-2ubuntu0.1) ...
 Selecting previously unselected package libpython2.7-dev:amd64.
 Preparing to unpack .../libpython2.7-dev_2.7.12-1ubuntu0~16.04.9_amd64.deb ...
 Unpacking libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.9) ...
@@ -5098,8 +5062,8 @@ Setting up libevent-dev (2.0.21-stable-2ubuntu0.16.04.1) ...
 Setting up libexpat1-dev:amd64 (2.1.0-7ubuntu0.16.04.5) ...
 Setting up libgmpxx4ldbl:amd64 (2:6.1.0+dfsg-2) ...
 Setting up libgmp-dev:amd64 (2:6.1.0+dfsg-2) ...
-Setting up libpcap0.8-dev (1.7.4-2) ...
-Setting up libpcap-dev (1.7.4-2) ...
+Setting up libpcap0.8-dev (1.7.4-2ubuntu0.1) ...
+Setting up libpcap-dev (1.7.4-2ubuntu0.1) ...
 Setting up libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.9) ...
 Setting up libpython-dev:amd64 (2.7.12-1~16.04) ...
 Setting up libpython-all-dev:amd64 (2.7.12-1~16.04) ...
@@ -5869,17 +5833,17 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/transport/TSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocket.lo src/thrift/transport/TSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocket.o
 depbase=`echo src/thrift/transport/TPipe.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipe.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipe.lo src/thrift/transport/TPipe.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocket.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipe.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp -o src/thrift/transport/TPipe.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TPipeServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipeServer.lo src/thrift/transport/TPipeServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipeServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp -o src/thrift/transport/TSocket.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipeServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp -o src/thrift/transport/TPipeServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TSSLSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSSLSocket.lo src/thrift/transport/TSSLSocket.cpp &&\
@@ -5915,10 +5879,10 @@ depbase=`echo src/thrift/server/TServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp -o src/thrift/server/TServer.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF src/thrift/transport/.deps/TBufferTransports.Tpo -c src/thrift/transport/TBufferTransports.cpp -o src/thrift/transport/TBufferTransports.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TSimpleServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TSimpleServer.lo src/thrift/server/TSimpleServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF src/thrift/transport/.deps/TBufferTransports.Tpo -c src/thrift/transport/TBufferTransports.cpp -o src/thrift/transport/TBufferTransports.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF src/thrift/server/.deps/TSimpleServer.Tpo -c src/thrift/server/TSimpleServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TSimpleServer.o
 depbase=`echo src/thrift/server/TThreadPoolServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/server/TThreadPoolServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TThreadPoolServer.lo src/thrift/server/TThreadPoolServer.cpp &&\
@@ -5939,8 +5903,8 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/processor/PeekProcessor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/processor/PeekProcessor.lo src/thrift/processor/PeekProcessor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF src/thrift/processor/.deps/PeekProcessor.Tpo -c src/thrift/processor/PeekProcessor.cpp  -fPIC -DPIC -o src/thrift/processor/.libs/PeekProcessor.o
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -release 0.9.2 -L/usr/lib/x86_64-linux-gnu  -o libthriftnb.la -rpath /usr/local/lib src/thrift/server/libthriftnb_la-TNonblockingServer.lo src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo src/thrift/async/libthriftnb_la-TEvhttpServer.lo src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo  -lssl -lcrypto -lrt -lpthread 
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/thrift/processor/PeekProcessor.lo -MD -MP -MF src/thrift/processor/.deps/PeekProcessor.Tpo -c src/thrift/processor/PeekProcessor.cpp  -fPIC -DPIC -o src/thrift/processor/.libs/PeekProcessor.o
 libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/thrift/server/.libs/libthriftnb_la-TNonblockingServer.o src/thrift/async/.libs/libthriftnb_la-TAsyncProtocolProcessor.o src/thrift/async/.libs/libthriftnb_la-TEvhttpServer.o src/thrift/async/.libs/libthriftnb_la-TEvhttpClientChannel.o   -L/usr/lib/x86_64-linux-gnu -lssl -lcrypto -lrt -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -Wl,-soname -Wl,libthriftnb-0.9.2.so -o .libs/libthriftnb-0.9.2.so
 libtool: link: (cd ".libs" && rm -f "libthriftnb.so" && ln -s "libthriftnb-0.9.2.so" "libthriftnb.so")
 libtool: link: ar cru .libs/libthriftnb.a  src/thrift/server/libthriftnb_la-TNonblockingServer.o src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.o src/thrift/async/libthriftnb_la-TEvhttpServer.o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o
@@ -6136,8 +6100,8 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thr
 depbase=`echo gen-cpp/TypedefTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/TypedefTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/TypedefTest_types.lo gen-cpp/TypedefTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/TypedefTest_types.lo -MD -MP -MF gen-cpp/.deps/TypedefTest_types.Tpo -c gen-cpp/TypedefTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/TypedefTest_types.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ChildService.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ChildService.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ChildService.lo gen-cpp/ChildService.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6169,15 +6133,15 @@ processor/Handlers.h:287:57: warning: unused parameter ‘bytes’ [-Wunused-par
 processor/Handlers.h:301:58: warning: unused parameter ‘bytes’ [-Wunused-parameter]
    void postWrite(void* ctx, const char* fnName, uint32_t bytes) {
                                                           ^
-depbase=`echo processor/EventLog.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
-g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT processor/EventLog.o -MD -MP -MF $depbase.Tpo -c -o processor/EventLog.o processor/EventLog.cpp &&\
-mv -f $depbase.Tpo $depbase.Po
 processor/ProcessorTest.cpp:936:49: warning: unused parameter ‘argc’ [-Wunused-parameter]
  unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
                                                  ^
 processor/ProcessorTest.cpp:936:66: warning: unused parameter ‘argv’ [-Wunused-parameter]
  unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
                                                                   ^
+depbase=`echo processor/EventLog.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT processor/EventLog.o -MD -MP -MF $depbase.Tpo -c -o processor/EventLog.o processor/EventLog.cpp &&\
+mv -f $depbase.Tpo $depbase.Po
 depbase=`echo processor/ServerThread.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT processor/ServerThread.o -MD -MP -MF $depbase.Tpo -c -o processor/ServerThread.o processor/ServerThread.cpp &&\
 mv -f $depbase.Tpo $depbase.Po
@@ -6262,38 +6226,34 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/t
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
-../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
-depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
-/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
-mv -f $depbase.Tpo $depbase.Plo
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
-/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
-mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ThriftTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 depbase=`echo gen-cpp/ThriftTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_types.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
+depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
 depbase=`echo src/ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o src/ThriftTest_extras.lo src/ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF src/.deps/ThriftTest_extras.Tpo -c src/ThriftTest_extras.cpp  -fPIC -DPIC -o src/.libs/ThriftTest_extras.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT src/ThriftTest_extras.lo -MD -MP -MF src/.deps/ThriftTest_extras.Tpo -c src/ThriftTest_extras.cpp -o src/ThriftTest_extras.o >/dev/null 2>&1
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_constants.lo gen-cpp/StressTest_constants.cpp &&\
@@ -6304,18 +6264,22 @@ depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_types.lo gen-cpp/StressTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libstresstestgencpp.la  gen-cpp/StressTest_constants.lo gen-cpp/StressTest_types.lo gen-cpp/Service.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: ar cru .libs/libstresstestgencpp.a gen-cpp/.libs/StressTest_constants.o gen-cpp/.libs/StressTest_types.o gen-cpp/.libs/Service.o 
-ar: `u' modifier ignored since `D' is the default (see `U')
-libtool: link: ranlib .libs/libstresstestgencpp.a
-libtool: link: ( cd ".libs" && rm -f "libstresstestgencpp.la" && ln -s "../libstresstestgencpp.la" "libstresstestgencpp.la" )
+depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libtestgencpp.la  gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest.lo src/ThriftTest_extras.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: ar cru .libs/libtestgencpp.a gen-cpp/.libs/ThriftTest_constants.o gen-cpp/.libs/ThriftTest_types.o gen-cpp/.libs/ThriftTest.o src/.libs/ThriftTest_extras.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtestgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtestgencpp.la" && ln -s "../libtestgencpp.la" "libtestgencpp.la" )
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -std=c++11 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -std=c++11 -L/usr/lib/x86_64-linux-gnu   -o libstresstestgencpp.la  gen-cpp/StressTest_constants.lo gen-cpp/StressTest_types.lo gen-cpp/Service.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
+libtool: link: ar cru .libs/libstresstestgencpp.a gen-cpp/.libs/StressTest_constants.o gen-cpp/.libs/StressTest_types.o gen-cpp/.libs/Service.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+libtool: link: ranlib .libs/libstresstestgencpp.a
+libtool: link: ( cd ".libs" && rm -f "libstresstestgencpp.la" && ln -s "../libstresstestgencpp.la" "libstresstestgencpp.la" )
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/cpp'
 Making all in py
 make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/py'
@@ -6574,9 +6538,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.p
 byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TSerialization.py to TSerialization.pyc
-writing byte-compilation script '/tmp/tmp0xSDTc.py'
-/usr/bin/python -O /tmp/tmp0xSDTc.py
-removing /tmp/tmp0xSDTc.py
+writing byte-compilation script '/tmp/tmpuFtiEk.py'
+/usr/bin/python -O /tmp/tmpuFtiEk.py
+removing /tmp/tmpuFtiEk.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -6752,14 +6716,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TMultiplexedProcessor.py to TMultiplexedProcessor.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TSerialization.py to TSerialization.pyc
-writing byte-compilation script '/tmp/tmphnL376.py'
-/usr/bin/python -O /tmp/tmphnL376.py
-removing /tmp/tmphnL376.py
+writing byte-compilation script '/tmp/tmpQsckvG.py'
+/usr/bin/python -O /tmp/tmpQsckvG.py
+removing /tmp/tmpQsckvG.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpGny1X8.py'
-/usr/bin/python -O /tmp/tmpGny1X8.py
-removing /tmp/tmpGny1X8.py
+writing byte-compilation script '/tmp/tmpzTTyAK.py'
+/usr/bin/python -O /tmp/tmpzTTyAK.py
+removing /tmp/tmpzTTyAK.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -6777,26 +6741,26 @@ Adding thrift 0.9.2 to easy-install.pth file
 Installed /usr/local/lib/python2.7/dist-packages/thrift-0.9.2-py2.7-linux-x86_64.egg
 Processing dependencies for thrift==0.9.2
 Finished processing dependencies for thrift==0.9.2
---2019-11-06 13:50:18--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 192.30.255.113
-Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+--2019-12-14 13:46:22--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-11-06 13:50:18--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.255.120
-Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
+--2019-12-14 13:46:23--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 140.82.114.10
+Connecting to codeload.github.com (codeload.github.com)|140.82.114.10|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  346K
-    50K .......... .......... .......... .......... ..........  756K
-   100K .......... .......... .......... .......... ..........  646K
-   150K .......... .......... .......... .......... ..........  773K
-   200K .......... .......... .......... .......... ..........  968K
-   250K .......... .......... .......... .......... .......    1.02M=0.5s
+     0K .......... .......... .......... .......... ..........  190K
+    50K .......... .......... .......... .......... ..........  227K
+   100K .......... .......... .......... .......... .......... 1.85M
+   150K .......... .......... .......... .......... ..........  787K
+   200K .......... .......... .......... .......... .......... 1.05M
+   250K .......... .......... .......... .......... .......     427K=0.7s
 
-2019-11-06 13:50:19 (661 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-12-14 13:46:24 (407 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -9408,14 +9372,6 @@ depbase=`echo switch_runner.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ./libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog  -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out  -Wall -Wextra -pthread -O0 -g -std=c++11 -MT switch_runner.lo -MD -MP -MF $depbase.Tpo -c -o switch_runner.lo switch_runner.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out -Wall -Wextra -pthread -O0 -g -std=c++11 -MT switch_runner.lo -MD -MP -MF .deps/switch_runner.Tpo -c switch_runner.cpp  -fPIC -DPIC -o .libs/switch_runner.o
-switch_runner.cpp: In constructor ‘sswitch_grpc::SimpleSwitchGrpcRunner::SimpleSwitchGrpcRunner(bool, std::__cxx11::string, bm::DevMgrIface::port_t, std::__cxx11::string, bm::DevMgrIface::port_t)’:
-switch_runner.cpp:509:22: warning: ‘static void pi::fe::proto::DeviceMgr::init(size_t)’ is deprecated [-Wdeprecated-declarations]
-   DeviceMgr::init(256);
-                      ^
-In file included from switch_runner.cpp:28:0:
-/usr/local/include/PI/frontends/proto/device_mgr.h:93:15: note: declared here
-   static void init(size_t max_devices);
-               ^
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out -Wall -Wextra -pthread -O0 -g -std=c++11 -MT switch_runner.lo -MD -MP -MF .deps/switch_runner.Tpo -c switch_runner.cpp -o switch_runner.o >/dev/null 2>&1
 /bin/bash ./libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g -std=c++11   -o libsimple_switch_grpc.la  switch_runner.lo  ./../simple_switch/libsimpleswitch.la ./../../PI/libbmpi.la libbm_grpc_dataplane.la ./../../src/bm_runtime/libbmruntime.la ./../../thrift_src/libruntimestubs.la ./../simple_switch/libsimpleswitch_thrift.la -lpifeproto -lpigrpcserver -lpi -L/usr/local/lib -lgrpc++ -lgrpc -L/usr/local/lib -lprotobuf -pthread -lpthread 
 libtool: link: (cd .libs/libsimple_switch_grpc.lax/libsimpleswitch.a && ar x "/home/andy/behavioral-model/targets/simple_switch_grpc/./../simple_switch/.libs/libsimpleswitch.a")
@@ -9549,11 +9505,11 @@ make[3]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_gr
 make[2]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Wed Nov  6 14:05:12 PST 2019
+Sat Dec 14 14:01:13 PST 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Wed Nov  6 14:05:13 PST 2019
+Sat Dec 14 14:01:14 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -9568,26 +9524,29 @@ libgmp-dev is already the newest version (2:6.1.0+dfsg-2).
 libtool is already the newest version (2.4.6-0.1).
 pkg-config is already the newest version (0.29.1-0ubuntu1).
 cmake is already the newest version (3.5.1-1ubuntu3).
-git is already the newest version (1:2.7.4-0ubuntu1.6).
+git is already the newest version (1:2.7.4-0ubuntu1.7).
 python is already the newest version (2.7.12-1~16.04).
 tcpdump is already the newest version (4.9.2-0ubuntu0.16.04.1).
 The following additional packages will be installed:
   binfmt-support icu-devtools libboost-graph1.58-dev libboost-graph1.58.0
   libboost-iostreams1.58-dev libboost-regex1.58-dev libboost-regex1.58.0
-  libicu-dev llvm-3.8 llvm-3.8-dev llvm-3.8-runtime llvm-runtime
+  libicu-dev libpython3-dev libpython3.5-dev llvm-3.8 llvm-3.8-dev
+  llvm-3.8-runtime llvm-runtime python3-dev python3-setuptools python3-wheel
+  python3.5-dev
 Suggested packages:
   graphviz icu-doc llvm-3.8-doc python-ply-doc tcpreplay wireshark
   python-gnuplot python-crypto python-pyx ebtables python-visual sox xpdf gv
-  hexer librsvg2-bin python-pcapy
+  hexer librsvg2-bin python-pcapy python-setuptools-doc
 The following NEW packages will be installed:
   binfmt-support icu-devtools libboost-graph-dev libboost-graph1.58-dev
   libboost-graph1.58.0 libboost-iostreams-dev libboost-iostreams1.58-dev
-  libboost-regex1.58-dev libboost-regex1.58.0 libgc-dev libicu-dev llvm
-  llvm-3.8 llvm-3.8-dev llvm-3.8-runtime llvm-runtime python-ipaddr python-ply
-  python-scapy
-0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
-Need to get 28.4 MB of archives.
-After this operation, 176 MB of additional disk space will be used.
+  libboost-regex1.58-dev libboost-regex1.58.0 libgc-dev libicu-dev
+  libpython3-dev libpython3.5-dev llvm llvm-3.8 llvm-3.8-dev llvm-3.8-runtime
+  llvm-runtime python-ipaddr python-ply python-scapy python3-dev python3-pip
+  python3-setuptools python3-wheel python3.5-dev
+0 upgraded, 26 newly installed, 0 to remove and 0 not upgraded.
+Need to get 66.4 MB of archives.
+After this operation, 231 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 binfmt-support amd64 2.1.6-1 [50.7 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 icu-devtools amd64 55.1-7ubuntu0.4 [166 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libboost-regex1.58.0 amd64 1.58.0+dfsg-5ubuntu3.1 [261 kB]
@@ -9599,17 +9558,24 @@ Get:8 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 libboost
 Get:9 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 libboost-iostreams1.58-dev amd64 1.58.0+dfsg-5ubuntu3.1 [36.2 kB]
 Get:10 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libboost-iostreams-dev amd64 1.58.0.1ubuntu1 [2,784 B]
 Get:11 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgc-dev amd64 1:7.4.2-7.3ubuntu0.1 [223 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8-runtime amd64 1:3.8-2ubuntu4 [72.3 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 llvm-runtime amd64 1:3.8-33ubuntu3.1 [2,756 B]
-Get:14 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8 amd64 1:3.8-2ubuntu4 [1,524 kB]
-Get:15 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 llvm amd64 1:3.8-33ubuntu3.1 [3,196 B]
-Get:16 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8-dev amd64 1:3.8-2ubuntu4 [16.7 MB]
-Get:17 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddr all 2.1.11-2 [14.9 kB]
-Get:18 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ply all 3.7-1 [46.9 kB]
-Get:19 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-scapy all 2.2.0-1 [236 kB]
-Fetched 28.4 MB in 1min 6s (427 kB/s)
+Get:12 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython3.5-dev amd64 3.5.2-2ubuntu0~16.04.9 [37.3 MB]
+Get:13 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libpython3-dev amd64 3.5.1-3 [6,926 B]
+Get:14 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8-runtime amd64 1:3.8-2ubuntu4 [72.3 kB]
+Get:15 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 llvm-runtime amd64 1:3.8-33ubuntu3.1 [2,756 B]
+Get:16 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8 amd64 1:3.8-2ubuntu4 [1,524 kB]
+Get:17 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 llvm amd64 1:3.8-33ubuntu3.1 [3,196 B]
+Get:18 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8-dev amd64 1:3.8-2ubuntu4 [16.7 MB]
+Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddr all 2.1.11-2 [14.9 kB]
+Get:20 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ply all 3.7-1 [46.9 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-scapy all 2.2.0-1 [236 kB]
+Get:22 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python3.5-dev amd64 3.5.2-2ubuntu0~16.04.9 [413 kB]
+Get:23 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python3-dev amd64 3.5.1-3 [1,186 B]
+Get:24 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python3-pip all 8.1.1-2ubuntu0.4 [109 kB]
+Get:25 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python3-setuptools all 20.7.0-1 [88.0 kB]
+Get:26 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python3-wheel all 0.29.0-1 [48.1 kB]
+Fetched 66.4 MB in 30s (2,152 kB/s)
 Selecting previously unselected package binfmt-support.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 197901 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 197911 files and directories currently installed.)
 Preparing to unpack .../binfmt-support_2.1.6-1_amd64.deb ...
 Unpacking binfmt-support (2.1.6-1) ...
 Selecting previously unselected package icu-devtools.
@@ -9642,6 +9608,12 @@ Unpacking libboost-iostreams-dev:amd64 (1.58.0.1ubuntu1) ...
 Selecting previously unselected package libgc-dev:amd64.
 Preparing to unpack .../libgc-dev_1%3a7.4.2-7.3ubuntu0.1_amd64.deb ...
 Unpacking libgc-dev:amd64 (1:7.4.2-7.3ubuntu0.1) ...
+Selecting previously unselected package libpython3.5-dev:amd64.
+Preparing to unpack .../libpython3.5-dev_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking libpython3.5-dev:amd64 (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../libpython3-dev_3.5.1-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.5.1-3) ...
 Selecting previously unselected package llvm-3.8-runtime.
 Preparing to unpack .../llvm-3.8-runtime_1%3a3.8-2ubuntu4_amd64.deb ...
 Unpacking llvm-3.8-runtime (1:3.8-2ubuntu4) ...
@@ -9666,8 +9638,23 @@ Unpacking python-ply (3.7-1) ...
 Selecting previously unselected package python-scapy.
 Preparing to unpack .../python-scapy_2.2.0-1_all.deb ...
 Unpacking python-scapy (2.2.0-1) ...
+Selecting previously unselected package python3.5-dev.
+Preparing to unpack .../python3.5-dev_3.5.2-2ubuntu0~16.04.9_amd64.deb ...
+Unpacking python3.5-dev (3.5.2-2ubuntu0~16.04.9) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../python3-dev_3.5.1-3_amd64.deb ...
+Unpacking python3-dev (3.5.1-3) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../python3-pip_8.1.1-2ubuntu0.4_all.deb ...
+Unpacking python3-pip (8.1.1-2ubuntu0.4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../python3-setuptools_20.7.0-1_all.deb ...
+Unpacking python3-setuptools (20.7.0-1) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../python3-wheel_0.29.0-1_all.deb ...
+Unpacking python3-wheel (0.29.0-1) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Processing triggers for man-db (2.7.5-1) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
 Setting up binfmt-support (2.1.6-1) ...
@@ -9681,6 +9668,8 @@ Setting up libboost-regex1.58-dev:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Setting up libboost-iostreams1.58-dev:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Setting up libboost-iostreams-dev:amd64 (1.58.0.1ubuntu1) ...
 Setting up libgc-dev:amd64 (1:7.4.2-7.3ubuntu0.1) ...
+Setting up libpython3.5-dev:amd64 (3.5.2-2ubuntu0~16.04.9) ...
+Setting up libpython3-dev:amd64 (3.5.1-3) ...
 Setting up llvm-3.8-runtime (1:3.8-2ubuntu4) ...
 Setting up llvm-runtime (1:3.8-33ubuntu3.1) ...
 Setting up llvm-3.8 (1:3.8-2ubuntu4) ...
@@ -9689,9 +9678,25 @@ Setting up llvm-3.8-dev (1:3.8-2ubuntu4) ...
 Setting up python-ipaddr (2.1.11-2) ...
 Setting up python-ply (3.7-1) ...
 Setting up python-scapy (2.2.0-1) ...
+Setting up python3.5-dev (3.5.2-2ubuntu0~16.04.9) ...
+Setting up python3-dev (3.5.1-3) ...
+Setting up python3-pip (8.1.1-2ubuntu0.4) ...
+Setting up python3-setuptools (20.7.0-1) ...
+Setting up python3-wheel (0.29.0-1) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
+Collecting scapy
+  Downloading https://files.pythonhosted.org/packages/52/e7/464079606a9cf97ad04936c52a5324d14dae36215f9319bf3faa46a7907d/scapy-2.4.3.tar.gz (905kB)
+Building wheels for collected packages: scapy
+  Running setup.py bdist_wheel for scapy: started
+  Running setup.py bdist_wheel for scapy: finished with status 'done'
+  Stored in directory: /home/andy/.cache/pip/wheels/95/bf/51/905b3e84ec4ca910ce4ae92173c7334623105a265bdd1d9438
+Successfully built scapy
+Installing collected packages: scapy
+Successfully installed scapy
+You are using pip version 8.1.1, however version 19.3.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
 Cloning into 'p4c'...
 Submodule 'control-plane/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'control-plane/p4runtime'
 Submodule 'test/frameworks/gtest' (https://github.com/google/googletest.git) registered for path 'test/frameworks/gtest'
@@ -9699,11 +9704,13 @@ Cloning into 'control-plane/p4runtime'...
 Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Cloning into 'test/frameworks/gtest'...
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit df500eefbb34e397c3e9ec25b6ac7fbfdcb1d078
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Wed Nov 6 10:52:08 2019 -0800
+commit 7cf234df1992c61645f57519260f31a491d425c2
+Author: Chris Dodd <cdodd@barefootnetworks.com>
+Date:   Thu Dec 12 16:41:18 2019 -0800
 
-    Allow actions with absolute paths; fixes #2037 (#2042)
+    Fix simplifyDefUse to deal with side effect in if condition (#2114)
+    
+    - fixes issue seen in #2026
 -- The C compiler identification is GNU 5.4.0
 -- The CXX compiler identification is GNU 5.4.0
 -- Check for working C compiler: /usr/bin/cc
@@ -9718,7 +9725,7 @@ Date:   Wed Nov 6 10:52:08 2019 -0800
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Found PythonInterp: /usr/bin/python (found version "2.7.12") 
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.5.2", minimum required is "3") 
 -- Found FLEX: /usr/bin/flex (found version "2.6.0") 
 -- Found BISON: /usr/bin/bison (found suitable version "3.0.4", minimum required is "3.0.2") 
 -- Looking for pthread.h
@@ -9736,6 +9743,8 @@ Date:   Wed Nov 6 10:52:08 2019 -0800
 --   iostreams
 --   regex
 -- Found LibGc: /usr/lib/x86_64-linux-gnu/libgccpp.so (found suitable version "7.4.2", minimum required is "7.2.0") 
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
 -- Found LibGmp: /usr/lib/x86_64-linux-gnu/libgmpxx.so  
 -- Looking for clock_gettime in rt
 -- Looking for clock_gettime in rt - found
@@ -9751,15 +9760,16 @@ Date:   Wed Nov 6 10:52:08 2019 -0800
 -- Looking for pipe2 - found
 -- Looking for GC_print_stats
 -- Looking for GC_print_stats - found
--- Found PY_difflib: /usr/lib/python2.7/difflib.pyc  
--- Found PY_shutil: /usr/lib/python2.7/shutil.pyc  
--- Found PY_tempfile: /usr/lib/python2.7/tempfile.pyc  
--- Found PY_subprocess: /usr/lib/python2.7/subprocess.pyc  
--- Found PY_re: /usr/lib/python2.7/re.pyc  
+-- Found PY_difflib: /usr/lib/python3.5/difflib.py  
+-- Found PY_shutil: /usr/lib/python3.5/shutil.py  
+-- Found PY_tempfile: /usr/lib/python3.5/tempfile.py  
+-- Found PY_subprocess: /usr/lib/python3.5/subprocess.py  
+-- Found PY_re: /usr/lib/python3.5/re.py  
 -- Could NOT find Doxygen (missing:  DOXYGEN_EXECUTABLE) 
--- Found PY_scapy: /usr/lib/python2.7/dist-packages/scapy  
--- Found PY_ipaddr: /usr/lib/python2.7/dist-packages/ipaddr.pyc  
+-- Found PY_scapy: /home/andy/.local/lib/python3.5/site-packages/scapy  
+-- Could NOT find PY_ipaddr (missing:  PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/simple_switch  
+-- Could NOT find PY_ipaddr (missing:  PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/psa_switch  
 -- Performing Test _HAVE_OPTION_Wall_
 -- Performing Test _HAVE_OPTION_Wall_ - Success
@@ -9771,16 +9781,16 @@ Date:   Wed Nov 6 10:52:08 2019 -0800
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 383 tests to 'bmv2' (15 xfails)
+-- Added 385 tests to 'bmv2' (15 xfails)
 -- Added 14 tests to 'bmv2' (2 xfails)
 -- Check LLVM version with 'llvm-config --version'
 -- Found LLVM 3.8.0
 -- Added 16 tests to 'ebpf-bcc' (0 xfails)
 -- Added 16 tests to 'ebpf' (0 xfails)
 -- Added 6 tests to 'p4' (0 xfails)
--- Added 560 tests to 'p4' (2 xfails)
+-- Added 568 tests to 'p4' (2 xfails)
 -- Added 6 tests to 'err' (0 xfails)
--- Added 173 tests to 'err' (0 xfails)
+-- Added 176 tests to 'err' (0 xfails)
 -- Added 208 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 1
 -- Configuring done
@@ -9975,16 +9985,17 @@ Install the project...
 -- Installing: /usr/local/bin/p4test
 -- Installing: /usr/local/bin/p4c-graphs
 end install p4c:
-Wed Nov  6 14:20:30 PST 2019
+Sat Dec 14 14:11:01 PST 2019
 ------------------------------------------------------------
 Installing Mininet - not necessary to run P4 programs, but useful if
 you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
-Wed Nov  6 14:20:31 PST 2019
+Sat Dec 14 14:11:02 PST 2019
 Cloning into 'mininet'...
 Detected Linux distribution: Ubuntu 16.04 xenial amd64
-python is version 2
+sys.version_info(major=2, minor=7, micro=12, releaselevel='final', serial=0)
+Detected Python (python) version 2
 Installing Mininet dependencies
 Reading package lists...
 Building dependency tree...
@@ -10051,9 +10062,9 @@ Get:30 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 socat amd64 1.7
 Get:31 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 ssh-import-id all 5.5-0ubuntu1 [10.2 kB]
 Extracting templates from packages: 96%Extracting templates from packages: 100%
 Preconfiguring packages ...
-Fetched 2,818 kB in 31s (88.3 kB/s)
+Fetched 2,818 kB in 25s (112 kB/s)
 Selecting previously unselected package python-six.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 199949 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200296 files and directories currently installed.)
 Preparing to unpack .../python-six_1.10.0-3_all.deb ...
 Unpacking python-six (1.10.0-3) ...
 Selecting previously unselected package python-wrapt.
@@ -10147,8 +10158,8 @@ Selecting previously unselected package ssh-import-id.
 Preparing to unpack .../ssh-import-id_5.5-0ubuntu1_all.deb ...
 Unpacking ssh-import-id (5.5-0ubuntu1) ...
 Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Processing triggers for ufw (0.35-0ubuntu2) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
 Processing triggers for install-info (6.1.0.dfsg.1-5) ...
@@ -10160,13 +10171,13 @@ Setting up python-wrapt (1.8.0-5build2) ...
 Setting up openssh-sftp-server (1:7.2p2-4ubuntu2.8) ...
 Setting up openssh-server (1:7.2p2-4ubuntu2.8) ...
 Creating SSH2 RSA key; this may take some time ...
-2048 SHA256:ZSAEzdqB4+ziAuTMOOA2dyKfjZnNyyOWV2jn69COKhA root@andy-vm (RSA)
+2048 SHA256:cmQkG/QwpD0QLryk5gjNkDAr9qPM/eMw0ViGIVhxAa8 root@andy-vm (RSA)
 Creating SSH2 DSA key; this may take some time ...
-1024 SHA256:iQQ0SEdDmUjbrdaGC/gKPLIprTxVu8EMT5B8TJO2eFk root@andy-vm (DSA)
+1024 SHA256:UoiqJHiIV2GEvVl/O7ZLCNz/ZpyUEl9DLGM/QdNx2Kk root@andy-vm (DSA)
 Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:HuxitC+rThCQWIL9lGiVIheUVE7pQZcguqdLTdf7cA4 root@andy-vm (ECDSA)
+256 SHA256:Rsk2f3tQbxxssaneo3NXiMO3jtv1e3cooVmA+HB5v5I root@andy-vm (ECDSA)
 Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:Ymq1seJegMXUkbv2fp3t1Es28QhJ6xohMQ5lWm+9bOE root@andy-vm (ED25519)
+256 SHA256:0Y22kD11GAH0ZdNZI+whfCk3eRMxxaDjj9HoFMVfq0I root@andy-vm (ED25519)
 Setting up ssh (1:7.2p2-4ubuntu2.8) ...
 Setting up tk8.6-blt2.5 (2.5.3+dfsg-3) ...
 Setting up blt (2.5.3+dfsg-3) ...
@@ -10194,8 +10205,8 @@ Setting up python-tk (2.7.12-1~16.04) ...
 Setting up cgroup-bin (0.41-7ubuntu1) ...
 Setting up socat (1.7.3.1-1) ...
 Setting up ssh-import-id (5.5-0ubuntu1) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Processing triggers for ufw (0.35-0ubuntu2) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
 Reading package lists...
@@ -10450,7 +10461,7 @@ Get:5 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libqgsttools-p1 amd6
 Get:6 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libqt5multimedia5-plugins amd64 5.5.1-4ubuntu2 [175 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libsmi2ldbl amd64 0.4.8+dfsg2-11 [101 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libspandsp2 amd64 0.0.6-2.1 [273 kB]
-Get:9 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssh-gcrypt-4 amd64 0.6.3-4.3ubuntu0.2 [119 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssh-gcrypt-4 amd64 0.6.3-4.3ubuntu0.5 [120 kB]
 Get:10 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 libwireshark-data all 2.6.10-1~ubuntu16.04.0 [1,418 kB]
 Get:11 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc-ares2 amd64 1.10.0-3ubuntu0.2 [34.1 kB]
 Get:12 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libsnappy1v5 amd64 1.1.3-2 [16.0 kB]
@@ -10464,9 +10475,9 @@ Get:19 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 wiresha
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 wireshark-qt amd64 2.6.10-1~ubuntu16.04.0 [3,518 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 wireshark amd64 2.6.10-1~ubuntu16.04.0 [4,436 B]
 Preconfiguring packages ...
-Fetched 21.0 MB in 1min 23s (251 kB/s)
+Fetched 21.0 MB in 8s (2,410 kB/s)
 Selecting previously unselected package libmaxminddb0:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 203537 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 203884 files and directories currently installed.)
 Preparing to unpack .../libmaxminddb0_1.0.4-2.1_amd64.deb ...
 Unpacking libmaxminddb0:amd64 (1.0.4-2.1) ...
 Selecting previously unselected package libnghttp2-14:amd64.
@@ -10491,8 +10502,8 @@ Selecting previously unselected package libspandsp2:amd64.
 Preparing to unpack .../libspandsp2_0.0.6-2.1_amd64.deb ...
 Unpacking libspandsp2:amd64 (0.0.6-2.1) ...
 Selecting previously unselected package libssh-gcrypt-4:amd64.
-Preparing to unpack .../libssh-gcrypt-4_0.6.3-4.3ubuntu0.2_amd64.deb ...
-Unpacking libssh-gcrypt-4:amd64 (0.6.3-4.3ubuntu0.2) ...
+Preparing to unpack .../libssh-gcrypt-4_0.6.3-4.3ubuntu0.5_amd64.deb ...
+Unpacking libssh-gcrypt-4:amd64 (0.6.3-4.3ubuntu0.5) ...
 Selecting previously unselected package libwireshark-data.
 Preparing to unpack .../libwireshark-data_2.6.10-1~ubuntu16.04.0_all.deb ...
 Unpacking libwireshark-data (2.6.10-1~ubuntu16.04.0) ...
@@ -10546,7 +10557,7 @@ Setting up libqgsttools-p1:amd64 (5.5.1-4ubuntu2) ...
 Setting up libqt5multimedia5-plugins:amd64 (5.5.1-4ubuntu2) ...
 Setting up libsmi2ldbl:amd64 (0.4.8+dfsg2-11) ...
 Setting up libspandsp2:amd64 (0.0.6-2.1) ...
-Setting up libssh-gcrypt-4:amd64 (0.6.3-4.3ubuntu0.2) ...
+Setting up libssh-gcrypt-4:amd64 (0.6.3-4.3ubuntu0.5) ...
 Setting up libwireshark-data (2.6.10-1~ubuntu16.04.0) ...
 Setting up libc-ares2:amd64 (1.10.0-3ubuntu0.2) ...
 Setting up libsnappy1v5:amd64 (1.1.3-2) ...
@@ -10576,9 +10587,9 @@ Need to get 1,817 kB of archives.
 After this operation, 8,046 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 openvswitch-common amd64 2.5.5-0ubuntu0.16.04.2 [658 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 openvswitch-switch amd64 2.5.5-0ubuntu0.16.04.2 [1,159 kB]
-Fetched 1,817 kB in 6s (265 kB/s)
+Fetched 1,817 kB in 1s (1,194 kB/s)
 Selecting previously unselected package openvswitch-common.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 204048 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 204395 files and directories currently installed.)
 Preparing to unpack .../openvswitch-common_2.5.5-0ubuntu0.16.04.2_amd64.deb ...
 Unpacking openvswitch-common (2.5.5-0ubuntu0.16.04.2) ...
 Selecting previously unselected package openvswitch-switch.
@@ -10586,13 +10597,13 @@ Preparing to unpack .../openvswitch-switch_2.5.5-0ubuntu0.16.04.2_amd64.deb ...
 Unpacking openvswitch-switch (2.5.5-0ubuntu0.16.04.2) ...
 Processing triggers for man-db (2.7.5-1) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Setting up openvswitch-common (2.5.5-0ubuntu0.16.04.2) ...
 Setting up openvswitch-switch (2.5.5-0ubuntu0.16.04.2) ...
 update-alternatives: using /usr/lib/openvswitch-switch/ovs-vswitchd to provide /usr/sbin/ovs-vswitchd (ovs-vswitchd) in auto mode
 openvswitch-nonetwork.service is a disabled or a static unit, not starting it.
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -10610,32 +10621,32 @@ Need to get 429 kB of archives.
 After this operation, 1,328 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 openvswitch-pki all 2.5.5-0ubuntu0.16.04.2 [13.3 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 openvswitch-testcontroller amd64 2.5.5-0ubuntu0.16.04.2 [416 kB]
-Fetched 429 kB in 3s (135 kB/s)
+Fetched 429 kB in 2s (147 kB/s)
 Selecting previously unselected package openvswitch-pki.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 204143 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 204490 files and directories currently installed.)
 Preparing to unpack .../openvswitch-pki_2.5.5-0ubuntu0.16.04.2_all.deb ...
 Unpacking openvswitch-pki (2.5.5-0ubuntu0.16.04.2) ...
 Selecting previously unselected package openvswitch-testcontroller.
 Preparing to unpack .../openvswitch-testcontroller_2.5.5-0ubuntu0.16.04.2_amd64.deb ...
 Unpacking openvswitch-testcontroller (2.5.5-0ubuntu0.16.04.2) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Processing triggers for man-db (2.7.5-1) ...
 Setting up openvswitch-pki (2.5.5-0ubuntu0.16.04.2) ...
 Creating controllerca...
 Creating switchca...
 Setting up openvswitch-testcontroller (2.5.5-0ubuntu0.16.04.2) ...
+Processing triggers for systemd (229-4ubuntu21.23) ...
 Processing triggers for ureadahead (0.100.0-19.1) ...
-Processing triggers for systemd (229-4ubuntu21.22) ...
 Stopped running controller
 insserv: warning: current start runlevel(s) (empty) of script `openvswitch-testcontroller' overrides LSB defaults (2 3 4 5).
 insserv: warning: current stop runlevel(s) (0 1 2 3 4 5 6) of script `openvswitch-testcontroller' overrides LSB defaults (0 1 6).
 end install mininet:
-Wed Nov  6 14:23:37 PST 2019
+Sat Dec 14 14:12:25 PST 2019
 ------------------------------------------------------------
 Installing a few miscellaneous packages
 start install miscellaneous packages:
-Wed Nov  6 14:23:37 PST 2019
+Sat Dec 14 14:12:25 PST 2019
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting grpcio
@@ -10652,11 +10663,11 @@ You should consider upgrading via the 'pip install --upgrade pip' command.
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting protobuf
-  Downloading https://files.pythonhosted.org/packages/c5/49/ffa7ab9c52ec56b535cffec3bc844254c073888e6d4aeee464671ac97480/protobuf-3.10.0-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
+  Downloading https://files.pythonhosted.org/packages/a3/27/9a375cc85b90c93ab847370c31fe1302a763b6cd57d54daee20171d720ff/protobuf-3.11.1-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
 Requirement already satisfied (use --upgrade to upgrade): setuptools in /usr/lib/python2.7/dist-packages (from protobuf)
 Requirement already satisfied (use --upgrade to upgrade): six>=1.9 in /usr/lib/python2.7/dist-packages (from protobuf)
 Installing collected packages: protobuf
-Successfully installed protobuf-3.10.0
+Successfully installed protobuf-3.11.1
 You are using pip version 8.1.1, however version 19.3.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 Reading package lists...
@@ -10668,25 +10679,25 @@ Suggested packages:
 The following NEW packages will be installed:
   libgflags-dev libgflags2v5 python-psutil
 0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
-Need to get 174 kB of archives.
-After this operation, 1,152 kB of additional disk space will be used.
+Need to get 175 kB of archives.
+After this operation, 1,153 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libgflags2v5 amd64 2.1.2-3 [54.4 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libgflags-dev amd64 2.1.2-3 [64.8 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-psutil amd64 3.4.2-1 [55.2 kB]
-Fetched 174 kB in 3s (49.9 kB/s)
+Get:3 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-psutil amd64 3.4.2-1ubuntu0.1 [55.4 kB]
+Fetched 175 kB in 1s (106 kB/s)
 Selecting previously unselected package libgflags2v5.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 204156 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 204503 files and directories currently installed.)
 Preparing to unpack .../libgflags2v5_2.1.2-3_amd64.deb ...
 Unpacking libgflags2v5 (2.1.2-3) ...
 Selecting previously unselected package libgflags-dev.
 Preparing to unpack .../libgflags-dev_2.1.2-3_amd64.deb ...
 Unpacking libgflags-dev (2.1.2-3) ...
 Selecting previously unselected package python-psutil.
-Preparing to unpack .../python-psutil_3.4.2-1_amd64.deb ...
-Unpacking python-psutil (3.4.2-1) ...
+Preparing to unpack .../python-psutil_3.4.2-1ubuntu0.1_amd64.deb ...
+Unpacking python-psutil (3.4.2-1ubuntu0.1) ...
 Setting up libgflags2v5 (2.1.2-3) ...
 Setting up libgflags-dev (2.1.2-3) ...
-Setting up python-psutil (3.4.2-1) ...
+Setting up python-psutil (3.4.2-1ubuntu0.1) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
@@ -10699,14 +10710,14 @@ Successfully installed crcmod-1.7
 You are using pip version 8.1.1, however version 19.3.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 end install miscellaneous packages:
-Wed Nov  6 14:23:56 PST 2019
+Sat Dec 14 14:12:39 PST 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Wed Nov  6 14:23:56 PST 2019
+Sat Dec 14 14:12:39 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        14G   12G  1.7G  88% /
+/dev/sda1        14G   12G  1.6G  89% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         14028M 11571M     1722M  88% /
+/dev/sda1         14028M 11709M     1585M  89% /
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS BELOW
 ----------------------------------------------------------------------
@@ -10725,3 +10736,4 @@ directory.
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS ABOVE
 ----------------------------------------------------------------------
+Killing child process

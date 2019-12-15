@@ -9,14 +9,11 @@ date this script was tested on its supported operating systems:
 
     https://github.com/jafingerhut/p4-guide/tree/master/bin/output
 
-The files installed by this script consume about 7 GB of disk space.
+The files installed by this script consume about 8 GB of disk space.
 
 On a 2015 MacBook Pro with a decent speed Internet connection
 and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it
-took about 55 minutes.
-
-You will likely need to enter your password for multiple uses of
-'sudo' spread throughout this script.
+took about 60 minutes.
 
 Versions of software that will be installed by this script:
 
@@ -29,7 +26,8 @@ Versions of software that will be installed by this script:
   + nanomsg version 1.0.0
   + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22
 + p4c: github.com/p4lang/p4c latest version
-+ Python packages: grpcio, protobuf, latest versions
++ Mininet: github.com/mininet/mininet latest version
++ Python packages: grpcio, protobuf, crcmod, latest versions
 
 Note that anything installed as 'the latest version' can change
 its precise contents from one run of this script to another.
@@ -41,27 +39,27 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Wed Nov  6 07:54:37 PST 2019
+Sat Dec 14 13:14:51 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G  6.2G   50G  11% /
+/dev/sda1        59G  6.4G   50G  12% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         60218M 6281M    50850M  11% /
+/dev/sda1         60218M 6456M    50675M  12% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
-git is already the newest version (1:2.17.1-1ubuntu0.4).
+git is already the newest version (1:2.17.1-1ubuntu0.5).
 Suggested packages:
   ctags vim-doc vim-scripts
 The following NEW packages will be installed:
   vim vim-runtime
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
 Need to get 6,587 kB of archives.
 After this operation, 32.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-runtime all 2:8.0.1453-1ubuntu1.1 [5,435 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim amd64 2:8.0.1453-1ubuntu1.1 [1,152 kB]
-Fetched 6,587 kB in 4s (1,559 kB/s)
+Fetched 6,587 kB in 4s (1,732 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 114478 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 114543 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a8.0.1453-1ubuntu1.1_all.deb ...
 Adding 'diversion of /usr/share/vim/vim80/doc/help.txt to /usr/share/vim/vim80/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim80/doc/tags to /usr/share/vim/vim80/doc/tags.vim-tiny by vim-runtime'
@@ -88,7 +86,7 @@ Suggested packages:
   python-doc python-tk python2.7-doc binfmt-support
 The following NEW packages will be installed:
   libpython-stdlib python python-minimal python2.7 python2.7-minimal
-0 upgraded, 5 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 5 newly installed, 0 to remove and 2 not upgraded.
 Need to get 1,710 kB of archives.
 After this operation, 4,984 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7-minimal amd64 2.7.15-4ubuntu4~18.04.2 [1,296 kB]
@@ -96,9 +94,9 @@ Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-minimal amd64
 Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python2.7 amd64 2.7.15-4ubuntu4~18.04.2 [239 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-stdlib amd64 2.7.15~rc1-1 [7,620 B]
 Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python amd64 2.7.15~rc1-1 [140 kB]
-Fetched 1,710 kB in 3s (490 kB/s)
+Fetched 1,710 kB in 4s (488 kB/s)
 Selecting previously unselected package python2.7-minimal.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116245 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116310 files and directories currently installed.)
 Preparing to unpack .../python2.7-minimal_2.7.15-4ubuntu4~18.04.2_amd64.deb ...
 Unpacking python2.7-minimal (2.7.15-4ubuntu4~18.04.2) ...
 Selecting previously unselected package python-minimal.
@@ -114,7 +112,7 @@ Setting up python2.7-minimal (2.7.15-4ubuntu4~18.04.2) ...
 Linking and byte-compiling packages for runtime python2.7...
 Setting up python-minimal (2.7.15~rc1-1) ...
 Selecting previously unselected package python.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116302 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116367 files and directories currently installed.)
 Preparing to unpack .../python_2.7.15~rc1-1_amd64.deb ...
 Unpacking python (2.7.15~rc1-1) ...
 Setting up python2.7 (2.7.15-4ubuntu4~18.04.2) ...
@@ -146,8 +144,8 @@ The following NEW packages will be installed:
   libc-dev-bin libc6-dev libcilkrts5 libcurl4 libgcc-7-dev libitm1 liblsan0
   libltdl-dev libmpx2 libquadmath0 libsigsegv2 libstdc++-7-dev libtool
   libtsan0 libubsan0 linux-libc-dev m4 make manpages-dev
-0 upgraded, 29 newly installed, 0 to remove and 0 not upgraded.
-Need to get 28.0 MB of archives.
+0 upgraded, 29 newly installed, 0 to remove and 2 not upgraded.
+Need to get 27.9 MB of archives.
 After this operation, 122 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsigsegv2 amd64 2.12-1 [14.7 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 m4 amd64 1.4.18-1 [197 kB]
@@ -169,7 +167,7 @@ Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libgcc-7-de
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 gcc-7 amd64 7.4.0-1ubuntu1~18.04.1 [7,463 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 gcc amd64 4:7.4.0-1ubuntu2.3 [5,184 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc-dev-bin amd64 2.27-3ubuntu1 [71.8 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-66.75 [1,139 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-72.81 [1,000 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc6-dev amd64 2.27-3ubuntu1 [2,587 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libstdc++-7-dev amd64 7.4.0-1ubuntu1~18.04.1 [1,468 kB]
 Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 g++-7 amd64 7.4.0-1ubuntu1~18.04.1 [7,574 kB]
@@ -178,9 +176,9 @@ Get:26 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libltdl-dev amd64 2
 Get:27 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtool all 2.4.6-2 [194 kB]
 Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 make amd64 4.1-9.1ubuntu1 [154 kB]
 Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 manpages-dev all 4.15-1 [2,217 kB]
-Fetched 28.0 MB in 30s (930 kB/s)
+Fetched 27.9 MB in 27s (1,021 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116355 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 116420 files and directories currently installed.)
 Preparing to unpack .../00-libsigsegv2_2.12-1_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.12-1) ...
 Selecting previously unselected package m4.
@@ -241,8 +239,8 @@ Selecting previously unselected package libc-dev-bin.
 Preparing to unpack .../19-libc-dev-bin_2.27-3ubuntu1_amd64.deb ...
 Unpacking libc-dev-bin (2.27-3ubuntu1) ...
 Selecting previously unselected package linux-libc-dev:amd64.
-Preparing to unpack .../20-linux-libc-dev_4.15.0-66.75_amd64.deb ...
-Unpacking linux-libc-dev:amd64 (4.15.0-66.75) ...
+Preparing to unpack .../20-linux-libc-dev_4.15.0-72.81_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.15.0-72.81) ...
 Selecting previously unselected package libc6-dev:amd64.
 Preparing to unpack .../21-libc6-dev_2.27-3ubuntu1_amd64.deb ...
 Unpacking libc6-dev:amd64 (2.27-3ubuntu1) ...
@@ -277,7 +275,7 @@ Setting up libcilkrts5:amd64 (7.4.0-1ubuntu1~18.04.1) ...
 Setting up libubsan0:amd64 (7.4.0-1ubuntu1~18.04.1) ...
 Setting up libtsan0:amd64 (8.3.0-6ubuntu1~18.04.1) ...
 Setting up libcurl4:amd64 (7.58.0-2ubuntu3.8) ...
-Setting up linux-libc-dev:amd64 (4.15.0-66.75) ...
+Setting up linux-libc-dev:amd64 (4.15.0-72.81) ...
 Setting up m4 (1.4.18-1) ...
 Setting up liblsan0:amd64 (8.3.0-6ubuntu1~18.04.1) ...
 Setting up libmpx2:amd64 (8.3.0-6ubuntu1~18.04.1) ...
@@ -306,13 +304,13 @@ Building dependency tree...
 Reading state information...
 The following NEW packages will be installed:
   zlib1g-dev
-0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 1 newly installed, 0 to remove and 2 not upgraded.
 Need to get 176 kB of archives.
 After this operation, 457 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-0ubuntu2 [176 kB]
-Fetched 176 kB in 1s (228 kB/s)
+Fetched 176 kB in 1s (176 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121431 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121496 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.11.dfsg-0ubuntu2_amd64.deb ...
 Unpacking zlib1g-dev:amd64 (1:1.2.11.dfsg-0ubuntu2) ...
 Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-0ubuntu2) ...
@@ -328,7 +326,7 @@ Suggested packages:
 The following NEW packages will be installed:
   build-essential dpkg-dev fakeroot libalgorithm-diff-perl
   libalgorithm-diff-xs-perl libalgorithm-merge-perl libfakeroot pkg-config
-0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 8 newly installed, 0 to remove and 2 not upgraded.
 Need to get 816 kB of archives.
 After this operation, 2,777 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 dpkg-dev all 1.19.0.5ubuntu2.3 [607 kB]
@@ -339,9 +337,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-diff-pe
 Get:6 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-diff-xs-perl amd64 0.04-5 [11.1 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 pkg-config amd64 0.29.1-0ubuntu2 [45.0 kB]
-Fetched 816 kB in 5s (152 kB/s)
+Fetched 816 kB in 1s (795 kB/s)
 Selecting previously unselected package dpkg-dev.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121459 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121524 files and directories currently installed.)
 Preparing to unpack .../0-dpkg-dev_1.19.0.5ubuntu2.3_all.deb ...
 Unpacking dpkg-dev (1.19.0.5ubuntu2.3) ...
 Selecting previously unselected package build-essential.
@@ -379,7 +377,7 @@ Processing triggers for libc-bin (2.27-3ubuntu1) ...
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Wed Nov  6 07:56:04 PST 2019
+Sat Dec 14 13:16:37 PST 2019
 git clone https://github.com/google/protobuf
 Cloning into 'protobuf'...
 Note: checking out 'v3.2.0'.
@@ -397,12 +395,12 @@ HEAD is now at 593e917c1 Bump version number to 3.2.0
 Google Mock not present.  Fetching gmock-1.7.0 from the web...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    477      0 --:--:-- --:--:-- --:--:--   477
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  362k    0  362k    0     0   417k      0 --:--:-- --:--:-- --:--:-- 1549k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    388      0 --:--:-- --:--:-- --:--:--   388
+100 13051    0 13051    0     0  15122      0 --:--:-- --:--:-- --:--:-- 15122100  362k    0  362k    0     0   311k      0 --:--:--  0:00:01 --:--:-- 1169k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    449      0 --:--:-- --:--:-- --:--:--   449
-100  123k    0  123k    0     0   169k      0 --:--:-- --:--:-- --:--:--  169k100  618k    0  618k    0     0   655k      0 --:--:-- --:--:-- --:--:-- 2320k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   129    0   129    0     0    422      0 --:--:-- --:--:-- --:--:--   422
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0100  359k    0  359k    0     0   137k      0 --:--:--  0:00:02 --:--:--  327k100  618k    0  618k    0     0   197k      0 --:--:--  0:00:03 --:--:--  381k
 + autoreconf -f -i -Wall,no-obsolete
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
 libtoolize: copying file 'build-aux/ltmain.sh'
@@ -1989,7 +1987,6 @@ libtool: link: ( cd ".libs" && rm -f "libprotobuf-lite.la" && ln -s "../libproto
 make[3]: Leaving directory '/home/andy/protobuf/src'
 make[2]: Leaving directory '/home/andy/protobuf/src'
 make[1]: Leaving directory '/home/andy/protobuf'
-Sorry, try again.
 Making install in .
 make[1]: Entering directory '/home/andy/protobuf'
 make[2]: Entering directory '/home/andy/protobuf'
@@ -2205,14 +2202,22 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/andy/protobuf/src'
 end install protobuf:
-Wed Nov  6 09:20:15 PST 2019
+Sat Dec 14 13:27:48 PST 2019
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Wed Nov  6 09:20:16 PST 2019
+Sat Dec 14 13:27:48 PST 2019
+Reading package lists...
+Building dependency tree...
+Reading state information...
+autoconf is already the newest version (2.69-11).
+build-essential is already the newest version (12.4ubuntu1).
+build-essential set to manually installed.
+libtool is already the newest version (2.4.6-2).
+pkg-config is already the newest version (0.29.1-0ubuntu2).
+0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
 git clone https://github.com/google/grpc.git
 Cloning into 'grpc'...
-Checking out files:  73% (7670/10390)   Checking out files:  74% (7689/10390)   Checking out files:  75% (7793/10390)   Checking out files:  76% (7897/10390)   Checking out files:  77% (8001/10390)   Checking out files:  78% (8105/10390)   Checking out files:  79% (8209/10390)   Checking out files:  80% (8312/10390)   Checking out files:  81% (8416/10390)   Checking out files:  82% (8520/10390)   Checking out files:  83% (8624/10390)   Checking out files:  84% (8728/10390)   Checking out files:  85% (8832/10390)   Checking out files:  86% (8936/10390)   Checking out files:  87% (9040/10390)   Checking out files:  88% (9144/10390)   Checking out files:  89% (9248/10390)   Checking out files:  90% (9351/10390)   Checking out files:  91% (9455/10390)   Checking out files:  92% (9559/10390)   Checking out files:  93% (9663/10390)   Checking out files:  94% (9767/10390)   Checking out files:  95% (9871/10390)   Checking out files:  96% (9975/10390)   Checking out files:  97% (10079/10390)   Checking out files:  98% (10183/10390)   Checking out files:  99% (10287/10390)   Checking out files: 100% (10390/10390)   Checking out files: 100% (10390/10390), done.
 Note: checking out 'tags/v1.3.2'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -3673,11 +3678,11 @@ src/proto/grpc/testing/services.proto: warning: Import src/proto/grpc/testing/st
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Wed Nov  6 09:28:36 PST 2019
+Sat Dec 14 13:38:33 PST 2019
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Wed Nov  6 09:28:36 PST 2019
+Sat Dec 14 13:38:33 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -3708,7 +3713,7 @@ The following NEW packages will be installed:
   libboost-system-dev libboost-system1.65-dev libboost-thread-dev
   libboost-thread1.65-dev libboost1.65-dev libjudy-dev libjudydebian1
   libreadline-dev libtinfo-dev libtool-bin valgrind
-0 upgraded, 20 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 20 newly installed, 0 to remove and 2 not upgraded.
 Need to get 22.4 MB of archives.
 After this operation, 199 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libboost1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [7,218 kB]
@@ -3731,9 +3736,9 @@ Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtinfo-de
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libreadline-dev amd64 7.0-3 [133 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libtool-bin amd64 2.4.6-2 [79.5 kB]
 Get:20 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 valgrind amd64 1:3.13.0-2ubuntu2.1 [14.3 MB]
-Fetched 22.4 MB in 17s (1,289 kB/s)
+Fetched 22.4 MB in 14s (1,569 kB/s)
 Selecting previously unselected package libboost1.65-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121787 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 121852 files and directories currently installed.)
 Preparing to unpack .../00-libboost1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-atomic1.65.1:amd64.
@@ -3829,42 +3834,14 @@ Submodule path 'proto/openconfig/gnmi': checked out '9c8d9e965b3e854107ea02c12ab
 Submodule path 'proto/openconfig/public': checked out '1040d11c089c74084c64c234bee3691ec70e8a9f'
 Submodule path 'proto/p4runtime': checked out '09a02842321aecd224cfdbbcea95b1dbc6255266'
 Submodule path 'third_party/googletest': checked out 'f5edb4f542e155c75bc4b516f227911d99ec167c'
-commit 33e15ea4cbc292a532cf3f5db61d0f5ea94e6c36
+commit 1539ecd8a50c159b011d9c5a9c0eba99f122a845
 Author: Antonin Bas <abas@vmware.com>
-Date:   Sat Nov 2 15:08:32 2019 -0700
+Date:   Wed Nov 6 22:17:37 2019 -0800
 
-    Support dynamic configuration for P4Runtime implementation
+    Update README with the new officially-supported versions of Protobuf / gRPC
     
-    The server now exposes a new gRPC service that allows changing some
-    configuration parameters of the P4Runtime implementation. At the moment
-    we only support enabling / disabling stream error-reporting (recently
-    added to the P4Runtime specification).
-    
-    For software that consumes DeviceMgr directly and does not use the
-    server code included in this project, we have added a new method to the
-    DeviceMgr PIMPL which enables updating the configuration.
-    
-    This change also implements support for stream error-reporting (when
-    enabled through the configuration mechanism described above). At the
-    moment we only report errors for invalid PacketOut messages. StreamError
-    messages could have been "injected in the stream" in 3 different places:
-    (1) in the PacketIOMgr, (2) in the DeviceMgr, or (3) in the DeviceMgr
-    client. In this patch we went with (2) to avoid changing the DeviceMgr
-    interface (3) and to avoid making the assumption that components which
-    handle PacketOut messages must also have the ability to send PacketIn
-    messages (1), even though this is currently the case for all the
-    components we have.
-    
-    The P4Runtime spec states that StreamError messages may be dropped if
-    the StreamChannel is too busy. We consider that this is not the
-    responsibility of DeviceMgr, but of the DeviceMgr client (e.g. P4Runtime
-    service implementation). This is probably a good idea for the client to
-    implement such a mechanism. Our current P4Runtime service implementation
-    does not, and if a StreamError message needs to be sent to the P4Runtime
-    client, we will not accept a new StreamMessageRequest until the
-    StreamError message is sent. This could impact PacketOut performance,
-    but then again stream error-reporting is only meant to be enabled for
-    debugging purposes.
+    Protobuf 3.6.1 and gRPC 1.17.2
+    These are the versions installed by p4lang/third-party and used for CI.
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
@@ -5840,27 +5817,21 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/andy/PI'
 end install PI:
-Wed Nov  6 09:35:30 PST 2019
+Sat Dec 14 13:45:50 PST 2019
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Wed Nov  6 09:35:30 PST 2019
+Sat Dec 14 13:45:51 PST 2019
 git clone https://github.com/p4lang/behavioral-model.git
 Cloning into 'behavioral-model'...
 Already up to date.
-commit 971732f48570f848a27a8f54b25b7447732d8591
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Sat Oct 26 13:26:13 2019 -0700
+commit 9ef324838b29419040b4f677a3ff65bc72405c44
+Author: Antonin Bas <abas@vmware.com>
+Date:   Wed Dec 11 08:30:32 2019 -0800
 
-    V1model notes on register extern (#817)
+    Document command-line options for simple_switch_grpc
     
-    * Add runtime_CLI docs on table_add and a few other commands
-    
-    * Additional implementation notes on registers in simple_switch
-    Some of this material comes from this comment by Antonin Bas:
-    https://github.com/p4lang/p4c/issues/2055#issuecomment-541863460
-    
-    * Add missing backquote markup
+    Fixes #831
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -5908,7 +5879,7 @@ The following NEW packages will be installed:
   python-keyring python-keyrings.alt python-pip python-pip-whl
   python-pkg-resources python-secretstorage python-setuptools python-six
   python-wheel python-xdg python2.7-dev
-0 upgraded, 58 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 58 newly installed, 0 to remove and 2 not upgraded.
 Need to get 41.2 MB of archives.
 After this operation, 102 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 flex amd64 2.6.4-6 [316 kB]
@@ -5939,8 +5910,8 @@ Get:25 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libfl2 amd64 2.6.4-
 Get:26 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libfl-dev amd64 2.6.4-6 [6,320 B]
 Get:27 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgmpxx4ldbl amd64 2:6.1.2+dfsg-2 [8,964 B]
 Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgmp-dev amd64 2:6.1.2+dfsg-2 [316 kB]
-Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcap0.8-dev amd64 1.8.1-6ubuntu1 [217 kB]
-Get:30 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcap-dev amd64 1.8.1-6ubuntu1 [3,480 B]
+Get:29 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpcap0.8-dev amd64 1.8.1-6ubuntu1.18.04.1 [218 kB]
+Get:30 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpcap-dev amd64 1.8.1-6ubuntu1.18.04.1 [3,488 B]
 Get:31 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython2.7-dev amd64 2.7.15-4ubuntu4~18.04.2 [28.3 MB]
 Get:32 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-dev amd64 2.7.15~rc1-1 [7,684 B]
 Get:33 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpython-all-dev amd64 2.7.15~rc1-1 [1,092 B]
@@ -5969,9 +5940,9 @@ Get:55 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-setuptools a
 Get:56 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-wheel all 0.30.0-0.2 [36.4 kB]
 Get:57 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-xdg all 0.25-4ubuntu1 [31.3 kB]
 Get:58 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libffi-dev amd64 3.2.1-8 [156 kB]
-Fetched 41.2 MB in 41s (1,002 kB/s)
+Fetched 41.2 MB in 29s (1,434 kB/s)
 Selecting previously unselected package flex.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 135910 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 135975 files and directories currently installed.)
 Preparing to unpack .../00-flex_2.6.4-6_amd64.deb ...
 Unpacking flex (2.6.4-6) ...
 Selecting previously unselected package libbison-dev:amd64.
@@ -6056,11 +6027,11 @@ Selecting previously unselected package libgmp-dev:amd64.
 Preparing to unpack .../27-libgmp-dev_2%3a6.1.2+dfsg-2_amd64.deb ...
 Unpacking libgmp-dev:amd64 (2:6.1.2+dfsg-2) ...
 Selecting previously unselected package libpcap0.8-dev:amd64.
-Preparing to unpack .../28-libpcap0.8-dev_1.8.1-6ubuntu1_amd64.deb ...
-Unpacking libpcap0.8-dev:amd64 (1.8.1-6ubuntu1) ...
+Preparing to unpack .../28-libpcap0.8-dev_1.8.1-6ubuntu1.18.04.1_amd64.deb ...
+Unpacking libpcap0.8-dev:amd64 (1.8.1-6ubuntu1.18.04.1) ...
 Selecting previously unselected package libpcap-dev:amd64.
-Preparing to unpack .../29-libpcap-dev_1.8.1-6ubuntu1_amd64.deb ...
-Unpacking libpcap-dev:amd64 (1.8.1-6ubuntu1) ...
+Preparing to unpack .../29-libpcap-dev_1.8.1-6ubuntu1.18.04.1_amd64.deb ...
+Unpacking libpcap-dev:amd64 (1.8.1-6ubuntu1.18.04.1) ...
 Selecting previously unselected package libpython2.7-dev:amd64.
 Preparing to unpack .../30-libpython2.7-dev_2.7.15-4ubuntu4~18.04.2_amd64.deb ...
 Unpacking libpython2.7-dev:amd64 (2.7.15-4ubuntu4~18.04.2) ...
@@ -6158,7 +6129,7 @@ Setting up libboost-filesystem1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up python-wheel (0.30.0-0.2) ...
 Setting up libssl1.0-dev:amd64 (1.0.2n-1ubuntu5.3) ...
 Setting up libffi-dev:amd64 (3.2.1-8) ...
-Setting up libpcap0.8-dev:amd64 (1.8.1-6ubuntu1) ...
+Setting up libpcap0.8-dev:amd64 (1.8.1-6ubuntu1.18.04.1) ...
 Setting up cmake-data (3.10.2-1ubuntu2.18.04.1) ...
 Setting up python-pkg-resources (39.0.1-2) ...
 Setting up libboost-filesystem1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
@@ -6171,7 +6142,7 @@ Setting up python-enum34 (1.1.6-2) ...
 Setting up libbison-dev:amd64 (2:3.0.4.dfsg-1build1) ...
 Setting up libfl2:amd64 (2.6.4-6) ...
 Setting up libexpat1-dev:amd64 (2.2.5-3ubuntu0.2) ...
-Setting up libpcap-dev:amd64 (1.8.1-6ubuntu1) ...
+Setting up libpcap-dev:amd64 (1.8.1-6ubuntu1.18.04.1) ...
 Setting up libpython2.7-dev:amd64 (2.7.15-4ubuntu4~18.04.2) ...
 Setting up bison (2:3.0.4.dfsg-1build1) ...
 update-alternatives: using /usr/bin/bison.yacc to provide /usr/bin/yacc (yacc) in auto mode
@@ -6795,9 +6766,9 @@ mv -f .deps/thrift-t_gv_generator.Tpo .deps/thrift-t_gv_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -MT thrift-t_d_generator.o -MD -MP -MF .deps/thrift-t_d_generator.Tpo -c -o thrift-t_d_generator.o `test -f 'src/generate/t_d_generator.cc' || echo './'`src/generate/t_d_generator.cc
 mv -f .deps/thrift-t_d_generator.Tpo .deps/thrift-t_d_generator.Po
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wextra -pedantic -g -O2 -MT thrift-t_lua_generator.o -MD -MP -MF .deps/thrift-t_lua_generator.Tpo -c -o thrift-t_lua_generator.o `test -f 'src/generate/t_lua_generator.cc' || echo './'`src/generate/t_lua_generator.cc
-mv -f .deps/thrift-t_go_generator.Tpo .deps/thrift-t_go_generator.Po
-g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wno-sign-compare -Wno-unused -g -O2 -MT libparse_a-thriftl.o -MD -MP -MF .deps/libparse_a-thriftl.Tpo -c -o libparse_a-thriftl.o `test -f 'thriftl.cc' || echo './'`thriftl.cc
 mv -f .deps/thrift-t_lua_generator.Tpo .deps/thrift-t_lua_generator.Po
+g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I./src  -Wall -Wno-sign-compare -Wno-unused -g -O2 -MT libparse_a-thriftl.o -MD -MP -MF .deps/libparse_a-thriftl.Tpo -c -o libparse_a-thriftl.o `test -f 'thriftl.cc' || echo './'`thriftl.cc
+mv -f .deps/thrift-t_go_generator.Tpo .deps/thrift-t_go_generator.Po
 mv -f .deps/libparse_a-thriftl.Tpo .deps/libparse_a-thriftl.Po
 rm -f libparse.a
 ar cru libparse.a libparse_a-thrifty.o libparse_a-thriftl.o 
@@ -6958,19 +6929,19 @@ src/thrift/transport/TFileTransport.cpp: In member function ‘void apache::thri
 src/thrift/transport/TFileTransport.cpp:316:20: warning: ignoring return value of ‘int ftruncate(int, __off_t)’, declared with attribute warn_unused_result [-Wunused-result]
     THRIFT_FTRUNCATE(fd_, offset_);
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSimpleFileTransport.lo -MD -MP -MF src/thrift/transport/.deps/TSimpleFileTransport.Tpo -c src/thrift/transport/TSimpleFileTransport.cpp -o src/thrift/transport/TSimpleFileTransport.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFileTransport.lo -MD -MP -MF src/thrift/transport/.deps/TFileTransport.Tpo -c src/thrift/transport/TFileTransport.cpp -o src/thrift/transport/TFileTransport.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/THttpTransport.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpTransport.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/THttpTransport.lo src/thrift/transport/THttpTransport.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TFileTransport.lo -MD -MP -MF src/thrift/transport/.deps/TFileTransport.Tpo -c src/thrift/transport/TFileTransport.cpp -o src/thrift/transport/TFileTransport.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpTransport.lo -MD -MP -MF src/thrift/transport/.deps/THttpTransport.Tpo -c src/thrift/transport/THttpTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/THttpTransport.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpTransport.lo -MD -MP -MF src/thrift/transport/.deps/THttpTransport.Tpo -c src/thrift/transport/THttpTransport.cpp -o src/thrift/transport/THttpTransport.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/THttpClient.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpClient.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/THttpClient.lo src/thrift/transport/THttpClient.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpClient.lo -MD -MP -MF src/thrift/transport/.deps/THttpClient.Tpo -c src/thrift/transport/THttpClient.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/THttpClient.o
 depbase=`echo src/thrift/transport/THttpServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/THttpServer.lo src/thrift/transport/THttpServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpClient.lo -MD -MP -MF src/thrift/transport/.deps/THttpClient.Tpo -c src/thrift/transport/THttpClient.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/THttpClient.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpServer.lo -MD -MP -MF src/thrift/transport/.deps/THttpServer.Tpo -c src/thrift/transport/THttpServer.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/THttpServer.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpServer.lo -MD -MP -MF src/thrift/transport/.deps/THttpServer.Tpo -c src/thrift/transport/THttpServer.cpp -o src/thrift/transport/THttpServer.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/THttpClient.lo -MD -MP -MF src/thrift/transport/.deps/THttpClient.Tpo -c src/thrift/transport/THttpClient.cpp -o src/thrift/transport/THttpClient.o >/dev/null 2>&1
@@ -6997,7 +6968,6 @@ depbase=`echo src/thrift/transport/TSocketPool.lo | sed 's|[^/]*$|.deps/&|;s|\.l
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocketPool.lo src/thrift/transport/TSocketPool.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF src/thrift/transport/.deps/TSocketPool.Tpo -c src/thrift/transport/TSocketPool.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocketPool.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF src/thrift/transport/.deps/TSocketPool.Tpo -c src/thrift/transport/TSocketPool.cpp -o src/thrift/transport/TSocketPool.o >/dev/null 2>&1
 In file included from /usr/include/string.h:494:0,
                  from /usr/include/boost/range/detail/implementation_help.hpp:18,
                  from /usr/include/boost/range/end.hpp:24,
@@ -7010,6 +6980,7 @@ In function ‘char* strncpy(char*, const char*, size_t)’,
 /usr/include/x86_64-linux-gnu/bits/string_fortified.h:106:71: warning: ‘char* __builtin_strncpy(char*, const char*, long unsigned int)’: specified size between 18446744071562067968 and 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Wstringop-overflow=]
    return __builtin___strncpy_chk (__dest, __src, __len, __bos (__dest));
                                                                        ^
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF src/thrift/transport/.deps/TSocketPool.Tpo -c src/thrift/transport/TSocketPool.cpp -o src/thrift/transport/TSocketPool.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp -o src/thrift/transport/TSSLSocket.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TServerSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TServerSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TServerSocket.lo src/thrift/transport/TServerSocket.cpp &&\
@@ -7019,16 +6990,16 @@ libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I
 depbase=`echo src/thrift/transport/TSSLServerSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLServerSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSSLServerSocket.lo src/thrift/transport/TSSLServerSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLServerSocket.Tpo -c src/thrift/transport/TSSLServerSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLServerSocket.o
 depbase=`echo src/thrift/transport/TTransportUtils.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TTransportUtils.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TTransportUtils.lo src/thrift/transport/TTransportUtils.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLServerSocket.Tpo -c src/thrift/transport/TSSLServerSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLServerSocket.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TTransportUtils.lo -MD -MP -MF src/thrift/transport/.deps/TTransportUtils.Tpo -c src/thrift/transport/TTransportUtils.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TTransportUtils.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLServerSocket.Tpo -c src/thrift/transport/TSSLServerSocket.cpp -o src/thrift/transport/TSSLServerSocket.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TTransportUtils.lo -MD -MP -MF src/thrift/transport/.deps/TTransportUtils.Tpo -c src/thrift/transport/TTransportUtils.cpp -o src/thrift/transport/TTransportUtils.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TBufferTransports.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include -I./src  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TBufferTransports.lo src/thrift/transport/TBufferTransports.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TTransportUtils.lo -MD -MP -MF src/thrift/transport/.deps/TTransportUtils.Tpo -c src/thrift/transport/TTransportUtils.cpp -o src/thrift/transport/TTransportUtils.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF src/thrift/transport/.deps/TBufferTransports.Tpo -c src/thrift/transport/TBufferTransports.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TBufferTransports.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I./src -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TBufferTransports.lo -MD -MP -MF src/thrift/transport/.deps/TBufferTransports.Tpo -c src/thrift/transport/TBufferTransports.cpp -o src/thrift/transport/TBufferTransports.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -7210,8 +7181,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo DebugProtoTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift  -I/usr/include -I../../../lib/cpp/src  -Wall -Wextra -pedantic -g -O2 -MT DebugProtoTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o DebugProtoTest_extras.lo DebugProtoTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -MT ThriftTest_extras.lo -MD -MP -MF .deps/ThriftTest_extras.Tpo -c ThriftTest_extras.cpp  -fPIC -DPIC -o .libs/ThriftTest_extras.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -MT DebugProtoTest_extras.lo -MD -MP -MF .deps/DebugProtoTest_extras.Tpo -c DebugProtoTest_extras.cpp  -fPIC -DPIC -o .libs/DebugProtoTest_extras.o
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -MT ThriftTest_extras.lo -MD -MP -MF .deps/ThriftTest_extras.Tpo -c ThriftTest_extras.cpp  -fPIC -DPIC -o .libs/ThriftTest_extras.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -MT DebugProtoTest_extras.lo -MD -MP -MF .deps/DebugProtoTest_extras.Tpo -c DebugProtoTest_extras.cpp -o DebugProtoTest_extras.o >/dev/null 2>&1
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I/usr/include -I../../../lib/cpp/src -Wall -Wextra -pedantic -g -O2 -MT ThriftTest_extras.lo -MD -MP -MF .deps/ThriftTest_extras.Tpo -c ThriftTest_extras.cpp -o ThriftTest_extras.o >/dev/null 2>&1
 ../../../compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
@@ -7389,39 +7360,40 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/t
 ../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+../../compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:42] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/ThriftTest.thrift:43] cpp generator does not accept 'noexist' as sub-namespace!
+../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 ../../compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
-/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
-mv -f $depbase.Tpo $depbase.Plo
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 depbase=`echo gen-cpp/ThriftTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 depbase=`echo gen-cpp/ThriftTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_constants.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest_types.o
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_constants.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_constants.Tpo -c gen-cpp/ThriftTest_constants.cpp -o gen-cpp/ThriftTest_constants.o >/dev/null 2>&1
 depbase=`echo gen-cpp/ThriftTest.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ThriftTest.lo gen-cpp/ThriftTest.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp  -fPIC -DPIC -o gen-cpp/.libs/ThriftTest.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest.lo -MD -MP -MF gen-cpp/.deps/ThriftTest.Tpo -c gen-cpp/ThriftTest.cpp -o gen-cpp/ThriftTest.o >/dev/null 2>&1
-libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 depbase=`echo src/ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT src/ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o src/ThriftTest_extras.lo src/ThriftTest_extras.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT src/ThriftTest_extras.lo -MD -MP -MF src/.deps/ThriftTest_extras.Tpo -c src/ThriftTest_extras.cpp  -fPIC -DPIC -o src/.libs/ThriftTest_extras.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT src/ThriftTest_extras.lo -MD -MP -MF src/.deps/ThriftTest_extras.Tpo -c src/ThriftTest_extras.cpp -o src/ThriftTest_extras.o >/dev/null 2>&1
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_constants.lo gen-cpp/StressTest_constants.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -7432,11 +7404,16 @@ depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
+depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/Service.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/Service.lo gen-cpp/Service.cpp &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp  -fPIC -DPIC -o gen-cpp/.libs/Service.o
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o libtestgencpp.la  gen-cpp/ThriftTest_constants.lo gen-cpp/ThriftTest_types.lo gen-cpp/ThriftTest.lo src/ThriftTest_extras.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: ar cru .libs/libtestgencpp.a gen-cpp/.libs/ThriftTest_constants.o gen-cpp/.libs/ThriftTest_types.o gen-cpp/.libs/ThriftTest.o src/.libs/ThriftTest_extras.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtestgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtestgencpp.la" && ln -s "../libtestgencpp.la" "libtestgencpp.la" )
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/Service.lo -MD -MP -MF gen-cpp/.deps/Service.Tpo -c gen-cpp/Service.cpp -o gen-cpp/Service.o >/dev/null 2>&1
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o libstresstestgencpp.la  gen-cpp/StressTest_constants.lo gen-cpp/StressTest_types.lo gen-cpp/Service.lo ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 libtool: link: ar cru .libs/libstresstestgencpp.a gen-cpp/.libs/StressTest_constants.o gen-cpp/.libs/StressTest_types.o gen-cpp/.libs/Service.o 
 ar: `u' modifier ignored since `D' is the default (see `U')
@@ -7463,6 +7440,7 @@ Making all in tutorial
 make[2]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/tutorial'
 Making all in cpp
 make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/tutorial/cpp'
+../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 ../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
 depbase=`echo CppServer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
 g++ -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -g -O2 -MT CppServer.o -MD -MP -MF $depbase.Tpo -c -o CppServer.o CppServer.cpp &&\
@@ -7521,8 +7499,8 @@ libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lssl -lcrypto -lrt -lpthread 
-libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
+libtool: link: g++ -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/lib/cpp/.libs/libthrift.so ../../lib/cpp/.libs/libthrift.so -lssl -lcrypto -lrt -lpthread
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/tutorial/cpp'
 Making all in py
 make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.9.2/tutorial/py'
@@ -7702,9 +7680,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSocket.py to T
 byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TZlibTransport.py to TZlibTransport.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/THttpClient.py to THttpClient.pyc
-writing byte-compilation script '/tmp/tmpdxPsQg.py'
-/usr/bin/python -O /tmp/tmpdxPsQg.py
-removing /tmp/tmpdxPsQg.py
+writing byte-compilation script '/tmp/tmpqPZGfx.py'
+/usr/bin/python -O /tmp/tmpqPZGfx.py
+removing /tmp/tmpqPZGfx.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -7880,14 +7858,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSocket.py to TSock
 byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TZlibTransport.py to TZlibTransport.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/TSSLSocket.py to TSSLSocket.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/THttpClient.py to THttpClient.pyc
-writing byte-compilation script '/tmp/tmpb0jggN.py'
-/usr/bin/python -O /tmp/tmpb0jggN.py
-removing /tmp/tmpb0jggN.py
+writing byte-compilation script '/tmp/tmpVVt1iw.py'
+/usr/bin/python -O /tmp/tmpVVt1iw.py
+removing /tmp/tmpVVt1iw.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpMIwhk9.py'
-/usr/bin/python -O /tmp/tmpMIwhk9.py
-removing /tmp/tmpMIwhk9.py
+writing byte-compilation script '/tmp/tmpEBbPFb.py'
+/usr/bin/python -O /tmp/tmpEBbPFb.py
+removing /tmp/tmpEBbPFb.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -7905,26 +7883,26 @@ Adding thrift 0.9.2 to easy-install.pth file
 Installed /usr/local/lib/python2.7/dist-packages/thrift-0.9.2-py2.7-linux-x86_64.egg
 Processing dependencies for thrift==0.9.2
 Finished processing dependencies for thrift==0.9.2
---2019-11-06 09:41:08--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 140.82.114.4
-Connecting to github.com (github.com)|140.82.114.4|:443... connected.
+--2019-12-14 13:55:39--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-11-06 09:41:08--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 192.30.253.121
-Connecting to codeload.github.com (codeload.github.com)|192.30.253.121|:443... connected.
+--2019-12-14 13:55:40--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 140.82.114.9
+Connecting to codeload.github.com (codeload.github.com)|140.82.114.9|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  262K
-    50K .......... .......... .......... .......... .......... 1.49M
-   100K .......... .......... .......... .......... ..........  571K
-   150K .......... .......... .......... .......... .......... 2.79M
-   200K .......... .......... .......... .......... ..........  733K
-   250K .......... .......... .......... .......... .......    2.33M=0.4s
+     0K .......... .......... .......... .......... ..........  251K
+    50K .......... .......... .......... .......... ..........  501K
+   100K .......... .......... .......... .......... .......... 2.69M
+   150K .......... .......... .......... .......... .......... 2.76M
+   200K .......... .......... .......... .......... ..........  656K
+   250K .......... .......... .......... .......... .......    2.71M=0.4s
 
-2019-11-06 09:41:09 (714 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2019-12-14 13:55:41 (696 KB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -10524,14 +10502,6 @@ depbase=`echo switch_runner.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ./libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog  -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out  -Wall -Wextra -pthread -O0 -g -MT switch_runner.lo -MD -MP -MF $depbase.Tpo -c -o switch_runner.lo switch_runner.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out -Wall -Wextra -pthread -O0 -g -MT switch_runner.lo -MD -MP -MF .deps/switch_runner.Tpo -c switch_runner.cpp  -fPIC -DPIC -o .libs/switch_runner.o
-switch_runner.cpp: In constructor ‘sswitch_grpc::SimpleSwitchGrpcRunner::SimpleSwitchGrpcRunner(bool, std::__cxx11::string, bm::DevMgrIface::port_t, std::__cxx11::string, bm::DevMgrIface::port_t)’:
-switch_runner.cpp:509:22: warning: ‘static void pi::fe::proto::DeviceMgr::init(size_t)’ is deprecated [-Wdeprecated-declarations]
-   DeviceMgr::init(256);
-                      ^
-In file included from switch_runner.cpp:28:0:
-/usr/local/include/PI/frontends/proto/device_mgr.h:93:15: note: declared here
-   static void init(size_t max_devices);
-               ^~~~
 libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I./../../include -I./../simple_switch -I./../../PI -isystem./../../third_party/spdlog -DWITH_THRIFT -I./../simple_switch/gen-cpp -Icpp_out -Igrpc_out -I./cpp_out -I./grpc_out -Wall -Wextra -pthread -O0 -g -MT switch_runner.lo -MD -MP -MF .deps/switch_runner.Tpo -c switch_runner.cpp -o switch_runner.o >/dev/null 2>&1
 /bin/bash ./libtool  --tag=CXX   --mode=link g++ -Wall -Wextra -pthread -O0 -g   -o libsimple_switch_grpc.la  switch_runner.lo  ./../simple_switch/libsimpleswitch.la ./../../PI/libbmpi.la libbm_grpc_dataplane.la ./../../src/bm_runtime/libbmruntime.la ./../../thrift_src/libruntimestubs.la ./../simple_switch/libsimpleswitch_thrift.la -lpifeproto -lpigrpcserver -lpi -L/usr/local/lib -lgrpc++ -lgrpc -L/usr/local/lib -lprotobuf -pthread -lpthread 
 libtool: link: (cd .libs/libsimple_switch_grpc.lax/libsimpleswitch.a && ar x "/home/andy/behavioral-model/targets/simple_switch_grpc/./../simple_switch/.libs/libsimpleswitch.a")
@@ -10665,11 +10635,11 @@ make[3]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_gr
 make[2]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Wed Nov  6 10:03:13 PST 2019
+Sat Dec 14 14:12:55 PST 2019
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Wed Nov  6 10:03:13 PST 2019
+Sat Dec 14 14:12:56 PST 2019
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -10687,178 +10657,214 @@ tcpdump is already the newest version (4.9.2-3).
 tcpdump set to manually installed.
 cmake is already the newest version (3.10.2-1ubuntu2.18.04.1).
 g++ is already the newest version (4:7.4.0-1ubuntu2.3).
-git is already the newest version (1:2.17.1-1ubuntu0.4).
+git is already the newest version (1:2.17.1-1ubuntu0.5).
 The following additional packages will be installed:
-  binfmt-support gir1.2-harfbuzz-0.0 icu-devtools libboost-graph1.65-dev
-  libboost-graph1.65.1 libboost-iostreams1.65-dev libboost-iostreams1.65.1
-  libboost-regex1.65-dev libboost-regex1.65.1 libgc1c2 libglib2.0-dev
-  libglib2.0-dev-bin libgraphite2-dev libharfbuzz-dev libharfbuzz-gobject0
-  libicu-dev libicu-le-hb-dev libicu-le-hb0 libiculx60 libpcre16-3
-  libpcre3-dev libpcre32-3 libpcrecpp0v5 llvm-6.0 llvm-6.0-dev
-  llvm-6.0-runtime llvm-runtime python3-distutils python3-lib2to3
+  binfmt-support dh-python gir1.2-harfbuzz-0.0 icu-devtools
+  libboost-graph1.65-dev libboost-graph1.65.1 libboost-iostreams1.65-dev
+  libboost-iostreams1.65.1 libboost-regex1.65-dev libboost-regex1.65.1
+  libgc1c2 libglib2.0-dev libglib2.0-dev-bin libgraphite2-dev libharfbuzz-dev
+  libharfbuzz-gobject0 libicu-dev libicu-le-hb-dev libicu-le-hb0 libiculx60
+  libpcre16-3 libpcre3-dev libpcre32-3 libpcrecpp0v5 libpython3-dev
+  libpython3.6-dev llvm-6.0 llvm-6.0-dev llvm-6.0-runtime llvm-runtime
+  python3-dev python3-distutils python3-lib2to3 python3-setuptools
+  python3-wheel python3.6-dev
 Suggested packages:
   graphviz libglib2.0-doc libgraphite2-utils icu-doc llvm-6.0-doc
   python-ply-doc tcpreplay wireshark python-gnuplot python-pyx ebtables
   python-visual sox xpdf gv hexer librsvg2-bin python-pcapy
+  python-setuptools-doc
 The following NEW packages will be installed:
-  binfmt-support gir1.2-harfbuzz-0.0 icu-devtools libboost-graph-dev
+  binfmt-support dh-python gir1.2-harfbuzz-0.0 icu-devtools libboost-graph-dev
   libboost-graph1.65-dev libboost-graph1.65.1 libboost-iostreams-dev
   libboost-iostreams1.65-dev libboost-iostreams1.65.1 libboost-regex1.65-dev
   libboost-regex1.65.1 libgc-dev libgc1c2 libglib2.0-dev libglib2.0-dev-bin
   libgraphite2-dev libharfbuzz-dev libharfbuzz-gobject0 libicu-dev
   libicu-le-hb-dev libicu-le-hb0 libiculx60 libpcre16-3 libpcre3-dev
-  libpcre32-3 libpcrecpp0v5 llvm llvm-6.0 llvm-6.0-dev llvm-6.0-runtime
-  llvm-runtime python-ipaddr python-ply python-scapy python3-distutils
-  python3-lib2to3
-0 upgraded, 36 newly installed, 0 to remove and 0 not upgraded.
-Need to get 41.7 MB of archives.
-After this operation, 247 MB of additional disk space will be used.
+  libpcre32-3 libpcrecpp0v5 libpython3-dev libpython3.6-dev llvm llvm-6.0
+  llvm-6.0-dev llvm-6.0-runtime llvm-runtime python-ipaddr python-ply
+  python-scapy python3-dev python3-distutils python3-lib2to3 python3-pip
+  python3-setuptools python3-wheel python3.6-dev
+0 upgraded, 44 newly installed, 0 to remove and 2 not upgraded.
+Need to get 87.5 MB of archives.
+After this operation, 328 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 binfmt-support amd64 2.1.8-2 [51.6 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 gir1.2-harfbuzz-0.0 amd64 1.7.2-1ubuntu1 [18.6 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 icu-devtools amd64 60.2-3ubuntu3 [179 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-regex1.65.1 amd64 1.65.1+dfsg-0ubuntu5 [259 kB]
-Get:5 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph1.65.1 amd64 1.65.1+dfsg-0ubuntu5 [93.4 kB]
-Get:6 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [102 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph-dev amd64 1.65.1.0ubuntu1 [3,024 B]
-Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-le-hb0 amd64 1.0.3+git161113-4 [14.3 kB]
-Get:9 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libiculx60 amd64 60.2-3ubuntu3 [18.9 kB]
-Get:10 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libharfbuzz-gobject0 amd64 1.7.2-1ubuntu1 [13.4 kB]
-Get:11 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-lib2to3 all 3.6.8-1~18.04 [76.5 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-distutils all 3.6.8-1~18.04 [141 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev-bin amd64 2.56.4-0ubuntu0.18.04.4 [102 kB]
-Get:14 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcre16-3 amd64 2:8.39-9 [147 kB]
-Get:15 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcre32-3 amd64 2:8.39-9 [138 kB]
-Get:16 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcrecpp0v5 amd64 2:8.39-9 [15.3 kB]
-Get:17 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcre3-dev amd64 2:8.39-9 [537 kB]
-Get:18 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev amd64 2.56.4-0ubuntu0.18.04.4 [1,385 kB]
-Get:19 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgraphite2-dev amd64 1.3.11-2 [14.5 kB]
-Get:20 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libharfbuzz-dev amd64 1.7.2-1ubuntu1 [302 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-le-hb-dev amd64 1.0.3+git161113-4 [29.5 kB]
-Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-dev amd64 60.2-3ubuntu3 [8,893 kB]
-Get:23 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-regex1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [312 kB]
-Get:24 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libboost-iostreams1.65.1 amd64 1.65.1+dfsg-0ubuntu5 [29.2 kB]
-Get:25 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-iostreams1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [37.0 kB]
-Get:26 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-iostreams-dev amd64 1.65.1.0ubuntu1 [2,916 B]
-Get:27 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgc1c2 amd64 1:7.4.2-8ubuntu1 [81.8 kB]
-Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgc-dev amd64 1:7.4.2-8ubuntu1 [224 kB]
-Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0-runtime amd64 1:6.0-1ubuntu2 [200 kB]
-Get:30 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 llvm-runtime amd64 1:6.0-41~exp5~ubuntu1 [2,856 B]
-Get:31 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0 amd64 1:6.0-1ubuntu2 [4,838 kB]
-Get:32 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 llvm amd64 1:6.0-41~exp5~ubuntu1 [3,468 B]
-Get:33 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0-dev amd64 1:6.0-1ubuntu2 [23.0 MB]
-Get:34 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ipaddr all 2.2.0-1 [15.5 kB]
-Get:35 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ply all 3.11-1 [46.6 kB]
-Get:36 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-scapy all 2.3.3-3 [359 kB]
-Fetched 41.7 MB in 37s (1,124 kB/s)
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-lib2to3 all 3.6.9-1~18.04 [77.4 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-distutils all 3.6.9-1~18.04 [144 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 dh-python all 3.20180325ubuntu2 [89.2 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 gir1.2-harfbuzz-0.0 amd64 1.7.2-1ubuntu1 [18.6 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 icu-devtools amd64 60.2-3ubuntu3 [179 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-regex1.65.1 amd64 1.65.1+dfsg-0ubuntu5 [259 kB]
+Get:8 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph1.65.1 amd64 1.65.1+dfsg-0ubuntu5 [93.4 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [102 kB]
+Get:10 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-graph-dev amd64 1.65.1.0ubuntu1 [3,024 B]
+Get:11 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-le-hb0 amd64 1.0.3+git161113-4 [14.3 kB]
+Get:12 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libiculx60 amd64 60.2-3ubuntu3 [18.9 kB]
+Get:13 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libharfbuzz-gobject0 amd64 1.7.2-1ubuntu1 [13.4 kB]
+Get:14 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev-bin amd64 2.56.4-0ubuntu0.18.04.4 [102 kB]
+Get:15 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcre16-3 amd64 2:8.39-9 [147 kB]
+Get:16 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcre32-3 amd64 2:8.39-9 [138 kB]
+Get:17 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcrecpp0v5 amd64 2:8.39-9 [15.3 kB]
+Get:18 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libpcre3-dev amd64 2:8.39-9 [537 kB]
+Get:19 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libglib2.0-dev amd64 2.56.4-0ubuntu0.18.04.4 [1,385 kB]
+Get:20 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgraphite2-dev amd64 1.3.11-2 [14.5 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libharfbuzz-dev amd64 1.7.2-1ubuntu1 [302 kB]
+Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-le-hb-dev amd64 1.0.3+git161113-4 [29.5 kB]
+Get:23 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libicu-dev amd64 60.2-3ubuntu3 [8,893 kB]
+Get:24 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-regex1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [312 kB]
+Get:25 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libboost-iostreams1.65.1 amd64 1.65.1+dfsg-0ubuntu5 [29.2 kB]
+Get:26 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-iostreams1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [37.0 kB]
+Get:27 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libboost-iostreams-dev amd64 1.65.1.0ubuntu1 [2,916 B]
+Get:28 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgc1c2 amd64 1:7.4.2-8ubuntu1 [81.8 kB]
+Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libgc-dev amd64 1:7.4.2-8ubuntu1 [224 kB]
+Get:30 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython3.6-dev amd64 3.6.9-1~18.04 [44.8 MB]
+Get:31 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython3-dev amd64 3.6.7-1~18.04 [7,328 B]
+Get:32 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0-runtime amd64 1:6.0-1ubuntu2 [200 kB]
+Get:33 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 llvm-runtime amd64 1:6.0-41~exp5~ubuntu1 [2,856 B]
+Get:34 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0 amd64 1:6.0-1ubuntu2 [4,838 kB]
+Get:35 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 llvm amd64 1:6.0-41~exp5~ubuntu1 [3,468 B]
+Get:36 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 llvm-6.0-dev amd64 1:6.0-1ubuntu2 [23.0 MB]
+Get:37 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ipaddr all 2.2.0-1 [15.5 kB]
+Get:38 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-ply all 3.11-1 [46.6 kB]
+Get:39 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python-scapy all 2.3.3-3 [359 kB]
+Get:40 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3.6-dev amd64 3.6.9-1~18.04 [508 kB]
+Get:41 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python3-dev amd64 3.6.7-1~18.04 [1,288 B]
+Get:42 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 python3-pip all 9.0.1-2.3~ubuntu1.18.04.1 [114 kB]
+Get:43 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python3-setuptools all 39.0.1-2 [248 kB]
+Get:44 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 python3-wheel all 0.30.0-0.2 [36.5 kB]
+Fetched 87.5 MB in 42s (2,072 kB/s)
 Selecting previously unselected package binfmt-support.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 139792 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 139857 files and directories currently installed.)
 Preparing to unpack .../00-binfmt-support_2.1.8-2_amd64.deb ...
 Unpacking binfmt-support (2.1.8-2) ...
+Selecting previously unselected package python3-lib2to3.
+Preparing to unpack .../01-python3-lib2to3_3.6.9-1~18.04_all.deb ...
+Unpacking python3-lib2to3 (3.6.9-1~18.04) ...
+Selecting previously unselected package python3-distutils.
+Preparing to unpack .../02-python3-distutils_3.6.9-1~18.04_all.deb ...
+Unpacking python3-distutils (3.6.9-1~18.04) ...
+Selecting previously unselected package dh-python.
+Preparing to unpack .../03-dh-python_3.20180325ubuntu2_all.deb ...
+Unpacking dh-python (3.20180325ubuntu2) ...
 Selecting previously unselected package gir1.2-harfbuzz-0.0:amd64.
-Preparing to unpack .../01-gir1.2-harfbuzz-0.0_1.7.2-1ubuntu1_amd64.deb ...
+Preparing to unpack .../04-gir1.2-harfbuzz-0.0_1.7.2-1ubuntu1_amd64.deb ...
 Unpacking gir1.2-harfbuzz-0.0:amd64 (1.7.2-1ubuntu1) ...
 Selecting previously unselected package icu-devtools.
-Preparing to unpack .../02-icu-devtools_60.2-3ubuntu3_amd64.deb ...
+Preparing to unpack .../05-icu-devtools_60.2-3ubuntu3_amd64.deb ...
 Unpacking icu-devtools (60.2-3ubuntu3) ...
 Selecting previously unselected package libboost-regex1.65.1:amd64.
-Preparing to unpack .../03-libboost-regex1.65.1_1.65.1+dfsg-0ubuntu5_amd64.deb ...
+Preparing to unpack .../06-libboost-regex1.65.1_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost-regex1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-graph1.65.1:amd64.
-Preparing to unpack .../04-libboost-graph1.65.1_1.65.1+dfsg-0ubuntu5_amd64.deb ...
+Preparing to unpack .../07-libboost-graph1.65.1_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost-graph1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-graph1.65-dev:amd64.
-Preparing to unpack .../05-libboost-graph1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
+Preparing to unpack .../08-libboost-graph1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost-graph1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-graph-dev:amd64.
-Preparing to unpack .../06-libboost-graph-dev_1.65.1.0ubuntu1_amd64.deb ...
+Preparing to unpack .../09-libboost-graph-dev_1.65.1.0ubuntu1_amd64.deb ...
 Unpacking libboost-graph-dev:amd64 (1.65.1.0ubuntu1) ...
 Selecting previously unselected package libicu-le-hb0:amd64.
-Preparing to unpack .../07-libicu-le-hb0_1.0.3+git161113-4_amd64.deb ...
+Preparing to unpack .../10-libicu-le-hb0_1.0.3+git161113-4_amd64.deb ...
 Unpacking libicu-le-hb0:amd64 (1.0.3+git161113-4) ...
 Selecting previously unselected package libiculx60:amd64.
-Preparing to unpack .../08-libiculx60_60.2-3ubuntu3_amd64.deb ...
+Preparing to unpack .../11-libiculx60_60.2-3ubuntu3_amd64.deb ...
 Unpacking libiculx60:amd64 (60.2-3ubuntu3) ...
 Selecting previously unselected package libharfbuzz-gobject0:amd64.
-Preparing to unpack .../09-libharfbuzz-gobject0_1.7.2-1ubuntu1_amd64.deb ...
+Preparing to unpack .../12-libharfbuzz-gobject0_1.7.2-1ubuntu1_amd64.deb ...
 Unpacking libharfbuzz-gobject0:amd64 (1.7.2-1ubuntu1) ...
-Selecting previously unselected package python3-lib2to3.
-Preparing to unpack .../10-python3-lib2to3_3.6.8-1~18.04_all.deb ...
-Unpacking python3-lib2to3 (3.6.8-1~18.04) ...
-Selecting previously unselected package python3-distutils.
-Preparing to unpack .../11-python3-distutils_3.6.8-1~18.04_all.deb ...
-Unpacking python3-distutils (3.6.8-1~18.04) ...
 Selecting previously unselected package libglib2.0-dev-bin.
-Preparing to unpack .../12-libglib2.0-dev-bin_2.56.4-0ubuntu0.18.04.4_amd64.deb ...
+Preparing to unpack .../13-libglib2.0-dev-bin_2.56.4-0ubuntu0.18.04.4_amd64.deb ...
 Unpacking libglib2.0-dev-bin (2.56.4-0ubuntu0.18.04.4) ...
 Selecting previously unselected package libpcre16-3:amd64.
-Preparing to unpack .../13-libpcre16-3_2%3a8.39-9_amd64.deb ...
+Preparing to unpack .../14-libpcre16-3_2%3a8.39-9_amd64.deb ...
 Unpacking libpcre16-3:amd64 (2:8.39-9) ...
 Selecting previously unselected package libpcre32-3:amd64.
-Preparing to unpack .../14-libpcre32-3_2%3a8.39-9_amd64.deb ...
+Preparing to unpack .../15-libpcre32-3_2%3a8.39-9_amd64.deb ...
 Unpacking libpcre32-3:amd64 (2:8.39-9) ...
 Selecting previously unselected package libpcrecpp0v5:amd64.
-Preparing to unpack .../15-libpcrecpp0v5_2%3a8.39-9_amd64.deb ...
+Preparing to unpack .../16-libpcrecpp0v5_2%3a8.39-9_amd64.deb ...
 Unpacking libpcrecpp0v5:amd64 (2:8.39-9) ...
 Selecting previously unselected package libpcre3-dev:amd64.
-Preparing to unpack .../16-libpcre3-dev_2%3a8.39-9_amd64.deb ...
+Preparing to unpack .../17-libpcre3-dev_2%3a8.39-9_amd64.deb ...
 Unpacking libpcre3-dev:amd64 (2:8.39-9) ...
 Selecting previously unselected package libglib2.0-dev:amd64.
-Preparing to unpack .../17-libglib2.0-dev_2.56.4-0ubuntu0.18.04.4_amd64.deb ...
+Preparing to unpack .../18-libglib2.0-dev_2.56.4-0ubuntu0.18.04.4_amd64.deb ...
 Unpacking libglib2.0-dev:amd64 (2.56.4-0ubuntu0.18.04.4) ...
 Selecting previously unselected package libgraphite2-dev:amd64.
-Preparing to unpack .../18-libgraphite2-dev_1.3.11-2_amd64.deb ...
+Preparing to unpack .../19-libgraphite2-dev_1.3.11-2_amd64.deb ...
 Unpacking libgraphite2-dev:amd64 (1.3.11-2) ...
 Selecting previously unselected package libharfbuzz-dev:amd64.
-Preparing to unpack .../19-libharfbuzz-dev_1.7.2-1ubuntu1_amd64.deb ...
+Preparing to unpack .../20-libharfbuzz-dev_1.7.2-1ubuntu1_amd64.deb ...
 Unpacking libharfbuzz-dev:amd64 (1.7.2-1ubuntu1) ...
 Selecting previously unselected package libicu-le-hb-dev:amd64.
-Preparing to unpack .../20-libicu-le-hb-dev_1.0.3+git161113-4_amd64.deb ...
+Preparing to unpack .../21-libicu-le-hb-dev_1.0.3+git161113-4_amd64.deb ...
 Unpacking libicu-le-hb-dev:amd64 (1.0.3+git161113-4) ...
 Selecting previously unselected package libicu-dev.
-Preparing to unpack .../21-libicu-dev_60.2-3ubuntu3_amd64.deb ...
+Preparing to unpack .../22-libicu-dev_60.2-3ubuntu3_amd64.deb ...
 Unpacking libicu-dev (60.2-3ubuntu3) ...
 Selecting previously unselected package libboost-regex1.65-dev:amd64.
-Preparing to unpack .../22-libboost-regex1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
+Preparing to unpack .../23-libboost-regex1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost-regex1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-iostreams1.65.1:amd64.
-Preparing to unpack .../23-libboost-iostreams1.65.1_1.65.1+dfsg-0ubuntu5_amd64.deb ...
+Preparing to unpack .../24-libboost-iostreams1.65.1_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost-iostreams1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-iostreams1.65-dev:amd64.
-Preparing to unpack .../24-libboost-iostreams1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
+Preparing to unpack .../25-libboost-iostreams1.65-dev_1.65.1+dfsg-0ubuntu5_amd64.deb ...
 Unpacking libboost-iostreams1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Selecting previously unselected package libboost-iostreams-dev:amd64.
-Preparing to unpack .../25-libboost-iostreams-dev_1.65.1.0ubuntu1_amd64.deb ...
+Preparing to unpack .../26-libboost-iostreams-dev_1.65.1.0ubuntu1_amd64.deb ...
 Unpacking libboost-iostreams-dev:amd64 (1.65.1.0ubuntu1) ...
 Selecting previously unselected package libgc1c2:amd64.
-Preparing to unpack .../26-libgc1c2_1%3a7.4.2-8ubuntu1_amd64.deb ...
+Preparing to unpack .../27-libgc1c2_1%3a7.4.2-8ubuntu1_amd64.deb ...
 Unpacking libgc1c2:amd64 (1:7.4.2-8ubuntu1) ...
 Selecting previously unselected package libgc-dev:amd64.
-Preparing to unpack .../27-libgc-dev_1%3a7.4.2-8ubuntu1_amd64.deb ...
+Preparing to unpack .../28-libgc-dev_1%3a7.4.2-8ubuntu1_amd64.deb ...
 Unpacking libgc-dev:amd64 (1:7.4.2-8ubuntu1) ...
+Selecting previously unselected package libpython3.6-dev:amd64.
+Preparing to unpack .../29-libpython3.6-dev_3.6.9-1~18.04_amd64.deb ...
+Unpacking libpython3.6-dev:amd64 (3.6.9-1~18.04) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../30-libpython3-dev_3.6.7-1~18.04_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.6.7-1~18.04) ...
 Selecting previously unselected package llvm-6.0-runtime.
-Preparing to unpack .../28-llvm-6.0-runtime_1%3a6.0-1ubuntu2_amd64.deb ...
+Preparing to unpack .../31-llvm-6.0-runtime_1%3a6.0-1ubuntu2_amd64.deb ...
 Unpacking llvm-6.0-runtime (1:6.0-1ubuntu2) ...
 Selecting previously unselected package llvm-runtime.
-Preparing to unpack .../29-llvm-runtime_1%3a6.0-41~exp5~ubuntu1_amd64.deb ...
+Preparing to unpack .../32-llvm-runtime_1%3a6.0-41~exp5~ubuntu1_amd64.deb ...
 Unpacking llvm-runtime (1:6.0-41~exp5~ubuntu1) ...
 Selecting previously unselected package llvm-6.0.
-Preparing to unpack .../30-llvm-6.0_1%3a6.0-1ubuntu2_amd64.deb ...
+Preparing to unpack .../33-llvm-6.0_1%3a6.0-1ubuntu2_amd64.deb ...
 Unpacking llvm-6.0 (1:6.0-1ubuntu2) ...
 Selecting previously unselected package llvm.
-Preparing to unpack .../31-llvm_1%3a6.0-41~exp5~ubuntu1_amd64.deb ...
+Preparing to unpack .../34-llvm_1%3a6.0-41~exp5~ubuntu1_amd64.deb ...
 Unpacking llvm (1:6.0-41~exp5~ubuntu1) ...
 Selecting previously unselected package llvm-6.0-dev.
-Preparing to unpack .../32-llvm-6.0-dev_1%3a6.0-1ubuntu2_amd64.deb ...
+Preparing to unpack .../35-llvm-6.0-dev_1%3a6.0-1ubuntu2_amd64.deb ...
 Unpacking llvm-6.0-dev (1:6.0-1ubuntu2) ...
 Selecting previously unselected package python-ipaddr.
-Preparing to unpack .../33-python-ipaddr_2.2.0-1_all.deb ...
+Preparing to unpack .../36-python-ipaddr_2.2.0-1_all.deb ...
 Unpacking python-ipaddr (2.2.0-1) ...
 Selecting previously unselected package python-ply.
-Preparing to unpack .../34-python-ply_3.11-1_all.deb ...
+Preparing to unpack .../37-python-ply_3.11-1_all.deb ...
 Unpacking python-ply (3.11-1) ...
 Selecting previously unselected package python-scapy.
-Preparing to unpack .../35-python-scapy_2.3.3-3_all.deb ...
+Preparing to unpack .../38-python-scapy_2.3.3-3_all.deb ...
 Unpacking python-scapy (2.3.3-3) ...
+Selecting previously unselected package python3.6-dev.
+Preparing to unpack .../39-python3.6-dev_3.6.9-1~18.04_amd64.deb ...
+Unpacking python3.6-dev (3.6.9-1~18.04) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../40-python3-dev_3.6.7-1~18.04_amd64.deb ...
+Unpacking python3-dev (3.6.7-1~18.04) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../41-python3-pip_9.0.1-2.3~ubuntu1.18.04.1_all.deb ...
+Unpacking python3-pip (9.0.1-2.3~ubuntu1.18.04.1) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../42-python3-setuptools_39.0.1-2_all.deb ...
+Unpacking python3-setuptools (39.0.1-2) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../43-python3-wheel_0.30.0-0.2_all.deb ...
+Unpacking python3-wheel (0.30.0-0.2) ...
 Setting up binfmt-support (2.1.8-2) ...
 Created symlink /etc/systemd/system/multi-user.target.wants/binfmt-support.service → /lib/systemd/system/binfmt-support.service.
 Setting up libboost-iostreams1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
@@ -10866,6 +10872,8 @@ Setting up python-ipaddr (2.2.0-1) ...
 Setting up python-ply (3.11-1) ...
 Setting up libicu-le-hb0:amd64 (1.0.3+git161113-4) ...
 Setting up libgc1c2:amd64 (1:7.4.2-8ubuntu1) ...
+Setting up python3-wheel (0.30.0-0.2) ...
+Setting up libpython3.6-dev:amd64 (3.6.9-1~18.04) ...
 Setting up llvm-6.0-runtime (1:6.0-1ubuntu2) ...
 Setting up llvm-runtime (1:6.0-41~exp5~ubuntu1) ...
 Setting up gir1.2-harfbuzz-0.0:amd64 (1.7.2-1ubuntu1) ...
@@ -10876,11 +10884,13 @@ Setting up libpcrecpp0v5:amd64 (2:8.39-9) ...
 Setting up libpcre32-3:amd64 (2:8.39-9) ...
 Setting up icu-devtools (60.2-3ubuntu3) ...
 Setting up libpcre16-3:amd64 (2:8.39-9) ...
-Setting up python3-lib2to3 (3.6.8-1~18.04) ...
+Setting up python3.6-dev (3.6.9-1~18.04) ...
+Setting up python3-lib2to3 (3.6.9-1~18.04) ...
 Setting up libgraphite2-dev:amd64 (1.3.11-2) ...
 Setting up libharfbuzz-gobject0:amd64 (1.7.2-1ubuntu1) ...
-Setting up python3-distutils (3.6.8-1~18.04) ...
+Setting up python3-distutils (3.6.9-1~18.04) ...
 Setting up libboost-regex1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
+Setting up libpython3-dev:amd64 (3.6.7-1~18.04) ...
 Setting up libgc-dev:amd64 (1:7.4.2-8ubuntu1) ...
 Setting up libpcre3-dev:amd64 (2:8.39-9) ...
 Setting up libglib2.0-dev-bin (2.56.4-0ubuntu0.18.04.4) ...
@@ -10888,10 +10898,14 @@ Setting up libboost-graph1.65.1:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libglib2.0-dev:amd64 (2.56.4-0ubuntu0.18.04.4) ...
 Setting up llvm (1:6.0-41~exp5~ubuntu1) ...
 Setting up llvm-6.0-dev (1:6.0-1ubuntu2) ...
+Setting up python3-pip (9.0.1-2.3~ubuntu1.18.04.1) ...
+Setting up python3-setuptools (39.0.1-2) ...
+Setting up dh-python (3.20180325ubuntu2) ...
 Setting up libboost-graph1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-graph-dev:amd64 (1.65.1.0ubuntu1) ...
+Setting up python3-dev (3.6.7-1~18.04) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
+Processing triggers for systemd (237-3ubuntu10.33) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Processing triggers for ureadahead (0.100.0-21) ...
 Processing triggers for libglib2.0-0:amd64 (2.56.4-0ubuntu0.18.04.4) ...
@@ -10901,6 +10915,15 @@ Setting up libicu-dev (60.2-3ubuntu3) ...
 Setting up libboost-regex1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-iostreams1.65-dev:amd64 (1.65.1+dfsg-0ubuntu5) ...
 Setting up libboost-iostreams-dev:amd64 (1.65.1.0ubuntu1) ...
+Collecting scapy
+  Downloading https://files.pythonhosted.org/packages/52/e7/464079606a9cf97ad04936c52a5324d14dae36215f9319bf3faa46a7907d/scapy-2.4.3.tar.gz (905kB)
+Building wheels for collected packages: scapy
+  Running setup.py bdist_wheel for scapy: started
+  Running setup.py bdist_wheel for scapy: finished with status 'done'
+  Stored in directory: /home/andy/.cache/pip/wheels/95/bf/51/905b3e84ec4ca910ce4ae92173c7334623105a265bdd1d9438
+Successfully built scapy
+Installing collected packages: scapy
+Successfully installed scapy-2.4.3
 Cloning into 'p4c'...
 Submodule 'control-plane/p4runtime' (https://github.com/p4lang/p4runtime.git) registered for path 'control-plane/p4runtime'
 Submodule 'test/frameworks/gtest' (https://github.com/google/googletest.git) registered for path 'test/frameworks/gtest'
@@ -10908,13 +10931,13 @@ Cloning into '/home/andy/p4c/control-plane/p4runtime'...
 Cloning into '/home/andy/p4c/test/frameworks/gtest'...
 Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit ad2d2586d8ed1a182f4a8dc68341ef97b1ede72a
-Author: Han Wang <hanw@users.noreply.github.com>
-Date:   Sat Nov 2 02:42:37 2019 +0800
+commit 7cf234df1992c61645f57519260f31a491d425c2
+Author: Chris Dodd <cdodd@barefootnetworks.com>
+Date:   Thu Dec 12 16:41:18 2019 -0800
 
-    Revert "remove test_args from p4c_add_test_with_args, always pass args throug… (#2068)" (#2077)
+    Fix simplifyDefUse to deal with side effect in if condition (#2114)
     
-    This reverts commit 53fd23c7251f64fef51ada7076bc81d0a139c9a2.
+    - fixes issue seen in #2026
 -- The C compiler identification is GNU 7.4.0
 -- The CXX compiler identification is GNU 7.4.0
 -- Check for working C compiler: /usr/bin/cc
@@ -10929,7 +10952,7 @@ Date:   Sat Nov 2 02:42:37 2019 +0800
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Found PythonInterp: /usr/bin/python (found version "2.7.15") 
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.6.9", minimum required is "3") 
 -- Found FLEX: /usr/bin/flex (found version "2.6.4") 
 -- Found BISON: /usr/bin/bison (found suitable version "3.0.4", minimum required is "3.0.2") 
 -- Looking for pthread.h
@@ -10947,6 +10970,8 @@ Date:   Sat Nov 2 02:42:37 2019 +0800
 --   iostreams
 --   regex
 -- Found LibGc: /usr/lib/x86_64-linux-gnu/libgccpp.so (found suitable version "7.4.2", minimum required is "7.2.0") 
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
 -- Found LibGmp: /usr/lib/x86_64-linux-gnu/libgmpxx.so  
 -- Looking for clock_gettime in rt
 -- Looking for clock_gettime in rt - found
@@ -10962,15 +10987,16 @@ Date:   Sat Nov 2 02:42:37 2019 +0800
 -- Looking for pipe2 - found
 -- Looking for GC_print_stats
 -- Looking for GC_print_stats - found
--- Found PY_difflib: /usr/lib/python2.7/difflib.pyc  
--- Found PY_shutil: /usr/lib/python2.7/shutil.pyc  
--- Found PY_tempfile: /usr/lib/python2.7/tempfile.pyc  
--- Found PY_subprocess: /usr/lib/python2.7/subprocess.pyc  
--- Found PY_re: /usr/lib/python2.7/re.pyc  
+-- Found PY_difflib: /usr/lib/python3.6/difflib.py  
+-- Found PY_shutil: /usr/lib/python3.6/shutil.py  
+-- Found PY_tempfile: /usr/lib/python3.6/tempfile.py  
+-- Found PY_subprocess: /usr/lib/python3.6/subprocess.py  
+-- Found PY_re: /usr/lib/python3.6/re.py  
 -- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) 
--- Found PY_scapy: /usr/lib/python2.7/dist-packages/scapy  
--- Found PY_ipaddr: /usr/lib/python2.7/dist-packages/ipaddr.pyc  
+-- Found PY_scapy: /home/andy/.local/lib/python3.6/site-packages/scapy  
+-- Could NOT find PY_ipaddr (missing: PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/simple_switch  
+-- Could NOT find PY_ipaddr (missing: PY_IPADDR) 
 -- Found BMv2 programs: /usr/local/bin/psa_switch  
 -- Performing Test _HAVE_OPTION_Wall_
 -- Performing Test _HAVE_OPTION_Wall_ - Success
@@ -10982,18 +11008,18 @@ Date:   Sat Nov 2 02:42:37 2019 +0800
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 383 tests to 'bmv2' (15 xfails)
+-- Added 385 tests to 'bmv2' (15 xfails)
 -- Added 14 tests to 'bmv2' (2 xfails)
 -- Check LLVM version with 'llvm-config --version'
 -- Found LLVM 6.0.0
 -- Added 16 tests to 'ebpf-bcc' (0 xfails)
 -- Added 16 tests to 'ebpf' (0 xfails)
 -- Added 6 tests to 'p4' (0 xfails)
--- Added 559 tests to 'p4' (2 xfails)
+-- Added 568 tests to 'p4' (2 xfails)
 -- Added 6 tests to 'err' (0 xfails)
--- Added 173 tests to 'err' (0 xfails)
+-- Added 176 tests to 'err' (0 xfails)
 -- Added 208 tests to 'p14_to_16' (0 xfails)
--- CTest parallel: -j 4
+-- CTest parallel: -j 1
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/andy/p4c/build
@@ -11159,16 +11185,17 @@ Install the project...
 -- Installing: /usr/local/bin/p4test
 -- Installing: /usr/local/bin/p4c-graphs
 end install p4c:
-Wed Nov  6 11:13:43 PST 2019
+Sat Dec 14 14:29:01 PST 2019
 ------------------------------------------------------------
 Installing Mininet - not necessary to run P4 programs, but useful if
 you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
-Wed Nov  6 11:13:43 PST 2019
+Sat Dec 14 14:29:03 PST 2019
 Cloning into 'mininet'...
 Detected Linux distribution: Ubuntu 18.04 bionic amd64
-python is version 2
+sys.version_info(major=2, minor=7, micro=15, releaselevel='final', serial=0)
+Detected Python (python) version 2
 Installing Mininet dependencies
 Reading package lists...
 Building dependency tree...
@@ -11208,7 +11235,7 @@ The following NEW packages will be installed:
   python-pexpect python-ptyprocess python-pyflakes python-singledispatch
   python-tk python-wrapt python3-pycodestyle python3-pyflakes socat ssh
   ssh-import-id tk8.6-blt2.5 xterm
-0 upgraded, 45 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 45 newly installed, 0 to remove and 2 not upgraded.
 Need to get 5,930 kB of archives.
 After this operation, 32.3 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openssh-sftp-server amd64 1:7.6p1-4ubuntu0.3 [45.6 kB]
@@ -11257,9 +11284,9 @@ Get:43 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 cgroup-bin all 
 Get:44 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 socat amd64 1.7.3.2-2ubuntu2 [342 kB]
 Get:45 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 ssh-import-id all 5.7-0ubuntu1.1 [10.9 kB]
 Preconfiguring packages ...
-Fetched 5,930 kB in 28s (214 kB/s)
+Fetched 5,930 kB in 5s (1,210 kB/s)
 Selecting previously unselected package openssh-sftp-server.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 142826 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 143416 files and directories currently installed.)
 Preparing to unpack .../00-openssh-sftp-server_1%3a7.6p1-4ubuntu0.3_amd64.deb ...
 Unpacking openssh-sftp-server (1:7.6p1-4ubuntu0.3) ...
 Selecting previously unselected package openssh-server.
@@ -11437,11 +11464,11 @@ Setting up openssh-server (1:7.6p1-4ubuntu0.3) ...
 
 Creating config file /etc/ssh/sshd_config with new version
 Creating SSH2 RSA key; this may take some time ...
-2048 SHA256:+cUvd03twlh3dYDHL1dN6Fr6iKC1opmpX8/MAudpT+Q root@andyvm (RSA)
+2048 SHA256:Sqhn4hCz4EQvJ8ktKTObgN1BoxxyhFPzOmmh1+aESno root@andyvm (RSA)
 Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:1LOLUPK14LiQxLkWbbyxX0XSDm39BHEfvLYnkoo4LGI root@andyvm (ECDSA)
+256 SHA256:deC14RBcviPhJQFNjb38CAPRMJM9gzywoGY3VC02DCs root@andyvm (ECDSA)
 Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:FBGyb6ov/Ur8hzYzluJ0PtTTCJgoKgjp5UXW8khfJUE root@andyvm (ED25519)
+256 SHA256:AzjuGt2LnGatX0DPuu24IqnsYVnomNxifxslJrd/zIA root@andyvm (ED25519)
 Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
 Setting up cgroup-bin (0.41-8ubuntu2) ...
@@ -11455,7 +11482,7 @@ Processing triggers for ureadahead (0.100.0-21) ...
 Processing triggers for desktop-file-utils (0.23-1ubuntu3.18.04.2) ...
 Processing triggers for install-info (6.5.0.dfsg.1-2) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
+Processing triggers for systemd (237-3ubuntu10.33) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Processing triggers for gnome-menus (3.13.3-11ubuntu1.1) ...
 Processing triggers for hicolor-icon-theme (0.17-2) ...
@@ -11464,7 +11491,7 @@ Building dependency tree...
 Reading state information...
 iproute2 is already the newest version (4.15.0-2ubuntu1).
 iproute2 set to manually installed.
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
 Installing Mininet core
 ~/mininet ~
 cc -Wall -Wextra  -DVERSION=\"`PYTHONPATH=. python -B bin/mn --version`\" mnexec.c -o mnexec
@@ -11707,29 +11734,29 @@ The following NEW packages will be installed:
   libsnappy1v5 libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark11
   libwiretap8 libwscodecs2 libwsutil9 libxcb-xinerama0 qt5-gtk-platformtheme
   qttranslations5-l10n tshark wireshark wireshark-common wireshark-qt
-0 upgraded, 33 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 33 newly installed, 0 to remove and 2 not upgraded.
 Need to get 30.4 MB of archives.
 After this operation, 149 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libdouble-conversion1 amd64 2.0.1-4ubuntu1 [33.0 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5core5a amd64 5.9.5+dfsg-0ubuntu2.3 [2,036 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5dbus5 amd64 5.9.5+dfsg-0ubuntu2.3 [195 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5network5 amd64 5.9.5+dfsg-0ubuntu2.3 [634 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5core5a amd64 5.9.5+dfsg-0ubuntu2.4 [2,036 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5dbus5 amd64 5.9.5+dfsg-0ubuntu2.4 [196 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5network5 amd64 5.9.5+dfsg-0ubuntu2.4 [634 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libxcb-xinerama0 amd64 1.13-2~ubuntu18.04 [5,264 B]
-Get:6 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5gui5 amd64 5.9.5+dfsg-0ubuntu2.3 [2,569 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5widgets5 amd64 5.9.5+dfsg-0ubuntu2.3 [2,204 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5gui5 amd64 5.9.5+dfsg-0ubuntu2.4 [2,569 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5widgets5 amd64 5.9.5+dfsg-0ubuntu2.4 [2,205 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libqt5svg5 amd64 5.9.5-0ubuntu1 [128 kB]
 Get:9 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 liblua5.2-0 amd64 5.2.4-1.1build1 [108 kB]
 Get:10 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libmaxminddb0 amd64 1.3.1-1 [25.6 kB]
 Get:11 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libnl-route-3-200 amd64 3.2.29-0ubuntu3 [146 kB]
 Get:12 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqt5multimedia5 amd64 5.9.5-0ubuntu1 [293 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5opengl5 amd64 5.9.5+dfsg-0ubuntu2.3 [132 kB]
+Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5opengl5 amd64 5.9.5+dfsg-0ubuntu2.4 [132 kB]
 Get:14 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqt5multimediawidgets5 amd64 5.9.5-0ubuntu1 [36.6 kB]
 Get:15 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqgsttools-p1 amd64 5.9.5-0ubuntu1 [72.4 kB]
 Get:16 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libqt5multimedia5-plugins amd64 5.9.5-0ubuntu1 [194 kB]
-Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5printsupport5 amd64 5.9.5+dfsg-0ubuntu2.3 [178 kB]
+Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libqt5printsupport5 amd64 5.9.5+dfsg-0ubuntu2.4 [178 kB]
 Get:18 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsmi2ldbl amd64 0.4.8+dfsg2-15 [100 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libspandsp2 amd64 0.0.6+dfsg-0.1 [273 kB]
-Get:20 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libssh-gcrypt-4 amd64 0.8.0~20170825.94fa1e38-1ubuntu0.2 [171 kB]
+Get:20 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libssh-gcrypt-4 amd64 0.8.0~20170825.94fa1e38-1ubuntu0.5 [172 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwireshark-data all 2.6.10-1~ubuntu18.04.0 [1,425 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libc-ares2 amd64 1.14.0-1 [37.1 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libsnappy1v5 amd64 1.1.7-1 [16.0 kB]
@@ -11737,36 +11764,36 @@ Get:24 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwsut
 Get:25 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwiretap8 amd64 2.6.10-1~ubuntu18.04.0 [177 kB]
 Get:26 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwscodecs2 amd64 2.6.10-1~ubuntu18.04.0 [17.8 kB]
 Get:27 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libwireshark11 amd64 2.6.10-1~ubuntu18.04.0 [13.6 MB]
-Get:28 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 qt5-gtk-platformtheme amd64 5.9.5+dfsg-0ubuntu2.3 [117 kB]
+Get:28 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 qt5-gtk-platformtheme amd64 5.9.5+dfsg-0ubuntu2.4 [117 kB]
 Get:29 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 qttranslations5-l10n all 5.9.5-0ubuntu1 [1,485 kB]
 Get:30 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 wireshark-common amd64 2.6.10-1~ubuntu18.04.0 [391 kB]
 Get:31 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 tshark amd64 2.6.10-1~ubuntu18.04.0 [134 kB]
 Get:32 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 wireshark-qt amd64 2.6.10-1~ubuntu18.04.0 [3,429 kB]
 Get:33 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 wireshark amd64 2.6.10-1~ubuntu18.04.0 [4,516 B]
 Preconfiguring packages ...
-Fetched 30.4 MB in 31s (993 kB/s)
+Fetched 30.4 MB in 19s (1,560 kB/s)
 Selecting previously unselected package libdouble-conversion1:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148047 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148637 files and directories currently installed.)
 Preparing to unpack .../00-libdouble-conversion1_2.0.1-4ubuntu1_amd64.deb ...
 Unpacking libdouble-conversion1:amd64 (2.0.1-4ubuntu1) ...
 Selecting previously unselected package libqt5core5a:amd64.
-Preparing to unpack .../01-libqt5core5a_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5core5a:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../01-libqt5core5a_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5core5a:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libqt5dbus5:amd64.
-Preparing to unpack .../02-libqt5dbus5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5dbus5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../02-libqt5dbus5_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5dbus5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libqt5network5:amd64.
-Preparing to unpack .../03-libqt5network5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5network5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../03-libqt5network5_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5network5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libxcb-xinerama0:amd64.
 Preparing to unpack .../04-libxcb-xinerama0_1.13-2~ubuntu18.04_amd64.deb ...
 Unpacking libxcb-xinerama0:amd64 (1.13-2~ubuntu18.04) ...
 Selecting previously unselected package libqt5gui5:amd64.
-Preparing to unpack .../05-libqt5gui5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5gui5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../05-libqt5gui5_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5gui5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libqt5widgets5:amd64.
-Preparing to unpack .../06-libqt5widgets5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5widgets5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../06-libqt5widgets5_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5widgets5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libqt5svg5:amd64.
 Preparing to unpack .../07-libqt5svg5_5.9.5-0ubuntu1_amd64.deb ...
 Unpacking libqt5svg5:amd64 (5.9.5-0ubuntu1) ...
@@ -11783,8 +11810,8 @@ Selecting previously unselected package libqt5multimedia5:amd64.
 Preparing to unpack .../11-libqt5multimedia5_5.9.5-0ubuntu1_amd64.deb ...
 Unpacking libqt5multimedia5:amd64 (5.9.5-0ubuntu1) ...
 Selecting previously unselected package libqt5opengl5:amd64.
-Preparing to unpack .../12-libqt5opengl5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5opengl5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../12-libqt5opengl5_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5opengl5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libqt5multimediawidgets5:amd64.
 Preparing to unpack .../13-libqt5multimediawidgets5_5.9.5-0ubuntu1_amd64.deb ...
 Unpacking libqt5multimediawidgets5:amd64 (5.9.5-0ubuntu1) ...
@@ -11795,8 +11822,8 @@ Selecting previously unselected package libqt5multimedia5-plugins:amd64.
 Preparing to unpack .../15-libqt5multimedia5-plugins_5.9.5-0ubuntu1_amd64.deb ...
 Unpacking libqt5multimedia5-plugins:amd64 (5.9.5-0ubuntu1) ...
 Selecting previously unselected package libqt5printsupport5:amd64.
-Preparing to unpack .../16-libqt5printsupport5_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking libqt5printsupport5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../16-libqt5printsupport5_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking libqt5printsupport5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package libsmi2ldbl:amd64.
 Preparing to unpack .../17-libsmi2ldbl_0.4.8+dfsg2-15_amd64.deb ...
 Unpacking libsmi2ldbl:amd64 (0.4.8+dfsg2-15) ...
@@ -11804,8 +11831,8 @@ Selecting previously unselected package libspandsp2:amd64.
 Preparing to unpack .../18-libspandsp2_0.0.6+dfsg-0.1_amd64.deb ...
 Unpacking libspandsp2:amd64 (0.0.6+dfsg-0.1) ...
 Selecting previously unselected package libssh-gcrypt-4:amd64.
-Preparing to unpack .../19-libssh-gcrypt-4_0.8.0~20170825.94fa1e38-1ubuntu0.2_amd64.deb ...
-Unpacking libssh-gcrypt-4:amd64 (0.8.0~20170825.94fa1e38-1ubuntu0.2) ...
+Preparing to unpack .../19-libssh-gcrypt-4_0.8.0~20170825.94fa1e38-1ubuntu0.5_amd64.deb ...
+Unpacking libssh-gcrypt-4:amd64 (0.8.0~20170825.94fa1e38-1ubuntu0.5) ...
 Selecting previously unselected package libwireshark-data.
 Preparing to unpack .../20-libwireshark-data_2.6.10-1~ubuntu18.04.0_all.deb ...
 Unpacking libwireshark-data (2.6.10-1~ubuntu18.04.0) ...
@@ -11828,8 +11855,8 @@ Selecting previously unselected package libwireshark11:amd64.
 Preparing to unpack .../26-libwireshark11_2.6.10-1~ubuntu18.04.0_amd64.deb ...
 Unpacking libwireshark11:amd64 (2.6.10-1~ubuntu18.04.0) ...
 Selecting previously unselected package qt5-gtk-platformtheme:amd64.
-Preparing to unpack .../27-qt5-gtk-platformtheme_5.9.5+dfsg-0ubuntu2.3_amd64.deb ...
-Unpacking qt5-gtk-platformtheme:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Preparing to unpack .../27-qt5-gtk-platformtheme_5.9.5+dfsg-0ubuntu2.4_amd64.deb ...
+Unpacking qt5-gtk-platformtheme:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Selecting previously unselected package qttranslations5-l10n.
 Preparing to unpack .../28-qttranslations5-l10n_5.9.5-0ubuntu1_all.deb ...
 Unpacking qttranslations5-l10n (5.9.5-0ubuntu1) ...
@@ -11847,7 +11874,7 @@ Preparing to unpack .../32-wireshark_2.6.10-1~ubuntu18.04.0_amd64.deb ...
 Unpacking wireshark (2.6.10-1~ubuntu18.04.0) ...
 Setting up libxcb-xinerama0:amd64 (1.13-2~ubuntu18.04) ...
 Setting up libdouble-conversion1:amd64 (2.0.1-4ubuntu1) ...
-Setting up libssh-gcrypt-4:amd64 (0.8.0~20170825.94fa1e38-1ubuntu0.2) ...
+Setting up libssh-gcrypt-4:amd64 (0.8.0~20170825.94fa1e38-1ubuntu0.5) ...
 Setting up libspandsp2:amd64 (0.0.6+dfsg-0.1) ...
 Setting up libnl-route-3-200:amd64 (3.2.29-0ubuntu3) ...
 Setting up libsmi2ldbl:amd64 (0.4.8+dfsg2-15) ...
@@ -11859,16 +11886,16 @@ Setting up libwscodecs2:amd64 (2.6.10-1~ubuntu18.04.0) ...
 Setting up liblua5.2-0:amd64 (5.2.4-1.1build1) ...
 Setting up libc-ares2:amd64 (1.14.0-1) ...
 Setting up libmaxminddb0:amd64 (1.3.1-1) ...
-Setting up libqt5core5a:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5dbus5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5network5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Setting up libqt5core5a:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
+Setting up libqt5dbus5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
+Setting up libqt5network5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Setting up libwiretap8:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Setting up libqt5gui5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up qt5-gtk-platformtheme:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5widgets5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Setting up libqt5gui5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
+Setting up qt5-gtk-platformtheme:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
+Setting up libqt5widgets5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Setting up libwireshark11:amd64 (2.6.10-1~ubuntu18.04.0) ...
-Setting up libqt5printsupport5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
-Setting up libqt5opengl5:amd64 (5.9.5+dfsg-0ubuntu2.3) ...
+Setting up libqt5printsupport5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
+Setting up libqt5opengl5:amd64 (5.9.5+dfsg-0ubuntu2.4) ...
 Setting up libqt5multimedia5:amd64 (5.9.5-0ubuntu1) ...
 Setting up libqt5svg5:amd64 (5.9.5-0ubuntu1) ...
 Setting up libqt5multimediawidgets5:amd64 (5.9.5-0ubuntu1) ...
@@ -11898,27 +11925,27 @@ Suggested packages:
   openvswitch-doc
 The following NEW packages will be installed:
   openvswitch-common openvswitch-switch
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 2,321 kB of archives.
+0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
+Need to get 2,322 kB of archives.
 After this operation, 10.3 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openvswitch-common amd64 2.9.2-0ubuntu0.18.04.3 [814 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openvswitch-switch amd64 2.9.2-0ubuntu0.18.04.3 [1,506 kB]
-Fetched 2,321 kB in 2s (1,031 kB/s)
+Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openvswitch-common amd64 2.9.5-0ubuntu0.18.04.1 [815 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 openvswitch-switch amd64 2.9.5-0ubuntu0.18.04.1 [1,507 kB]
+Fetched 2,322 kB in 2s (1,132 kB/s)
 Selecting previously unselected package openvswitch-common.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148972 files and directories currently installed.)
-Preparing to unpack .../openvswitch-common_2.9.2-0ubuntu0.18.04.3_amd64.deb ...
-Unpacking openvswitch-common (2.9.2-0ubuntu0.18.04.3) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149562 files and directories currently installed.)
+Preparing to unpack .../openvswitch-common_2.9.5-0ubuntu0.18.04.1_amd64.deb ...
+Unpacking openvswitch-common (2.9.5-0ubuntu0.18.04.1) ...
 Selecting previously unselected package openvswitch-switch.
-Preparing to unpack .../openvswitch-switch_2.9.2-0ubuntu0.18.04.3_amd64.deb ...
-Unpacking openvswitch-switch (2.9.2-0ubuntu0.18.04.3) ...
-Setting up openvswitch-common (2.9.2-0ubuntu0.18.04.3) ...
-Setting up openvswitch-switch (2.9.2-0ubuntu0.18.04.3) ...
+Preparing to unpack .../openvswitch-switch_2.9.5-0ubuntu0.18.04.1_amd64.deb ...
+Unpacking openvswitch-switch (2.9.5-0ubuntu0.18.04.1) ...
+Setting up openvswitch-common (2.9.5-0ubuntu0.18.04.1) ...
+Setting up openvswitch-switch (2.9.5-0ubuntu0.18.04.1) ...
 update-alternatives: using /usr/lib/openvswitch-switch/ovs-vswitchd to provide /usr/sbin/ovs-vswitchd (ovs-vswitchd) in auto mode
 Created symlink /etc/systemd/system/multi-user.target.wants/openvswitch-switch.service → /lib/systemd/system/openvswitch-switch.service.
 ovs-vswitchd.service is a disabled or a static unit, not starting it.
 ovsdb-server.service is a disabled or a static unit, not starting it.
 Processing triggers for ureadahead (0.100.0-21) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
+Processing triggers for systemd (237-3ubuntu10.33) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Reading package lists...
 Building dependency tree...
@@ -11932,33 +11959,33 @@ The following additional packages will be installed:
   openvswitch-pki
 The following NEW packages will be installed:
   openvswitch-pki openvswitch-testcontroller
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 554 kB of archives.
-After this operation, 1,712 kB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openvswitch-pki all 2.9.2-0ubuntu0.18.04.3 [13.3 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openvswitch-testcontroller amd64 2.9.2-0ubuntu0.18.04.3 [541 kB]
-Fetched 554 kB in 1s (458 kB/s)
+0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
+Need to get 555 kB of archives.
+After this operation, 1,716 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openvswitch-pki all 2.9.5-0ubuntu0.18.04.1 [13.3 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openvswitch-testcontroller amd64 2.9.5-0ubuntu0.18.04.1 [542 kB]
+Fetched 555 kB in 1s (707 kB/s)
 Selecting previously unselected package openvswitch-pki.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149056 files and directories currently installed.)
-Preparing to unpack .../openvswitch-pki_2.9.2-0ubuntu0.18.04.3_all.deb ...
-Unpacking openvswitch-pki (2.9.2-0ubuntu0.18.04.3) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149646 files and directories currently installed.)
+Preparing to unpack .../openvswitch-pki_2.9.5-0ubuntu0.18.04.1_all.deb ...
+Unpacking openvswitch-pki (2.9.5-0ubuntu0.18.04.1) ...
 Selecting previously unselected package openvswitch-testcontroller.
-Preparing to unpack .../openvswitch-testcontroller_2.9.2-0ubuntu0.18.04.3_amd64.deb ...
-Unpacking openvswitch-testcontroller (2.9.2-0ubuntu0.18.04.3) ...
-Setting up openvswitch-pki (2.9.2-0ubuntu0.18.04.3) ...
+Preparing to unpack .../openvswitch-testcontroller_2.9.5-0ubuntu0.18.04.1_amd64.deb ...
+Unpacking openvswitch-testcontroller (2.9.5-0ubuntu0.18.04.1) ...
+Setting up openvswitch-pki (2.9.5-0ubuntu0.18.04.1) ...
 Creating controllerca...
 Creating switchca...
-Setting up openvswitch-testcontroller (2.9.2-0ubuntu0.18.04.3) ...
+Setting up openvswitch-testcontroller (2.9.5-0ubuntu0.18.04.1) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Processing triggers for ureadahead (0.100.0-21) ...
-Processing triggers for systemd (237-3ubuntu10.31) ...
+Processing triggers for systemd (237-3ubuntu10.33) ...
 Stopped running controller
 end install mininet:
-Wed Nov  6 11:15:36 PST 2019
+Sat Dec 14 14:30:25 PST 2019
 ------------------------------------------------------------
 Installing a few miscellaneous packages
 start install miscellaneous packages:
-Wed Nov  6 11:15:36 PST 2019
+Sat Dec 14 14:30:25 PST 2019
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting grpcio
@@ -11971,11 +11998,11 @@ Successfully installed grpcio-1.25.0
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 Collecting protobuf
-  Downloading https://files.pythonhosted.org/packages/c5/49/ffa7ab9c52ec56b535cffec3bc844254c073888e6d4aeee464671ac97480/protobuf-3.10.0-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
+  Downloading https://files.pythonhosted.org/packages/a3/27/9a375cc85b90c93ab847370c31fe1302a763b6cd57d54daee20171d720ff/protobuf-3.11.1-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
 Requirement already satisfied: six>=1.9 in /usr/lib/python2.7/dist-packages (from protobuf)
 Requirement already satisfied: setuptools in /usr/lib/python2.7/dist-packages (from protobuf)
 Installing collected packages: protobuf
-Successfully installed protobuf-3.10.0
+Successfully installed protobuf-3.11.1
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -11985,16 +12012,16 @@ Suggested packages:
   python-psutil-doc
 The following NEW packages will be installed:
   libgflags-dev libgflags2.2 net-tools python-psutil
-0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 4 newly installed, 0 to remove and 2 not upgraded.
 Need to get 488 kB of archives.
 After this operation, 2,569 kB of additional disk space will be used.
-Do you want to continue? [Y/n] Get:1 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libgflags2.2 amd64 2.2.1-1 [72.4 kB]
+Get:1 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libgflags2.2 amd64 2.2.1-1 [72.4 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu bionic/universe amd64 libgflags-dev amd64 2.2.1-1 [86.1 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 net-tools amd64 1.60+git20161116.90da8a0-1ubuntu1 [194 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 python-psutil amd64 5.4.2-1 [135 kB]
-Fetched 488 kB in 3s (173 kB/s)
+Get:4 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python-psutil amd64 5.4.2-1ubuntu0.1 [136 kB]
+Fetched 488 kB in 1s (327 kB/s)
 Selecting previously unselected package libgflags2.2.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149069 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 149659 files and directories currently installed.)
 Preparing to unpack .../libgflags2.2_2.2.1-1_amd64.deb ...
 Unpacking libgflags2.2 (2.2.1-1) ...
 Selecting previously unselected package libgflags-dev.
@@ -12004,11 +12031,11 @@ Selecting previously unselected package net-tools.
 Preparing to unpack .../net-tools_1.60+git20161116.90da8a0-1ubuntu1_amd64.deb ...
 Unpacking net-tools (1.60+git20161116.90da8a0-1ubuntu1) ...
 Selecting previously unselected package python-psutil.
-Preparing to unpack .../python-psutil_5.4.2-1_amd64.deb ...
-Unpacking python-psutil (5.4.2-1) ...
+Preparing to unpack .../python-psutil_5.4.2-1ubuntu0.1_amd64.deb ...
+Unpacking python-psutil (5.4.2-1ubuntu0.1) ...
 Setting up libgflags2.2 (2.2.1-1) ...
 Setting up libgflags-dev (2.2.1-1) ...
-Setting up python-psutil (5.4.2-1) ...
+Setting up python-psutil (5.4.2-1ubuntu0.1) ...
 Setting up net-tools (1.60+git20161116.90da8a0-1ubuntu1) ...
 Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
@@ -12021,14 +12048,14 @@ Installing collected packages: crcmod
     Running setup.py install for crcmod: finished with status 'done'
 Successfully installed crcmod-1.7
 end install miscellaneous packages:
-Wed Nov  6 11:46:27 PST 2019
+Sat Dec 14 14:30:39 PST 2019
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Wed Nov  6 11:46:27 PST 2019
+Sat Dec 14 14:30:39 PST 2019
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G   14G   43G  25% /
+/dev/sda1        59G   15G   42G  26% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         60218M 14074M    43057M  25% /
+/dev/sda1         60218M 14408M    42723M  26% /
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS BELOW
 ----------------------------------------------------------------------
@@ -12047,3 +12074,4 @@ directory.
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS ABOVE
 ----------------------------------------------------------------------
+Killing child process
