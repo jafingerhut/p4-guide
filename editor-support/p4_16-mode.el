@@ -213,16 +213,12 @@
 (require 'xcscope)
 
 ;; Put everything together
-(defun p4_16-mode ()
+(define-derived-mode p4_16-mode prog-mode "P4_16"
   "Major mode for editing P4_16 programs"
-  (interactive)
-  (kill-all-local-variables)
-  (set-syntax-table p4_16-mode-syntax-table)
+  :syntax-table p4_16-mode-syntax-table
   (use-local-map p4_16-mode-map)
   (set (make-local-variable 'font-lock-defaults) '(p4_16-font-lock-keywords))
-  (set (make-local-variable 'indent-line-function) 'p4_16-indent-line)  
-  (setq major-mode 'p4_16-mode)
-  (setq mode-name "P4_16")
+  (set (make-local-variable 'indent-line-function) 'p4_16-indent-line)
   (setq imenu-generic-expression p4_16-imenu-generic-expression)
   ;; Setting this to nil causes indentation to use only space
   ;; characters, never tabs.
