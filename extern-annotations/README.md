@@ -179,7 +179,7 @@ case, and also ignoring any "v1." and "psa." prefixes.
 | yes |     |     |     | psa.psa_normal |
 | yes |     |     |     | psa.psa_recirculate |
 | yes |     |     |     | psa.psa_resubmit |
-|  no |  no |  no | yes (Note 1) | v1.random |
+|  no |  no |  no | yes, see (Note 1) | v1.random |
 |  no |  no | yes |     | v1.recirculate |
 |  no |  no | yes |     | v1.resubmit |
 | tbd |     |     |     | v1.truncate |
@@ -200,9 +200,9 @@ case, and also ignoring any "v1." and "psa." prefixes.
 |  no |  no |  no | yes |     | psa.Counter.count |
 |  no |  no | yes |     |     | psa.Digest.pack |
 |  no |  no |  no | yes |     | psa.DirectCounter.count |
-|  no |  no |  no | yes |     | psa.DirectMeter.execute (both signatures) |
+|  no |  no |  no | yes, see (Note 2) |     | psa.DirectMeter.execute (both signatures) |
 |  no |  no |  no | yes |     | v1.direct_counter.count |
-|  no |  no |  no | yes |     | v1.direct_meter.read |
+|  no |  no |  no | yes, see (Note 2) |     | v1.direct_meter.read |
 | yes |     |     |     |     | psa.Hash.get_hash (both signatures) |
 |  no |  no | yes |     |     | psa.InternetChecksum.add |
 |  no |  no | yes |     |     | psa.InternetChecksum.clear |
@@ -210,9 +210,9 @@ case, and also ignoring any "v1." and "psa." prefixes.
 |  no | yes | yes |     |     | psa.InternetChecksum.get_state |
 |  no |  no | yes |     |     | psa.InternetChecksum.set_state |
 |  no |  no | yes |     |     | psa.InternetChecksum.subtract |
-|  no |  no |  no | yes |     | psa.Meter.execute (both signatures) |
-|  no |  no |  no | yes |     | v1.meter.execute_meter |
-|  no |  no |  no |  no | yes (Note 1) | psa.Random.read |
+|  no |  no |  no | yes, see (Note 2) |     | psa.Meter.execute (both signatures) |
+|  no |  no |  no | yes, see (Note 2) |     | v1.meter.execute_meter |
+|  no |  no |  no |  no | yes, see (Note 1) | psa.Random.read |
 |  no | yes |  no | yes |     | v1.register.read |
 |  no | yes |  no | yes |     | psa.Register.read |
 |  no |  no |  no | yes |     | v1.register.write |
@@ -297,14 +297,15 @@ extern void log_msg<T>(string msg, in T data);
 ## v1model extern objects and their methods
 
 v1.counter.count `@localIndexedState` (index) - Note that due to the
-  use case for such a counter, one could also mark this with
-  annotations that indicate it is asynchronous, i.e. could happen at
-  some unspecified point in time later, after the call.  Thus separate
-  calls to this method, on the same or different instances, could be
-  reordered relative to each other by an optimizing compiler, and
-  nothing bad would happen as a result.  Such a property is called
-  `commute` in at least one software transactional memory system I am
-  aware of (in the Clojure programming language).
+  use case for such a counter, one could also mark this method with
+  annotations that indicate it is asynchronous, i.e. the state
+  modification to the counter could happen at some unspecified point
+  in time later, after the call returns.  Thus separate calls to this
+  method, on the same or different instances, could be reordered
+  relative to each other by an optimizing compiler, and nothing bad
+  would happen as a result.  Such a property is called `commute` in at
+  least one software transactional memory system I am aware of (in the
+  Clojure programming language).
 
 v1.direct_counter.count `@localIndexedState` (table_entry) - same
   comments as for v1.counter.count
@@ -313,15 +314,17 @@ v1.meter.execute_meter `@localIndexedState` (index) - the final value
   of the out parameter `result` is a function of in parameter `index`,
   and the extern instance's state stored at that index, and the
   current time.  Longer elapsed times between calls to the same meter
-  state make it return green rather than red or yellow.  The
-  annotation `@localIndexedState` is only precise if each index has
-  its own independent timer.  An implementation that is more cost
-  effective is for all meter states to share a common time counter in
-  the device, but with that imprecision understood, this annotation is
-  otherwise accurate.
+  state make it return green rather than red or yellow.
+
+(Note 2) The annotation `@localIndexedState` is only precise for
+  v1.meter.execute_meter if each index has its own independent timer
+  state.  An implementation that is more cost effective is for all
+  indexed states to share a common time counter in the device, but
+  with that imprecision understood, this annotation is otherwise
+  accurate.
 
 v1.direct_meter.read `@localIndexedState` (table_entry) - same notes
-  as v1.meter.execute_meter.
+  as v1.meter.execute_meter, including (Note 2).
 
 v1.register.read - final value of the out parameter `result` is a
   function of the in parameter `index`, and the extern object's
@@ -465,11 +468,12 @@ p4include/psa.p4, giving the names of all extern objects and all
 extern functions declared there, omitting everything else.
 
 Note that the first several extern functions that return type `bool`
-probably would have been written as normal P4_16 functions, but they
-did not yet exist in the P4_16 language specification at the time the
-PSA specification was developed.  In comments below I have added what
-the equivalent P4_16 function would be.  Those comments do not appear
-in the p4include/psa.p4 file.
+probably would have been written as normal P4_16 functions (as opposed
+to extern functions), but normal functions did not yet exist in the
+P4_16 language specification at the time the PSA specification was
+developed.  In comments below I have added what the equivalent P4_16
+function would be.  Those comments do not appear in the
+p4include/psa.p4 file.
 
 ```
 extern bool psa_clone_i2e(in psa_ingress_output_metadata_t istd);
@@ -600,11 +604,11 @@ psa.Counter.count - same effect restrictions as v1.counter.count
 psa.DirectCounter.count - same effect restrictions as
 v1.direct_counter.count
 
-psa.Meter.execute (both signatures) - same effect restrictions as
-v1.meter.execute_meter
+psa.Meter.execute (both signatures) - Same effect restrictions as
+v1.meter.execute_meter, including (Note 2).
 
 psa.DirectMeter.execute (both signatures) - same effect restrictions
-as v1.direct_meter.read
+as v1.direct_meter.read, including (Note 2).
 
 psa.Register.read - same effect restrictions as v1.register.read
 
@@ -612,8 +616,9 @@ psa.Register.write - same effect restrictions as v1.register.write
 
 psa.Random.read - see v1.random
 
-ActionProfile
-ActionSelector
+ActionProfile - see v1.action_profile
+
+ActionSelector - see v1.action_selector
 
 psa.Digest.pack `@packetState` - similar to v1.digest
 
