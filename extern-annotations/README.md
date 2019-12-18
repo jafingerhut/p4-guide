@@ -125,6 +125,12 @@ one of the `@localState`, `@packetState`, or `@localIndexedstate`
 annotations.  The latter annotation would further restrict what state
 the method/function is allowed to read.
 
+Aside: I find it interesting that despite the nearly arbitrary power
+that extern functions and methods are permitted in P4_16, all of the
+examples in the v1model and PSA architectures are at least limited by
+the `@localState` annotation described here, and most of them are
+significantly more restricted than that.
+
 
 # Summary of results
 
