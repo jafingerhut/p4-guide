@@ -72,30 +72,7 @@ instance, whereas pure functions/methods like `min` do not.  Is that
 important for compiler optimization passes to distinguish?
 
 
-# Big tables summarizing the results
-
-Here we will refer to all extern object methods in file v1model.p4 by
-the name `v1.<extern_name>.<method_name>`, and in the file psa.p4 by
-the name `psa.<extern_name>.<method_name>`.  Including the extern name
-helps distinguish methods like `v1.counter.count` and
-`v1.direct_counter.count` from each other.
-
-Similarly we will refer to all extern functions in v1model.p4 by the
-name `v1.<extern_function_name>` and in psa.p4 by
-`psa.<extern_function_name>`.
-
-The first table contains only extern functions.  The second contains
-only extern object methods.  They are separated in this way, because
-some of the comments are specific to each.  For example, for extern
-object methods, it makes sense to refer to the particular extern
-object instance that the method is invoked upon, but this does not
-apply for extern function calls.
-
-The table entries are sorted by name, with strings sorted ignoring
-case, and also ignoring any "v1." and "psa." prefixes.
-
-
-## Annotations discussed in this document
+# Annotations discussed in this document
 
 I will use some fairly short annotation names within this document for
 brevity.  I am not currently advocating these particular names for use
@@ -153,6 +130,34 @@ It makes sense to have an annotation with both `@noSideEffects` and
 one of the `@localState`, `@packetState`, or `@localIndexedstate`
 annotations.  The latter annotation would further restrict what state
 the method/function is allowed to read.
+
+
+# Summary of results
+
+The tables in this section summarize the annotations that I believe
+would be correct to add to them.  There are details of why I believe
+each of these annotations are correct in later sections after the
+tables.
+
+Here we will refer to all extern object methods in file v1model.p4 by
+the name `v1.<extern_name>.<method_name>`, and in the file psa.p4 by
+the name `psa.<extern_name>.<method_name>`.  Including the extern name
+helps distinguish methods like `v1.counter.count` and
+`v1.direct_counter.count` from each other.
+
+Similarly we will refer to all extern functions in v1model.p4 by the
+name `v1.<extern_function_name>` and in psa.p4 by
+`psa.<extern_function_name>`.
+
+The first table contains only extern functions.  The second contains
+only extern object methods.  They are separated in this way, because
+some of the comments are specific to each.  For example, for extern
+object methods, it makes sense to refer to the particular extern
+object instance that the method is invoked upon, but this does not
+apply for extern function calls.
+
+The table entries are sorted by name, with strings sorted ignoring
+case, and also ignoring any "v1." and "psa." prefixes.
 
 
 ## Extern functions
@@ -216,14 +221,12 @@ the method/function is allowed to read.
 
 Extern objects with no methods:
 
-| `@pure` | `@noSideEffects` | `@packetState` | `@localIndexedState` | `@localState` | extern method name |
-| ------- | ---------------- | -------------- | -------------------- | ------------- | ------------------ |
-|     |     |     |     |     | psa.ActionProfile |
-|     |     |     |     |     | psa.ActionSelector |
-|     |     |     |     |     | v1.action_profile |
-|     |     |     |     |     | v1.action_selector |
-|     |     |     |     |     | psa.BufferingQueueingEngine |
-|     |     |     |     |     | psa.PacketReplicationEngine |
++ psa.ActionProfile
++ psa.ActionSelector
++ v1.action_profile
++ v1.action_selector
++ psa.BufferingQueueingEngine
++ psa.PacketReplicationEngine
 
 
 # v1model architecture extern objects and functions
