@@ -196,13 +196,13 @@ case, and also ignoring any "v1." and "psa." prefixes.
 |  no |  no | yes |     |     | psa.Checksum.clear |
 |  no | yes | yes |     |     | psa.Checksum.get |
 |  no |  no | yes |     |     | psa.Checksum.update |
-|  no |  no |  no | yes |     | v1.counter.count |
-|  no |  no |  no | yes |     | psa.Counter.count |
+|  no |  no |  no | yes, see (Note 3) |     | v1.counter.count |
+|  no |  no |  no | yes, see (Note 3) |     | psa.Counter.count |
 |  no |  no | yes |     |     | psa.Digest.pack |
-|  no |  no |  no | yes |     | psa.DirectCounter.count |
-|  no |  no |  no | yes, see (Note 2) |     | psa.DirectMeter.execute (both signatures) |
-|  no |  no |  no | yes |     | v1.direct_counter.count |
-|  no |  no |  no | yes, see (Note 2) |     | v1.direct_meter.read |
+|  no |  no |  no | yes, see (Note 3) |     | psa.DirectCounter.count |
+|  no |  no |  no | yes, see (Note 2), (Note 3) |     | psa.DirectMeter.execute (both signatures) |
+|  no |  no |  no | yes, see (Note 3) |     | v1.direct_counter.count |
+|  no |  no |  no | yes, see (Note 2), (Note 3) |     | v1.direct_meter.read |
 | yes |     |     |     |     | psa.Hash.get_hash (both signatures) |
 |  no |  no | yes |     |     | psa.InternetChecksum.add |
 |  no |  no | yes |     |     | psa.InternetChecksum.clear |
@@ -210,8 +210,8 @@ case, and also ignoring any "v1." and "psa." prefixes.
 |  no | yes | yes |     |     | psa.InternetChecksum.get_state |
 |  no |  no | yes |     |     | psa.InternetChecksum.set_state |
 |  no |  no | yes |     |     | psa.InternetChecksum.subtract |
-|  no |  no |  no | yes, see (Note 2) |     | psa.Meter.execute (both signatures) |
-|  no |  no |  no | yes, see (Note 2) |     | v1.meter.execute_meter |
+|  no |  no |  no | yes, see (Note 2), (Note 3) |     | psa.Meter.execute (both signatures) |
+|  no |  no |  no | yes, see (Note 2), (Note 3) |     | v1.meter.execute_meter |
 |  no |  no |  no |  no | yes, see (Note 1) | psa.Random.read |
 |  no | yes |  no | yes |     | v1.register.read |
 |  no | yes |  no | yes |     | psa.Register.read |
@@ -305,26 +305,42 @@ v1.counter.count `@localIndexedState` (index) - Note that due to the
   relative to each other by an optimizing compiler, and nothing bad
   would happen as a result.  Such a property is called `commute` in at
   least one software transactional memory system I am aware of (in the
-  Clojure programming language).
+  Clojure programming language).  See (Note 3).
 
 v1.direct_counter.count `@localIndexedState` (table_entry) - same
-  comments as for v1.counter.count
+  comments as for v1.counter.count.
 
 v1.meter.execute_meter `@localIndexedState` (index) - the final value
   of the out parameter `result` is a function of in parameter `index`,
   and the extern instance's state stored at that index, and the
   current time.  Longer elapsed times between calls to the same meter
-  state make it return green rather than red or yellow.
+  state make it return green rather than red or yellow.  See (Note 2),
+  (Note 3).
 
 (Note 2) The annotation `@localIndexedState` is only precise for
-  v1.meter.execute_meter if each index has its own independent timer
-  state.  An implementation that is more cost effective is for all
-  indexed states to share a common time counter in the device, but
-  with that imprecision understood, this annotation is otherwise
-  accurate.
+v1.meter.execute_meter if each index has its own independent timer
+state.  An implementation that is more cost effective is for all
+indexed states to share a common time counter in the device, but with
+that imprecision understood, this annotation is otherwise accurate.
+
+(Note 3) All meter extern methods, and all counter count methods for
+counters that update a byte count, must also read per-packet state
+that is the length of the packet in bytes.  It seems that perhaps
+annotations that say what kinds of state accesses are allowed,
+combined with a logical "or", each adding new things that the extern
+method/function can also access, would make it easier to list multiple
+kinds of accesses via multiple annotations, versus an approach where
+multiple annotations are combined with a logical "and", each adding
+its own new restrictions to the others.
+
+If that kind of annotations were devised, then v1.meter.execute_meter
+might be annotated something like `@localIndexedStateReadWrite`
+`@packetStateRead` `@devicetimeRead`, and v1.counter.count for a
+counter that counts packet bytes might be
+`@localIndexedStateReadWrite` `@packetStateRead`.
 
 v1.direct_meter.read `@localIndexedState` (table_entry) - same notes
-  as v1.meter.execute_meter, including (Note 2).
+  as v1.meter.execute_meter.
 
 v1.register.read - final value of the out parameter `result` is a
   function of the in parameter `index`, and the extern object's
