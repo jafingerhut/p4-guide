@@ -665,6 +665,10 @@ those internals, except via the kinds of annotations discussed here,
 or special case code written into the P4 compiler's implementation
 regarding those extern functions.
 
+According to annotations described earlier, all extern functions that
+behaved the same as the examples below could be annotated `@pure`,
+since they neither read nor write any state that is not a parameter.
+
 ```
 void dec_v1 (inout bit<8> x) {
     x = x - 1;
