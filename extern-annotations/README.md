@@ -65,12 +65,6 @@ but to knowledge of how the externs are implemented in the version of
 behavioral-model specified in [the version
 section](#versions-of-code-and-specifications-cited).
 
-TBD: Add a note on the difference between `register.read` and other
-pure functions, which is that the behavior of `register.read` depends
-upon whatever was done earlier that modifies the state of the register
-instance, whereas pure functions/methods like `min` do not.  Is that
-important for compiler optimization passes to distinguish?
-
 
 # Annotations discussed in this document
 
