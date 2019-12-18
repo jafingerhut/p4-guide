@@ -129,7 +129,16 @@ Aside: I find it interesting that despite the nearly arbitrary power
 that extern functions and methods are permitted in P4_16, all of the
 examples in the v1model and PSA architectures are at least limited by
 the `@localState` annotation described here, and most of them are
-significantly more restricted than that.
+significantly more restricted than that.  None of them
+communicate/collude with each other, and none start additional threads
+of execution.
+
+Most of the interesting/more-varied behavior occurs completely outside
+of the time that parsers and controls are executed on a packet,
+e.g. just after ingress deparsing is complete, to decide whether a
+packet is resubmitted, cloned, multicast, unicast, dropped, actually
+creating or appending to a digest message, etc.  None of that needs to
+happen during ingress control execution on a packet.
 
 
 # Summary of results
