@@ -157,7 +157,7 @@ the method/function is allowed to read.
 
 ## Extern functions
 
-| `@pure` | `@noSideEffects` | `@packetState` | `@localState` | extern function name |
+| `@pure` | `@noSide` `Effects` | `@packet` `State` | `@local` `State` | extern function name |
 | ------- | ---------------- | -------------- | ------------- | -------------------- |
 |  no |  no |  no | yes | v1.assert |
 |  no |  no |  no | yes | psa.assert |
@@ -186,14 +186,14 @@ the method/function is allowed to read.
 
 ## Extern object methods
 
-| `@pure` | `@noSideEffects` | `@packetState` | `@localIndexedState` | `@localState` | extern method name |
+| `@pure` | `@noSide` `Effects` | `@packet` `State` | `@local` `Indexed` `State` | `@local` `State` | extern method name |
 | ------- | ---------------- | -------------- | -------------------- | ------------- | ------------------ |
 |  no |  no | yes |     |     | psa.Checksum.clear |
 |  no | yes | yes |     |     | psa.Checksum.get |
 |  no |  no | yes |     |     | psa.Checksum.update |
 |  no |  no |  no | yes |     | v1.counter.count |
 |  no |  no |  no | yes |     | psa.Counter.count |
-|     |     |     |     |     | psa.Digest.pack |
+|  no |  no | yes |     |     | psa.Digest.pack |
 |  no |  no |  no | yes |     | psa.DirectCounter.count |
 |  no |  no |  no | yes |     | psa.DirectMeter.execute (both signatures) |
 |  no |  no |  no | yes |     | v1.direct_counter.count |
@@ -293,7 +293,7 @@ extern void log_msg<T>(string msg, in T data);
 
 ## v1model extern objects and their methods
 
-v1.counter.count @localIndexedState(index) - Note that due to the
+v1.counter.count `@localIndexedState` (index) - Note that due to the
   use case for such a counter, one could also mark this with
   annotations that indicate it is asynchronous, i.e. could happen at
   some unspecified point in time later, after the call.  Thus separate
@@ -303,16 +303,21 @@ v1.counter.count @localIndexedState(index) - Note that due to the
   `commute` in at least one software transactional memory system I am
   aware of (in the Clojure programming language).
 
-v1.direct_counter.count @localIndexedState(table_entry) - same
+v1.direct_counter.count `@localIndexedState` (table_entry) - same
   comments as for v1.counter.count
 
-v1.meter.execute_meter @localIndexedState(index) - final value of
-  out parameter `result` is a function of in parameter `index`, and
-  the extern instance's state stored at that index, and the current
-  time -- longer elapsed times between calls to the same meter state
-  make it return green rather than red or yellow.
+v1.meter.execute_meter `@localIndexedState` (index) - the final value
+  of the out parameter `result` is a function of in parameter `index`,
+  and the extern instance's state stored at that index, and the
+  current time.  Longer elapsed times between calls to the same meter
+  state make it return green rather than red or yellow.  The
+  annotation `@localIndexedState` is only precise if each index has
+  its own independent timer.  An implementation that is more cost
+  effective is for all meter states to share a common time counter in
+  the device, but with that imprecision understood, this annotation is
+  otherwise accurate.
 
-v1.direct_meter.read @localIndexedState(table_entry) - same notes
+v1.direct_meter.read `@localIndexedState` (table_entry) - same notes
   as v1.meter.execute_meter.
 
 v1.register.read - final value of the out parameter `result` is a
@@ -321,7 +326,7 @@ v1.register.read - final value of the out parameter `result` is a
   considered both `@pure` and `@noSideEffects`, or only one of them,
   if there is any difference between the two.
 
-v1.register.write @localIndexedState(table_entry)
+v1.register.write `@localIndexedState` (table_entry)
 
 v1.action_profile has no methods, and has internal state that is
 presumably only read by the data plane when a packet does an apply()
@@ -371,8 +376,8 @@ function mark_to_drop(inout standard_metadata_t standard_metadata) {
 }
 ```
 
-v1.hash `@pure` - out parameter result's final value is a function only
-  of the in parameters, and does not read any other state.
+v1.hash `@pure` - The out parameter `result`'s final value is a
+  function only of the in parameters.
 
 
 v1.verify_checksum `@packetState` - If it took standard_metadata as an
@@ -388,16 +393,21 @@ v1.verify_checksum `@packetState` - If it took standard_metadata as an
   `@localState` not associated only with this one packet, e.g. a
   counter of the total number of packets for which a checksum error
   was detected, but for this document I am assuming this does not
-  happen.
+  happen.  Note: If v1.verify_checksum were modified so that it took
+  standard_metadata as an inout parameter, it could be restricted to
+  `@pure` instead.
 
 v1.verify_checksum_with_payload `@packetState` - the same as
   verify_checksum, except that it also reads the contents of the
   packet payload, which is not an explicit parameter to the function,
-  so it must be reading state global to the architecture, but specific
-  to this packet (i.e. the packet's unparsed body).
+  so it is reading other state besides its parameters, but specific to
+  this packet (i.e. the packet's unparsed body).  Note: If
+  v1.verify_checksum_with_payload were modified so that it took
+  standard_metadata as an inout parameter, it could be restricted the
+  same as v1.update_checksum_with_payload.
 
-v1.update_checksum `@pure` - inout parameter checksum's final value is
-  a function only of the in parameters.
+v1.update_checksum `@pure` - The inout parameter `checksum`'s final
+  value is a function only of the in parameters.
 
 v1.update_checksum_with_payload `@noSideEffects` `@packetState` - the
   same as v1.update_checksum, except that it also reads the contents
@@ -408,13 +418,15 @@ v1.resubmit `@packetState` - Modifies some internal state in the
   architecture, to remember whether to resubmit the packet after it
   finishes executing the ingress control.  It is restricted to modify
   only state associated with the current packet.  Note that later,
-  when the packet packet is actually later "enqueued" for starting
-  ingress processing again, if the target implementation used a
-  somewhat unusual drop policy like drop-from-front-of-queue instead
-  of drop-new-packet-being-enqueued, it could later cause a different
+  when the packet is actually later "enqueued" for starting ingress
+  processing again, if the target implementation used a somewhat
+  unusual drop policy like drop-from-front-of-queue instead of
+  drop-new-packet-being-enqueued, it could later cause a different
   resubmitted packet to be dropped.  However, that is after the call
   to resubmit is complete, and occurs at a time that is outside of the
-  execution of any P4 parser or control.
+  execution of any P4 parser or control, so really has nothing to do
+  with the effect restrictions the compiler must know when compiling
+  calls to v1.resubmit.
 
 v1.recirculate `@packetState` - same annotation as resubmit, with
   similar behavior.
