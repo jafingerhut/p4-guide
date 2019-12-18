@@ -157,7 +157,7 @@ the method/function is allowed to read.
 
 ## Extern functions
 
-| `@pure` | `@noSide` `Effects` | `@packet` `State` | `@local` `State` | extern function name |
+| `@pure` | `@noSideEffects` | `@packetState` | `@localState` | extern function name |
 | ------- | ---------------- | -------------- | ------------- | -------------------- |
 |  no |  no |  no | yes | v1.assert |
 |  no |  no |  no | yes | psa.assert |
@@ -186,7 +186,7 @@ the method/function is allowed to read.
 
 ## Extern object methods
 
-| `@pure` | `@noSide` `Effects` | `@packet` `State` | `@local` `Indexed` `State` | `@local` `State` | extern method name |
+| `@pure` | `@noSide` `Effects` | `@packet` `State` | `@localIndexed` `State` | `@local` `State` | extern method name |
 | ------- | ---------------- | -------------- | -------------------- | ------------- | ------------------ |
 |  no |  no | yes |     |     | psa.Checksum.clear |
 |  no | yes | yes |     |     | psa.Checksum.get |
