@@ -80,81 +80,150 @@ the name `psa.<extern_name>.<method_name>`.  Including the extern name
 helps distinguish methods like `v1.counter.count` and
 `v1.direct_counter.count` from each other.
 
-Similarly we will reer to all extern functions in v1model.p4 by the
-name `v1.<etern_function_name>` and in psa.p4 by
+Similarly we will refer to all extern functions in v1model.p4 by the
+name `v1.<extern_function_name>` and in psa.p4 by
 `psa.<extern_function_name>`.
 
-The first table contains only extern object methods.  The second
-contains only extern functions.  They are separated in this way,
-because some of the comments are specific to each.  For example, for
-extern object methods, it makes sense to refer to the particular
-extern object instance that the method is invoked upon, but this does
-not apply for extern functions.
+The first table contains only extern functions.  The second contains
+only extern object methods.  They are separated in this way, because
+some of the comments are specific to each.  For example, for extern
+object methods, it makes sense to refer to the particular extern
+object instance that the method is invoked upon, but this does not
+apply for extern function calls.
 
-## Extern object methods
+The table entries are sorted by name, with strings sorted ignoring
+case, and also ignoring any "v1." and "psa." prefixes.
 
-The entries are sorted in case insensitive string ordering, ignoring
-any "v1." and "psa." prefixes.
 
-| Extern method name | tbd1 | tbd2 |
-| ------------------ | ---- | ---- |
-| psa.ActionProfile
-| psa.ActionSelector
-| v1.action_profile
-| v1.action_selector
-| psa.BufferingQueueingEngine
-| psa.Checksum.clear
-| psa.Checksum.get
-| psa.Checksum.update
-| v1.counter.count
-| psa.Counter.count
-| psa.Digest.pack
-| psa.DirectCounter.count
-| psa.DirectMeter.execute (both signatures)
-| v1.direct_counter.count
-| v1.direct_meter.read
-| psa.Hash.get_hash (both signatures)
-| psa.InternetChecksum.add
-| psa.InternetChecksum.clear
-| psa.InternetChecksum.get
-| psa.InternetChecksum.get_state
-| psa.InternetChecksum.set_state
-| psa.InternetChecksum.subtract
-| psa.Meter.execute (both signatures)
-| v1.meter.execute_meter
-| psa.PacketReplicationEngine
-| psa.Random.read
-| v1.register.read
-| psa.Register.read
-| v1.register.write
-| psa.Register.write
+## Annotations discussed in this document
+
+I will use some fairly short annotation names within this document for
+brevity.  I am not currently advocating these particular names for use
+in the P4_16 language specification.
+
+Note that extern method/functions always have read access to the
+values of their `in` and `inout` parameters, and will always have the
+final values of any `out` or `inout` parameters copied back into the
+P4 program variables after they return.  All of them that have a
+non-void return type also return a value.  Nothing in the proposed
+annotations restricts that behavior in any way.
+
++ `@pure` - During its execution, the method/function will never read
+  any state, nor modify any state.  `@pure` is more restrictive than
+  `@noSideEffects`.  I do not know if this is a useful distinction
+  from `@noSideEffects` as described next, or not.  That is one of the
+  purposes of writing this document and having it reviewed.
+
++ `@noSideEffects` - During its execution, the method/function will
+  never modify any state, but it is allowed to read state.
+
+The following annotations were not part of the pull request that led
+to writing this document.  I thought of them while analyzing the
+existing extern methods and functions, and would ask P4 compiler
+authors whether they seem useful enough to add.
+
++ `@localState` - When applied to an extern method, the extern method
+  implementation might read and/or write internal state, but all such
+  accessed state is limited to state associated directly with the
+  extern object instance on which the method is called.  When applied
+  to an extern function, the accessible state is restricted to state
+  associated directly with this extern function.  Method and function
+  calls so annotated will never read, nor write, global state of the
+  architecture, nor the state of any other extern object instance or
+  function.
+
++ `@packetState` - Similar to `@localState`, except it is even more
+  restricted in the state that can be accessed.  The internal state of
+  the extern object instance or extern function is partitioned by
+  packets being processed in the device.  The extern method/function
+  call can only access the internal state associated with the packet
+  being processed by the code that made the call.  An annotation of
+  `@packetState` implies an annotation of `@localState`.
+
++ `@localIndexedState` - Similar to `@localState`, except it is even
+  more restricted in the state that can be accessed.  The internal
+  state of the extern object instance or extern function is
+  partitioned into an array of independently accessible sub-states,
+  each with its own index or associated table entry.  The extern
+  method/function call can only access the internal state associated
+  with that index or table entry, and no others.  An annotation of
+  `@localIndexedState` implies an annotation of `@localState`.
+
+It makes sense to have an annotation with both `@noSideEffects` and
+one of the `@localState`, `@packetState`, or `@localIndexedstate`
+annotations.  The latter annotation would further restrict what state
+the method/function is allowed to read.
 
 
 ## Extern functions
 
-v1.assert
-psa.assert
-v1.assume
-psa.assume
-v1.clone
-v1.clone3
-v1.digest
-v1.hash
-v1.log_msg
-v1.mark_to_drop
-psa.psa_clone_e2e
-psa.psa_clone_i2e
-psa.psa_normal
-psa.psa_recirculate
-psa.psa_resubmit
-v1.random
-v1.recirculate
-v1.resubmit
-v1.truncate
-v1.update_checksum
-v1.update_checksum_with_payload
-v1.verify_checksum
-v1.verify_checksum_with_payload
+| `@pure` | `@noSideEffects` | `@packetState` | `@localState` | extern function name |
+| ------- | ---------------- | -------------- | ------------- | -------------------- |
+|  no |  no |  no | yes | v1.assert |
+|  no |  no |  no | yes | psa.assert |
+|  no |  no |  no | yes | v1.assume |
+|  no |  no |  no | yes | psa.assume |
+|  no |  no | yes |     | v1.clone |
+|  no |  no | yes |     | v1.clone3 |
+|  no |  no | yes |     | v1.digest |
+| yes |     |     |     | v1.hash |
+|  no |  no |  no | yes | v1.log_msg |
+| yes |     |     |     | v1.mark_to_drop |
+| yes |     |     |     | psa.psa_clone_e2e |
+| yes |     |     |     | psa.psa_clone_i2e |
+| yes |     |     |     | psa.psa_normal |
+| yes |     |     |     | psa.psa_recirculate |
+| yes |     |     |     | psa.psa_resubmit |
+|  no |  no |  no | yes (Note 1) | v1.random |
+|  no |  no | yes |     | v1.recirculate |
+|  no |  no | yes |     | v1.resubmit |
+| tbd |     |     |     | v1.truncate |
+| yes |     |     |     | v1.update_checksum |
+|  no | yes | yes |     | v1.update_checksum_with_payload |
+|  no |  no | yes |     | v1.verify_checksum |
+|  no |  no | yes |     | v1.verify_checksum_with_payload |
+
+
+## Extern object methods
+
+| `@pure` | `@noSideEffects` | `@packetState` | `@localIndexedState` | `@localState` | extern method name |
+| ------- | ---------------- | -------------- | -------------------- | ------------- | ------------------ |
+|  no |  no | yes |     |     | psa.Checksum.clear |
+|  no | yes | yes |     |     | psa.Checksum.get |
+|  no |  no | yes |     |     | psa.Checksum.update |
+|  no |  no |  no | yes |     | v1.counter.count |
+|  no |  no |  no | yes |     | psa.Counter.count |
+|     |     |     |     |     | psa.Digest.pack |
+|  no |  no |  no | yes |     | psa.DirectCounter.count |
+|  no |  no |  no | yes |     | psa.DirectMeter.execute (both signatures) |
+|  no |  no |  no | yes |     | v1.direct_counter.count |
+|  no |  no |  no | yes |     | v1.direct_meter.read |
+| yes |     |     |     |     | psa.Hash.get_hash (both signatures) |
+|  no |  no | yes |     |     | psa.InternetChecksum.add |
+|  no |  no | yes |     |     | psa.InternetChecksum.clear |
+|  no | yes | yes |     |     | psa.InternetChecksum.get |
+|  no | yes | yes |     |     | psa.InternetChecksum.get_state |
+|  no |  no | yes |     |     | psa.InternetChecksum.set_state |
+|  no |  no | yes |     |     | psa.InternetChecksum.subtract |
+|  no |  no |  no | yes |     | psa.Meter.execute (both signatures) |
+|  no |  no |  no | yes |     | v1.meter.execute_meter |
+|  no |  no |  no |  no | yes (Note 1) | psa.Random.read |
+|  no | yes |  no | yes |     | v1.register.read |
+|  no | yes |  no | yes |     | psa.Register.read |
+|  no |  no |  no | yes |     | v1.register.write |
+|  no |  no |  no | yes |     | psa.Register.write |
+
+
+Extern objects with no methods:
+
+| `@pure` | `@noSideEffects` | `@packetState` | `@localIndexedState` | `@localState` | extern method name |
+| ------- | ---------------- | -------------- | -------------------- | ------------- | ------------------ |
+|     |     |     |     |     | psa.ActionProfile |
+|     |     |     |     |     | psa.ActionSelector |
+|     |     |     |     |     | v1.action_profile |
+|     |     |     |     |     | v1.action_selector |
+|     |     |     |     |     | psa.BufferingQueueingEngine |
+|     |     |     |     |     | psa.PacketReplicationEngine |
 
 
 # v1model architecture extern objects and functions
@@ -221,31 +290,10 @@ extern void log_msg(string msg);
 extern void log_msg<T>(string msg, in T data);
 ```
 
-+ `@modifyOnlyTargetInstance` - the extern method can have side
-  effects, but the side effect is limited to the state associated with
-  the extern object instance on which the method is called.  It will
-  never affect the state of the architecture globally, nor the state
-  of any other extern object instance.
-
-+ `@modifyOnlyTargetIndex` - Similar to `@modifyOnlyTargetInstance`,
-  except it is even more restricted in the state that can be modified.
-  The internal state of the extern object instance is partitioned into
-  an array of independently modifiable sub-states, each with its own
-  index or associated table entry.  The extern method call can only
-  modify the internal state associated with that index or table entry,
-  and no others.
-
-+ `@modifyOnlyStateAssociatedWithExternFunction` - Similar to
-  `@modifyOnlyTargetInstance`, except this one is intended for use
-  with extern functions, not extern methods.  extern functions have no
-  object instances, but some such extern functions do have internal
-  state that is dedicated solely for access by that one extern
-  function, and no others can read or write that state in any way.
-
 
 ## v1model extern objects and their methods
 
-v1.counter.count @modifyOnlyTargetIndex(index) - Note that due to the
+v1.counter.count @localIndexedState(index) - Note that due to the
   use case for such a counter, one could also mark this with
   annotations that indicate it is asynchronous, i.e. could happen at
   some unspecified point in time later, after the call.  Thus separate
@@ -255,25 +303,25 @@ v1.counter.count @modifyOnlyTargetIndex(index) - Note that due to the
   `commute` in at least one software transactional memory system I am
   aware of (in the Clojure programming language).
 
-v1.direct_counter.count @modifyOnlyTargetIndex(table_entry) - same
+v1.direct_counter.count @localIndexedState(table_entry) - same
   comments as for v1.counter.count
 
-v1.meter.execute_meter @modifyOnlyTargetIndex(index) - final value of
+v1.meter.execute_meter @localIndexedState(index) - final value of
   out parameter `result` is a function of in parameter `index`, and
   the extern instance's state stored at that index, and the current
   time -- longer elapsed times between calls to the same meter state
   make it return green rather than red or yellow.
 
-v1.direct_meter.read @modifyOnlyTargetIndex(table_entry) - same notes
+v1.direct_meter.read @localIndexedState(table_entry) - same notes
   as v1.meter.execute_meter.
 
 v1.register.read - final value of the out parameter `result` is a
   function of the in parameter `index`, and the extern object's
   internal state at that index.  I am not sure if that should be
-  considered both `@pure` and `@noSideEffect`, or only one of them, if
-  there is any difference between the two.
+  considered both `@pure` and `@noSideEffects`, or only one of them,
+  if there is any difference between the two.
 
-v1.register.write @modifyOnlyTargetIndex(table_entry)
+v1.register.write @localIndexedState(table_entry)
 
 v1.action_profile has no methods, and has internal state that is
 presumably only read by the data plane when a packet does an apply()
@@ -289,8 +337,28 @@ modified by the control plane.
 
 ## v1model extern functions
 
-v1.random `@modifyOnlyStateAssociatedWithExternFunction`
-v1.digest `@modifyOnlyStateAssociatedWithExternFunction`
+v1.random `@localState` - (Note 1) It is target-dependent whether the
+  implementation of random reads state that is "private" to other
+  externs, or globally in the architecture.  For example, an
+  implementer could design their `random` function to read the least
+  significant bits of several target-global event counters and a
+  current clock time, in order to seed more entropy into the results.
+  The `@localState` annotation is only correct if an implementation
+  does not do this, but limits its state access to, for example, a
+  collection of state dedicated for the purpose of the `random`
+  function.  It might even be possible to implement in a reasonable
+  manner such that the annotation `@packetState` was correct in a
+  particular target, e.g. if there was per-packet hidden state in the
+  architecture initialized before each packet began ingress
+  processing, and it was updated like a PRNG on each call by that
+  packet to the `random` function.
+
+v1.digest `@packetState` - Similar to v1.resubmit, including that it
+  is target-dependent precisely how/when it is implemented, and that
+  some effects can occur outside of the time that the packet that
+  caused the function call to occur.  I am using inside knowledge of
+  the behavioral-model implementation for the annotation described in
+  this document.
 
 v1.mark_to_drop `@pure` - inout parameter standard_metadata's final
   value is a function only of its original in value.  Calling
@@ -304,66 +372,75 @@ function mark_to_drop(inout standard_metadata_t standard_metadata) {
 ```
 
 v1.hash `@pure` - out parameter result's final value is a function only
-  of the in parameters.
+  of the in parameters, and does not read any other state.
 
 
-v1.verify_checksum `@modifyOnlyStateAssociatedWithExternFunction` - If it
-  took standard_metadata as an inout parameter, it could be annotated
-  with `@pure`, because then its out parameter would be a function
-  only of its in parameter values.  However, the way it currently
-  operates in v1model is that it records some hidden state inside of
-  the architecture, so that when the verifyChecksum control is
-  finished executing, the architecture can change the value of the
-  ingress control's standard_metadata.checksum_error input field to 1.
-  The state it modifies is also limited to state associated with the
-  current packet, except perhaps for some architecture-wide error
-  count of number of times a checksum error was detected, across all
-  packets, which simple_switch does not currently implement, as far as
-  I know, but a v1model implementation could do so.
+v1.verify_checksum `@packetState` - If it took standard_metadata as an
+  inout parameter, it could be annotated with `@pure`, because then
+  its out parameter would be a function only of its in parameter
+  values.  However, the way it currently operates in v1model is that
+  it records some hidden state inside of the architecture, so that
+  when the verifyChecksum control is finished executing, the
+  architecture can change the value of the ingress control's
+  standard_metadata.checksum_error input field to 1.  The state it
+  modifies is also limited to state associated with the current
+  packet.  An implementation would be allowed to also modify other
+  `@localState` not associated only with this one packet, e.g. a
+  counter of the total number of packets for which a checksum error
+  was detected, but for this document I am assuming this does not
+  happen.
 
-v1.verify_checksum_with_payload is the same as verify_checksum, except
-  that it also reads the contents of the packet payload, which is not
-  an explicit parameter to the function, so it must be reading state
-  global to the architecture, but specific to this packet (i.e. the
-  packet's unparsed body).
+v1.verify_checksum_with_payload `@packetState` - the same as
+  verify_checksum, except that it also reads the contents of the
+  packet payload, which is not an explicit parameter to the function,
+  so it must be reading state global to the architecture, but specific
+  to this packet (i.e. the packet's unparsed body).
 
 v1.update_checksum `@pure` - inout parameter checksum's final value is
   a function only of the in parameters.
 
-v1.update_checksum_with_payload - the same as v1.update_checksum,
-  except that it also reads the contents of the packet's unparsed
-  body, which is not an explicit parameter to the function, similar to
-  v1.verify_checksum_with_payload.
+v1.update_checksum_with_payload `@noSideEffects` `@packetState` - the
+  same as v1.update_checksum, except that it also reads the contents
+  of the packet's unparsed body, which is not an explicit parameter to
+  the function, similar to v1.verify_checksum_with_payload.
 
-v1.resubmit `@modifyOnlyStateAssociatedWithExternFunction` - Modifies
-  some internal state in the architecture, to remember whether to
-  resubmit the packet after it finishes executing the ingress control.
-  It is restricted to modify only state associated with the current
-  packet, with the possible exception that when the packet is actually
-  later "enqueued" for starting ingress processing again, if the
-  target implementation used a somewhat unusual drop policy like
-  drop-from-front-of-queue instead of drop-new-packet-being-enqueued,
-  it could later cause a different resubmitted packet to be dropped.
+v1.resubmit `@packetState` - Modifies some internal state in the
+  architecture, to remember whether to resubmit the packet after it
+  finishes executing the ingress control.  It is restricted to modify
+  only state associated with the current packet.  Note that later,
+  when the packet packet is actually later "enqueued" for starting
+  ingress processing again, if the target implementation used a
+  somewhat unusual drop policy like drop-from-front-of-queue instead
+  of drop-new-packet-being-enqueued, it could later cause a different
+  resubmitted packet to be dropped.  However, that is after the call
+  to resubmit is complete, and occurs at a time that is outside of the
+  execution of any P4 parser or control.
 
-v1.recirculate - same annotation as resubmit, with similar behavior.
+v1.recirculate `@packetState` - same annotation as resubmit, with
+  similar behavior.
 
-v1.clone - similar to resubmit, except it also reads state of a clone
-  session (which is similar to a register read, or table lookup via
-  exact index), which is only accessible via the clone and clone3
-  methods, and the control plane.
+v1.clone `@packetState` - similar to resubmit, except it also reads
+  state of a clone session (which is similar to a register read, or
+  table lookup via exact index), which is only accessible via the
+  clone and clone3 methods, and the control plane.  It is
+  target-dependent whether that clone session state is accessed
+  immediately during the call to the clone method, or after the
+  enclosing control (ingress or egress) has completed execution.  I
+  will give annotations in this document assuming the latter, because
+  that is how behavioral-model code implements the clone operation.
 
-v1.clone3 - same as clone
+v1.clone3 `@packetState` - same as clone
 
 v1.truncate - TBD I do not know what this method does well enough to
   suggest annotations.
 
-v1.assert `@modifyOnlyStateAssociatedWithExternFunction` - if in
-parameter is false, it may modify some target-specific state to record
+v1.assert `@localState` - if in parameter `check` is false, this
+function will typically modify some target-specific state to record
 this fact.
 
 v1.assume - same as assert
 
-v1.log_msg (both signatures) `@modifyOnlyStateAssociatedWithExternFunction`
+v1.log_msg (both signatures) `@localState` - similar to v1.assert
 
 
 # psa architecture extern objects and functions
@@ -478,7 +555,69 @@ extern Digest<T> {
 
 ## psa extern objects and their methods
 
+psa.Hash.get_hash (both signatures) - `@pure`, similar to v1.hash
+
+psa.Checksum.clear `@packetState` - all PSA Checksum methods are
+documented to limit their effects to state that is independent per
+packet.
+
+psa.Checksum.update `@packetState`
+
+psa.Checksum.get `@noSideEffects` `@packetState` - reads state for
+this packet, but does not modify it.
+
+psa.InternetChecksum.clear `@packetState` - all PSA InternetChecksum
+methods are documented to limit their effects to state that is
+independent per packet.
+
+psa.InternetChecksum.add `@packetState`
+
+psa.InternetChecksum.subtract `@packetState`
+
+psa.InternetChecksum.get `@noSideEffects` `@packetState`
+
+psa.InternetChecksum.get_state `@noSideEffects` `@packetState`
+
+psa.InternetChecksum.set_state `@packetState`
+
+psa.Counter.count - same effect restrictions as v1.counter.count
+
+psa.DirectCounter.count - same effect restrictions as
+v1.direct_counter.count
+
+psa.Meter.execute (both signatures) - same effect restrictions as
+v1.meter.execute_meter
+
+psa.DirectMeter.execute (both signatures) - same effect restrictions
+as v1.direct_meter.read
+
+psa.Register.read - same effect restrictions as v1.register.read
+
+psa.Register.write - same effect restrictions as v1.register.write
+
+psa.Random.read - see v1.random
+
+ActionProfile
+ActionSelector
+
+psa.Digest.pack `@packetState` - similar to v1.digest
+
+
 ## psa extern functions
+
+psa.psa_clone_i2e `@pure`
+
+psa.psa_resubmit `@pure`
+
+psa.psa_normal `@pure`
+
+psa.psa_clone_e2e `@pure`
+
+psa.psa_recirculate `@pure`
+
+psa.assert - same effect restrictions as v1.assert
+
+psa.assume - same effect restrictions as v1.assert
 
 
 # Other functions
