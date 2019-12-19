@@ -75,9 +75,10 @@ in the P4_16 language specification.
 Note that extern method/functions always have read access to the
 values of their `in` and `inout` parameters, and will always have the
 final values of any `out` or `inout` parameters copied back into the
-P4 program variables after they return.  All of them that have a
-non-void return type also return a value.  Nothing in the proposed
-annotations restricts that behavior in any way.
+P4 program variables after the method/function returns.  All extern
+methods/functions that have a non-void return type also return a
+value.  Nothing in the proposed annotations restricts that behavior in
+any way.
 
 + `@pure` - During its execution, the method/function will never read
   any state, nor modify any state.  `@pure` is more restrictive than
