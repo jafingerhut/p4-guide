@@ -41,7 +41,15 @@ optimization passes.
 There is no known reason for using such annotations on P4_16 controls,
 parsers, actions, or functions, because even with no annotations the
 P4 compiler can already "see" inside of their definitions and deduce
-everything it wishes to about their behavior.
+everything it wishes to about their behavior.  The kind of functions
+mentioned in the previous sentence are not extern functions, but the
+kind of functions that can be written inside the P4_16 language
+itself, as described in the P4_16 language specification, version 1.2,
+section 9 "Function declarations".  In the rest of this document after
+this point, I will say "function" without qualification to mean an
+P4_16 extern function, and if the need ever arises to refer to the
+non-extern P4_16 function defined in section 9 of the spec, I will use
+the phrase "normal P4_16 function".
 
 The annotation names mentioned in the comments of the pull request
 linked above are:
@@ -108,9 +116,10 @@ authors whether they seem useful enough to add.
   restricted in the state that can be accessed.  The internal state of
   the extern object instance or extern function is partitioned by
   packets being processed in the device.  The extern method/function
-  call can only access the internal state associated with the packet
-  being processed by the code that made the call.  An annotation of
-  `@packetState` implies an annotation of `@localState`.
+  can only access the part of its internal state that is associated
+  with the current packet being processed by the P4_16 code that made
+  the method/function call.  An annotation of `@packetState` implies
+  an annotation of `@localState`.
 
 + `@localIndexedState` - Similar to `@localState`, except it is even
   more restricted in the state that can be accessed.  The internal
@@ -118,13 +127,15 @@ authors whether they seem useful enough to add.
   partitioned into an array of independently accessible sub-states,
   each with its own index or associated table entry.  The extern
   method/function call can only access the internal state associated
-  with that index or table entry, and no others.  An annotation of
-  `@localIndexedState` implies an annotation of `@localState`.
+  with that one index, or one table entry, and no others.  An
+  annotation of `@localIndexedState` implies an annotation of
+  `@localState`.
 
 It makes sense to have an annotation with both `@noSideEffects` and
 one of the `@localState`, `@packetState`, or `@localIndexedstate`
-annotations.  The latter annotation would further restrict what state
-the method/function is allowed to read.
+annotations.  The latter annotation restricts what state can be
+accessed, and `@noSideEffects` indicates that state can only be read,
+not modified.
 
 Aside: I find it interesting that despite the nearly arbitrary power
 that extern functions and methods are permitted in P4_16, all of the
@@ -362,14 +373,15 @@ v1.register.write `@localIndexedState` (table_entry)
 
 v1.action_profile has no methods, and has internal state that is
 presumably only read by the data plane when a packet does an apply()
-call on the table with which the action_profile is associated.  The
-state is only modified by the control plane.
+call on a table with which the action_profile is associated (there can
+be more than one such table).  The state is only modified by the
+control plane.
 
 v1.action_selector has no methods, but some variants are allowed to
-have internal state, which is presumably only read and/or updated by
-the data plane when a packet does an apply() call on the table with
-which the action_selector is associated.  The state can also be
-modified by the control plane.
+have internal state, which is presumably only read and/or modified by
+the data plane when a packet does an apply() call on a table with
+which the action_selector is associated (there can be more than one
+such table).  The state can also be modified by the control plane.
 
 
 ## v1model extern functions
@@ -407,6 +419,9 @@ function mark_to_drop(inout standard_metadata_t standard_metadata) {
     standard_metadata.mcast_grp = 0;
 }
 ```
+Reference: See "class drop" and "class mark_to_drop" in file
+targets/simple_switch/primitives.cpp of repository
+https://gitub.com/p4lang/behavioral-model
 
 v1.hash `@pure` - The out parameter `result`'s final value is a
   function only of the in parameters.
