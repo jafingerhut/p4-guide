@@ -6,8 +6,8 @@ TCAM entries, for a single field.
 There are mentions of this in published research papers, without
 explicitly giving the construction, since approximately the year 2000,
 I am nearly certain that the technique described here was first
-published in the 1990s, but do not have a precise reference (please
-send me one if you know so I can add that here).
+published in the 1990s, but do not have a citation (please send me one
+if you know so I can add that here).
 
 The basic idea is to partition the set of values in the range [min,
 max] into one or more disjoint ranges whose union contains exactly the
