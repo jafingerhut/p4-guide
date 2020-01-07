@@ -49,10 +49,10 @@ Determine which of the 3 cases above is true for it.  If it is case 1,
 we are done with that one prefix value/mask.  If it is case 3, we
 recurse on the two new prefix value/mask ranges.
 
-Example 1:
+Example:
 
 A field with width W=4 bits, for which we want to match the range with
-`min=1` and `max=6` decimal.  The `min` and `max` values written in
+`min=1` and `max=5` decimal.  The `min` and `max` values written in
 binary are:
 
 ```
@@ -94,10 +94,9 @@ xxxx   prefix is range [0, 15].  Case 3.  Split into ranges (0) and (1) below.
 
 (001)
 001x   prefix is range [2, 3].  Case 1.  Keep.
-tbd
 
 (01)
-01xx   prefix is range [4, 7].  Case 3.  Split into ranges (010) and (010) below.
+01xx   prefix is range [4, 7].  Case 3.  Split into ranges (010) and (011) below.
 
 (010)
 010x   prefix is range [4, 5].  Case 1.  Keep.
@@ -119,15 +118,14 @@ the result of the range expansion of [1, 5] for W=4 bits:
 ```
 
 The included Python program `range-to-tcam-entries.py` does not use
-exactly the algorithm above, but produces the same result.
+exactly the algorithm above, but produces the same result.  It uses
+mask values with bit position of 1 to indicate an exact match bit
+position, 0 to indicate a wildcard/don't-care bit position.
 
 ```
 $ ./range-to-tcam-entries.py --bit-width 4 --min 1 --max 5
-debug=False
-W=4
-min=1
-max=5
-idx value_hex mask_hex range_min_decimal range_max_decimal
+idx      value      mask   range_min range_max
+         (hex)      (hex)  (decimal) (decimal)
  0          1          f          1          1
  1          2          e          2          3
  2          4          e          4          5
@@ -138,12 +136,9 @@ value/masks to be produced, `2W - 2` of them.  Here is sample output
 for `W=16`:
 
 ```
-$ ./range-to-tcam-entries.py --bit-width 16 --min 1 --max 65534
-debug=False
-W=16
-min=1
-max=65534
-idx value_hex mask_hex range_min_decimal range_max_decimal
+ ./range-to-tcam-entries.py --bit-width 16 --min 1 --max 65534
+idx      value      mask   range_min range_max
+         (hex)      (hex)  (decimal) (decimal)
  0          1       ffff          1          1
  1          2       fffe          2          3
  2          4       fffc          4          7

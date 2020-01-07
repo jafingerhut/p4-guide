@@ -27,10 +27,10 @@ parser.add_argument('--max', dest='max', type=int, required=True,
 args = parser.parse_known_args()[0]
 
 debug = args.debug
-print("debug=%s" % (debug))
-print('W=%d' % (args.W))
-print('min=%d' % (args.min))
-print('max=%d' % (args.max))
+#print("debug=%s" % (debug))
+#print('W=%d' % (args.W))
+#print('min=%d' % (args.min))
+#print('max=%d' % (args.max))
 
 all_prefix_masks = {}
 
@@ -202,12 +202,13 @@ def sorted_tcam_entries(W, entries):
                             "range": range}
         entries_with_ranges.append(entry_with_range)
     return sorted(entries_with_ranges, key=lambda x: x["range"]["min"])
-    
+
 
 def debug_print_tcam_entries(W, tcam_entries):
     n = len(tcam_entries)
     entries_with_ranges = sorted_tcam_entries(W, entries)
-    print("idx value_hex mask_hex range_min_decimal range_max_decimal")
+    print("idx      value      mask   range_min range_max")
+    print("         (hex)      (hex)  (decimal) (decimal)")
     for i in range(n):
         print("%2d %10x %10x %10d %10d"
               "" % (i,
@@ -239,7 +240,6 @@ def check_tcam_entries(W, min_val, max_val, entries):
     return True
 
 
-#range_to_tcam_entries("5", 1, 4)
 entries = range_to_tcam_entries(args.W, args.min, args.max)
 
 debug_print_tcam_entries(args.W, entries)
