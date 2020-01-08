@@ -11,6 +11,10 @@ import argparse
 
 debug = False
 
+def auto_int(x):
+    return int(x, 0)
+
+
 parser = argparse.ArgumentParser(description="""
 Print a small number of TCAM entries that together match any value
 in the range [min, max], where the value to match is bit-width bits wide.""")
@@ -20,10 +24,10 @@ parser.add_argument('--test', dest='test', action='store_true',
                     help="""Perform exhaustive test of _all_ ranges with the given width in bits.  Warnings: this is reasonably fast for W <= 10, but the number of test cases grows roughly as 2^(2*W)""")
 parser.add_argument('--bit-width', dest='W', type=int, required=True,
                     help="""The width in bits of the field to match on.""")
-parser.add_argument('--min', dest='min', type=int, required=True,
-                    help="""The minimum value of the range to match.""")
-parser.add_argument('--max', dest='max', type=int, required=True,
-                    help="""The maximum value of the range to match.""")
+parser.add_argument('--min', dest='min', type=auto_int, required=True,
+                    help="""The minimum value of the range to match.  Interpreted as Python literal number, allowing 0x prefix for base 16, 0o for base 8, and 0b for base 2.""")
+parser.add_argument('--max', dest='max', type=auto_int, required=True,
+                    help="""The maximum value of the range to match.  Allows same bases as --min""")
 args = parser.parse_known_args()[0]
 
 debug = args.debug
