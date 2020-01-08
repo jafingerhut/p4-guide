@@ -1,15 +1,11 @@
 #! /usr/bin/env python3
 
-import os, sys
-import re
-
 ######################################################################
 # Parsing optional command line arguments
 ######################################################################
 
 import argparse
 
-debug = False
 
 def auto_int(x):
     return int(x, 0)
@@ -150,7 +146,7 @@ def range_to_tcam_entries(W, min_val, max_val):
         msg = ("Error: min=%d outside of range of W-bit value [0, %d]"
                "" % (min_val, max_field_val))
         raise ValueError(msg)
-    
+
     if max_val < 0 or max_val > max_field_val:
         msg = ("Error: max=%d outside of range of W-bit value [0, %d]"
                "" % (max_val, max_field_val))
@@ -192,25 +188,25 @@ def range_to_tcam_entries(W, min_val, max_val):
     left_part_tcam_entries = part_tcam_entries(W, min_val, bitpos, "left")
     right_part_tcam_entries = part_tcam_entries(W, max_val, bitpos, "right")
     #right_part_tcam_entries = []
-    
+
     tcam_entries = left_part_tcam_entries + right_part_tcam_entries
     return tcam_entries
 
 
-def sorted_tcam_entries(W, entries):
+def sorted_tcam_entries(W, tcam_entries):
     entries_with_ranges = []
-    for entry in entries:
-        range = prefix_mask_range(W, entry)
+    for entry in tcam_entries:
+        rng = prefix_mask_range(W, entry)
         entry_with_range = {"value": entry["value"],
                             "mask": entry["mask"],
-                            "range": range}
+                            "range": rng}
         entries_with_ranges.append(entry_with_range)
     return sorted(entries_with_ranges, key=lambda x: x["range"]["min"])
 
 
 def debug_print_tcam_entries(W, tcam_entries):
     n = len(tcam_entries)
-    entries_with_ranges = sorted_tcam_entries(W, entries)
+    entries_with_ranges = sorted_tcam_entries(W, tcam_entries)
     print("idx      value      mask   range_min range_max")
     print("         (hex)      (hex)  (decimal) (decimal)")
     for i in range(n):
@@ -222,8 +218,8 @@ def debug_print_tcam_entries(W, tcam_entries):
                     entries_with_ranges[i]["range"]["max"]))
 
 
-def check_tcam_entries(W, min_val, max_val, entries):
-    entries_with_ranges = sorted_tcam_entries(W, entries)
+def check_tcam_entries(W, min_val, max_val, tcam_entries):
+    entries_with_ranges = sorted_tcam_entries(W, tcam_entries)
     n = len(entries_with_ranges)
     if entries_with_ranges[0]["range"]["min"] != min_val:
         msg = ("min value of first range %d != %d = min_val"
@@ -235,7 +231,8 @@ def check_tcam_entries(W, min_val, max_val, entries):
         raise ValueError(msg)
     for i in range(1, n):
         if entries_with_ranges[i]["range"]["min"] != (entries_with_ranges[i-1]["range"]["max"] + 1):
-            msg = ("min value of range %d is %d but expected one more than max of range %d, which is %d"
+            msg = ("min value of range %d is %d but expected one more"
+                   " than max of range %d, which is %d"
                    "" % (i,
                          entries_with_ranges[i]["range"]["min"],
                          i-1,
