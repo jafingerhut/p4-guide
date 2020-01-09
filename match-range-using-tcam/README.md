@@ -117,10 +117,15 @@ the result of the range expansion of [1, 5] for W=4 bits:
 010x   prefix is range [4, 5].  Case 1.  Keep.
 ```
 
-The included Python program `range-to-tcam-entries.py` does not use
-exactly the algorithm above, but produces the same result.  It uses
-mask values with bit position of 1 to indicate an exact match bit
-position, 0 to indicate a wildcard/don't-care bit position.
+Two programs are included in this directory:
+
++ Python program `range-to-tcam-entries.py`
++ C program `range-to-tcam-entries.c`
+
+They do not use exactly the algorithm above, but they produce the same
+result.  They use mask values with bit position of 1 to indicate an
+exact match bit position, 0 to indicate a wildcard/don't-care bit
+position.
 
 ```
 $ ./range-to-tcam-entries.py --bit-width 4 --min 1 --max 5
@@ -129,6 +134,13 @@ idx      value      mask   range_min range_max
  0          1          f          1          1
  1          2          e          2          3
  2          4          e          4          5
+
+$ gcc range-to-tcam-entries.c -o range-to-tcam-entries
+
+$ ./range-to-tcam-entries 4 1 5
+value 0x0000000000000001 mask 0x000000000000000f min 1 max 1
+value 0x0000000000000002 mask 0x000000000000000e min 2 max 3
+value 0x0000000000000004 mask 0x000000000000000e min 4 max 5
 ```
 
 In general, the range `[1, 2^W-2]` causes the largest number of
@@ -171,25 +183,24 @@ idx      value      mask   range_min range_max
 29       fffe       ffff      65534      65534
 ```
 
-The Python program also provides a `--test` option, which causes the
-program to exhaustively try _all_ ranges with the given width in bits,
-approximately `2^(2*W)` of them, so testing with `W > 10` can require
-significant patience.  For each of those ranges, it will call the
-Python function `range_to_tcam_entries` to compute the list prefix
-value/masks for the range, then call `check_tcam_entries` to verify
+The Python program also provides a `--test` option (the C program
+implements this by providing _any_ command line argument after the max
+value), which causes the program to exhaustively try _all_ ranges with
+the given width in bits, approximately `2^(2*W)` of them, so testing
+with `W > 10` can require significant patience.
+
+For each of those ranges, it will call the Python/C function
+`range_to_tcam_entries` to compute the list prefix value/masks for the
+range.  The Python version then calls `check_tcam_entries` to verify
 that they are prefix masks, that each covers a disjoint range, and
 that together they cover the entire input range.  It will raise an
-exception if any incorrect list of prefix value/masks is found.
+exception if any incorrect list of prefix value/masks is found.  The C
+version will exit with Unix error status 1 and print a message to
+stderr if it finds a mistake in the result.
 
 I have run the exhaustive test for all bit widths from 1 up to 11 and
 it found no errors, so I have very high confidence that the code for
 calculating lists of prefix value/masks is correct.
-
-Note: I chose Python because its integer arithmetic and bit-wise
-operations work on arbitrary size integers without any special effort
-on my part.  Porting this to another programming language would
-require all of those operations to work up to the largest supported
-bit width of values you want to support for the ranges.
 
 
 Extensions:
