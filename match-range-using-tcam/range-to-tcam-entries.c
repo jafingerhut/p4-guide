@@ -210,7 +210,7 @@ main (int argc, char *argv[])
         do_print = 0;
         big_int max_val_for_width = (((big_int) 1) << width) - 1;
         for (min_val = (big_int) 0; min_val <= max_val_for_width; min_val++) {
-            for (max_val = (big_int) min_val; max_val <= max_val_for_width; max_val++) {
+            for (max_val = min_val; max_val <= max_val_for_width; max_val++) {
                 range_to_tcam_entries(width, min_val, max_val, do_print);
                 ++test_count;
             }
