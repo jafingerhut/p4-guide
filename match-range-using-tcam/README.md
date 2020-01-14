@@ -1,3 +1,5 @@
+# Implementing range matching using multiple ternary entries in a TCAM
+
 It is well known, at least among people who have worked on packet
 classification for ACLs (Access Control Lists), that one can match an
 arbitrary [min, max] range of a W-bit wide field using at most 2W-2
@@ -220,3 +222,18 @@ property when populating the entries in a TCAM, where it is acceptable
 for many entries to match, and the highest priority will "win", but
 there may be contexts in which this property is important, e.g. some
 algorithmic TCAM approaches.
+
+
+# Implementing "not equal to" matching using multiple ternary entries in a TCAM
+
+One way to implement a match of "not equal to 7" for a field that is 8
+bits wide, is to use two ranges: one that matches values in the range
+[0, 6], and the other that mathes values in the range [8, 255].
+Expand each of those ranges independently into ternary entries as
+described in the previous section.
+
+I do not have a proof of this, but experiments using the program
+`not-equal-to-match-using-two-ranges.py` show that at least for bit
+widths up to 16, the number of ternary entries requires is always W,
+the width of the field in bits, regardless of which value you want to
+do a "not equal to X" match on.
