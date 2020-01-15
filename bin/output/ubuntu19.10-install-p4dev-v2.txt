@@ -40,11 +40,11 @@ command at the appropriate places.
 
 ------------------------------------------------------------
 Time and disk space used before installation begins:
-Sat 14 Dec 2019 01:24:12 PM PST
+Wed 15 Jan 2020 12:39:41 AM PST
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G  6.7G   50G  12% /
+/dev/sda1        59G  6.9G   49G  13% /
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         60218M 6809M    50322M  12% /
+/dev/sda1         60218M 7000M    50130M  13% /
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -58,7 +58,7 @@ Need to get 6,878 kB of archives.
 After this operation, 33.4 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 vim-runtime all 2:8.1.0875-5ubuntu2 [5,669 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 vim amd64 2:8.1.0875-5ubuntu2 [1,209 kB]
-Fetched 6,878 kB in 14s (482 kB/s)
+Fetched 6,878 kB in 3s (2,042 kB/s)
 Selecting previously unselected package vim-runtime.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 124770 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a8.1.0875-5ubuntu2_all.deb ...
@@ -90,26 +90,26 @@ The following NEW packages will be installed:
   libpython-stdlib libpython2-stdlib libpython2.7-minimal libpython2.7-stdlib
   python python-minimal python2 python2-minimal python2.7 python2.7-minimal
 0 upgraded, 10 newly installed, 0 to remove and 0 not upgraded.
-Need to get 3,862 kB of archives.
+Need to get 3,852 kB of archives.
 After this operation, 16.6 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2.7-minimal amd64 2.7.17~rc1-1 [335 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2.7-minimal amd64 2.7.17~rc1-1 [1,316 kB]
+Get:1 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 libpython2.7-minimal amd64 2.7.17-1~19.10 [335 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 python2.7-minimal amd64 2.7.17-1~19.10 [1,307 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2-minimal amd64 2.7.17-1 [27.8 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-minimal amd64 2.7.17-1 [5,996 B]
-Get:5 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2.7-stdlib amd64 2.7.17~rc1-1 [1,882 kB]
-Get:6 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2.7 amd64 2.7.17~rc1-1 [248 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 libpython2.7-stdlib amd64 2.7.17-1~19.10 [1,881 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 python2.7 amd64 2.7.17-1~19.10 [248 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2-stdlib amd64 2.7.17-1 [7,400 B]
 Get:8 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython-stdlib amd64 2.7.17-1 [5,836 B]
 Get:9 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2 amd64 2.7.17-1 [26.5 kB]
 Get:10 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python amd64 2.7.17-1 [7,836 B]
-Fetched 3,862 kB in 9s (425 kB/s)
+Fetched 3,852 kB in 6s (641 kB/s)
 Selecting previously unselected package libpython2.7-minimal:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 126573 files and directories currently installed.)
-Preparing to unpack .../0-libpython2.7-minimal_2.7.17~rc1-1_amd64.deb ...
-Unpacking libpython2.7-minimal:amd64 (2.7.17~rc1-1) ...
+Preparing to unpack .../0-libpython2.7-minimal_2.7.17-1~19.10_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.17-1~19.10) ...
 Selecting previously unselected package python2.7-minimal.
-Preparing to unpack .../1-python2.7-minimal_2.7.17~rc1-1_amd64.deb ...
-Unpacking python2.7-minimal (2.7.17~rc1-1) ...
+Preparing to unpack .../1-python2.7-minimal_2.7.17-1~19.10_amd64.deb ...
+Unpacking python2.7-minimal (2.7.17-1~19.10) ...
 Selecting previously unselected package python2-minimal.
 Preparing to unpack .../2-python2-minimal_2.7.17-1_amd64.deb ...
 Unpacking python2-minimal (2.7.17-1) ...
@@ -117,19 +117,19 @@ Selecting previously unselected package python-minimal.
 Preparing to unpack .../3-python-minimal_2.7.17-1_amd64.deb ...
 Unpacking python-minimal (2.7.17-1) ...
 Selecting previously unselected package libpython2.7-stdlib:amd64.
-Preparing to unpack .../4-libpython2.7-stdlib_2.7.17~rc1-1_amd64.deb ...
-Unpacking libpython2.7-stdlib:amd64 (2.7.17~rc1-1) ...
+Preparing to unpack .../4-libpython2.7-stdlib_2.7.17-1~19.10_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.17-1~19.10) ...
 Selecting previously unselected package python2.7.
-Preparing to unpack .../5-python2.7_2.7.17~rc1-1_amd64.deb ...
-Unpacking python2.7 (2.7.17~rc1-1) ...
+Preparing to unpack .../5-python2.7_2.7.17-1~19.10_amd64.deb ...
+Unpacking python2.7 (2.7.17-1~19.10) ...
 Selecting previously unselected package libpython2-stdlib:amd64.
 Preparing to unpack .../6-libpython2-stdlib_2.7.17-1_amd64.deb ...
 Unpacking libpython2-stdlib:amd64 (2.7.17-1) ...
 Selecting previously unselected package libpython-stdlib:amd64.
 Preparing to unpack .../7-libpython-stdlib_2.7.17-1_amd64.deb ...
 Unpacking libpython-stdlib:amd64 (2.7.17-1) ...
-Setting up libpython2.7-minimal:amd64 (2.7.17~rc1-1) ...
-Setting up python2.7-minimal (2.7.17~rc1-1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.17-1~19.10) ...
+Setting up python2.7-minimal (2.7.17-1~19.10) ...
 Linking and byte-compiling packages for runtime python2.7...
 Setting up python2-minimal (2.7.17-1) ...
 Selecting previously unselected package python2.
@@ -141,8 +141,8 @@ Selecting previously unselected package python.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127358 files and directories currently installed.)
 Preparing to unpack .../python_2.7.17-1_amd64.deb ...
 Unpacking python (2.7.17-1) ...
-Setting up libpython2.7-stdlib:amd64 (2.7.17~rc1-1) ...
-Setting up python2.7 (2.7.17~rc1-1) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.17-1~19.10) ...
+Setting up python2.7 (2.7.17-1~19.10) ...
 Setting up libpython2-stdlib:amd64 (2.7.17-1) ...
 Setting up python2 (2.7.17-1) ...
 Setting up libpython-stdlib:amd64 (2.7.17-1) ...
@@ -176,7 +176,7 @@ Get:4 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 autotools-dev all 2018
 Get:5 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 automake all 1:1.16.1-4ubuntu3 [522 kB]
 Get:6 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libltdl-dev amd64 2.4.6-11 [162 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libtool all 2.4.6-11 [194 kB]
-Fetched 1,452 kB in 4s (371 kB/s)
+Fetched 1,452 kB in 1s (1,266 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127372 files and directories currently installed.)
 Preparing to unpack .../0-libsigsegv2_2.12-2_amd64.deb ...
@@ -215,11 +215,11 @@ Building dependency tree...
 Reading state information...
 The following NEW packages will be installed:
   zlib1g-dev
-0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 1 newly installed, 0 to remove and 2 not upgraded.
 Need to get 172 kB of archives.
 After this operation, 439 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-1ubuntu3 [172 kB]
-Fetched 172 kB in 1s (140 kB/s)
+Fetched 172 kB in 1s (255 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127731 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.11.dfsg-1ubuntu3_amd64.deb ...
@@ -231,7 +231,7 @@ Building dependency tree...
 Reading state information...
 pkg-config is already the newest version (0.29.1-0ubuntu3).
 pkg-config set to manually installed.
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -262,9 +262,9 @@ The following NEW packages will be installed:
   python-six python-wheel python-xdg python2-dev python2.7-dev python3-crypto
   python3-dev python3-distutils python3-keyrings.alt python3-lib2to3
   python3-pip python3-setuptools python3-wheel python3.7-dev
-0 upgraded, 47 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 47 newly installed, 0 to remove and 2 not upgraded.
 Need to get 13.0 MB of archives.
-After this operation, 56.2 MB of additional disk space will be used.
+After this operation, 56.3 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 python3-lib2to3 all 3.7.5-1build1 [75.6 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 python3-distutils all 3.7.5-1build1 [142 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 dh-python all 4.20190722ubuntu1 [94.2 kB]
@@ -273,15 +273,15 @@ Get:5 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libexpat1-dev amd64 2.
 Get:6 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libjs-jquery all 3.3.1~dfsg-3 [329 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libjs-underscore all 1.9.1~dfsg-1 [98.6 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libjs-sphinxdoc all 1.8.5-3 [96.5 kB]
-Get:9 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2.7 amd64 2.7.17~rc1-1 [1,036 kB]
-Get:10 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2.7-dev amd64 2.7.17~rc1-1 [2,465 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 libpython2.7 amd64 2.7.17-1~19.10 [1,035 kB]
+Get:10 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 libpython2.7-dev amd64 2.7.17-1~19.10 [2,476 kB]
 Get:11 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython2-dev amd64 2.7.17-1 [7,456 B]
 Get:12 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython-dev amd64 2.7.17-1 [5,892 B]
 Get:13 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libpython-all-dev amd64 2.7.17-1 [1,112 B]
 Get:14 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 libpython3.7-dev amd64 3.7.5-2~19.10 [3,633 kB]
 Get:15 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpython3-dev amd64 3.7.5-1 [6,944 B]
 Get:16 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-all amd64 2.7.17-1 [1,088 B]
-Get:17 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2.7-dev amd64 2.7.17~rc1-1 [278 kB]
+Get:17 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 python2.7-dev amd64 2.7.17-1~19.10 [279 kB]
 Get:18 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python2-dev amd64 2.7.17-1 [1,264 B]
 Get:19 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-dev amd64 2.7.17-1 [1,240 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-all-dev amd64 2.7.17-1 [1,112 B]
@@ -312,7 +312,7 @@ Get:44 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-keyrings.
 Get:45 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-pip all 18.1-5 [135 kB]
 Get:46 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-setuptools all 41.1.0-1 [253 kB]
 Get:47 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-wheel all 0.32.3-2 [19.4 kB]
-Fetched 13.0 MB in 17s (781 kB/s)
+Fetched 13.0 MB in 7s (1,774 kB/s)
 Selecting previously unselected package python3-lib2to3.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 127759 files and directories currently installed.)
 Preparing to unpack .../00-python3-lib2to3_3.7.5-1build1_all.deb ...
@@ -339,11 +339,11 @@ Selecting previously unselected package libjs-sphinxdoc.
 Preparing to unpack .../07-libjs-sphinxdoc_1.8.5-3_all.deb ...
 Unpacking libjs-sphinxdoc (1.8.5-3) ...
 Selecting previously unselected package libpython2.7:amd64.
-Preparing to unpack .../08-libpython2.7_2.7.17~rc1-1_amd64.deb ...
-Unpacking libpython2.7:amd64 (2.7.17~rc1-1) ...
+Preparing to unpack .../08-libpython2.7_2.7.17-1~19.10_amd64.deb ...
+Unpacking libpython2.7:amd64 (2.7.17-1~19.10) ...
 Selecting previously unselected package libpython2.7-dev:amd64.
-Preparing to unpack .../09-libpython2.7-dev_2.7.17~rc1-1_amd64.deb ...
-Unpacking libpython2.7-dev:amd64 (2.7.17~rc1-1) ...
+Preparing to unpack .../09-libpython2.7-dev_2.7.17-1~19.10_amd64.deb ...
+Unpacking libpython2.7-dev:amd64 (2.7.17-1~19.10) ...
 Selecting previously unselected package libpython2-dev:amd64.
 Preparing to unpack .../10-libpython2-dev_2.7.17-1_amd64.deb ...
 Unpacking libpython2-dev:amd64 (2.7.17-1) ...
@@ -363,8 +363,8 @@ Selecting previously unselected package python-all.
 Preparing to unpack .../15-python-all_2.7.17-1_amd64.deb ...
 Unpacking python-all (2.7.17-1) ...
 Selecting previously unselected package python2.7-dev.
-Preparing to unpack .../16-python2.7-dev_2.7.17~rc1-1_amd64.deb ...
-Unpacking python2.7-dev (2.7.17~rc1-1) ...
+Preparing to unpack .../16-python2.7-dev_2.7.17-1~19.10_amd64.deb ...
+Unpacking python2.7-dev (2.7.17-1~19.10) ...
 Selecting previously unselected package python2-dev.
 Preparing to unpack .../17-python2-dev_2.7.17-1_amd64.deb ...
 Unpacking python2-dev (2.7.17-1) ...
@@ -459,7 +459,7 @@ Setting up javascript-common (11) ...
 Setting up python-enum34 (1.1.6-2) ...
 Setting up python-crypto (2.6.1-10) ...
 Setting up python-gi (3.34.0-1) ...
-Setting up libpython2.7:amd64 (2.7.17~rc1-1) ...
+Setting up libpython2.7:amd64 (2.7.17-1~19.10) ...
 Setting up python-wheel (0.32.3-2) ...
 Setting up python-pkg-resources (41.1.0-1) ...
 Setting up python-asn1crypto (0.24.0-1) ...
@@ -479,7 +479,7 @@ Setting up libjs-underscore (1.9.1~dfsg-1) ...
 Setting up python-cffi-backend (1.12.3-1build1) ...
 Setting up python3-distutils (3.7.5-1build1) ...
 Setting up dh-python (4.20190722ubuntu1) ...
-Setting up libpython2.7-dev:amd64 (2.7.17~rc1-1) ...
+Setting up libpython2.7-dev:amd64 (2.7.17-1~19.10) ...
 Setting up python-keyrings.alt (3.1.1-1) ...
 Setting up python3-setuptools (41.1.0-1) ...
 Setting up libpython3.7-dev:amd64 (3.7.5-2~19.10) ...
@@ -490,7 +490,7 @@ Setting up python3-pip (18.1-5) ...
 Setting up libjs-sphinxdoc (1.8.5-3) ...
 Setting up python3-keyrings.alt (3.1.1-1) ...
 Setting up libpython2-dev:amd64 (2.7.17-1) ...
-Setting up python2.7-dev (2.7.17~rc1-1) ...
+Setting up python2.7-dev (2.7.17-1~19.10) ...
 Setting up libpython3-dev:amd64 (3.7.5-1) ...
 Setting up python2-dev (2.7.17-1) ...
 Setting up python-secretstorage (2.3.1-2) ...
@@ -507,7 +507,7 @@ Processing triggers for libc-bin (2.30-0ubuntu2) ...
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
-Sat 14 Dec 2019 01:25:51 PM PST
+Wed 15 Jan 2020 12:41:36 AM PST
 git clone https://github.com/google/protobuf
 Cloning into 'protobuf'...
 Note: checking out 'v3.6.1'.
@@ -1766,11 +1766,11 @@ test -z "test-suite.log" || rm -f test-suite.log
 rm -f *.lo
 make[1]: Leaving directory '/home/andy/protobuf/src'
 end install protobuf:
-Sat 14 Dec 2019 01:43:59 PM PST
+Wed 15 Jan 2020 12:58:59 AM PST
 ------------------------------------------------------------
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
-Sat 14 Dec 2019 01:44:00 PM PST
+Wed 15 Jan 2020 12:59:00 AM PST
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -1779,10 +1779,9 @@ build-essential is already the newest version (12.8ubuntu1).
 build-essential set to manually installed.
 libtool is already the newest version (2.4.6-11).
 pkg-config is already the newest version (0.29.1-0ubuntu3).
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
 git clone https://github.com/google/grpc.git
 Cloning into 'grpc'...
-Checking out files:  13% (1409/10425)   Checking out files:  14% (1460/10425)   Checking out files:  15% (1564/10425)   Checking out files:  16% (1668/10425)   Checking out files:  17% (1773/10425)   Checking out files:  18% (1877/10425)   Checking out files:  19% (1981/10425)   Checking out files:  20% (2085/10425)   Checking out files:  21% (2190/10425)   Checking out files:  22% (2294/10425)   Checking out files:  23% (2398/10425)   Checking out files:  24% (2502/10425)   Checking out files:  25% (2607/10425)   Checking out files:  26% (2711/10425)   Checking out files:  27% (2815/10425)   Checking out files:  28% (2919/10425)   Checking out files:  29% (3024/10425)   Checking out files:  30% (3128/10425)   Checking out files:  31% (3232/10425)   Checking out files:  32% (3336/10425)   Checking out files:  33% (3441/10425)   Checking out files:  34% (3545/10425)   Checking out files:  35% (3649/10425)   Checking out files:  36% (3753/10425)   Checking out files:  37% (3858/10425)   Checking out files:  38% (3962/10425)   Checking out files:  39% (4066/10425)   Checking out files:  40% (4170/10425)   Checking out files:  41% (4275/10425)   Checking out files:  42% (4379/10425)   Checking out files:  43% (4483/10425)   Checking out files:  44% (4587/10425)   Checking out files:  45% (4692/10425)   Checking out files:  46% (4796/10425)   Checking out files:  47% (4900/10425)   Checking out files:  48% (5004/10425)   Checking out files:  49% (5109/10425)   Checking out files:  50% (5213/10425)   Checking out files:  51% (5317/10425)   Checking out files:  52% (5421/10425)   Checking out files:  53% (5526/10425)   Checking out files:  54% (5630/10425)   Checking out files:  55% (5734/10425)   Checking out files:  56% (5838/10425)   Checking out files:  57% (5943/10425)   Checking out files:  58% (6047/10425)   Checking out files:  59% (6151/10425)   Checking out files:  60% (6255/10425)   Checking out files:  61% (6360/10425)   Checking out files:  62% (6464/10425)   Checking out files:  63% (6568/10425)   Checking out files:  64% (6672/10425)   Checking out files:  65% (6777/10425)   Checking out files:  66% (6881/10425)   Checking out files:  67% (6985/10425)   Checking out files:  68% (7089/10425)   Checking out files:  68% (7152/10425)   Checking out files:  69% (7194/10425)   Checking out files:  70% (7298/10425)   Checking out files:  71% (7402/10425)   Checking out files:  72% (7506/10425)   Checking out files:  73% (7611/10425)   Checking out files:  74% (7715/10425)   Checking out files:  75% (7819/10425)   Checking out files:  76% (7923/10425)   Checking out files:  77% (8028/10425)   Checking out files:  78% (8132/10425)   Checking out files:  79% (8236/10425)   Checking out files:  80% (8340/10425)   Checking out files:  81% (8445/10425)   Checking out files:  82% (8549/10425)   Checking out files:  83% (8653/10425)   Checking out files:  84% (8757/10425)   Checking out files:  85% (8862/10425)   Checking out files:  86% (8966/10425)   Checking out files:  87% (9070/10425)   Checking out files:  88% (9174/10425)   Checking out files:  89% (9279/10425)   Checking out files:  90% (9383/10425)   Checking out files:  91% (9487/10425)   Checking out files:  92% (9591/10425)   Checking out files:  93% (9696/10425)   Checking out files:  94% (9800/10425)   Checking out files:  95% (9904/10425)   Checking out files:  96% (10008/10425)   Checking out files:  97% (10113/10425)   Checking out files:  98% (10217/10425)   Checking out files:  99% (10321/10425)   Checking out files: 100% (10425/10425)   Checking out files: 100% (10425/10425), done.
 Note: checking out 'tags/v1.17.2'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -3103,11 +3102,11 @@ In file included from ./src/core/lib/transport/transport.h:34,
 [INSTALL] Installing root certificates
 [CLEAN]   Cleaning build directories.
 end install grpc:
-Sat 14 Dec 2019 02:14:20 PM PST
+Wed 15 Jan 2020 01:19:30 AM PST
 ------------------------------------------------------------
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
-Sat 14 Dec 2019 02:14:21 PM PST
+Wed 15 Jan 2020 01:19:32 AM PST
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -3138,7 +3137,7 @@ The following NEW packages will be installed:
   libboost-system-dev libboost-system1.67-dev libboost-thread-dev
   libboost-thread1.67-dev libboost1.67-dev libjudy-dev libjudydebian1
   libncurses-dev libreadline-dev libtool-bin valgrind
-0 upgraded, 20 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 20 newly installed, 0 to remove and 2 not upgraded.
 Need to get 31.8 MB of archives.
 After this operation, 249 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libboost1.67-dev amd64 1.67.0-13ubuntu1 [8,361 kB]
@@ -3161,7 +3160,7 @@ Get:17 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libncurses-dev amd64 
 Get:18 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libreadline-dev amd64 8.0-3 [141 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libtool-bin amd64 2.4.6-11 [79.8 kB]
 Get:20 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 valgrind amd64 1:3.15.0-1ubuntu3.1 [20.3 MB]
-Fetched 31.8 MB in 23s (1,405 kB/s)
+Fetched 31.8 MB in 13s (2,445 kB/s)
 Selecting previously unselected package libboost1.67-dev:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 129783 files and directories currently installed.)
 Preparing to unpack .../00-libboost1.67-dev_1.67.0-13ubuntu1_amd64.deb ...
@@ -3257,16 +3256,26 @@ Cloning into '/home/andy/PI/proto/p4runtime'...
 Cloning into '/home/andy/PI/third_party/googletest'...
 Submodule path 'proto/openconfig/gnmi': checked out '9c8d9e965b3e854107ea02c12ab11b70717456f2'
 Submodule path 'proto/openconfig/public': checked out '1040d11c089c74084c64c234bee3691ec70e8a9f'
-Submodule path 'proto/p4runtime': checked out '09a02842321aecd224cfdbbcea95b1dbc6255266'
+Submodule path 'proto/p4runtime': checked out '576196b584ed5c185a86e99d1bfaaf6df03f017f'
 Submodule path 'third_party/googletest': checked out 'f5edb4f542e155c75bc4b516f227911d99ec167c'
-commit 1539ecd8a50c159b011d9c5a9c0eba99f122a845
+commit 5ca8b20b4bb69a8d08660ca3466bffc29859751e
 Author: Antonin Bas <abas@vmware.com>
-Date:   Wed Nov 6 22:17:37 2019 -0800
+Date:   Fri Dec 27 13:48:57 2019 -0800
 
-    Update README with the new officially-supported versions of Protobuf / gRPC
+    Update P4Runtime version to 1.1.0-rc.1 and implement Capabilities RPC
     
-    Protobuf 3.6.1 and gRPC 1.17.2
-    These are the versions installed by p4lang/third-party and used for CI.
+    As of this version of P4Runtime, the Capabilities RPC only returns the
+    version of the API implemented by the server.
+    
+    The RPC is handled entirely by the server, and DeviceMgr is not
+    involved. This means that if the DeviceMgr implementation
+    (libpifecpp.so) is updated separately from the server, the version
+    number returned by the server may not be meaningful anymore. However,
+    moving the implementation of Capabilities to DeviceMgr does not really
+    resolve the issue either, since some parts of P4Runtime (such as
+    master-arbitration) are the responsibility of the server. The current
+    solution is consistent with Stratum, which takes care of implementing
+    Capabilities in the target-independent server code.
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
@@ -5242,21 +5251,36 @@ rm -f *.lo
 rm -f -r 
 make[1]: Leaving directory '/home/andy/PI'
 end install PI:
-Sat 14 Dec 2019 02:27:15 PM PST
+Wed 15 Jan 2020 01:32:51 AM PST
 ------------------------------------------------------------
 Installing p4lang/behavioral-model
 start install behavioral-model:
-Sat 14 Dec 2019 02:27:16 PM PST
+Wed 15 Jan 2020 01:32:51 AM PST
 git clone https://github.com/p4lang/behavioral-model.git
 Cloning into 'behavioral-model'...
 Already up to date.
-commit 9ef324838b29419040b4f677a3ff65bc72405c44
+commit 3d0ca48b7a978e78f6ff0902728e0e7a2dbfa197
 Author: Antonin Bas <abas@vmware.com>
-Date:   Wed Dec 11 08:30:32 2019 -0800
+Date:   Mon Dec 30 18:46:51 2019 -0800
 
-    Document command-line options for simple_switch_grpc
+    Support lvalue expressions
     
-    Fixes #831
+    The bmv2 expression engine can now returns references to bmv2 primitive
+    objects (Data, Header, ...) when the expression being evaluated is an
+    lvalue. This means that we can now handle assignments to complex lvalue
+    expressions which do not statically resolve to a field / header /
+    union. One example would be an assignment to a header stack field
+    accessed through a runtime index.
+    
+    Unit tests were added, although at the moment they do not support all
+    the possible cases (e.g. expressions which evaluate to a header union).
+    
+    The JSON version number was bumped up to 2.23. Even though no additions
+    were made to the format, we now support additional cases and the
+    documentation now includes an example of a "complex" assignment
+    statement.
+    
+    Fixes #838
 patching file install_deps.sh
 patching file travis/install-thrift.sh
 Reading package lists...
@@ -5293,7 +5317,7 @@ The following NEW packages will be installed:
   libevent-extra-2.1-6 libevent-openssl-2.1-6 libevent-pthreads-2.1-6
   libffi-dev libfl-dev libfl2 libgmp-dev libgmpxx4ldbl libjsoncpp1 libpcap-dev
   libpcap0.8-dev librhash0 libssl-dev libuv1
-0 upgraded, 30 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 30 newly installed, 0 to remove and 2 not upgraded.
 Need to get 11.3 MB of archives.
 After this operation, 64.6 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 flex amd64 2.6.4-6.2 [317 kB]
@@ -5326,7 +5350,7 @@ Get:27 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpcap0.8-dev amd64 
 Get:28 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libpcap-dev amd64 1.9.1-2 [3,480 B]
 Get:29 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libssl-dev amd64 1.1.1c-1ubuntu4 [1,578 kB]
 Get:30 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libffi-dev amd64 3.2.1-9 [157 kB]
-Fetched 11.3 MB in 8s (1,468 kB/s)
+Fetched 11.3 MB in 6s (1,869 kB/s)
 Selecting previously unselected package flex.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 144902 files and directories currently installed.)
 Preparing to unpack .../00-flex_2.6.4-6.2_amd64.deb ...
@@ -5889,7 +5913,7 @@ C++ Library:
 
 Python Library:
    Using Python .............. : /usr/bin/python
-   Using Python version ...... : Python 2.7.17rc1
+   Using Python version ...... : Python 2.7.17
    Using Python3 ............. : /usr/bin/python3
    Using Python3 version ..... : Python 3.7.5
 
@@ -5964,9 +5988,9 @@ mv -f src/thrift/generate/.deps/thrift-t_rb_generator.Tpo src/thrift/generate/.d
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_php_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_php_generator.Tpo -c -o src/thrift/generate/thrift-t_php_generator.o `test -f 'src/thrift/generate/t_php_generator.cc' || echo './'`src/thrift/generate/t_php_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_perl_generator.Tpo src/thrift/generate/.deps/thrift-t_perl_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_erl_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_erl_generator.Tpo -c -o src/thrift/generate/thrift-t_erl_generator.o `test -f 'src/thrift/generate/t_erl_generator.cc' || echo './'`src/thrift/generate/t_erl_generator.cc
-mv -f src/thrift/generate/.deps/thrift-t_erl_generator.Tpo src/thrift/generate/.deps/thrift-t_erl_generator.Po
-g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_cocoa_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_cocoa_generator.Tpo -c -o src/thrift/generate/thrift-t_cocoa_generator.o `test -f 'src/thrift/generate/t_cocoa_generator.cc' || echo './'`src/thrift/generate/t_cocoa_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_php_generator.Tpo src/thrift/generate/.deps/thrift-t_php_generator.Po
+g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_cocoa_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_cocoa_generator.Tpo -c -o src/thrift/generate/thrift-t_cocoa_generator.o `test -f 'src/thrift/generate/t_cocoa_generator.cc' || echo './'`src/thrift/generate/t_cocoa_generator.cc
+mv -f src/thrift/generate/.deps/thrift-t_erl_generator.Tpo src/thrift/generate/.deps/thrift-t_erl_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_swift_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_swift_generator.Tpo -c -o src/thrift/generate/thrift-t_swift_generator.o `test -f 'src/thrift/generate/t_swift_generator.cc' || echo './'`src/thrift/generate/t_swift_generator.cc
 mv -f src/thrift/generate/.deps/thrift-t_swift_generator.Tpo src/thrift/generate/.deps/thrift-t_swift_generator.Po
 g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I./src   -Wall -Wextra -pedantic -Werror -g -O2 -MT src/thrift/generate/thrift-t_st_generator.o -MD -MP -MF src/thrift/generate/.deps/thrift-t_st_generator.Tpo -c -o src/thrift/generate/thrift-t_st_generator.o `test -f 'src/thrift/generate/t_st_generator.cc' || echo './'`src/thrift/generate/t_st_generator.cc
@@ -6036,8 +6060,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo src/thrift/concurrency/Monitor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Monitor.lo src/thrift/concurrency/Monitor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Mutex.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Monitor.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Mutex.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp -o src/thrift/concurrency/Monitor.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/PosixThreadFactory.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/PosixThreadFactory.lo src/thrift/concurrency/PosixThreadFactory.cpp &&\
@@ -6054,14 +6078,14 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 mv -f src/thrift/async/.deps/libthriftnb_la-TEvhttpServer.Tpo src/thrift/async/.deps/libthriftnb_la-TEvhttpServer.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c -o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo `test -f 'src/thrift/async/TEvhttpClientChannel.cpp' || echo './'`src/thrift/async/TEvhttpClientChannel.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c src/thrift/async/TEvhttpClientChannel.cpp  -fPIC -DPIC -o src/thrift/async/.libs/libthriftnb_la-TEvhttpClientChannel.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c src/thrift/async/TEvhttpClientChannel.cpp -o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o >/dev/null 2>&1
 mv -f src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c -o src/thrift/transport/libthriftz_la-TZlibTransport.lo `test -f 'src/thrift/transport/TZlibTransport.cpp' || echo './'`src/thrift/transport/TZlibTransport.cpp
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpClientChannel.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo -c src/thrift/async/TEvhttpClientChannel.cpp -o src/thrift/async/libthriftnb_la-TEvhttpClientChannel.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c src/thrift/transport/TZlibTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/libthriftz_la-TZlibTransport.o
 mv -f src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Tpo src/thrift/async/.deps/libthriftnb_la-TEvhttpClientChannel.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-THeaderTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-THeaderTransport.Tpo -c -o src/thrift/transport/libthriftz_la-THeaderTransport.lo `test -f 'src/thrift/transport/THeaderTransport.cpp' || echo './'`src/thrift/transport/THeaderTransport.cpp
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-THeaderTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-THeaderTransport.Tpo -c src/thrift/transport/THeaderTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/libthriftz_la-THeaderTransport.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-TZlibTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo -c src/thrift/transport/TZlibTransport.cpp -o src/thrift/transport/libthriftz_la-TZlibTransport.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/libthriftz_la-THeaderTransport.lo -MD -MP -MF src/thrift/transport/.deps/libthriftz_la-THeaderTransport.Tpo -c src/thrift/transport/THeaderTransport.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/libthriftz_la-THeaderTransport.o
 mv -f src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Tpo src/thrift/transport/.deps/libthriftz_la-TZlibTransport.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/libthriftz_la-THeaderProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/libthriftz_la-THeaderProtocol.Tpo -c -o src/thrift/protocol/libthriftz_la-THeaderProtocol.lo `test -f 'src/thrift/protocol/THeaderProtocol.cpp' || echo './'`src/thrift/protocol/THeaderProtocol.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/libthriftz_la-THeaderProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/libthriftz_la-THeaderProtocol.Tpo -c src/thrift/protocol/THeaderProtocol.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/libthriftz_la-THeaderProtocol.o
@@ -6187,8 +6211,8 @@ depbase=`echo src/thrift/transport/TPipe.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipe.lo src/thrift/transport/TPipe.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipe.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp -o src/thrift/transport/TPipe.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp -o src/thrift/transport/TSocket.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp -o src/thrift/transport/TPipe.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TPipeServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipeServer.lo src/thrift/transport/TPipeServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6197,10 +6221,10 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo src/thrift/transport/TSSLSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSSLSocket.lo src/thrift/transport/TSSLSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLSocket.o
 depbase=`echo src/thrift/transport/TSocketPool.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocketPool.lo src/thrift/transport/TSocketPool.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLSocket.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF src/thrift/transport/.deps/TSocketPool.Tpo -c src/thrift/transport/TSocketPool.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocketPool.o
 src/thrift/transport/TSSLSocket.cpp: In function ‘void apache::thrift::transport::cleanupOpenSSL()’:
 src/thrift/transport/TSSLSocket.cpp:154:21: warning: ‘void ERR_remove_state(long unsigned int)’ is deprecated [-Wdeprecated-declarations]
@@ -6362,10 +6386,10 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo src/thrift/server/TConnectedClient.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TConnectedClient.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TConnectedClient.lo src/thrift/server/TConnectedClient.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TConnectedClient.lo -MD -MP -MF src/thrift/server/.deps/TConnectedClient.Tpo -c src/thrift/server/TConnectedClient.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TConnectedClient.o
 depbase=`echo src/thrift/server/TServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TServer.lo src/thrift/server/TServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TConnectedClient.lo -MD -MP -MF src/thrift/server/.deps/TConnectedClient.Tpo -c src/thrift/server/TConnectedClient.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TConnectedClient.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TServer.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp -o src/thrift/server/TServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TServerFramework.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6377,8 +6401,8 @@ depbase=`echo src/thrift/server/TSimpleServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TSimpleServer.lo src/thrift/server/TSimpleServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF src/thrift/server/.deps/TSimpleServer.Tpo -c src/thrift/server/TSimpleServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TSimpleServer.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF src/thrift/server/.deps/TSimpleServer.Tpo -c src/thrift/server/TSimpleServer.cpp -o src/thrift/server/TSimpleServer.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServerFramework.lo -MD -MP -MF src/thrift/server/.deps/TServerFramework.Tpo -c src/thrift/server/TServerFramework.cpp -o src/thrift/server/TServerFramework.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TSimpleServer.lo -MD -MP -MF src/thrift/server/.deps/TSimpleServer.Tpo -c src/thrift/server/TSimpleServer.cpp -o src/thrift/server/TSimpleServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TThreadPoolServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadPoolServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TThreadPoolServer.lo src/thrift/server/TThreadPoolServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6532,11 +6556,10 @@ make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../../test/TypedefTest.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp OneWayTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style processor/proc.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp OneWayTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp OneWayTest.thrift
 make  all-am
@@ -6603,8 +6626,8 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/
 depbase=`echo gen-cpp/OneWayTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/OneWayTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/OneWayTest_types.lo gen-cpp/OneWayTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/OneWayTest_types.lo -MD -MP -MF gen-cpp/.deps/OneWayTest_types.Tpo -c gen-cpp/OneWayTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/OneWayTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ThriftTest_types.lo -MD -MP -MF gen-cpp/.deps/ThriftTest_types.Tpo -c gen-cpp/ThriftTest_types.cpp -o gen-cpp/ThriftTest_types.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/OneWayTest_types.lo -MD -MP -MF gen-cpp/.deps/OneWayTest_types.Tpo -c gen-cpp/OneWayTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/OneWayTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/OneWayTest_types.lo -MD -MP -MF gen-cpp/.deps/OneWayTest_types.Tpo -c gen-cpp/OneWayTest_types.cpp -o gen-cpp/OneWayTest_types.o >/dev/null 2>&1
 depbase=`echo ThriftTest_extras.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT ThriftTest_extras.lo -MD -MP -MF $depbase.Tpo -c -o ThriftTest_extras.lo ThriftTest_extras.cpp &&\
@@ -6630,16 +6653,16 @@ depbase=`echo gen-cpp/ParentService.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ParentService.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/ParentService.lo gen-cpp/ParentService.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ParentService.lo -MD -MP -MF gen-cpp/.deps/ParentService.Tpo -c gen-cpp/ParentService.cpp  -fPIC -DPIC -o gen-cpp/.libs/ParentService.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ParentService.lo -MD -MP -MF gen-cpp/.deps/ParentService.Tpo -c gen-cpp/ParentService.cpp -o gen-cpp/ParentService.o >/dev/null 2>&1
 depbase=`echo gen-cpp/proc_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/proc_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/proc_types.lo gen-cpp/proc_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/proc_types.lo -MD -MP -MF gen-cpp/.deps/proc_types.Tpo -c gen-cpp/proc_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/proc_types.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/ParentService.lo -MD -MP -MF gen-cpp/.deps/ParentService.Tpo -c gen-cpp/ParentService.cpp -o gen-cpp/ParentService.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/proc_types.lo -MD -MP -MF gen-cpp/.deps/proc_types.Tpo -c gen-cpp/proc_types.cpp -o gen-cpp/proc_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/AnnotationTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/AnnotationTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/AnnotationTest_types.lo gen-cpp/AnnotationTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/AnnotationTest_types.lo -MD -MP -MF gen-cpp/.deps/AnnotationTest_types.Tpo -c gen-cpp/AnnotationTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/AnnotationTest_types.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I. -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/proc_types.lo -MD -MP -MF gen-cpp/.deps/proc_types.Tpo -c gen-cpp/proc_types.cpp -o gen-cpp/proc_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/DebugProtoTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../../.. -I../../../lib/cpp/src/thrift -I../../../lib/c_glib/src/thrift  -I/usr/include -I../../../lib/cpp/src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I.  -Wall -Wextra -pedantic -g -O2 -MT gen-cpp/DebugProtoTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/DebugProtoTest_types.lo gen-cpp/DebugProtoTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
@@ -6786,11 +6809,11 @@ building 'thrift.protocol.fastbinary' extension
 creating build/temp.linux-x86_64-2.7
 creating build/temp.linux-x86_64-2.7/src
 creating build/temp.linux-x86_64-2.7/src/ext
-x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-FxxVsS/python2.7-2.7.17~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/module.cpp -o build/temp.linux-x86_64-2.7/src/ext/module.o
-x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-FxxVsS/python2.7-2.7.17~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/types.cpp -o build/temp.linux-x86_64-2.7/src/ext/types.o
-x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-FxxVsS/python2.7-2.7.17~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/binary.cpp -o build/temp.linux-x86_64-2.7/src/ext/binary.o
-x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-FxxVsS/python2.7-2.7.17~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/compact.cpp -o build/temp.linux-x86_64-2.7/src/ext/compact.o
-x86_64-linux-gnu-g++ -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-FxxVsS/python2.7-2.7.17~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -Wl,-Bsymbolic-functions -Wl,-z,relro -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-FxxVsS/python2.7-2.7.17~rc1=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC build/temp.linux-x86_64-2.7/src/ext/module.o build/temp.linux-x86_64-2.7/src/ext/types.o build/temp.linux-x86_64-2.7/src/ext/binary.o build/temp.linux-x86_64-2.7/src/ext/compact.o -o build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so
+x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-8kFkPd/python2.7-2.7.17=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/module.cpp -o build/temp.linux-x86_64-2.7/src/ext/module.o
+x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-8kFkPd/python2.7-2.7.17=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/types.cpp -o build/temp.linux-x86_64-2.7/src/ext/types.o
+x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-8kFkPd/python2.7-2.7.17=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/binary.cpp -o build/temp.linux-x86_64-2.7/src/ext/binary.o
+x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-8kFkPd/python2.7-2.7.17=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Isrc -I/usr/include/python2.7 -c src/ext/compact.cpp -o build/temp.linux-x86_64-2.7/src/ext/compact.o
+x86_64-linux-gnu-g++ -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-8kFkPd/python2.7-2.7.17=. -fstack-protector-strong -Wformat -Werror=format-security -Wl,-Bsymbolic-functions -Wl,-z,relro -Wdate-time -D_FORTIFY_SOURCE=2 -g -fdebug-prefix-map=/build/python2.7-8kFkPd/python2.7-2.7.17=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC build/temp.linux-x86_64-2.7/src/ext/module.o build/temp.linux-x86_64-2.7/src/ext/types.o build/temp.linux-x86_64-2.7/src/ext/binary.o build/temp.linux-x86_64-2.7/src/ext/compact.o -o build/lib.linux-x86_64-2.7/thrift/protocol/fastbinary.so
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/py'
 make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib'
 make[3]: Nothing to be done for 'all-am'.
@@ -6808,17 +6831,17 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp:templates,cob_style -r ../../test/ThriftTest.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 make  all-am
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/cpp'
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6827,8 +6850,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_types.lo gen-cpp/StressTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF gen-cpp/.deps/StressTest_constants.Tpo -c gen-cpp/StressTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_constants.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF gen-cpp/.deps/StressTest_constants.Tpo -c gen-cpp/StressTest_constants.cpp -o gen-cpp/StressTest_constants.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -7099,6 +7122,7 @@ test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -7119,7 +7143,6 @@ test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 test -d gen-py-default || /usr/bin/mkdir -p gen-py-default
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py -out gen-py-default ../Recursive.thrift
@@ -7187,9 +7210,7 @@ test -d gen-py-slots || /usr/bin/mkdir -p gen-py-slots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-s or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7233,7 +7254,9 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7321,11 +7344,7 @@ test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
-s or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7369,7 +7388,12 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
+test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
+.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7391,9 +7415,8 @@ s or not be backwards compatible!
 
 [WARNING:generation:1] old_style is deprecated and may be removed in the future.
 
-test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
-test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../DoubleConstantsTest.thrift
+test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../Recursive.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
 
@@ -7414,10 +7437,10 @@ test -d gen-py-oldstyle || /usr/bin/mkdir -p gen-py-oldstyle
 [WARNING:generation:1] old_style is deprecated and may be removed in the future.
 
 test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../ThriftTest.thrift
 [WARNING:generation:1] old_style is deprecated and may be removed in the future.
 
 test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
@@ -7509,6 +7532,7 @@ test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 .12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
@@ -7529,7 +7553,6 @@ test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../DoubleConstantsTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../Recursive.thrift
@@ -7551,8 +7574,8 @@ test -d gen-py-no_utf8strings || /usr/bin/mkdir -p gen-py-no_utf8strings
 
 test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../DebugProtoTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../ThriftTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -7641,10 +7664,7 @@ test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
-.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7665,7 +7685,10 @@ test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
 test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../DoubleConstantsTest.thrift
+test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../Recursive.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
 
@@ -7685,8 +7708,8 @@ test -d gen-py-dynamic || /usr/bin/mkdir -p gen-py-dynamic
 
 test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../ThriftTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DebugProtoTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../ThriftTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -7731,10 +7754,7 @@ test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
-s or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7798,9 +7818,12 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DoubleConstantsTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 test -d gen-py-dynamicslots || /usr/bin/mkdir -p gen-py-dynamicslots
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../Recursive.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DoubleConstantsTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:7] 64-bit constant "9223372036854775807" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/test/DoubleConstantsTest.thrift:8] 64-bit constant "-9223372036854775807" may not work in all languages.
@@ -7881,8 +7904,8 @@ libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
-libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
+libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 make[4]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial/cpp'
 make[3]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.12.0/tutorial/cpp'
 Making all in py
@@ -8124,9 +8147,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/transport/sslcompat.py to
 byte-compiling /usr/lib/python2.7/site-packages/thrift/Thrift.py to Thrift.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TRecursive.py to TRecursive.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.pyc
-writing byte-compilation script '/tmp/tmp2Mh7n3.py'
-/usr/bin/python -O /tmp/tmp2Mh7n3.py
-removing /tmp/tmp2Mh7n3.py
+writing byte-compilation script '/tmp/tmpoXzBWE.py'
+/usr/bin/python -O /tmp/tmpoXzBWE.py
+removing /tmp/tmpoXzBWE.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -8325,14 +8348,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/transport/sslcompat.py to ssl
 byte-compiling build/bdist.linux-x86_64/egg/thrift/Thrift.py to Thrift.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TRecursive.py to TRecursive.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
-writing byte-compilation script '/tmp/tmplpASni.py'
-/usr/bin/python -O /tmp/tmplpASni.py
-removing /tmp/tmplpASni.py
+writing byte-compilation script '/tmp/tmpxNR97N.py'
+/usr/bin/python -O /tmp/tmpxNR97N.py
+removing /tmp/tmpxNR97N.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpMbgrS7.py'
-/usr/bin/python -O /tmp/tmpMbgrS7.py
-removing /tmp/tmpMbgrS7.py
+writing byte-compilation script '/tmp/tmp79oMey.py'
+/usr/bin/python -O /tmp/tmp79oMey.py
+removing /tmp/tmp79oMey.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -8357,26 +8380,26 @@ Adding six 1.12.0 to easy-install.pth file
 
 Using /usr/lib/python2.7/dist-packages
 Finished processing dependencies for thrift==0.12.0
---2019-12-14 14:48:08--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 192.30.255.113
-Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+--2020-01-15 01:55:34--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.112|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2019-12-14 14:48:08--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+--2020-01-15 01:55:34--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
 Resolving codeload.github.com (codeload.github.com)... 192.30.255.120
 Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  534K
-    50K .......... .......... .......... .......... .......... 1.12M
-   100K .......... .......... .......... .......... .......... 2.85M
-   150K .......... .......... .......... .......... .......... 2.66M
-   200K .......... .......... .......... .......... .......... 2.01M
-   250K .......... .......... .......... .......... .......    2.43M=0.2s
+     0K .......... .......... .......... .......... ..........  562K
+    50K .......... .......... .......... .......... .......... 2.58M
+   100K .......... .......... .......... .......... .......... 1.16M
+   150K .......... .......... .......... .......... .......... 2.90M
+   200K .......... .......... .......... .......... .......... 2.09M
+   250K .......... .......... .......... .......... .......    2.66M=0.2s
 
-2019-12-14 14:48:09 (1.35 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2020-01-15 01:55:41 (1.40 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -9233,7 +9256,7 @@ Requirement already satisfied: pycparser in /usr/local/lib/python2.7/dist-packag
 Building wheels for collected packages: nnpy
   Running setup.py bdist_wheel for nnpy: started
   Running setup.py bdist_wheel for nnpy: finished with status 'done'
-  Stored in directory: /tmp/pip-ephem-wheel-cache-Qy6elV/wheels/82/a8/e3/04d7a84baf17394aa9f4c4415a0c39264db196b8ce67e6e472
+  Stored in directory: /tmp/pip-ephem-wheel-cache-2eViYo/wheels/6c/28/91/ac4d680be647dc0e99bd775b744e9c80c1ad41a1078d02df01
 Successfully built nnpy
 Installing collected packages: nnpy
 Successfully installed nnpy-0.1
@@ -9667,7 +9690,7 @@ In file included from ../../include/bm/bm_sim/match_units.h:37,
                  from ../../include/bm/bm_sim/match_tables.h:32,
                  from ../../include/bm/bm_sim/tables.h:28,
                  from ../../include/bm/bm_sim/P4Objects.h:33,
-                 from actions.cpp:24:
+                 from actions.cpp:25:
 ../../include/bm/bm_sim/handle_mgr.h: In member function ‘const bm::HandleMgr::const_iterator bm::HandleMgr::const_iterator::operator++(int)’:
 ../../include/bm/bm_sim/handle_mgr.h:120:37: warning: implicitly-declared ‘constexpr bm::HandleMgr::const_iterator::const_iterator(const bm::HandleMgr::const_iterator&)’ is deprecated [-Wdeprecated-copy]
   120 |       const const_iterator old(*this);
@@ -9685,7 +9708,7 @@ In file included from ../../include/bm/bm_sim/action_profile.h:36,
                  from ../../include/bm/bm_sim/match_tables.h:37,
                  from ../../include/bm/bm_sim/tables.h:28,
                  from ../../include/bm/bm_sim/P4Objects.h:33,
-                 from actions.cpp:24:
+                 from actions.cpp:25:
 ../../include/bm/bm_sim/ras.h: In member function ‘const bm::RandAccessUIntSet::const_iterator bm::RandAccessUIntSet::const_iterator::operator++(int)’:
 ../../include/bm/bm_sim/ras.h:121:37: warning: implicitly-declared ‘constexpr bm::RandAccessUIntSet::const_iterator::const_iterator(const bm::RandAccessUIntSet::const_iterator&)’ is deprecated [-Wdeprecated-copy]
   121 |       const const_iterator old(*this);
@@ -10064,7 +10087,7 @@ In file included from ../../include/bm/bm_sim/match_units.h:37,
                  from ../../include/bm/bm_sim/match_tables.h:32,
                  from ../../include/bm/bm_sim/tables.h:28,
                  from ../../include/bm/bm_sim/P4Objects.h:33,
-                 from P4Objects.cpp:21:
+                 from P4Objects.cpp:22:
 ../../include/bm/bm_sim/handle_mgr.h: In member function ‘const bm::HandleMgr::const_iterator bm::HandleMgr::const_iterator::operator++(int)’:
 ../../include/bm/bm_sim/handle_mgr.h:120:37: warning: implicitly-declared ‘constexpr bm::HandleMgr::const_iterator::const_iterator(const bm::HandleMgr::const_iterator&)’ is deprecated [-Wdeprecated-copy]
   120 |       const const_iterator old(*this);
@@ -10082,7 +10105,7 @@ In file included from ../../include/bm/bm_sim/action_profile.h:36,
                  from ../../include/bm/bm_sim/match_tables.h:37,
                  from ../../include/bm/bm_sim/tables.h:28,
                  from ../../include/bm/bm_sim/P4Objects.h:33,
-                 from P4Objects.cpp:21:
+                 from P4Objects.cpp:22:
 ../../include/bm/bm_sim/ras.h: In member function ‘const bm::RandAccessUIntSet::const_iterator bm::RandAccessUIntSet::const_iterator::operator++(int)’:
 ../../include/bm/bm_sim/ras.h:121:37: warning: implicitly-declared ‘constexpr bm::RandAccessUIntSet::const_iterator::const_iterator(const bm::RandAccessUIntSet::const_iterator&)’ is deprecated [-Wdeprecated-copy]
   121 |       const const_iterator old(*this);
@@ -11537,7 +11560,6 @@ chmod a-w bm_nanomsg_events.tmp
 mv bm_nanomsg_events.tmp bm_nanomsg_events
 make[2]: Leaving directory '/home/andy/behavioral-model/tools'
 make[2]: Entering directory '/home/andy/behavioral-model'
-make[2]: Nothing to be done for 'all-am'.
 make[2]: Leaving directory '/home/andy/behavioral-model'
 make[1]: Leaving directory '/home/andy/behavioral-model'
 Making install in thrift_src
@@ -12343,11 +12365,11 @@ make[3]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_gr
 make[2]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc/tests'
 make[1]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_grpc'
 end install behavioral-model:
-Sat 14 Dec 2019 03:03:43 PM PST
+Wed 15 Jan 2020 02:21:10 AM PST
 ------------------------------------------------------------
 Installing p4lang/p4c
 start install p4c:
-Sat 14 Dec 2019 03:03:45 PM PST
+Wed 15 Jan 2020 02:21:12 AM PST
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -12385,7 +12407,7 @@ The following NEW packages will be installed:
   libgc-dev libgc1c2 libicu-dev libpfm4 llvm llvm-9 llvm-9-dev llvm-9-runtime
   llvm-9-tools llvm-runtime python-chardet python-ipaddr python-ply
   python-pygments python-scapy python-yaml python3-pygments
-0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 27 newly installed, 0 to remove and 2 not upgraded.
 Need to get 43.7 MB of archives.
 After this operation, 284 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 binfmt-support amd64 2.2.0-2 [58.2 kB]
@@ -12415,7 +12437,7 @@ Get:24 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-chardet al
 Get:25 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-ipaddr all 2.2.0-2 [15.5 kB]
 Get:26 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-ply all 3.11-3 [46.5 kB]
 Get:27 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-scapy all 2.4.2-1 [614 kB]
-Fetched 43.7 MB in 25s (1,776 kB/s)
+Fetched 43.7 MB in 18s (2,365 kB/s)
 Selecting previously unselected package binfmt-support.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 148065 files and directories currently installed.)
 Preparing to unpack .../00-binfmt-support_2.2.0-2_amd64.deb ...
@@ -12547,13 +12569,15 @@ Cloning into '/home/andy/p4c/control-plane/p4runtime'...
 Cloning into '/home/andy/p4c/test/frameworks/gtest'...
 Submodule path 'control-plane/p4runtime': checked out 'e7a10bbc4178aad56055ca9384bbdbf18d15341a'
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
-commit 7cf234df1992c61645f57519260f31a491d425c2
-Author: Chris Dodd <cdodd@barefootnetworks.com>
-Date:   Thu Dec 12 16:41:18 2019 -0800
+commit 690833c271fb8edbf74ca418fed19d2b3e878ca2
+Author: Hemant Singh <32817427+hesingh@users.noreply.github.com>
+Date:   Wed Jan 15 12:54:44 2020 -0500
 
-    Fix simplifyDefUse to deal with side effect in if condition (#2114)
+    Misc minor fixes (#2138)
     
-    - fixes issue seen in #2026
+    * Misc minor fixes
+    
+    * Changes all instances of protobuf 3.2.0 to 3.6.1 in README.md
 -- The C compiler identification is GNU 9.2.1
 -- The CXX compiler identification is GNU 9.2.1
 -- Check for working C compiler: /usr/bin/cc
@@ -12616,17 +12640,17 @@ Date:   Thu Dec 12 16:41:18 2019 -0800
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 385 tests to 'bmv2' (15 xfails)
+-- Added 387 tests to 'bmv2' (15 xfails)
 -- Added 14 tests to 'bmv2' (2 xfails)
 -- Check LLVM version with 'llvm-config --version'
 -- Found LLVM 9.0.0
 -- Added 16 tests to 'ebpf-bcc' (0 xfails)
 -- Added 16 tests to 'ebpf' (0 xfails)
 -- Added 6 tests to 'p4' (0 xfails)
--- Added 568 tests to 'p4' (2 xfails)
+-- Added 574 tests to 'p4' (2 xfails)
 -- Added 6 tests to 'err' (0 xfails)
--- Added 176 tests to 'err' (0 xfails)
--- Added 208 tests to 'p14_to_16' (0 xfails)
+-- Added 195 tests to 'err' (0 xfails)
+-- Added 190 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 1
 -- Configuring done
 -- Generating done
@@ -12904,7 +12928,7 @@ In file included from /home/andy/p4c/frontends/parsers/v1/v1lexer.hpp:13,
 parsers/v1/v1parser.ypp: In member function ‘V1::Attributes& V1::Attributes::operator=(V1::Attributes&&)’:
 parsers/v1/v1parser.ypp:52:8: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(IR::Vector<T>&&) [with T = IR::Annotation]’ first required here
 parsers/v1/v1parser.ypp: In member function ‘virtual int V1::V1Parser::parse()’:
-parsers/v1/v1parser.ypp:320:53: note: synthesized method ‘V1::Attributes& V1::Attributes::operator=(V1::Attributes&&)’ first required here
+parsers/v1/v1parser.ypp:321:53: note: synthesized method ‘V1::Attributes& V1::Attributes::operator=(V1::Attributes&&)’ first required here
 In file included from /home/andy/p4c/ir/ir.h:39,
                  from /home/andy/p4c/frontends/p4/symbol_table.h:28,
                  from /home/andy/p4c/frontends/parsers/parserDriver.h:24,
@@ -12933,7 +12957,7 @@ In file included from /home/andy/p4c/frontends/parsers/v1/v1lexer.hpp:13,
 parsers/v1/v1parser.ypp: In member function ‘V1::Attributes& V1::Attributes::operator=(const V1::Attributes&)’:
 parsers/v1/v1parser.ypp:52:8: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Annotation]’ first required here
 parsers/v1/v1parser.ypp: In member function ‘virtual int V1::V1Parser::parse()’:
-parsers/v1/v1parser.ypp:321:79: note: synthesized method ‘V1::Attributes& V1::Attributes::operator=(const V1::Attributes&)’ first required here
+parsers/v1/v1parser.ypp:322:79: note: synthesized method ‘V1::Attributes& V1::Attributes::operator=(const V1::Attributes&)’ first required here
 In file included from /home/andy/p4c/ir/ir.h:42,
                  from /home/andy/p4c/frontends/p4/symbol_table.h:28,
                  from /home/andy/p4c/frontends/parsers/parserDriver.h:24,
@@ -12950,7 +12974,7 @@ In file included from /home/andy/p4c/ir/ir.h:38,
    93 |     Node(const Node& other) : srcInfo(other.srcInfo), id(currentId++), clone_id(other.clone_id) {
       |     ^~~~
 parsers/v1/v1parser.ypp: In member function ‘virtual int V1::V1Parser::parse()’:
-parsers/v1/v1parser.ypp:933:99: note: synthesized method ‘IR::NameMap<T, MAP, COMP, ALLOC>& IR::NameMap<T, MAP, COMP, ALLOC>::operator=(IR::NameMap<T, MAP, COMP, ALLOC>&&) [with T = IR::Property; MAP = std::map; COMP = std::less<cstring>; ALLOC = std::allocator<std::pair<const cstring, const IR::Property*> >]’ first required here
+parsers/v1/v1parser.ypp:934:99: note: synthesized method ‘IR::NameMap<T, MAP, COMP, ALLOC>& IR::NameMap<T, MAP, COMP, ALLOC>::operator=(IR::NameMap<T, MAP, COMP, ALLOC>&&) [with T = IR::Property; MAP = std::map; COMP = std::less<cstring>; ALLOC = std::allocator<std::pair<const cstring, const IR::Property*> >]’ first required here
 [ 33%] Building CXX object frontends/CMakeFiles/frontend.dir/__/ir/ir-generated.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
                  from /home/andy/p4c/lib/error_reporter.h:20,
@@ -13177,8 +13201,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/frontends/common/parseInput.cpp:17,
                  from /home/andy/p4c/build/frontends/unified_frontend_sources_1.cpp:6:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 37%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_2.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
@@ -13303,8 +13327,8 @@ In file included from /home/andy/p4c/ir/ir.h:39,
 In file included from /home/andy/p4c/frontends/p4/fromv1.0/converters.cpp:17,
                  from /home/andy/p4c/build/frontends/unified_frontend_sources_3.cpp:5:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 40%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_4.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
@@ -13388,6 +13412,42 @@ In file included from /home/andy/p4c/lib/error_helper.h:27,
 /home/andy/p4c/lib/source_file.h:60:5: note: because ‘Util::SourcePosition’ has user-provided ‘Util::SourcePosition::SourcePosition(const Util::SourcePosition&)’
    60 |     SourcePosition(const SourcePosition& other)
       |     ^~~~~~~~~~~~~~
+In file included from /home/andy/p4c/ir/ir.h:39,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
+                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
+/home/andy/p4c/ir/vector.h: In member function ‘IR::VectorBase& IR::VectorBase::operator=(const IR::VectorBase&)’:
+/home/andy/p4c/ir/vector.h:33:7: warning: implicitly-declared ‘IR::Node& IR::Node::operator=(const IR::Node&)’ is deprecated [-Wdeprecated-copy]
+   33 | class VectorBase : public Node {
+      |       ^~~~~~~~~~
+In file included from /home/andy/p4c/ir/ir.h:38,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
+                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
+/home/andy/p4c/ir/node.h:93:5: note: because ‘IR::Node’ has user-provided ‘IR::Node::Node(const IR::Node&)’
+   93 |     Node(const Node& other) : srcInfo(other.srcInfo), id(currentId++), clone_id(other.clone_id) {
+      |     ^~~~
+In file included from /home/andy/p4c/ir/ir.h:39,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
+                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
+/home/andy/p4c/ir/vector.h: In member function ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::StatOrDecl]’:
+/home/andy/p4c/ir/vector.h:54:7: note: synthesized method ‘IR::VectorBase& IR::VectorBase::operator=(const IR::VectorBase&)’ first required here
+   54 | class Vector : public VectorBase {
+      |       ^~~~~~
+In file included from /home/andy/p4c/ir/ir.h:40,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
+                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
+                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
+/home/andy/p4c/ir/indexed_vector.h: In member function ‘IR::IndexedVector<T>& IR::IndexedVector<T>::operator=(const IR::IndexedVector<T>&) [with T = IR::StatOrDecl]’:
+/home/andy/p4c/ir/indexed_vector.h:39:7: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::StatOrDecl]’ first required here
+   39 | class IndexedVector : public Vector<T> {
+      |       ^~~~~~~~~~~~~
+In file included from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:4:
+/home/andy/p4c/frontends/p4/sideEffects.cpp: In member function ‘const IR::Node* P4::DoSimplifyExpressions::shortCircuit(IR::Operation_Binary*)’:
+/home/andy/p4c/frontends/p4/sideEffects.cpp:190:22: note: synthesized method ‘IR::IndexedVector<T>& IR::IndexedVector<T>::operator=(const IR::IndexedVector<T>&) [with T = IR::StatOrDecl]’ first required here
+  190 |         statements = save;
+      |                      ^~~~
 In file included from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:6:
 /home/andy/p4c/frontends/p4/simplifyDefUse.cpp: In member function ‘bool P4::{anonymous}::FindUninitialized::setCurrent(const IR::Statement*)’:
 /home/andy/p4c/frontends/p4/simplifyDefUse.cpp:93:55: warning: implicitly-declared ‘P4::ProgramPoint& P4::ProgramPoint::operator=(const P4::ProgramPoint&)’ is deprecated [-Wdeprecated-copy]
@@ -13513,42 +13573,6 @@ In file included from /home/andy/p4c/frontends/p4/simplifyDefUse.cpp:18,
 /home/andy/p4c/frontends/p4/def_use.h:258:5: note: because ‘P4::ProgramPoint’ has user-provided ‘P4::ProgramPoint::ProgramPoint(const P4::ProgramPoint&)’
   258 |     ProgramPoint(const ProgramPoint& other) : stack(other.stack) {}
       |     ^~~~~~~~~~~~
-In file included from /home/andy/p4c/ir/ir.h:39,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
-                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
-/home/andy/p4c/ir/vector.h: In member function ‘IR::VectorBase& IR::VectorBase::operator=(const IR::VectorBase&)’:
-/home/andy/p4c/ir/vector.h:33:7: warning: implicitly-declared ‘IR::Node& IR::Node::operator=(const IR::Node&)’ is deprecated [-Wdeprecated-copy]
-   33 | class VectorBase : public Node {
-      |       ^~~~~~~~~~
-In file included from /home/andy/p4c/ir/ir.h:38,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
-                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
-/home/andy/p4c/ir/node.h:93:5: note: because ‘IR::Node’ has user-provided ‘IR::Node::Node(const IR::Node&)’
-   93 |     Node(const Node& other) : srcInfo(other.srcInfo), id(currentId++), clone_id(other.clone_id) {
-      |     ^~~~
-In file included from /home/andy/p4c/ir/ir.h:39,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
-                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
-/home/andy/p4c/ir/vector.h: In member function ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::ParserState]’:
-/home/andy/p4c/ir/vector.h:54:7: note: synthesized method ‘IR::VectorBase& IR::VectorBase::operator=(const IR::VectorBase&)’ first required here
-   54 | class Vector : public VectorBase {
-      |       ^~~~~~
-In file included from /home/andy/p4c/ir/ir.h:40,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.h:20,
-                 from /home/andy/p4c/frontends/p4/resetHeaders.cpp:17,
-                 from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:2:
-/home/andy/p4c/ir/indexed_vector.h: In member function ‘IR::IndexedVector<T>& IR::IndexedVector<T>::operator=(const IR::IndexedVector<T>&) [with T = IR::ParserState]’:
-/home/andy/p4c/ir/indexed_vector.h:39:7: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::ParserState]’ first required here
-   39 | class IndexedVector : public Vector<T> {
-      |       ^~~~~~~~~~~~~
-In file included from /home/andy/p4c/build/frontends/unified_frontend_sources_5.cpp:7:
-/home/andy/p4c/frontends/p4/simplifyParsers.cpp: In member function ‘virtual const IR::Node* P4::{anonymous}::CollapseChains::preorder(IR::P4Parser*)’:
-/home/andy/p4c/frontends/p4/simplifyParsers.cpp:160:27: note: synthesized method ‘IR::IndexedVector<T>& IR::IndexedVector<T>::operator=(const IR::IndexedVector<T>&) [with T = IR::ParserState]’ first required here
-  160 |         parser->states = *states;
-      |                           ^~~~~~
 [ 43%] Building CXX object frontends/CMakeFiles/frontend.dir/unified_frontend_sources_6.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
                  from /home/andy/p4c/lib/error_reporter.h:20,
@@ -13779,8 +13803,8 @@ In file included from /home/andy/p4c/lib/error_helper.h:27,
                  from /home/andy/p4c/lib/error.h:22,
                  from /home/andy/p4c/lib/null.h:22,
                  from /home/andy/p4c/ir/ir.h:25,
-                 from /home/andy/p4c/midend/simplifyKey.h:20,
-                 from /home/andy/p4c/midend/simplifyKey.cpp:1,
+                 from /home/andy/p4c/midend/simplifyBitwise.h:4,
+                 from /home/andy/p4c/midend/simplifyBitwise.cpp:1,
                  from /home/andy/p4c/build/midend/unified_midend_srcs_4.cpp:2:
 /home/andy/p4c/lib/source_file.h: In member function ‘Util::SourceInfo& Util::SourceInfo::operator+=(const Util::SourceInfo&)’:
 /home/andy/p4c/lib/source_file.h:182:40: warning: implicitly-declared ‘Util::SourcePosition& Util::SourcePosition::operator=(const Util::SourcePosition&)’ is deprecated [-Wdeprecated-copy]
@@ -13796,29 +13820,29 @@ In file included from /home/andy/p4c/lib/error_helper.h:27,
    60 |     SourcePosition(const SourcePosition& other)
       |     ^~~~~~~~~~~~~~
 In file included from /home/andy/p4c/ir/ir.h:39,
-                 from /home/andy/p4c/midend/simplifyKey.h:20,
-                 from /home/andy/p4c/midend/simplifyKey.cpp:1,
+                 from /home/andy/p4c/midend/simplifyBitwise.h:4,
+                 from /home/andy/p4c/midend/simplifyBitwise.cpp:1,
                  from /home/andy/p4c/build/midend/unified_midend_srcs_4.cpp:2:
 /home/andy/p4c/ir/vector.h: In member function ‘IR::VectorBase& IR::VectorBase::operator=(IR::VectorBase&&)’:
 /home/andy/p4c/ir/vector.h:33:7: warning: implicitly-declared ‘IR::Node& IR::Node::operator=(const IR::Node&)’ is deprecated [-Wdeprecated-copy]
    33 | class VectorBase : public Node {
       |       ^~~~~~~~~~
 In file included from /home/andy/p4c/ir/ir.h:38,
-                 from /home/andy/p4c/midend/simplifyKey.h:20,
-                 from /home/andy/p4c/midend/simplifyKey.cpp:1,
+                 from /home/andy/p4c/midend/simplifyBitwise.h:4,
+                 from /home/andy/p4c/midend/simplifyBitwise.cpp:1,
                  from /home/andy/p4c/build/midend/unified_midend_srcs_4.cpp:2:
 /home/andy/p4c/ir/node.h:93:5: note: because ‘IR::Node’ has user-provided ‘IR::Node::Node(const IR::Node&)’
    93 |     Node(const Node& other) : srcInfo(other.srcInfo), id(currentId++), clone_id(other.clone_id) {
       |     ^~~~
 In file included from /home/andy/p4c/ir/ir.h:39,
-                 from /home/andy/p4c/midend/simplifyKey.h:20,
-                 from /home/andy/p4c/midend/simplifyKey.cpp:1,
+                 from /home/andy/p4c/midend/simplifyBitwise.h:4,
+                 from /home/andy/p4c/midend/simplifyBitwise.cpp:1,
                  from /home/andy/p4c/build/midend/unified_midend_srcs_4.cpp:2:
 /home/andy/p4c/ir/vector.h: In member function ‘IR::Vector<T>& IR::Vector<T>::operator=(IR::Vector<T>&&) [with T = IR::SelectCase]’:
 /home/andy/p4c/ir/vector.h:54:7: note: synthesized method ‘IR::VectorBase& IR::VectorBase::operator=(IR::VectorBase&&)’ first required here
    54 | class Vector : public VectorBase {
       |       ^~~~~~
-In file included from /home/andy/p4c/build/midend/unified_midend_srcs_4.cpp:3:
+In file included from /home/andy/p4c/build/midend/unified_midend_srcs_4.cpp:4:
 /home/andy/p4c/midend/simplifySelectCases.cpp: In member function ‘virtual const IR::Node* P4::DoSimplifySelectCases::preorder(IR::SelectExpression*)’:
 /home/andy/p4c/midend/simplifySelectCases.cpp:80:50: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(IR::Vector<T>&&) [with T = IR::SelectCase]’ first required here
    80 |         expression->selectCases = std::move(cases);
@@ -14027,8 +14051,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/backends/bmv2/simple_switch/main.cpp:24,
                  from /home/andy/p4c/build/backends/bmv2/unified_bmv2_simple_switch_srcs_1.cpp:2:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 75%] Linking CXX executable p4c-bm2-ss
 [ 75%] Built target p4c-bm2-ss
@@ -14079,8 +14103,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/backends/bmv2/psa_switch/main.cpp:24,
                  from /home/andy/p4c/build/backends/bmv2/unified_bmv2_psa_switch_srcs_1.cpp:2:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 79%] Linking CXX executable p4c-bm2-psa
 [ 79%] Built target p4c-bm2-psa
@@ -14131,8 +14155,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/backends/ebpf/p4c-ebpf.cpp:33,
                  from /home/andy/p4c/build/backends/ebpf/unified_p4c_ebpf_srcs_1.cpp:2:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 82%] Building CXX object backends/ebpf/CMakeFiles/p4c-ebpf.dir/unified_p4c_ebpf_srcs_2.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
@@ -14203,8 +14227,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/backends/p4test/p4test.cpp:31,
                  from /home/andy/p4c/build/backends/p4test/unified_p4test_srcs_1.cpp:2:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 87%] Linking CXX executable p4test
 [ 87%] Built target p4test
@@ -14256,8 +14280,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/backends/graphs/p4c-graphs.cpp:26,
                  from /home/andy/p4c/build/backends/graphs/unified_graphs_srcs_1.cpp:5:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 90%] Linking CXX executable p4c-graphs
 [ 90%] Built target p4c-graphs
@@ -14313,8 +14337,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/test/gtest/arch_test.cpp:22,
                  from /home/andy/p4c/build/test/unified_gtest_base_sources_1.cpp:3:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 96%] Building CXX object test/CMakeFiles/gtestp4c.dir/unified_gtest_base_sources_2.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
@@ -14362,8 +14386,8 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/test/gtest/helpers.cpp:25,
                  from /home/andy/p4c/build/test/unified_gtest_base_sources_2.cpp:7:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [ 98%] Building CXX object test/CMakeFiles/gtestp4c.dir/unified_gtest_base_sources_3.cpp.o
 In file included from /home/andy/p4c/lib/error_helper.h:27,
@@ -14410,11 +14434,12 @@ In file included from /home/andy/p4c/frontends/common/parseInput.h:22,
                  from /home/andy/p4c/test/gtest/p4runtime.cpp:35,
                  from /home/andy/p4c/build/test/unified_gtest_base_sources_3.cpp:5:
 /home/andy/p4c/frontends/p4/fromv1.0/converters.h: In member function ‘virtual const IR::Node* P4V1::FixExtracts::postorder(IR::P4Program*)’:
-/home/andy/p4c/frontends/p4/fromv1.0/converters.h:542:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
-  542 |         program->objects = allTypeDecls;
+/home/andy/p4c/frontends/p4/fromv1.0/converters.h:545:28: note: synthesized method ‘IR::Vector<T>& IR::Vector<T>::operator=(const IR::Vector<T>&) [with T = IR::Node]’ first required here
+  545 |         program->objects = allTypeDecls;
       |                            ^~~~~~~~~~~~
 [100%] Linking CXX executable gtestp4c
 [100%] Built target gtestp4c
+Sorry, try again.
 [  0%] Built target update_includes
 [  0%] Built target linkgraphs
 [  0%] Built target linkbmv2
@@ -14463,18 +14488,18 @@ Install the project...
 -- Installing: /usr/local/bin/p4test
 -- Installing: /usr/local/bin/p4c-graphs
 end install p4c:
-Sat 14 Dec 2019 03:14:46 PM PST
+Wed 15 Jan 2020 11:12:34 AM PST
 ------------------------------------------------------------
 Installing Mininet - not necessary to run P4 programs, but useful if
 you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
-Sat 14 Dec 2019 03:14:48 PM PST
+Wed 15 Jan 2020 11:12:35 AM PST
 Cloning into 'mininet'...
 patching file util/install.sh
 Hunk #1 succeeded at 172 (offset 12 lines).
 Detected Linux distribution: Ubuntu 19.10 eoan amd64
-sys.version_info(major=2, minor=7, micro=17, releaselevel='candidate', serial=1)
+sys.version_info(major=2, minor=7, micro=17, releaselevel='final', serial=0)
 Detected Python (python) version 2
 Installing Mininet dependencies
 Reading package lists...
@@ -14507,7 +14532,7 @@ The following NEW packages will be installed:
   python3-astroid python3-isort python3-lazy-object-proxy
   python3-logilab-common python3-mccabe python3-pycodestyle python3-pyflakes
   python3-tk python3-wrapt socat ssh ssh-import-id tk8.6-blt2.5 xterm
-0 upgraded, 34 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 34 newly installed, 0 to remove and 2 not upgraded.
 Need to get 5,347 kB of archives.
 After this operation, 25.9 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 openssh-sftp-server amd64 1:8.0p1-6build1 [47.7 kB]
@@ -14539,13 +14564,13 @@ Get:26 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python3-mccabe al
 Get:27 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 pylint all 2.2.2-3 [375 kB]
 Get:28 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-ptyprocess all 0.6.0-1 [13.1 kB]
 Get:29 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-pexpect all 4.6.0-1 [44.0 kB]
-Get:30 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 python-tk amd64 2.7.17~rc1-1 [25.4 kB]
+Get:30 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 python-tk amd64 2.7.17-1~19.10 [25.5 kB]
 Get:31 http://us.archive.ubuntu.com/ubuntu eoan-updates/main amd64 python3-tk amd64 3.7.5-1build1 [110 kB]
 Get:32 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 xterm amd64 348-2ubuntu1 [753 kB]
 Get:33 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 socat amd64 1.7.3.2-2ubuntu3 [343 kB]
 Get:34 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 ssh-import-id all 5.7-24-g4001a38e-0ubuntu1 [11.5 kB]
 Preconfiguring packages ...
-Fetched 5,347 kB in 4s (1,311 kB/s)
+Fetched 5,347 kB in 7s (773 kB/s)
 Selecting previously unselected package openssh-sftp-server.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 151449 files and directories currently installed.)
 Preparing to unpack .../00-openssh-sftp-server_1%3a8.0p1-6build1_amd64.deb ...
@@ -14635,8 +14660,8 @@ Selecting previously unselected package python-pexpect.
 Preparing to unpack .../28-python-pexpect_4.6.0-1_all.deb ...
 Unpacking python-pexpect (4.6.0-1) ...
 Selecting previously unselected package python-tk.
-Preparing to unpack .../29-python-tk_2.7.17~rc1-1_amd64.deb ...
-Unpacking python-tk (2.7.17~rc1-1) ...
+Preparing to unpack .../29-python-tk_2.7.17-1~19.10_amd64.deb ...
+Unpacking python-tk (2.7.17-1~19.10) ...
 Selecting previously unselected package python3-tk:amd64.
 Preparing to unpack .../30-python3-tk_3.7.5-1build1_amd64.deb ...
 Unpacking python3-tk:amd64 (3.7.5-1build1) ...
@@ -14654,11 +14679,11 @@ Setting up openssh-server (1:8.0p1-6build1) ...
 
 Creating config file /etc/ssh/sshd_config with new version
 Creating SSH2 RSA key; this may take some time ...
-3072 SHA256:MflxbLdgLWEK6l8SUXvmPWK+PUsHwQNROrdEJ/z97b4 root@andy-vm (RSA)
+3072 SHA256:S0GYGyxudsMSWz5QMj6xPUJRtkVsikTMtfUCCgtGvT0 root@andy-vm (RSA)
 Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:Z9b23zD/CaNQIfY6hbSZXlfL044uaf7PBDrtutHFj30 root@andy-vm (ECDSA)
+256 SHA256:ODXYXQ9XjXa/8+VC+opu067Ngvby3giV561bw3w3q1s root@andy-vm (ECDSA)
 Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:XmpZj5EzknbzdozuKLkHbLlsJ1KCgs7CFrt5LKkREQ8 root@andy-vm (ED25519)
+256 SHA256:/lmpeAADlc5+U/I6A5TDjOWGDwlOmdwrQlHHQcRaywk root@andy-vm (ED25519)
 Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
 rescue-ssh.target is a disabled or a static unit, not starting it.
@@ -14694,7 +14719,7 @@ Setting up pylint (2.2.2-3) ...
 Setting up tk8.6-blt2.5 (2.5.3+dfsg-4) ...
 Setting up blt (2.5.3+dfsg-4) ...
 Setting up python3-tk:amd64 (3.7.5-1build1) ...
-Setting up python-tk (2.7.17~rc1-1) ...
+Setting up python-tk (2.7.17-1~19.10) ...
 Processing triggers for desktop-file-utils (0.24-1ubuntu1) ...
 Processing triggers for mime-support (3.63ubuntu1) ...
 Processing triggers for hicolor-icon-theme (0.17-2) ...
@@ -14709,7 +14734,7 @@ Building dependency tree...
 Reading state information...
 iproute2 is already the newest version (5.2.0-1ubuntu2).
 iproute2 set to manually installed.
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
 Installing Mininet core
 /home/andy/mininet /home/andy
 cc -Wall -Wextra  -DVERSION=\"`PYTHONPATH=. python -B bin/mn --version`\" mnexec.c -o mnexec
@@ -14955,7 +14980,7 @@ The following NEW packages will be installed:
   libwireshark12 libwiretap9 libwscodecs2 libwsutil10 libxcb-xinerama0
   libxcb-xinput0 qt5-gtk-platformtheme qttranslations5-l10n tshark wireshark
   wireshark-common wireshark-qt
-0 upgraded, 34 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 34 newly installed, 0 to remove and 2 not upgraded.
 Need to get 32.3 MB of archives.
 After this operation, 160 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libdouble-conversion3 amd64 3.1.5-2 [38.0 kB]
@@ -14993,7 +15018,7 @@ Get:32 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 tshark amd64 3.0.
 Get:33 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 wireshark-qt amd64 3.0.5-1 [3,592 kB]
 Get:34 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 wireshark amd64 3.0.5-1 [5,072 B]
 Preconfiguring packages ...
-Fetched 32.3 MB in 15s (2,109 kB/s)
+Fetched 32.3 MB in 14s (2,265 kB/s)
 Selecting previously unselected package libdouble-conversion3:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 156349 files and directories currently installed.)
 Preparing to unpack .../00-libdouble-conversion3_3.1.5-2_amd64.deb ...
@@ -15152,7 +15177,7 @@ Suggested packages:
 The following NEW packages will be installed:
   libunbound8 openvswitch-common openvswitch-switch python3-openvswitch
   python3-sortedcontainers
-0 upgraded, 5 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 5 newly installed, 0 to remove and 2 not upgraded.
 Need to get 3,088 kB of archives.
 After this operation, 13.7 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 libunbound8 amd64 1.9.0-2ubuntu1 [346 kB]
@@ -15160,7 +15185,7 @@ Get:2 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-sortedcontaine
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 openvswitch-common amd64 2.12.0-0ubuntu1 [942 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 python3-openvswitch all 2.12.0-0ubuntu1 [84.7 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 openvswitch-switch amd64 2.12.0-0ubuntu1 [1,688 kB]
-Fetched 3,088 kB in 2s (1,575 kB/s)
+Fetched 3,088 kB in 4s (689 kB/s)
 Selecting previously unselected package libunbound8:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157259 files and directories currently installed.)
 Preparing to unpack .../libunbound8_1.9.0-2ubuntu1_amd64.deb ...
@@ -15199,12 +15224,12 @@ The following additional packages will be installed:
   openvswitch-pki
 The following NEW packages will be installed:
   openvswitch-pki openvswitch-testcontroller
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
 Need to get 677 kB of archives.
 After this operation, 2,236 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 openvswitch-pki all 2.12.0-0ubuntu1 [2,748 B]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 openvswitch-testcontroller amd64 2.12.0-0ubuntu1 [674 kB]
-Fetched 677 kB in 1s (647 kB/s)
+Fetched 677 kB in 1s (540 kB/s)
 Selecting previously unselected package openvswitch-pki.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157411 files and directories currently installed.)
 Preparing to unpack .../openvswitch-pki_2.12.0-0ubuntu1_all.deb ...
@@ -15220,25 +15245,25 @@ Processing triggers for man-db (2.8.7-3) ...
 Processing triggers for systemd (242-7ubuntu3.2) ...
 Stopped running controller
 end install mininet:
-Sat 14 Dec 2019 03:16:18 PM PST
+Wed 15 Jan 2020 11:14:06 AM PST
 ------------------------------------------------------------
 Installing a few miscellaneous packages
 start install miscellaneous packages:
-Sat 14 Dec 2019 03:16:18 PM PST
+Wed 15 Jan 2020 11:14:07 AM PST
 Collecting grpcio
-  Downloading https://files.pythonhosted.org/packages/69/46/ebd21ce467ab87f2cf825413273936f9b1ee0e6cd4e2f2ee62e0516c771f/grpcio-1.25.0-cp27-cp27mu-manylinux1_x86_64.whl (2.5MB)
+  Downloading https://files.pythonhosted.org/packages/ca/48/620a51a9109ab0e5e509c08af0b565d834593a37371faf8dfc25d6df43eb/grpcio-1.26.0-cp27-cp27mu-manylinux1_x86_64.whl (2.5MB)
 Requirement already satisfied: six>=1.5.2 in /usr/lib/python2.7/dist-packages (from grpcio) (1.12.0)
 Collecting futures>=2.2.0; python_version < "3.2" (from grpcio)
   Downloading https://files.pythonhosted.org/packages/d8/a6/f46ae3f1da0cd4361c344888f59ec2f5785e69c872e175a748ef6071cdb5/futures-3.3.0-py2-none-any.whl
 Requirement already satisfied: enum34>=1.0.4; python_version < "3.4" in /usr/lib/python2.7/dist-packages (from grpcio) (1.1.6)
 Installing collected packages: futures, grpcio
-Successfully installed futures-3.3.0 grpcio-1.25.0
+Successfully installed futures-3.3.0 grpcio-1.26.0
 Collecting protobuf
-  Downloading https://files.pythonhosted.org/packages/a3/27/9a375cc85b90c93ab847370c31fe1302a763b6cd57d54daee20171d720ff/protobuf-3.11.1-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
+  Downloading https://files.pythonhosted.org/packages/13/5c/ba4572a4d952b8db68c4534168a6d2a946b354de5e2b779efb44d4d0b72c/protobuf-3.11.2-cp27-cp27mu-manylinux1_x86_64.whl (1.3MB)
 Requirement already satisfied: six>=1.9 in /usr/lib/python2.7/dist-packages (from protobuf) (1.12.0)
 Requirement already satisfied: setuptools in /usr/lib/python2.7/dist-packages (from protobuf) (41.1.0)
 Installing collected packages: protobuf
-Successfully installed protobuf-3.11.1
+Successfully installed protobuf-3.11.2
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -15248,14 +15273,14 @@ Suggested packages:
   python-psutil-doc
 The following NEW packages will be installed:
   libgflags-dev libgflags2.2 net-tools python-psutil
-0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 4 newly installed, 0 to remove and 2 not upgraded.
 Need to get 496 kB of archives.
 After this operation, 2,715 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libgflags2.2 amd64 2.2.2-1 [70.6 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu eoan/universe amd64 libgflags-dev amd64 2.2.2-1 [87.3 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu eoan/main amd64 net-tools amd64 1.60+git20180626.aebd88e-1ubuntu1 [196 kB]
 Get:4 http://us.archive.ubuntu.com/ubuntu eoan-updates/universe amd64 python-psutil amd64 5.5.1-1ubuntu0.19.10.1 [141 kB]
-Fetched 496 kB in 1s (594 kB/s)
+Fetched 496 kB in 2s (232 kB/s)
 Selecting previously unselected package libgflags2.2.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 157424 files and directories currently installed.)
 Preparing to unpack .../libgflags2.2_2.2.2-1_amd64.deb ...
@@ -15285,14 +15310,14 @@ Successfully built crcmod
 Installing collected packages: crcmod
 Successfully installed crcmod-1.7
 end install miscellaneous packages:
-Sat 14 Dec 2019 03:16:32 PM PST
+Wed 15 Jan 2020 11:14:41 AM PST
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
-Sat 14 Dec 2019 03:16:32 PM PST
+Wed 15 Jan 2020 11:14:42 AM PST
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        59G   16G   41G  28% /
+/dev/sda1        59G   16G   41G  29% /
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         60218M 15972M    41159M  28% /
+/dev/sda1         60218M 16092M    41039M  29% /
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS BELOW
 ----------------------------------------------------------------------
