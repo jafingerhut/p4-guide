@@ -3,6 +3,8 @@
 # Get copies of other repositories that I use to test an open source
 # P4 development tool installation.
 
+set -x
+
 git clone https://github.com/p4pktgen/p4pktgen
 
 # Basic testing of p4pktgen functionality:
