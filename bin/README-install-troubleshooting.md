@@ -32,12 +32,11 @@ Then run the commands below in a terminal.  Note:
 ```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
-$ ./p4-guide/bin/install-p4dev-p4runtime.sh |& tee log.txt
+$ ./p4-guide/bin/install-p4dev-v2.sh |& tee log.txt
 ```
-Replace `install-p4dev-p4runtime.sh` with `install-p4dev.sh` or
-`install-p4dev-v2.sh` if you prefer to use those install scripts
-instead.  More details on the differences between them are in the next
-section.
+Replace `install-p4dev-v2.sh` with `install-p4dev-p4runtime.sh` if you
+prefer it instead.  More details on the differences between them are
+in the next section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
@@ -48,29 +47,29 @@ file is good if you want to see what it did.
 
 ## Which install script should I use?
 
-I would recommend using `install-p4dev-p4runtime.sh` if you have no
+I would recommend using `install-p4dev-v2.sh` if you have no
 preferences.  See the differences below if you want to make a more
 informed decision.
 
-* The shell script
-  [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh) installs
-  `p4c`, `behavioral-model` `simple_switch`, plus
+* The newest shell script [`install-p4dev-v2.sh`](install-p4dev-v2.sh)
+  installs `p4c`, `behavioral-model` `simple_switch`, plus
   `simple_switch_grpc`, that can use the P4Runtime API protocol to
   communicate with a controller (in addition to the older Thrift API).
   It also installs Mininet and a few other small packages that enable
   you to run the exercises in the master branch of the
-  [tutorials](https://github.com/p4lang/tutorials) repository.
-* The newest shell script [`install-p4dev-v2.sh`](install-p4dev-v2.sh)
-  is still fairly new and less tested than the ones above, so consider
-  it "bleeding edge" for now.  It is like `install-p4dev-p4runtime.sh`
-  in that it also installs `simple_switch_grpc` and P4Runtime
-  software.  `install-p4dev-v2.sh` installs more recent versions of
-  Protobuf, Thrift, and gRPC libraries than the scripts above do.  It
-  has been successfully run on all of Ubuntu 16.04, 18.04, and 19.10
+  [tutorials](https://github.com/p4lang/tutorials) repository.  It
+  uses the latest versions of the Protobuf, Thrift, and gRPC libraries
+  that are supported by the open source P4 development tools.  It has
+  been successfully run on all of Ubuntu 16.04, 18.04, and 19.10
   systems, with good test results from running `p4c`'s included tests
   (which exercise little or none of the P4Runtime API code), and
   running the basic exercise in the
   [tutorials](https://github.com/p4lang/tutorials) repository.
+* The shell script
+  [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh) is nearly
+  identical to `install-p4dev-v2.sh`, except it uses slightly older
+  versions of the Protobuf, Thrift, and gRPC libraries, that were
+  until some time during 2019 the latest supported versions.
 * The older shell script [`install-p4dev.sh`](install-p4dev.sh) does
   not install anything unless you edit it.  The messages that appear
   when you run it explain why, and how to change it if you really want
