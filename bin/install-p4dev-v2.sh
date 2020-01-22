@@ -392,12 +392,8 @@ echo "Installing a few miscellaneous packages"
 echo "start install miscellaneous packages:"
 date
 
-# On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
-# grpcio 1.24.1
-sudo pip install grpcio
-# On 2019-Oct-09 on an Ubuntu 16.04 or 18.04 machine, this installed
-# protobuf 3.10.0
-sudo pip install protobuf
+sudo pip install grpcio==1.17.2
+sudo pip install protobuf==3.6.1
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 sudo apt-get --yes install python-psutil libgflags-dev net-tools
 sudo pip install crcmod
