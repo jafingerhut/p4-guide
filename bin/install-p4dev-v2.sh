@@ -93,6 +93,13 @@ echo "adding 'git checkout <tag>' and/or 'git checkout <commit-sha>'"
 echo "command at the appropriate places."
 echo ""
 
+# TBD: Consider adding a check for how much free disk space there is
+# and giving a message about it and aborting if it is too low.  On
+# Ubuntu 16.04, at least, the command `df --output=avail .` shows how
+# many Kbytes are free on the file system containing the directory
+# `.`, which could be interpreted in a bash script without having to
+# parse so much output from a different command like `df -h .`
+
 
 REPO_CACHE_DIR="${INSTALL_DIR}/repository-cache"
 get_from_nearest() {
@@ -214,7 +221,7 @@ git submodule update --init --recursive
 if [[ "${ubuntu_release}" > "19" ]]
 then
     # Apply patches that seem to be necessary in order for grpc v1.17.2
-    # to compile and install successfully on an Ubuntu 19.04 system
+    # to compile and install successfully on an Ubuntu 19.10 system
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
     for PATCH_FILE in ${PATCH_DIR}/*.diff
     do
