@@ -375,8 +375,23 @@ echo "Installing a few miscellaneous packages"
 echo "start install miscellaneous packages:"
 date
 
-sudo pip install grpcio==1.3.2
-sudo pip install protobuf==3.2.0
+# grpcio 1.3.2 would be ideal, to match the version of gRPC that we
+# have installed.  At least on 2020-Jan-21 when I tried to install
+# that version of grpcio using pip, it indicated that many other
+# versions were available, but not that one.  The closest two versions
+# were 1.3.0 and 1.3.3.  It seems safer to use a slightly newer
+# version of the Python package, rather than an older one, but that is
+# just a guess on my part.  So far, it has worked well when doing
+# _basic_ P4Runtime API testing on a system on which this install
+# script was run.
+sudo pip install grpcio==1.3.3
+
+# When installing grpcio 1.3.3, it installs protobuf 3.11.2
+# automatically as a dependency.  Later trying to 'pip install
+# protobuf==3.2.0' leaves it at the newer version 3.11.2, so do not
+# bother running the next commented command.
+#sudo pip install protobuf==3.2.0
+
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 sudo apt-get --yes install python-psutil libgflags-dev net-tools
 sudo pip install crcmod
