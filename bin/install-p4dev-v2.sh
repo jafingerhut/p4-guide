@@ -36,6 +36,7 @@
 # p4c - 1.6G
 # behavioral-model - 4.1G
 
+set -e
 
 # The maximum number of gcc/g++ jobs to run in parallel.  1 is the
 # safest number that enables compiling p4c even on machines with only
@@ -453,6 +454,8 @@ set -x
 pip list
 pip3 list
 set +x
+
+set +e
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"

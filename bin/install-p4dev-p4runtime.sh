@@ -36,6 +36,8 @@
 # p4c - 1.4G
 # behavioral-model - 2.5G
 
+set -e
+
 # The maximum number of gcc/g++ jobs to run in parallel.  1 is the
 # safest number that enables compiling p4c even on machines with only
 # 2 GB of RAM, and even on machines with significantly more RAM, it
@@ -80,7 +82,7 @@ echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version"
-echo "+ Python packages: grpcio 1.3.3, protobuf 3.11.2"
+echo "+ Python packages: grpcio 1.8.1, protobuf 3.11.2"
 echo "+ Python packages: crcmod, latest version"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -392,21 +394,28 @@ echo "Installing a few miscellaneous packages"
 echo "start install miscellaneous packages:"
 date
 
-# grpcio 1.3.2 would be ideal, to match the version of gRPC that we
-# have installed.  At least on 2020-Jan-21 when I tried to install
-# that version of grpcio using pip, it indicated that many other
-# versions were available, but not that one.  The closest two versions
-# were 1.3.0 and 1.3.3.  It seems safer to use a slightly newer
-# version of the Python package, rather than an older one, but that is
-# just a guess on my part.  So far, it has worked well when doing
-# _basic_ P4Runtime API testing on a system on which this install
-# script was run.
-sudo pip install grpcio==1.3.3
+# grpcio 1.3.2 would match the version of gRPC that we have installed.
+# At least on 2020-Jan-21 when I tried to install that version of
+# grpcio using pip, it indicated that many other versions were
+# available, but not that one.  The closest two versions were 1.3.0
+# and 1.3.3.
+
+# I tried 1.3.3, but then the p4lang/tutorials basic exercise 'make
+# run' failed with an error message that mentioned a grpc Python
+# library class UnaryUnaryClientInterceptor not being found.  That
+# string is mentioned in grpcio 1.17.1, but not 1.3.3.
+
+# The earliest grpcio package version I found that mentions this class
+# is 1.8.1.
+
+# So far, version TBD has worked well when doing _basic_ P4Runtime API
+# testing on a system on which this install script was run.
+sudo pip install grpcio==1.8.1
 set -x
 pip list
 set +x
 
-# When installing grpcio 1.3.3, it installs protobuf 3.11.2
+# When installing grpcio 1.8.1, it installs protobuf 3.11.2
 # automatically as a dependency.  Later trying to 'pip install
 # protobuf==3.2.0' leaves it at the newer version 3.11.2, so do not
 # bother running the next commented command.
@@ -425,16 +434,18 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
+set -x
+pip list
+pip3 list
+set +x
+
+set +e
+
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
 date
 df -h .
 df -BM .
-
-set -x
-pip list
-pip3 list
-set +x
 
 cd "${INSTALL_DIR}"
 DETS="install-details"
