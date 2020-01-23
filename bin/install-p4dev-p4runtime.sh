@@ -331,9 +331,25 @@ date
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2019-Oct-09
 sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply python3-pip tcpdump
+
+pip --version
+pip3 --version
+# At multiple points I do a 'pip list' command.  This is not required
+# for a successful installation -- I do it mainly because I am curious
+# to see in the log output files from running this script what
+# packages and versions were installed at those times during script
+# execution.
+set -x
+pip list
+pip3 list
+set +x
+
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 pip3 install scapy
+set -x
+pip3 list
+set +x
 
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
@@ -385,6 +401,9 @@ date
 # _basic_ P4Runtime API testing on a system on which this install
 # script was run.
 sudo pip install grpcio==1.3.3
+set -x
+pip list
+set +x
 
 # When installing grpcio 1.3.3, it installs protobuf 3.11.2
 # automatically as a dependency.  Later trying to 'pip install
@@ -395,6 +414,9 @@ sudo pip install grpcio==1.3.3
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 sudo apt-get --yes install python-psutil libgflags-dev net-tools
 sudo pip install crcmod
+set -x
+pip list
+set +x
 
 echo "end install miscellaneous packages:"
 date
@@ -407,6 +429,11 @@ echo "Time and disk space used when installation was complete:"
 date
 df -h .
 df -BM .
+
+set -x
+pip list
+pip3 list
+set +x
 
 cd "${INSTALL_DIR}"
 DETS="install-details"

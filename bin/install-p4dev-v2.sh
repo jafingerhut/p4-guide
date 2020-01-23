@@ -179,6 +179,18 @@ sudo apt-get --yes install pkg-config
 # 19.10, so install it explicitly here.
 sudo apt-get --yes install python3-pip python-pip
 
+pip --version
+pip3 --version
+# At multiple points I do a 'pip list' command.  This is not required
+# for a successful installation -- I do it mainly because I am curious
+# to see in the log output files from running this script what
+# packages and versions were installed at those times during script
+# execution.
+set -x
+pip list
+pip3 list
+set +x
+
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
 
@@ -341,6 +353,9 @@ sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex l
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 pip3 install scapy
+set -x
+pip3 list
+set +x
 
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
@@ -403,26 +418,40 @@ date
 # have installed.  At least on 2020-Jan-21 when I tried to install
 # that version of grpcio using pip, it indicated that many other
 # versions were available, but not that one.  The closest two versions
-# were 1.17.1 and 1.18.0.  It seems safer to use a slightly newer
-# version of the Python package, rather than an older one, but that is
-# just a guess on my part.  So far, it has worked well when doing
+# were 1.17.1 and 1.18.0.  Antonin Bas mentioned that he believes
+# there were perhaps no changes from 1.17.1 to 1.17.2 and so
+# recommended using 1.17.1.  So far, it has worked well when doing
 # _basic_ P4Runtime API testing on a system on which this install
 # script was run.
-sudo pip install grpcio==1.18.0
+sudo pip install grpcio==1.17.1
+set -x
+pip list
+set +x
 
 # Installing the version of grpcio above does not automatically
 # install a Python protobuf package, so install one.
 sudo pip install protobuf==3.6.1
+set -x
+pip list
+set +x
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 sudo apt-get --yes install python-psutil libgflags-dev net-tools
 sudo pip install crcmod
+set -x
+pip list
+set +x
 
 echo "end install miscellaneous packages:"
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
+
+set -x
+pip list
+pip3 list
+set +x
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
