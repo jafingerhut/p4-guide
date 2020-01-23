@@ -463,6 +463,12 @@ diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-insta
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
 echo "----------------------------------------------------------------------"
+echo "Output of script p4-environment-info.sh"
+echo "----------------------------------------------------------------------"
+"${THIS_SCRIPT_DIR_ABSOLUTE}/p4-environment-info.sh"
+echo "----------------------------------------------------------------------"
+
+echo "----------------------------------------------------------------------"
 echo "CONSIDER READING WHAT IS BELOW"
 echo "----------------------------------------------------------------------"
 echo ""
