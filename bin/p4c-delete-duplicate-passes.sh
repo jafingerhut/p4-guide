@@ -21,7 +21,7 @@ cd "${DUMP_DIR}"
 
 frontendpass=0
 lastkeptfile="not found"
-for n in ${BNAME}-FrontEnd_${frontendpass}_*.p4
+for n in ${BNAME}-FrontEnd_${frontendpass}_*.p4*
 do
     lastkeptfile="${n}"
 done
@@ -33,7 +33,7 @@ fi
 
 for frontendpass in `seq 1 100`
 do
-    for n in ${BNAME}-FrontEnd_${frontendpass}_*.p4
+    for n in ${BNAME}-FrontEnd_${frontendpass}_*.p4*
     do
 	curname="${n}"
     done
@@ -64,7 +64,7 @@ done
 
 for midendpass in `seq 0 100`
 do
-    for n in ${BNAME}-*MidEnd_${midendpass}_*.p4
+    for n in ${BNAME}-*MidEnd_${midendpass}_*.p4*
     do
 	curname="${n}"
     done
