@@ -12,8 +12,18 @@ The open source v1model architecture adds these:
 * `range`
 * `selector` - used only for 
 
-In late 2019, some developers have proposed adding the following new
-match kinds:
+This documentation for simple_switch gives some details about these
+match kinds, including restriction on `lpm` fields supported by
+simple_switch, and how one can write table entries for them in a P4_16
+program using `const entries`:
+https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md#table-match-kinds-supported
+
+This article documents the syntax to use for adding table entries
+using the `simple_switch_CLI` program:
+https://github.com/p4lang/behavioral-model/blob/master/docs/runtime_CLI.md#table_add
+
+In late 2019, some P4 developers have proposed adding the following
+new match kinds:
 
 * `optional` - similar to `ternary`, but with a restriction that the
   mask is either completely wildcard in every bit position, or
