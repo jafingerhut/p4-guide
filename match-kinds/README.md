@@ -54,14 +54,14 @@ places that would also require changes if someone wants to add the
 `set` match kind:
 
 * Changes to https://github.com/p4lang/p4c
-  * https://github.com/p4lang/p4c/pull/2146
+  * https://github.com/p4lang/p4c/pull/2184 (done)
 * Changes to https://github.com/p4lang/behavioral-model
-  * simple_switch_grpc https://github.com/p4lang/behavioral-model/pull/861
-  * Documentation https://github.com/p4lang/behavioral-model/pull/847
+  * simple_switch_grpc https://github.com/p4lang/behavioral-model/pull/861 (waiting on PI #504 to merge first)
+  * Documentation https://github.com/p4lang/behavioral-model/pull/847 (probably ready to go as of 2020-Feb-04)
 * Changes to https://github.com/p4lang/p4runtime
-  * https://github.com/p4lang/p4runtime/pull/259
+  * https://github.com/p4lang/p4runtime/pull/259 (done)
 * Changes to https://github.com/p4lang/PI
-  * https://github.com/p4lang/PI/pull/504
+  * https://github.com/p4lang/PI/pull/504 (probably ready to go as of 2020-Feb-04)
 
 
 In order to reduce the development effort required, the approach taken
