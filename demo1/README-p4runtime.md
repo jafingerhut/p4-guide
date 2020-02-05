@@ -145,14 +145,12 @@ h.table_add(('send_frame', None), ('egressImpl.my_drop', []))
 # Python P4Runtime client operations.  If 'n' does not fit in
 # 'width_in_bits' bits, an exception is raised.
 
-# Note: I have tried adding table entries using calls to bt.int2string
-# that had fewer bits than shown in the calls below, and got back an
-# error from the P4Runtime server, I think with "INVALID_ARGUMENT" in
-# the printed error message at the client (from memory).  Apparently
-# the current simple_switch_grpc code is not permissive in the size of
-# the encoding of these numbers?  If so, it would be nice to have some
-# code that would automatically determine the necessary width from the
-# P4 Info file, without a user having to look it up and do it
+# Until and unless simple_switch_grpc is modified so that it can
+# accept P4Runtime API messages with the minimum length encoding of
+# integers, without padding them with 0s to the full width of the
+# field in the P4_16 source code (see Note 1), it would be nice to
+# have some code that would automatically determine the bit width from
+# the P4 Info file, without a user having to look it up and do it
 # themselves.
 
 # Define a few small helper functions that help construct parameters
@@ -320,6 +318,68 @@ with open(p4info_path, 'r') as p4info_f:
 
 
 ----------------------------------------
+
+
+# Note on attempts to try minimum-length encoding of numbers in P4Runtime API messages
+
+Note 1:
+
+I have tried adding table entries using calls to `bt.int2string2`,
+which returns fewer zero padding bits than the `bt.int2string` calls
+shown above, and got back an error from the P4Runtime server like this
+printed in the client Python interactive session:
+
+```
+>>> h.table_add(ipv4_da_lpm_key(h, '10.1.0.1', 32), set_l2ptr(58))
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/home/andy/p4-guide/pylib/base_test.py", line 636, in table_add
+    action_name, action_params)
+  File "/home/andy/p4-guide/pylib/base_test.py", line 620, in send_request_add_entry_to_action
+    return req, self.write_request(req, store=(mk is not None))
+  File "/home/andy/p4-guide/pylib/base_test.py", line 522, in write_request
+    rep = self._write(req)
+  File "/home/andy/p4-guide/pylib/base_test.py", line 519, in _write
+    raise P4RuntimeWriteException(e)
+base_test.P4RuntimeWriteException: Error(s) during Write:
+        * At index 0: INVALID_ARGUMENT, ''
+```
+
+Apparently the current simple_switch_grpc code is not permissive in
+the size of the encoding of these numbers?
+
+The last time I saw this error was when I tested with the open source
+tools built from the versions of source code in the repositories given
+below in this section.
+
+For https://github.com/p4lang/p4c
+
+```
+$ git log -n 1 | head -n 3
+commit e5b6c838d06e0075dd0d113600b01f5ae71498de
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Tue Feb 4 15:34:33 2020 -0800
+```
+
+For https://github.com/p4lang/behavioral-model
+
+```
+$ git log -n 1 | head -n 3
+commit b2b86662060f6c843a01cd2996822e4280528fd7
+Author: Antonin Bas <abas@vmware.com>
+Date:   Sat Feb 1 18:49:43 2020 -0800
+```
+
+For https://github.com/p4lang/PI
+
+```
+$ git log -n 1 | head -n 3
+commit f2fcaa37e56a4f0a44ced51a5cfb77fc315c44ac
+Author: Antonin Bas <abas@vmware.com>
+Date:   Tue Jan 21 18:38:18 2020 -0800
+```
+
+
 
 # Last successfully tested with these software versions
 
