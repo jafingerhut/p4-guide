@@ -327,25 +327,25 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit b3798b95f3e407ef269ed4d5eb02843e78b35754
-Author: Chris Dodd <cdodd@barefootnetworks.com>
-Date:   Wed Nov 6 18:15:47 2019 -0800
+commit e5b6c838d06e0075dd0d113600b01f5ae71498de
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Tue Feb 4 15:34:33 2020 -0800
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit 971732f48570f848a27a8f54b25b7447732d8591
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Sat Oct 26 13:26:13 2019 -0700
+commit b2b86662060f6c843a01cd2996822e4280528fd7
+Author: Antonin Bas <abas@vmware.com>
+Date:   Sat Feb 1 18:49:43 2020 -0800
 ```
 
 For https://github.com/p4lang/PI
 
 ```
 $ git log -n 1 | head -n 3
-commit 33e15ea4cbc292a532cf3f5db61d0f5ea94e6c36
+commit f2fcaa37e56a4f0a44ced51a5cfb77fc315c44ac
 Author: Antonin Bas <abas@vmware.com>
-Date:   Sat Nov 2 15:08:32 2019 -0700
+Date:   Tue Jan 21 18:38:18 2020 -0800
 ```
