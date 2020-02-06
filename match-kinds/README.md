@@ -49,19 +49,25 @@ they can be implemented, and prove their usefulness:
 
 As of February 2020, there are pull requests with proposed changes
 available to implement the addition of the `optional` match kind.
-Here is a list of them for reference, showing at least most of the
+Below is a list of them for reference, showing at least most of the
 places that would also require changes if someone wants to add the
-`set` match kind:
+`set` match kind.
 
-* Changes to https://github.com/p4lang/p4c
-  * https://github.com/p4lang/p4c/pull/2184 (done)
-* Changes to https://github.com/p4lang/behavioral-model
-  * simple_switch_grpc https://github.com/p4lang/behavioral-model/pull/861 (waiting on PI #504 to merge first)
-  * Documentation https://github.com/p4lang/behavioral-model/pull/847 (probably ready to go as of 2020-Feb-04)
+I have attempted to put them in order of dependency between them, with
+later ones depending upon earlier commits happening first.  The PR for
+documentation changes does not have any code dependencies with the
+others, but it seems best to wait to publish the new documentation
+until after most or all of the implementation is ready.
+
 * Changes to https://github.com/p4lang/p4runtime
   * https://github.com/p4lang/p4runtime/pull/259 (done)
+* Changes to https://github.com/p4lang/p4c
+  * https://github.com/p4lang/p4c/pull/2184 (done)
 * Changes to https://github.com/p4lang/PI
-  * https://github.com/p4lang/PI/pull/504 (probably ready to go as of 2020-Feb-04)
+  * https://github.com/p4lang/PI/pull/504 (done)
+* Changes to https://github.com/p4lang/behavioral-model
+  * simple_switch_grpc https://github.com/p4lang/behavioral-model/pull/861 (waiting on PI #504 to merge first)
+  * Documentation https://github.com/p4lang/behavioral-model/pull/847 (done)
 
 
 In order to reduce the development effort required, the approach taken
