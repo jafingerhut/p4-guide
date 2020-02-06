@@ -345,8 +345,11 @@ base_test.P4RuntimeWriteException: Error(s) during Write:
         * At index 0: INVALID_ARGUMENT, ''
 ```
 
-Apparently the current simple_switch_grpc code is not permissive in
-the size of the encoding of these numbers?
+There is an issue opened on the p4lang/PI repository to track the fact
+that currently it requires the full size fields, rounded up to a whole
+number of bytes, but it should be able to accept shorter
+representations of integers, too:
+https://github.com/p4lang/PI/issues/454
 
 The last time I saw this error was when I tested with the open source
 tools built from the versions of source code in the repositories given
