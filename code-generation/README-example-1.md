@@ -12,8 +12,8 @@ That will write to these two files:
 + generated_read_write_custom_header_at_index.p4
 
 Copies of the files as generated on my system when I was developing it
-are included in the `generated-files` directory, in case you want to
-look at them without generating them yourself.
+are included in the `[generated-files](generated-files/)` directory,
+in case you want to look at them without generating them yourself.
 
 Both of those files have `#include` directives in the program
 `example1.p4`, which you can now compile:
