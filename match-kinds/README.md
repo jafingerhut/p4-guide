@@ -66,7 +66,7 @@ until after most or all of the implementation is ready.
 * Changes to https://github.com/p4lang/PI
   * https://github.com/p4lang/PI/pull/504 (done)
 * Changes to https://github.com/p4lang/behavioral-model
-  * simple_switch_grpc https://github.com/p4lang/behavioral-model/pull/861 (waiting on PI #504 to merge first)
+  * simple_switch_grpc https://github.com/p4lang/behavioral-model/pull/861 (done)
   * Documentation https://github.com/p4lang/behavioral-model/pull/847 (done)
 
 
