@@ -101,6 +101,18 @@ control ingressImpl(inout headers_t hdr,
         // straightforward to do this.  We are not attempting to solve
         // that problem in this example program.
 
+        // Note: The v1model architecture has fields enq_qdepth and
+        // deq_qdepth that can be read during egress processing that
+        // provide the depth of the output port queue, in units of
+        // packets, where enq_qdepth is the depth of the queue at the
+        // time a packet was enqueued, and deq_qdepth is the depth of
+        // the queue at the time a packet was dequeued.  This program
+        // shows how, if you did not have such fields in standard
+        // metadata, how one might try to implement something like
+        // deq_qdepth, but only if the target supported a single
+        // register array extern object instance that can be accessed
+        // and updated from both ingress and egress.
+
         approx_queue_depth_pkts.read(tmp_count, (bit<32>) output_port);
         tmp_count = tmp_count + 1;
         log_msg("Ingress incremented approx_queue_depth_pkts[p] for p={} to {}",
