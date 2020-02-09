@@ -33,12 +33,11 @@ struct headers_t {
 
 typedef bit<32> PktCount_t;
 
-// WARNING: P4_16 the language allows implementations to have
-// instantiations of extern objects at the top level, and access them
-// from multiple different controls in your program.  This demo
-// program shows that the BMv2 software switch does support this, with
-// the same register array being updated in both ingress and egress
-// controls.
+// P4_16 the language allows implementations to have instantiations of
+// extern objects at the top level, and access them from multiple
+// different controls in your program.  This demo program shows that
+// the BMv2 software switch does support this, with the same register
+// array being updated in both ingress and egress controls.
 
 // WARNING: While the P4_16 language specification allows
 // implementations to do this, it does not _require_ that all
