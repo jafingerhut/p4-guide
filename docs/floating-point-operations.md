@@ -441,4 +441,6 @@ ternary or range entry, all sharing the same `base_value` and `slope`.
 
 You can use this to implement functions with multiple inputs, too, by
 having them as separate fields of the table lookup key, and multiple
-outputs, if that is useful.
+outputs, if that is useful.  The multiplication in the previous
+section could also be implemented with a table having 2^(8+8) = 64K
+entries, each with a 16-bit result.
