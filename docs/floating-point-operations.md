@@ -384,7 +384,7 @@ Take a look at [this page from a book published in the year
 1619](https://en.wikipedia.org/wiki/Mathematical_table#/media/File:Bernegger_Manuale_136.jpg),
 and see if you can guess one way to do this in P4.
 
-That is right.  Use a table.
+That is right.  Use a table!
 
 Now for most high speed devices you will not want to attempt to create
 a table with as many entries as a book has, but there is a lot of room
@@ -444,3 +444,21 @@ having them as separate fields of the table lookup key, and multiple
 outputs, if that is useful.  The multiplication in the previous
 section could also be implemented with a table having 2^(8+8) = 64K
 entries, each with a 16-bit result.
+
+
+
+# References
+
++ Henry S. Warren, "Hacker's Delight, 2nd edition", Addison-Wesley,
+  2012, ISBN 978-0321842688,
+  https://en.wikipedia.org/wiki/Hacker%27s_Delight
+
+Some of these techniques (and perhaps more) are also described in this
+2017 research paper:
+
++ "Evaluating the Power of Flexible Packet Processing for Network
+  Resource Allocation", Naveen Kr. Sharma, Antoine Kaufmann, Thomas
+  Anderson, Changhoon Kim, Arvind Krishnamurthy, Jacob Nelson, Simon
+  Peter, Proc. of the 14th USENIX Symposium on Networked Systems
+  Design and Implementation (NSDI '17), March 2017,
+  https://www.usenix.org/system/files/conference/nsdi17/nsdi17-sharma.pdf
