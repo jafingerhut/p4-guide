@@ -237,7 +237,7 @@ e.g. 100 is 64+32+4, we can write fractinos as sums of negative powers
 of 2, e.g. 3.4 is 1/2+1/4.
 
 Just as 1/3 cannot be represented exactly as a decimal number with a
-finite number of digits, but only as a infinitely repeating series of
+finite number of digits, but only as an infinitely repeating series of
 digits 0.33333...., many fractions cannot be represented exactly in
 binary, either.  1/100 is such a number that cannot be represented
 exactly in binary, without an infinite repeating sequence of bits.
@@ -322,11 +322,12 @@ believe roughly the 1950s through 1960s), and known by a much larger
 fraction of computer programmers at a time when FPUs did not yet
 exist, and even integer multiply and divide instructions could take
 significantly longer than integer add, subtract, and shift
-instructions.  It can be valuable for P4 programmers in 2020, who are
-targeting high speed switch ASICs.  Perhaps some day high speed switch
-ASICs will have big integer multiply and divide operations, and/or
-FPUs, but until then:
+instructions.  It can be a valuable resource for P4 programmers in
+2020, who are targeting high speed switch ASICs.
 
-Henry S. Warren, "Hacker's Delight, 2nd edition", Addison-Wesley,
-2012, ISBN 978-0321842688,
-https://en.wikipedia.org/wiki/Hacker%27s_Delight
++ Henry S. Warren, "Hacker's Delight, 2nd edition", Addison-Wesley,
+  2012, ISBN 978-0321842688,
+  https://en.wikipedia.org/wiki/Hacker%27s_Delight
+
+Perhaps some day high speed switch ASICs will have big integer
+multiply and divide operations, and/or FPUs, but until then ...
