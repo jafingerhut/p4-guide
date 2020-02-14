@@ -342,13 +342,13 @@ multiply and divide operations, and/or FPUs, but until then ...
 
 ## Multiplying two integers
 
-Some P4 implementations may enable you to compile two integer
-variables, but if they do not, and you really really need it, there
-are at least a couple of ways to go about it.
+Some P4 implementations may enable you to multiply two integer
+variables, but if they do not, and you really want to, there are at
+least a couple of ways to go about it.
 
 The one described in this section is basically multiplication of two
-multi-digit numbers like many people learn in grade school (in
-decimal), except in binary.  I was surprised to see that Khan Academy
+multi-digit numbers like many people learn in grade school, in
+decimal, except in binary.  I was surprised to see that Khan Academy
 has a [video demonstrating multiplication in
 binary](https://www.khanacademy.org/math/algebra-home/alg-intro-to-algebra/algebra-alternate-number-bases/v/binary-multiplication).
 
@@ -420,7 +420,7 @@ variable where you want to store the result.
              100 : set_result(0);
             // ... 899 entries omitted here ...
             1000 : set_result(100);
-	}
+        }
     }
 
 This code can be even more repetitive than that from the previous
