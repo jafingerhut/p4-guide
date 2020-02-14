@@ -118,7 +118,7 @@ example the queueing latency, i.e. time that packets spent waiting in
 a queue.  This is one such paper:
 
 + "Language-Directed Hardware Design for Network Performance
-  Monitoring", Srinivas Narayana, Anirudh, Sivaraman, Vikram Nathan,
+  Monitoring", Srinivas Narayana, Anirudh Sivaraman, Vikram Nathan,
   Prateesh Goyal, Venkat Arun, Mohammad Alizadeh, Vimalkumar
   Jeyakumar, Changhoon Kim, SIGCOMM 2017,
   http://web.mit.edu/marple/marple-sigcomm17.pdf
@@ -188,7 +188,7 @@ units.
 How precise are these avg_next values?  They are a _whole integer
 number_ of microseconds.  The example code above discards any
 fractional microseconds that would result if you did infinite
-precision arithemtic, in the calculation of the expression `diff >>
+precision arithmetic, in the calculation of the expression `diff >>
 7`.  The least significant 7 bits of `diff` are discarded.
 
 Could you calculate an average value that was precise to a fraction of
@@ -240,7 +240,7 @@ What if we really wanted to use alpha=0.01, because we determined that
 1/128 was not good enough for our use case?
 
 Just as we represent integer in binary as sums of powers of 2,
-e.g. 100 is 64+32+4, we can write fractinos as sums of negative powers
+e.g. 100 is 64+32+4, we can write fractions as sums of negative powers
 of 2, e.g. 3.4 is 1/2+1/4.
 
 Just as 1/3 cannot be represented exactly as a decimal number with a
