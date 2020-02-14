@@ -83,7 +83,7 @@ control read_custom_header_at_index (in my_custom_hdr_t my_custom_hdr,
 {
     action read_offset_0 () {
         // The P4_16 operator ++ concatenates a bit<W1> operand and
-        // bit<W2> operand to product a bit<W1+W2> result.
+        // bit<W2> operand to produce a bit<W1+W2> result.
         result = my_custom_hdr.f0 ++ my_custom_hdr.f1;
     }
     action read_offset_1 () {
@@ -382,11 +382,12 @@ https://github.com/networkedsystemsIITB/pcube
 
 There are certainly other design choices on how to extend P4, but one
 way is the way that the original C++ compiler was implemented, which
-was as a preprocessor step that translated to C.  pcube is a
+was as a preprocessor step that translated to C.  `pcube` is a
 preprocessor that transforms its input, which is P4_14 extended with a
-few extra constructs, into P4_14.  As mentioned in the paper, all of
-their ideas should extend to an extended version of P4_16 that is
-translated into standard P4_16.
+few extra constructs, into P4_14 that only uses constructs defined
+within the language specification.  As mentioned in the paper, all of
+their ideas should work in creating a similar extended version of
+P4_16 that is translated into standard P4_16.
 
 You can think of parser generators like
 [Bison](https://en.wikipedia.org/wiki/GNU_Bison) and
@@ -417,13 +418,14 @@ longer actively did hardware design).
 I have seen multiple tools that allowed one to embed
 [Perl](https://en.wikipedia.org/wiki/Perl) code in specially formatted
 comments into Verilog source files, that were a kind of templating
-language.  The idea was you ran a particular Perl preprocessor on the
-mingled Perl/Verilog source code, and it executed Perl code in those
-specially formatted comments, and the output was a Verilog program.  I
-am not aware of an open source tool like this to refer to, but it is
-straightforward enough, and useful enough, to create such a tool in a
-commercial setting, that there were multiple different implementations
-of such tools developed within different hardware design teams.
+language.  The idea was you ran a preprocessor program, written in
+Perl, on the mingled Perl/Verilog source code, and it executed Perl
+code in those specially formatted comments, and the output was a
+Verilog program.  I am not aware of an open source tool like this to
+refer to, but it is straightforward enough, and useful enough, to
+create such a tool in a commercial hardware design setting, that there
+were multiple different implementations of such tools developed within
+different hardware design teams.
 
 [Common Lisp macros](https://en.wikipedia.org/wiki/Common_Lisp#Macros)
 (not to be confused with macros in C or C++ -- Lisp's are
@@ -437,10 +439,20 @@ can be nested.  The language provides a large powerful library for
 manipulating these lists in many ways, which can be used when writing
 Lisp macros.
 
+Common Lisp macros are basically user-written functions that take data
+structures representing code as input (which can have constructs that
+the Common Lisp compiler does not know how to compile), and return as
+output the transformed data structures representing code you want the
+Common Lisp compiler to actually compile (which should not have
+anything the Common Lisp compiler does not know how to compile).
+
 [1] Yes, fine, there is a reader in Lisp, but it is about as simple
-    and straightforward as a lexer in most programming languages,
-    plus handling of nested lists.  But once you get past this simple
-    reader, which is the same one for all programming language
-    constructs, you have Lisp data structures in memory, and you can
-    use Lisp macros to define new control flow constructs, if you
-    wish, that did not come as part of the language itself.
+    and straightforward as a lexer in most programming languages, plus
+    handling of nested lists [2].  But once you get past this simple
+    reader, which is the same one for all Lisp programming language
+    constructs, you have Lisp data structures in memory.
+
+[2] OK, getting even more into details here, there _are_ reader macros
+    in Common Lisp, too, which can, roughly speaking, change how the
+    lexer works, too.  That way can lie madness for Common Lisp
+    developers, if used unwisely.
