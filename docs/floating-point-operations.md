@@ -102,6 +102,13 @@ using integer subtraction of two such time stamp values, and the
 result will be in the same units as the time stamps.  No FPU is
 required.
 
+This is also called [fixed-point
+arithmetic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic).  It
+is like the mantissa part of a floating point number, without the
+exponent.  Or if you prefer another way to think of it, the exponent
+is a constant that is understood or implied as part of the program,
+not stored in any variable anywhere.
+
 
 ## Example of calculating EWMA of queue depths
 
@@ -331,3 +338,107 @@ instructions.  It can be a valuable resource for P4 programmers in
 
 Perhaps some day high speed switch ASICs will have big integer
 multiply and divide operations, and/or FPUs, but until then ...
+
+
+## Multiplying two integers
+
+Some P4 implementations may enable you to compile two integer
+variables, but if they do not, and you really really need it, there
+are at least a couple of ways to go about it.
+
+The one described in this section is basically multiplication of two
+multi-digit numbers like many people learn in grade school (in
+decimal), except in binary.  I was surprised to see that Khan Academy
+has a [video demonstrating multiplication in
+binary](https://www.khanacademy.org/math/algebra-home/alg-intro-to-algebra/algebra-alternate-number-bases/v/binary-multiplication).
+
+I will restrict this example to multiplying two 8-bit unsigned
+integers, with a 16-bit result, but the idea is pretty easy to
+generalize to multiplying an A-bit unsigned integer with a B-bit
+unsigned integer to produce an (A+B)-bit result.
+
+    bit<8> a;
+    bit<8> b;
+    bit<16> product;
+
+    bit<16> tmp0 = (b[0:0] == 1) ? (((bit<16>) a) << 0) : 0;
+    bit<16> tmp1 = (b[1:1] == 1) ? (((bit<16>) a) << 1) : 0;
+    bit<16> tmp2 = (b[2:2] == 1) ? (((bit<16>) a) << 2) : 0;
+    bit<16> tmp3 = (b[3:3] == 1) ? (((bit<16>) a) << 3) : 0;
+    bit<16> tmp4 = (b[4:4] == 1) ? (((bit<16>) a) << 4) : 0;
+    bit<16> tmp5 = (b[5:5] == 1) ? (((bit<16>) a) << 5) : 0;
+    bit<16> tmp6 = (b[6:6] == 1) ? (((bit<16>) a) << 6) : 0;
+    bit<16> tmp7 = (b[7:7] == 1) ? (((bit<16>) a) << 7) : 0;
+    product = tmp0 + tmp1 + tmp2 + tmp3 + tmp4 + tmp5 + tmp6 + tmp7;
+
+This kind of code can get quite repetitive.  See the [P4 code
+generation article](../code-generation/README.md) for tips on how to
+avoid drudgery when creating repetitive code.
+
+
+## Other functions
+
+What about other kinds of functions: sines, cosines, logarithms, etc.?
+
+Take a look at [this page from a book published in the year
+1619](https://en.wikipedia.org/wiki/Mathematical_table#/media/File:Bernegger_Manuale_136.jpg),
+and see if you can guess one way to do this in P4.
+
+That is right.  Use a table.
+
+Now for most high speed devices you will not want to attempt to create
+a table with as many entries as a book has, but there is a lot of room
+here for trading off the size of the table, with the accuracy of the
+results you get.
+
+For example, suppose you want to calculate the base 10 logarithm of
+some number in the range 1.0 to 10.0.
+
+First, pick a precision and representation as an integer for the input
+value, e.g. it will be a 10-bit integer, where the integer 1000 will
+represent 10.0, 200 will represent 2.0, and in general the integer N
+will represent the value (N/100).
+
+Next, pick a precision and representation as an integer for the output
+value, e.g. it will be an 8-bit integer, where the value M will
+represent the value (M/100).  We only need to represent values in the
+range [0.0, 1.0], and 8 bits is enough to represent all multiples of
+0.01 in that range.
+
+Now create a P4 table with a 10-bit exact match key, with only one
+action, that assigns the value of an 8-bit action parameter to some
+variable where you want to store the result.
+
+    bit<10> input_val;
+    bit<8> output_val;
+
+    action set_result (bit<8> result) { output_val = result; }
+    table log_base_10 {
+        key = { input_val : exact; }
+        actions = { set_result; }
+        const entries = {
+             100 : set_result(0);
+            // ... 899 entries omitted here ...
+            1000 : set_result(100);
+	}
+    }
+
+This code can be even more repetitive than that from the previous
+section.  See the [P4 code generation
+article](../code-generation/README.md) for tips on how to avoid
+drudgery when creating repetitive code.
+
+For many functions that are "smooth", i.e. can be closely approximated
+by a few points connected by straight lines, you can significantly
+reduce the size of the table by using linear interpolation.  Instead
+of each entry having only one action parameter, it could have a
+`base_value`, `slope`.  After doing a table lookup on the `input_val`,
+you then use the technique of the previous section to calculate
+`output_val = base_value + (slope * input_val)`.  If you used a
+ternary or range match instead of exact, you may even be able to
+combine what would be many consecutive exact match entries into one
+ternary or range entry, all sharing the same `base_value` and `slope`.
+
+You can use this to implement functions with multiple inputs, too, by
+having them as separate fields of the table lookup key, and multiple
+outputs, if that is useful.
