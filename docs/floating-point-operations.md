@@ -240,8 +240,8 @@ What if we really wanted to use alpha=0.01, because we determined that
 1/128 was not good enough for our use case?
 
 Just as we represent integer in binary as sums of powers of 2,
-e.g. 100 is 64+32+4, we can write fractions as sums of negative powers
-of 2, e.g. 3.4 is 1/2+1/4.
+e.g. 100 is (64 + 32 + 4), we can write fractions as sums of negative
+powers of 2, e.g. 3/4 is (1/2 + 1/4).
 
 Just as 1/3 cannot be represented exactly as a decimal number with a
 finite number of digits, but only as an infinitely repeating series of
@@ -292,7 +292,7 @@ We can be a bit more precise by shifting `x` left by 14 bit positions
 first, so we do not discard the least significant bits multiple times
 during the calculation, but only once at the end.
 
-    = ((x << 7) + (x << 5) + (x << 1) + x) >> 14
+      ((x << 7) + (x << 5) + (x << 1) + x) >> 14
 
 To avoid losing the most significant bits, the intermediate
 calculations should be done with integers that are 14 bits larger than
@@ -318,7 +318,13 @@ of a microsecond.  It is straightforward to make it more like Example
 
     diff = ((int<32>) standard_metadata.deq_timedelta) - ((int<32>) avg_previous);
     x = ((int<46>) diff) << 14;
-    x2 = (x << 7) + (x << 5) + (x << 1) + x;
+
+    // x has been shifted left by 14 bits, so we use the right-shift
+    // version of the formula above.  The least significant 14 bits of
+    // x2 are a fraction of microseconds.
+    x2 = (x >> 7) + (x >> 9) + (x >> 13) + (x >> 14);
+
+    // The next expression discards the fractional part of x2
     avg_next = avg_previous + (bit<32>) ((int<32>) (x2 >> 14));
 
     // write avg_next back to P4 register, so the value is up to date
