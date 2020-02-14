@@ -312,11 +312,12 @@ of a microsecond.  It is straightforward to make it more like Example
     bit<32> avg_next;
     int<32> diff;
     int<46> x;
+    int<46> x2;
 
     // get avg_previous value, e.g. reading it from a P4 register
 
     diff = ((int<32>) standard_metadata.deq_timedelta) - ((int<32>) avg_previous);
-    x = ((int<46> diff) << 14;
+    x = ((int<46>) diff) << 14;
     x2 = (x << 7) + (x << 5) + (x << 1) + x;
     avg_next = avg_previous + (bit<32>) ((int<32>) (x2 >> 14));
 
