@@ -444,7 +444,9 @@ structures representing code as input (which can have constructs that
 the Common Lisp compiler does not know how to compile), and return as
 output the transformed data structures representing code you want the
 Common Lisp compiler to actually compile (which should not have
-anything the Common Lisp compiler does not know how to compile).
+anything the Common Lisp compiler does not know how to compile).  A
+wealth of examples is given in [Paul Graham's book "On
+Lisp"](https://en.wikipedia.org/wiki/On_Lisp).
 
 [1] Yes, fine, there is a reader in Lisp, but it is about as simple
     and straightforward as a lexer in most programming languages, plus
