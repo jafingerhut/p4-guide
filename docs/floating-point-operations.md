@@ -437,13 +437,14 @@ drudgery when creating repetitive code.
 
 For many functions that are "smooth", i.e. can be closely approximated
 by a few points connected by straight lines, you can significantly
-reduce the size of the table by using linear interpolation.  Instead
-of each entry having only one action parameter, it could have a
-`base_value`, `slope`.  After doing a table lookup on the `input_val`,
-you then use the technique of the previous section to calculate
-`output_val = base_value + (slope * input_val)`.  If you used a
-ternary or range match instead of exact, you may even be able to
-combine what would be many consecutive exact match entries into one
+reduce the size of the table by using [linear
+interpolation](https://en.wikipedia.org/wiki/Linear_interpolation#Linear_interpolation_as_approximation).
+Instead of each entry having only one action parameter, it could have
+a `base_value`, `slope`.  After doing a table lookup on the
+`input_val`, you then use the technique of the previous section to
+calculate `output_val = base_value + (slope * input_val)`.  If you
+used a ternary or range match instead of exact, you may even be able
+to combine what would be many consecutive exact match entries into one
 ternary or range entry, all sharing the same `base_value` and `slope`.
 
 You can use this to implement functions with multiple inputs, too, by
