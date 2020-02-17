@@ -22,6 +22,28 @@ Both of those files have `#include` directives in the program
 $ p4c --target bmv2 --arch v1model example1.p4
 ```
 
+When developing and debugging programs where parts of them are
+auto-generated, it can often be helpful to look at the final version
+after all of the code generation is complete, and the `#include`
+directives have been processed.  Executing the `p4c` command will
+create a file `example1.p4i` that contains exactly that.  It will
+still contain some lines that look like this:
+
+```
+# 39 "example1.p4" 2
+```
+
+These are used by the P4 compiler to track which original input file
+and line number each line of code came from, so when it generates
+error or warning messages, they can mention the correct file and line
+number of the files before the preprocessor ran, rather than after.
+Such lines have no effect on the execution behavior of the P4 program.
+
+Such a `.p4i` file will also contain the full contents of the
+`v1model.p4` #include file, which you will likely want to skip over.
+Using your text editor to search for occurrences of the file name you
+are interested in, e.g. `example.p4`, can be useful for that.
+
 Note that I have written the `example1-generator.py` program to accept
 a command line parameter with the number of fields to generate.  This
 can be generalized to any number of parameters you wish, or files of
