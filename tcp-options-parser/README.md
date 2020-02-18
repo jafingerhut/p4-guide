@@ -37,3 +37,12 @@ use the `header_union` feature of the P4 language, but as a result it
 also does not parse TCP options correctly.  The only reason that
 variation was created was that it compiled without error using older
 versions of `p4c` (e.g. circa 2017).
+
+The directory [`look-for-ts-tcp-option`](look-for-ts-tcp-option/)
+contains another version that uses no header stacks, nor
+`header_union` types, and thus is likely to be more portable than P4
+code that does use those P4 language features, but note that as for
+most programs in this repository, I have not done extensive testing on
+them, nor have I checked what P4 targets they might be portable for.
+They are intended for learning purposes, and perhaps a useful starting
+point for your own P4 development efforts.
