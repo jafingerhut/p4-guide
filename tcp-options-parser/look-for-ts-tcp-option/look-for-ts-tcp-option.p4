@@ -78,6 +78,14 @@ header tcp_t {
     bit<16> urgentPtr;
 }
 
+const bit<8> TCP_OPTION_END_OF_OPTIONS = 0;  // End of Option List - RFC 793
+const bit<8> TCP_OPTION_NOP            = 1;  // No-Operation - RFC 793
+const bit<8> TCP_OPTION_MSS            = 2;  // Maximum Segment Size - RFC 793
+const bit<8> TCP_OPTION_WINDOW_SCALE   = 3;  // Window Scale - RFC 7323
+const bit<8> TCP_OPTION_SACK_PERMITTED = 4;  // SACK Permitted - RFC 2018
+const bit<8> TCP_OPTION_SACK           = 5;  // SACK - RFC 2018
+const bit<8> TCP_OPTION_TIMESTAMPS     = 8;  // Timestamps - RFC 7323
+
 #include "generated-code/define_tcp_options_headers.p4"
 
 struct headers_t {
@@ -133,11 +141,215 @@ control verifyChecksum(inout headers_t hdr, inout metadata_t meta) {
     apply { }
 }
 
+control get_tcp_options_byte(
+    in headers_t hdr,
+    in bit<8> offset,
+    out bit<8> val)
+{
+#include "generated-code/get_tcp_options_byte.p4"
+}
+
+control get_tcp_options_bit32(
+    in headers_t hdr,
+    in bit<8> offset,
+    out bit<32> val)
+{
+#include "generated-code/get_tcp_options_bit32.p4"
+}
+
+control get_option_kind_info(
+    in bit<8> option_kind,
+    out bool known_option,
+    out bool kind_followed_by_length,
+    out bool fixed_length,
+    out bit<8> expected_fixed_length)
+{
+    // Note 1: This assignment is not here because it is needed for a
+    // correctly functioning program, because the caller should never
+    // use the value of this variable, given the values assigned to
+    // the other 'out' parameters earlier.  The assignment is here
+    // only to avoid a warning about a possibly uninitialized variable
+    // from the p4c compiler.
+    
+    action kind_only() {
+        known_option = true;
+        kind_followed_by_length = false;
+        fixed_length = false;  // See Note 1
+        expected_fixed_length = 0;  // See Note 1
+    }
+    action one_legal_length(
+        bit<8> expected_fixed_length_val)
+    {
+        known_option = true;
+        kind_followed_by_length = true;
+        fixed_length = true;
+        expected_fixed_length = expected_fixed_length_val;
+    }
+    action variable_length() {
+        known_option = true;
+        kind_followed_by_length = true;
+        fixed_length = false;
+        expected_fixed_length = 0;  // See Note 1
+    }
+    action unknown_option() {
+        known_option = false;
+        kind_followed_by_length = false;  // See Note 1
+        fixed_length = false;  // See Note 1
+        expected_fixed_length = 0;  // See Note 1
+    }
+    table t_get_option_kind_info {
+        key = {
+            option_kind : exact;
+        }
+        actions = {
+            kind_only;
+            one_legal_length;
+            variable_length;
+            unknown_option;
+        }
+        const entries = {
+            TCP_OPTION_END_OF_OPTIONS: kind_only();
+            TCP_OPTION_NOP:            kind_only();
+            TCP_OPTION_MSS:            one_legal_length(4);
+            TCP_OPTION_WINDOW_SCALE:   one_legal_length(4);
+            TCP_OPTION_SACK_PERMITTED: one_legal_length(2);
+            TCP_OPTION_SACK:           variable_length();
+            TCP_OPTION_TIMESTAMPS:     one_legal_length(10);
+        }
+        const default_action = unknown_option;
+    }
+    apply {
+        t_get_option_kind_info.apply();
+    }
+}
+
+control parse_one_tcp_option(
+    in headers_t hdr,
+    in bit<8> options_length,
+    in bit<8> offset,
+    out bit<8> next_offset,
+    out bool found_ts_option,
+    out bool executed_break)
+{
+    get_tcp_options_byte() get_tcp_options_byte_inst1;
+    get_tcp_options_byte() get_tcp_options_byte_inst2;
+
+    bit<8> option_kind;
+    bool known_option;
+    bool kind_followed_by_length;
+    bool fixed_length;
+    bit<8> expected_fixed_length;
+    bit<8> option_len_bytes;
+
+    apply {
+        next_offset = offset;  // See Note 1
+        found_ts_option = false;
+        get_tcp_options_byte_inst1.apply(hdr, offset, option_kind);
+        get_option_kind_info.apply(option_kind, known_option,
+                      kind_followed_by_length, fixed_length,
+                      expected_fixed_length);
+        log_msg("---- offset={} option_kind={} known_option={}",
+            {offset, option_kind, (bit<1>) known_option});
+        log_msg("     kind_followed_by_length={} fixed_length={} expected_fixed_length={}",
+            {(bit<1>) kind_followed_by_length, (bit<1>) fixed_length, expected_fixed_length});
+        if (!known_option) {
+            executed_break = true;
+            return;
+        }
+        if (kind_followed_by_length) {
+            if ((offset + 1) >= options_length) {
+                // malformed TCP options - fell off end of TCP options header
+                executed_break = true;
+                return;
+            }
+            get_tcp_options_byte_inst2.apply(hdr, offset+1, option_len_bytes);
+            if (fixed_length && (option_len_bytes != expected_fixed_length)) {
+                // malformed TCP options - incorrect length
+                executed_break = true;
+                return;
+            }
+            // This code assumes that if fixed_length is FALSE, the
+            // length in the packet is correct.  For the SACK option,
+            // it is possible to check that the option length is one
+            // of a few legal values.
+        } else {
+            option_len_bytes = 1;
+        }
+        if ((offset + option_len_bytes) > options_length) {
+            // option is too long to fit in packet's TCP options
+            executed_break = true;
+            return;
+        }
+        // This code stops when the first Timestamps option is found.
+        if (option_kind == TCP_OPTION_TIMESTAMPS) {
+            found_ts_option = true;
+            executed_break = true;
+            return;
+        }
+        if (option_kind == TCP_OPTION_END_OF_OPTIONS) {
+            // Stop if End of Options option is encountered.
+            executed_break = true;
+            return;
+        }
+        next_offset = offset + option_len_bytes;
+        executed_break = false;
+    }
+}
+
 control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+#include "generated-code/instantiate_controls.p4"
+    get_tcp_options_bit32() get_tcp_options_bit32_inst1;
+    get_tcp_options_bit32() get_tcp_options_bit32_inst2;
+
+    bit<8> options_length;
+    bit<8> offset;
+    bool found_ts_option;
+    bool executed_break;
+    bit<8> iteration_count;
+    bit<32> TSval;
+    bit<32> TSecr;
+
     apply {
+        stdmeta.egress_spec = 1;
+        if (hdr.tcp.isValid()) {
+            offset = 0;
+            options_length = (((bit<8>) hdr.tcp.dataOffset) << 2) - 20;
+
+            // Unrolled loop to parse TCP options.  Each iteration
+            // assigns a value of true to executed_break if no more
+            // iterations should be performed, either because a
+            // Timstamps TCP option was found, or for a few other
+            // reasons, e.g. End Of Options option was found, the end
+            // of the TCP header was reached without finding a
+            // Timestamps option, some malformed TCP option was found,
+            // etc.
+
+            found_ts_option = false;
+            iteration_count = 0;
+            executed_break = false;
+
+            if (offset < options_length) {
+                // Loop iteration #1
+                iteration_count = iteration_count + 1;
+                parse_one_tcp_option_inst1.apply(hdr, options_length, offset, offset,
+                    found_ts_option, executed_break);
+            }
+#include "generated-code/tcp_parse_iterations_1_through_n.p4"
+
+            log_msg("found_ts_option={} iteration_count={} executed_break={} offset={}",
+                {(bit<1>) found_ts_option, iteration_count,
+                    (bit<1>) executed_break, offset});
+
+            if (found_ts_option) {
+                get_tcp_options_bit32_inst1.apply(hdr, offset + 2, TSval);
+                get_tcp_options_bit32_inst2.apply(hdr, offset + 6, TSecr);
+                log_msg("Found Timestamps option with TSval={} TSecr={}",
+                    {TSval, TSecr});
+            }
+        }
     }
 }
 

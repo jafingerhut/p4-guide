@@ -18,13 +18,11 @@ The goal with this program is:
 
 + Look for a TCP Timestamp option in packets that begin with an
   Ethernet, then IPv4, then TCP header.
-+ If one is found, extract its fields into some P4 variables, that can
-  then be processed however you wish to write P4 code for.  In this
-  example code, it simply adds 1 to the timestamp of the packet.
-+ Update the TCP header checksum field, if any changes were made to
-  the time stamp field.
++ If one is found, extract its fields into some P4 variables.  These
+  variables can then be processed however you wish, if you write the
+  P4 code to do it.
 
-Below is some pseudocode that implements the first step above.  It is
+Below is some code that implements the first step above.  It is
 written in C, or something very close to it (I have not checked
 whether it compiles using a C compiler).  I would not call it brief,
 but hopefully it is at least clear how it behaves, to anyone with at
@@ -40,7 +38,7 @@ option, except perhaps skip over up to 2 NOP options if they appear
 before the Timestamps option".
 
 It _is_ shorter than the P4 version of the code that is generated to
-behave like this pseudocode, because the pseudocode takes advantage of
+behave like this code, because the code below takes advantage of
 a `while` loop and an array of bytes (type `uint8_t`) called
 `tcp_options` that can be indexed at a byte offset that is a run-time
 variable.
@@ -65,8 +63,7 @@ variable.
 #define TCP_OPTION_TIMESTAMPS     8    // Timestamps - RFC 7323
 
 
-    // Inputs expected to be initialized correctly before this
-    // pseudocode executes.
+    // Inputs expected to be initialized before this code executes.
     uint8_t tcp_options[40];
     int options_length = (hdr.tcp.dataOffset << 2) - 20;
     // Assume that hdr.tcp.dataOffset has already been checked that it
@@ -123,7 +120,7 @@ variable.
         // This code stops when the first Timestamps option is found.
         if (option_kind == TCP_OPTION_TIMESTAMPS) {
             found_ts_option = TRUE;
-	    break;
+            break;
         }
         if (option_kind == TCP_OPTION_END_OF_OPTIONS) {
             // Stop if End of Options option is encountered.
@@ -209,52 +206,53 @@ uint32_t get_uint32_at_byte_offset(uint8_t in_tcp_options[],
 
 ```
 
-My P4 version of this pseudocode "unrolls" the loop to some maximum
-number of iterations that you can change if you wish, and avoids using
+My P4 version of this code "unrolls" the loop to some maximum number
+of iterations that you can change if you wish, and avoids using
 run-time variable array indexes.  Both of those results are achieved
 in the same way as demonstrated in the example programs in the
 [`code-generation`](/code-generation/) directory.
 
-TBD: Give detailed instructions on how to change this maximum number
-of iterations.
+One choice you can make in using this unroll-the-loop technique is the
+maximum number of iterations to execute.  I doubt that any TCP
+implementations in common use create 40 bytes of options that consist
+of 30 1-byte NOP options (a single byte equal to 1), followed by a
+10-byte long Timestamps option, and this might even be prohibited by
+some RFC somewhere that I have not read.  If it is not prohibited, it
+appears legal to create such a packet.  The code above would repeat
+the while loop body 31 times before it would find the Timestamps
+option.
 
-There are options in modifying this program that can make it more or
-less useful for particular purposes.
+On some high speed P4 implementations, you might not be willing (or
+able) to use the P4 version of the code that unrolls the loop 31
+times.  You may be willing to make an engineering tradeoff such as:
+unroll the loop only 8 times, and if the P4 program does not find the
+Timestamps option in 8 iterations, it is acceptable not to process the
+Timestamps option in that packet.
 
-One of the primary choices to make is how many TCP options to parse
-while searching for a TCP timestamp option.  The options portion of a
-TCP header can be up to 40 bytes in length.
+To change the maximum number of iterations to any number 1 or larger,
+edit the file `compile.sh`, and replace the 8 on the following line
+with the number of iterations you wish to use:
+```bash
+../generate.py --num-parse-iterations 8
+```
 
 Unlike some of the other example P4 programs in this repository
-dealing with parsing TCP options, this one does not create a separate
-header type for each TCP option, but actually does something like what
-a P4 parser does in the ingress control.  It does this to avoid using
-P4 header stacks and `header_union` types.  There are other ways to
-achieve the goal besides the examples in this repository, though, so
-do not take the lack of another style of example program as me
-claiming "it cannot be done any other way" -- it certainly can be [2].
+dealing with parsing TCP options, this one uses neither header stacks
+nor any `header_union` type.  This is simply to demonstrate a
+different way to do it -- one that might be more portable to different
+P4 implementations.  There are other ways to achieve the goal besides
+the examples in this repository -- do not take the lack of yet another
+style of P4 program as me claiming "it cannot be done any other way"
+-- it certainly can be [2].
 
-I doubt that any TCP implementations in common use create 40 bytes of
-options that consist of 30 1-byte NOP options (a single byte equal to
-0), followed by a 10-byte long timestamp option, and this might even
-be prohibited by some RFC somewhere that I have not read, but if it is
-not prohibited, it appears legal to create such a packet.
 
-The code in this directory executes at least one separate `if`
-statement for each TCP option that occurs before the timestamp option
-is found, and the condition for each is data-dependent upon earlier
-TCP options found, so cannot be parallelized inan automatic way.  Some
-P4 implementations may have relatively tight limits on how many such
-sequentially dependent operations they can perform, and while this
-program along might not stretch those limits, if you want to use this
-code as only one kind of packet processing among many that you wish to
-perform, it can add up quickly.
+# References
 
 [1]
 
-Documents, especially RFCs, references examined while writing this
-example code (perhaps only briefly -- no claim of complete, nor even
-thorough, knowledge is made here).
+Documents, especially RFCs, examined while writing this example code
+(perhaps only briefly -- no claim of complete, nor even thorough,
+knowledge is made here).
 
 "Transmission Control Protocol (TCP) Parameters", Last updated
 2019-07-26,
@@ -269,7 +267,7 @@ https://tools.ietf.org/html/rfc7323
 
 [2]
 
-One could use techniques similar to a kangaroo parser (see below) in
+One could use techniques similar to a Kangaroo parser (see below) in
 the ingress control to reduce the number of dependent iterations
 required to get to the timestamp option, at least for some sequences
 of TCP options, making the code easier to "fit" into certain P4
@@ -277,11 +275,13 @@ targets, with the tradeoff that the code is a bit more complex to
 understand and maintain.
 
 This suggestion might sound confusing.  You may be wondering: don't P4
-implementations often use techniques like kangaroo parsers in their
-implementation of a P4 `parser` construct?  Yes, some likely do that.
-So yes, my suggestion that you could write code to use that technique
-in a P4 `control` may sound odd, but that does not make it impossible.
-There might be situations where it is even desirable to do.
+implementations often use techniques like Kangaroo parsers in their
+implementation of a P4 `parser` construct?  Yes, very like some
+implementations use that technique.  My note that you could write code
+using that technique in a P4 `control` may sound odd, but there
+_might_ be situations where it is desirable to do.  It can be useful
+to know about multiple options if one is working under tight
+constraints.
 
 + "Leaping multiple headers in a single bound: wire-speed parsing
   using the Kangaroo system", Christos Kozanitis, John Huber, Sushil
