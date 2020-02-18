@@ -14,20 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/*
-The TCP option parsing part of this program has been adapted from
-testdata/p4_16_samples/spec-ex19.p4 within the repository
-https://github.com/p4lang/p4c by Andy Fingerhut
-(andy.fingerhut@gmail.com).  That earlier version also appears in
-the P4_16 v1.0.0 specification document.
-
-As of 2017-Nov-09, the P4_16 compiler `p4test` in
-https://github.com/p4lang/p4c compiles tcp-options-parser.p4 without
-any errors, but `p4c-bm2-ss` gives an error that Tcp_option_h is not a
-header type.  This is because as of that date the bmv2 back end code
-in `p4c-bm2-ss` code does not yet handle header_union.
-*/
-
 #include <core.p4>
 #include <v1model.p4>
 
@@ -54,15 +40,15 @@ header ipv4_t {
     bit<32> dstAddr;
 }
 
-/* The portion of a TCP header that is present in all TCP packets,
- * which is the first 20 bytes, with a fixed format, and no TCP
- * options inside of it.  Any TCP options follow these 20 bytes, and
- * the length of the full TCP header is in the dataOffset field,
- * represented as an integer number of 32-bit words, which includes
- * the 4 32-bit words present in this base header.  Thus dataOffset
- * values less than 5 are an error, and the longest TCP header is when
- * dataOffset=15, or 15*4=60 bytes long, which is this 20-byte fixed
- * header plus 40 bytes of TCP options. */
+/* Type tcp_t is the portion of a TCP header that is present in all
+ * TCP packets, which is the first 20 bytes.  It has a fixed format,
+ * and no TCP options inside of it.  Any TCP options follow these 20
+ * bytes, and the length of the full TCP header is in the dataOffset
+ * field, represented as an integer number of 32-bit words, which
+ * includes the 4 32-bit words present in this base header.  Thus
+ * dataOffset values less than 5 are an error, and the longest TCP
+ * header is when dataOffset=15, or 15*4=60 bytes long, which is this
+ * 20-byte fixed header plus 40 bytes of TCP options. */
 
 header tcp_t {
     bit<16> srcPort;
