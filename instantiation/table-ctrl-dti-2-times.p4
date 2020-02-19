@@ -79,7 +79,7 @@ control ingressImpl(inout headers_t hdr,
     apply {
         stdmeta.egress_spec = 1;
         // Use direct type invocation 2 times on the same
-        // statelessControl in the same scope.
+        // tableControl in the same scope.
         tableControl.apply(hdr.ethernet.etherType, hdr.ethernet.etherType);
         tableControl.apply(hdr.ethernet.etherType, hdr.ethernet.etherType);
     }

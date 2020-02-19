@@ -45,3 +45,13 @@ They are all written to use the v1model architecture, and except for
 the instantiation and/or calling `apply` on various controls, tables,
 and extern object instances, do nothing except parse an Ethernet
 header, and send all packets out of port 1.
+
+The ones with file names beginning with `stateless-ctrl` all use a
+control named `statelessControl` that contains no controllable
+entities.  It simply performs some calculations on its `in` parameter
+to assign a value to its `out` parameter.
+
+The ones with file names beginning with `table-ctrl` all use a control
+named `tableControl` that also assigns a value to its one `out`
+parameter, but uses a table and some actions defined within it to do
+so.  Thus it contains at least one controllable entity.
