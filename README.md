@@ -15,6 +15,12 @@ See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
 
 
+## Articles on various P4 topics
+
+See [this page](docs/README.md) for a list of articles included in
+this repository.
+
+
 ## Overview of public P4.org documentation and code repositories
 
 * An overview of the [p4lang organization Github
@@ -116,29 +122,30 @@ language C or something very similar to it, e.g. C++ or Java.
     selecting for each entry the search key to be matched against,
     and the action to be executed if, while processing a packet,
     that table entry is matched.
-* A P4_16 "architecture" like the Portable Switch Architecture (PSA)
-  also defines a library of other constructs, such as packet/byte
-  counters, meters for enforcing average packet and/or bit rates on
-  forwarded traffic, registers for some limited kinds of stateful
-  packet processing, and methods for recirculating a packet,
-  multicasting it to multiple destinations, etc.
+* A P4_16 "architecture" like the [Portable Switch
+  Architecture](https://p4.org/specs/) (PSA) also defines a library of
+  other constructs, such as packet/byte counters, meters for enforcing
+  average packet and/or bit rates on forwarded traffic, registers for
+  some limited kinds of stateful packet processing, and methods for
+  recirculating a packet, multicasting it to multiple destinations,
+  etc.
 * Fields and variables can be integers of arbitrary bit width (up to
   some maximum size allowed by a particular implementation), with
   results of arithmetic operations well defined for all operations.
-  P4 implementations need not implement floating point arithmetic,
-  and I expect most would not because such things are not needed for
-  the majority of packet processing applications.  P4
-  implementations also need not implement multiplication, division,
-  or modulo operations, again given that such operations are often
-  not needed for most packet processing applications.
-* Note that integer arithmetic is sufficient for implementing fixed
-  point operations, because fixed point add/subtract/shift can be
-  viewed as the corresponding operations on integers that are in
-  smaller units, e.g. an integer could be used to represent time in
-  multiples of 0.8 nanoseconds, as opposed to in units of
-  nanoseconds, which would be convenient if an implementation had a
-  clock speed of 1.25 GHz and measured time in integer number of
-  clock cycles (1 cycle / 0.8 nanosec = 1.25 GHz).
+  P4 implementations need not implement floating point arithmetic, and
+  I expect most would not because such things are not needed for the
+  majority of packet processing applications.  P4 implementations also
+  need not implement multiplication, division, or modulo operations,
+  again given that such operations are often not needed for most
+  packet processing applications.
+* Note that [integer arithmetic is sufficient for implementing fixed
+  point operations](docs/floating-point-operations.md), because fixed
+  point add/subtract/shift can be viewed as the corresponding
+  operations on integers that are in smaller units, e.g. an integer
+  could be used to represent time in multiples of 0.8 nanoseconds, as
+  opposed to in units of nanoseconds, which would be convenient if an
+  implementation had a clock speed of 1.25 GHz and measured time in
+  integer number of clock cycles (1 cycle / 0.8 nanosec = 1.25 GHz).
 
 
 ## Very brief comparison of P4_14 and P4_16 languages
