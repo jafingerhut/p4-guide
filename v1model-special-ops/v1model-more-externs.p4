@@ -229,10 +229,7 @@ control debug_std_meta(in standard_metadata_t standard_metadata)
             standard_metadata.ingress_port : exact;
             standard_metadata.egress_spec : exact;
             standard_metadata.egress_port : exact;
-            standard_metadata.clone_spec : exact;
             standard_metadata.instance_type : exact;
-            standard_metadata.drop : exact;
-            standard_metadata.recirculate_port : exact;
             standard_metadata.packet_length : exact;
             standard_metadata.enq_timestamp : exact;
             standard_metadata.enq_qdepth : exact;
@@ -240,12 +237,9 @@ control debug_std_meta(in standard_metadata_t standard_metadata)
             standard_metadata.deq_qdepth : exact;
             standard_metadata.ingress_global_timestamp : exact;
             standard_metadata.egress_global_timestamp : exact;
-            standard_metadata.lf_field_list : exact;
             standard_metadata.mcast_grp : exact;
-            standard_metadata.resubmit_flag : exact;
             standard_metadata.egress_rid : exact;
             standard_metadata.checksum_error : exact;
-            standard_metadata.recirculate_flag : exact;
             //standard_metadata.parser_error : exact;
         }
         actions = { NoAction; }
@@ -352,12 +346,6 @@ control ingress(inout headers_t hdr,
         // BMV2_V1MODEL_INSTANCE_TYPE_RESUBMIT.  The instance_type
         // field is an exception to the "preserve metadata field
         // value" rule.
-
-        // For the resubmit operation, standard_metadata.resubmit_flag
-        // is 0 for the resubmitted packet, which avoids that packet
-        // being resubmitted indefinitely, unless your program
-        // explicitly causes a separate call to resubmit() on each
-        // execution of ingress.
         resubmit(standard_metadata);
     }
     action do_clone_i2e(bit<32> l2ptr) {

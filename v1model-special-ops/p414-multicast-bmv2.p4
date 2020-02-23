@@ -26,11 +26,8 @@ header_type intrinsic_metadata_t {
     fields {
         ingress_global_timestamp : 48;
         egress_global_timestamp : 48;
-        lf_field_list : 8;
         mcast_grp : 16;
         egress_rid : 16;
-        resubmit_flag : 8;
-        recirculate_flag : 8;
     }
 }
 
@@ -76,11 +73,8 @@ action _nop() {
         standard_metadata.instance_type: exact; \
         intrinsic_metadata.ingress_global_timestamp: exact; \
         intrinsic_metadata.egress_global_timestamp: exact; \
-        intrinsic_metadata.lf_field_list: exact; \
         intrinsic_metadata.mcast_grp: exact; \
         intrinsic_metadata.egress_rid: exact; \
-        intrinsic_metadata.resubmit_flag: exact; \
-        intrinsic_metadata.recirculate_flag: exact; \
         ethernet.dstAddr: exact; \
         ethernet.srcAddr: exact; \
         ethernet.etherType: exact;

@@ -159,20 +159,16 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
             t_first_pass_t1.apply();
             t_first_pass_t2.apply();
             t_first_pass_t3.apply();
-        }
-        else {
+        } else {
             if (meta.mymeta.resubmit_reason == 3w1) {
                 t_second_pass_reason1.apply();
-            }
-            else {
+            } else {
                 if (meta.mymeta.resubmit_reason == 3w2) {
                     t_second_pass_reason2.apply();
-                }
-                else {
+                } else {
                     if (meta.mymeta.resubmit_reason == 3w3) {
                         t_second_pass_reason3.apply();
-                    }
-                    else {
+                    } else {
                         t_second_pass_reason4.apply();
                     }
                 }

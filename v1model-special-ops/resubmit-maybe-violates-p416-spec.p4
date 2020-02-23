@@ -86,10 +86,7 @@ control debug_tables(in standard_metadata_t stdmeta,
             stdmeta.ingress_port : exact;
             stdmeta.egress_spec : exact;
             stdmeta.egress_port : exact;
-            stdmeta.clone_spec : exact;
             stdmeta.instance_type : exact;
-            stdmeta.drop : exact;
-            stdmeta.recirculate_port : exact;
             stdmeta.packet_length : exact;
             stdmeta.enq_timestamp : exact;
             stdmeta.enq_qdepth : exact;
@@ -97,12 +94,9 @@ control debug_tables(in standard_metadata_t stdmeta,
             stdmeta.deq_qdepth : exact;
             stdmeta.ingress_global_timestamp : exact;
             stdmeta.egress_global_timestamp : exact;
-            stdmeta.lf_field_list : exact;
             stdmeta.mcast_grp : exact;
-            stdmeta.resubmit_flag : exact;
             stdmeta.egress_rid : exact;
             stdmeta.checksum_error : exact;
-            stdmeta.recirculate_flag : exact;
             //stdmeta.parser_error : exact;
             hdr.ipv4.srcAddr : exact;
             hdr.ipv4.dstAddr : exact;
