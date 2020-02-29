@@ -21,11 +21,24 @@ https://github.com/p4lang/p4c by Andy Fingerhut
 (andy.fingerhut@gmail.com).  That earlier version also appears in
 the P4_16 v1.0.0 specification document.
 
-As of 2017-Nov-09, the P4_16 compiler `p4test` in
-https://github.com/p4lang/p4c compiles tcp-options-parser.p4 without
-any errors, but `p4c-bm2-ss` gives an error that Tcp_option_h is not a
-header type.  This is because as of that date the bmv2 back end code
-in `p4c-bm2-ss` code does not yet handle header_union.
+The oldest version of the open source p4c compiler that can compile
+this program without error, to a BMv2 JSON file for use with
+simple_switch, is after 2019-Jan-01, and before 2019-Apr-01.  It was
+during that range of dates that the last bit of enhancements were
+added to p4c to support header_union types.  Before then, any program
+using a header_union failed to compile.
+
+Looking at the descriptions in the p4c commit logs, this might be the
+earliest version of p4c that can successfully compile programs using a
+header_union type to a BMv2 JSON file:
+
+commit f393f76761155c3b4585a42981260487b4b00769
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Tue Mar 5 17:11:54 2019 -0800
+
+    Support for header unions in bmv2 simple_switch back-end; multiple test examples (#1760)
+
+    * Support for union stacks; multiple test examples
 */
 
 #include <core.p4>
