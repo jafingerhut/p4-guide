@@ -1,8 +1,8 @@
 See the comments after the license boilerplate near the beginning of
-tcp-options-parser.p4 for some similar TCP options parsing code that
+`tcp-options-parser.p4` for some similar TCP options parsing code that
 this code was derived from.
 
-The code in parser Tcp_option_parser, and the definition of the TCP
+The code in parser `Tcp_option_parser`, and the definition of the TCP
 option header types, is the distinctive part of this example.
 Everything else is pretty standard stuff you can find in many other P4
 programs.
@@ -10,7 +10,7 @@ programs.
 That parser demonstrates a couple of things that are uncommon in P4
 parsers:
 
-(a) parser ParserImpl calls a sub-parser Tcp_option_parser.
+(a) parser `ParserImpl` calls a sub-parser `Tcp_option_parser`.
 
 (b) A 'transition select' statement in state 'next_option' with an
     expression based on a variable 'tcp_hdr_bytes_left' that is
