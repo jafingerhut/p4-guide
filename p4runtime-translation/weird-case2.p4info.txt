@@ -1,0 +1,55 @@
+pkg_info {
+  arch: "v1model"
+}
+tables {
+  preamble {
+    id: 33575637
+    name: "ingressImpl.t1"
+    alias: "t1"
+  }
+  match_fields {
+    id: 1
+    name: "myaddress"
+    bitwidth: 32
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16786387
+  }
+  action_refs {
+    id: 16788060
+  }
+  action_refs {
+    id: 16800567
+  }
+  const_default_action_id: 16800567
+  size: 1024
+}
+actions {
+  preamble {
+    id: 16800567
+    name: "NoAction"
+    alias: "NoAction"
+  }
+}
+actions {
+  preamble {
+    id: 16788060
+    name: "ingressImpl.my_drop"
+    alias: "my_drop"
+  }
+}
+actions {
+  preamble {
+    id: 16786387
+    name: "ingressImpl.set_output"
+    alias: "set_output"
+  }
+  params {
+    id: 1
+    name: "output_port"
+    bitwidth: 9
+  }
+}
+type_info {
+}
