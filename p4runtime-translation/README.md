@@ -161,10 +161,8 @@ The approach here is:
 
 | Expression | P4_16 v1.2.0 type | Proposed type | Notes |
 | ---------- | ----------------- | ------------- | ----- |
-
 |     -u1 | bit<32> | -- | |
 |     -a1 |   error |  A | Only type A involved, so result is type A |
-
 | u1 + u2 | bit<32> | -- | only type bit<32> involved |
 | u1 + a1 |   error |  A | only type A and bit<32> involved, so result is A |
 | a1 + u1 |   error |  A | similar to previous line |
