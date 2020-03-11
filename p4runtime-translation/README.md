@@ -1,3 +1,13 @@
+# Introduction
+
+This document explores some issues around P4Runtime translation, and
+how to define types in P4_16 programs so that there are explainable
+predictable rules for determining what type to use for any expression
+that is a key of a P4 table.
+
+
+## A set of tiny programs that illustrate the questions
+
 This directory contains 4 very similar P4_16 programs.
 
 They should contain nothing surprising, except they define 3 `type`
@@ -44,3 +54,335 @@ or:
   might legally be used as a table key, what its type should be in the
   auto-generated control plane API.  It is possible to make such
   deterministic rules, but what do you propose they should be?
+
+
+## The P4_16 language specification version 1.2.0 answers
+
+The current answer to the questions asked at the end of the previous
+section in the P4_16 language specification, version 1.2.0, is
+basically:
+
++ Every `type` definition creates its own unique type, and each type
+  is its own "island" of values.  To get from one "island" to another,
+  you must use a cast.
+
+Before the `type` keyword was introduced to P4_16, it was already the
+case that types `bit<15>` and `bit<16>` were their own separate
+"islands", too (and introducing the `type` keyword did not change
+that).
+
+By "island" I mean the following:
+
++ You cannot do operations like +, -, <<, >>, ==, !=, <=, >=, <, >,
+  etc. if one operand is of type `bit<15>` and the other is of type
+  `bit<16>`.  It is a compile time error to attempt to do so.
+
++ You can get from one of these islands to the other with an explicit
+  cast.
+
+When the `type` keyword was introduced, effectively a type `MyWord_t`
+defined as `type bit<16> MyWord_t` became its own "island", separate
+from `bit<16>`, requiring a cast to get from one island to the other,
+in either direction.
+
+While I played a role in defining things this way, I can't say that I
+was particularly happy about the result.  I felt like it was one
+solution that definitely required more casts to perform operations on
+such values as compared to what a P4 developer would be likely to find
+convenient, but it has the advantage of making the rules fairly
+straightforward to explain, and to enforce using a P4 compiler.  It
+does require more cast operations than are convenient when writing
+code, but only when doing arithmetic operations on values of values
+with types created via `type` definitions.
+
+
+## Fishing around for another solution
+
+It would be nice if we could find another solution that was
+straightforward to explain, and to enforce using a P4 compiler, but
+did not require as many casts.
+
+Here are some thoughts in that direction that haven't been thought
+through for very long, but seem like they might potentially lead to
+something workable.
+
+I am going to focus on values of type `bit<W>` for any W >= 1, and
+types created using a `type` definition, where their base type is
+`bit<W>` for some W >= 1.  I am assuming for now that `int<W>` and
+`bit<W>` will remain separate "islands" from each other, requiring a
+cast to get between them.
+
+The basic idea is to allow many expressions that contain a mix of
+values with type `bit<W>` and one or more types defined via `type`
+with a base type of `bit<W>` having the same value of W.  Some of them
+will require a cast to inform the compiler what the resulting type of
+the entire expression is, but some of them will not.
+
+Assume the following variable definitions in the example expressions
+below:
+
+```
+type bit<32> A;
+type bit<32> B;
+type bit<32> C;
+
+bit<32> u1;
+bit<32> u2;
+A a1;
+A a2;
+B b1;
+B b2;
+C c1;
+C c2;
+```
+
+Consider all operations allowed on values of type `bit<32>`, which I
+will attempt to create a complete list.
+
+In the "Proposed type" column, "-" means that no change from the
+version 1.2.0 language specification result type is proposed.
+
+The approach here is:
+
++ If all of the types involved in an expression are `bit<32>`, the
+  result today is `bit<32>`, and it will still be in this proposal.
++ If all of the types involved are `A`, or some mix of at least one
+  `A` and zero or more `bit<32>`, the result is `A`.  Similarly if you
+  replace `A` with `B` or any other `type` defined based on `bit<32>`.
++ If there is at least two different types like `A` and `B` involved,
+  at least one cast is required.  It is sufficient to provide a single
+  cast for the entire expression, and that will be the type of the
+  resulting expression.  A developer is allowed to provide appropriate
+  casts for subexpressions, too, if they wish, and that subexpression
+  is treated according to these rules on its own first, then that
+  subexpression is treated as if it is that type when determining
+  whether the enclosing expression is correct, and if so, what its
+  type is.
+
+| Expression | P4_16 v1.2.0 type | Proposed type | Notes |
+| ---------- | ----------------- | ------------- | ----- |
+
+|     -u1 | bit<32> | -- | |
+|     -a1 |   error |  A | Only type A involved, so result is type A |
+
+| u1 + u2 | bit<32> | -- | only type bit<32> involved |
+| u1 + a1 |   error |  A | only type A and bit<32> involved, so result is A |
+| a1 + u1 |   error |  A | similar to previous line |
+| a1 + a2 |   error |  A | only type A involved |
+| a1 + b1 |   error | error | mix of type A and B involved, so requires a cast |
+| (A) (a1 + b1) | error | A | single (A) cast makes the entire expression type A |
+| (B) (a1 + b1) | error | B | single (B) cast makes the entire expression type B |
+| (C) (a1 + b1) | error | C | C is not the type of any of the operands involved, but type C is the same base type as the others, so a single explicit cast on the whole expression is enough to make it type C |
+| (B) (a1 + b1 + a2 + b2 + u1) | error | B | similar to previous line |
+
+These operators:
+
++ `-`, `*`, `|+|`, `|-|`, `&`, `|`, `^`
+
+work the same way as for binary `+`.  Replacing any or all occurrences
+of binary `+` operators in the expressions above with those operators
+gives the same results.
+
+These operators:
+
++ unary `+`, `~`
+
+works the same as for unary `-`.
+
+For comparison operators:
+
++ `==` `!=` `<` `<=` `>` `>=`
+
+as long as left and right operands are any of `bit<32>`, `A`, and/or
+`B`, the result is of type boolean, and the result is defined the same
+as if all operands were cast to type `bit<32>`.
+
+concatenation `++`: One idea would be to allow both operands to be
+`bit<W>`, or any type defined with a base type of `bit<W>`, and it
+behaves as if all operands were cast to their base type of `bit<W>`.
+This is the opposite "direction" of type conversion as the other
+binary operators above, because a derived type like `type bit<32> A`
+must be exactly 32 bits wide, so concatenating it with anything else
+produces a wider result that cannot be type `A`.
+
+slice `[m:l]`: One idea would be to allow this, and if the slice
+contained all bits of the operand, the result is the same type as the
+operand.  If the slice leaves out any bits of the operand, the result
+is type `bit<W>` where W=m-l+1.  This is the opposite direction of
+type conversion as the binary operators above, for the same reason as
+given for the `++` operator.
+
+shifts `<<`, `>>`: The result is the same type as the left operand.
+
+Ternary operator `(boolean expression) ? <expression1> :
+<expression2>` is treated like binary `+` above -- if both
+`expression1` and `expression2` are `bit<32>`, the result is
+`bit<32>`.  If both are `A`, the result is `A`.  If one is `A` and the
+other `bit<32>`, the result is `A`.  If one is `A` and the other `B`,
+then an explicit cast is required to determine the resulting type.
+
+For the examples below, here is a repeat of the definitions that are
+in place before those expressions occur.
+```
+type bit<32> A;
+type bit<32> B;
+type bit<32> C;
+
+bit<32> u1;
+bit<32> u2;
+A a1;
+A a2;
+B b1;
+B b2;
+C c1;
+C c2;
+```
+
+Examples:
+
+| Expression | P4_16 v1.2.0 type | Proposed type | Notes |
+| ---------- | ----------------- | ------------- | ----- |
+| (a1 > 5) ? b1 : c1 | error | error | b1 and c1 have different types, so cast is required to determine the type of the result |
+| (bit<32>) ((a1 > 5) ? b1 : c1) | error | bit<32> | The single cast on the whole expression deterimines the result type |
+| (bit<31>) ((a1 > 5) ? b1 : c1) | error | error | The explicit cast `bit<31>` is not the same width as the width of b1 and c1, so this is an error. |
+| (bit<31>) (bit<32>) ((a1 > 5) ? b1 : c1) | error | bit<31> | Just as for P4_16 before, you can do multiple successive casts, as long as they are done in a correct sequence. |
+| -((u1 + 5) << 5) | bit<32> | bit<32> | Nothing new here.  Just an existing correct example according to version 1.2.0 spec as context for the next example. |
+| -((a1 + 5) << 5) | error | A | allow infinite-precision integers to be impicitly cast to type A, since its base type is bit<32> |
+| (a1 + b1) == c1 | error | error | I suppose we could figure out a sane way to make this legal, too, but it is certainly seems more straightforward to define and implement this if the subexpression (a1+b1) must have its own cast to define its type, before it can be compared to anything else. |
+| (C) (a1 + b1) == c1 | error | boolean | Casts (A), (B), or (bit<32>) instead of (C) would also work. |
+
+Possible implementation approach in the compiler (not sure if this
+holds water -- just brainstorming here):
+
+Take an abstract syntax tree representing an expression, e.g. for `(a1
++ b1) << 5 - c1` it would look like this:
+
+```
+          -
+         / \
+        /   \
+      <<     c1
+     /  \
+    /    \
+   +      5
+  / \
+ /   \
+a1   b1
+```
+
+On approach to validating an expression, and determining its resulting
+type, would be to start at the leaves and work bottom up, labeling
+each tree node with a set of types that appears below it.
+
+```
+                       -   <--- {A,B,C,bit<32>}
+                      / \
+                     /   \
+ {A,B,bit<32>} --> <<     c1
+                  /  \    {C}
+                 /    \
+      {A,B} --> +      5
+               / \    {int}
+              /   \
+             a1   b1
+             {A}  {B}
+```
+
+Because the root node has a set of types that contains more than one
+element that is a type defined via `type`, an explicit cast is
+required, and that cast must be some type whose base type is the same
+as that of all types in that set, or the base type.
+
+Note: Any explicit casts in the expression tree must be checked to see
+if they are correct for the sub-expression they apply to, according to
+these rules.  If they are, the set of types for the node representing
+the cast operation contains only one element: the type of the cast.
+
+If that set contains only a bit<W> type, the result is bit<W>.  If
+that set contains only a bit<W> and one type `A` defined via `type`,
+then the result is type `A`.
+
+For comparison operators, e.g. `==`, `<=`, etc., one approach is to
+calculate this set independently for the left and right operands, and
+as long as the base types of both sets is the same, declare the
+expression legal, and it means the same as if both operands were cast
+to that same base type.
+
+
+## Compiler transformations
+
+I believe that some passes of the p4c compiler make transformations
+that "substitute equals for equals".  That is, they can take an
+expression somewhere in the program, and replace it with another
+expression that the compiler "knows" must have an equal value.  I
+believe the notion of equals in "substitute equals for equals" is
+P4_16 `==`.
+
+For example, this:
+
+```
+bit<32> u1;
+bit<32> u2;
+bit<32> u3;
+bit<32> u4;
+bit<32> u5;
+
+u1 = u2 + u3;
+u5 = u1 - u4;
+```
+
+can be transformed into this, where the only change is replacing the
+last occurrence of `u1` with `(u2 + u3)`:
+
+```
+u1 = u2 + u3;
+u5 = (u2 + u3) - u4;
+```
+
+With the rules proposed here, I believe there are ways that such
+substitutions can be made while not introducing type problems.  For
+example, this program:
+
+```
+type bit<32> A;
+type bit<32> B;
+type bit<32> C;
+
+A a1;
+B b1;
+C c1;
+C c2;
+C c3;
+
+// Right-hand side explicitly cast to same type as left-hand side, so
+// assignment is OK.  Without the cast, it would be an error.
+c1 = (C) (a1 - b1);
+
+// No cast needed, because all types the same.
+c3 = c2 + c1;
+```
+
+can be transformed into this one, but the cast (C) must be present in
+the expression assigned to `c3`, otherwise it is not correct.
+
+```
+c1 = (C) (a1 - b1);
+c3 = c2 + (C) (a1 - b1);
+```
+
+Some kinds of algebraic simplifications could transform an illegal
+program into a legal one, like this:
+
+```
+// This is a type error, since the right-hand side needs at least one
+// cast.
+a1 = a1 + (c2 - c2);
+
+// Replacing (c2 - c2) with 0 results in an expression that is legal
+// without a cast.
+a1 = a1 + 0;
+```
+
+I believe that as long as the original program is first checked to see
+that it follows the rules above, it is probably correct to perform
+these kinds of simplifcations afterwards.
