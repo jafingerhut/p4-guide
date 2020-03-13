@@ -96,7 +96,7 @@ code, but only when doing arithmetic operations on values of values
 with types created via `type` definitions.
 
 
-## Fishing around for another solution
+## Fishing around for another solution, approach #1
 
 It would be nice if we could find another solution that was
 straightforward to explain, and to enforce using a P4 compiler, but
@@ -384,3 +384,59 @@ a1 = a1 + 0;
 I believe that as long as the original program is first checked to see
 that it follows the rules above, it is probably correct to perform
 these kinds of simplifcations afterwards.
+
+
+## Fishing around for another solution, approach #2
+
+Another idea is to consider again what might be done with the existing
+`typedef` type declarations in P4_16, without changing their meaning
+or use in a program as specified today in version 1.2.0 of the
+specification.
+
+It turns out that as of March 2020, the latest version of p4c (and
+this has been true for years before that, I believe) has the property
+that `typedef` declarations are preserved in the intermediate
+representations (IR) of p4c all the way through the front end passes,
+and continuing until the last midend pass.
+
+If that is true, and if P4Runtime API generation is done at the end of
+the front end passes, then for many cases it should be possible to
+determine which `typedef` type name a header field, struct field,
+action parameter, etc. were declared with in the developer's original
+P4_16 source code, by examining the appropriate part of the IR data
+structures at that time.
+
+Here is a list of cases that I think are the easy, or straightforward,
+ones to handle in this way, because these things have explicit
+declarations in the original source code, and there seems to be little
+or nothing in the compiled that would ever need to change the IR for
+them before the midend passes:
+
++ action parameters have explicit type declarations for each one
++ so do the types of:
+  + elements of register arrays, and in PSA their index type, too
+  + in PSA the type of index for counter and meter arrays
+  + to/from controller header types in PSA, also called Packet In and
+    Packet Out, and every field within such a header
+  + The type of digest messages
+  + parser value sets in P4_16 have an explicit bit<W> or struct type
+    given for their 'key', and structs have explicit definitions with
+    a type for every field.
+
+The types of the things below might be more tricky to determine, since
+they can be not quite arbitrary expressions, but definitely
+expressions containing values with different types:
+
++ table keys can be expressions
+  + By far the most common case for such an expression is a single
+    run-time variable, e.g. a field in a header or struct, perhaps
+    nested a couple of levels deep, e.g. `hdr.ethernet.srcAddr`.
+  + They can be more general expressions, though,
+    e.g. `hdr.ipv4.srcAddr & 0xffff0000`.  Such expressions can
+    contain mixes of run-time variables with different `type` and/or
+    `typedef` types.
++ In both the v1model and PSA architectures, the type of digest
+  messages might be the type of an expression in the source code.
+  + A common case is that the digest is a struct, and which struct
+    type is the type of an explicitly declared variable in the source
+    code.
