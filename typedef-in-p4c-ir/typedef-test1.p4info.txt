@@ -1,0 +1,99 @@
+pkg_info {
+  arch: "v1model"
+}
+tables {
+  preamble {
+    id: 42499711
+    name: "ingress.custom_table"
+    alias: "custom_table"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ethernet.addr0"
+    bitwidth: 48
+    match_type: EXACT
+  }
+  match_fields {
+    id: 2
+    name: "hdr.ethernet.addr1"
+    bitwidth: 48
+    match_type: EXACT
+    type_name {
+      name: "Eth1_t"
+    }
+  }
+  match_fields {
+    id: 3
+    name: "hdr.ethernet.addr2"
+    bitwidth: 49
+    match_type: EXACT
+    type_name {
+      name: "Eth2_t"
+    }
+  }
+  action_refs {
+    id: 21844022
+  }
+  action_refs {
+    id: 21580947
+  }
+  size: 1024
+}
+actions {
+  preamble {
+    id: 21844022
+    name: "ingress.set_headers"
+    alias: "set_headers"
+  }
+  params {
+    id: 1
+    name: "addr0"
+    bitwidth: 48
+  }
+  params {
+    id: 2
+    name: "addr1"
+    bitwidth: 48
+    type_name {
+      name: "Eth1_t"
+    }
+  }
+  params {
+    id: 3
+    name: "addr2"
+    bitwidth: 49
+    type_name {
+      name: "Eth2_t"
+    }
+  }
+}
+actions {
+  preamble {
+    id: 21580947
+    name: "ingress.my_drop"
+    alias: "my_drop"
+  }
+}
+type_info {
+  new_types {
+    key: "Eth1_t"
+    value {
+      original_type {
+        bitstring {
+          bit {
+            bitwidth: 48
+          }
+        }
+      }
+    }
+  }
+  new_types {
+    key: "Eth2_t"
+    value {
+      translated_type {
+        uri: "mycompany.com/EthernetAddress"
+        sdn_bitwidth: 49
+      }
+    }
+  }
+}

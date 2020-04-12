@@ -1,0 +1,43 @@
+diff --git a/control-plane/p4RuntimeSerializer.cpp b/control-plane/p4RuntimeSerializer.cpp
+index d70c7463..d36f5eef 100644
+--- a/control-plane/p4RuntimeSerializer.cpp
++++ b/control-plane/p4RuntimeSerializer.cpp
+@@ -760,6 +760,19 @@ getMatchFields(const IR::P4Table* table,
+         TypeSpecConverter::convert(refMap, typeMap, matchFieldType, p4RtTypeInfo);
+         auto type_name = getTypeName(matchFieldType, typeMap);
+         int width = getTypeWidth(matchFieldType, typeMap);
++
++        bool is_Newtype = matchFieldType->is<IR::Type_Newtype>();
++        bool is_Typedef = matchFieldType->is<IR::Type_Typedef>();
++        ::warning(ErrorType::WARN_INVALID,
++                  "tablekey name=%1% match_kind=%2% type_name=%3% Typedef?=%4% Newtype?=%5% matchFieldType=%6%",
++                  //          "tablekey match_kind=%1% type_name=%2% Typedef?=%3% Newtype?=%4% matchFieldType=%5%",
++                  *matchFieldName,
++                  matchTypeName,
++                  type_name,
++                  is_Typedef ? "true" : "false",
++                  is_Newtype ? "true" : "false",
++                  matchFieldType);
++
+         matchFields.push_back(MatchField{*matchFieldName, id, *matchType,
+                               matchTypeName, uint32_t(width),
+                               keyElement->to<IR::IAnnotated>(), type_name});
+@@ -961,6 +974,18 @@ class P4RuntimeAnalyzer {
+             addDocumentation(param, actionParam->to<IR::IAnnotated>());
+ 
+             auto paramType = typeMap->getType(actionParam, true);
++            auto paramType2 = typeMap->getType(actionParam, false);
++            //auto paramTypeType = typeMap->getTypeType(actionParam, true);
++            bool is_Newtype = paramType->is<IR::Type_Newtype>();
++            bool is_Typedef = paramType->is<IR::Type_Typedef>();
++            ::warning(ErrorType::WARN_INVALID,
++                      "action name=%1% paramName=%2% Typedef?=%3% Newtype?=%4% paramType=%5% paramType2=%6%",
++                      name,
++                      paramName,
++                      is_Typedef ? "true" : "false",
++                      is_Newtype ? "true" : "false",
++                      paramType,
++                      paramType2);
+             if (!paramType->is<IR::Type_Bits>() && !paramType->is<IR::Type_Boolean>()
+                 && !paramType->is<IR::Type_Newtype>() &&
+                 !paramType->is<IR::Type_SerEnum>()) {

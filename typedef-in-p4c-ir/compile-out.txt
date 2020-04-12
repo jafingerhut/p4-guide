@@ -1,0 +1,23 @@
++ p4c --target bmv2 --arch v1model --p4runtime-files typedef-test1.p4info.txt --dump . --top4 FrontEndLast,FrontEndDump,MidEndLast --toJson typedef-test1.ir.json typedef-test1.p4
+[--Wwarn=invalid] warning: action name=ingress.set_headers paramName=addr0 Typedef?=false Newtype?=false paramType=bit<48> paramType2=bit<48>
+typedef-test1.p4(22): [--Wwarn=invalid] warning: action name=ingress.set_headers paramName=addr1 Typedef?=false Newtype?=true paramType=Eth1_t paramType2=Eth1_t
+type bit<48> Eth1_t;
+             ^^^^^^
+typedef-test1.p4(22)
+type bit<48> Eth1_t;
+             ^^^^^^
+typedef-test1.p4(24): [--Wwarn=invalid] warning: action name=ingress.set_headers paramName=addr2 Typedef?=false Newtype?=true paramType=Eth2_t paramType2=Eth2_t
+type bit<48> Eth2_t;
+             ^^^^^^
+typedef-test1.p4(24)
+type bit<48> Eth2_t;
+             ^^^^^^
+[--Wwarn=invalid] warning: tablekey name=hdr.ethernet.addr0 match_kind=exact type_name= Typedef?=false Newtype?=false matchFieldType=bit<48>
+typedef-test1.p4(22): [--Wwarn=invalid] warning: tablekey name=hdr.ethernet.addr1 match_kind=exact type_name=Eth1_t Typedef?=false Newtype?=true matchFieldType=Eth1_t
+type bit<48> Eth1_t;
+             ^^^^^^
+typedef-test1.p4(24): [--Wwarn=invalid] warning: tablekey name=hdr.ethernet.addr2 match_kind=exact type_name=Eth2_t Typedef?=false Newtype?=true matchFieldType=Eth2_t
+type bit<48> Eth2_t;
+             ^^^^^^
++ p4c --version
+p4c 1.2.0 (SHA: 98a34fea)
