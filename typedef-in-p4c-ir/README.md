@@ -24,6 +24,9 @@ preserve the type of field `addr0` as `Eth0_t` in these places:
 Thus it seems that p4c has not yet erased the existence, nor the uses,
 of the `typedef` `Eth0_t`.
 
+
+# Experiment #1
+
 File `experiment1.patch` is a diff that I tried locally as an
 experiment, applied to this version of p4c source code:
 
@@ -36,10 +39,10 @@ Date:   Fri Apr 10 10:25:22 2020 -0700
 The output from when I ran the `compile.sh` script with this command:
 
 ```bash
-$ ./compile.sh >& compile-out.txt
+$ ./compile.sh >& experiment1-compile-out.txt
 ```
 
-is in the file `compile-out.txt`.  There you can see that field
+is in the file `experiment1-compile-out.txt`.  There you can see that field
 `addr1` has type `Eth1_t`, and field `addr2` has type `Eth2_t`, which
 are declared using `type` declarations, but whatever C++ calls are
 being used there for the field `addr0` only show the underlying type
@@ -63,3 +66,29 @@ about how one might change the P4_16 language spec to enable
 annotations on `typedef` declarations.  I am not sure yet, but it
 seems that perhaps there would be no changes to the language spec
 required for this, only to p4c.
+
+
+# Experiment #2
+
+Based on feedback on this issue that I created about experiment #1:
+
++ https://github.com/p4lang/p4c/issues/2310
+
+and in particular these two comments with suggested code changes to
+try:
+
++ https://github.com/p4lang/p4c/issues/2310#issuecomment-613014526
++ https://github.com/p4lang/p4c/issues/2310#issuecomment-613049589
+
+I tried applying the changes in `experiment2.patch` to the same
+version of p4c described for experiment #1 above.
+
+Even when using that C++ code to try to get the type of field `addr0`
+in a header, declared as `typedef bit<48> Eth0_t`, that code finds a
+type of `bit<48>`, not `Eth0_t`.
+
+Output of this command is in the file shown in the command:
+
+```bash
+$ ./compile.sh >& experiment2-compile-out.txt
+```
