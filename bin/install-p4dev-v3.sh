@@ -15,26 +15,17 @@
 # limitations under the License.
 
 
-# This script differs from install-p4dev.sh as follows:
+# This script differs from install-p4dev2.sh as follows:
 
-# install-p4dev.sh executes steps to build the behavioral-model
-# simple_switch program, using only Thrift as the IPC mechanism for
-# other processes to connect to it and make table add/modify/delete
-# requests.
+# install-p4dev-v2.sh at the time of this writing 2020-Apr-23 only
+# supports Ubuntu 16.04, 18.04, and 19.10.
 
-# install-p4dev-p4runtime.sh executes steps to build the
-# behavioral-model simple_switch_grpc program, which uses the
-# P4Runtime API as the IPC mechanism for other processes to connect to
-# it and make table add/modify/delete requests.  It is built with the
-# necessary options so that the simple_switch_grpc process _also_
-# supports Thrift, but this is only intended as a debugging aid,
-# e.g. to show table contents using the simple_switch_CLI program.
-
-# Size of the largest 3 source trees, after being built on an x86_64
-# machine, without documentation:
-# grpc - 1.2G
-# p4c - 1.6G
-# behavioral-model - 4.1G
+# install-p4dev-v3.sh is intended to try to support Ubuntu 20.04, and
+# preferably at least also Ubuntu 16.04 and 18.04, too.  The first
+# hurdle that I am aware of to support all three is that several P4
+# open source projects still require Python 2 and PIP for Python 2.
+# Python 2 is still available as a package on Ubuntu 20.04, but I have
+# not found a way to install Python 2 PIP via an Ubuntu package yet.
 
 set -e
 
@@ -152,12 +143,20 @@ clean_up() {
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
-# Install Python2.  This is required for p4c, but there are several
-# earlier packages that check for python in their configure scripts,
-# and on a minimal Ubuntu 18.04 Desktop Linux system they find
-# Python3, not Python2, unless we install Python2.  Most Python code
-# in open source P4 projects is written for Python2.
-sudo apt-get --yes install python
+# Install Python2 as the command 'python'.  There are several packages
+# that check for python in their configure scripts, and on a minimal
+# Ubuntu 18.04 Desktop Linux system they find Python3, not Python2,
+# unless we install Python2.  Most Python code in open source P4
+# projects is written for Python2.
+if [[ "${ubuntu_release}" > "20" ]]
+then
+    # The python2 package installs python2 as the command
+    # /usr/bin/python2, but not as /usr/bin/python.  The package
+    # python-is-python2 installs python2 as /usr/bin/python.
+    sudo apt-get --yes install python2 python-is-python2
+else
+    sudo apt-get --yes install python
+fi
 
 # Install Ubuntu packages needed by protobuf v3.6.1, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
@@ -174,12 +173,25 @@ sudo apt-get --yes install pkg-config
 # requires that pip3 has been installed first.  Without this, there is
 # an error during building Thrift 0.12.0 where a Python 3 program
 # cannot import from the setuptools package.
+sudo apt-get --yes install python3-pip
 #
 # Also in earlier versions of this script on Ubuntu 16.04 and 18.04,
 # the pip package was being installed as a dependency of some other
 # package somewhere, but this appears not to be the case on Ubuntu
 # 19.10, so install it explicitly here.
-sudo apt-get --yes install python3-pip python-pip
+if [[ "${ubuntu_release}" > "20" ]]
+then
+    # Source for where I found the commands used below, which I have
+    # no idea whether it is "officially supported", a temporary hack
+    # that might only work for a few months, or what.  We shall see.
+    # https://askubuntu.com/questions/1226469/how-to-install-python-2-pip-on-ubuntu-20-04-focal-fossa
+    wget https://bootstrap.pypa.io/get-pip.py
+    python get-pip.py
+    PIP2_BIN_DIR="$HOME/.local/bin"
+    export PATH="${PIP2_BIN_DIR}:${PATH}"
+else
+    sudo apt-get --yes install python-pip
+fi
 
 pip --version
 pip3 --version
