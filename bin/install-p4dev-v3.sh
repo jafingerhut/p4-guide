@@ -386,6 +386,16 @@ sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex l
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 pip3 install scapy
+# Earlier versions of this script installed the Ubuntu package
+# python-ipaddr.  However, that no longer exists in Ubuntu 20.04.  PIP
+# for Python2 can install the ipaddr module, which is good enough to
+# enable two of p4c's many tests to pass, tests that failed if the
+# ipaddr Python 2 module is not installed, in my testing on
+# 2020-Apr-24.  From the Python stack trace that appears when running
+# those failing tests, the code that requires this module is in
+# behavioral-model's runtime_CLI.py source file, in a function named
+# ipv6Addr_to_bytes.
+sudo pip install ipaddr
 set -x
 pip3 list
 set +x
