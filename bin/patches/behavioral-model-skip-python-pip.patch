@@ -1,0 +1,11 @@
+diff --git a/install_deps.sh b/install_deps.sh
+--- a/install_deps.sh
++++ b/install_deps.sh
+@@ -31,7 +34,6 @@ sudo apt-get install -y \
+     $LIBSSL_DEV \
+     libffi-dev \
+     python-dev \
+-    python-pip \
+     wget
+ 
+ tmpdir=`mktemp -d -p .`

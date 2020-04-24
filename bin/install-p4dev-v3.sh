@@ -332,6 +332,10 @@ git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch"
+if [[ "${ubuntu_release}" > "20" ]]
+then
+    patch -p1 < "${PATCH_DIR}/behavioral-model-skip-python-pip.patch"
+fi
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
