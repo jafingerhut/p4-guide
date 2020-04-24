@@ -242,8 +242,13 @@ sudo apt-get --yes install build-essential autoconf libtool pkg-config
 get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04
-git checkout tags/v1.17.2
-git submodule update --init --recursive
+
+# TBD: Temporarily commenting out these lines, which is only correct I
+# use a cached grpc.tar.gz file in which I have already done these
+# commands inside of it, befoore creating the .tar.gz file.
+#git checkout tags/v1.17.2
+#git submodule update --init --recursive
+
 if [[ "${ubuntu_release}" > "19" ]]
 then
     # Apply patches that seem to be necessary in order for grpc v1.17.2
