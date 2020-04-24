@@ -186,9 +186,10 @@ then
     # that might only work for a few months, or what.  We shall see.
     # https://askubuntu.com/questions/1226469/how-to-install-python-2-pip-on-ubuntu-20-04-focal-fossa
     wget https://bootstrap.pypa.io/get-pip.py
-    # This install pip executable in $HOME/.local/bin
+    # This installs pip executable in $HOME/.local/bin
     python get-pip.py
-    # Put a copy in a system-wide reachable place, for use by user root, too
+    # Put a copy in a system-wide reachable place, where it can easily
+    # be used by the user root, too.
     sudo cp "$HOME/.local/bin/pip" /usr/local/bin/pip
 else
     sudo apt-get --yes install python-pip
