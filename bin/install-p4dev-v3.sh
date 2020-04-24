@@ -185,12 +185,20 @@ then
     # no idea whether it is "officially supported", a temporary hack
     # that might only work for a few months, or what.  We shall see.
     # https://askubuntu.com/questions/1226469/how-to-install-python-2-pip-on-ubuntu-20-04-focal-fossa
+    #
+    # This appears to be more official-looking documentation that
+    # recommends the same steps:
+    # https://pip.pypa.io/en/stable/installing/
     wget https://bootstrap.pypa.io/get-pip.py
-    # This installs pip executable in $HOME/.local/bin
-    python get-pip.py
-    # Put a copy in a system-wide reachable place, where it can easily
-    # be used by the user root, too.
-    sudo cp "$HOME/.local/bin/pip" /usr/local/bin/pip
+    # This installs pip executable in system-wide /usr/local/bin and
+    # /usr/local/lib/python2.7.  If we left off the 'sudo', it would
+    # instead install in the corresponding $HOME/.local/bin and
+    # $HOME/.local/lib/python2.7 directories, where $HOME is the home
+    # directory of the user that ran this script.  We want both the
+    # original user, and the root account, to be able to run 'pip'
+    # commands later, because installing some packages runs Python2
+    # pip as the original user, but at least one runs it as root.
+    sudo python "${INSTALL_DIR}/get-pip.py"
 else
     sudo apt-get --yes install python-pip
 fi
