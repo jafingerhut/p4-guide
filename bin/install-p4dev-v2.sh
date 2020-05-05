@@ -386,23 +386,6 @@ echo "start install mininet:"
 date
 
 git clone git://github.com/mininet/mininet mininet
-cd mininet
-# As of 2019-Nov-06, the latest version of mininet tries to apt-get
-# install the package cgroup-bin on Ubuntu Linux systems.  The
-# description of this package in Ubuntu 16.04 and 18.04 is "Package to
-# ease upgrading from older cgroup-bin package to the new cgroup-tools
-# package."  The new cgroup-tools package exists on Ubuntu 16.04,
-# 18.04, and 19.10 systems.  The old cgroup-bin package exists on
-# Ubuntu 16.04 and 18.04, but is no longer present with Ubuntu 19.10.
-# I would guess it is considered obsolete and has been removed, and
-# will not be added again in future Ubuntu versions.
-#
-# The patch below simply changes installing cgroup-bin to instead
-# install cgroup-tools, so it should work on all versions of Ubuntu
-# Linux supported by this script.
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-installer-fix-for-ubuntu19.10.patch"
-cd ..
 sudo ./mininet/util/install.sh -nwv
 
 echo "end install mininet:"
