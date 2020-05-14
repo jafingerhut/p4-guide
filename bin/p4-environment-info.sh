@@ -30,6 +30,9 @@ get_package_info() {
     fi
 }
 
+echo "p4-environment-info version 1"
+echo ""
+
 echo "$ uname -a"
 uname -a
 
@@ -44,6 +47,8 @@ get_package_info llvm-config
 get_package_info cmake
 get_package_info python
 get_package_info pip
+get_package_info python3
+get_package_info pip3
 get_package_info mn
 get_package_info protoc
 get_package_info thrift
