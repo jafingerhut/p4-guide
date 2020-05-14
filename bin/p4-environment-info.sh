@@ -26,6 +26,8 @@ get_package_info() {
 	case $pkg in
             pip) echo "$ pip list"
 		 pip list ;;
+            pip3) echo "$ pip3 list"
+		  pip3 list ;;
 	esac
     fi
 }
