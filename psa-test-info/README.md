@@ -167,60 +167,64 @@ program.
 
 PSA test programs not mentioned in any `CMakeLists.txt` files:
 
-| Summary of features exercised | Has STF test? | Test program file name |
-| ----------------------------- | ------------- | ---------------------- |
-| tbd | no  | psa-meter2.p4 |
-| basic instantiation of top level package with empty parsers, controls, and deparsers | no  | issue1208-1.p4 |
-| Support for (limited) structs inside of a header, which is really a P4_16 language feature that is not specific to the PSA architecture, but still a useful test. | no  | p4rt_digest_complex.p4 |
-| tbd | no  | psa-action-profile1.p4 |
-| tbd | no  | psa-action-profile2.p4 |
-| tbd | no  | psa-action-profile3.p4 |
-| tbd | no  | psa-action-profile4.p4 |
-| tbd | no  | psa-action-selector1.p4 |
-| tbd | no  | psa-action-selector2.p4 |
-| tbd | no  | psa-action-selector3.p4 |
-| Indexed (aka indirect) counter instantiation and updating.  STF test as of 2020-Aug does not actually read the counters to check that they are updated, but if p4c and psa_switch are correct the counters should be updated. | yes | psa-basic-counter-bmv2.p4 |
-| Looks extremely similar, but not identical, to psa-basic-counter-bmv2.p4.  No additional features executed more than what psa-basic-counter-bmv2.p4 does, except that it attempts to update index 1024 of an indexed counter with 1024 elements, so out of range and should be a no-op. | no  | psa-counter1.p4 |
-| Same as psa-counter1.p4 except that a single action should update two indexed counters, not only one. | no  | psa-counter2.p4 |
-| Same as psa-counter2.p4 except that it only updates one indexed counter, and does it by a call directly in ingress control apply block, rather than in an action of a table. | no  | psa-counter3.p4 |
-| Basic use of DirectCounter extern | no  | psa-counter4.p4 |
-| Nearly identical to psa-counter1.p4, but uses P4_16 `type` declaration to declare a type that is used as the index to the indexed Counter extern. | no  | psa-custom-type-counter-index.p4 |
-| Empty ingress and egress, so all received packets should be dropped, confirmed by testing with a couple of input packets in STF file. | yes | psa-drop-all-bmv2.p4 |
-| Nearly identical to psa-drop-all-bmv2.p4.  Could probably be removed without any real loss of test coverage. | yes | psa-drop-all-corrected-bmv2.p4 |
-| tbd | no  | psa-example-counters-bmv2.p4 |
-| tbd | yes | psa-example-register2-bmv2.p4 |
-| Empty ingress and egress, so should drop all received packets.  Seems that psa-drop-all-bmv2.p4 covers this functionality better, since it has non-empty STF test that actually sends in a few packets. | yes | psa-fwd-bmv2.p4 |
-| tbd | no  | psa-hash.p4 |
-| tbd | no  | psa-meter3.p4 |
-| tbd | no  | psa-meter4.p4 |
-| tbd | no  | psa-meter5.p4 |
-| tbd | no  | psa-meter6.p4 |
-| tbd | yes | psa-meter7-bmv2.p4 |
-| Test sending a packet multicast to several output ports, but STF test does not verify that intrinsic metadata fields egress_port, instance, and packet_path are correct. | yes | psa-multicast-basic-bmv2.p4 |
-| Nearly identical to psa-multicast-basic-bmv2.p4 | yes | psa-multicast-basic-corrected-bmv2.p4 |
-| tbd | no  | psa-portid-using-newtype2.p4 |
-| tbd | no  | psa-random.p4 |
-| tbd | yes | psa-recirculate-no-meta-bmv2.p4 |
-| tbd | no  | psa-register1.p4 |
-| tbd | no  | psa-register2.p4 |
-| tbd | no  | psa-register3.p4 |
-| Basic read/write tests on a PSA Register extern, with STF tests. | yes | psa-register-complex-bmv2.p4 |
-| Basic read/write tests on a PSA Register extern, with STF tests. | yes | psa-register-read-write-bmv2.p4 |
-| tbd | yes | psa-resubmit-bmv2.p4 |
-| tbd | no  | psa-test.p4 |
-| Tests top level assignments in the ingress control, i.e. not performed within the action of a table.  A very early version of the PSA implementation in p4c produced incorrect output for this program. | yes | psa-top-level-assignments-bmv2.p4 |
-| Tests sending a packet unicast to a single output port that is a function of a header field, or dropping the packet for some values of fields in the input packet. | yes | psa-unicast-or-drop-bmv2.p4 |
-| Nearly identical test program to psa-unicast-or-drop-bmv2.p4, with identical STF tests covering nearly the same functionality.  One of these two test programs did expose a bug in an early version of the BMv2 PSA implementation, so both are worth keeping. | yes | psa-unicast-or-drop-corrected-bmv2.p4 |
+| Test program file name | Summary of features exercised | Has STF test? |
+| ---------------------- | ----------------------------- | ------------- |
+| psa-meter2.p4 | tbd | no  |
+| issue1208-1.p4 | basic instantiation of top level package with empty parsers, controls, and deparsers | no  |
+| p4rt_digest_complex.p4 | Support for (limited) structs inside of a header, which is really a P4_16 language feature that is not specific to the PSA architecture, but still a useful test. | no  |
+| psa-action-profile1.p4 | tbd | no  |
+| psa-action-profile2.p4 | tbd | no  |
+| psa-action-profile3.p4 | tbd | no  |
+| psa-action-profile4.p4 | tbd | no  |
+| psa-action-selector1.p4 | tbd | no  |
+| psa-action-selector2.p4 | tbd | no  |
+| psa-action-selector3.p4 | tbd | no  |
+| psa-basic-counter-bmv2.p4 | Indexed (aka indirect) counter instantiation and updating.  STF test as of 2020-Aug does not actually read the counters to check that they are updated, but if p4c and psa_switch are correct the counters should be updated. | yes |
+| psa-counter1.p4 | Looks extremely similar, but not identical, to psa-basic-counter-bmv2.p4.  No additional features executed more than what psa-basic-counter-bmv2.p4 does, except that it attempts to update index 1024 of an indexed counter with 1024 elements, so out of range and should be a no-op. | no  |
+| psa-counter2.p4 | Same as psa-counter1.p4 except that a single action should update two indexed counters, not only one. | no  |
+| psa-counter3.p4 | Same as psa-counter2.p4 except that it only updates one indexed counter, and does it by a call directly in ingress control apply block, rather than in an action of a table. | no  |
+| psa-counter4.p4 | Basic use of DirectCounter extern | no  |
+| psa-counter6.p4 | see table below | no  |
+| psa-custom-type-counter-index.p4 | Nearly identical to psa-counter1.p4, but uses P4_16 `type` declaration to declare a type that is used as the index to the indexed Counter extern. | no  |
+| psa-drop-all-bmv2.p4 | Empty ingress and egress, so all received packets should be dropped, confirmed by testing with a couple of input packets in STF file. | yes |
+| psa-drop-all-corrected-bmv2.p4 | Nearly identical to psa-drop-all-bmv2.p4.  Could probably be removed without any real loss of test coverage. | yes |
+| psa-example-counters-bmv2.p4 | tbd | no  |
+| psa-example-digest-bmv2.p4 | see table below | no  |
+| psa-example-parser-checksum.p4 | see table below | no  |
+| psa-example-register2-bmv2.p4 | tbd | yes |
+| psa-fwd-bmv2.p4 | Empty ingress and egress, so should drop all received packets.  Seems that psa-drop-all-bmv2.p4 covers this functionality better, since it has non-empty STF test that actually sends in a few packets. | yes |
+| psa-hash.p4   | tbd | no  |
+| psa-meter1.p4 | see table below | no  |
+| psa-meter3.p4 | tbd | no  |
+| psa-meter4.p4 | tbd | no  |
+| psa-meter5.p4 | tbd | no  |
+| psa-meter6.p4 | tbd | no  |
+| psa-meter7-bmv2.p4 | tbd | yes |
+| psa-multicast-basic-bmv2.p4 | Test sending a packet multicast to several output ports, but STF test does not verify that intrinsic metadata fields egress_port, instance, and packet_path are correct. | yes |
+| psa-multicast-basic-corrected-bmv2.p4 | Nearly identical to psa-multicast-basic-bmv2.p4 | yes |
+| psa-portid-using-newtype2.p4    | tbd | no  |
+| psa-random.p4                   | tbd | no  |
+| psa-recirculate-no-meta-bmv2.p4 | tbd | yes |
+| psa-register1.p4                | tbd | no  |
+| psa-register2.p4                | tbd | no  |
+| psa-register3.p4                | tbd | no  |
+| psa-register-complex-bmv2.p4 | Basic read/write tests on a PSA Register extern, with STF tests. | yes |
+| psa-register-read-write-bmv2.p4 | Basic read/write tests on a PSA Register extern, with STF tests. | yes |
+| psa-resubmit-bmv2.p4 | tbd | yes |
+| psa-test.p4 | tbd | no  |
+| psa-top-level-assignments-bmv2.p4 | Tests top level assignments in the ingress control, i.e. not performed within the action of a table.  A very early version of the PSA implementation in p4c produced incorrect output for this program. | yes |
+| psa-unicast-or-drop-bmv2.p4 | Tests sending a packet unicast to a single output port that is a function of a header field, or dropping the packet for some values of fields in the input packet. | yes |
+| psa-unicast-or-drop-corrected-bmv2.p4 | Nearly identical test program to psa-unicast-or-drop-bmv2.p4, with identical STF tests covering nearly the same functionality.  One of these two test programs did expose a bug in an early version of the BMv2 PSA implementation, so both are worth keeping. | yes |
 
 
 PSA test programs mentioned in at least one `CMakeLists.txt` file:
 
-| Summary of features exercised | Has STF test? | Reason it is mentioned in CMakeLists.txt file | Test program file name |
-| ----------------------------- | ------------- | --------------------------------------------- | ---------------------- |
-| Basic use of DirectCounter in a way that should ideally cause a compile-time error, intended to test that compiler catches this incorrect program. | no  | There are comments in backends/p4test/CMakeLists.txt explaining why it should give an error when you attempt to compile it.  It is marked XFAIL in that file, as it should be for such a test program. | psa-counter6.p4 |
-| tbd | no  | This test program uses an if statement in a deparser, which is needed for PSA 1.x digests and a few other features, but is not implemented in p4c yet.  Han Wang might implement this in Aug 2020 or soon afterwards. | psa-example-digest-bmv2.p4 |
-| tbd | no  | Table parser_error_count_and_convert key named istd.parser_error is type error, which P4Runtime API 1.x does not support as the type of a table key.  Long term solution is for a future P4Runtime API version to support type error as table keys. | psa-example-parser-checksum.p4 |
-| tbd | no  | It seems that the best approach to making a program like this work with the P4Runtime API is to enhance the P4Runtime API to support action parameters that have enum types: https://github.com/p4lang/p4runtime/issues/191 | psa-meter1.p4 |
+| Test program file name | Summary of features exercised | Has STF test? | Reason it is mentioned in CMakeLists.txt file |
+| ---------------------- | ----------------------------- | ------------- | --------------------------------------------- |
+| psa-counter6.p4 | Basic use of DirectCounter in a way that should ideally cause a compile-time error, intended to test that compiler catches this incorrect program. | no  | There are comments in backends/p4test/CMakeLists.txt explaining why it should give an error when you attempt to compile it.  It is marked XFAIL in that file, as it should be for such a test program. |
+| psa-example-digest-bmv2.p4 | tbd | no  | This test program uses an if statement in a deparser, which is needed for PSA 1.x digests and a few other features, but is not implemented in p4c yet.  Han Wang might implement this in Aug 2020 or soon afterwards. |
+| psa-example-parser-checksum.p4 | tbd | no  | Table parser_error_count_and_convert key named istd.parser_error is type error, which P4Runtime API 1.x does not support as the type of a table key.  Long term solution is for a future P4Runtime API version to support type error as table keys. |
+| psa-meter1.p4 | tbd | no  | It seems that the best approach to making a program like this work with the P4Runtime API is to enhance the P4Runtime API to support action parameters that have enum types: https://github.com/p4lang/p4runtime/issues/191 |
 
 
 PSA features, and which test programs exercise them:
