@@ -2,6 +2,9 @@
 
 As of the commit to the p4lang/p4c repository shown below:
 
+TBD: Update the versions of p4c and behavioral-model repos to include
+changes Andy Fingerhut made to both during week ending 2020-Aug-21:
+
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
@@ -177,13 +180,13 @@ program.
 | Basic use of DirectCounter extern | no  | no  | | psa-counter4.p4 |
 | Basic use of DirectCounter in a way that should ideally cause a compile-time error, intended to test that compiler catches this incorrect program. | no  | yes | There are comments in backends/p4test/CMakeLists.txt explaining why it should give an error when you attempt to compile it.  It is marked XFAIL in that file, as it should be for such a test program. | psa-counter6.p4 |
 | Nearly identical to psa-counter1.p4, but uses P4_16 `type` declaration to declare a type that is used as the index to the indexed Counter extern. | no  | no  | | psa-custom-type-counter-index.p4 |
-| tbd | yes | no  | | psa-drop-all-bmv2.p4 |
-| tbd | yes | no  | | psa-drop-all-corrected-bmv2.p4 |
+| Empty ingress and egress, so all received packets should be dropped, confirmed by testing with a couple of input packets in STF file. | yes | no  | | psa-drop-all-bmv2.p4 |
+| Nearly identical to psa-drop-all-bmv2.p4.  Could probably be removed without any real loss of test coverage. | yes | no  | | psa-drop-all-corrected-bmv2.p4 |
 | tbd | no  | no  | | psa-example-counters-bmv2.p4 |
 | tbd | no  | yes | This test program uses an if statement in a deparser, which is needed for PSA 1.x digests and a few other features, but is not implemented in p4c yet.  Han Wang might implement this in Aug 2020 or soon afterwards. | psa-example-digest-bmv2.p4 |
 | tbd | no  | yes | Table parser_error_count_and_convert key named istd.parser_error is type error, which P4Runtime API 1.x does not support as the type of a table key.  Long term solution is for a future P4Runtime API version to support type error as table keys. | psa-example-parser-checksum.p4 |
 | tbd | yes | no  | | psa-example-register2-bmv2.p4 |
-| tbd | yes | no  | | psa-fwd-bmv2.p4 |
+| Empty ingress and egress, so should drop all received packets.  Seems that psa-drop-all-bmv2.p4 covers this functionality better, since it has non-empty STF test that actually sends in a few packets. | yes | no  | | psa-fwd-bmv2.p4 |
 | tbd | no  | no  | | psa-hash.p4 |
 | tbd | no  | yes | It seems that the best approach to making a program like this work with the P4Runtime API is to enhance the P4Runtime API to support action parameters that have enum types: https://github.com/p4lang/p4runtime/issues/191 | psa-meter1.p4 |
 | tbd | no  | no  | | psa-meter3.p4 |
@@ -191,22 +194,59 @@ program.
 | tbd | no  | no  | | psa-meter5.p4 |
 | tbd | no  | no  | | psa-meter6.p4 |
 | tbd | yes | no  | | psa-meter7-bmv2.p4 |
-| tbd | yes | no  | | psa-multicast-basic-bmv2.p4 |
-| tbd | yes | no  | | psa-multicast-basic-corrected-bmv2.p4 |
+| Test sending a packet multicast to several output ports, but STF test does not verify that intrinsic metadata fields egress_port, instance, and packet_path are correct. | yes | no  | | psa-multicast-basic-bmv2.p4 |
+| Nearly identical to psa-multicast-basic-bmv2.p4 | yes | no  | | psa-multicast-basic-corrected-bmv2.p4 |
 | tbd | no  | no  | | psa-portid-using-newtype2.p4 |
 | tbd | no  | no  | | psa-random.p4 |
 | tbd | yes | no  | | psa-recirculate-no-meta-bmv2.p4 |
 | tbd | no  | no  | | psa-register1.p4 |
 | tbd | no  | no  | | psa-register2.p4 |
 | tbd | no  | no  | | psa-register3.p4 |
-| tbd | yes | no  | | psa-register-complex-bmv2.p4 |
-| tbd | yes | no  | | psa-register-read-write-bmv2.p4 |
+| Basic read/write tests on a PSA Register extern, with STF tests. | yes | no  | | psa-register-complex-bmv2.p4 |
+| Basic read/write tests on a PSA Register extern, with STF tests. | yes | no  | | psa-register-read-write-bmv2.p4 |
 | tbd | yes | no  | | psa-resubmit-bmv2.p4 |
 | tbd | no  | no  | | psa-test.p4 |
-| tbd | yes | no  | | psa-top-level-assignments-bmv2.p4 |
-| tbd | yes | no  | | psa-unicast-or-drop-bmv2.p4 |
-| tbd | yes | no  | | psa-unicast-or-drop-corrected-bmv2.p4 |
+| Tests top level assignments in the ingress control, i.e. not performed within the action of a table.  A very early version of the PSA implementation in p4c produced incorrect output for this program. | yes | no  | | psa-top-level-assignments-bmv2.p4 |
+| Tests sending a packet unicast to a single output port that is a function of a header field, or dropping the packet for some values of fields in the input packet. | yes | no  | | psa-unicast-or-drop-bmv2.p4 |
+| Nearly identical test program to psa-unicast-or-drop-bmv2.p4, with identical STF tests covering nearly the same functionality.  One of these two test programs did expose a bug in an early version of the BMv2 PSA implementation, so both are worth keeping. | yes | no  | | psa-unicast-or-drop-corrected-bmv2.p4 |
 
+
+PSA features, and which test programs exercise them:
+
+| PSA feature | Test programs | STF test fully automated checking of results? | Notes |
+| ----------- | ------------- | --------------------------------------------- | ----- |
+| unicast vs. drop, with correct setting of packet_path metadata in egress | psa-unicast-or-drop-bmv2.{p4,stf} | yes | |
+| multicast, with correct setting of egress_port, instance, and packet_path metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
+| resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | enhanced test submitted as p4lang/p4c PR on 2020-Aug-21 |
+| recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | enhanced test submitted as p4lang/p4c PR on 2020-Aug-21 |
+| ingress to egress clone | not implemented in psa_switch yet, but Peter Li has draft test program in p4c PR | ? | |
+| egress to egress clone | not implemented in psa_switch yet | | |
+| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | tbd | | |
+| verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
+| verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
+| verify egress class_of_service copied from ingress for unicast and multicast packets, and from PRE configuration for cloned packets | tbd | | |
+| verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | tbd | | |
+| unicast and multicast packets with preservation of bridged metadata | not yet implemented in p4c and bmv2 | | |
+| resubmit with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| recirculate with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| ingress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| egress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| ActionProfile extern | tbd | | |
+| ActionSelector extern | tbd | | |
+| ActionSelector extern with watch port feature enabled | tbd | | |
+| Checksum extern | tbd | | |
+| Counter extern | psa-basic-counter-bmv2.{p4,stf} | yes for output packets, no for reading and checking counters after they are updated, since p4lang/p4c STF tests do not provide a way to do that | |
+| Counter extern silently allows updates to out-of-range index, with no state change | psa-counter1.p4 | no STF test yet | |
+| Digest extern | tbd | | |
+| DirectCounter extern | tbd | | |
+| DirectMeter extern | tbd | | |
+| Hash extern | tbd | | |
+| InternetChecksum extern | tbd | | |
+| Meter extern | tbd | | |
+| Random extern | tbd | | |
+| Register extern | psa-register-read-write-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
+| psa_idle_timeout table property | tbd | | |
+| psa_empty_group_action table property | tbd | | |
 
 
 # Manual testing of program psa-basic-counter-bmv2.p4
