@@ -231,16 +231,16 @@ PSA features, and which test programs exercise them:
 
 | PSA feature | Test programs | STF test fully automated checking of results? | Notes |
 | ----------- | ------------- | --------------------------------------------- | ----- |
-| unicast vs. drop, with correct setting of packet_path metadata in egress | psa-unicast-or-drop-bmv2.{p4,stf} | yes | |
-| multicast, with correct setting of egress_port, instance, and packet_path metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
-| resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | enhanced test submitted as p4lang/p4c PR on 2020-Aug-21 |
-| recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | enhanced test submitted as p4lang/p4c PR on 2020-Aug-21 |
+| unicast vs. drop, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-unicast-or-drop-bmv2.{p4,stf} | yes | |
+| multicast, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
+| resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | |
+| recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
 | ingress to egress clone | not implemented in psa_switch yet, but Peter Li has draft test program in p4c PR | ? | |
 | egress to egress clone | not implemented in psa_switch yet | | |
 | verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | tbd | | |
 | verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
 | verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
-| verify egress class_of_service copied from ingress for unicast and multicast packets, and from PRE configuration for cloned packets | tbd | | |
+| verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
 | verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | tbd | | |
 | unicast and multicast packets with preservation of bridged metadata | not yet implemented in p4c and bmv2 | | |
 | resubmit with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
@@ -260,7 +260,7 @@ PSA features, and which test programs exercise them:
 | InternetChecksum extern | tbd | | |
 | Meter extern | tbd | | |
 | Random extern | tbd | | |
-| Register extern | psa-register-read-write-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
+| Register extern | psa-register-read-write-bmv2.{p4,stf} psa-register-read-write-2-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
 | psa_idle_timeout table property | tbd | | |
 | psa_empty_group_action table property | tbd | | |
 
