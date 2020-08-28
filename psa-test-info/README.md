@@ -8,15 +8,25 @@ changes Andy Fingerhut made to both during week ending 2020-Aug-21:
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
-$ git checkout f8d2bc1c038d8b61d55f7358135520348649c460
-$ git log -n 1 | cat
-commit f8d2bc1c038d8b61d55f7358135520348649c460
-Author: Chris Dodd <chris@barefootnetworks.com>
-Date:   Mon Aug 10 10:43:24 2020 -0700
+$ git checkout f9d6d86ef708c498ec67e002710f4d4433ce2a39
+$ git log -n 1 | head -n 5
+commit f9d6d86ef708c498ec67e002710f4d4433ce2a39
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Fri Aug 28 12:29:16 2020 -0400
 
-    Infer don't care for type args used only by @optional args (#2494)
-    
-    - rerun travis
+    Add checking of class_of_service field to PSA unii- and multicast tests (#2513)
+
+
+$ git clone https://github.com/p4lang/behavioral-model
+$ cd behavioral-model
+$ git checkout 5f9ad7026365d8b491a8a43618b10cae2f7850d1
+$ git log -n 1 | head -n 5
+commit 5f9ad7026365d8b491a8a43618b10cae2f7850d1
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Sun Aug 23 13:56:58 2020 -0700
+
+    PSA fixes for metadata fields class-of-service, timestamp, instance (#939)
+
 ```
 
 most of the test programs for the PSA architecture are in files
@@ -90,6 +100,7 @@ testdata/p4_16_samples/psa-counter6.p4
 testdata/p4_16_samples/psa-custom-type-counter-index.p4
 testdata/p4_16_samples/psa-drop-all-bmv2.p4
 testdata/p4_16_samples/psa-drop-all-corrected-bmv2.p4
+testdata/p4_16_samples/psa-end-of-ingress-test-bmv2.p4
 testdata/p4_16_samples/psa-example-counters-bmv2.p4
 testdata/p4_16_samples/psa-example-digest-bmv2.p4
 testdata/p4_16_samples/psa-example-parser-checksum.p4
@@ -102,6 +113,7 @@ testdata/p4_16_samples/psa-meter4.p4
 testdata/p4_16_samples/psa-meter5.p4
 testdata/p4_16_samples/psa-meter6.p4
 testdata/p4_16_samples/psa-meter7-bmv2.p4
+testdata/p4_16_samples/psa-multicast-basic-2-bmv2.p4
 testdata/p4_16_samples/psa-multicast-basic-bmv2.p4
 testdata/p4_16_samples/psa-multicast-basic-corrected-bmv2.p4
 testdata/p4_16_samples/psa-portid-using-newtype2.p4
@@ -111,6 +123,7 @@ testdata/p4_16_samples/psa-register1.p4
 testdata/p4_16_samples/psa-register2.p4
 testdata/p4_16_samples/psa-register3.p4
 testdata/p4_16_samples/psa-register-complex-bmv2.p4
+testdata/p4_16_samples/psa-register-read-write-2-bmv2.p4
 testdata/p4_16_samples/psa-register-read-write-bmv2.p4
 testdata/p4_16_samples/psa-resubmit-bmv2.p4
 testdata/p4_16_samples/psa-test.p4
@@ -146,13 +159,7 @@ $ find . -name CMakeLists.txt | xargs grep psa-
 ./backends/p4test/CMakeLists.txt:  testdata/p4_16_samples/psa-example-parser-checksum.p4
 ./backends/p4test/CMakeLists.txt:  testdata/p4_16_samples/psa-counter6.p4
 ./backends/bmv2/CMakeLists.txt:  testdata/p4_16_samples/psa-example-digest-bmv2.p4
-./backends/bmv2/CMakeLists.txt:  testdata/p4_16_samples/psa-ingress-input-meta-bmv2.p4
 ```
-
-Note that the last line above mentions a file that is not now, and has
-never, been checked into the p4lang/p4c repository, as far as I can
-tell.  The place where it is mentioned in the
-`backends/bmv2/CMakeLists.txt` file should probably be deleted.
 
 The tables below gives some notes on each of the PSA test programs.
 The first table contains only those programs that are not mentioned in
@@ -237,7 +244,7 @@ PSA features, and which test programs exercise them:
 | recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
 | ingress to egress clone | not implemented in psa_switch yet, but Peter Li has draft test program in p4c PR | ? | |
 | egress to egress clone | not implemented in psa_switch yet | | |
-| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | tbd | | |
+| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | The test does not cover ingress-to-egress clone operation testing yet, since that functionality was not yet implemented in psa_switch when the test was first written.  It can be enhanced later to cover that functionality when i2e cloning is in psa_switch. |
 | verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
 | verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
 | verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
