@@ -242,7 +242,7 @@ PSA features, and which test programs exercise them:
 | multicast, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
 | resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | |
 | recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
-| ingress to egress clone | not implemented in psa_switch yet, but Peter Li has draft test program in p4c PR | ? | |
+| ingress to egress clone | not implemented in psa_switch yet, but Peter Li has a test program in p4c PR https://github.com/p4lang/behavioral-model/pull/935 https://github.com/p4lang/p4c/pull/2499 | ? | |
 | egress to egress clone | not implemented in psa_switch yet | | |
 | verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | The test does not cover ingress-to-egress clone operation testing yet, since that functionality was not yet implemented in psa_switch when the test was first written.  It can be enhanced later to cover that functionality when i2e cloning is in psa_switch. |
 | verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
@@ -266,7 +266,7 @@ PSA features, and which test programs exercise them:
 | Hash extern | tbd | | |
 | InternetChecksum extern | tbd | | |
 | Meter extern | tbd | | |
-| Random extern | tbd | | |
+| Random extern | not implemented in psa_switch yet, but Yunhe Liu has these PRs and p4c one has a test program https://github.com/p4lang/behavioral-model/pull/931 https://github.com/p4lang/p4c/pull/2477 | | |
 | Register extern | psa-register-read-write-bmv2.{p4,stf} psa-register-read-write-2-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
 | psa_idle_timeout table property | tbd | | |
 | psa_empty_group_action table property | tbd | | |
