@@ -1,5 +1,54 @@
 # Portable Switch Architecture (PSA) test programs for p4c and behavioral-model
 
+This document is intended to list PSA features and any existing test
+programs that exercise those features.
+
+
+# PSA features, and which test programs exercise them
+
+The PSA features here were a list created by hand by Andy Fingerhut,
+by skimming the PSA specification and thinking about the kinds of test
+that had been written so far, and which had not.  Suggestions welcome
+for any other features that would be nice to have test programs
+written to exercise them.
+
+| PSA feature | Test programs | STF test fully automated checking of results? | Notes |
+| ----------- | ------------- | --------------------------------------------- | ----- |
+| unicast vs. drop, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-unicast-or-drop-bmv2.{p4,stf} | yes | |
+| multicast, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
+| resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | |
+| recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
+| ingress to egress clone | not implemented in psa_switch yet, but Peter Li has a test program in p4c PR https://github.com/p4lang/behavioral-model/pull/935 https://github.com/p4lang/p4c/pull/2499 | ? | |
+| egress to egress clone | not implemented in psa_switch yet | | |
+| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | The test does not cover ingress-to-egress clone operation testing yet, since that functionality was not yet implemented in psa_switch when the test was first written.  It can be enhanced later to cover that functionality when i2e cloning is in psa_switch. |
+| verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
+| verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
+| verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
+| verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | tbd | | |
+| unicast and multicast packets with preservation of bridged metadata | not yet implemented in p4c and bmv2 | | |
+| resubmit with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| recirculate with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| ingress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| egress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
+| ActionProfile extern | tbd | | |
+| ActionSelector extern | tbd | | |
+| ActionSelector extern with watch port feature enabled | tbd | | |
+| Checksum extern | tbd | | |
+| Counter extern | psa-basic-counter-bmv2.{p4,stf} | yes for output packets, no for reading and checking counters after they are updated, since p4lang/p4c STF tests do not provide a way to do that | |
+| Counter extern silently allows updates to out-of-range index, with no state change | psa-counter1.p4 | no STF test yet | |
+| Digest extern | tbd | | |
+| DirectCounter extern | tbd | | |
+| DirectMeter extern | tbd | | |
+| Hash extern | tbd | | |
+| InternetChecksum extern | tbd | | |
+| Meter extern | tbd | | |
+| Random extern | not implemented in psa_switch yet, but Yunhe Liu has these PRs and p4c one has a test program https://github.com/p4lang/behavioral-model/pull/931 https://github.com/p4lang/p4c/pull/2477 | | |
+| Register extern | psa-register-read-write-bmv2.{p4,stf} psa-register-read-write-2-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
+| psa_idle_timeout table property | tbd | | |
+| psa_empty_group_action table property | tbd | | |
+
+# Version details
+
 As of the commit to the p4lang/p4c repository shown below:
 
 ```
@@ -230,43 +279,6 @@ PSA test programs mentioned in at least one `CMakeLists.txt` file:
 | psa-example-parser-checksum.p4 | no  | tbd | Table parser_error_count_and_convert key named istd.parser_error is type error, which P4Runtime API 1.x does not support as the type of a table key.  Long term solution is for a future P4Runtime API version to support type error as table keys. |
 | psa-meter1.p4 | no  | tbd | It seems that the best approach to making a program like this work with the P4Runtime API is to enhance the P4Runtime API to support action parameters that have enum types: https://github.com/p4lang/p4runtime/issues/191 |
 
-
-PSA features, and which test programs exercise them:
-
-| PSA feature | Test programs | STF test fully automated checking of results? | Notes |
-| ----------- | ------------- | --------------------------------------------- | ----- |
-| unicast vs. drop, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-unicast-or-drop-bmv2.{p4,stf} | yes | |
-| multicast, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
-| resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | |
-| recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
-| ingress to egress clone | not implemented in psa_switch yet, but Peter Li has a test program in p4c PR https://github.com/p4lang/behavioral-model/pull/935 https://github.com/p4lang/p4c/pull/2499 | ? | |
-| egress to egress clone | not implemented in psa_switch yet | | |
-| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | The test does not cover ingress-to-egress clone operation testing yet, since that functionality was not yet implemented in psa_switch when the test was first written.  It can be enhanced later to cover that functionality when i2e cloning is in psa_switch. |
-| verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
-| verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
-| verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
-| verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | tbd | | |
-| unicast and multicast packets with preservation of bridged metadata | not yet implemented in p4c and bmv2 | | |
-| resubmit with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| recirculate with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| ingress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| egress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| ActionProfile extern | tbd | | |
-| ActionSelector extern | tbd | | |
-| ActionSelector extern with watch port feature enabled | tbd | | |
-| Checksum extern | tbd | | |
-| Counter extern | psa-basic-counter-bmv2.{p4,stf} | yes for output packets, no for reading and checking counters after they are updated, since p4lang/p4c STF tests do not provide a way to do that | |
-| Counter extern silently allows updates to out-of-range index, with no state change | psa-counter1.p4 | no STF test yet | |
-| Digest extern | tbd | | |
-| DirectCounter extern | tbd | | |
-| DirectMeter extern | tbd | | |
-| Hash extern | tbd | | |
-| InternetChecksum extern | tbd | | |
-| Meter extern | tbd | | |
-| Random extern | not implemented in psa_switch yet, but Yunhe Liu has these PRs and p4c one has a test program https://github.com/p4lang/behavioral-model/pull/931 https://github.com/p4lang/p4c/pull/2477 | | |
-| Register extern | psa-register-read-write-bmv2.{p4,stf} psa-register-read-write-2-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
-| psa_idle_timeout table property | tbd | | |
-| psa_empty_group_action table property | tbd | | |
 
 
 # Manual testing of program psa-basic-counter-bmv2.p4
