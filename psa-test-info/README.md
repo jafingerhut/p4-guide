@@ -2,9 +2,6 @@
 
 As of the commit to the p4lang/p4c repository shown below:
 
-TBD: Update the versions of p4c and behavioral-model repos to include
-changes Andy Fingerhut made to both during week ending 2020-Aug-21:
-
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
