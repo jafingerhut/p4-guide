@@ -20,7 +20,7 @@ written to exercise them.
 | recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
 | ingress to egress clone | not implemented in psa_switch yet, but Peter Li has a test program in p4c PR https://github.com/p4lang/behavioral-model/pull/935 https://github.com/p4lang/p4c/pull/2499 | ? | |
 | egress to egress clone | not implemented in psa_switch yet | | |
-| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | The test does not cover ingress-to-egress clone operation testing yet, since that functionality was not yet implemented in psa_switch when the test was first written.  It can be enhanced later to cover that functionality when i2e cloning is in psa_switch. |
+| verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | No ingress-to-egress clone functionality tested yet.  TBD: add later when implemented. |
 | verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
 | verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
 | verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
