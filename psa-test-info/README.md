@@ -18,7 +18,7 @@ written to exercise them.
 | multicast, with correct setting of egress_port, instance, packet_path, class_of_service metadata in egress | psa-multicast-basic-2-bmv2.{p4,stf} | yes | |
 | resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | |
 | recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
-| ingress to egress clone | not implemented in psa_switch yet, but Peter Li has a test program in p4c PR https://github.com/p4lang/behavioral-model/pull/935 https://github.com/p4lang/p4c/pull/2499 | ? | |
+| ingress to egress clone | psa-i2e-cloning-basic-bmv2.{p4,stf} | yes | |
 | egress to egress clone | not implemented in psa_switch yet | | |
 | verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | No ingress-to-egress clone functionality tested yet.  TBD: add later when implemented. |
 | verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
@@ -54,25 +54,23 @@ As of the commit to the p4lang/p4c repository shown below:
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
-$ git checkout f9d6d86ef708c498ec67e002710f4d4433ce2a39
+$ git checkout e3d00878698f7acdf57fba13260e086eef7aac1f
 $ git log -n 1 | head -n 5
-commit f9d6d86ef708c498ec67e002710f4d4433ce2a39
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Fri Aug 28 12:29:16 2020 -0400
+commit e3d00878698f7acdf57fba13260e086eef7aac1f
+Author: Peter J. Li <pl488@cornell.edu>
+Date:   Wed Sep 2 15:34:04 2020 -0700
 
-    Add checking of class_of_service field to PSA unii- and multicast tests (#2513)
-
+    [psa] i2e cloning bmv2 stf tests (#2499)
 
 $ git clone https://github.com/p4lang/behavioral-model
 $ cd behavioral-model
-$ git checkout 5f9ad7026365d8b491a8a43618b10cae2f7850d1
+$ git checkout 51dae313390e3613f37fb8233ad493a306c0613b
 $ git log -n 1 | head -n 5
-commit 5f9ad7026365d8b491a8a43618b10cae2f7850d1
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Sun Aug 23 13:56:58 2020 -0700
+commit 51dae313390e3613f37fb8233ad493a306c0613b
+Author: Peter J. Li <pl488@cornell.edu>
+Date:   Mon Aug 31 12:13:14 2020 -0700
 
-    PSA fixes for metadata fields class-of-service, timestamp, instance (#939)
-
+    [psa_switch] first pass at i2e cloning  (#935)
 ```
 
 most of the test programs for the PSA architecture are in files
