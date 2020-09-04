@@ -55,6 +55,7 @@ All test programs listed in the table are in the
 
 | Kind of switch statement | Test program name | Expected result | p4c as of version above gives expected result? |
 | ------------------------ | ----------------- | --------------- | ---------------------------------------------- |
+| no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  I have not yet investigated what the program's behavior is. |
 | duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
 | duplicate `default` switch labels | None yet.  See proposed test program in p4c issue #2525 | compile-time error | Warning about one of the default cases being not last, but no error.  Probably will be fixed in p4c soon. |
 | `default` switch label in any but the last case of the switch statement | tbd | compile-time error (or warning?) | tbd |
