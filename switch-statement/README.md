@@ -55,7 +55,7 @@ All test programs listed in the table are in the
 
 | Kind of switch statement | Test program name | Expected result | p4c as of version above gives expected result? |
 | ------------------------ | ----------------- | --------------- | ---------------------------------------------- |
-| duplicate switch labels, which are not 'default' | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
+| duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
 | duplicate `default` switch labels | None yet.  See proposed test program in p4c issue #2525 | compile-time error | Warning about one of the default cases being not last, but no error.  Probably will be fixed in p4c soon. |
 | `default` switch label in any but the last case of the switch statement | tbd | compile-time error (or warning?) | tbd |
 | a switch statement with no `default` label, and labels that include all possible values of the switch expression | | no error or warning | tbd |
@@ -76,6 +76,7 @@ inside of a switch case.
 
 Which of these programs in p4_16_samples directory contain STF tests?
 
+```
 no  apply-cf.p4
 no  basic_routing-bmv2.p4
 no  cases.p4
@@ -86,9 +87,10 @@ no  inline-switch.p4
 no  issue-2123.p4
 no  issue1595-1.p4
 no  issue1595.p4
-yes issue2153-bmv2.p4  no default label, labels not exhaustive
+yes issue2153-bmv2.p4   switch has no `default` label, and labels not exhaustive
 yes issue2170-bmv2.p4
 no  stack_ebpf.p4
 yes switch_ebpf.p4
 yes ternary2-bmv2.p4
 no  uninit.p4
+```
