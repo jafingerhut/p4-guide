@@ -24,17 +24,18 @@ Date:   Sun Sep 6 17:41:09 2020 -0400
 
 $ find . -name '*.p4' | xargs egrep '\bswitch *\(' | egrep -v '/p4_1[46]_samples_outputs/' | egrep -v '/p4_16_errors_outputs/' | sort
 ./testdata/p4_16_errors/duplicate-label.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_errors/incorrect-label.p4:        switch (t1.apply().action_run) {
 ./testdata/p4_16_errors/switch_expression.p4:        switch (hdr.field) {
 ./testdata/p4_16_samples/apply-cf.p4:        switch (t.apply().action_run) {
 ./testdata/p4_16_samples/basic_routing-bmv2.p4:            switch (ipv4_fib.apply().action_run) {
 ./testdata/p4_16_samples/cases.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/def-use.p4:        switch(t.apply().action_run) {
 ./testdata/p4_16_samples/default-switch.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_samples/def-use.p4:        switch(t.apply().action_run) {
 ./testdata/p4_16_samples/exit5.p4:        switch (t.apply().action_run) {
 ./testdata/p4_16_samples/inline-switch.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/issue-2123.p4:            switch (ipv4_fib.apply().action_run) {
 ./testdata/p4_16_samples/issue1595-1.p4:        switch(t.apply().action_run) {
 ./testdata/p4_16_samples/issue1595.p4:        switch (t1.apply().action_run) {
+./testdata/p4_16_samples/issue-2123.p4:            switch (ipv4_fib.apply().action_run) {
 ./testdata/p4_16_samples/issue2153-bmv2.p4:        switch (simple_table.apply().action_run) {
 ./testdata/p4_16_samples/issue2170-bmv2.p4:        switch (simple_table.apply().action_run) {
 ./testdata/p4_16_samples/stack_ebpf.p4:        switch (Check_src_ip.apply().action_run) {
@@ -59,15 +60,12 @@ All test programs listed in the table are in the
 | no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  Behaves as if there was an empty body `{ }` after the last label. |
 | duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
 | duplicate `default` switch labels | None yet.  See proposed test program in p4c issue #2525 | compile-time error | Warning about one of the default cases being not last, but no error.  Probably will be fixed in p4c soon. |
-| `default` switch label in any but the last case of the switch statement | tbd | compile-time error (or warning?) | tbd |
+| `default` switch label in any but the last case of the switch statement | default-switch.p4 | compile-time warning only | compile-time warning |
 | a switch statement with no `default` label, and labels that include all possible values of the switch expression | | no error or warning | tbd |
 | a switch statement with no `default` label, and labels that DO NOT include all possible values of the switch expression | issue2153-bmv2.p4 and several others.  issue2153-bmv2.stf is a packet processing test that makes visible in the output packets, and has expected output packets that would cause the test to fail if the switch statement executed the one branch rather than doing nothing, if the one label is not matched, | no error or warning | While some P4 developers might want an option to get a warning when the switch branches are not exhaustive, there seems to be a multi-year history of using such non-exhaustive switch statements. The P4_16 language specification 1.2.1 and earlier has always explicitly stated that "if no case matches, execution of the program simply continues" (Section 11.7 "Switch statement").  The fix for p4c issue #2153 was to change p4c's internals so that it no longer assumed that the cases of a switch statement in the source code were exhaustive. |
-| a switch statement with a label that is not any of the possible values of evaluating the switch expression | p4_16_errors/incorrect-label.p4 proposed to be added with p4c PR #2526 | compile-time error | yes |
+| a switch statement with a label that is not any of the possible values of evaluating the switch expression | p4_16_errors/incorrect-label.p4 | compile-time error | yes |
 | a switch statement with an expression not of the form `table_name.apply().action_run` | p4_16_errors/switch_expression.p4 | compile-time error | yes, but the reason for writing these notes is to present to the P4 LDWG a generalized switch statement that would allow other types of switch expressions |
-
-TBD: Quick and easy error/warning test programs to write:
-
-| `default` switch label in any but the last case of the switch statement | tbd | compile-time error (or warning?) | tbd |
+| a switch statement where the non-`default` labels are exhaustive, but there is still an explicit `default` label that can never be executed | inline-switch.p4 | might be nice to have a warning? | no warning.  Output of mid-end includes the default case still, which seems correct but unnecessary. |
 
 issue2170-bmv2.p4 and corresponding STF test exercise the behavior
 that if a table gets a miss, and executes its default action, then the
