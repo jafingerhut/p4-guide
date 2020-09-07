@@ -12,34 +12,35 @@ switch statements.
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
-$ git checkout e3d00878698f7acdf57fba13260e086eef7aac1f
+$ git checkout 790e06c1c4dda3031961fc8ce4b648f2ec93a548
 $ git log -n 1 | head -n 5
-commit e3d00878698f7acdf57fba13260e086eef7aac1f
-Author: Peter J. Li <pl488@cornell.edu>
-Date:   Wed Sep 2 15:34:04 2020 -0700
+commit 790e06c1c4dda3031961fc8ce4b648f2ec93a548
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Sun Sep 6 17:41:09 2020 -0400
 
-    [psa] i2e cloning bmv2 stf tests (#2499)
+    Add a test case verifying that p4c gives compile time error for bad switch label (#2526)
 
 
-$ find . -name '*.p4' | xargs egrep '\bswitch *\(' | egrep -v '/p4_1[46]_samples_outputs/' | egrep -v '/p4_16_errors_outputs/'
-./testdata/p4_16_samples/basic_routing-bmv2.p4:            switch (ipv4_fib.apply().action_run) {
-./testdata/p4_16_samples/uninit.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/default-switch.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/cases.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/ternary2-bmv2.p4:        switch (ex1.apply().action_run) {
-./testdata/p4_16_samples/switch_ebpf.p4:        switch (Check_src_ip.apply().action_run) {
-./testdata/p4_16_samples/issue1595-1.p4:        switch(t.apply().action_run) {
-./testdata/p4_16_samples/issue2153-bmv2.p4:        switch (simple_table.apply().action_run) {
-./testdata/p4_16_samples/issue1595.p4:        switch (t1.apply().action_run) {
-./testdata/p4_16_samples/exit5.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/def-use.p4:        switch(t.apply().action_run) {
-./testdata/p4_16_samples/stack_ebpf.p4:        switch (Check_src_ip.apply().action_run) {
-./testdata/p4_16_samples/issue-2123.p4:            switch (ipv4_fib.apply().action_run) {
-./testdata/p4_16_samples/apply-cf.p4:        switch (t.apply().action_run) {
-./testdata/p4_16_samples/issue2170-bmv2.p4:        switch (simple_table.apply().action_run) {
-./testdata/p4_16_samples/inline-switch.p4:        switch (t.apply().action_run) {
+
+$ find . -name '*.p4' | xargs egrep '\bswitch *\(' | egrep -v '/p4_1[46]_samples_outputs/' | egrep -v '/p4_16_errors_outputs/' | sort
 ./testdata/p4_16_errors/duplicate-label.p4:        switch (t.apply().action_run) {
 ./testdata/p4_16_errors/switch_expression.p4:        switch (hdr.field) {
+./testdata/p4_16_samples/apply-cf.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_samples/basic_routing-bmv2.p4:            switch (ipv4_fib.apply().action_run) {
+./testdata/p4_16_samples/cases.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_samples/def-use.p4:        switch(t.apply().action_run) {
+./testdata/p4_16_samples/default-switch.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_samples/exit5.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_samples/inline-switch.p4:        switch (t.apply().action_run) {
+./testdata/p4_16_samples/issue-2123.p4:            switch (ipv4_fib.apply().action_run) {
+./testdata/p4_16_samples/issue1595-1.p4:        switch(t.apply().action_run) {
+./testdata/p4_16_samples/issue1595.p4:        switch (t1.apply().action_run) {
+./testdata/p4_16_samples/issue2153-bmv2.p4:        switch (simple_table.apply().action_run) {
+./testdata/p4_16_samples/issue2170-bmv2.p4:        switch (simple_table.apply().action_run) {
+./testdata/p4_16_samples/stack_ebpf.p4:        switch (Check_src_ip.apply().action_run) {
+./testdata/p4_16_samples/switch_ebpf.p4:        switch (Check_src_ip.apply().action_run) {
+./testdata/p4_16_samples/ternary2-bmv2.p4:        switch (ex1.apply().action_run) {
+./testdata/p4_16_samples/uninit.p4:        switch (t.apply().action_run) {
 ```
 
 The table below lists various kinds of cases that seem useful to test
@@ -55,7 +56,7 @@ All test programs listed in the table are in the
 
 | Kind of switch statement | Test program name | Expected result | p4c as of version above gives expected result? |
 | ------------------------ | ----------------- | --------------- | ---------------------------------------------- |
-| no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  I have not yet investigated what the program's behavior is. |
+| no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  Behaves as if there was an empty body `{ }` after the last label. |
 | duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
 | duplicate `default` switch labels | None yet.  See proposed test program in p4c issue #2525 | compile-time error | Warning about one of the default cases being not last, but no error.  Probably will be fixed in p4c soon. |
 | `default` switch label in any but the last case of the switch statement | tbd | compile-time error (or warning?) | tbd |
