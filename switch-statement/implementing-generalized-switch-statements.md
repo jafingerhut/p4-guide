@@ -12,7 +12,6 @@ previously existing restricted P4_16 switch statements.
 Consider the generalized switch statement in Partial Program 1, where
 the switch expression has type `bit<16>`.
 
-----------------------------------------------------------------------
 Partial Program 1
 ----------------------------------------------------------------------
 ```
@@ -34,7 +33,6 @@ applying tables, nested switch statements, etc.
 It is certainly possible for a target to implement Partial Program 1
 in the same way that it would implement Partial Program 2.
 
-----------------------------------------------------------------------
 Partial Program 2
 ----------------------------------------------------------------------
 ```
@@ -61,7 +59,6 @@ did, since the table was not created by a human developer.  The
 `@hidden` annotation in the P4_16 specification is used to indicate
 this.
 
-----------------------------------------------------------------------
 Partial Program 3
 ----------------------------------------------------------------------
 ```
