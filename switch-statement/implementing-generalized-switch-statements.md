@@ -1,7 +1,7 @@
 # Implementing generalized P4_16 switch statements
 
 Version 1.2.1 and earlier of the P4_16 language specification
-restricts switch statements ot have a switch expression of the form
+restricts switch statements to have a switch expression of the form
 `table_name.apply().action_run`.
 
 This short article is intended to demonstrate a way that P4 compiler
@@ -9,12 +9,13 @@ writers can implement a generalized P4_16 switch statement in a way
 that is as efficient as any techniques they have for implementing the
 previously existing restricted P4_16 switch statements.
 
-Consider the generalized switch statement in Partial Progrma 1, where
+Consider the generalized switch statement in Partial Program 1, where
 the switch expression has type `bit<16>`.
 
 ----------------------------------------------------------------------
 Partial Program 1
 ----------------------------------------------------------------------
+```
 bit<16> x;
 
 switch (x) {
@@ -24,7 +25,7 @@ switch (x) {
    4: { /* body 4 here */ }
    default: { /* body D here */ }
 }
-----------------------------------------------------------------------
+```
 
 Each of the switch case bodies in Partial Program 1 can be arbitrary
 P4_16 code that can appear within a control, e.g. if-then-else's,
@@ -36,6 +37,7 @@ in the same way that it would implement Partial Program 2.
 ----------------------------------------------------------------------
 Partial Program 2
 ----------------------------------------------------------------------
+```
 if (x == 1) {
     /* body 1 here */
 } else if ((x == 2) || (x == 3)) {
@@ -45,7 +47,7 @@ if (x == 1) {
 } else {
     /* body D here */
 }
-----------------------------------------------------------------------
+```
 
 However, some P4 compilers may be able to implement Partial Program 1
 more efficiently by compiling it the same way they would compile
@@ -62,6 +64,7 @@ this.
 ----------------------------------------------------------------------
 Partial Program 3
 ----------------------------------------------------------------------
+```
 bit<16> x;
 
 @hidden action switch1_case_1 () {
@@ -105,6 +108,7 @@ switch1_case_23:      { /* body 23 here */ }
 switch1_case_4:       { /* body 4 here */ }
 switch1_case_default: { /* body D here */ }
 }
+```
 ----------------------------------------------------------------------
 
 Some properties of the transformation:
