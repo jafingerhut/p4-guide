@@ -55,9 +55,9 @@ Note that the table `switch1_table` is completely constant in all
 ways, both in its table entries and in its default action.  It does
 not have any need to be visible from the control plane software, and
 would probably only confuse control plane software developers if it
-did, since the table was not created by a human developer.  The
-`@hidden` annotation in the P4_16 specification is used to indicate
-this.
+was visible, since the table was not created by a human developer.
+The `@hidden` annotation in the P4_16 specification is used to
+indicate this.
 
 Partial Program 3
 ----------------------------------------------------------------------
