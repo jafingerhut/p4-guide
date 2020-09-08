@@ -12,13 +12,14 @@ switch statements.
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
-$ git checkout 790e06c1c4dda3031961fc8ce4b648f2ec93a548
+$ git checkout ac3d217f44b8c8e9146cea3ae4d059125646a966
 $ git log -n 1 | head -n 5
-commit 790e06c1c4dda3031961fc8ce4b648f2ec93a548
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Sun Sep 6 17:41:09 2020 -0400
+commit ac3d217f44b8c8e9146cea3ae4d059125646a966
+Author: Mihai Budiu <mbudiu@vmware.com>
+Date:   Tue Sep 8 10:37:58 2020 -0700
 
-    Add a test case verifying that p4c gives compile time error for bad switch label (#2526)
+    Rejet switch statements with two default labels (#2529)
+
 
 
 
@@ -59,7 +60,7 @@ All test programs listed in the table are in the
 | ------------------------ | ----------------- | --------------- | ---------------------------------------------- |
 | no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  Behaves as if there was an empty body `{ }` after the last label. |
 | duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
-| duplicate `default` switch labels | None yet.  See proposed test program in p4c issue #2525 | compile-time error | Warning about one of the default cases being not last, but no error.  Probably will be fixed in p4c soon. |
+| duplicate `default` switch labels | p4_16_errors/issue2525.p4 | compile-time error | yes |
 | `default` switch label in any but the last case of the switch statement | default-switch.p4 | compile-time warning only | compile-time warning |
 | a switch statement with no `default` label, and labels that include all possible values of the switch expression | | no error or warning | tbd |
 | a switch statement with no `default` label, and labels that DO NOT include all possible values of the switch expression | issue2153-bmv2.p4 and several others.  issue2153-bmv2.stf is a packet processing test that makes visible in the output packets, and has expected output packets that would cause the test to fail if the switch statement executed the one branch rather than doing nothing, if the one label is not matched, | no error or warning | While some P4 developers might want an option to get a warning when the switch branches are not exhaustive, there seems to be a multi-year history of using such non-exhaustive switch statements. The P4_16 language specification 1.2.1 and earlier has always explicitly stated that "if no case matches, execution of the program simply continues" (Section 11.7 "Switch statement").  The fix for p4c issue #2153 was to change p4c's internals so that it no longer assumed that the cases of a switch statement in the source code were exhaustive. |
