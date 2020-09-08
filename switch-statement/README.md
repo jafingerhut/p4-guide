@@ -58,6 +58,7 @@ All test programs listed in the table are in the
 
 | Kind of switch statement | Test program name | Expected result | p4c as of version above gives expected result? |
 | ------------------------ | ----------------- | --------------- | ---------------------------------------------- |
+| attempt to define an action named `default` whose name conflicts with `default` switch label | action-named-default-bmv2.p4 proposed in this PR: https://github.com/p4lang/p4c/pull/2530 | compile-time error that `default` cannot be used as action name, probably because it is a something like a 'reserved keyword' | yes |
 | no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  Behaves as if there was an empty body `{ }` after the last label. |
 | duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
 | duplicate `default` switch labels | p4_16_errors/issue2525.p4 | compile-time error | yes |
