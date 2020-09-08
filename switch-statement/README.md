@@ -12,13 +12,14 @@ switch statements.
 ```
 $ git clone https://github.com/p4lang/p4c
 $ cd p4c
-$ git checkout ac3d217f44b8c8e9146cea3ae4d059125646a966
+$ git checkout cceaa380f9cb07c107bae5124772dddaef3e98ce
 $ git log -n 1 | head -n 5
-commit ac3d217f44b8c8e9146cea3ae4d059125646a966
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Tue Sep 8 10:37:58 2020 -0700
+commit cceaa380f9cb07c107bae5124772dddaef3e98ce
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Tue Sep 8 14:29:20 2020 -0400
 
-    Rejet switch statements with two default labels (#2529)
+    Add test case attempting to name an action 'default' (#2530)
+
 
 
 
@@ -58,7 +59,7 @@ All test programs listed in the table are in the
 
 | Kind of switch statement | Test program name | Expected result | p4c as of version above gives expected result? |
 | ------------------------ | ----------------- | --------------- | ---------------------------------------------- |
-| attempt to define an action named `default` whose name conflicts with `default` switch label | action-named-default-bmv2.p4 proposed in this PR: https://github.com/p4lang/p4c/pull/2530 | compile-time error that `default` cannot be used as action name, probably because it is a something like a 'reserved keyword' | yes |
+| attempt to define an action named `default` whose name conflicts with `default` switch label | p4_16_errors/action-named-default-bmv2.p4 | compile-time error that `default` cannot be used as action name, probably because it is a something like a 'reserved keyword' | yes |
 | no body after the last label | last-switch-label-without-body.p4 attached to p4c issue #2527 | compile-time error?  The P4_16 version 1.2.1 spec is silent on this issue, as far as I can see. | no error.  Behaves as if there was an empty body `{ }` after the last label. |
 | duplicate switch labels, which are not `default` | p4_16_errors/duplicate-label.p4 | compile-time error | yes |
 | duplicate `default` switch labels | p4_16_errors/issue2525.p4 | compile-time error | yes |
