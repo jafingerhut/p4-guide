@@ -1,4 +1,5 @@
-These are only
+These are a few notes on ideas for formal verification of P4_16
+programs.
 
 
 # Reading fields of a header
@@ -14,30 +15,31 @@ to the language specification.
     }
 ```
 
-If hdr.tcp.isValid() is true before executing the code above, then
-there is only one possible final value for hdr.ethernet.dstAddress,
+If `hdr.tcp.isValid()` is true before executing the code above, then
+there is only one possible final value for `hdr.ethernet.dstAddress`,
 which is 2.
 
-If hdr.tcp.isValis() is false before executing the code above, then
-there are two possible final values for hdr.ethernet.dstAddress: 1 or
-2.
+If `hdr.tcp.isValid()` is false before executing the code above, then
+there are two possible final values for `hdr.ethernet.dstAddress`: 1
+or 2.
 
 Why is 1 possible, you might reasonably ask?  Because according to the
 language specification, every separate read of a field in an invalid
 header evaluates to an unspecified value of the appropriate type, and
 that value can change from one evaluation of the field to the next.
 Thus it is possible that the two separate reads might return different
-values of type bit<16>, and the if condition would then evaluate to
-false.  The two reads might also just happen to return the same value,
-and then the condition would evaluate to true.
+values of type `bit<16>`, and the `if` condition would then evaluate
+to false.  The two reads might also just happen to return the same
+value, and then the condition would evaluate to true.
 
 I believe that the following transformations of a P4_16 program are
 correct.  I would not necessarily recommend these for use in a P4_16
 compiler, but they may be useful for a P4 verification tool.
 
-All reads of a header field with type `bit<W>`, e.g. `hdr.tcp.srcPort`
-which is type `bit<16>`, can be replaced with the following expression
-without changing the possible set of behaviors of the program:
+All reads of a header field with type `bit<16>`,
+e.g. `hdr.tcp.srcPort` which is type `bit<16>`, can be replaced with
+the following expression without changing the possible set of
+behaviors of the program:
 
 ```
 (hdr.tcp.isValid() ? hdr.tcp.srcPort : fresh_input_bit_16_value_number_1)
@@ -96,6 +98,38 @@ In that last code snippet, if `fresh_input_bit_16_1` and
 arbitrary values of type `bit<16>` that are independent of the
 contents of the received packet, it is straightforward to see that the
 condition might evaluate to true, or to false.
+
+Given this substitution, it is possible to write P4 programs where the
+set of output packet(s) that result from processing one received
+packet, and/or the sequence of side effects (e.g. counter, meter,
+and/or register updates), either:
+
+(a) in some cases does depend upon the value of a `fresh_input_*`
+    input value
+
+(b) all outputs and side effects have absolutely no dependence upon
+    the value of any `fresh_input_*` input values.
+
+Programs with property (b) are more predictable and portable across P4
+implementations.  It would be very reasonable, and perhaps desirable,
+for a P4 compiler with full warnings enabled, or a P4 "lint" type
+tool, to warn about any occurrences of (a) in a developer's P4
+program.
+
+Even in case (a), it is possible that there are _intermediate_
+variable values in a program that depend upon the value of a
+`fresh_input_*` input value, but the "final visible outputs", e.g. the
+packets going out, and any side effects made to counters, meters,
+registers, or other similar stateful objects, does _not_ depend upon
+the `fresh_input_*` values, because those intermediate values are
+later ignored or masked out.
+
+It seems desirable in such cases to let a P4 developer using a
+lint/warning tool to choose whether to see that, or disable
+notifications of those, because they might make the program easier to
+write, or in fact it might not be reasonable to write the program in
+such a way that 0 intermediate variable values depend upon these
+`fresh_input_*` values.
 
 
 # Writing fields of a header
