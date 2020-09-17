@@ -460,5 +460,6 @@ program.  This example is mentioned because the transformation `if
 (condition_expr) body1 else body2;` to `if (condition_expr) body1; if
 (! condition_expr) body2;` was brought up as transformation that p4c
 might make, at least in some situations.  I do not know what
-situations those are.  Perhaps within action bodies?
+situations those are.  If you know of a program where p4c makes such a
+transformation, I would like to include it here.
 
