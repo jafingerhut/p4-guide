@@ -298,10 +298,10 @@ P4 target device.
 
 The primary reason for multiple behaviors we will consider here are
 those resulting from the semantics of the P4 language itself, and most
-especially the ones resulting from the part of the P4 specifiation
+especially the ones resulting from the part of the P4 specification
 pointed out in the "Reading fields of a header" section above: if an
 uninitialized variable or header field is read, each of its uses can
-result in a differnt value being used.
+result in a different value being used.
 
 Aside: You might wonder why such behavior is mentioned in the P4
 language specification.  My understanding is that the primary reason
@@ -370,8 +370,8 @@ control ingressImpl(inout headers_t hdr,
 Because in Undef2 there is an explicit assignment to variable `x`, an
 implementation of Undef2 should do exactly one of these two things:
 
-(behavior #1) evaluate condition #1 as true, and condition #2 as false
-(behavior #2) evaluate condition #1 as false, and condition #2 as true
++ (behavior #1) evaluate condition #1 as true, and condition #2 as false
++ (behavior #2) evaluate condition #1 as false, and condition #2 as true
 
 Program Undef3 looks like it should be equivalent.  After all, it is
 simply eliminating what appears to be a redundant and unnecessary
@@ -383,15 +383,15 @@ thus multiple occurrences of `undef` might result in different values
 of type `bit<8>` being used.  Thus there are now 4 possible behaviors,
 which include the two behaviors above, plus the following:
 
-(behavior #3) evaluate condition #1 as true, and condition #2 as true
-(behavior #4) evaluate condition #1 as false, and condition #2 as false
++ (behavior #3) evaluate condition #1 as true, and condition #2 as true
++ (behavior #4) evaluate condition #1 as false, and condition #2 as false
 
 Going back to the term "refine", I believe a correct definition is:
 
-refine: We say that "program B refines program A" if the set of
+_refine_: We say that "program B refines program A" if the set of
     possible behaviors of B is a subset of the possible behaviors of A
     (perhaps the same set, perhaps a proper subset).  Alternately we
-    may say "program B is a refinment of program A".
+    may say "program B is a refinement of program A".
 
 So program Undef2 is a refinement of Undef3, but program Undef3 is
 _not_ a refinement of Undef2.
