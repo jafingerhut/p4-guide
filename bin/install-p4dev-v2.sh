@@ -37,6 +37,7 @@
 # behavioral-model - 4.1G
 
 set -e
+set -x
 
 # The maximum number of gcc/g++ jobs to run in parallel.  1 is the
 # safest number that enables compiling p4c even on machines with only
@@ -53,6 +54,7 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_release=`lsb_release -s -r`
 
+set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
@@ -93,6 +95,7 @@ echo "versions that are not the latest, you can modify this script by"
 echo "adding 'git checkout <tag>' and/or 'git checkout <commit-sha>'"
 echo "command at the appropriate places."
 echo ""
+set -x
 
 # TBD: Consider adding a check for how much free disk space there is
 # and giving a message about it and aborting if it is too low.  On
@@ -102,6 +105,7 @@ echo ""
 # parse so much output from a different command like `df -h .`
 
 
+set +x
 REPO_CACHE_DIR="${INSTALL_DIR}/repository-cache"
 get_from_nearest() {
     local git_url="$1"
@@ -120,6 +124,7 @@ get_from_nearest() {
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
+set -x
 date
 df -h .
 df -BM .
@@ -140,6 +145,7 @@ sudo apt-get --yes install git vim
 "${THIS_SCRIPT_DIR_ABSOLUTE}/keep-sudo-credentials-fresh.sh" &
 CHILD_PROCESS_PID=$!
 
+set +x
 clean_up() {
     echo "Killing child process"
     kill ${CHILD_PROCESS_PID}
@@ -147,6 +153,7 @@ clean_up() {
     sudo --reset-timestamp
     exit
 }
+set -x
 
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
@@ -187,17 +194,17 @@ pip3 --version
 # to see in the log output files from running this script what
 # packages and versions were installed at those times during script
 # execution.
-set -x
 pip list
 pip3 list
-set +x
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
 
+set +x
 echo "------------------------------------------------------------"
 echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
 echo "start install protobuf:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
@@ -212,15 +219,19 @@ sudo ldconfig
 # Save about 0.5G of storage by cleaning up protobuf build
 make clean
 
+set +x
 echo "end install protobuf:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-2-after-protobuf.txt
 
+set +x
 echo "------------------------------------------------------------"
 echo "Installing grpc, needed for installing p4lang/PI"
 echo "start install grpc:"
+set -x
 date
 
 # From BUILDING.md of grpc source repository
@@ -247,15 +258,19 @@ sudo ldconfig
 # Save about 0.3G of storage by cleaning up grpc v1.17.2 build
 make clean
 
+set +x
 echo "end install grpc:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
 
+set +x
 echo "------------------------------------------------------------"
 echo "Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc"
 echo "start install PI:"
+set -x
 date
 
 # Deps needed to build PI:
@@ -284,15 +299,19 @@ sudo make install
 # Save about 0.25G of storage by cleaning up PI build
 make clean
 
+set +x
 echo "end install PI:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-4-after-PI.txt
 
+set +x
 echo "------------------------------------------------------------"
 echo "Installing p4lang/behavioral-model"
 echo "start install behavioral-model:"
+set -x
 date
 
 # Following instructions in the file
@@ -337,15 +356,19 @@ make
 sudo make install
 sudo ldconfig
 
+set +x
 echo "end install behavioral-model:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-5-after-behavioral-model.txt
 
+set +x
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
 echo "start install p4c:"
+set -x
 date
 
 # Install Ubuntu dependencies needed by p4c, from its README.md
@@ -354,9 +377,7 @@ sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex l
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 pip3 install scapy
-set -x
 pip3 list
-set +x
 
 # Clone p4c and its submodules:
 git clone --recursive https://github.com/p4lang/p4c.git
@@ -370,32 +391,40 @@ make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
 
+set +x
 echo "end install p4c:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-p4c.txt
 
+set +x
 echo "------------------------------------------------------------"
 
 echo "Installing Mininet - not necessary to run P4 programs, but useful if"
 echo "you want to run tutorials from https://github.com/p4lang/tutorials"
 echo "repository."
 echo "start install mininet:"
+set -x
 date
 
 git clone git://github.com/mininet/mininet mininet
 sudo ./mininet/util/install.sh -nwv
 
+set +x
 echo "end install mininet:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
 
+set +x
 echo "------------------------------------------------------------"
 echo "Installing a few miscellaneous packages"
 echo "start install miscellaneous packages:"
+set -x
 date
 
 # grpcio 1.17.2 would be ideal, to match the version of gRPC that we
@@ -408,39 +437,35 @@ date
 # _basic_ P4Runtime API testing on a system on which this install
 # script was run.
 sudo pip install grpcio==1.17.1
-set -x
 pip list
-set +x
 
 # Installing the version of grpcio above does not automatically
 # install a Python protobuf package, so install one.
 sudo pip install protobuf==3.6.1
-set -x
 pip list
-set +x
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 sudo apt-get --yes install python-psutil libgflags-dev net-tools
 sudo pip install crcmod
-set -x
 pip list
-set +x
 
+set +x
 echo "end install miscellaneous packages:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
-set -x
 pip list
 pip3 list
-set +x
 
 set +e
 
+set +x
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
+set -x
 date
 df -h .
 df -BM .
@@ -460,6 +485,7 @@ diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-insta
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
+set +x
 echo "----------------------------------------------------------------------"
 echo "Output of script p4-environment-info.sh"
 echo "----------------------------------------------------------------------"
@@ -497,5 +523,6 @@ echo "directory."
 echo "----------------------------------------------------------------------"
 echo "CONSIDER READING WHAT IS ABOVE"
 echo "----------------------------------------------------------------------"
+set -x
 
 clean_up

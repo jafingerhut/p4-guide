@@ -242,7 +242,9 @@ sudo ldconfig
 # Save about 0.5G of storage by cleaning up protobuf build
 make clean
 
+set +x
 echo "end install protobuf:"
+set -x
 date
 
 cd "${INSTALL_DIR}"
