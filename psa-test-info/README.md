@@ -19,7 +19,7 @@ written to exercise them.
 | resubmit, with correct setting of packet_path metadata in ingress | psa-resubmit-bmv2.{p4,stf} | yes | |
 | recirculate, with correct setting of packet_path metadata in ingress and egress, and recirculated packet's ingress_port equals PSA_RECIRCULATE_PORT | psa-recirculate-no-meta-bmv2.{p4,stf} | yes | |
 | ingress to egress clone | psa-i2e-cloning-basic-bmv2.{p4,stf} | yes | |
-| egress to egress clone | not implemented in psa_switch yet | | |
+| egress to egress clone | psa-e2e-cloning-basic-bmv2.{p4,stf} | yes | |
 | verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | No ingress-to-egress clone functionality tested yet.  TBD: add later when implemented. |
 | verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
 | verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
