@@ -21,10 +21,10 @@ written to exercise them.
 | ingress to egress clone | psa-i2e-cloning-basic-bmv2.{p4,stf} | yes | |
 | egress to egress clone | psa-e2e-cloning-basic-bmv2.{p4,stf} | yes | |
 | verify the proper end-of-ingress behavior for drop vs. resubmit vs. multicast vs. unicast operations, combined in all ways with ingress-to-egress clone yes vs. no | psa-end-of-ingress-test-bmv2.{p4,stf} covers most of this.  See Note column. | yes | No ingress-to-egress clone functionality tested yet.  TBD: add later when implemented. |
-| verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | tbd | | |
+| verify proper end-of-egress behavior for drop vs. recirculate vs. one-packet-out, combined in all ways with egress-to-egress clone yes vs. no | psa-e2e-cloning-basic-bmv2.{p4,stf} covers most of these cases | yes | |
 | verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
 | verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
-| verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | tbd | | |
+| verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | psa-parser-error-test-bmv2.{p4,stf} in PR https://github.com/p4lang/p4c/pull/2571 | yes | |
 | unicast and multicast packets with preservation of bridged metadata | not yet implemented in p4c and bmv2 | | |
 | resubmit with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
 | recirculate with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
