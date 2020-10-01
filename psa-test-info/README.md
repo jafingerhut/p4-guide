@@ -25,13 +25,13 @@ written to exercise them.
 | verify ingress_timestamp is updated for resubmitted and recirculated packets, i.e. not always same as original packet | tbd | | |
 | verify egress class_of_service copied from PRE configuration for cloned packets | tbd | | |
 | verify parser_error filled in correctly at beginning of ingress and egress controls for no-error and at least one kind of parser error | psa-parser-error-test-bmv2.{p4,stf} in PR https://github.com/p4lang/p4c/pull/2571 | yes | |
-| unicast and multicast packets with preservation of bridged metadata | not yet implemented in p4c and bmv2 | | |
-| resubmit with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| recirculate with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| ingress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| egress-to-egress clone with preservation of user-defined metadata | not yet implemented in p4c and bmv2 | | |
-| ActionProfile extern | tbd | | |
-| ActionSelector extern | tbd | | |
+| unicast and multicast packets with preservation of bridged metadata, including use of psa_normal extern function | not yet implemented in p4c and bmv2 | | |
+| resubmit with preservation of user-defined metadata, including use of psa_resubmit extern function | not yet implemented in p4c and bmv2 | | |
+| recirculate with preservation of user-defined metadata, including use of psa_recirculate extern function | not yet implemented in p4c and bmv2 | | |
+| ingress-to-egress clone with preservation of user-defined metadata, including use of psa_clone_i2e extern function | not yet implemented in p4c and bmv2 | | |
+| egress-to-egress clone with preservation of user-defined metadata, including use of psa_clone_e2e extern function | not yet implemented in p4c and bmv2 | | |
+| ActionProfile extern | Han at least partially implemented this for PSA based on v1model implementation, but no test yet that Thrift API can configure an action profile and data packets are processed appropriately.  p4c PSA back end seems to have some part that looks for table property 'implementation' rather than PSA's 'psa_implementation'. | | |
+| ActionSelector extern | same status as ActionProfile extern | | |
 | ActionSelector extern with watch port feature enabled | tbd | | |
 | Checksum extern | tbd | | |
 | Counter extern | psa-basic-counter-bmv2.{p4,stf} | yes for output packets, no for reading and checking counters after they are updated, since p4lang/p4c STF tests do not provide a way to do that | |
@@ -41,7 +41,7 @@ written to exercise them.
 | DirectMeter extern | tbd | | |
 | Hash extern | tbd | | |
 | InternetChecksum extern | tbd | | |
-| Meter extern | tbd | | |
+| Meter extern | psa-meter7-bmv2.{p4,stf} test that packet gets result GREEN from updating a color-blind meter.  TBD: Implement and create a test case for a color-aware meter that gets back GREEN when given GREEN, YELLOW when given YELLOW, and RED when given RED. | yes | |
 | Random extern | not implemented in psa_switch yet, but Yunhe Liu has these PRs and p4c one has a test program https://github.com/p4lang/behavioral-model/pull/931 https://github.com/p4lang/p4c/pull/2477 | | |
 | Register extern | psa-register-read-write-bmv2.{p4,stf} psa-register-read-write-2-bmv2.{p4,stf} | yes for output packet contents, no for control plane API to read/write Register array elements | | |
 | psa_idle_timeout table property | tbd | | |
