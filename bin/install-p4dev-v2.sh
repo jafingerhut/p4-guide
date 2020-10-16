@@ -131,6 +131,7 @@ df -BM .
 
 # Check to see which versions of Python-related programs this system
 # already has installed, before the script starts installing things.
+lsb_release -a
 python -V  || echo "No such command in PATH: python"
 python2 -V || echo "No such command in PATH: python2"
 python3 -V || echo "No such command in PATH: python3"
