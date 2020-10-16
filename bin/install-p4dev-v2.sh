@@ -332,7 +332,7 @@ cd behavioral-model
 git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch"
+patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
