@@ -129,6 +129,15 @@ date
 df -h .
 df -BM .
 
+# Check to see which versions of Python-related programs this system
+# already has installed, before the script starts installing things.
+python -V  || echo "No such command in PATH: python"
+python2 -V || echo "No such command in PATH: python2"
+python3 -V || echo "No such command in PATH: python3"
+pip -V  || echo "No such command in PATH: pip"
+pip2 -V || echo "No such command in PATH: pip2"
+pip3 -V || echo "No such command in PATH: pip3"
+
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
 sudo apt-get --yes install git vim
