@@ -15,7 +15,7 @@
 # limitations under the License.
 
 
-# This script differs from install-p4dev2.sh as follows:
+# This script differs from install-p4dev-v2.sh as follows:
 
 # install-p4dev-v2.sh at the time of this writing 2020-Apr-23 only
 # supports Ubuntu 16.04, 18.04, and 19.10.
@@ -120,6 +120,16 @@ set -x
 date
 df -h .
 df -BM .
+
+# Check to see which versions of Python-related programs this system
+# already has installed, before the script starts installing things.
+lsb_release -a
+python -V  || echo "No such command in PATH: python"
+python2 -V || echo "No such command in PATH: python2"
+python3 -V || echo "No such command in PATH: python3"
+pip -V  || echo "No such command in PATH: pip"
+pip2 -V || echo "No such command in PATH: pip2"
+pip3 -V || echo "No such command in PATH: pip3"
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
@@ -355,7 +365,7 @@ cd behavioral-model
 git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch"
+patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 if [[ "${ubuntu_release}" > "20" ]]
 then
     patch -p1 < "${PATCH_DIR}/behavioral-model-skip-python-pip.patch"
