@@ -245,6 +245,11 @@ then
 fi
 make
 sudo make install
+# I believe the following 2 commands, adapted from similar commands in
+# src/python/grpcio/README.rst, should install the Python3 module
+# grpc.
+sudo pip3 install -rrequirements.txt
+GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install .
 sudo ldconfig
 # Save about 0.3G of storage by cleaning up grpc v1.17.2 build
 make clean
@@ -371,17 +376,17 @@ date
 sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python3-pip tcpdump
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
-pip3 install scapy
+sudo pip3 install scapy
 # Earlier versions of this script installed the Ubuntu package
 # python-ipaddr.  However, that no longer exists in Ubuntu 20.04.  PIP
-# for Python2 can install the ipaddr module, which is good enough to
+# for Python3 can install the ipaddr module, which is good enough to
 # enable two of p4c's many tests to pass, tests that failed if the
-# ipaddr Python 2 module is not installed, in my testing on
-# 2020-Apr-24.  From the Python stack trace that appears when running
+# ipaddr Python3 module is not installed, in my testing on
+# 2020-Oct-17.  From the Python stack trace that appears when running
 # those failing tests, the code that requires this module is in
 # behavioral-model's runtime_CLI.py source file, in a function named
 # ipv6Addr_to_bytes.
-#sudo pip install ipaddr
+sudo pip3 install ipaddr
 pip3 list
 
 # Clone p4c and its submodules:
@@ -432,28 +437,12 @@ echo "start install miscellaneous packages:"
 set -x
 date
 
-# grpcio 1.17.2 would be ideal, to match the version of gRPC that we
-# have installed.  At least on 2020-Jan-21 when I tried to install
-# that version of grpcio using pip, it indicated that many other
-# versions were available, but not that one.  The closest two versions
-# were 1.17.1 and 1.18.0.  Antonin Bas mentioned that he believes
-# there were perhaps no changes from 1.17.1 to 1.17.2 and so
-# recommended using 1.17.1.  So far, it has worked well when doing
-# _basic_ P4Runtime API testing on a system on which this install
-# script was run.
-# TBD: Do we need Python3 versions of these packages installed?
-#sudo pip install grpcio==1.17.1
-#pip list  || echo "Some error occurred attempting to run command: pip"
-
-# Installing the version of grpcio above does not automatically
-# install a Python protobuf package, so install one.
-#sudo pip install protobuf==3.6.1
-#pip list  || echo "Some error occurred attempting to run command: pip"
+sudo pip3 install protobuf==3.6.1
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
-#sudo apt-get --yes install python-psutil libgflags-dev net-tools
-#sudo pip install crcmod
-#pip list  || echo "Some error occurred attempting to run command: pip"
+#sudo apt-get --yes install libgflags-dev net-tools
+sudo pip3 install psutil crcmod
+pip3 list
 
 set +x
 echo "end install miscellaneous packages:"
