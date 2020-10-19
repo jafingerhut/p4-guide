@@ -551,7 +551,7 @@ set -x
 date
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
-#sudo apt-get --yes install libgflags-dev net-tools
+sudo apt-get --yes install libgflags-dev net-tools
 sudo pip3 install psutil crcmod
 pip3 list
 
