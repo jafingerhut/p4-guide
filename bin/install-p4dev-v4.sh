@@ -253,9 +253,9 @@ echo "start install protobuf:"
 set -x
 date
 
-# On a freshly installed Ubuntu 20.04.1 system, desktop amd64 minimal
-# installation, the Debian package python3-protobuf is installed.
-# This is depended upon by another package called
+# On a freshly installed Ubuntu 20.04.1 or 18.04.5 system, desktop
+# amd64 minimal installation, the Debian package python3-protobuf is
+# installed.  This is depended upon by another package called
 # python3-macaroonbakery, which in turn is is depended upon by a
 # package called gnome-online accounts.  I suspect this might have
 # something to do with Ubuntu's desire to make it easy to connect with
@@ -291,7 +291,7 @@ date
 # At that point, attempting to import any of the 3 modules above gave NO error.
 
 echo "Uninstalling Ubuntu python3-protobuf if present"
-sudo apt-get purge python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
+sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
 sudo pip3 install protobuf==3.6.1
 
 cd "${INSTALL_DIR}"
