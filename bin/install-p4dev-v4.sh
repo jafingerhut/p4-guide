@@ -253,6 +253,47 @@ echo "start install protobuf:"
 set -x
 date
 
+# On a freshly installed Ubuntu 20.04.1 system, desktop amd64 minimal
+# installation, the Debian package python3-protobuf is installed.
+# This is depended upon by another package called
+# python3-macaroonbakery, which in turn is is depended upon by a
+# package called gnome-online accounts.  I suspect this might have
+# something to do with Ubuntu's desire to make it easy to connect with
+# on-line accounts like Google accounts.
+
+# This python3-protobuf package enables one to have a session like
+# this with no error, on a freshly installed system:
+
+# $ python3
+# >>> import google.protobuf
+
+# However, something about this script doing its work causes a
+# conflict between the Python3 protobuf module installed by this
+# script, and the one installed by the package python3-protobuf, such
+# that the import statement above gives an error.  The package
+# google.protobuf.internal is used by the p4lang/tutorials Python
+# code, and the only way I know to make this work right now is to
+# remove the Debian python3-protobuf package, and then install Python3
+# protobuf support using pip3 as done below.
+
+# Experiment starting from a freshly installed Ubuntu 20.04.1 Linux
+# desktop amd64 system, minimal install:
+# Initially, python3-protobuf package was installed.
+# Doing python3 followed 'import' of any of these gave no error:
+# + google
+# + google.protobuf
+# + google.protobuf.internal
+# Then did 'sudo apt-get purge python3-protobuf'
+# At that point, attempting to import any of the 3 modules above gave an error.
+# Then did 'sudo apt-get install python3-pip'
+# At that point, attempting to import any of the 3 modules above gave an error.
+# Then did 'sudo pip3 install protobuf==3.6.1'
+# At that point, attempting to import any of the 3 modules above gave NO error.
+
+echo "Uninstalling Ubuntu python3-protobuf if present"
+sudo apt-get purge python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
+sudo pip3 install protobuf==3.6.1
+
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
 cd protobuf
@@ -494,8 +535,6 @@ echo "Installing a few miscellaneous packages"
 echo "start install miscellaneous packages:"
 set -x
 date
-
-sudo pip3 install protobuf==3.6.1
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 #sudo apt-get --yes install libgflags-dev net-tools
