@@ -137,10 +137,35 @@ move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     # https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
     # https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
 
-    cd /usr/local/lib/python3.8/site-packages/
+    SRC_DIR="/usr/local/lib/python3.8/site-packages"
+    DST_DIR="/usr/local/lib/python3.8/dist-packages"
+
     # Do not move any __pycache__ directory that might be present.
-    sudo rm -fr __pycache__
-    sudo mv * ../dist-packages
+    sudo rm -fr "${SRC_DIR}/__pycache__"
+
+    echo "Source dir contents before moving: ${SRC_DIR}"
+    ls -lrt "${SRC_DIR}"
+    echo "Dest dir contents before moving: ${DST_DIR}"
+    ls -lrt "${DST_DIR}"
+    # At least sometimes (perhaps always?) there is a directory p4 in
+    # both the surce and dest directory.  I think I want to merge
+    # their contents.  List them both so I can see in the log what was
+    # in both at the time:
+    if [ -d "${SRC_DIR}/p4" -a -d "${DST_DIR}/p4" ]
+    then
+	echo "Both source and dest dir contain a directory p4"
+	echo "Source dir p4 directory contents:"
+	ls -l "${SRC_DIR}/p4"
+	echo "Dest dir p4 directory contents:"
+	ls -l "${DST_DIR}/p4"
+        sudo mv "${SRC_DIR}/p4/*" "${DST_DIR}/p4/"
+	sudo rmdir "${SRC_DIR}/p4"
+    fi
+    sudo mv "${SRC_DIR}/*" "${DST_DIR}/"
+    echo "Source dir contents after moving: ${SRC_DIR}"
+    ls -lrt "${SRC_DIR}"
+    echo "Dest dir contents after moving: ${DST_DIR}"
+    ls -lrt "${DST_DIR}"
 }
 
 
