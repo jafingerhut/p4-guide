@@ -1,0 +1,673 @@
+diff --git a/utils/Makefile b/utils/Makefile
+index 2846b61..0f32642 100644
+--- a/utils/Makefile
++++ b/utils/Makefile
+@@ -32,7 +32,7 @@ endif
+ all: run
+ 
+ run: build
+-	sudo python $(RUN_SCRIPT) -t $(TOPO) $(run_args)
++	sudo python3 $(RUN_SCRIPT) -t $(TOPO) $(run_args)
+ 
+ stop:
+ 	sudo mn -c
+diff --git a/utils/mininet/appcontroller.py b/utils/mininet/appcontroller.py
+index 2cf9732..3c7ead1 100644
+--- a/utils/mininet/appcontroller.py
++++ b/utils/mininet/appcontroller.py
+@@ -25,7 +25,7 @@ class AppController:
+         assert entries
+         if sw: thrift_port = sw.thrift_port
+ 
+-        print '\n'.join(entries)
++        print('\n'.join(entries))
+         p = subprocess.Popen(['simple_switch_CLI', '--thrift-port', str(thrift_port)], stdin=subprocess.PIPE)
+         p.communicate(input='\n'.join(entries))
+ 
+@@ -33,8 +33,8 @@ class AppController:
+         if sw: thrift_port = sw.thrift_port
+         p = subprocess.Popen(['simple_switch_CLI', '--thrift-port', str(thrift_port)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+         stdout, stderr = p.communicate(input="register_read %s %d" % (register, idx))
+-        reg_val = filter(lambda l: ' %s[%d]' % (register, idx) in l, stdout.split('\n'))[0].split('= ', 1)[1]
+-        return long(reg_val)
++        reg_val = [l for l in stdout.split('\n') if ' %s[%d]' % (register, idx) in l][0].split('= ', 1)[1]
++        return int(reg_val)
+ 
+     def start(self):
+         shortestpath = ShortestPath(self.links)
+@@ -54,7 +54,7 @@ class AppController:
+ 
+         for host_name in self.topo._host_links:
+             h = self.net.get(host_name)
+-            for link in self.topo._host_links[host_name].values():
++            for link in list(self.topo._host_links[host_name].values()):
+                 sw = link['sw']
+                 #entries[sw].append('table_add send_frame rewrite_mac %d => %s' % (link['sw_port'], link['sw_mac']))
+                 #entries[sw].append('table_add forward set_dmac %s => %s' % (link['host_ip'], link['host_mac']))
+@@ -70,7 +70,7 @@ class AppController:
+             h.setDefaultRoute("via %s" % link['sw_ip'])
+ 
+         for h in self.net.hosts:
+-            h_link = self.topo._host_links[h.name].values()[0]
++            h_link = list(self.topo._host_links[h.name].values())[0]
+             for sw in self.net.switches:
+                 path = shortestpath.get(sw.name, h.name, exclude=lambda n: n[0]=='h')
+                 if not path: continue
+@@ -85,20 +85,20 @@ class AppController:
+                 path = shortestpath.get(h.name, h2.name, exclude=lambda n: n[0]=='h')
+                 if not path: continue
+                 h_link = self.topo._host_links[h.name][path[1]]
+-                h2_link = self.topo._host_links[h2.name].values()[0]
++                h2_link = list(self.topo._host_links[h2.name].values())[0]
+                 h.cmd('ip route add %s via %s' % (h2_link['host_ip'], h_link['sw_ip']))
+ 
+ 
+-        print "**********"
+-        print "Configuring entries in p4 tables"
++        print("**********")
++        print("Configuring entries in p4 tables")
+         for sw_name in entries:
+-            print
+-            print "Configuring switch... %s" % sw_name
++            print()
++            print("Configuring switch... %s" % sw_name)
+             sw = self.net.get(sw_name)
+             if entries[sw_name]:
+                 self.add_entries(sw=sw, entries=entries[sw_name])
+-        print "Configuration complete."
+-        print "**********"
++        print("Configuration complete.")
++        print("**********")
+ 
+     def stop(self):
+         pass
+diff --git a/utils/mininet/apptopo.py b/utils/mininet/apptopo.py
+index 3491a3d..f2b6152 100644
+--- a/utils/mininet/apptopo.py
++++ b/utils/mininet/apptopo.py
+@@ -6,9 +6,9 @@ class AppTopo(Topo):
+                  log_dir="/tmp", bws={}, **opts):
+         Topo.__init__(self, **opts)
+ 
+-        nodes = sum(map(list, zip(*links)), [])
+-        host_names = sorted(list(set(filter(lambda n: n[0] == 'h', nodes))))
+-        sw_names = sorted(list(set(filter(lambda n: n[0] == 's', nodes))))
++        nodes = sum(list(map(list, list(zip(*links)))), [])
++        host_names = sorted(list(set([n for n in nodes if n[0] == 'h'])))
++        sw_names = sorted(list(set([n for n in nodes if n[0] == 's'])))
+         sw_ports = dict([(sw, []) for sw in sw_names])
+ 
+         self._host_links = {}
+@@ -23,7 +23,7 @@ class AppTopo(Topo):
+             self.addHost(host_name)
+ 
+             self._host_links[host_name] = {}
+-            host_links = filter(lambda l: l[0]==host_name or l[1]==host_name, links)
++            host_links = [l for l in links if l[0]==host_name or l[1]==host_name]
+ 
+             sw_idx = 0
+             for link in host_links:
+diff --git a/utils/mininet/multi_switch_mininet.py b/utils/mininet/multi_switch_mininet.py
+index 0bb406f..0d58358 100755
+--- a/utils/mininet/multi_switch_mininet.py
++++ b/utils/mininet/multi_switch_mininet.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python3
+ 
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+@@ -84,7 +84,7 @@ def main():
+     conf = manifest['targets'][args.target]
+     params = conf['parameters'] if 'parameters' in conf else {}
+ 
+-    os.environ.update(dict(map(lambda (k,v): (k, str(v)), params.iteritems())))
++    os.environ.update(dict([(k_v[0], str(k_v[1])) for k_v in iter(params.items())]))
+ 
+     def formatParams(s):
+         for param in params:
+@@ -124,7 +124,7 @@ def main():
+             latencies[host_name+other] = host['latency']
+ 
+     for l in latencies:
+-        if isinstance(latencies[l], (str, unicode)):
++        if isinstance(latencies[l], str):
+             latencies[l] = formatParams(latencies[l])
+         else:
+             latencies[l] = str(latencies[l]) + "ms"
+@@ -160,7 +160,7 @@ def main():
+ 
+     if args.cli_message is not None:
+         with open(args.cli_message, 'r') as message_file:
+-            print message_file.read()
++            print(message_file.read())
+ 
+     if args.cli or ('cli' in conf and conf['cli']):
+         CLI(net)
+@@ -176,16 +176,16 @@ def main():
+         return cmd
+ 
+     def _wait_for_exit(p, host):
+-        print p.communicate()
++        print(p.communicate())
+         if p.returncode is None:
+             p.wait()
+-            print p.communicate()
++            print(p.communicate())
+         return_codes.append(p.returncode)
+         if host_name in stdout_files:
+             stdout_files[host_name].flush()
+             stdout_files[host_name].close()
+ 
+-    print '\n'.join(map(lambda (k,v): "%s: %s"%(k,v), params.iteritems())) + '\n'
++    print('\n'.join(["%s: %s"%(k_v1[0],k_v1[1]) for k_v1 in iter(params.items())]) + '\n')
+ 
+     for host_name in sorted(conf['hosts'].keys()):
+         host = conf['hosts'][host_name]
+@@ -195,7 +195,7 @@ def main():
+         stdout_filename = os.path.join(args.log_dir, h.name + '.stdout')
+         stdout_files[h.name] = open(stdout_filename, 'w')
+         cmd = formatCmd(host['cmd'])
+-        print h.name, cmd
++        print(h.name, cmd)
+         p = h.popen(cmd, stdout=stdout_files[h.name], shell=True, preexec_fn=os.setpgrp)
+         if 'startup_sleep' in host: sleep(host['startup_sleep'])
+ 
+diff --git a/utils/mininet/p4_mininet.py b/utils/mininet/p4_mininet.py
+index 8abe79f..8175754 100644
+--- a/utils/mininet/p4_mininet.py
++++ b/utils/mininet/p4_mininet.py
+@@ -39,16 +39,16 @@ class P4Host(Host):
+         return r
+ 
+     def describe(self, sw_addr=None, sw_mac=None):
+-        print "**********"
+-        print "Network configuration for: %s" % self.name
+-        print "Default interface: %s\t%s\t%s" %(
++        print("**********")
++        print("Network configuration for: %s" % self.name)
++        print("Default interface: %s\t%s\t%s" %(
+             self.defaultIntf().name,
+             self.defaultIntf().IP(),
+             self.defaultIntf().MAC()
+-        )
++        ))
+         if sw_addr is not None or sw_mac is not None:
+-            print "Default route to switch: %s (%s)" % (sw_addr, sw_mac)
+-        print "**********"
++            print("Default route to switch: %s (%s)" % (sw_addr, sw_mac))
++        print("**********")
+ 
+ class P4Switch(Switch):
+     """P4 virtual switch"""
+@@ -113,7 +113,7 @@ class P4Switch(Switch):
+         "Start up a new P4 switch"
+         info("Starting P4 switch {}.\n".format(self.name))
+         args = [self.sw_path]
+-        for port, intf in self.intfs.items():
++        for port, intf in list(self.intfs.items()):
+             if not intf.IP():
+                 args.extend(['-i', str(port) + "@" + intf.name])
+         if self.pcap_dump:
+diff --git a/utils/mininet/single_switch_mininet.py b/utils/mininet/single_switch_mininet.py
+index e2e7636..9c2431d 100755
+--- a/utils/mininet/single_switch_mininet.py
++++ b/utils/mininet/single_switch_mininet.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python3
+ 
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+@@ -64,11 +64,11 @@ class SingleSwitchTopo(Topo):
+                                 enable_debugger = False,
+                                 pcap_dump = pcap_dump)
+ 
+-        for h in xrange(n):
++        for h in range(n):
+             host = self.addHost('h%d' % (h + 1),
+                                 ip = "10.0.%d.10/24" % h,
+                                 mac = '00:04:00:00:00:%02x' %h)
+-            print "Adding host", str(host)
++            print("Adding host", str(host))
+             self.addLink(host, switch)
+ 
+ def main():
+@@ -88,11 +88,11 @@ def main():
+     net.start()
+ 
+ 
+-    sw_mac = ["00:aa:bb:00:00:%02x" % n for n in xrange(num_hosts)]
++    sw_mac = ["00:aa:bb:00:00:%02x" % n for n in range(num_hosts)]
+ 
+-    sw_addr = ["10.0.%d.1" % n for n in xrange(num_hosts)]
++    sw_addr = ["10.0.%d.1" % n for n in range(num_hosts)]
+ 
+-    for n in xrange(num_hosts):
++    for n in range(num_hosts):
+         h = net.get('h%d' % (n + 1))
+         if mode == "l2":
+             h.setDefaultRoute("dev %s" % h.defaultIntf().name)
+@@ -100,30 +100,30 @@ def main():
+             h.setARP(sw_addr[n], sw_mac[n])
+             h.setDefaultRoute("dev %s via %s" % (h.defaultIntf().name, sw_addr[n]))
+ 
+-    for n in xrange(num_hosts):
++    for n in range(num_hosts):
+         h = net.get('h%d' % (n + 1))
+         h.describe(sw_addr[n], sw_mac[n])
+ 
+     sleep(1)
+ 
+     if args.switch_config is not None:
+-        print
+-        print "Reading switch configuration script:", args.switch_config
++        print()
++        print("Reading switch configuration script:", args.switch_config)
+         with open(args.switch_config, 'r') as config_file:
+             switch_config = config_file.read()
+ 
+-        print "Configuring switch..."
++        print("Configuring switch...")
+         proc = Popen(["simple_switch_CLI"], stdin=PIPE)
+         proc.communicate(input=switch_config)
+ 
+-        print "Configuration complete."
+-        print
++        print("Configuration complete.")
++        print()
+ 
+-    print "Ready !"
++    print("Ready !")
+ 
+     if args.cli_message is not None:
+         with open(args.cli_message, 'r') as message_file:
+-            print message_file.read()
++            print(message_file.read())
+ 
+     CLI( net )
+     net.stop()
+diff --git a/utils/p4_mininet.py b/utils/p4_mininet.py
+index d70322a..fad5141 100644
+--- a/utils/p4_mininet.py
++++ b/utils/p4_mininet.py
+@@ -45,14 +45,14 @@ class P4Host(Host):
+         return r
+ 
+     def describe(self):
+-        print "**********"
+-        print self.name
+-        print "default interface: %s\t%s\t%s" %(
++        print("**********")
++        print(self.name)
++        print("default interface: %s\t%s\t%s" %(
+             self.defaultIntf().name,
+             self.defaultIntf().IP(),
+             self.defaultIntf().MAC()
+-        )
+-        print "**********"
++        ))
++        print("**********")
+ 
+ class P4Switch(Switch):
+     """P4 virtual switch"""
+@@ -120,7 +120,7 @@ class P4Switch(Switch):
+         "Start up a new P4 switch"
+         info("Starting P4 switch {}.\n".format(self.name))
+         args = [self.sw_path]
+-        for port, intf in self.intfs.items():
++        for port, intf in list(self.intfs.items()):
+             if not intf.IP():
+                 args.extend(['-i', str(port) + "@" + intf.name])
+         if self.pcap_dump:
+diff --git a/utils/p4apprunner.py b/utils/p4apprunner.py
+index 36b9eea..83cd8a0 100755
+--- a/utils/p4apprunner.py
++++ b/utils/p4apprunner.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+@@ -13,7 +13,7 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-from __future__ import print_function
++
+ 
+ import argparse
+ from collections import OrderedDict
+@@ -76,7 +76,7 @@ def read_manifest(manifest_file):
+     elif 'default-target' in manifest:
+         chosen_target = manifest['default-target']
+     else:
+-        chosen_target = manifest['targets'].keys()[0]
++        chosen_target = list(manifest['targets'].keys())[0]
+ 
+     if chosen_target not in manifest['targets']:
+         log_error('Target not found in manifest:', chosen_target)
+diff --git a/utils/p4runtime_lib/bmv2.py b/utils/p4runtime_lib/bmv2.py
+index 7f483f4..eebb44a 100644
+--- a/utils/p4runtime_lib/bmv2.py
++++ b/utils/p4runtime_lib/bmv2.py
+@@ -12,7 +12,7 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+-from switch import SwitchConnection
++from .switch import SwitchConnection
+ from p4.tmp import p4config_pb2
+ 
+ 
+@@ -21,7 +21,7 @@ def buildDeviceConfig(bmv2_json_file_path=None):
+     device_config = p4config_pb2.P4DeviceConfig()
+     device_config.reassign = True
+     with open(bmv2_json_file_path) as f:
+-        device_config.device_data = f.read()
++        device_config.device_data = f.read().encode('utf-8')
+     return device_config
+ 
+ 
+diff --git a/utils/p4runtime_lib/convert.py b/utils/p4runtime_lib/convert.py
+index 0375e17..50d6a5d 100644
+--- a/utils/p4runtime_lib/convert.py
++++ b/utils/p4runtime_lib/convert.py
+@@ -29,10 +29,10 @@ def matchesMac(mac_addr_string):
+     return mac_pattern.match(mac_addr_string) is not None
+ 
+ def encodeMac(mac_addr_string):
+-    return mac_addr_string.replace(':', '').decode('hex')
++    return bytes.fromhex(mac_addr_string.replace(':', ''))
+ 
+ def decodeMac(encoded_mac_addr):
+-    return ':'.join(s.encode('hex') for s in encoded_mac_addr)
++    return ':'.join(s.hex() for s in encoded_mac_addr)
+ 
+ ip_pattern = re.compile('^(\d{1,3}\.){3}(\d{1,3})$')
+ def matchesIPv4(ip_addr_string):
+@@ -52,10 +52,10 @@ def encodeNum(number, bitwidth):
+     num_str = '%x' % number
+     if number >= 2 ** bitwidth:
+         raise Exception("Number, %d, does not fit in %d bits" % (number, bitwidth))
+-    return ('0' * (byte_len * 2 - len(num_str)) + num_str).decode('hex')
++    return bytes.fromhex('0' * (byte_len * 2 - len(num_str)) + num_str)
+ 
+ def decodeNum(encoded_number):
+-    return int(encoded_number.encode('hex'), 16)
++    return int(encoded_number.hex(), 16)
+ 
+ def encode(x, bitwidth):
+     'Tries to infer the type of `x` and encode it'
+@@ -116,4 +116,4 @@ if __name__ == '__main__':
+         enc_num = encodeNum(num, 8)
+         raise Exception("expected exception")
+     except Exception as e:
+-        print e
++        print(e)
+diff --git a/utils/p4runtime_lib/error_utils.py b/utils/p4runtime_lib/error_utils.py
+index 487c98e..532ca32 100644
+--- a/utils/p4runtime_lib/error_utils.py
++++ b/utils/p4runtime_lib/error_utils.py
+@@ -73,20 +73,20 @@ def parseGrpcErrorBinaryDetails(grpc_error):
+ # batch) in order to print error code + user-facing message. See P4Runtime
+ # documentation for more details on error-reporting.
+ def printGrpcError(grpc_error):
+-    print "gRPC Error", grpc_error.details(),
++    print("gRPC Error", grpc_error.details(), end=' ')
+     status_code = grpc_error.code()
+-    print "({})".format(status_code.name),
++    print("({})".format(status_code.name), end=' ')
+     traceback = sys.exc_info()[2]
+-    print "[{}:{}]".format(
+-        traceback.tb_frame.f_code.co_filename, traceback.tb_lineno)
++    print("[{}:{}]".format(
++        traceback.tb_frame.f_code.co_filename, traceback.tb_lineno))
+     if status_code != grpc.StatusCode.UNKNOWN:
+         return
+     p4_errors = parseGrpcErrorBinaryDetails(grpc_error)
+     if p4_errors is None:
+         return
+-    print "Errors in batch:"
++    print("Errors in batch:")
+     for idx, p4_error in p4_errors:
+         code_name = code_pb2._CODE.values_by_number[
+             p4_error.canonical_code].name
+-        print "\t* At index {}: {}, '{}'\n".format(
+-            idx, code_name, p4_error.message)
++        print("\t* At index {}: {}, '{}'\n".format(
++            idx, code_name, p4_error.message))
+diff --git a/utils/p4runtime_lib/helper.py b/utils/p4runtime_lib/helper.py
+index d5d76a3..29ea788 100644
+--- a/utils/p4runtime_lib/helper.py
++++ b/utils/p4runtime_lib/helper.py
+@@ -18,7 +18,7 @@ import google.protobuf.text_format
+ from p4.v1 import p4runtime_pb2
+ from p4.config.v1 import p4info_pb2
+ 
+-from convert import encode
++from .convert import encode
+ 
+ class P4InfoHelper(object):
+     def __init__(self, p4_info_filepath):
+@@ -173,7 +173,7 @@ class P4InfoHelper(object):
+         if match_fields:
+             table_entry.match.extend([
+                 self.get_match_field_pb(table_name, match_field_name, value)
+-                for match_field_name, value in match_fields.iteritems()
++                for match_field_name, value in match_fields.items()
+             ])
+ 
+         if default_action:
+@@ -185,7 +185,7 @@ class P4InfoHelper(object):
+             if action_params:
+                 action.params.extend([
+                     self.get_action_param_pb(action_name, field_name, value)
+-                    for field_name, value in action_params.iteritems()
++                    for field_name, value in action_params.items()
+                 ])
+         return table_entry
+ 
+diff --git a/utils/p4runtime_lib/simple_controller.py b/utils/p4runtime_lib/simple_controller.py
+index 4e78886..8788abd 100755
+--- a/utils/p4runtime_lib/simple_controller.py
++++ b/utils/p4runtime_lib/simple_controller.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python3
+ #
+ # Copyright 2017-present Open Networking Foundation
+ #
+@@ -19,15 +19,15 @@ import json
+ import os
+ import sys
+ 
+-import bmv2
+-import helper
++from . import bmv2
++from . import helper
+ 
+ 
+ def error(msg):
+-    print >> sys.stderr, ' - ERROR! ' + msg
++    print(' - ERROR! ' + msg, file=sys.stderr)
+ 
+ def info(msg):
+-    print >> sys.stdout, ' - ' + msg
++    print(' - ' + msg, file=sys.stdout)
+ 
+ 
+ class ConfException(Exception):
+@@ -165,16 +165,13 @@ def insertTableEntry(sw, flow, p4info_helper):
+     sw.WriteTableEntry(table_entry)
+ 
+ 
+-# object hook for josn library, use str instead of unicode object
+-# https://stackoverflow.com/questions/956867/how-to-get-string-objects-instead-of-unicode-from-json
+ def json_load_byteified(file_handle):
+-    return _byteify(json.load(file_handle, object_hook=_byteify),
+-                    ignore_dicts=True)
++    return json.load(file_handle)
+ 
+ 
+ def _byteify(data, ignore_dicts=False):
+     # if this is a unicode string, return its string representation
+-    if isinstance(data, unicode):
++    if isinstance(data, str):
+         return data.encode('utf-8')
+     # if this is a list of values, return list of byteified values
+     if isinstance(data, list):
+@@ -184,7 +181,7 @@ def _byteify(data, ignore_dicts=False):
+     if isinstance(data, dict) and not ignore_dicts:
+         return {
+             _byteify(key, ignore_dicts=True): _byteify(value, ignore_dicts=True)
+-            for key, value in data.iteritems()
++            for key, value in data.items()
+         }
+     # if it's anything else, return it in its original form
+     return data
+diff --git a/utils/p4runtime_lib/switch.py b/utils/p4runtime_lib/switch.py
+index 254145c..0c171a5 100644
+--- a/utils/p4runtime_lib/switch.py
++++ b/utils/p4runtime_lib/switch.py
+@@ -12,7 +12,7 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+-from Queue import Queue
++from queue import Queue
+ from abc import abstractmethod
+ from datetime import datetime
+ 
+@@ -63,7 +63,7 @@ class SwitchConnection(object):
+         request.arbitration.election_id.low = 1
+ 
+         if dry_run:
+-            print "P4Runtime MasterArbitrationUpdate: ", request
++            print("P4Runtime MasterArbitrationUpdate: ", request)
+         else:
+             self.requests_stream.put(request)
+             for item in self.stream_msg_resp:
+@@ -81,7 +81,7 @@ class SwitchConnection(object):
+ 
+         request.action = p4runtime_pb2.SetForwardingPipelineConfigRequest.VERIFY_AND_COMMIT
+         if dry_run:
+-            print "P4Runtime SetForwardingPipelineConfig:", request
++            print("P4Runtime SetForwardingPipelineConfig:", request)
+         else:
+             self.client_stub.SetForwardingPipelineConfig(request)
+ 
+@@ -96,7 +96,7 @@ class SwitchConnection(object):
+             update.type = p4runtime_pb2.Update.INSERT
+         update.entity.table_entry.CopyFrom(table_entry)
+         if dry_run:
+-            print "P4Runtime Write:", request
++            print("P4Runtime Write:", request)
+         else:
+             self.client_stub.Write(request)
+ 
+@@ -110,7 +110,7 @@ class SwitchConnection(object):
+         else:
+             table_entry.table_id = 0
+         if dry_run:
+-            print "P4Runtime Read:", request
++            print("P4Runtime Read:", request)
+         else:
+             for response in self.client_stub.Read(request):
+                 yield response
+@@ -127,7 +127,7 @@ class SwitchConnection(object):
+         if index is not None:
+             counter_entry.index.index = index
+         if dry_run:
+-            print "P4Runtime Read:", request
++            print("P4Runtime Read:", request)
+         else:
+             for response in self.client_stub.Read(request):
+                 yield response
+@@ -141,7 +141,7 @@ class SwitchConnection(object):
+         update.type = p4runtime_pb2.Update.INSERT
+         update.entity.packet_replication_engine_entry.CopyFrom(pre_entry)
+         if dry_run:
+-            print "P4Runtime Write:", request
++            print("P4Runtime Write:", request)
+         else:
+             self.client_stub.Write(request)
+ 
+diff --git a/utils/p4runtime_switch.py b/utils/p4runtime_switch.py
+index 1f89373..31d735f 100644
+--- a/utils/p4runtime_switch.py
++++ b/utils/p4runtime_switch.py
+@@ -100,7 +100,7 @@ class P4RuntimeSwitch(P4Switch):
+     def start(self, controllers):
+         info("Starting P4 switch {}.\n".format(self.name))
+         args = [self.sw_path]
+-        for port, intf in self.intfs.items():
++        for port, intf in list(self.intfs.items()):
+             if not intf.IP():
+                 args.extend(['-i', str(port) + "@" + intf.name])
+         if self.pcap_dump:
+diff --git a/utils/run_exercise.py b/utils/run_exercise.py
+index 8f9ec9e..9a7b2b8 100755
+--- a/utils/run_exercise.py
++++ b/utils/run_exercise.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+@@ -45,7 +45,7 @@ def configureP4Switch(**switch_args):
+                 P4RuntimeSwitch.__init__(self, *opts, **kwargs)
+ 
+             def describe(self):
+-                print "%s -> gRPC port: %d" % (self.name, self.grpc_port)
++                print("%s -> gRPC port: %d" % (self.name, self.grpc_port))
+ 
+         return ConfiguredP4RuntimeSwitch
+     else:
+@@ -59,7 +59,7 @@ def configureP4Switch(**switch_args):
+                 P4Switch.__init__(self, *opts, **kwargs)
+ 
+             def describe(self):
+-                print "%s -> Thrift port: %d" % (self.name, self.thrift_port)
++                print("%s -> Thrift port: %d" % (self.name, self.thrift_port))
+ 
+         return ConfiguredP4Switch
+ 
+@@ -79,7 +79,7 @@ class ExerciseTopo(Topo):
+             else:
+                 switch_links.append(link)
+ 
+-        for sw, params in switches.iteritems():
++        for sw, params in switches.items():
+             if "program" in params:
+                 switchClass = configureP4Switch(
+                         sw_path=bmv2_exe,
+@@ -143,7 +143,7 @@ class ExerciseRunner:
+ 
+     def format_latency(self, l):
+         """ Helper method for parsing link latencies from the topology json. """
+-        if isinstance(l, (str, unicode)):
++        if isinstance(l, str):
+             return l
+         else:
+             return str(l) + "ms"
+@@ -297,7 +297,7 @@ class ExerciseRunner:
+             P4Runtime, depending if any command or runtime JSON files were
+             provided for the switches.
+         """
+-        for sw_name, sw_dict in self.switches.iteritems():
++        for sw_name, sw_dict in self.switches.items():
+             if 'cli_input' in sw_dict:
+                 self.program_switch_cli(sw_name, sw_dict)
+             if 'runtime_json' in sw_dict:
+@@ -306,7 +306,7 @@ class ExerciseRunner:
+     def program_hosts(self):
+         """ Execute any commands provided in the topology.json file on each Mininet host
+         """
+-        for host_name, host_info in self.hosts.items():
++        for host_name, host_info in list(self.hosts.items()):
+             h = self.net.get(host_name)
+             if "commands" in host_info:
+                 for cmd in host_info["commands"]:
