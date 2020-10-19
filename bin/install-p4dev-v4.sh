@@ -113,59 +113,73 @@ get_from_nearest() {
     fi
 }
 
+
+# The install steps for p4lang/PI and p4lang/behavioral-model end
+# up installing Python module code in the site-packages directory
+# mentioned below in this function.  That is were GNU autoconf's
+# 'configure' script seems to find as the place to put them.
+
+# On Ubuntu systems when you run the versions of Python that are
+# installed via Debian/Ubuntu packages, they only look in a
+# sibling dist-packages directory, never the site-packages one.
+
+# If I could find a way to change the part of the install script
+# so that p4lang/PI and p4lang/behavioral-model install their
+# Python modules in the dist-packages directory, that sounds
+# useful, but I have not found a way.
+
+# As a workaround, after finishing the part of the install script
+# for those packages, I will invoke this function to move them all
+# into the dist-packages directory.
+
+# Some articles with questions and answers related to this.
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=765022
+# https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
+# https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
+
 move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
-    # The install steps for p4lang/PI and p4lang/behavioral-model end
-    # up installing Python module code in the site-packages directory
-    # mentioned below in this function.  That is were GNU autoconf's
-    # 'configure' script seems to find as the place to put them.
-
-    # On Ubuntu systems when you run the versions of Python that are
-    # installed via Debian/Ubuntu packages, they only look in a
-    # sibling dist-packages directory, never the site-packages one.
-
-    # If I could find a way to change the part of the install script
-    # so that p4lang/PI and p4lang/behavioral-model install their
-    # Python modules in the dist-packages directory, that sounds
-    # useful, but I have not found a way.
-
-    # As a workaround, after finishing the part of the install script
-    # for those packages, I will invoke this function to move them all
-    # into the dist-packages directory.
-
-    # Some articles with questions and answers related to this.
-    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=765022
-    # https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
-    # https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
+    local SRC_DIR
+    local DST_DIR
+    local j
+    local k
 
     SRC_DIR="/usr/local/lib/python3.8/site-packages"
     DST_DIR="/usr/local/lib/python3.8/dist-packages"
 
     # Do not move any __pycache__ directory that might be present.
-    sudo rm -fr "${SRC_DIR}/__pycache__"
+    sudo rm -fr ${SRC_DIR}/__pycache__
 
     echo "Source dir contents before moving: ${SRC_DIR}"
-    ls -lrt "${SRC_DIR}"
+    ls -lrt ${SRC_DIR}
     echo "Dest dir contents before moving: ${DST_DIR}"
-    ls -lrt "${DST_DIR}"
-    # At least sometimes (perhaps always?) there is a directory p4 in
-    # both the surce and dest directory.  I think I want to merge
-    # their contents.  List them both so I can see in the log what was
-    # in both at the time:
-    if [ -d "${SRC_DIR}/p4" -a -d "${DST_DIR}/p4" ]
-    then
-	echo "Both source and dest dir contain a directory p4"
-	echo "Source dir p4 directory contents:"
-	ls -l "${SRC_DIR}/p4"
-	echo "Dest dir p4 directory contents:"
-	ls -l "${DST_DIR}/p4"
-        sudo mv "${SRC_DIR}/p4/*" "${DST_DIR}/p4/"
-	sudo rmdir "${SRC_DIR}/p4"
-    fi
-    sudo mv "${SRC_DIR}/*" "${DST_DIR}/"
+    ls -lrt ${DST_DIR}
+    for j in ${SRC_DIR}/*
+    do
+	echo $j
+	k=`basename $j`
+	# At least sometimes (perhaps always?) there is a directory
+	# 'p4' or 'google' in both the surce and dest directory.  I
+	# think I want to merge their contents.  List them both so I
+	# can see in the log what was in both at the time:
+        if [ -d ${SRC_DIR}/$k -a -d ${DST_DIR}/$k ]
+   	then
+	    echo "Both source and dest dir contain a directory: $k"
+	    echo "Source dir $k directory contents:"
+	    ls -l ${SRC_DIR}/$k
+	    echo "Dest dir $k directory contents:"
+	    ls -l ${DST_DIR}/$k
+            sudo mv ${SRC_DIR}/$k/* ${DST_DIR}/$k/
+	    sudo rmdir ${SRC_DIR}/$k
+	else
+	    echo "Not a conflicting directory: $k"
+            sudo mv ${SRC_DIR}/$k ${DST_DIR}/$k
+	fi
+    done
+
     echo "Source dir contents after moving: ${SRC_DIR}"
-    ls -lrt "${SRC_DIR}"
+    ls -lrt ${SRC_DIR}
     echo "Dest dir contents after moving: ${DST_DIR}"
-    ls -lrt "${DST_DIR}"
+    ls -lrt ${DST_DIR}
 }
 
 
