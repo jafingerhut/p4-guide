@@ -113,6 +113,36 @@ get_from_nearest() {
     fi
 }
 
+move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
+    # The install steps for p4lang/PI and p4lang/behavioral-model end
+    # up installing Python module code in the site-packages directory
+    # mentioned below in this function.  That is were GNU autoconf's
+    # 'configure' script seems to find as the place to put them.
+
+    # On Ubuntu systems when you run the versions of Python that are
+    # installed via Debian/Ubuntu packages, they only look in a
+    # sibling dist-packages directory, never the site-packages one.
+
+    # If I could find a way to change the part of the install script
+    # so that p4lang/PI and p4lang/behavioral-model install their
+    # Python modules in the dist-packages directory, that sounds
+    # useful, but I have not found a way.
+
+    # As a workaround, after finishing the part of the install script
+    # for those packages, I will invoke this function to move them all
+    # into the dist-packages directory.
+
+    # Some articles with questions and answers related to this.
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=765022
+    # https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
+    # https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
+
+    cd /usr/local/lib/python3.8/site-packages/
+    # Do not move any __pycache__ directory that might be present.
+    sudo rm -fr __pycache__
+    sudo mv * ../dist-packages
+}
+
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
@@ -294,6 +324,7 @@ sudo make install
 
 # Save about 0.25G of storage by cleaning up PI build
 make clean
+move_usr_local_lib_python3_from_site_packages_to_dist_packages
 
 set +x
 echo "end install PI:"
@@ -329,6 +360,7 @@ git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/behavioral-model-use-python3-for-env-scripts.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 if [[ "${ubuntu_release}" > "20" ]]
 then
     patch -p1 < "${PATCH_DIR}/behavioral-model-python3-only.patch"
@@ -355,6 +387,7 @@ cd targets/simple_switch_grpc
 make
 sudo make install
 sudo ldconfig
+move_usr_local_lib_python3_from_site_packages_to_dist_packages
 
 set +x
 echo "end install behavioral-model:"

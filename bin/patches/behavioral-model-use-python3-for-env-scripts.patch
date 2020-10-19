@@ -1,0 +1,180 @@
+diff --git a/mininet/1sw_demo.py b/mininet/1sw_demo.py
+index 99c3849..9744231 100755
+--- a/mininet/1sw_demo.py
++++ b/mininet/1sw_demo.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/mininet/stress_test_ipv4.py.in b/mininet/stress_test_ipv4.py.in
+index 44fe998..47c01e8 100755
+--- a/mininet/stress_test_ipv4.py.in
++++ b/mininet/stress_test_ipv4.py.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/psa_switch/psa_switch_CLI.in b/targets/psa_switch/psa_switch_CLI.in
+index 03861d7..d458aab 100755
+--- a/targets/psa_switch/psa_switch_CLI.in
++++ b/targets/psa_switch/psa_switch_CLI.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/psa_switch/pswitch_CLI.py b/targets/psa_switch/pswitch_CLI.py
+index bf89c77..771a3ec 100755
+--- a/targets/psa_switch/pswitch_CLI.py
++++ b/targets/psa_switch/pswitch_CLI.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/simple_switch/simple_switch_CLI.in b/targets/simple_switch/simple_switch_CLI.in
+index 2f926e1..21c2d5c 100755
+--- a/targets/simple_switch/simple_switch_CLI.in
++++ b/targets/simple_switch/simple_switch_CLI.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/simple_switch/sswitch_CLI.py b/targets/simple_switch/sswitch_CLI.py
+index b9d4138..bd8b801 100755
+--- a/targets/simple_switch/sswitch_CLI.py
++++ b/targets/simple_switch/sswitch_CLI.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/simple_switch/tests/CLI_tests/run_one_test.py.in b/targets/simple_switch/tests/CLI_tests/run_one_test.py.in
+index 6311bcc..b9fea3b 100755
+--- a/targets/simple_switch/tests/CLI_tests/run_one_test.py.in
++++ b/targets/simple_switch/tests/CLI_tests/run_one_test.py.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/simple_switch_grpc/gnmi_sub_on_change.py b/targets/simple_switch_grpc/gnmi_sub_on_change.py
+index 4b69f57..e4006f1 100755
+--- a/targets/simple_switch_grpc/gnmi_sub_on_change.py
++++ b/targets/simple_switch_grpc/gnmi_sub_on_change.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/targets/simple_switch_grpc/gnmi_sub_once.py b/targets/simple_switch_grpc/gnmi_sub_once.py
+index 0c27be5..d062b1c 100755
+--- a/targets/simple_switch_grpc/gnmi_sub_once.py
++++ b/targets/simple_switch_grpc/gnmi_sub_once.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/tests/stress_tests/gen_udp_tcp_traffic.py b/tests/stress_tests/gen_udp_tcp_traffic.py
+index a3a53cc..a10d21c 100755
+--- a/tests/stress_tests/gen_udp_tcp_traffic.py
++++ b/tests/stress_tests/gen_udp_tcp_traffic.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+diff --git a/tools/bm_CLI.in b/tools/bm_CLI.in
+index a59a634..bc729ca 100755
+--- a/tools/bm_CLI.in
++++ b/tools/bm_CLI.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/tools/bm_nanomsg_events.in b/tools/bm_nanomsg_events.in
+index 303dbc1..da1e13c 100755
+--- a/tools/bm_nanomsg_events.in
++++ b/tools/bm_nanomsg_events.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/tools/bm_p4dbg.in b/tools/bm_p4dbg.in
+index 1fa2d3c..826ac45 100755
+--- a/tools/bm_p4dbg.in
++++ b/tools/bm_p4dbg.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/tools/bmpy_utils.py b/tools/bmpy_utils.py
+index f28281c..7b75663 100644
+--- a/tools/bmpy_utils.py
++++ b/tools/bmpy_utils.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+diff --git a/tools/cpplint.py b/tools/cpplint.py
+index 584c68b..9637a48 100755
+--- a/tools/cpplint.py
++++ b/tools/cpplint.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ # Copyright (c) 2009 Google Inc. All rights reserved.
+ #
+diff --git a/tools/nanomsg_client.py b/tools/nanomsg_client.py
+index cd06d44..a8dfebc 100755
+--- a/tools/nanomsg_client.py
++++ b/tools/nanomsg_client.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/tools/p4dbg.py b/tools/p4dbg.py
+index ab0f62b..fcf9606 100755
+--- a/tools/p4dbg.py
++++ b/tools/p4dbg.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/tools/runtime_CLI.py b/tools/runtime_CLI.py
+index 536c9bb..0552943 100755
+--- a/tools/runtime_CLI.py
++++ b/tools/runtime_CLI.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Copyright 2013-present Barefoot Networks, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
