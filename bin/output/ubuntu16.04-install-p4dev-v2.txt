@@ -51,13 +51,13 @@ command at the appropriate places.
 ------------------------------------------------------------
 Time and disk space used before installation begins:
 + date
-Fri Oct 16 16:32:23 PDT 2020
+Sat Nov 21 13:53:51 PST 2020
 + df -h .
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        58G  4.0G   52G   8% /
+/dev/sda1        58G  4.1G   52G   8% /
 + df -BM .
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda1         59385M 4007M    52339M   8% /
+/dev/sda1         59385M 4114M    52232M   8% /
 + lsb_release -a
 No LSB modules are available.
 Distributor ID:	Ubuntu
@@ -92,14 +92,14 @@ Suggested packages:
   | vim-athena-py2 | vim-nox-py2
 The following NEW packages will be installed:
   vim vim-runtime
-0 upgraded, 2 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 6,205 kB of archives.
 After this operation, 30.0 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim-runtime all 2:7.4.1689-3ubuntu1.5 [5,169 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 vim amd64 2:7.4.1689-3ubuntu1.5 [1,036 kB]
-Fetched 6,205 kB in 0s (8,016 kB/s)
+Fetched 6,205 kB in 1s (3,727 kB/s)
 Selecting previously unselected package vim-runtime.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 174920 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 174933 files and directories currently installed.)
 Preparing to unpack .../vim-runtime_2%3a7.4.1689-3ubuntu1.5_all.deb ...
 Adding 'diversion of /usr/share/vim/vim74/doc/help.txt to /usr/share/vim/vim74/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim74/doc/tags to /usr/share/vim/vim74/doc/tags.vim-tiny by vim-runtime'
@@ -117,7 +117,7 @@ update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rview (rview) 
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vi (vi) in auto mode
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/view (view) in auto mode
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/ex (ex) in auto mode
-+ CHILD_PROCESS_PID=2310
++ CHILD_PROCESS_PID=3192
 + set +x
 + trap clean_up SIGHUP SIGINT SIGTERM
 + sudo apt-get --yes install python
@@ -126,7 +126,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 python is already the newest version (2.7.12-1~16.04).
-0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 + sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 Reading package lists...
 Building dependency tree...
@@ -141,7 +141,7 @@ Suggested packages:
   | fortran95-compiler gcj-jdk
 The following NEW packages will be installed:
   autoconf automake autotools-dev curl libltdl-dev libsigsegv2 libtool m4
-0 upgraded, 8 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
 Need to get 1,573 kB of archives.
 After this operation, 6,194 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libsigsegv2 amd64 2.10-4 [14.1 kB]
@@ -152,9 +152,9 @@ Get:5 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 automake all 1:1.15-
 Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 curl amd64 7.47.0-1ubuntu2.16 [139 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libltdl-dev amd64 2.4.6-0.1 [162 kB]
 Get:8 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool all 2.4.6-0.1 [193 kB]
-Fetched 1,573 kB in 0s (4,966 kB/s)
+Fetched 1,573 kB in 1s (1,201 kB/s)
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 176629 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 176642 files and directories currently installed.)
 Preparing to unpack .../libsigsegv2_2.10-4_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.10-4) ...
 Selecting previously unselected package m4.
@@ -199,13 +199,13 @@ Building dependency tree...
 Reading state information...
 The following NEW packages will be installed:
   zlib1g-dev
-0 upgraded, 1 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
 Need to get 167 kB of archives.
 After this operation, 424 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-2ubuntu4.3 [167 kB]
-Fetched 167 kB in 0s (977 kB/s)
+Fetched 167 kB in 0s (284 kB/s)
 Selecting previously unselected package zlib1g-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 176996 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177009 files and directories currently installed.)
 Preparing to unpack .../zlib1g-dev_1%3a1.2.8.dfsg-2ubuntu4.3_amd64.deb ...
 Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.3) ...
 Processing triggers for man-db (2.7.5-1) ...
@@ -215,7 +215,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 pkg-config is already the newest version (0.29.1-0ubuntu1).
-0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 + sudo apt-get --yes install python3-pip python-pip
 Reading package lists...
 Building dependency tree...
@@ -233,7 +233,7 @@ The following NEW packages will be installed:
   python-pip python-pip-whl python-pkg-resources python-setuptools
   python-wheel python2.7-dev python3-dev python3-pip python3-setuptools
   python3-wheel python3.5-dev
-0 upgraded, 20 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 20 newly installed, 0 to remove and 0 not upgraded.
 Need to get 67.8 MB of archives.
 After this operation, 100 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libexpat1-dev amd64 2.1.0-7ubuntu0.16.04.5 [115 kB]
@@ -256,9 +256,9 @@ Get:17 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python3-dev amd64 3
 Get:18 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python3-pip all 8.1.1-2ubuntu0.6 [109 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python3-setuptools all 20.7.0-1 [88.0 kB]
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python3-wheel all 0.29.0-1 [48.1 kB]
-Fetched 67.8 MB in 2s (24.7 MB/s)
+Fetched 67.8 MB in 4s (13.7 MB/s)
 Selecting previously unselected package libexpat1-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177024 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177037 files and directories currently installed.)
 Preparing to unpack .../libexpat1-dev_2.1.0-7ubuntu0.16.04.5_amd64.deb ...
 Unpacking libexpat1-dev:amd64 (2.1.0-7ubuntu0.16.04.5) ...
 Selecting previously unselected package libpython2.7-dev:amd64.
@@ -352,7 +352,7 @@ pip (8.1.1)
 setuptools (20.7.0)
 unity-lens-photos (1.0)
 wheel (0.29.0)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + pip3 list
 apturl (0.5.2)
@@ -421,17 +421,17 @@ wheel (0.29.0)
 xdiagnose (3.8.4.1)
 xkit (0.0.0)
 XlsxWriter (0.7.3)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + cd /home/andy
-+ find /usr/lib /usr/local /home/andy/.local
 + sort
++ find /usr/lib /usr/local /home/andy/.local
 + set +x
 ------------------------------------------------------------
 Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc
 start install protobuf:
 + date
-Fri Oct 16 16:33:03 PDT 2020
+Sat Nov 21 13:54:31 PST 2020
 + cd /home/andy
 + get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
 + local git_url=https://github.com/google/protobuf
@@ -1669,7 +1669,7 @@ make[1]: Leaving directory '/home/andy/protobuf/src'
 + set +x
 end install protobuf:
 + date
-Fri Oct 16 16:52:13 PDT 2020
+Sat Nov 21 14:12:12 PST 2020
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
@@ -1678,7 +1678,7 @@ Fri Oct 16 16:52:13 PDT 2020
 Installing grpc, needed for installing p4lang/PI
 start install grpc:
 + date
-Fri Oct 16 16:52:14 PDT 2020
+Sat Nov 21 14:12:13 PST 2020
 + sudo apt-get --yes install build-essential autoconf libtool pkg-config
 Reading package lists...
 Building dependency tree...
@@ -1687,7 +1687,7 @@ autoconf is already the newest version (2.69-9).
 build-essential is already the newest version (12.1ubuntu2).
 libtool is already the newest version (2.4.6-0.1).
 pkg-config is already the newest version (0.29.1-0ubuntu1).
-0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 + get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 + local git_url=https://github.com/google/grpc.git
 + local repo_cache_name=grpc.tar.gz
@@ -2653,7 +2653,7 @@ Submodule path 'third_party/zlib': checked out 'cacf7f1d4e3d44d871b605da3b647f07
 + set +x
 end install grpc:
 + date
-Fri Oct 16 17:03:17 PDT 2020
+Sat Nov 21 14:24:43 PST 2020
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
@@ -2662,7 +2662,7 @@ Fri Oct 16 17:03:17 PDT 2020
 Installing p4lang/PI, needed for installing p4lang/behavioral-model simple_switch_grpc
 start install PI:
 + date
-Fri Oct 16 17:03:18 PDT 2020
+Sat Nov 21 14:24:44 PST 2020
 + sudo apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 Reading package lists...
 Building dependency tree...
@@ -2693,7 +2693,7 @@ The following NEW packages will be installed:
   libboost-thread1.58-dev libboost-thread1.58.0 libboost1.58-dev libjudy-dev
   libjudydebian1 libreadline-dev libreadline6-dev libtinfo-dev libtool-bin
   valgrind
-0 upgraded, 21 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 21 newly installed, 0 to remove and 0 not upgraded.
 Need to get 18.4 MB of archives.
 After this operation, 179 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libboost1.58-dev amd64 1.58.0+dfsg-5ubuntu3.1 [6,222 kB]
@@ -2717,9 +2717,9 @@ Get:18 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline6-dev am
 Get:19 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libreadline-dev amd64 6.3-8ubuntu2 [992 B]
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libtool-bin amd64 2.4.6-0.1 [79.2 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 valgrind amd64 1:3.11.0-1ubuntu4.2 [11.2 MB]
-Fetched 18.4 MB in 1s (17.9 MB/s)
+Fetched 18.4 MB in 2s (7,446 kB/s)
 Selecting previously unselected package libboost1.58-dev:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177800 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 177813 files and directories currently installed.)
 Preparing to unpack .../libboost1.58-dev_1.58.0+dfsg-5ubuntu3.1_amd64.deb ...
 Unpacking libboost1.58-dev:amd64 (1.58.0+dfsg-5ubuntu3.1) ...
 Selecting previously unselected package libboost-atomic1.58.0:amd64.
@@ -2827,20 +2827,11 @@ Submodule path 'proto/p4runtime': checked out '6a457c2eb594a09c60a2930c93b552e85
 Cloning into 'third_party/googletest'...
 Submodule path 'third_party/googletest': checked out 'f5edb4f542e155c75bc4b516f227911d99ec167c'
 + git log -n 1
-commit 771d5c46106f14f33777e70f39df2ae772cdfe17
-Author: Antonin Bas <abas@vmware.com>
-Date:   Fri Jul 17 17:02:20 2020 -0700
+commit e16d99a18d3ad22d6f68b283e45d1441bc9b1bbd
+Author: fruffy <5960321+fruffy@users.noreply.github.com>
+Date:   Fri Oct 16 17:28:09 2020 -0700
 
-    Fix build with recent Protobuf & gRPC versions
-    
-    When testing with Protobuf 3.12 and gRPC 1.30, the build failed because
-    of some deprecation warnings (treated as errors) in files generated by
-    protoc. To avoid these errors, we include the generated files using
-    -isystem so they get the same special treatment as system headers.
-    
-    We also replace all grpc++ include statements with grpcpp include
-    statements. grpc++ headers are deprecated since gRPC 1.10 (the official
-    gRPC version for p4lang software is 1.17).
+    Support for Python3 (#519)
 + ./autogen.sh
 libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
 libtoolize: copying file './ltmain.sh'
@@ -2896,8 +2887,8 @@ libtoolize: copying file 'm4/ltsugar.m4'
 libtoolize: copying file 'm4/ltversion.m4'
 libtoolize: copying file 'm4/lt~obsolete.m4'
 configure.ac:10: installing './compile'
-configure.ac:91: installing './config.guess'
-configure.ac:91: installing './config.sub'
+configure.ac:89: installing './config.guess'
+configure.ac:89: installing './config.sub'
 configure.ac:7: installing './install-sh'
 configure.ac:7: installing './missing'
 CLI/Makefile.am: installing './depcomp'
@@ -2929,12 +2920,6 @@ checking whether g++ accepts -g... yes
 checking dependency style of g++... gcc3
 checking whether g++ supports C++11 features by default... no
 checking whether g++ supports C++11 features with -std=c++11... yes
-checking for a Python interpreter with version >= 2.7... python2
-checking for python2... /usr/bin/python2
-checking for python2 version... 2.7
-checking for python2 platform... linux2
-checking for python2 script directory... ${prefix}/lib/python2.7/dist-packages
-checking for python2 extension module directory... ${exec_prefix}/lib/python2.7/dist-packages
 checking for doxygen... no
 configure: WARNING: doxygen not found - will not generate any doxygen documentation
 checking for perl... /usr/bin/perl
@@ -4826,7 +4811,7 @@ make[1]: Leaving directory '/home/andy/PI'
 + set +x
 end install PI:
 + date
-Fri Oct 16 17:15:03 PDT 2020
+Sat Nov 21 14:34:56 PST 2020
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
@@ -4835,7 +4820,7 @@ Fri Oct 16 17:15:03 PDT 2020
 Installing p4lang/behavioral-model
 start install behavioral-model:
 + date
-Fri Oct 16 17:15:03 PDT 2020
+Sat Nov 21 14:34:56 PST 2020
 + get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
 + local git_url=https://github.com/p4lang/behavioral-model.git
 + local repo_cache_name=behavioral-model.tar.gz
@@ -4848,13 +4833,21 @@ Cloning into 'behavioral-model'...
 + git pull
 Already up-to-date.
 + git log -n 1
-commit 50f017865bcf0e204a37e26aa4a1f9e78b040332
-Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-Date:   Fri Oct 9 14:08:06 2020 -0400
+commit e4cfda212e61ebe9930b94ccb124b8054fec9c73
+Author: fruffy <5960321+fruffy@users.noreply.github.com>
+Date:   Fri Oct 30 13:06:03 2020 -0700
 
-    Update build script and README to Thrift version 0.11.0
-    This version has been officially supported for a while now, and will
-    likely help in moving from Python2 to Python3.
+    Update cpplint to latest version (#963)
+    
+    * Update cpplint.
+    
+    * Should have called make check.
+    
+    * Address comments.
+    
+    * Python 3 and bignum.
+    
+    * Clean up lines.
 + PATCH_DIR=/home/andy/p4-guide/bin/patches
 + patch -p1
 patching file install_deps.sh
@@ -4895,7 +4888,7 @@ The following NEW packages will be installed:
   libevent-core-2.0-5 libevent-dev libevent-extra-2.0-5 libevent-openssl-2.0-5
   libevent-pthreads-2.0-5 libffi-dev libfl-dev libgmp-dev libgmpxx4ldbl
   libjsoncpp1 libpcap-dev libpcap0.8-dev libssl-dev libssl-doc
-0 upgraded, 27 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.
 Need to get 8,972 kB of archives.
 After this operation, 45.4 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 cmake-data all 3.5.1-1ubuntu3 [1,121 kB]
@@ -4925,9 +4918,9 @@ Get:24 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpcap-dev
 Get:25 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl-dev amd64 1.0.2g-1ubuntu4.17 [1,346 kB]
 Get:26 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl-doc all 1.0.2g-1ubuntu4.17 [1,077 kB]
 Get:27 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libffi-dev amd64 3.2.1-4 [161 kB]
-Fetched 8,972 kB in 1s (8,160 kB/s)
+Fetched 8,972 kB in 1s (4,831 kB/s)
 Selecting previously unselected package cmake-data.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 189863 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 189876 files and directories currently installed.)
 Preparing to unpack .../cmake-data_3.5.1-1ubuntu3_all.deb ...
 Unpacking cmake-data (3.5.1-1ubuntu3) ...
 Selecting previously unselected package libjsoncpp1:amd64.
@@ -5607,20 +5600,20 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo src/thrift/concurrency/Monitor.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/Monitor.lo src/thrift/concurrency/Monitor.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Monitor.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Mutex.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/Monitor.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Monitor.lo -MD -MP -MF src/thrift/concurrency/.deps/Monitor.Tpo -c src/thrift/concurrency/Monitor.cpp -o src/thrift/concurrency/Monitor.o >/dev/null 2>&1
 depbase=`echo src/thrift/concurrency/PosixThreadFactory.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/concurrency/PosixThreadFactory.lo src/thrift/concurrency/PosixThreadFactory.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF src/thrift/concurrency/.deps/PosixThreadFactory.Tpo -c src/thrift/concurrency/PosixThreadFactory.cpp  -fPIC -DPIC -o src/thrift/concurrency/.libs/PosixThreadFactory.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/PosixThreadFactory.lo -MD -MP -MF src/thrift/concurrency/.deps/PosixThreadFactory.Tpo -c src/thrift/concurrency/PosixThreadFactory.cpp -o src/thrift/concurrency/PosixThreadFactory.o >/dev/null 2>&1
-/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c -o src/thrift/server/libthriftnb_la-TNonblockingServer.lo `test -f 'src/thrift/server/TNonblockingServer.cpp' || echo './'`src/thrift/server/TNonblockingServer.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/concurrency/Mutex.lo -MD -MP -MF src/thrift/concurrency/.deps/Mutex.Tpo -c src/thrift/concurrency/Mutex.cpp -o src/thrift/concurrency/Mutex.o >/dev/null 2>&1
+/bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c -o src/thrift/server/libthriftnb_la-TNonblockingServer.lo `test -f 'src/thrift/server/TNonblockingServer.cpp' || echo './'`src/thrift/server/TNonblockingServer.cpp
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c src/thrift/server/TNonblockingServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/libthriftnb_la-TNonblockingServer.o
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TAsyncProtocolProcessor.Tpo -c -o src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo `test -f 'src/thrift/async/TAsyncProtocolProcessor.cpp' || echo './'`src/thrift/async/TAsyncProtocolProcessor.cpp
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c src/thrift/server/TNonblockingServer.cpp -o src/thrift/server/libthriftnb_la-TNonblockingServer.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TAsyncProtocolProcessor.Tpo -c src/thrift/async/TAsyncProtocolProcessor.cpp  -fPIC -DPIC -o src/thrift/async/.libs/libthriftnb_la-TAsyncProtocolProcessor.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/libthriftnb_la-TNonblockingServer.lo -MD -MP -MF src/thrift/server/.deps/libthriftnb_la-TNonblockingServer.Tpo -c src/thrift/server/TNonblockingServer.cpp -o src/thrift/server/libthriftnb_la-TNonblockingServer.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TAsyncProtocolProcessor.Tpo -c src/thrift/async/TAsyncProtocolProcessor.cpp -o src/thrift/async/libthriftnb_la-TAsyncProtocolProcessor.o >/dev/null 2>&1
 mv -f src/thrift/async/.deps/libthriftnb_la-TAsyncProtocolProcessor.Tpo src/thrift/async/.deps/libthriftnb_la-TAsyncProtocolProcessor.Plo
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS   -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/libthriftnb_la-TEvhttpServer.lo -MD -MP -MF src/thrift/async/.deps/libthriftnb_la-TEvhttpServer.Tpo -c -o src/thrift/async/libthriftnb_la-TEvhttpServer.lo `test -f 'src/thrift/async/TEvhttpServer.cpp' || echo './'`src/thrift/async/TEvhttpServer.cpp
@@ -5658,10 +5651,10 @@ depbase=`echo src/thrift/VirtualProfiling.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/VirtualProfiling.lo src/thrift/VirtualProfiling.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp  -fPIC -DPIC -o src/thrift/.libs/VirtualProfiling.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp -o src/thrift/VirtualProfiling.o >/dev/null 2>&1
 depbase=`echo src/thrift/async/TAsyncChannel.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/async/TAsyncChannel.lo src/thrift/async/TAsyncChannel.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/VirtualProfiling.lo -MD -MP -MF src/thrift/.deps/VirtualProfiling.Tpo -c src/thrift/VirtualProfiling.cpp -o src/thrift/VirtualProfiling.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TAsyncChannel.lo -MD -MP -MF src/thrift/async/.deps/TAsyncChannel.Tpo -c src/thrift/async/TAsyncChannel.cpp  -fPIC -DPIC -o src/thrift/async/.libs/TAsyncChannel.o
 depbase=`echo src/thrift/async/TConcurrentClientSyncInfo.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/async/TConcurrentClientSyncInfo.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/async/TConcurrentClientSyncInfo.lo src/thrift/async/TConcurrentClientSyncInfo.cpp &&\
@@ -5697,10 +5690,10 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo src/thrift/protocol/TJSONProtocol.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TJSONProtocol.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/protocol/TJSONProtocol.lo src/thrift/protocol/TJSONProtocol.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TJSONProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TJSONProtocol.Tpo -c src/thrift/protocol/TJSONProtocol.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/TJSONProtocol.o
 depbase=`echo src/thrift/protocol/TBase64Utils.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TBase64Utils.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/protocol/TBase64Utils.lo src/thrift/protocol/TBase64Utils.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TJSONProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TJSONProtocol.Tpo -c src/thrift/protocol/TJSONProtocol.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/TJSONProtocol.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TBase64Utils.lo -MD -MP -MF src/thrift/protocol/.deps/TBase64Utils.Tpo -c src/thrift/protocol/TBase64Utils.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/TBase64Utils.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TBase64Utils.lo -MD -MP -MF src/thrift/protocol/.deps/TBase64Utils.Tpo -c src/thrift/protocol/TBase64Utils.cpp -o src/thrift/protocol/TBase64Utils.o >/dev/null 2>&1
 depbase=`echo src/thrift/protocol/TMultiplexedProtocol.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -5708,10 +5701,10 @@ depbase=`echo src/thrift/protocol/TMultiplexedProtocol.lo | sed 's|[^/]*$|.deps/
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TMultiplexedProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TMultiplexedProtocol.Tpo -c src/thrift/protocol/TMultiplexedProtocol.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/TMultiplexedProtocol.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TMultiplexedProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TMultiplexedProtocol.Tpo -c src/thrift/protocol/TMultiplexedProtocol.cpp -o src/thrift/protocol/TMultiplexedProtocol.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TJSONProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TJSONProtocol.Tpo -c src/thrift/protocol/TJSONProtocol.cpp -o src/thrift/protocol/TJSONProtocol.o >/dev/null 2>&1
 depbase=`echo src/thrift/protocol/TProtocol.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TProtocol.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/protocol/TProtocol.lo src/thrift/protocol/TProtocol.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TJSONProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TJSONProtocol.Tpo -c src/thrift/protocol/TJSONProtocol.cpp -o src/thrift/protocol/TJSONProtocol.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TProtocol.Tpo -c src/thrift/protocol/TProtocol.cpp  -fPIC -DPIC -o src/thrift/protocol/.libs/TProtocol.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/protocol/TProtocol.lo -MD -MP -MF src/thrift/protocol/.deps/TProtocol.Tpo -c src/thrift/protocol/TProtocol.cpp -o src/thrift/protocol/TProtocol.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TTransportException.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -5753,20 +5746,20 @@ depbase=`echo src/thrift/transport/TSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocket.lo src/thrift/transport/TSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSocket.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp -o src/thrift/transport/TSocket.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TPipe.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipe.lo src/thrift/transport/TPipe.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipe.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSocket.Tpo -c src/thrift/transport/TSocket.cpp -o src/thrift/transport/TSocket.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipe.lo -MD -MP -MF src/thrift/transport/.deps/TPipe.Tpo -c src/thrift/transport/TPipe.cpp -o src/thrift/transport/TPipe.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TPipeServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TPipeServer.lo src/thrift/transport/TPipeServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TPipeServer.o
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp -o src/thrift/transport/TPipeServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TSSLSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSSLSocket.lo src/thrift/transport/TSSLSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TPipeServer.lo -MD -MP -MF src/thrift/transport/.deps/TPipeServer.Tpo -c src/thrift/transport/TPipeServer.cpp -o src/thrift/transport/TPipeServer.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLSocket.Tpo -c src/thrift/transport/TSSLSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TSSLSocket.o
 depbase=`echo src/thrift/transport/TSocketPool.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSocketPool.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TSocketPool.lo src/thrift/transport/TSocketPool.cpp &&\
@@ -5786,13 +5779,13 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo src/thrift/transport/TNonblockingServerSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingServerSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TNonblockingServerSocket.lo src/thrift/transport/TNonblockingServerSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TNonblockingServerSocket.Tpo -c src/thrift/transport/TNonblockingServerSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TNonblockingServerSocket.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TSSLServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TSSLServerSocket.Tpo -c src/thrift/transport/TSSLServerSocket.cpp -o src/thrift/transport/TSSLServerSocket.o >/dev/null 2>&1
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TNonblockingServerSocket.Tpo -c src/thrift/transport/TNonblockingServerSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TNonblockingServerSocket.o
 depbase=`echo src/thrift/transport/TNonblockingSSLServerSocket.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingSSLServerSocket.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TNonblockingSSLServerSocket.lo src/thrift/transport/TNonblockingSSLServerSocket.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TNonblockingServerSocket.Tpo -c src/thrift/transport/TNonblockingServerSocket.cpp -o src/thrift/transport/TNonblockingServerSocket.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingSSLServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TNonblockingSSLServerSocket.Tpo -c src/thrift/transport/TNonblockingSSLServerSocket.cpp  -fPIC -DPIC -o src/thrift/transport/.libs/TNonblockingSSLServerSocket.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TNonblockingServerSocket.Tpo -c src/thrift/transport/TNonblockingServerSocket.cpp -o src/thrift/transport/TNonblockingServerSocket.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TNonblockingSSLServerSocket.lo -MD -MP -MF src/thrift/transport/.deps/TNonblockingSSLServerSocket.Tpo -c src/thrift/transport/TNonblockingSSLServerSocket.cpp -o src/thrift/transport/TNonblockingSSLServerSocket.o >/dev/null 2>&1
 depbase=`echo src/thrift/transport/TTransportUtils.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/transport/TTransportUtils.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/transport/TTransportUtils.lo src/thrift/transport/TTransportUtils.cpp &&\
@@ -5807,10 +5800,10 @@ libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/sr
 depbase=`echo src/thrift/server/TConnectedClient.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TConnectedClient.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TConnectedClient.lo src/thrift/server/TConnectedClient.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TConnectedClient.lo -MD -MP -MF src/thrift/server/.deps/TConnectedClient.Tpo -c src/thrift/server/TConnectedClient.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TConnectedClient.o
 depbase=`echo src/thrift/server/TServer.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServer.lo -MD -MP -MF $depbase.Tpo -c -o src/thrift/server/TServer.lo src/thrift/server/TServer.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TConnectedClient.lo -MD -MP -MF src/thrift/server/.deps/TConnectedClient.Tpo -c src/thrift/server/TConnectedClient.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TConnectedClient.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp  -fPIC -DPIC -o src/thrift/server/.libs/TServer.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TServer.lo -MD -MP -MF src/thrift/server/.deps/TServer.Tpo -c src/thrift/server/TServer.cpp -o src/thrift/server/TServer.o >/dev/null 2>&1
 depbase=`echo src/thrift/server/TServerFramework.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -5842,12 +5835,12 @@ libtool: link: ranlib .libs/libthriftnb.a
 libtool: link: ( cd ".libs" && rm -f "libthriftnb.la" && ln -s "../libthriftnb.la" "libthriftnb.la" )
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -release 0.11.0 -L/usr/lib/x86_64-linux-gnu  -o libthriftz.la -rpath /usr/local/lib src/thrift/transport/libthriftz_la-TZlibTransport.lo src/thrift/transport/libthriftz_la-THeaderTransport.lo src/thrift/protocol/libthriftz_la-THeaderProtocol.lo  -lrt -lpthread 
 libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/thrift/transport/.libs/libthriftz_la-TZlibTransport.o src/thrift/transport/.libs/libthriftz_la-THeaderTransport.o src/thrift/protocol/.libs/libthriftz_la-THeaderProtocol.o   -L/usr/lib/x86_64-linux-gnu -lrt -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -Wl,-soname -Wl,libthriftz-0.11.0.so -o .libs/libthriftz-0.11.0.so
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadedServer.lo -MD -MP -MF src/thrift/server/.deps/TThreadedServer.Tpo -c src/thrift/server/TThreadedServer.cpp -o src/thrift/server/TThreadedServer.o >/dev/null 2>&1
 libtool: link: (cd ".libs" && rm -f "libthriftz.so" && ln -s "libthriftz-0.11.0.so" "libthriftz.so")
 libtool: link: ar cru .libs/libthriftz.a  src/thrift/transport/libthriftz_la-TZlibTransport.o src/thrift/transport/libthriftz_la-THeaderTransport.o src/thrift/protocol/libthriftz_la-THeaderProtocol.o
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libthriftz.a
 libtool: link: ( cd ".libs" && rm -f "libthriftz.la" && ln -s "../libthriftz.la" "libthriftz.la" )
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I./src -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Wall -Wextra -pedantic -g -O2 -MT src/thrift/server/TThreadedServer.lo -MD -MP -MF src/thrift/server/.deps/TThreadedServer.Tpo -c src/thrift/server/TThreadedServer.cpp -o src/thrift/server/TThreadedServer.o >/dev/null 2>&1
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -release 0.11.0  -o libthrift.la -rpath /usr/local/lib src/thrift/TApplicationException.lo src/thrift/TOutput.lo src/thrift/VirtualProfiling.lo src/thrift/async/TAsyncChannel.lo src/thrift/async/TConcurrentClientSyncInfo.lo src/thrift/concurrency/ThreadManager.lo src/thrift/concurrency/TimerManager.lo src/thrift/concurrency/Util.lo src/thrift/processor/PeekProcessor.lo src/thrift/protocol/TDebugProtocol.lo src/thrift/protocol/TJSONProtocol.lo src/thrift/protocol/TBase64Utils.lo src/thrift/protocol/TMultiplexedProtocol.lo src/thrift/protocol/TProtocol.lo src/thrift/transport/TTransportException.lo src/thrift/transport/TFDTransport.lo src/thrift/transport/TFileTransport.lo src/thrift/transport/TSimpleFileTransport.lo src/thrift/transport/THttpTransport.lo src/thrift/transport/THttpClient.lo src/thrift/transport/THttpServer.lo src/thrift/transport/TSocket.lo src/thrift/transport/TPipe.lo src/thrift/transport/TPipeServer.lo src/thrift/transport/TSSLSocket.lo src/thrift/transport/TSocketPool.lo src/thrift/transport/TServerSocket.lo src/thrift/transport/TSSLServerSocket.lo src/thrift/transport/TNonblockingServerSocket.lo src/thrift/transport/TNonblockingSSLServerSocket.lo src/thrift/transport/TTransportUtils.lo src/thrift/transport/TBufferTransports.lo src/thrift/server/TConnectedClient.lo src/thrift/server/TServer.lo src/thrift/server/TServerFramework.lo src/thrift/server/TSimpleServer.lo src/thrift/server/TThreadPoolServer.lo src/thrift/server/TThreadedServer.lo  src/thrift/concurrency/Mutex.lo src/thrift/concurrency/Monitor.lo src/thrift/concurrency/PosixThreadFactory.lo -L/usr/lib/x86_64-linux-gnu  -lssl -lcrypto -lrt -lpthread 
 libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbeginS.o  src/thrift/.libs/TApplicationException.o src/thrift/.libs/TOutput.o src/thrift/.libs/VirtualProfiling.o src/thrift/async/.libs/TAsyncChannel.o src/thrift/async/.libs/TConcurrentClientSyncInfo.o src/thrift/concurrency/.libs/ThreadManager.o src/thrift/concurrency/.libs/TimerManager.o src/thrift/concurrency/.libs/Util.o src/thrift/processor/.libs/PeekProcessor.o src/thrift/protocol/.libs/TDebugProtocol.o src/thrift/protocol/.libs/TJSONProtocol.o src/thrift/protocol/.libs/TBase64Utils.o src/thrift/protocol/.libs/TMultiplexedProtocol.o src/thrift/protocol/.libs/TProtocol.o src/thrift/transport/.libs/TTransportException.o src/thrift/transport/.libs/TFDTransport.o src/thrift/transport/.libs/TFileTransport.o src/thrift/transport/.libs/TSimpleFileTransport.o src/thrift/transport/.libs/THttpTransport.o src/thrift/transport/.libs/THttpClient.o src/thrift/transport/.libs/THttpServer.o src/thrift/transport/.libs/TSocket.o src/thrift/transport/.libs/TPipe.o src/thrift/transport/.libs/TPipeServer.o src/thrift/transport/.libs/TSSLSocket.o src/thrift/transport/.libs/TSocketPool.o src/thrift/transport/.libs/TServerSocket.o src/thrift/transport/.libs/TSSLServerSocket.o src/thrift/transport/.libs/TNonblockingServerSocket.o src/thrift/transport/.libs/TNonblockingSSLServerSocket.o src/thrift/transport/.libs/TTransportUtils.o src/thrift/transport/.libs/TBufferTransports.o src/thrift/server/.libs/TConnectedClient.o src/thrift/server/.libs/TServer.o src/thrift/server/.libs/TServerFramework.o src/thrift/server/.libs/TSimpleServer.o src/thrift/server/.libs/TThreadPoolServer.o src/thrift/server/.libs/TThreadedServer.o src/thrift/concurrency/.libs/Mutex.o src/thrift/concurrency/.libs/Monitor.o src/thrift/concurrency/.libs/PosixThreadFactory.o   -L/usr/lib/x86_64-linux-gnu -lssl -lcrypto -lrt -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/5/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o  -g -O2   -Wl,-soname -Wl,libthrift-0.11.0.so -o .libs/libthrift-0.11.0.so
 libtool: link: (cd ".libs" && rm -f "libthrift.so" && ln -s "libthrift-0.11.0.so" "libthrift.so")
@@ -5948,7 +5941,12 @@ make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
+
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
+.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -5967,11 +5965,6 @@ make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
-
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen cpp ../../../test/EnumTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/AnnotationTest.thrift:53] "senum" is deprecated and will be removed in a future compiler version.  This type should be replaced with "string".
 
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen cpp ../../../test/OptionalRequiredTest.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen cpp ../../../test/Recursive.thrift
@@ -6216,10 +6209,10 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen cpp ../../test/StressTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/StressTest.thrift:31] Consider using the more efficient "binary" type instead of "list<byte>".
 make  all-am
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/cpp'
 depbase=`echo gen-cpp/StressTest_constants.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6228,8 +6221,8 @@ mv -f $depbase.Tpo $depbase.Plo
 depbase=`echo gen-cpp/StressTest_types.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
 /bin/bash ../../libtool  --tag=CXX   --mode=compile g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift  -I/usr/include  -I../../lib/cpp/src -Igen-cpp  -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF $depbase.Tpo -c -o gen-cpp/StressTest_types.lo gen-cpp/StressTest_types.cpp &&\
 mv -f $depbase.Tpo $depbase.Plo
-libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF gen-cpp/.deps/StressTest_constants.Tpo -c gen-cpp/StressTest_constants.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_constants.o
+libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp  -fPIC -DPIC -o gen-cpp/.libs/StressTest_types.o
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_constants.lo -MD -MP -MF gen-cpp/.deps/StressTest_constants.Tpo -c gen-cpp/StressTest_constants.cpp -o gen-cpp/StressTest_constants.o >/dev/null 2>&1
 libtool: compile:  g++ -std=c++11 -DHAVE_CONFIG_H -I. -I../.. -I../../lib/cpp/src/thrift -I../../lib/c_glib/src/thrift -I/usr/include -I../../lib/cpp/src -Igen-cpp -Wall -Wextra -pedantic -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -g -O2 -MT gen-cpp/StressTest_types.lo -MD -MP -MF gen-cpp/.deps/StressTest_types.Tpo -c gen-cpp/StressTest_types.cpp -o gen-cpp/StressTest_types.o >/dev/null 2>&1
 depbase=`echo gen-cpp/Service.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
@@ -6366,9 +6359,7 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6388,6 +6379,8 @@ make[3]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py  ../Recursive.thrift
 test -d gen-py-default || /bin/mkdir -p gen-py-default
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py -out gen-py-default ../ThriftTest.thrift
@@ -6395,7 +6388,6 @@ test -d gen-py-default || /bin/mkdir -p gen-py-default
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py -out gen-py-default ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-default || /bin/mkdir -p gen-py-default
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -6504,6 +6496,7 @@ test -d gen-py-default || /bin/mkdir -p gen-py-default
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+test -d gen-py-default || /bin/mkdir -p gen-py-default
 test -d gen-py-slots || /bin/mkdir -p gen-py-slots
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py -out gen-py-default ../Recursive.thrift
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:slots -out gen-py-slots ../ThriftTest.thrift
@@ -6669,7 +6662,11 @@ test -d gen-py-oldstyle || /bin/mkdir -p gen-py-oldstyle
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflict[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
+s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6736,133 +6733,13 @@ test -d gen-py-oldstyle || /bin/mkdir -p gen-py-oldstyle
 [WARNING:generation:1] old_style is deprecated and may be removed in the future.
 
 test -d gen-py-oldstyle || /bin/mkdir -p gen-py-oldstyle
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../Recursive.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
-[WARNING:generation:1] old_style is deprecated and may be removed in the future.
-
 test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:old_style -out gen-py-oldstyle ../Recursive.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../ThriftTest.thrift
+[WARNING:generation:1] old_style is deprecated and may be removed in the future.
+
 test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
 /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../DebugProtoTest.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../ThriftTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:48] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:120] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:160] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:166] Consider using the more efficient "binary" type instead of "list<byte>".
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
-
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
-
-test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../Recursive.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
-test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../ThriftTest.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -6953,7 +6830,8 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0test -d gen-py-no_utf8strings || /bin/mkdir -p gen-py-no_utf8strings
+.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -6973,15 +6851,11 @@ s or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:no_utf8strings -out gen-py-no_utf8strings ../Recursive.thrift
 test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
-test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../Recursive.thrift
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../ThriftTest.thrift
-test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DebugProtoTest.thrift
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
-test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
+test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../ThriftTest.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../DebugProtoTest.thrift
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
@@ -7070,7 +6944,9 @@ test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
 
-[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
 
@@ -7090,7 +6966,124 @@ test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
 
 [WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
 
-/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../Recursive.thrift
+test -d gen-py-dynamic || /bin/mkdir -p gen-py-dynamic
+test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic -out gen-py-dynamic ../Recursive.thrift
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../ThriftTest.thrift
+test -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
+/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../DebugProtoTest.thrift
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:45] No generator named 'noexist' could be found!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/ThriftTest.thrift:47] cpp generator does not accept 'noexist' as sub-namespace!
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicttest -d gen-py-dynamicslots || /bin/mkdir -p gen-py-dynamicslots
+s or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:42] 64-bit constant "10000000000" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:48] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:120] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:160] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:166] Consider using the more efficient "binary" type instead of "list<byte>".
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:178] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:188] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "4294967295" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "1099511627775" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "281474976710655" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "72057594037927935" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:197] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:206] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:213] 64-bit constant "9223372036854775807" may not work in all languages.
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:362] No field key specified for field1, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:363] No field key specified for field2, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/compiler/cpp/thrift --gen py:dynamic,slots -out gen-py-dynamicslots ../Recursive.thrift
+.11.0/test/DebugProtoTest.thrift:364] No field key specified for field3, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:365] No field key specified for field4, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:366] No field key specified for field5, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:367] No field key specified for field6, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:368] No field key specified for field7, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:369] No field key specified for field8, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:370] No field key specified for field9, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:371] No field key specified for field10, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:372] No field key specified for field11, resulting protocol may have conflicts or not be backwards compatible!
+
+[WARNING:/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/DebugProtoTest.thrift:373] No field key specified for field12, resulting protocol may have conflicts or not be backwards compatible!
+
 make  all-am
 make[4]: Entering directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/test/py'
 make[4]: Nothing to be done for 'all-am'.
@@ -7153,8 +7146,8 @@ libtool: link: ar cru .libs/libtutorialgencpp.a gen-cpp/.libs/Calculator.o gen-c
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: link: ranlib .libs/libtutorialgencpp.a
 libtool: link: ( cd ".libs" && rm -f "libtutorialgencpp.la" && ln -s "../libtutorialgencpp.la" "libtutorialgencpp.la" )
-/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
 /bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialClient CppClient.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
+/bin/bash ../../libtool  --tag=CXX   --mode=link g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -L/usr/lib/x86_64-linux-gnu   -o TutorialServer CppServer.o libtutorialgencpp.la ../../lib/cpp/libthrift.la -lrt -lpthread 
 libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialServer CppServer.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 libtool: link: g++ -std=c++11 -Wall -Wextra -pedantic -g -O2 -o .libs/TutorialClient CppClient.o  -L/usr/lib/x86_64-linux-gnu ./.libs/libtutorialgencpp.a /home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/lib/cpp/.libs/libthrift.so -lssl -lcrypto ../../lib/cpp/.libs/libthrift.so -lrt -lpthread
 make[4]: Leaving directory '/home/andy/behavioral-model/tmp.XXXX/thrift-0.11.0/tutorial/cpp'
@@ -7394,9 +7387,9 @@ byte-compiling /usr/lib/python2.7/site-packages/thrift/TRecursive.py to TRecursi
 byte-compiling /usr/lib/python2.7/site-packages/thrift/__init__.py to __init__.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TSerialization.py to TSerialization.pyc
 byte-compiling /usr/lib/python2.7/site-packages/thrift/TSCons.py to TSCons.pyc
-writing byte-compilation script '/tmp/tmpocEnW3.py'
-/usr/bin/python -O /tmp/tmpocEnW3.py
-removing /tmp/tmpocEnW3.py
+writing byte-compilation script '/tmp/tmpy5DS0t.py'
+/usr/bin/python -O /tmp/tmpy5DS0t.py
+removing /tmp/tmpy5DS0t.py
 running install_egg_info
 running egg_info
 creating thrift.egg-info
@@ -7591,14 +7584,14 @@ byte-compiling build/bdist.linux-x86_64/egg/thrift/TRecursive.py to TRecursive.p
 byte-compiling build/bdist.linux-x86_64/egg/thrift/__init__.py to __init__.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TSerialization.py to TSerialization.pyc
 byte-compiling build/bdist.linux-x86_64/egg/thrift/TSCons.py to TSCons.pyc
-writing byte-compilation script '/tmp/tmpcvg1nY.py'
-/usr/bin/python -O /tmp/tmpcvg1nY.py
-removing /tmp/tmpcvg1nY.py
+writing byte-compilation script '/tmp/tmpc6MBhJ.py'
+/usr/bin/python -O /tmp/tmpc6MBhJ.py
+removing /tmp/tmpc6MBhJ.py
 creating stub loader for thrift/protocol/fastbinary.so
 byte-compiling build/bdist.linux-x86_64/egg/thrift/protocol/fastbinary.py to fastbinary.pyc
-writing byte-compilation script '/tmp/tmpkEcqDq.py'
-/usr/bin/python -O /tmp/tmpkEcqDq.py
-removing /tmp/tmpkEcqDq.py
+writing byte-compilation script '/tmp/tmpTCCZOg.py'
+/usr/bin/python -O /tmp/tmpTCCZOg.py
+removing /tmp/tmpTCCZOg.py
 creating build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
 copying thrift.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
@@ -7622,8 +7615,8 @@ Reading https://pypi.python.org/simple/six/
 Best match: six 1.15.0
 Downloading https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz#sha256=30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259
 Processing six-1.15.0.tar.gz
-Writing /tmp/easy_install-qJxwwF/six-1.15.0/setup.cfg
-Running six-1.15.0/setup.py -q bdist_egg --dist-dir /tmp/easy_install-qJxwwF/six-1.15.0/egg-dist-tmp-u8afv0
+Writing /tmp/easy_install-wVnG2c/six-1.15.0/setup.cfg
+Running six-1.15.0/setup.py -q bdist_egg --dist-dir /tmp/easy_install-wVnG2c/six-1.15.0/egg-dist-tmp-NRilX1
 /usr/lib/python2.7/distutils/dist.py:267: UserWarning: Unknown distribution option: 'python_requires'
   warnings.warn(msg)
 no previously-included directories found matching 'documentation/_build'
@@ -7635,26 +7628,26 @@ Adding six 1.15.0 to easy-install.pth file
 
 Installed /usr/local/lib/python2.7/dist-packages/six-1.15.0-py2.7.egg
 Finished processing dependencies for thrift==0.11.0
---2020-10-16 17:37:36--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
-Resolving github.com (github.com)... 140.82.112.4
-Connecting to github.com (github.com)|140.82.112.4|:443... connected.
+--2020-11-21 14:43:35--  https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz
+Resolving github.com (github.com)... 140.82.113.3
+Connecting to github.com (github.com)|140.82.113.3|:443... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0 [following]
---2020-10-16 17:37:36--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
-Resolving codeload.github.com (codeload.github.com)... 140.82.112.9
-Connecting to codeload.github.com (codeload.github.com)|140.82.112.9|:443... connected.
+--2020-11-21 14:43:35--  https://codeload.github.com/nanomsg/nanomsg/tar.gz/1.0.0
+Resolving codeload.github.com (codeload.github.com)... 140.82.112.10
+Connecting to codeload.github.com (codeload.github.com)|140.82.112.10|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [application/x-gzip]
 Saving to: ‘nanomsg-1.0.0.tar.gz’
 
-     0K .......... .......... .......... .......... ..........  939K
-    50K .......... .......... .......... .......... .......... 3.59M
-   100K .......... .......... .......... .......... .......... 1.02M
-   150K .......... .......... .......... .......... .......... 91.3M
-   200K .......... .......... .......... .......... .......... 88.8M
-   250K .......... .......... .......... .......... .......    71.2M=0.1s
+     0K .......... .......... .......... .......... .......... 1.18M
+    50K .......... .......... .......... .......... .......... 2.45M
+   100K .......... .......... .......... .......... .......... 5.34M
+   150K .......... .......... .......... .......... .......... 41.8M
+   200K .......... .......... .......... .......... .......... 3.22M
+   250K .......... .......... .......... .......... .......    38.2M=0.09s
 
-2020-10-16 17:37:37 (2.50 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
+2020-11-21 14:43:35 (3.30 MB/s) - ‘nanomsg-1.0.0.tar.gz’ saved [305040]
 
 nanomsg-1.0.0/
 nanomsg-1.0.0/.appveyor.yml
@@ -8502,7 +8495,7 @@ Collecting pycparser (from cffi)
   Downloading https://files.pythonhosted.org/packages/ae/e7/d9c3a176ca4b02024debf82342dab36efadfc5776f9c8db077e8f6e71821/pycparser-2.20-py2.py3-none-any.whl (112kB)
 Installing collected packages: pycparser, cffi
 Successfully installed cffi-1.14.3 pycparser-2.20
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
@@ -8513,7 +8506,7 @@ Installing collected packages: nnpy
   Running setup.py install for nnpy: started
     Running setup.py install for nnpy: finished with status 'done'
 Successfully installed nnpy-0.1
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + ./autogen.sh
 libtoolize: putting auxiliary files in '.'.
@@ -10414,7 +10407,7 @@ make[1]: Leaving directory '/home/andy/behavioral-model/targets/simple_switch_gr
 + set +x
 end install behavioral-model:
 + date
-Fri Oct 16 18:19:06 PDT 2020
+Sat Nov 21 14:57:47 PST 2020
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
@@ -10423,7 +10416,7 @@ Fri Oct 16 18:19:06 PDT 2020
 Installing p4lang/p4c
 start install p4c:
 + date
-Fri Oct 16 18:19:06 PDT 2020
+Sat Nov 21 14:57:48 PST 2020
 + sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply python3-pip tcpdump
 Reading package lists...
 Building dependency tree...
@@ -10457,7 +10450,7 @@ The following NEW packages will be installed:
   libboost-regex1.58-dev libboost-regex1.58.0 libgc-dev libicu-dev llvm
   llvm-3.8 llvm-3.8-dev llvm-3.8-runtime llvm-runtime python-ipaddr python-ply
   python-scapy
-0 upgraded, 19 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
 Need to get 28.4 MB of archives.
 After this operation, 176 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 binfmt-support amd64 2.1.6-1 [50.7 kB]
@@ -10479,9 +10472,9 @@ Get:16 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 llvm-3.8-de
 Get:17 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddr all 2.1.11-2 [14.9 kB]
 Get:18 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-ply all 3.7-1 [46.9 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 python-scapy all 2.2.0-1 [236 kB]
-Fetched 28.4 MB in 3s (8,817 kB/s)
+Fetched 28.4 MB in 2s (9,477 kB/s)
 Selecting previously unselected package binfmt-support.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 194092 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 194105 files and directories currently installed.)
 Preparing to unpack .../binfmt-support_2.1.6-1_amd64.deb ...
 Unpacking binfmt-support (2.1.6-1) ...
 Selecting previously unselected package icu-devtools.
@@ -10574,7 +10567,7 @@ Building wheels for collected packages: scapy
 Successfully built scapy
 Installing collected packages: scapy
 Successfully installed scapy
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + pip3 list
 apturl (0.5.2)
@@ -10644,7 +10637,7 @@ wheel (0.29.0)
 xdiagnose (3.8.4.1)
 xkit (0.0.0)
 XlsxWriter (0.7.3)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + git clone --recursive https://github.com/p4lang/p4c.git
 Cloning into 'p4c'...
@@ -10659,13 +10652,13 @@ Cloning into 'test/frameworks/gtest'...
 Submodule path 'test/frameworks/gtest': checked out 'aa148eb2b7f70ede0eb10de34b6254826bfb34f4'
 + cd p4c
 + git log -n 1
-commit c0907946eeb46a96bc8fee822ba083fb3c442bd2
+commit fb47a7ff435311e03bc4896deaa1c7818f12404b
 Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Thu Oct 15 10:17:17 2020 -0700
+Date:   Fri Nov 20 12:48:35 2020 -0800
 
-    Reassociation pass; two more strength-reduction optimizations (#2587)
+    Fix off-by-one error in strength-reduction (#2616)
     
-    * Reassociation pass; two more strength-reduction optimizations
+    * Fix off-by-one error in strength-reduction
 + mkdir build
 + cd build
 + cmake .. -DCMAKE_BUILD_TYPE=DEBUG
@@ -10739,13 +10732,13 @@ Date:   Thu Oct 15 10:17:17 2020 -0700
 -- Performing Test _HAVE_OPTION_Wnodeprecated_ - Success
 -- Using the GNU gold linker.
 -- Available extensions 
--- Added 422 tests to 'bmv2' (15 xfails)
+-- Added 423 tests to 'bmv2' (15 xfails)
 -- Added 22 tests to 'bmv2' (1 xfails)
 -- Start configuring eBPF back end
--- Detected kernel version: 4.15.0-120-generic
+-- Detected kernel version: 4.15.0-123-generic
 -- Check LLVM version with 'llvm-config --version'
 -- Found LLVM 3.8.0
-CMake Warning at backends/ebpf/CMakeLists.txt:153 (message):
+CMake Warning at backends/ebpf/CMakeLists.txt:165 (message):
   Missing the libbpf dependency, disabling kernel tests.  You can install
   libbpf by running './build_libbpf' in the
   /home/andy/p4c/backends/ebpf/runtime folder.
@@ -10756,9 +10749,9 @@ CMake Warning at backends/ebpf/CMakeLists.txt:153 (message):
 -- Done with configuring BPF back end
 -- Added 16 tests to 'ubpf' (0 xfails)
 -- Added 6 tests to 'p4' (0 xfails)
--- Added 718 tests to 'p4' (1 xfails)
+-- Added 722 tests to 'p4' (1 xfails)
 -- Added 6 tests to 'err' (0 xfails)
--- Added 230 tests to 'err' (0 xfails)
+-- Added 233 tests to 'err' (0 xfails)
 -- Added 191 tests to 'p14_to_16' (0 xfails)
 -- CTest parallel: -j 1
 -- Configuring done
@@ -10970,7 +10963,7 @@ Install the project...
 + set +x
 end install p4c:
 + date
-Fri Oct 16 18:48:46 PDT 2020
+Sat Nov 21 17:11:24 PST 2020
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
@@ -10981,7 +10974,7 @@ you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
 + date
-Fri Oct 16 18:48:48 PDT 2020
+Sat Nov 21 17:11:25 PST 2020
 + git clone git://github.com/mininet/mininet mininet
 Cloning into 'mininet'...
 + sudo ./mininet/util/install.sh -nwv
@@ -11017,7 +11010,7 @@ The following NEW packages will be installed:
   python-pexpect python-ptyprocess python-pyflakes python-six python-tk
   python-wrapt python3-pep8 python3-pyflakes socat ssh ssh-import-id
   tk8.6-blt2.5
-0 upgraded, 27 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.
 Need to get 2,705 kB of archives.
 After this operation, 18.7 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 python-six all 1.10.0-3 [10.9 kB]
@@ -11048,9 +11041,9 @@ Get:25 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-tk a
 Get:26 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 socat amd64 1.7.3.1-1 [321 kB]
 Get:27 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 ssh-import-id all 5.5-0ubuntu1 [10.2 kB]
 Preconfiguring packages ...
-Fetched 2,705 kB in 0s (2,839 kB/s)
+Fetched 2,705 kB in 1s (2,048 kB/s)
 Selecting previously unselected package python-six.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 196140 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 196153 files and directories currently installed.)
 Preparing to unpack .../python-six_1.10.0-3_all.deb ...
 Unpacking python-six (1.10.0-3) ...
 Selecting previously unselected package python-wrapt.
@@ -11145,13 +11138,13 @@ Setting up python-wrapt (1.8.0-5build2) ...
 Setting up openssh-sftp-server (1:7.2p2-4ubuntu2.10) ...
 Setting up openssh-server (1:7.2p2-4ubuntu2.10) ...
 Creating SSH2 RSA key; this may take some time ...
-2048 SHA256:JyASwLz+Ve3vONqjUJO5D7nSDg2ra+ClTxOsYvMDcD8 root@andy-vm (RSA)
+2048 SHA256:TB7quKemsXE32W6BsfGwQ6xG5YcZVwBBg+Dt2YY3pps root@andy-vm (RSA)
 Creating SSH2 DSA key; this may take some time ...
-1024 SHA256:F4H+IDX450djgv2vc9KLpa5G7HgPMdjy8b0w4v4HWeQ root@andy-vm (DSA)
+1024 SHA256:H+58m2TK/xSmSStM2LBC7IEUkLYf7C1R5lsHlYpkp/w root@andy-vm (DSA)
 Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:kCuCEiCAT3lh1AEK9SgsaHcFeglo7PXoD9RiuOUE34E root@andy-vm (ECDSA)
+256 SHA256:qaZxoywKncWO90SF0x652D4sM2/0FmXrou/eaVTGQQs root@andy-vm (ECDSA)
 Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:J9SJoiAq7pq7wWX7hvj6PzrBmVmvTPP/noH8X6KlOyU root@andy-vm (ED25519)
+256 SHA256:S7gyZg6XFV2UhAHtgf8oVa3LnTK7+vlgqW/4/zQSHUo root@andy-vm (ED25519)
 Setting up ssh (1:7.2p2-4ubuntu2.10) ...
 Setting up tk8.6-blt2.5 (2.5.3+dfsg-3) ...
 Setting up blt (2.5.3+dfsg-3) ...
@@ -11183,7 +11176,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 iproute2 is already the newest version (4.3.0-1ubuntu3.16.04.5).
-0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -11191,15 +11184,15 @@ The following additional packages will be installed:
   cgroup-lite libcgroup1
 The following NEW packages will be installed:
   cgroup-lite cgroup-tools libcgroup1
-0 upgraded, 3 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
 Need to get 111 kB of archives.
 After this operation, 419 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libcgroup1 amd64 0.41-7ubuntu1 [42.1 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 cgroup-lite all 1.11 [4,192 B]
 Get:3 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 cgroup-tools amd64 0.41-7ubuntu1 [64.4 kB]
-Fetched 111 kB in 0s (324 kB/s)
+Fetched 111 kB in 0s (206 kB/s)
 Selecting previously unselected package libcgroup1:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 199667 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 199680 files and directories currently installed.)
 Preparing to unpack .../libcgroup1_0.41-7ubuntu1_amd64.deb ...
 Unpacking libcgroup1:amd64 (0.41-7ubuntu1) ...
 Selecting previously unselected package cgroup-lite.
@@ -11452,7 +11445,7 @@ The following NEW packages will be installed:
   libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark11 libwiretap8
   libwscodecs2 libwsutil9 tshark wireshark wireshark-common wireshark-gtk
   wireshark-qt
-0 upgraded, 21 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 21 newly installed, 0 to remove and 0 not upgraded.
 Need to get 21.0 MB of archives.
 After this operation, 108 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libmaxminddb0 amd64 1.0.4-2.1 [22.8 kB]
@@ -11477,9 +11470,9 @@ Get:19 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 wiresha
 Get:20 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 wireshark-qt amd64 2.6.10-1~ubuntu16.04.0 [3,518 kB]
 Get:21 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 wireshark amd64 2.6.10-1~ubuntu16.04.0 [4,436 B]
 Preconfiguring packages ...
-Fetched 21.0 MB in 3s (5,313 kB/s)
+Fetched 21.0 MB in 2s (8,775 kB/s)
 Selecting previously unselected package libmaxminddb0:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 199725 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 199738 files and directories currently installed.)
 Preparing to unpack .../libmaxminddb0_1.0.4-2.1_amd64.deb ...
 Unpacking libmaxminddb0:amd64 (1.0.4-2.1) ...
 Selecting previously unselected package libnghttp2-14:amd64.
@@ -11584,14 +11577,14 @@ The following additional packages will be installed:
   openvswitch-common
 The following NEW packages will be installed:
   openvswitch-common openvswitch-switch
-0 upgraded, 2 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 1,817 kB of archives.
 After this operation, 8,046 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 openvswitch-common amd64 2.5.5-0ubuntu0.16.04.2 [658 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 openvswitch-switch amd64 2.5.5-0ubuntu0.16.04.2 [1,159 kB]
-Fetched 1,817 kB in 0s (2,530 kB/s)
+Fetched 1,817 kB in 1s (1,403 kB/s)
 Selecting previously unselected package openvswitch-common.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200236 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200249 files and directories currently installed.)
 Preparing to unpack .../openvswitch-common_2.5.5-0ubuntu0.16.04.2_amd64.deb ...
 Unpacking openvswitch-common (2.5.5-0ubuntu0.16.04.2) ...
 Selecting previously unselected package openvswitch-switch.
@@ -11618,14 +11611,14 @@ The following additional packages will be installed:
   openvswitch-pki
 The following NEW packages will be installed:
   openvswitch-pki openvswitch-testcontroller
-0 upgraded, 2 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 429 kB of archives.
 After this operation, 1,328 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 openvswitch-pki all 2.5.5-0ubuntu0.16.04.2 [13.3 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 openvswitch-testcontroller amd64 2.5.5-0ubuntu0.16.04.2 [416 kB]
-Fetched 429 kB in 0s (1,068 kB/s)
+Fetched 429 kB in 0s (559 kB/s)
 Selecting previously unselected package openvswitch-pki.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200331 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200344 files and directories currently installed.)
 Preparing to unpack .../openvswitch-pki_2.5.5-0ubuntu0.16.04.2_all.deb ...
 Unpacking openvswitch-pki (2.5.5-0ubuntu0.16.04.2) ...
 Selecting previously unselected package openvswitch-testcontroller.
@@ -11646,7 +11639,7 @@ insserv: warning: current stop runlevel(s) (0 1 2 3 4 5 6) of script `openvswitc
 + set +x
 end install mininet:
 + date
-Fri Oct 16 18:50:58 PDT 2020
+Sat Nov 21 17:12:17 PST 2020
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
@@ -11655,7 +11648,7 @@ Fri Oct 16 18:50:58 PDT 2020
 Installing a few miscellaneous packages
 start install miscellaneous packages:
 + date
-Fri Oct 16 18:50:59 PDT 2020
+Sat Nov 21 17:12:17 PST 2020
 + sudo pip install grpcio==1.17.1
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
 The directory '/home/andy/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
@@ -11668,7 +11661,7 @@ Collecting futures>=2.2.0 (from grpcio==1.17.1)
   Downloading https://files.pythonhosted.org/packages/d8/a6/f46ae3f1da0cd4361c344888f59ec2f5785e69c872e175a748ef6071cdb5/futures-3.3.0-py2-none-any.whl
 Installing collected packages: enum34, futures, grpcio
 Successfully installed enum34-1.1.10 futures-3.3.0 grpcio-1.17.1
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + pip list
 adium-theme-ubuntu (0.3.4)
@@ -11696,7 +11689,7 @@ thrift (0.11.0)
 unity-lens-photos (1.0)
 wheel (0.29.0)
 wrapt (1.8.0)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + sudo pip install protobuf==3.6.1
 The directory '/home/andy/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
@@ -11707,7 +11700,7 @@ Requirement already satisfied (use --upgrade to upgrade): setuptools in /usr/lib
 Requirement already satisfied (use --upgrade to upgrade): six>=1.9 in /usr/local/lib/python2.7/dist-packages/six-1.15.0-py2.7.egg (from protobuf==3.6.1)
 Installing collected packages: protobuf
 Successfully installed protobuf-3.6.1
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + pip list
 adium-theme-ubuntu (0.3.4)
@@ -11736,7 +11729,7 @@ thrift (0.11.0)
 unity-lens-photos (1.0)
 wheel (0.29.0)
 wrapt (1.8.0)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + sudo apt-get --yes install python-psutil libgflags-dev net-tools
 Reading package lists...
@@ -11747,15 +11740,15 @@ Suggested packages:
   python-psutil-doc
 The following NEW packages will be installed:
   libgflags-dev libgflags2v5 python-psutil
-0 upgraded, 3 newly installed, 0 to remove and 7 not upgraded.
+0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
 Need to get 175 kB of archives.
 After this operation, 1,153 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libgflags2v5 amd64 2.1.2-3 [54.4 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu xenial/universe amd64 libgflags-dev amd64 2.1.2-3 [64.8 kB]
 Get:3 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-psutil amd64 3.4.2-1ubuntu0.1 [55.4 kB]
-Fetched 175 kB in 0s (523 kB/s)
+Fetched 175 kB in 0s (251 kB/s)
 Selecting previously unselected package libgflags2v5.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200344 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 200357 files and directories currently installed.)
 Preparing to unpack .../libgflags2v5_2.1.2-3_amd64.deb ...
 Unpacking libgflags2v5 (2.1.2-3) ...
 Selecting previously unselected package libgflags-dev.
@@ -11777,7 +11770,7 @@ Installing collected packages: crcmod
   Running setup.py install for crcmod: started
     Running setup.py install for crcmod: finished with status 'done'
 Successfully installed crcmod-1.7
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + pip list
 adium-theme-ubuntu (0.3.4)
@@ -11808,15 +11801,15 @@ thrift (0.11.0)
 unity-lens-photos (1.0)
 wheel (0.29.0)
 wrapt (1.8.0)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + set +x
 end install miscellaneous packages:
 + date
-Fri Oct 16 18:51:35 PDT 2020
+Sat Nov 21 17:12:31 PST 2020
 + cd /home/andy
-+ find /usr/lib /usr/local /home/andy/.local
 + sort
++ find /usr/lib /usr/local /home/andy/.local
 + pip list
 adium-theme-ubuntu (0.3.4)
 astroid (1.4.4)
@@ -11846,7 +11839,7 @@ thrift (0.11.0)
 unity-lens-photos (1.0)
 wheel (0.29.0)
 wrapt (1.8.0)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + pip3 list
 apturl (0.5.2)
@@ -11919,20 +11912,20 @@ wheel (0.29.0)
 xdiagnose (3.8.4.1)
 xkit (0.0.0)
 XlsxWriter (0.7.3)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 + set +e
 + set +x
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
 + date
-Fri Oct 16 18:51:41 PDT 2020
+Sat Nov 21 17:12:33 PST 2020
 + df -h .
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda1        58G   13G   43G  23% /
 + df -BM .
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda1         59385M 12494M    43852M  23% /
+/dev/sda1         59385M 12535M    43811M  23% /
 + cd /home/andy
 + DETS=install-details
 + mkdir -p install-details
@@ -11953,7 +11946,7 @@ Output of script p4-environment-info.sh
 p4-environment-info version 1
 
 $ uname -a
-Linux andy-vm 4.15.0-120-generic #122~16.04.1-Ubuntu SMP Wed Sep 30 15:09:00 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+Linux andy-vm 4.15.0-123-generic #126~16.04.1-Ubuntu SMP Wed Oct 21 13:48:05 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
 
 $ lsb_release -a
 No LSB modules are available.
@@ -12040,7 +12033,7 @@ thrift (0.11.0)
 unity-lens-photos (1.0)
 wheel (0.29.0)
 wrapt (1.8.0)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 
 $ which python3
@@ -12123,7 +12116,7 @@ wheel (0.29.0)
 xdiagnose (3.8.4.1)
 xkit (0.0.0)
 XlsxWriter (0.7.3)
-You are using pip version 8.1.1, however version 20.2.3 is available.
+You are using pip version 8.1.1, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 
 $ which mn
@@ -12144,12 +12137,12 @@ Thrift version 0.11.0
 $ which simple_switch
 /usr/local/bin/simple_switch
 $ simple_switch --version
-1.14.0-50f01786
+1.14.0-e4cfda21
 
 $ which simple_switch_grpc
 /usr/local/bin/simple_switch_grpc
 $ simple_switch_grpc --version
-1.14.0-50f01786
+1.14.0-e4cfda21
 
 $ which simple_switch_CLI
 /usr/local/bin/simple_switch_CLI
@@ -12157,199 +12150,199 @@ $ which simple_switch_CLI
 $ which p4c
 /usr/local/bin/p4c
 $ p4c --version
-p4c 1.2.0 (SHA: c090794 BUILD: DEBUG)
+p4c 1.2.0 (SHA: fb47a7f BUILD: DEBUG)
 
 $ find /usr | grep p4runtime | sort | xargs ls -ld
--rw-r--r-- 1 root root   66733 Oct 16 17:14 /usr/local/include/p4/v1/p4runtime.grpc.pb.h
--rw-r--r-- 1 root root  524355 Oct 16 17:14 /usr/local/include/p4/v1/p4runtime.pb.h
--rw-r--r-- 1 root staff   6447 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.py
--rw-r--r-- 1 root staff   5595 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyc
--rw-r--r-- 1 root staff   5595 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyo
--rw-r--r-- 1 root staff 148919 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2.py
--rw-r--r-- 1 root staff  65781 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2.pyc
--rw-r--r-- 1 root staff  65781 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2.pyo
+-rw-r--r-- 1 root root   66733 Nov 21 14:34 /usr/local/include/p4/v1/p4runtime.grpc.pb.h
+-rw-r--r-- 1 root root  524355 Nov 21 14:34 /usr/local/include/p4/v1/p4runtime.pb.h
+-rw-r--r-- 1 root staff   6447 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.py
+-rw-r--r-- 1 root staff   5595 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyc
+-rw-r--r-- 1 root staff   5595 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyo
+-rw-r--r-- 1 root staff 148919 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2.py
+-rw-r--r-- 1 root staff  65781 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2.pyc
+-rw-r--r-- 1 root staff  65781 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2.pyo
 
 $ find /usr/local/lib | grep grpc | sort | xargs ls -ld
--rw-r--r-- 1 root root   3512116 Oct 16 18:19 /usr/local/lib/libbm_grpc_dataplane.a
--rwxr-xr-x 1 root root      1024 Oct 16 18:19 /usr/local/lib/libbm_grpc_dataplane.la
-lrwxrwxrwx 1 root root        29 Oct 16 18:19 /usr/local/lib/libbm_grpc_dataplane.so -> libbm_grpc_dataplane.so.0.0.0
-lrwxrwxrwx 1 root root        29 Oct 16 18:19 /usr/local/lib/libbm_grpc_dataplane.so.0 -> libbm_grpc_dataplane.so.0.0.0
--rwxr-xr-x 1 root root   2088312 Oct 16 18:19 /usr/local/lib/libbm_grpc_dataplane.so.0.0.0
--rwxr-xr-x 1 root root   6587942 Oct 16 17:03 /usr/local/lib/libgrpc.a
--rwxr-xr-x 1 root root   1912276 Oct 16 17:03 /usr/local/lib/libgrpc++.a
--rwxr-xr-x 1 root root   6041650 Oct 16 17:03 /usr/local/lib/libgrpc_cronet.a
--rwxr-xr-x 1 root root   6788672 Oct 16 17:03 /usr/local/lib/libgrpc++_cronet.a
-lrwxrwxrwx 1 root root        23 Oct 16 17:03 /usr/local/lib/libgrpc_cronet.so -> libgrpc_cronet.so.7.0.0
-lrwxrwxrwx 1 root root        26 Oct 16 17:03 /usr/local/lib/libgrpc++_cronet.so -> libgrpc++_cronet.so.1.17.1
-lrwxrwxrwx 1 root root        26 Oct 16 17:03 /usr/local/lib/libgrpc++_cronet.so.1 -> libgrpc++_cronet.so.1.17.1
--rwxr-xr-x 1 root root   1463136 Oct 16 17:03 /usr/local/lib/libgrpc++_cronet.so.1.17.1
-lrwxrwxrwx 1 root root        23 Oct 16 17:03 /usr/local/lib/libgrpc_cronet.so.7 -> libgrpc_cronet.so.7.0.0
--rwxr-xr-x 1 root root   2584640 Oct 16 17:03 /usr/local/lib/libgrpc_cronet.so.7.0.0
--rwxr-xr-x 1 root root    337224 Oct 16 17:03 /usr/local/lib/libgrpc++_error_details.a
-lrwxrwxrwx 1 root root        33 Oct 16 17:03 /usr/local/lib/libgrpc++_error_details.so -> libgrpc++_error_details.so.1.17.1
-lrwxrwxrwx 1 root root        33 Oct 16 17:03 /usr/local/lib/libgrpc++_error_details.so.1 -> libgrpc++_error_details.so.1.17.1
--rwxr-xr-x 1 root root     35600 Oct 16 17:03 /usr/local/lib/libgrpc++_error_details.so.1.17.1
--rwxr-xr-x 1 root root   1623142 Oct 16 17:03 /usr/local/lib/libgrpcpp_channelz.a
-lrwxrwxrwx 1 root root        28 Oct 16 17:03 /usr/local/lib/libgrpcpp_channelz.so -> libgrpcpp_channelz.so.1.17.1
-lrwxrwxrwx 1 root root        28 Oct 16 17:03 /usr/local/lib/libgrpcpp_channelz.so.1 -> libgrpcpp_channelz.so.1.17.1
--rwxr-xr-x 1 root root    791784 Oct 16 17:03 /usr/local/lib/libgrpcpp_channelz.so.1.17.1
--rwxr-xr-x 1 root root    704700 Oct 16 17:03 /usr/local/lib/libgrpc++_reflection.a
-lrwxrwxrwx 1 root root        30 Oct 16 17:03 /usr/local/lib/libgrpc++_reflection.so -> libgrpc++_reflection.so.1.17.1
-lrwxrwxrwx 1 root root        30 Oct 16 17:03 /usr/local/lib/libgrpc++_reflection.so.1 -> libgrpc++_reflection.so.1.17.1
--rwxr-xr-x 1 root root    295288 Oct 16 17:03 /usr/local/lib/libgrpc++_reflection.so.1.17.1
-lrwxrwxrwx 1 root root        16 Oct 16 17:03 /usr/local/lib/libgrpc.so -> libgrpc.so.7.0.0
-lrwxrwxrwx 1 root root        19 Oct 16 17:03 /usr/local/lib/libgrpc++.so -> libgrpc++.so.1.17.1
-lrwxrwxrwx 1 root root        19 Oct 16 17:03 /usr/local/lib/libgrpc++.so.1 -> libgrpc++.so.1.17.1
--rwxr-xr-x 1 root root    546672 Oct 16 17:03 /usr/local/lib/libgrpc++.so.1.17.1
-lrwxrwxrwx 1 root root        16 Oct 16 17:03 /usr/local/lib/libgrpc.so.7 -> libgrpc.so.7.0.0
--rwxr-xr-x 1 root root   2819320 Oct 16 17:03 /usr/local/lib/libgrpc.so.7.0.0
--rwxr-xr-x 1 root root   3145664 Oct 16 17:03 /usr/local/lib/libgrpc_unsecure.a
--rwxr-xr-x 1 root root   1771118 Oct 16 17:03 /usr/local/lib/libgrpc++_unsecure.a
-lrwxrwxrwx 1 root root        25 Oct 16 17:03 /usr/local/lib/libgrpc_unsecure.so -> libgrpc_unsecure.so.7.0.0
-lrwxrwxrwx 1 root root        28 Oct 16 17:03 /usr/local/lib/libgrpc++_unsecure.so -> libgrpc++_unsecure.so.1.17.1
-lrwxrwxrwx 1 root root        28 Oct 16 17:03 /usr/local/lib/libgrpc++_unsecure.so.1 -> libgrpc++_unsecure.so.1.17.1
--rwxr-xr-x 1 root root    501088 Oct 16 17:03 /usr/local/lib/libgrpc++_unsecure.so.1.17.1
-lrwxrwxrwx 1 root root        25 Oct 16 17:03 /usr/local/lib/libgrpc_unsecure.so.7 -> libgrpc_unsecure.so.7.0.0
--rwxr-xr-x 1 root root   1278328 Oct 16 17:03 /usr/local/lib/libgrpc_unsecure.so.7.0.0
--rw-r--r-- 1 root root   4408640 Oct 16 17:15 /usr/local/lib/libpigrpcserver.a
--rwxr-xr-x 1 root root      1278 Oct 16 17:15 /usr/local/lib/libpigrpcserver.la
-lrwxrwxrwx 1 root root        24 Oct 16 17:15 /usr/local/lib/libpigrpcserver.so -> libpigrpcserver.so.0.0.0
-lrwxrwxrwx 1 root root        24 Oct 16 17:15 /usr/local/lib/libpigrpcserver.so.0 -> libpigrpcserver.so.0.0.0
--rwxr-xr-x 1 root root   2047568 Oct 16 17:15 /usr/local/lib/libpigrpcserver.so.0.0.0
--rw-r--r-- 1 root root  15230008 Oct 16 17:14 /usr/local/lib/libpiprotogrpc.a
--rwxr-xr-x 1 root root      1090 Oct 16 17:14 /usr/local/lib/libpiprotogrpc.la
-lrwxrwxrwx 1 root root        23 Oct 16 17:14 /usr/local/lib/libpiprotogrpc.so -> libpiprotogrpc.so.0.0.0
-lrwxrwxrwx 1 root root        23 Oct 16 17:14 /usr/local/lib/libpiprotogrpc.so.0 -> libpiprotogrpc.so.0.0.0
--rwxr-xr-x 1 root root   6001992 Oct 16 17:14 /usr/local/lib/libpiprotogrpc.so.0.0.0
--rw-r--r-- 1 root root       269 Oct 16 17:03 /usr/local/lib/pkgconfig/grpc.pc
--rw-r--r-- 1 root root       258 Oct 16 17:03 /usr/local/lib/pkgconfig/grpc++.pc
--rw-r--r-- 1 root root       297 Oct 16 17:03 /usr/local/lib/pkgconfig/grpc_unsecure.pc
--rw-r--r-- 1 root root       297 Oct 16 17:03 /usr/local/lib/pkgconfig/grpc++_unsecure.pc
--rw-r--r-- 1 root staff     4688 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/gnmi/gnmi_pb2_grpc.py
--rw-r--r-- 1 root staff     4723 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/gnmi/gnmi_pb2_grpc.pyc
--rw-r--r-- 1 root staff     4723 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/gnmi/gnmi_pb2_grpc.pyo
--rw-r--r-- 1 root staff       83 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/google/rpc/code_pb2_grpc.py
--rw-r--r-- 1 root staff      179 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/google/rpc/code_pb2_grpc.pyc
--rw-r--r-- 1 root staff      179 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/google/rpc/code_pb2_grpc.pyo
--rw-r--r-- 1 root staff       83 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/google/rpc/status_pb2_grpc.py
--rw-r--r-- 1 root staff      181 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/google/rpc/status_pb2_grpc.pyc
--rw-r--r-- 1 root staff      181 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/google/rpc/status_pb2_grpc.pyo
-drwxr-sr-x 6 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc
--rw-r--r-- 1 root staff     2584 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_auth.py
--rw-r--r-- 1 root staff     2948 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_auth.pyc
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta
--rw-r--r-- 1 root staff    26290 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/_client_adaptations.py
--rw-r--r-- 1 root staff    23132 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/_client_adaptations.pyc
--rw-r--r-- 1 root staff    11878 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/implementations.py
--rw-r--r-- 1 root staff    11507 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/implementations.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/__init__.py
--rw-r--r-- 1 root staff      137 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/__init__.pyc
--rw-r--r-- 1 root staff     5956 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/interfaces.py
--rw-r--r-- 1 root staff     6945 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/interfaces.pyc
--rw-r--r-- 1 root staff     1606 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/_metadata.py
--rw-r--r-- 1 root staff     1817 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/_metadata.pyc
--rw-r--r-- 1 root staff    14641 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/_server_adaptations.py
--rw-r--r-- 1 root staff    15432 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/_server_adaptations.pyc
--rw-r--r-- 1 root staff     4933 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/utilities.py
--rw-r--r-- 1 root staff     5235 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/beta/utilities.pyc
--rw-r--r-- 1 root staff    41582 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_channel.py
--rw-r--r-- 1 root staff    34422 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_channel.pyc
--rw-r--r-- 1 root staff     3374 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_common.py
--rw-r--r-- 1 root staff     3394 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_common.pyc
-drwxr-sr-x 4 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_credentials
--rw-r--r-- 1 root staff   265845 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_credentials/roots.pem
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_cygrpc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_cygrpc/__init__.py
--rw-r--r-- 1 root staff      148 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_cygrpc/__init__.pyc
--rwxr-xr-x 1 root staff 28294510 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/cygrpc.so
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/__init__.py
--rw-r--r-- 1 root staff      140 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_cython/__init__.pyc
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental
--rw-r--r-- 1 root staff      973 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental/gevent.py
--rw-r--r-- 1 root staff      718 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental/gevent.pyc
--rw-r--r-- 1 root staff      682 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental/__init__.py
--rw-r--r-- 1 root staff      266 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental/__init__.pyc
--rw-r--r-- 1 root staff     1533 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental/session_cache.py
--rw-r--r-- 1 root staff     1742 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/experimental/session_cache.pyc
-drwxr-sr-x 5 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common
--rw-r--r-- 1 root staff      988 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/cardinality.py
--rw-r--r-- 1 root staff      833 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/cardinality.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/__init__.py
--rw-r--r-- 1 root staff      149 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/__init__.pyc
--rw-r--r-- 1 root staff      824 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/style.py
--rw-r--r-- 1 root staff      641 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/style.pyc
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation
--rw-r--r-- 1 root staff      872 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/abandonment.py
--rw-r--r-- 1 root staff      672 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/abandonment.pyc
--rw-r--r-- 1 root staff     3151 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/callable_util.py
--rw-r--r-- 1 root staff     3722 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/callable_util.pyc
--rw-r--r-- 1 root staff     8091 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/future.py
--rw-r--r-- 1 root staff     7821 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/future.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/__init__.py
--rw-r--r-- 1 root staff      153 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/__init__.pyc
--rw-r--r-- 1 root staff     2214 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/logging_pool.py
--rw-r--r-- 1 root staff     3202 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/logging_pool.pyc
--rw-r--r-- 1 root staff     1389 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream.py
--rw-r--r-- 1 root staff     1541 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream.pyc
--rw-r--r-- 1 root staff     4772 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream_util.py
--rw-r--r-- 1 root staff     5846 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream_util.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/__init__.py
--rw-r--r-- 1 root staff      142 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/__init__.pyc
-drwxr-sr-x 4 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base
--rw-r--r-- 1 root staff    12193 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/base.py
--rw-r--r-- 1 root staff    14864 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/base.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/__init__.py
--rw-r--r-- 1 root staff      158 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/__init__.pyc
--rw-r--r-- 1 root staff     2455 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/utilities.py
--rw-r--r-- 1 root staff     2442 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/utilities.pyc
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face
--rw-r--r-- 1 root staff    39704 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/face.py
--rw-r--r-- 1 root staff    43971 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/face.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/__init__.py
--rw-r--r-- 1 root staff      158 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/__init__.pyc
--rw-r--r-- 1 root staff     6711 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/utilities.py
--rw-r--r-- 1 root staff     6245 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/utilities.pyc
--rw-r--r-- 1 root staff      577 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/__init__.py
--rw-r--r-- 1 root staff      153 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/__init__.pyc
--rw-r--r-- 1 root staff       26 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_grpcio_metadata.py
--rw-r--r-- 1 root staff      173 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_grpcio_metadata.pyc
--rw-r--r-- 1 root staff    67781 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/__init__.py
--rw-r--r-- 1 root staff    72730 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/__init__.pyc
--rw-r--r-- 1 root staff    17224 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_interceptor.py
--rw-r--r-- 1 root staff    20193 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_interceptor.pyc
-drwxr-sr-x 2 root staff     4096 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info
--rw-r--r-- 1 root staff        4 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/INSTALLER
--rw-r--r-- 1 root staff     3443 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/METADATA
--rw-r--r-- 1 root staff     5349 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/RECORD
--rw-r--r-- 1 root staff        5 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/top_level.txt
--rw-r--r-- 1 root staff      110 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/WHEEL
--rw-r--r-- 1 root staff     3425 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_plugin_wrapping.py
--rw-r--r-- 1 root staff     3671 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_plugin_wrapping.pyc
--rw-r--r-- 1 root staff    31365 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_server.py
--rw-r--r-- 1 root staff    29172 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_server.pyc
--rw-r--r-- 1 root staff     5117 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_utilities.py
--rw-r--r-- 1 root staff     6172 Oct 16 18:51 /usr/local/lib/python2.7/dist-packages/grpc/_utilities.pyc
--rw-r--r-- 1 root staff       83 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4info_pb2_grpc.py
--rw-r--r-- 1 root staff      183 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4info_pb2_grpc.pyc
--rw-r--r-- 1 root staff      183 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4info_pb2_grpc.pyo
--rw-r--r-- 1 root staff       83 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4types_pb2_grpc.py
--rw-r--r-- 1 root staff      184 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4types_pb2_grpc.pyc
--rw-r--r-- 1 root staff      184 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4types_pb2_grpc.pyo
--rw-r--r-- 1 root staff     2349 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/server/v1/config_pb2_grpc.py
--rw-r--r-- 1 root staff     2613 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/server/v1/config_pb2_grpc.pyc
--rw-r--r-- 1 root staff     2613 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/server/v1/config_pb2_grpc.pyo
--rw-r--r-- 1 root staff       83 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/tmp/p4config_pb2_grpc.py
--rw-r--r-- 1 root staff      179 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/tmp/p4config_pb2_grpc.pyc
--rw-r--r-- 1 root staff      179 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/tmp/p4config_pb2_grpc.pyo
--rw-r--r-- 1 root staff       83 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4data_pb2_grpc.py
--rw-r--r-- 1 root staff      176 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4data_pb2_grpc.pyc
--rw-r--r-- 1 root staff      176 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4data_pb2_grpc.pyo
--rw-r--r-- 1 root staff     6447 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.py
--rw-r--r-- 1 root staff     5595 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyc
--rw-r--r-- 1 root staff     5595 Oct 16 17:14 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyo
+-rw-r--r-- 1 root root   3512116 Nov 21 14:57 /usr/local/lib/libbm_grpc_dataplane.a
+-rwxr-xr-x 1 root root      1024 Nov 21 14:57 /usr/local/lib/libbm_grpc_dataplane.la
+lrwxrwxrwx 1 root root        29 Nov 21 14:57 /usr/local/lib/libbm_grpc_dataplane.so -> libbm_grpc_dataplane.so.0.0.0
+lrwxrwxrwx 1 root root        29 Nov 21 14:57 /usr/local/lib/libbm_grpc_dataplane.so.0 -> libbm_grpc_dataplane.so.0.0.0
+-rwxr-xr-x 1 root root   2088312 Nov 21 14:57 /usr/local/lib/libbm_grpc_dataplane.so.0.0.0
+-rwxr-xr-x 1 root root   6587942 Nov 21 14:24 /usr/local/lib/libgrpc.a
+-rwxr-xr-x 1 root root   1912276 Nov 21 14:24 /usr/local/lib/libgrpc++.a
+-rwxr-xr-x 1 root root   6041650 Nov 21 14:24 /usr/local/lib/libgrpc_cronet.a
+-rwxr-xr-x 1 root root   6788672 Nov 21 14:24 /usr/local/lib/libgrpc++_cronet.a
+lrwxrwxrwx 1 root root        23 Nov 21 14:24 /usr/local/lib/libgrpc_cronet.so -> libgrpc_cronet.so.7.0.0
+lrwxrwxrwx 1 root root        26 Nov 21 14:24 /usr/local/lib/libgrpc++_cronet.so -> libgrpc++_cronet.so.1.17.1
+lrwxrwxrwx 1 root root        26 Nov 21 14:24 /usr/local/lib/libgrpc++_cronet.so.1 -> libgrpc++_cronet.so.1.17.1
+-rwxr-xr-x 1 root root   1463136 Nov 21 14:24 /usr/local/lib/libgrpc++_cronet.so.1.17.1
+lrwxrwxrwx 1 root root        23 Nov 21 14:24 /usr/local/lib/libgrpc_cronet.so.7 -> libgrpc_cronet.so.7.0.0
+-rwxr-xr-x 1 root root   2584640 Nov 21 14:24 /usr/local/lib/libgrpc_cronet.so.7.0.0
+-rwxr-xr-x 1 root root    337224 Nov 21 14:24 /usr/local/lib/libgrpc++_error_details.a
+lrwxrwxrwx 1 root root        33 Nov 21 14:24 /usr/local/lib/libgrpc++_error_details.so -> libgrpc++_error_details.so.1.17.1
+lrwxrwxrwx 1 root root        33 Nov 21 14:24 /usr/local/lib/libgrpc++_error_details.so.1 -> libgrpc++_error_details.so.1.17.1
+-rwxr-xr-x 1 root root     35600 Nov 21 14:24 /usr/local/lib/libgrpc++_error_details.so.1.17.1
+-rwxr-xr-x 1 root root   1623142 Nov 21 14:24 /usr/local/lib/libgrpcpp_channelz.a
+lrwxrwxrwx 1 root root        28 Nov 21 14:24 /usr/local/lib/libgrpcpp_channelz.so -> libgrpcpp_channelz.so.1.17.1
+lrwxrwxrwx 1 root root        28 Nov 21 14:24 /usr/local/lib/libgrpcpp_channelz.so.1 -> libgrpcpp_channelz.so.1.17.1
+-rwxr-xr-x 1 root root    791784 Nov 21 14:24 /usr/local/lib/libgrpcpp_channelz.so.1.17.1
+-rwxr-xr-x 1 root root    704700 Nov 21 14:24 /usr/local/lib/libgrpc++_reflection.a
+lrwxrwxrwx 1 root root        30 Nov 21 14:24 /usr/local/lib/libgrpc++_reflection.so -> libgrpc++_reflection.so.1.17.1
+lrwxrwxrwx 1 root root        30 Nov 21 14:24 /usr/local/lib/libgrpc++_reflection.so.1 -> libgrpc++_reflection.so.1.17.1
+-rwxr-xr-x 1 root root    295288 Nov 21 14:24 /usr/local/lib/libgrpc++_reflection.so.1.17.1
+lrwxrwxrwx 1 root root        16 Nov 21 14:24 /usr/local/lib/libgrpc.so -> libgrpc.so.7.0.0
+lrwxrwxrwx 1 root root        19 Nov 21 14:24 /usr/local/lib/libgrpc++.so -> libgrpc++.so.1.17.1
+lrwxrwxrwx 1 root root        19 Nov 21 14:24 /usr/local/lib/libgrpc++.so.1 -> libgrpc++.so.1.17.1
+-rwxr-xr-x 1 root root    546672 Nov 21 14:24 /usr/local/lib/libgrpc++.so.1.17.1
+lrwxrwxrwx 1 root root        16 Nov 21 14:24 /usr/local/lib/libgrpc.so.7 -> libgrpc.so.7.0.0
+-rwxr-xr-x 1 root root   2819320 Nov 21 14:24 /usr/local/lib/libgrpc.so.7.0.0
+-rwxr-xr-x 1 root root   3145664 Nov 21 14:24 /usr/local/lib/libgrpc_unsecure.a
+-rwxr-xr-x 1 root root   1771118 Nov 21 14:24 /usr/local/lib/libgrpc++_unsecure.a
+lrwxrwxrwx 1 root root        25 Nov 21 14:24 /usr/local/lib/libgrpc_unsecure.so -> libgrpc_unsecure.so.7.0.0
+lrwxrwxrwx 1 root root        28 Nov 21 14:24 /usr/local/lib/libgrpc++_unsecure.so -> libgrpc++_unsecure.so.1.17.1
+lrwxrwxrwx 1 root root        28 Nov 21 14:24 /usr/local/lib/libgrpc++_unsecure.so.1 -> libgrpc++_unsecure.so.1.17.1
+-rwxr-xr-x 1 root root    501088 Nov 21 14:24 /usr/local/lib/libgrpc++_unsecure.so.1.17.1
+lrwxrwxrwx 1 root root        25 Nov 21 14:24 /usr/local/lib/libgrpc_unsecure.so.7 -> libgrpc_unsecure.so.7.0.0
+-rwxr-xr-x 1 root root   1278328 Nov 21 14:24 /usr/local/lib/libgrpc_unsecure.so.7.0.0
+-rw-r--r-- 1 root root   4408640 Nov 21 14:34 /usr/local/lib/libpigrpcserver.a
+-rwxr-xr-x 1 root root      1278 Nov 21 14:34 /usr/local/lib/libpigrpcserver.la
+lrwxrwxrwx 1 root root        24 Nov 21 14:34 /usr/local/lib/libpigrpcserver.so -> libpigrpcserver.so.0.0.0
+lrwxrwxrwx 1 root root        24 Nov 21 14:34 /usr/local/lib/libpigrpcserver.so.0 -> libpigrpcserver.so.0.0.0
+-rwxr-xr-x 1 root root   2047568 Nov 21 14:34 /usr/local/lib/libpigrpcserver.so.0.0.0
+-rw-r--r-- 1 root root  15230008 Nov 21 14:34 /usr/local/lib/libpiprotogrpc.a
+-rwxr-xr-x 1 root root      1090 Nov 21 14:34 /usr/local/lib/libpiprotogrpc.la
+lrwxrwxrwx 1 root root        23 Nov 21 14:34 /usr/local/lib/libpiprotogrpc.so -> libpiprotogrpc.so.0.0.0
+lrwxrwxrwx 1 root root        23 Nov 21 14:34 /usr/local/lib/libpiprotogrpc.so.0 -> libpiprotogrpc.so.0.0.0
+-rwxr-xr-x 1 root root   6001992 Nov 21 14:34 /usr/local/lib/libpiprotogrpc.so.0.0.0
+-rw-r--r-- 1 root root       269 Nov 21 14:24 /usr/local/lib/pkgconfig/grpc.pc
+-rw-r--r-- 1 root root       258 Nov 21 14:24 /usr/local/lib/pkgconfig/grpc++.pc
+-rw-r--r-- 1 root root       297 Nov 21 14:24 /usr/local/lib/pkgconfig/grpc_unsecure.pc
+-rw-r--r-- 1 root root       297 Nov 21 14:24 /usr/local/lib/pkgconfig/grpc++_unsecure.pc
+-rw-r--r-- 1 root staff     4688 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/gnmi/gnmi_pb2_grpc.py
+-rw-r--r-- 1 root staff     4723 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/gnmi/gnmi_pb2_grpc.pyc
+-rw-r--r-- 1 root staff     4723 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/gnmi/gnmi_pb2_grpc.pyo
+-rw-r--r-- 1 root staff       83 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/google/rpc/code_pb2_grpc.py
+-rw-r--r-- 1 root staff      179 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/google/rpc/code_pb2_grpc.pyc
+-rw-r--r-- 1 root staff      179 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/google/rpc/code_pb2_grpc.pyo
+-rw-r--r-- 1 root staff       83 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/google/rpc/status_pb2_grpc.py
+-rw-r--r-- 1 root staff      181 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/google/rpc/status_pb2_grpc.pyc
+-rw-r--r-- 1 root staff      181 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/google/rpc/status_pb2_grpc.pyo
+drwxr-sr-x 6 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc
+-rw-r--r-- 1 root staff     2584 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_auth.py
+-rw-r--r-- 1 root staff     2948 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_auth.pyc
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta
+-rw-r--r-- 1 root staff    26290 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/_client_adaptations.py
+-rw-r--r-- 1 root staff    23132 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/_client_adaptations.pyc
+-rw-r--r-- 1 root staff    11878 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/implementations.py
+-rw-r--r-- 1 root staff    11507 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/implementations.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/__init__.py
+-rw-r--r-- 1 root staff      137 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/__init__.pyc
+-rw-r--r-- 1 root staff     5956 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/interfaces.py
+-rw-r--r-- 1 root staff     6945 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/interfaces.pyc
+-rw-r--r-- 1 root staff     1606 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/_metadata.py
+-rw-r--r-- 1 root staff     1817 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/_metadata.pyc
+-rw-r--r-- 1 root staff    14641 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/_server_adaptations.py
+-rw-r--r-- 1 root staff    15432 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/_server_adaptations.pyc
+-rw-r--r-- 1 root staff     4933 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/utilities.py
+-rw-r--r-- 1 root staff     5235 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/beta/utilities.pyc
+-rw-r--r-- 1 root staff    41582 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_channel.py
+-rw-r--r-- 1 root staff    34422 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_channel.pyc
+-rw-r--r-- 1 root staff     3374 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_common.py
+-rw-r--r-- 1 root staff     3394 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_common.pyc
+drwxr-sr-x 4 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_credentials
+-rw-r--r-- 1 root staff   265845 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_credentials/roots.pem
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_cygrpc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_cygrpc/__init__.py
+-rw-r--r-- 1 root staff      148 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/_cygrpc/__init__.pyc
+-rwxr-xr-x 1 root staff 28294510 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/cygrpc.so
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/__init__.py
+-rw-r--r-- 1 root staff      140 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_cython/__init__.pyc
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental
+-rw-r--r-- 1 root staff      973 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental/gevent.py
+-rw-r--r-- 1 root staff      718 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental/gevent.pyc
+-rw-r--r-- 1 root staff      682 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental/__init__.py
+-rw-r--r-- 1 root staff      266 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental/__init__.pyc
+-rw-r--r-- 1 root staff     1533 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental/session_cache.py
+-rw-r--r-- 1 root staff     1742 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/experimental/session_cache.pyc
+drwxr-sr-x 5 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common
+-rw-r--r-- 1 root staff      988 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/cardinality.py
+-rw-r--r-- 1 root staff      833 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/cardinality.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/__init__.py
+-rw-r--r-- 1 root staff      149 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/__init__.pyc
+-rw-r--r-- 1 root staff      824 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/style.py
+-rw-r--r-- 1 root staff      641 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/common/style.pyc
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation
+-rw-r--r-- 1 root staff      872 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/abandonment.py
+-rw-r--r-- 1 root staff      672 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/abandonment.pyc
+-rw-r--r-- 1 root staff     3151 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/callable_util.py
+-rw-r--r-- 1 root staff     3722 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/callable_util.pyc
+-rw-r--r-- 1 root staff     8091 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/future.py
+-rw-r--r-- 1 root staff     7821 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/future.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/__init__.py
+-rw-r--r-- 1 root staff      153 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/__init__.pyc
+-rw-r--r-- 1 root staff     2214 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/logging_pool.py
+-rw-r--r-- 1 root staff     3202 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/logging_pool.pyc
+-rw-r--r-- 1 root staff     1389 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream.py
+-rw-r--r-- 1 root staff     1541 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream.pyc
+-rw-r--r-- 1 root staff     4772 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream_util.py
+-rw-r--r-- 1 root staff     5846 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/foundation/stream_util.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/__init__.py
+-rw-r--r-- 1 root staff      142 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/__init__.pyc
+drwxr-sr-x 4 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base
+-rw-r--r-- 1 root staff    12193 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/base.py
+-rw-r--r-- 1 root staff    14864 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/base.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/__init__.py
+-rw-r--r-- 1 root staff      158 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/__init__.pyc
+-rw-r--r-- 1 root staff     2455 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/utilities.py
+-rw-r--r-- 1 root staff     2442 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/base/utilities.pyc
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face
+-rw-r--r-- 1 root staff    39704 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/face.py
+-rw-r--r-- 1 root staff    43971 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/face.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/__init__.py
+-rw-r--r-- 1 root staff      158 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/__init__.pyc
+-rw-r--r-- 1 root staff     6711 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/utilities.py
+-rw-r--r-- 1 root staff     6245 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/face/utilities.pyc
+-rw-r--r-- 1 root staff      577 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/__init__.py
+-rw-r--r-- 1 root staff      153 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/framework/interfaces/__init__.pyc
+-rw-r--r-- 1 root staff       26 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_grpcio_metadata.py
+-rw-r--r-- 1 root staff      173 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_grpcio_metadata.pyc
+-rw-r--r-- 1 root staff    67781 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/__init__.py
+-rw-r--r-- 1 root staff    72730 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/__init__.pyc
+-rw-r--r-- 1 root staff    17224 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_interceptor.py
+-rw-r--r-- 1 root staff    20193 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_interceptor.pyc
+drwxr-sr-x 2 root staff     4096 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info
+-rw-r--r-- 1 root staff        4 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/INSTALLER
+-rw-r--r-- 1 root staff     3443 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/METADATA
+-rw-r--r-- 1 root staff     5349 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/RECORD
+-rw-r--r-- 1 root staff        5 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/top_level.txt
+-rw-r--r-- 1 root staff      110 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpcio-1.17.1.dist-info/WHEEL
+-rw-r--r-- 1 root staff     3425 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_plugin_wrapping.py
+-rw-r--r-- 1 root staff     3671 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_plugin_wrapping.pyc
+-rw-r--r-- 1 root staff    31365 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_server.py
+-rw-r--r-- 1 root staff    29172 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_server.pyc
+-rw-r--r-- 1 root staff     5117 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_utilities.py
+-rw-r--r-- 1 root staff     6172 Nov 21 17:12 /usr/local/lib/python2.7/dist-packages/grpc/_utilities.pyc
+-rw-r--r-- 1 root staff       83 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4info_pb2_grpc.py
+-rw-r--r-- 1 root staff      183 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4info_pb2_grpc.pyc
+-rw-r--r-- 1 root staff      183 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4info_pb2_grpc.pyo
+-rw-r--r-- 1 root staff       83 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4types_pb2_grpc.py
+-rw-r--r-- 1 root staff      184 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4types_pb2_grpc.pyc
+-rw-r--r-- 1 root staff      184 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/config/v1/p4types_pb2_grpc.pyo
+-rw-r--r-- 1 root staff     2349 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/server/v1/config_pb2_grpc.py
+-rw-r--r-- 1 root staff     2613 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/server/v1/config_pb2_grpc.pyc
+-rw-r--r-- 1 root staff     2613 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/server/v1/config_pb2_grpc.pyo
+-rw-r--r-- 1 root staff       83 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/tmp/p4config_pb2_grpc.py
+-rw-r--r-- 1 root staff      179 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/tmp/p4config_pb2_grpc.pyc
+-rw-r--r-- 1 root staff      179 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/tmp/p4config_pb2_grpc.pyo
+-rw-r--r-- 1 root staff       83 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4data_pb2_grpc.py
+-rw-r--r-- 1 root staff      176 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4data_pb2_grpc.pyc
+-rw-r--r-- 1 root staff      176 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4data_pb2_grpc.pyo
+-rw-r--r-- 1 root staff     6447 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.py
+-rw-r--r-- 1 root staff     5595 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyc
+-rw-r--r-- 1 root staff     5595 Nov 21 14:34 /usr/local/lib/python2.7/dist-packages/p4/v1/p4runtime_pb2_grpc.pyo
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 CONSIDER READING WHAT IS BELOW
@@ -12372,6 +12365,6 @@ CONSIDER READING WHAT IS ABOVE
 + clean_up
 + echo 'Killing child process'
 Killing child process
-+ kill 2310
++ kill 3192
 + sudo --reset-timestamp
 + exit
