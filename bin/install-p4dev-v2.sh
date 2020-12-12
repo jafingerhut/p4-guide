@@ -386,7 +386,7 @@ date
 sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python python-scapy python-ipaddr python-ply python3-pip tcpdump
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
-pip3 install scapy
+sudo pip3 install scapy ipaddr
 pip3 list
 
 # Clone p4c and its submodules:
