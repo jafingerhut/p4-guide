@@ -438,13 +438,8 @@ cd behavioral-model
 # Get latest updates that are not in the repo cache version
 git pull
 git log -n 1
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-python3-for-env-scripts.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
-if [[ "${ubuntu_release}" > "20" ]]
-then
-    patch -p1 < "${PATCH_DIR}/behavioral-model-python3-only.patch"
-fi
+#PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+#patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
