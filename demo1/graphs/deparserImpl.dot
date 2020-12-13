@@ -1,4 +1,4 @@
-digraph DeparserImpl {
+digraph deparserImpl {
 subgraph cluster {
 graph [
 label="", labeljust=r, style=bold];

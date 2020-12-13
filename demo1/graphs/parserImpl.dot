@@ -1,4 +1,4 @@
-digraph ParserImpl{
+digraph parserImpl{
 start [shape=rectangle,label="start
 (hdr.ethernet.etherType)"]
 parse_ipv4 [shape=rectangle,label="parse_ipv4"]
