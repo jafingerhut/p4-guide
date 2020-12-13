@@ -116,7 +116,7 @@ those targets, they will need to learn how to do so (suggested
 modifications to enable this for my scripts are welcome, but I am not
 interested in investigating this myself).
 
-If you have saved the output of the `make` command output in a file as
+If you have saved the output of the `make` command in a file as
 suggested above, the output of the last `wc -l` command in the command
 pipeline below should print 0, indicating that the only failures were
 in the EBPF and UBPF tests.
@@ -197,11 +197,10 @@ Things I did that helped this process go smoothly:
   
   In particular, I tested with all of the Ubuntu install images linked
   below.  In my testing, I installed them as a virtual machine using
-  VirtualBox on a Mac running macOS 10.13 High Sierra as the host
-  operating system, but installing them as a virtual machine on a
-  different host operating system, or on a bare machine, should also
-  work:
-  + [Ubuntu Desktop 18.04.3](http://releases.ubuntu.com/18.04/ubuntu-18.04.3-desktop-amd64.iso) for the amd64 architecture
-  + [Ubuntu Desktop 16.04.6](http://releases.ubuntu.com/16.04/ubuntu-16.04.6-desktop-amd64.iso) for the amd64 architecture
-+ My machine had 4 GBytes of RAM available.  Less than 2 Gbytes will
+  VirtualBox on a Mac running macOS 10.14 Mojave as the host operating
+  system, but installing them as a virtual machine on a different host
+  operating system, or on a bare machine, should also work:
+  + [Ubuntu Desktop 18.04.5](http://releases.ubuntu.com/18.04/ubuntu-18.04.5-desktop-amd64.iso) for the amd64 architecture
+  + [Ubuntu Desktop 16.04.7](http://releases.ubuntu.com/16.04/ubuntu-16.04.7-desktop-amd64.iso) for the amd64 architecture
++ My machine had 2 GBytes of RAM available.  Less than 2 Gbytes will
   almost certainly not be enough.
