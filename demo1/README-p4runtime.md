@@ -80,9 +80,12 @@ Enter these commands at the `>>> ` prompt of the Python session:
 
 ```python
 # Note: 50051 is the default TCP port number on which the
-# simple_switch_grpc process is listening for connections.
+# simple_switch_grpc process is listening for connections until
+# 2020-Dec-03, when the default was changed to TCP port 9559, because
+# this number was granted for use for this purpose by IANA shortly
+# before then.
 
-my_dev1_addr='localhost:50051'
+my_dev1_addr='localhost:9559'
 my_dev1_id=0
 import base_test as bt
 
