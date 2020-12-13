@@ -82,12 +82,18 @@ Enter these commands at the `>>> ` prompt of the Python session:
 # Note: 50051 is the default TCP port number on which the
 # simple_switch_grpc process is listening for connections until
 # 2020-Dec-03, when the default was changed to TCP port 9559, because
-# this number was granted for use for this purpose by IANA shortly
-# before then.
+# 9559 was granted for use for this purpose by IANA shortly before
+# then.
 
 my_dev1_addr='localhost:9559'
 my_dev1_id=0
 import base_test as bt
+
+# If the previous statement gave an error like "ModuleNotFoundError:
+# No module named 'Queue'", then likely you are using Python3.  Good!
+# Use the following line instead to get a Python3 version of that
+# module.
+import base_test_py3 as bt
 
 # Convert the BMv2 JSON file demo1.p4_16.json, created by the p4c
 # compiler, into the binary format file demo1.p4_16.bin expected by

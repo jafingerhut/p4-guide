@@ -30,7 +30,7 @@ import re
 import sys
 import threading
 import time
-import Queue
+import queue
 
 #import ptf
 #from ptf.base_tests import BaseTest
@@ -69,10 +69,15 @@ def stringify(n, length):
     Python P4Runtime client operations.  If 'n' does not fit in
     'length' bytes, it is represented in the fewest number of bytes it
     does fit into without loss of precision.  It always returns a
-    string at least one byte long, even if value=width=0."""
-    h = '%x' % n
-    s = ('0'*(len(h) % 2) + h).zfill(length*2).decode('hex')
-    return s
+    string at least one byte long, even if n=length=0."""
+    if length == 0 and n == 0:
+        length = 1
+    while True:
+        try:
+            s = n.to_bytes(length, byteorder='big')
+            return s
+        except OverflowError:
+            length = length + 1
 
 def int2string(n, width_in_bits):
     """Take a non-negative integer 'n' as the first parameter, and a
@@ -82,9 +87,9 @@ def int2string(n, width_in_bits):
     an exception is raised."""
     assert isinstance(width_in_bits, int)
     assert width_in_bits >= 1
-    assert isinstance(n, int) or isinstance(n, long)
+    assert isinstance(n, int)
     assert (n >= 0) and (n < (1 << width_in_bits))
-    width_in_bytes = (width_in_bits + 7) / 8
+    width_in_bytes = (width_in_bits + 7) // 8
     return stringify(n, width_in_bytes)
 
 def stringify2(n):
@@ -93,14 +98,18 @@ def stringify2(n):
     is represented in the fewest number of bytes it fits into without
     loss of precision.  It always returns a string at least one byte
     long, even if n=0."""
-    h = '%x' % n
-    s = ('0'*(len(h) % 2) + h).decode('hex')
-    return s
+    length = 1
+    while True:
+        try:
+            s = n.to_bytes(length, byteorder='big')
+            return s
+        except OverflowError:
+            length = length + 1
 
 def int2string2(n):
     """Take a non-negative integer 'n', and return a string with binary
     contents expected by the Python P4Runtime client operations."""
-    assert isinstance(n, int) or isinstance(n, long)
+    assert isinstance(n, int)
     assert (n >= 0)
     return stringify2(n)
 
@@ -111,10 +120,10 @@ def ipv4_to_binary(addr):
     client operations."""
     bytes_ = [int(b, 10) for b in addr.split('.')]
     assert len(bytes_) == 4
-    # Note: The chr(b) call below will throw exception if any b is
-    # outside of the range [0, 255]], so no need to add a separate
-    # check for that here.
-    return "".join(chr(b) for b in bytes_)
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return bytes(bytes_)
 
 def mac_to_binary(addr):
     """Take an argument 'addr' containing an Ethernet MAC address written
@@ -124,10 +133,10 @@ def mac_to_binary(addr):
     operations."""
     bytes_ = [int(b, 16) for b in addr.split(':')]
     assert len(bytes_) == 6
-    # Note: The chr(b) call below will throw exception if any b is
-    # outside of the range [0, 255]], so no need to add a separate
-    # check for that here.
-    return "".join(chr(b) for b in bytes_)
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return bytes(bytes_)
 
 # Used to indicate that the gRPC error Status object returned by the server has
 # an incorrect format.
@@ -161,7 +170,7 @@ class P4RuntimeErrorIterator:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         while self.idx < len(self.errors):
             p4_error = p4runtime_pb2.Error()
             one_error_any = self.errors[self.idx]
@@ -305,7 +314,7 @@ class P4RuntimeTest():
                     key = (obj_type, suffix)
                     self.p4info_obj_map[key] = obj
                     suffix_count[key] += 1
-        for key, c in suffix_count.items():
+        for key, c in list(suffix_count.items()):
             if c > 1:
                 del self.p4info_obj_map[key]
 
@@ -324,8 +333,8 @@ class P4RuntimeTest():
         return self.p4info_id_to_obj_map[key]
 
     def set_up_stream(self):
-        self.stream_out_q = Queue.Queue()
-        self.stream_in_q = Queue.Queue()
+        self.stream_out_q = queue.Queue()
+        self.stream_in_q = queue.Queue()
         def stream_req_iterator():
             while True:
                 p = self.stream_out_q.get()
@@ -454,21 +463,24 @@ class P4RuntimeTest():
             mf = mk.add()
             mf.field_id = mf_id
             mf.lpm.prefix_len = self.pLen
-            mf.lpm.value = ''
-
+            assert isinstance(self.v, bytes)
+            orig_v_list = list(self.v)
+            mod_v_list = []
+            
             # P4Runtime now has strict rules regarding ternary matches: in the
             # case of LPM, trailing bits in the value (after prefix) must be set
             # to 0.
-            first_byte_masked = self.pLen / 8
-            for i in xrange(first_byte_masked):
-                mf.lpm.value += self.v[i]
-            if first_byte_masked == len(self.v):
+            first_byte_masked = self.pLen // 8
+            for i in range(first_byte_masked):
+                mod_v_list.append(orig_v_list[i])
+            if first_byte_masked == len(orig_v_list):
+                mf.lpm.value = bytes(mod_v_list)
                 return
             r = self.pLen % 8
-            mf.lpm.value += chr(
-                ord(self.v[first_byte_masked]) & (0xff << (8 - r)))
-            for i in range(first_byte_masked + 1, len(self.v)):
-                mf.lpm.value += '\x00'
+            mod_v_list.append(orig_v_list[first_byte_masked] & (0xff << (8 - r)))
+            for i in range(first_byte_masked + 1, len(orig_v_list)):
+                mod_v_list.append(0)
+            mf.lpm.value = bytes(mod_v_list)
 
     class Ternary(MF):
         def __init__(self, name, v, mask):
@@ -484,7 +496,7 @@ class P4RuntimeTest():
             mf.ternary.value = ''
             # P4Runtime now has strict rules regarding ternary matches: in the
             # case of Ternary, "don't-care" bits in the value must be set to 0
-            for i in xrange(len(self.mask)):
+            for i in range(len(self.mask)):
                 mf.ternary.value += chr(ord(self.v[i]) & ord(self.mask[i]))
 
     # Sets the match key for a p4::TableEntry object. mk needs to be an iterable
@@ -827,8 +839,8 @@ def autocleanup(f):
 # file PI/proto/ptf/bmv2/gen_bmv2_config.py
 
 def bmv2_json_to_device_config(bmv2_json_fname, bmv2_bin_fname):
-    with open(bmv2_bin_fname, 'wf') as f_out:
-        with open(bmv2_json_fname, 'r') as f_json:
+    with open(bmv2_bin_fname, 'wb') as f_out:
+        with open(bmv2_json_fname, 'rb') as f_json:
             device_config = p4config_pb2.P4DeviceConfig()
             device_config.device_data = f_json.read()
             f_out.write(device_config.SerializeToString())
