@@ -209,14 +209,16 @@ get_from_nearest() {
 # https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
 # https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
 
+PY3LOCALPATH=`${THIS_SCRIPT_DIR_ABSOLUTE}/py3localpath.py`
+
 move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     local SRC_DIR
     local DST_DIR
     local j
     local k
 
-    SRC_DIR="/usr/local/lib/python3.8/site-packages"
-    DST_DIR="/usr/local/lib/python3.8/dist-packages"
+    SRC_DIR="${PY3LOCALPATH}/site-packages"
+    DST_DIR="${PY3LOCALPATH}/dist-packages"
 
     # Do not move any __pycache__ directory that might be present.
     sudo rm -fr ${SRC_DIR}/__pycache__
