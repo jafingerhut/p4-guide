@@ -36,6 +36,84 @@
 # p4c - 1.6G
 # behavioral-model - 4.1G
 
+# Remember the current directory when the script was started:
+INSTALL_DIR="${PWD}"
+
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
+THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+
+abort_script=0
+
+# Minimum required system memory is 2 GBytes, minus a few MBytes
+# because from experiments I have run on several different Ubuntu
+# Linux VMs, when you configure them with 2 Gbytes of RAM, the first
+# line of /proc/meminfo shows a little less than that available, I
+# believe because some memory occupied by the kernel is not shown.
+
+min_mem_MBytes=`expr 2 \* \( 1024 - 64 \)`
+memtotal_KBytes=`head -n 1 /proc/meminfo | awk '{print $2;}'`
+memtotal_MBytes=`expr ${memtotal_KBytes} / 1024`
+
+if [ "${memtotal_MBytes}" -lt "${min_mem_MBytes}" ]
+then
+    memtotal_comment="too low"
+    abort_script=1
+else
+    memtotal_comment="enough"
+fi
+
+echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
+echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
+
+min_free_disk_MBytes=`expr 10 \* 1024`
+free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
+
+if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
+then
+    free_disk_comment="too low"
+    abort_script=1
+else
+    free_disk_comment="enough"
+fi
+
+echo "Minimum free disk space to run this script:    ${min_free_disk_MBytes} MBytes"
+echo "Free disk space on this system from df output: ${free_disk_MBytes} MBytes -> $free_disk_comment"
+
+if [ "${abort_script}" == 1 ]
+then
+    echo ""
+    echo "Aborting script because system has too little RAM or free disk space"
+    exit 1
+fi
+
+PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
+PATCH_DIR2="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+
+for dir in "${PATCH_DIR1}" "${PATCH_DIR2}"
+do
+    if [ -d "${dir}" ]
+    then
+	echo "Found directory containing patches: ${dir}"
+    else
+	echo "NO directory containing patches: ${dir}"
+	abort_script=1
+    fi
+done
+
+if [ "${abort_script}" == 1 ]
+then
+    echo ""
+    echo "Aborting script because an expected directory does not exist (see above)."
+    echo ""
+    echo "This script is not designed to work if you only copy the"
+    echo "script file to a system.  You should run it in the context"
+    echo "of a cloned copy of the repository: https://github/jafingerhut/p4-guide"
+    exit 1
+fi
+
+echo "Passed all sanity checks"
+
 set -e
 set -x
 
@@ -44,13 +122,6 @@ set -x
 # 2 GB of RAM, and even on machines with significantly more RAM, it
 # does not speed things up a lot to run multiple jobs in parallel.
 MAX_PARALLEL_JOBS=1
-
-# Remember the current directory when the script was started:
-INSTALL_DIR="${PWD}"
-
-THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
-THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
-THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_release=`lsb_release -s -r`
 
