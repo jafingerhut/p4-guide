@@ -17,15 +17,17 @@
 
 # This script differs from install-p4dev-v3.sh as follows:
 
-# This script attepts to completely successfully on an Ubuntu 20.04
+# This script attepts to complete successfully on an Ubuntu 20.04
 # system that does not have Python2 installed on it when it starts,
 # and tries never to install Python2, pip2, nor any Python2 packages
 # or libraries.
 
-# As of 2020-Oct, I believe the open source P4 tools are not quite
-# ready for this, but there has been progress made during that month
-# towards making this possible, and I am hoping this script might show
-# what remains to be done to achieve that goal.
+# As of 2020-Dec, the open source P4 tools seem to be ready for this.
+
+# In fact, this script does end up installing Python2, but only
+# because installing Mininet as this script currently does, causes
+# Python2 to be installed.  Before that point (near the end), Python2
+# is never installed.
 
 set -e
 set -x
@@ -50,15 +52,14 @@ echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It semi-regularly tested on freshly installed Ubuntu 16.04, 18.04,"
-echo "and 20.04 systems, with all Ubuntu software updates as of the"
-echo "date of testing.  See this directory for log files recording the"
-echo "last date this script was tested on its supported operating"
-echo "systems:"
+echo "It is regularly tested on freshly installed Ubuntu 20.04 system,"
+echo "with all Ubuntu software updates as of the date of testing.  See"
+echo "this directory for log files recording the last date this script"
+echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 9.5 GB of disk space."
+echo "The files installed by this script consume about 11 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
@@ -67,17 +68,17 @@ echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ protobuf: github.com/google/protobuf v3.6.1"
-echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 19.10"
+echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 20.04"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2019-Jun-10, also installs these things:"
-echo "  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script that changes behavioral-model to install thrift 0.12.0 instead)"
+echo "  which, as of 2020-Dec-12, also installs these things:"
+echo "  + thrift version 0.11.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version"
 echo "+ Python packages: grpcio 1.17.1, protobuf 3.6.1"
-echo "+ Python packages: crcmod, latest version"
+echo "+ Python packages: scapy, ipaddr, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
 echo "its precise contents from one run of this script to another."
