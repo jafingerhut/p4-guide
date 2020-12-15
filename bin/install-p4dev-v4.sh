@@ -146,6 +146,14 @@ move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     SRC_DIR="/usr/local/lib/python3.8/site-packages"
     DST_DIR="/usr/local/lib/python3.8/dist-packages"
 
+    # When I tested this script on Ubunt 16.04, there was no
+    # site-packages directory.  Return without doing anything else if
+    # this is the case.
+    if [ ! -d ${SRC_DIR} ]
+    then
+	return 0
+    fi
+
     # Do not move any __pycache__ directory that might be present.
     sudo rm -fr ${SRC_DIR}/__pycache__
 
