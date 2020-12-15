@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac
+index 2ad07c1..b5b7051 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -25,7 +25,7 @@ AX_CXX_COMPILE_STDCXX_11([noext],[optional])
+ 
+ # TODO: this can be removed when the Python scripts are updated to work with
+ # python3.
+-m4_define_default([_AM_PYTHON_INTERPRETER_LIST], [python python3 python2.7])
++m4_define_default([_AM_PYTHON_INTERPRETER_LIST], [python3 python2.7])
+ AM_CONDITIONAL([HAVE_python], [test "$PYTHON" != :])
+ 
+ DX_DOT_FEATURE([ON])

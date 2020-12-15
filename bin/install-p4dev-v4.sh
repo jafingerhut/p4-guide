@@ -468,6 +468,8 @@ git clone https://github.com/p4lang/PI
 cd PI
 git submodule update --init --recursive
 git log -n 1
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+patch -p1 < "${PATCH_DIR}/p4lang-PI-prefer-python3-during-configure.patch" || echo "Errors while attempting to patch PI, but continuing anyway ..."
 ./autogen.sh
 ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 # Output I saw:
