@@ -17,15 +17,95 @@
 
 # This script differs from install-p4dev-v3.sh as follows:
 
-# This script attepts to completely successfully on an Ubuntu 20.04
+# This script attepts to complete successfully on an Ubuntu 20.04
 # system that does not have Python2 installed on it when it starts,
 # and tries never to install Python2, pip2, nor any Python2 packages
 # or libraries.
 
-# As of 2020-Oct, I believe the open source P4 tools are not quite
-# ready for this, but there has been progress made during that month
-# towards making this possible, and I am hoping this script might show
-# what remains to be done to achieve that goal.
+# As of 2020-Dec, the open source P4 tools seem to be ready for this.
+
+# In fact, this script does end up installing Python2, but only
+# because installing Mininet as this script currently does, causes
+# Python2 to be installed.  Before that point (near the end), Python2
+# is never installed.
+
+# Remember the current directory when the script was started:
+INSTALL_DIR="${PWD}"
+
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
+THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+
+abort_script=0
+
+# Minimum required system memory is 2 GBytes, minus a few MBytes
+# because from experiments I have run on several different Ubuntu
+# Linux VMs, when you configure them with 2 Gbytes of RAM, the first
+# line of /proc/meminfo shows a little less than that available, I
+# believe because some memory occupied by the kernel is not shown.
+
+min_mem_MBytes=`expr 2 \* \( 1024 - 64 \)`
+memtotal_KBytes=`head -n 1 /proc/meminfo | awk '{print $2;}'`
+memtotal_MBytes=`expr ${memtotal_KBytes} / 1024`
+
+if [ "${memtotal_MBytes}" -lt "${min_mem_MBytes}" ]
+then
+    memtotal_comment="too low"
+    abort_script=1
+else
+    memtotal_comment="enough"
+fi
+
+echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
+echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
+
+min_free_disk_MBytes=`expr 12 \* 1024`
+free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
+
+if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
+then
+    free_disk_comment="too low"
+    abort_script=1
+else
+    free_disk_comment="enough"
+fi
+
+echo "Minimum free disk space to run this script:    ${min_free_disk_MBytes} MBytes"
+echo "Free disk space on this system from df output: ${free_disk_MBytes} MBytes -> $free_disk_comment"
+
+if [ "${abort_script}" == 1 ]
+then
+    echo ""
+    echo "Aborting script because system has too little RAM or free disk space"
+    exit 1
+fi
+
+PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
+PATCH_DIR2="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+
+for dir in "${PATCH_DIR1}" "${PATCH_DIR2}"
+do
+    if [ -d "${dir}" ]
+    then
+	echo "Found directory containing patches: ${dir}"
+    else
+	echo "NO directory containing patches: ${dir}"
+	abort_script=1
+    fi
+done
+
+if [ "${abort_script}" == 1 ]
+then
+    echo ""
+    echo "Aborting script because an expected directory does not exist (see above)."
+    echo ""
+    echo "This script is not designed to work if you only copy the"
+    echo "script file to a system.  You should run it in the context"
+    echo "of a cloned copy of the repository: https://github/jafingerhut/p4-guide"
+    exit 1
+fi
+
+echo "Passed all sanity checks"
 
 set -e
 set -x
@@ -36,13 +116,6 @@ set -x
 # does not speed things up a lot to run multiple jobs in parallel.
 MAX_PARALLEL_JOBS=1
 
-# Remember the current directory when the script was started:
-INSTALL_DIR="${PWD}"
-
-THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
-THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
-THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
-
 ubuntu_release=`lsb_release -s -r`
 
 set +x
@@ -50,15 +123,14 @@ echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It semi-regularly tested on freshly installed Ubuntu 16.04, 18.04,"
-echo "and 20.04 systems, with all Ubuntu software updates as of the"
-echo "date of testing.  See this directory for log files recording the"
-echo "last date this script was tested on its supported operating"
-echo "systems:"
+echo "It is regularly tested on freshly installed Ubuntu 20.04 system,"
+echo "with all Ubuntu software updates as of the date of testing.  See"
+echo "this directory for log files recording the last date this script"
+echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 9.5 GB of disk space."
+echo "The files installed by this script consume about 11 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
@@ -67,17 +139,17 @@ echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ protobuf: github.com/google/protobuf v3.6.1"
-echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 19.10"
+echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 20.04"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2019-Jun-10, also installs these things:"
-echo "  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script that changes behavioral-model to install thrift 0.12.0 instead)"
+echo "  which, as of 2020-Dec-12, also installs these things:"
+echo "  + thrift version 0.11.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version"
 echo "+ Python packages: grpcio 1.17.1, protobuf 3.6.1"
-echo "+ Python packages: crcmod, latest version"
+echo "+ Python packages: scapy, ipaddr, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
 echo "its precise contents from one run of this script to another."
@@ -137,14 +209,16 @@ get_from_nearest() {
 # https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
 # https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
 
+PY3LOCALPATH=`${THIS_SCRIPT_DIR_ABSOLUTE}/py3localpath.py`
+
 move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     local SRC_DIR
     local DST_DIR
     local j
     local k
 
-    SRC_DIR="/usr/local/lib/python3.8/site-packages"
-    DST_DIR="/usr/local/lib/python3.8/dist-packages"
+    SRC_DIR="${PY3LOCALPATH}/site-packages"
+    DST_DIR="${PY3LOCALPATH}/dist-packages"
 
     # When I tested this script on Ubunt 16.04, there was no
     # site-packages directory.  Return without doing anything else if
