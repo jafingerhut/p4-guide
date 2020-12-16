@@ -341,6 +341,26 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
+# The step below was not needed in order to get a successful
+# installation on Ubuntu 16.04 before some time around Nov or Dec
+# 2020.  For some reason I am not sure of, it seems that the Python3
+# cffi package installed on Ubuntu 16.04 by default causes the command
+# `sudo pip3 install cffi` in behavioral-model/travis/install-nnpy.sh
+# to fail.
+
+# Removing the Ubuntu package shown below causes 3 other packages that
+# depend upon it to be removed, too, as of 2020-Dec, but it seems
+# these are not essential Ubuntu functionality, and it continues to do
+# most things well without it, so unless I find a better way to avoid
+# this conflict, removing this Ubuntu package seems to be a reasonable
+# workaround.  I will do it only for Ubuntu 16.04 systems, since it
+# seems not to cause a problem for 18.04.
+
+if [ "${ubuntu_release}" = "16.04" ]
+then
+    sudo apt-get --yes purge python3-cffi-backend
+fi
+
 # Install Ubuntu packages needed by protobuf v3.6.1, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # zlib is not required to install protobuf, nor do I think it is
