@@ -33,9 +33,6 @@ Then run the commands below in a terminal.  Note:
   while the script runs.  The only commands run as superuser are those
   that install files in system-wide directories such as
   `/usr/local/bin`.
-+ The script requires several other files in this repository to be
-  present, at least some files in the `bin/patches` directory.  If you
-  copy only the script to another system, it will fail.
 ```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
