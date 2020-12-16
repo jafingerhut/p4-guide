@@ -15,6 +15,10 @@ Start with:
     of running the install script -- it will download approximately 1
     to 2 GByte of data.
 
+Note: These scripts have been reported NOT WORKING on WSL (Windows
+Subsystem for Linux).  I have had success running supported versions
+of Ubuntu Linux using VirtualBox on both macOS and Windows 10 hosts.
+
 Then run the commands below in a terminal.  Note:
 + You may run the commands from any directory you wish -- I typically
   run it from the home directory of my account.  Whichever directory
