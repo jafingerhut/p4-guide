@@ -44,9 +44,8 @@ THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_version_warning() {
-    1>&2 echo "This software has only been tested on Ubuntu 18.04 and"
-    1>&2 echo "20.04, and is known to fail in a few tests on Ubuntu"
-    1>&2 echo "16.04."
+    1>&2 echo "This software has only been tested on Ubuntu 16.04 and"
+    1>&2 echo "18.04."
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -66,7 +65,7 @@ fi
 
 distributor_id=`lsb_release -si`
 ubuntu_release=`lsb_release -s -r`
-if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" \) ]
+if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "16.04" -o "${ubuntu_release}" = "18.04" \) ]
 then
     echo "Found distributor '${distributor_id}' release '${release}'.  Continuing with installation."
 else
