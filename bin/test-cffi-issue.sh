@@ -9,7 +9,7 @@ git clone https://github.com/p4lang/behavioral-model
 python3 -V
 pip3 -V
 pip3 list
-sudo apt get python3-pip
+sudo apt-get --yes install python3-pip
 python3 -V
 pip3 -V
 pip3 list
