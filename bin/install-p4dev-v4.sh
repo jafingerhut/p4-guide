@@ -61,7 +61,7 @@ distributor_id=`lsb_release -si`
 ubuntu_release=`lsb_release -s -r`
 if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" \) ]
 then
-    echo "Found distributor '${distributor_id}' release '${release}'.  Continuing with installation."
+    echo "Found distributor '${distributor_id}' release '${ubuntu_release}'.  Continuing with installation."
 else
     ubuntu_version_warning
     1>&2 echo ""
