@@ -68,6 +68,11 @@ const ExpireTimeSelection_t DEFAULT_EXPIRE_TIME = 2;
 
 const FlowId_t FLOW_TABLE_SIZE = 10000000;
 
+struct set_flow_id_params_t {
+    FlowId_t flow_id;
+    ExpireTimeSelection_t expire_time;
+}
+
 enum bit<3> fw_action_t {
     DENY = 0,
     ALLOW = 1,
@@ -134,13 +139,11 @@ control mainCtrl (inout headers_t hdr,    // includes ethernet, ipv4, etc.
     action maybe_add_new_flow () {
         if (do_add_on_miss) {
             my_flow_id = allocate_flow_id();
-#ifdef WAIT_FOR_P4C_SUPPORT
             add_succeeded =
                 add_entry("set_flow_id",  // name of action
-                          (aom_table_hit_params_t)
+                          (set_flow_id_params_t)
                           {flow_id = my_flow_id,
 		           expire_time = new_expire_time_selection});
-#endif
         }
     }
     

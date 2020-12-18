@@ -42,6 +42,8 @@ struct pna_main_output_metadata_t {
 
 extern FlowId_t allocate_flow_id();
 
+extern bool add_entry<T>(string action_name, in T action_parameter_values);
+
 extern Register<T, S> {
   Register(bit<32> size);
   Register(bit<32> size, T initial_value);
