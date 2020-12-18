@@ -20,48 +20,47 @@ to the Java virtual machine byte code instructions:
   + Both guarantee no stray memory references to arbitrary memory locations.
   + EBPF's verifier also disallows programs that can execute
     arbitrarily large numbers of instructions.
-+ There are compilers for multiple source languages that compile to
-  JVM byte codes (not only Java, e.g. Scala, Clojure), and similarly
-  for multiple source langauges that compile to EBPF instructions (at
-  least C using LLVM C compiler with EBPF back end, not sure where to
-  find a list of others).
-+ Both have JIT compilers available for translation to the host CPUs
-  native instruction set, for better execution performance.
++ There are compilers for multiple source languages to both:
+  + For the JVM, source languages include Java, Scala, Groovy, and
+    Clojure.
+  + For EBPF, source languages include EBPF assembler, C, and Rust.
++ Both have JIT compilers for translating VM instructions to the host
+  CPUs native instruction set, for better performance.
 
 EBPF programs are designed for safe execution within the Linux kernel.
-User-space programs with appropriate privileges (typically super-user)
-choose an event or hook in the kernel, and specify an EBPF program to
-run when that event occurs.  Examples of such events include:
+User-space programs with super-user privileges choose an event or hook
+in the kernel, and specify an EBPF program to run when that event
+occurs.  Examples of such events include:
 
 + For XDP, when a packet is received from the NIC, and I believe also
   just before a packet is sent to the NIC.
-+ For hundreds of other EBPF programs that many developers use every
-  day, there are trace points written by Linux kernel developers in
-  the kernel code that can be treated as events that trigger the
-  execution of EBPF programs, too.  Also any function in the kernel
-  with a name (perhaps with some restrictions).  See the book "BPF
-  Performance Tools" for a wealth of examples, where triggers include:
++ For hundreds of other EBPF programs that are often used by many
+  developers, there are trace points written by Linux kernel
+  developers in the kernel code that can trigger the execution of EBPF
+  programs, too.  Also many named functions in the kernel.  See the
+  book "BPF Performance Tools" for a wealth of examples, where
+  triggers include:
   + a process being started
   + a block read/write operation being initiated in the file system
     code, or completed.
   + a TCP socket being created
 
-My guess is that most users of EBPF might not even be aware that it
-can be used to process packets.  But I will not say much more about
+My guess is that most users of EBPF might not even care that it can be
+used to process packets.  But I will not say much more about
 non-packet-processing uses of EBPF here.
 
-It is possible to disable the EBPF verifier and execute EBPF programs
+It is possible to disable the verifier and execute EBPF programs
 without passing the verifier's checks, but I believe very few people
 want to do so.  They want the extra safety that comes with passing the
-verification step, that their EBPF programs will not cause problems
-because of bugs in their programs.
+verifier's checks.  Skipping those leaves you vulnerable to bugs in an
+EBPF program causing memory corruption in kernel data structures.
 
 Taking C programs as one example source code language for targeting
 EBPF, clearly not all C programs can pass the verification checks,
 e.g. those with loops with arbitrary numbers of iterations, or those
 that calculate arbitrary integer values, cast them to pointers, and
 dereference those pointers.  So there is some "EBPF safe subset of C"
-that one must write their C programs in if they want them to pass the
+that one must write programs in if they want them to pass the
 verifier.
 
 
@@ -70,20 +69,20 @@ verifier.
 From examination of the program `xdping_kern.c` later below, I believe
 the following things are all true:
 
-+ The packet to be processed is simply available in memory when your
-  processing code begins, all of its content in contiguous addresses.
-  Your code is given a pointer to the beginning and end of the packet.
-  You can read it or write it wherever you want, up to the end of the
++ The packet to be processed is stored in a contiguous range of
+  addresses in memory before your EBPF code begins executing.  Your
+  code is given a pointer to the beginning and end of the packet.  You
+  can read it or write it wherever you want, up to the end of the
   packet.
 
 + When you want to parse packets in an EBPF program, you use normal C
-  pointers, pointer arithmetic, loads, stores, etc., getting whatever
-  fields you want out of the packet from wherever you want, in any
-  order (i.e. you can go backwards as well as forwards in the packet).
-  There is nothing like P4's `extract` or `advance` calls, but you
-  could easily write C functions that work that way if you wanted to.
-  The point is that in EBPF, nothing _restricts_ you to writing code
-  that looks like a P4 parser.
+  pointers, pointer arithmetic, loads, stores, etc., reading whatever
+  fields you want out of the packet, in any order, i.e. you can go
+  backwards as well as forward in the packet.  There is nothing like
+  P4's `extract` or `advance` calls, but you could easily write C
+  functions that behave that way if you wanted to.  The point is that
+  in EBPF, nothing _restricts_ you to writing code that looks like a
+  P4 parser.
 
 + When you want to modify packets, you use the same mechanisms.  TBD
   whether whether making the packet longer by adding a header at the
@@ -93,11 +92,11 @@ the following things are all true:
 
 + You can access EBPF maps whenever you want, in whatever order you
   want relative to reading or writing the packet contents.  There is
-  nothing like "parse first, then do table lookups and header reading
-  and/or modifications, then emit the modified packet".  You could
-  write EBPF programs that were of that restricted form if you wanted
-  to, but neither EBPF nor XDP does anything to mandate such a
-  structure.
+  nothing like typical P4 architecture's restrictions of "parse first,
+  then do table lookups and header reading and/or modifications, then
+  emit the modified packet".  You could write EBPF programs that were
+  of that restricted form if you wanted to, but neither EBPF nor XDP
+  does anything to mandate such a structure.
 
 + TBD detail: I do not know if the result of processing a single
   packet can be exactly one packet, or more than one.
@@ -122,6 +121,16 @@ challenging to make as efficient as a hand-coded EBPF program could
 be, since there could be a fair amount of memory copying involved, but
 it seems like a resulting EBPF program that copies each valid header's
 memory once into the target packet would be easy to do mechnically.
+
+It _might_ be technically feasible to devise a more strict EBPF
+verifier that only gives a "all good" result to EBPF programs that
+were in a restricted form that could be mechanically translated into
+an equivalent P4 program.  Even if it is, developers of such EBPF
+programs would need documentation on how to write
+EBPF-assembler/C/Rust code that passed the stricter verifier. In the
+end, writing a P4 program seems like the more straightforward
+technical approach to writing code that targets a device with such
+restrictions.
 
 
 ## xdping_kern.c - an EBPF program that 
