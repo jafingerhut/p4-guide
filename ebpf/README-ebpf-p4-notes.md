@@ -63,6 +63,31 @@ dereference those pointers.  So there is some "EBPF safe subset of C"
 that one must write programs in if they want them to pass the
 verifier.
 
+Some of the restrictions on this "EBPF safe subset of C" are
+documented on this page.  Search for the word "pitfall" to find 11
+numbered items describing some of the rules you must follow when
+writing C code that can pass the EBPF verifier:
+https://docs.cilium.io/en/latest/bpf/
+
+Here is a copy of the 11 headings in that part of the page, as
+retrieved on 2020-Dec-18.  Each of these headings has multiple
+paragraphs of details in the document, sometimes explaining the reason
+the restriction is there, and usually giving advice on how to write C
+programs that stay within the restrictions.
+
+1. Everything needs to be inlined, there are no function calls (on
+   older LLVM versions) or shared library calls available.
+2. Multiple programs can reside inside a single C file in different sections.
+3. There are no global variables allowed.
+4. There are no const strings or arrays allowed.
+5. Use of LLVM built-in functions for memset()/memcpy()/memmove()/memcmp().
+6. There are no loops available (yet).
+7. Partitioning programs with tail calls.
+8. Limited stack space of maximum 512 bytes.
+9. Use of BPF inline assembly possible.
+10. Remove struct padding with aligning members by using #pragma pack.
+11. Accessing packet data via invalidated references
+
 
 # Packet processing in EBPF
 
