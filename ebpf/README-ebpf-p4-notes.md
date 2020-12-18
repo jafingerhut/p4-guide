@@ -88,6 +88,17 @@ programs that stay within the restrictions.
 10. Remove struct padding with aligning members by using #pragma pack.
 11. Accessing packet data via invalidated references
 
+That page also mentions that some EBPF programs can be loaded into a
+Netronome NIC.  Given my knowledge from a detailed hardware
+presentation on Netronome's NICs from about 2018, where its design was
+described as an array of RISC CPU cores with interconnections to many
+specialized hardware blocks (e.g. TCAMs, specialized longest-prefix
+match tables, hash logic, etc.), it makes sense that any EBPF programs
+that passed the Linux kernel verifier would be straightforward to JIT
+compile to a RISC CPU's instruction set.  Probably the most fiddly
+bits of that would be handling EBPF maps correctly, and perhaps
+Netronome might not support all EBPF map types.
+
 
 # Packet processing in EBPF
 
@@ -123,12 +134,24 @@ the following things are all true:
   of that restricted form if you wanted to, but neither EBPF nor XDP
   does anything to mandate such a structure.
 
-+ TBD detail: I do not know if the result of processing a single
-  packet can be exactly one packet, or more than one.
++ EBPF programs invoked by XDP have a small collection of return codes
+  that XDP understands, and uses to decide what to do with the packet
+  next, including drop, pass up the Linux networking TCP/IP stack
+  normally, turn around and send back to the NIC, or redirect to a
+  different NIC.  Details: https://docs.cilium.io/en/latest/bpf/#xdp
+  Search for word "BPF program return codes".
 
-+ TBD detail: I do not know if you are allowed to make the modified
-  packet longer than the original, and if so exactly how, or how much
-  longer it is allowed to be than the original packet.
++ TBD detail: I do not know if the result of processing a single
+  packet can be exactly one packet, or more than one.  From the return
+  codes discussion in the previous bullet item, I would guess that no
+  packet replication is supported in XDP today.
+
++ For EBPF programs invoked by XDP, the modified packet can be longer
+  or shorter than the original.  It appears that by default XDP
+  allocates 256 bytes of memory before the beginning of the packet,
+  all of which could be used for making the packet longer at the
+  beginning.  Source: https://docs.cilium.io/en/latest/bpf/#xdp Search
+  for the word "headroom".
 
 Thus it seems like taking an arbitrary EBPF program that processes
 packets, and using automated means to transform it into an equivalent
