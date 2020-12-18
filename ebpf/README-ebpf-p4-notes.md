@@ -5,15 +5,18 @@ about EBPF, and comparing it to P4.  Much of what is here assumes
 knowledge of P4, but not about EBPF.
 
 
-# A few introductory facts about EBPF
+# A few facts about EBPF
+
+A short article that has 
+https://lwn.net/Articles/740157/
 
 EBPF programs are written in instructions of a simple virtual machine
 that is specific to EBPF.  This instruction set has some similarities
 to the Java virtual machine byte code instructions:
 
-+ Programs in both are intended to at least usually have an automated
-  verifier program perform checks on them that can guarantee that
-  executing the program is safe in multiple ways.
++ Programs in both are intended to have (at least usually) a verifier
+  perform checks on them that guarantee that executing the program is
+  safe in multiple ways.
   + Both guarantee no stray memory references to arbitrary memory locations.
   + EBPF's verifier also disallows programs that can execute
     arbitrarily large numbers of instructions.
@@ -22,6 +25,8 @@ to the Java virtual machine byte code instructions:
   for multiple source langauges that compile to EBPF instructions (at
   least C using LLVM C compiler with EBPF back end, not sure where to
   find a list of others).
++ Both have JIT compilers available for translation to the host CPUs
+  native instruction set, for better execution performance.
 
 EBPF programs are designed for safe execution within the Linux kernel.
 User-space programs with appropriate privileges (typically super-user)
@@ -60,26 +65,143 @@ that one must write their C programs in if they want them to pass the
 verifier.
 
 
+# Packet processing in EBPF
+
+From examination of the program `xdping_kern.c` later below, I believe
+the following things are all true:
+
++ The packet to be processed is simply available in memory when your
+  processing code begins, all of its content in contiguous addresses.
+  Your code is given a pointer to the beginning and end of the packet.
+  You can read it or write it wherever you want, up to the end of the
+  packet.
+
++ When you want to parse packets in an EBPF program, you use normal C
+  pointers, pointer arithmetic, loads, stores, etc., getting whatever
+  fields you want out of the packet from wherever you want, in any
+  order (i.e. you can go backwards as well as forwards in the packet).
+  There is nothing like P4's `extract` or `advance` calls, but you
+  could easily write C functions that work that way if you wanted to.
+  The point is that in EBPF, nothing _restricts_ you to writing code
+  that looks like a P4 parser.
+
++ When you want to modify packets, you use the same mechanisms.  TBD
+  whether whether making the packet longer by adding a header at the
+  beginning or in the middle requires copying all packet bytes before
+  or after the insertion point, but it might.  There is nothing like
+  P4's `emit` calls on headers.
+
++ You can access EBPF maps whenever you want, in whatever order you
+  want relative to reading or writing the packet contents.  There is
+  nothing like "parse first, then do table lookups and header reading
+  and/or modifications, then emit the modified packet".  You could
+  write EBPF programs that were of that restricted form if you wanted
+  to, but neither EBPF nor XDP does anything to mandate such a
+  structure.
+
++ TBD detail: I do not know if the result of processing a single
+  packet can be exactly one packet, or more than one.
+
++ TBD detail: I do not know if you are allowed to make the modified
+  packet longer than the original, and if so exactly how, or how much
+  longer it is allowed to be than the original packet.
+
+Thus it seems like taking an arbitrary EBPF program that processes
+packets, and using automated means to transform it into an equivalent
+P4 program, would either be impossible for some EBPF programs, or even
+if it is possible in all cases, it seems that it could be very
+inefficient, e.g. recirculating back to the parser as many times as
+the EBPF program switches between table/map lookups and back to
+parsing.  Turning modifications of arbitrary bytes within the packet,
+including arbitrarily deep into the payload, would be a very odd
+looking P4 program, to say the least.
+
+Mechanically transforming a P4 program into an EBPF program sounds far
+more feasible.  Implementing an arbitrary deparser might be
+challenging to make as efficient as a hand-coded EBPF program could
+be, since there could be a fair amount of memory copying involved, but
+it seems like a resulting EBPF program that copies each valid header's
+memory once into the target packet would be easy to do mechnically.
+
+
 ## xdping_kern.c - an EBPF program that 
 
-C program that can be compiled to EBPF using clang with EBPF back end.
+This is just one example of C source code that can be compiled to the
+EBPF VM instruction set, and is intended to process packets.
 
 https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c
 
-This is the corresponding user space program:
+This is the corresponding user space program designed to interact with
+the in-kernel EBPF program:
 
 https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/xdping.c
 
+A few notes on a few parts of the C program that is compiled to EBPF
+follow.
+
+The Linux kernel must be configured with XDP in order to use this
+program, and then this EBPF program must be loaded into the kernel.
+
+One of the entry points into this EBPF program is here:
+https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c#L89-L90
+
+I believe the `SEC("xdpclient")` is a kind of annotation used by the
+C->EBPF compiler to indicate that this is a function to be called via
+some kernel event.  It is defined here:
+https://github.com/xdp-project/bpf-next/blob/master/tools/lib/bpf/bpf_helpers.h#L18-L23
+
+The argument to function `xdping_client` is `struct xdp_md *ctx`,
+where struct `xdp_md` is defined here:
+
+https://github.com/xdp-project/bpf-next/blob/master/tools/include/uapi/linux/bpf.h#L3234-L3244
+
+From how some of these fields are used inside of `xdping_kern.c`, it
+appears that the fields mean the following:
+
++ `data` - a pointer to the beginning of the packet's Ethernet header.
+  TBD: It is defined as type `__u32`, and then cast to a `void *`
+  pointer, which I would have guessed was a 64-bit size quantity,
+  unless perhaps the kernel is running in some kind of 32-bit
+  addressing mode.  Why is it this way, and how does it work?
++ `data_end` - a pointer to the end of the packet, probably either to
+  the last byte, or maybe one past the last byte.  Not sure if it
+  includes Ethernet FCS or not.  That is a minor detail for now.
++ `data_meta` - not usd in xdping_kern.c so I do not have a guess yet
++ `ingress_ifindex` - comment after definition says
+  `rxq->dev->ifindex`.  Looks like some kind of identifier for the
+  interface on which this packet was received.  Not used in xdping_kern.c
++ `rx_queue_index` - comment after definition says `rxq->queue_index`.
+  Some kind of queue id.  Not used in xdping_kern.c
+
+The function `icmp_check` is nearly the first thing done inside of
+function `xdping_client`:
+https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c#L104
+
+Function `icmp_check` basically uses normal load/store with C pointers
+and pointer arithmetic, to determine whether the packet is Ethernet +
+IPv4 + ICMP, and if so, whether the `type` field in the ICMP header is
+equal to the value of the `type` parameter of function `icmp_check`,
+which in this case is `ICMP_ECHOREPLY`.  If the packet is anything
+else, function `xdping_client` returns a value of `XDP_PASS` to the
+caller, presumably some code in XDP, which uses that value to cause
+the packet to continue being processed as normal.
+
+If it is an ICMP echo reply packet, then `xdping_client` continues.
+
+TBD: Finish description of function `xdping_client`.
 
 
 ## References
 
+TBD: Article to summarize:
+
 https://qmonnet.github.io/whirl-offload/2016/09/01/dive-into-bpf/
 
-This book is 880 pages of examples of Linux performance and behavior
-monitoring tools created using EBPF, and only a fraction of them are
-related to the networking part of the Linux kernel.  Of those, I doubt
-any of them involve EBPF programs that process packets.
+The book "BPF Performance Tools" is 880 pages of examples of Linux
+performance and behavior monitoring tools created using EBPF, and only
+a fraction of them are related to the networking part of the Linux
+kernel.  Of those, I doubt any of them involve EBPF programs that
+process packets.
 
 The entire focus of the book is on using EBPF to hook into various
 trace points and hooks in the Linux kernel, such that when events of
