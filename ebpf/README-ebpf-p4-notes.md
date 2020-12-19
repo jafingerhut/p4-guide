@@ -19,7 +19,7 @@ to the Java virtual machine byte code instructions:
     arbitrarily large numbers of instructions.
 + There are compilers for multiple source languages that compile to
   JVM byte codes (not only Java, e.g. Scala, Clojure), and similarly
-  for multiple source langauges that compile to EBPF instructions (at
+  for multiple source languages that compile to EBPF instructions (at
   least C using LLVM C compiler with EBPF back end, not sure where to
   find a list of others).
 
@@ -60,7 +60,7 @@ that one must write their C programs in if they want them to pass the
 verifier.
 
 
-## xdping_kern.c - an EBPF program that 
+## xdping_kern.c - An example EBPF program written in C to process packets
 
 C program that can be compiled to EBPF using clang with EBPF back end.
 
