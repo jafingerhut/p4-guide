@@ -7,7 +7,8 @@ knowledge of P4, but not about EBPF.
 
 # A few facts about EBPF
 
-A short article that has 
+A short article that has a nice summary of some of the facts covered
+in this article below, and some that this article does not discuss:
 https://lwn.net/Articles/740157/
 
 EBPF programs are written in instructions of a simple virtual machine
@@ -23,7 +24,9 @@ to the Java virtual machine byte code instructions:
 + There are compilers for multiple source languages to both:
   + For the JVM, source languages include Java, Scala, Groovy, and
     Clojure.
-  + For EBPF, source languages include EBPF assembler, C, and Rust.
+  + For EBPF, source languages include EBPF assembler, C (via LLVM
+    Clang compiler EBPF back end), and Rust (see the
+    [redbpf](https://github.com/redsift/redbpf) project).
 + Both have JIT compilers for translating VM instructions to the host
   CPUs native instruction set, for better performance.
 
@@ -55,8 +58,8 @@ want to do so.  They want the extra safety that comes with passing the
 verifier's checks.  Skipping those leaves you vulnerable to bugs in an
 EBPF program causing memory corruption in kernel data structures.
 
-Taking C programs as one example source code language for targeting
-EBPF, clearly not all C programs can pass the verification checks,
+Taking C programs as one example source language for targeting EBPF,
+clearly not all C programs can pass the verification checks,
 e.g. those with loops with arbitrary numbers of iterations, or those
 that calculate arbitrary integer values, cast them to pointers, and
 dereference those pointers.  So there is some "EBPF safe subset of C"
@@ -64,16 +67,14 @@ that one must write programs in if they want them to pass the
 verifier.
 
 Some of the restrictions on this "EBPF safe subset of C" are
-documented on this page.  Search for the word "pitfall" to find 11
-numbered items describing some of the rules you must follow when
-writing C code that can pass the EBPF verifier:
-https://docs.cilium.io/en/latest/bpf/
-
-Here is a copy of the 11 headings in that part of the page, as
-retrieved on 2020-Dec-18.  Each of these headings has multiple
-paragraphs of details in the document, sometimes explaining the reason
-the restriction is there, and usually giving advice on how to write C
-programs that stay within the restrictions.
+documented on this page: https://docs.cilium.io/en/latest/bpf/ Search
+for the word "pitfall" to find 11 numbered items describing some of
+the rules you must follow when writing C code that can pass the EBPF
+verifier.  Below is the list of the 11 headings in that part of the
+document, as retrieved on 2020-Dec-18.  The linked document has many
+more details, sometimes explaining the reason the restriction is
+there, and often giving advice on how to write C programs that stay
+within the restrictions.
 
 1. Everything needs to be inlined, there are no function calls (on
    older LLVM versions) or shared library calls available.
@@ -110,7 +111,6 @@ the following things are all true:
   code is given a pointer to the beginning and end of the packet.  You
   can read it or write it wherever you want, up to the end of the
   packet.
-
 + When you want to parse packets in an EBPF program, you use normal C
   pointers, pointer arithmetic, loads, stores, etc., reading whatever
   fields you want out of the packet, in any order, i.e. you can go
@@ -119,39 +119,35 @@ the following things are all true:
   functions that behave that way if you wanted to.  The point is that
   in EBPF, nothing _restricts_ you to writing code that looks like a
   P4 parser.
-
-+ When you want to modify packets, you use the same mechanisms.  TBD
-  whether whether making the packet longer by adding a header at the
-  beginning or in the middle requires copying all packet bytes before
-  or after the insertion point, but it might.  There is nothing like
-  P4's `emit` calls on headers.
-
++ When you want to modify packets, you use the same mechanisms.  I
+  believe that the resulting modified packet must also be in
+  contiguous bytes in memory, and if so then adding headers in the
+  middle would require copying bytes of the original packet to make
+  room in the middle at the desired place.  There is nothing like P4's
+  `emit` calls on headers.
+  + For EBPF programs invoked by XDP, the modified packet can be
+    longer or shorter than the original.  It appears that by default
+    XDP allocates 256 bytes of memory before the beginning of the
+    packet, all of which could be used for making the packet longer at
+    the beginning.  Source: https://docs.cilium.io/en/latest/bpf/#xdp
+    Search for the word "headroom".
 + You can access EBPF maps whenever you want, in whatever order you
   want relative to reading or writing the packet contents.  There is
-  nothing like typical P4 architecture's restrictions of "parse first,
-  then do table lookups and header reading and/or modifications, then
-  emit the modified packet".  You could write EBPF programs that were
-  of that restricted form if you wanted to, but neither EBPF nor XDP
-  does anything to mandate such a structure.
-
+  nothing like typical a P4 architecture's restrictions of "parse
+  first, then do table lookups and header reading and/or
+  modifications, then emit the modified packet".  You could write EBPF
+  programs that were of that restricted form if you wanted to, but
+  neither EBPF nor XDP does anything to mandate such a structure.
 + EBPF programs invoked by XDP have a small collection of return codes
   that XDP understands, and uses to decide what to do with the packet
   next, including drop, pass up the Linux networking TCP/IP stack
   normally, turn around and send back to the NIC, or redirect to a
   different NIC.  Details: https://docs.cilium.io/en/latest/bpf/#xdp
   Search for word "BPF program return codes".
-
 + TBD detail: I do not know if the result of processing a single
   packet can be exactly one packet, or more than one.  From the return
   codes discussion in the previous bullet item, I would guess that no
   packet replication is supported in XDP today.
-
-+ For EBPF programs invoked by XDP, the modified packet can be longer
-  or shorter than the original.  It appears that by default XDP
-  allocates 256 bytes of memory before the beginning of the packet,
-  all of which could be used for making the packet longer at the
-  beginning.  Source: https://docs.cilium.io/en/latest/bpf/#xdp Search
-  for the word "headroom".
 
 Thus it seems like taking an arbitrary EBPF program that processes
 packets, and using automated means to transform it into an equivalent
@@ -163,18 +159,21 @@ parsing.  Turning modifications of arbitrary bytes within the packet,
 including arbitrarily deep into the payload, would be a very odd
 looking P4 program, to say the least.
 
-Mechanically transforming a P4 program into an EBPF program sounds far
-more feasible.  Implementing an arbitrary deparser might be
-challenging to make as efficient as a hand-coded EBPF program could
-be, since there could be a fair amount of memory copying involved, but
-it seems like a resulting EBPF program that copies each valid header's
-memory once into the target packet would be easy to do mechnically.
+Mechanically transforming a P4 program into an EBPF program is
+definitely feasible, and the open source
+[`p4c`](https://github.com/p4lang/p4c) P4 compiler can handle a
+significant subset of the P4 language as input.  Implementing an
+arbitrary deparser might be challenging to make as efficient as a
+hand-coded EBPF program could be, since there could be a fair amount
+of memory copying involved, but it seems like a resulting EBPF program
+that copies each valid header's memory once into the target packet
+would be easy to do mechanically.
 
 It _might_ be technically feasible to devise a more strict EBPF
-verifier that only gives a "all good" result to EBPF programs that
+verifier that only gives an "all good" result to EBPF programs that
 were in a restricted form that could be mechanically translated into
-an equivalent P4 program.  Even if it is, developers of such EBPF
-programs would need documentation on how to write
+an equivalent P4 program.  Even if this is feasible, developers of
+such EBPF programs would need documentation on how to write
 EBPF-assembler/C/Rust code that passed the stricter verifier. In the
 end, writing a P4 program seems like the more straightforward
 technical approach to writing code that targets a device with such
@@ -183,8 +182,9 @@ restrictions.
 
 ## xdping_kern.c - An example EBPF program written in C to process packets
 
-This is just one example of C source code that can be compiled to the
-EBPF VM instruction set, and is intended to process packets.
+The link below is to a simple example C program that can be compiled
+to the EBPF VM instruction set, and is intended to process packets by
+being invoked from XDP:
 
 https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c
 
@@ -193,8 +193,7 @@ the in-kernel EBPF program:
 
 https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/xdping.c
 
-A few notes on a few parts of the C program that is compiled to EBPF
-follow.
+Below are some notes on a few parts of this C program.
 
 The Linux kernel must be configured with XDP in order to use this
 program, and then this EBPF program must be loaded into the kernel.
@@ -202,9 +201,10 @@ program, and then this EBPF program must be loaded into the kernel.
 One of the entry points into this EBPF program is here:
 https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c#L89-L90
 
-I believe the `SEC("xdpclient")` is a kind of annotation used by the
-C->EBPF compiler to indicate that this is a function to be called via
-some kernel event.  It is defined here:
+The `SEC("xdpclient")` is a C preprocessor macro that becomes an
+annotation used by the C->EBPF compiler to indicate that the following
+function should be placed into a "section" of the resulting ELF format
+binary.  The macro is defined here:
 https://github.com/xdp-project/bpf-next/blob/master/tools/lib/bpf/bpf_helpers.h#L18-L23
 
 The argument to function `xdping_client` is `struct xdp_md *ctx`,
@@ -234,16 +234,20 @@ The function `icmp_check` is nearly the first thing done inside of
 function `xdping_client`:
 https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c#L104
 
-Function `icmp_check` basically uses normal load/store with C pointers
-and pointer arithmetic, to determine whether the packet is Ethernet +
-IPv4 + ICMP, and if so, whether the `type` field in the ICMP header is
-equal to the value of the `type` parameter of function `icmp_check`,
-which in this case is `ICMP_ECHOREPLY`.  If the packet is anything
-else, function `xdping_client` returns a value of `XDP_PASS` to the
-caller, presumably some code in XDP, which uses that value to cause
-the packet to continue being processed as normal.
+Function
+[`icmp_check`](https://github.com/xdp-project/bpf-next/blob/master/tools/testing/selftests/bpf/progs/xdping_kern.c#L59-L87)
+basically uses normal load/store with C pointers and pointer
+arithmetic, to determine whether the packet is Ethernet + IPv4 + ICMP,
+and if so, whether the `type` field in the ICMP header is equal to the
+value of the `type` parameter of function `icmp_check`, which in this
+case is `ICMP_ECHOREPLY`.  If the packet is anything else, function
+`xdping_client` returns a value of `XDP_PASS` to function
+`xdping_client`, which returns that value to XDP, causing the packet
+to continue with regular Linux network packet processing without
+modification.
 
-If it is an ICMP echo reply packet, then `xdping_client` continues.
+If it is an ICMP echo reply packet, then function `xdping_client`
+continues.
 
 TBD: Finish description of function `xdping_client`.
 
