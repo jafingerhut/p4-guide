@@ -7,9 +7,10 @@ knowledge of P4, but not about EBPF.
 
 # A few facts about EBPF
 
-A short article that has a nice summary of some of the facts covered
-in this article below, and some that this article does not discuss:
-https://lwn.net/Articles/740157/
+A short article that also has a nice summary of EBPF:
+https://lwn.net/Articles/740157/ There is some overlap with this
+article, but that article and this one each cover facts the other does
+not.
 
 EBPF programs are written in instructions of a simple virtual machine
 that is specific to EBPF.  This instruction set has some similarities
@@ -18,7 +19,12 @@ to the Java virtual machine byte code instructions:
 + Programs in both are intended to have (at least usually) a verifier
   perform checks on them that guarantee that executing the program is
   safe in multiple ways.
-  + Both guarantee no stray memory references to arbitrary memory locations.
+  + Both guarantee no stray memory references to arbitrary memory
+    locations. The JVM's verifier is also intended to make some
+    guarantees of type safety in the Java type system.  I believe
+    EBPF's verifier has no type system or guarantees of type safety
+    more than C does, i.e. casts between arbitrary types are probably
+    allowed.
   + EBPF's verifier also disallows programs that can execute
     arbitrarily large numbers of instructions.
 + There are compilers for multiple source languages to both:
@@ -35,8 +41,27 @@ User-space programs with super-user privileges choose an event or hook
 in the kernel, and specify an EBPF program to run when that event
 occurs.  Examples of such events include:
 
-+ For XDP, when a packet is received from the NIC, and I believe also
-  just before a packet is sent to the NIC.
++ For XDP, when a packet is received from the NIC, before it begins
+  processing in the rest of the Linux kernel networking code.
++ There are proposed patches for the Linux kernel that would enable an
+  EBPF program to be run via XDP, just before the packet is sent to a
+  NIC, after the rest of the Linux kernel network code has run on it.
+  + The latest message I have seen with an updated, but not yet merged
+    into the Linux kernel, is 2020-May-13 here:
+    https://lore.kernel.org/netdev/20200513014607.40418-7-dsahern@kernel.org/T/
+  + An earlier version of the proposed changes was described in this
+    2020-Feb-26 message: https://lwn.net/Articles/813406/
++ There are also hooks in the Linux kernel tc (Traffic Control) module
+  to invoke EBPF programs, both in receive and transmit direction.
+  There is a fair amount of functionality in the Linux kernel
+  networking code between these EBPF invocation points and
+  transmit/receive on a NIC.
+  + This 2017 presentation:
+    https://archive.fosdem.org/2017/schedule/event/ebpf_xdp/attachments/slides/1800/export/events/attachments/ebpf_xdp/slides/1800/2017_fosdem.pdf
+    describes some of the differences in XDP and tc invocation points
+    for EBPF programs, but I do not know what kernel version it
+    represents.  There is likely to be more recent informatoin
+    available for the latest kernel versions as of 2020.
 + For hundreds of other EBPF programs that are often used by many
   developers, there are trace points written by Linux kernel
   developers in the kernel code that can trigger the execution of EBPF
@@ -119,18 +144,17 @@ the following things are all true:
   functions that behave that way if you wanted to.  The point is that
   in EBPF, nothing _restricts_ you to writing code that looks like a
   P4 parser.
-+ When you want to modify packets, you use the same mechanisms.  I
-  believe that the resulting modified packet must also be in
-  contiguous bytes in memory, and if so then adding headers in the
-  middle would require copying bytes of the original packet to make
-  room in the middle at the desired place.  There is nothing like P4's
-  `emit` calls on headers.
++ When you want to modify packets, you use the same mechanisms.  The
+  resulting modified packet must also be in contiguous bytes in
+  memory. Thus adding headers in the middle requires copying bytes of
+  the original packet to make room in the middle at the desired place.
+  There is nothing like P4's `emit` calls on headers.
   + For EBPF programs invoked by XDP, the modified packet can be
-    longer or shorter than the original.  It appears that by default
-    XDP allocates 256 bytes of memory before the beginning of the
-    packet, all of which could be used for making the packet longer at
-    the beginning.  Source: https://docs.cilium.io/en/latest/bpf/#xdp
-    Search for the word "headroom".
+    longer or shorter than the original.  By default XDP allocates 256
+    bytes of memory before the beginning of the packet, all of which
+    could be used for making the packet longer at the beginning.
+    Source: https://docs.cilium.io/en/latest/bpf/#xdp Search for the
+    word "headroom".
 + You can access EBPF maps whenever you want, in whatever order you
   want relative to reading or writing the packet contents.  There is
   nothing like typical a P4 architecture's restrictions of "parse
@@ -139,11 +163,12 @@ the following things are all true:
   programs that were of that restricted form if you wanted to, but
   neither EBPF nor XDP does anything to mandate such a structure.
 + EBPF programs invoked by XDP have a small collection of return codes
-  that XDP understands, and uses to decide what to do with the packet
-  next, including drop, pass up the Linux networking TCP/IP stack
-  normally, turn around and send back to the NIC, or redirect to a
-  different NIC.  Details: https://docs.cilium.io/en/latest/bpf/#xdp
-  Search for word "BPF program return codes".
+  that XDP supports. When an EBPF program invoked by XDP returns, XDP
+  uses this return code to decide what to do with the packet next,
+  including drop, pass up the Linux networking TCP/IP stack normally,
+  turn around and send back to the NIC, or redirect to a different
+  NIC.  Details: https://docs.cilium.io/en/latest/bpf/#xdp Search for
+  word "BPF program return codes".
 + TBD detail: I do not know if the result of processing a single
   packet can be exactly one packet, or more than one.  From the return
   codes discussion in the previous bullet item, I would guess that no
@@ -151,13 +176,13 @@ the following things are all true:
 
 Thus it seems like taking an arbitrary EBPF program that processes
 packets, and using automated means to transform it into an equivalent
-P4 program, would either be impossible for some EBPF programs, or even
-if it is possible in all cases, it seems that it could be very
-inefficient, e.g. recirculating back to the parser as many times as
-the EBPF program switches between table/map lookups and back to
-parsing.  Turning modifications of arbitrary bytes within the packet,
-including arbitrarily deep into the payload, would be a very odd
-looking P4 program, to say the least.
+P4 program, would either be impossible for arbitrary EBPF
+programs. Even if it is possible in all cases, it seems that it could
+be very inefficient for many EBPF programs, e.g. recirculating back to
+the parser as many times as the EBPF program switches between
+table/map lookups and back to parsing.  Turning modifications of
+arbitrary bytes within the packet, including arbitrarily deep into the
+payload, would be a very odd looking P4 program, to say the least.
 
 Mechanically transforming a P4 program into an EBPF program is
 definitely feasible, and the open source
@@ -170,14 +195,36 @@ that copies each valid header's memory once into the target packet
 would be easy to do mechanically.
 
 It _might_ be technically feasible to devise a more strict EBPF
-verifier that only gives an "all good" result to EBPF programs that
-were in a restricted form that could be mechanically translated into
-an equivalent P4 program.  Even if this is feasible, developers of
-such EBPF programs would need documentation on how to write
-EBPF-assembler/C/Rust code that passed the stricter verifier. In the
-end, writing a P4 program seems like the more straightforward
-technical approach to writing code that targets a device with such
-restrictions.
+verifier that only gives an "passes the verifier" result for EBPF
+programs that were in a restricted form that could be mechanically
+translated into an equivalent P4 program.  Even if this is feasible,
+developers of such EBPF programs would need documentation on how to
+write EBPF-assembler/C/Rust code that passed the more strict
+verifier. In the end, writing a P4 program seems like the more
+straightforward technical approach to writing code that targets a
+device with restrictions similar to P4 architectures.
+
+
+## XDP and EBPF tutorial
+
+After writing the next section, I learned of this tutorial to XDP and
+EBPF:
+
+https://github.com/xdp-project/xdp-tutorial
+
+It goes into step by step instructions, spread over multiple
+exercises, to show:
+
++ How to compile and load EBPF programs into the kernel.
++ How to modify EBPF maps in an EBPF program running in the kernel,
+  and read and print their contents from a user-space program.
++ How to write EBPF programs that modify packets.
+
+I have done a few of the exercises, and skimmed over the rest, and it
+seems like a quite good introduction for someone who wants to do these
+things, and the exercises I tried all worked as described there on a
+freshly installed Ubuntu 20.04 Linux system, plus the Ubuntu packages
+it recommends installing.
 
 
 ## xdping_kern.c - An example EBPF program written in C to process packets
@@ -250,6 +297,10 @@ If it is an ICMP echo reply packet, then function `xdping_client`
 continues.
 
 TBD: Finish description of function `xdping_client`.
+
+TBD: It is not yet clear to me why this program changes ICMP echo
+requests to echo replies, and vice versa, and what the overall packet
+flow is.
 
 
 ## References
