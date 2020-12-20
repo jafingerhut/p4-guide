@@ -60,7 +60,7 @@ occurs.  Examples of such events include:
     https://archive.fosdem.org/2017/schedule/event/ebpf_xdp/attachments/slides/1800/export/events/attachments/ebpf_xdp/slides/1800/2017_fosdem.pdf
     describes some of the differences in XDP and tc invocation points
     for EBPF programs, but I do not know what kernel version it
-    represents.  There is likely to be more recent informatoin
+    represents.  There is likely to be more recent information
     available for the latest kernel versions as of 2020.
 + For hundreds of other EBPF programs that are often used by many
   developers, there are trace points written by Linux kernel
@@ -195,7 +195,7 @@ that copies each valid header's memory once into the target packet
 would be easy to do mechanically.
 
 It _might_ be technically feasible to devise a more strict EBPF
-verifier that only gives an "passes the verifier" result for EBPF
+verifier that only gives a "passes the verifier" result for EBPF
 programs that were in a restricted form that could be mechanically
 translated into an equivalent P4 program.  Even if this is feasible,
 developers of such EBPF programs would need documentation on how to
@@ -268,9 +268,11 @@ appears that the fields mean the following:
   unless perhaps the kernel is running in some kind of 32-bit
   addressing mode.  Why is it this way, and how does it work?
 + `data_end` - a pointer to the end of the packet, probably either to
-  the last byte, or maybe one past the last byte.  Not sure if it
-  includes Ethernet FCS or not.  That is a minor detail for now.
-+ `data_meta` - not usd in xdping_kern.c so I do not have a guess yet
+  the last byte, or maybe one past the last byte.  From one of the XDP
+  tutorial exercises I ran, it appears that (data_end - data) contains
+  Ethernet + IPv6 + ICMP headers and ICMP payload, but no Ethernet
+  FCS.  That is a minor detail for now.
++ `data_meta` - not used in xdping_kern.c so I do not have a guess yet
 + `ingress_ifindex` - comment after definition says
   `rxq->dev->ifindex`.  Looks like some kind of identifier for the
   interface on which this packet was received.  Not used in xdping_kern.c
