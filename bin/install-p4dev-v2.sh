@@ -178,8 +178,8 @@ echo "+ protobuf: github.com/google/protobuf v3.6.1"
 echo "+ gRPC: github.com/google/grpc.git v1.17.2"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2019-Jun-10, also installs these things:"
-echo "  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script that changes behavioral-model to install thrift 0.12.0 instead)"
+echo "  which, as of 2020-Dec-12, also installs these things:"
+echo "  + thrift version 0.11.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
@@ -317,15 +317,16 @@ sudo apt-get --yes install pkg-config
 # 19.10, so install it explicitly here.
 sudo apt-get --yes install python3-pip python-pip
 
-pip --version
-pip3 --version
+pip -V  || echo "No such command in PATH: pip"
+pip2 -V || echo "No such command in PATH: pip2"
+pip3 -V || echo "No such command in PATH: pip3"
 # At multiple points I do a 'pip list' command.  This is not required
 # for a successful installation -- I do it mainly because I am curious
 # to see in the log output files from running this script what
 # packages and versions were installed at those times during script
 # execution.
-pip list
-pip3 list
+pip list  || echo "Some error occurred attempting to run command: pip"
+pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
@@ -462,7 +463,7 @@ cd behavioral-model
 git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/behavioral-model-use-correct-libssl-pkg.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
@@ -587,7 +588,7 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
-pip list
+pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
 
 set +e

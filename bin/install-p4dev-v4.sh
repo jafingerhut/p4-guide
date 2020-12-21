@@ -387,7 +387,7 @@ pip3 -V || echo "No such command in PATH: pip3"
 # packages and versions were installed at those times during script
 # execution.
 pip list  || echo "Some error occurred attempting to run command: pip"
-pip3 list
+pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
