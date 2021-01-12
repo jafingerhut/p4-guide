@@ -47,6 +47,9 @@ is functionally equivalent to the code below with two tables:
     T_member_id_to_action.apply();
 ```
 
+
+# Example table configuration and packet processing
+
 Below is a figure showing an example configuration with a few entries
 in the two tables of Program fragment #2.
 
