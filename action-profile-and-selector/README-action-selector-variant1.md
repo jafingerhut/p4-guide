@@ -78,7 +78,7 @@ is functionally equivalent to the code below with three tables:
     T_member_id_to_action.apply();
 ```
 
-<img src="figures/action-selector-variant1-example.png" alt="Example table configuration for 'variant 1' 3-table implementation of a P4 action selector" width="600" align="middle">
+<img src="figures/action-selector-variant1-example.png" alt="Example table configuration for 'variant 1' 3-table implementation of a P4 action selector" width="900" align="middle">
 
 Note 1: TBD: Should T_group_size be X bits wide?  It needs to be able
 to represent any integer value in the range [1, M], where M is the
