@@ -11,18 +11,18 @@ Here we summarize the advantages and disadvantages of each.
 
 Note: I am certain someone can devise additional variants that have
 different advantages and disadvantages as compared to one of these
-three.  These three variants are not intended to include all
-possibilities.  The intent is to show that there are some
-implementation choices, each choice providing the same packet
-processing behavior, but with some consequences when implementing the
-device driver software that handles control plane API operations.
+three.  These examples are not intended to include all possibilities.
+The intent is to show that there are some implementation choices, each
+choice providing the same packet processing behavior, but with some
+consequences when implementing the device driver software that handles
+control plane API operations.
 
 + Variant 1
   + critical path: 3 dependent table lookups plus 1 integer modulo
     calculation (hash calculation can be done in parallel with first
     table lookup)
   + Disadvantages:
-    + Can require large number of table updates to change size of a
+    + Can require large number of table updates to change the size of a
       group (see article on variant 1 for some details).
   + Advantages:
     + Critical path is only 3 dependent table lookups
@@ -43,8 +43,9 @@ device driver software that handles control plane API operations.
     + Critical path is only 3 dependent table lookups
     + Changing the number of members in a group often requires at most
       O(1) table add/delete/modify operations, but in some cases
-      requires more.  When it requires more, it is in a table that
-      usually has relatively few entries compared to `T`.
+      requires more.  When it requires more, the number of operations
+      should be possible to keep as low as the size of the group being
+      modified, or some low multiple of that.
   + Disadvantages:
     + Driver software must implement some memory management techniques
       for maintaining all group members in contiguous entries of the

@@ -1,5 +1,9 @@
 # action_selector tables variant 2
 
+See the comparison between action selector variants at
+[README-action-selector-variant-comparison.md](README-action-selector-variant-comparison.md)
+for links to all of them.
+
 Having a table `T` with `implementation =
 action_selector(HashAlgorithm.H, N, W)` in a P4_16 program with the
 v1model architecture, like this:
