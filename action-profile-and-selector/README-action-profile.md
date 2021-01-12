@@ -52,6 +52,13 @@ in the two tables of Program fragment #2.
 
 <img src="figures/action-profile-example.png" alt="Example table configuration for 2-table implementation of a P4 action profile" width="600" align="middle">
 
+For example, if a packet looks up table `T_key_to_member_id` and
+matches the entry with key K3, the action will perform the assignment
+`T_member_id = 12`.  When table `T_member_id_to_action` is looked up,
+it will match the entry with key 12, and execute the action `a2(2)`,
+where `a2` in this example is one of the actions that the P4 developer
+specified in table `T`'s action list.
+
 
 # Restrictions enforced on control plane software for action profiles
 
@@ -69,9 +76,18 @@ profiles is:
   + It is an error to attempt to add an entry to table
     `T_key_to_member_id` with a `member_id` value that is not
     currently a key in table `T_member_id_to_action`.
+    + In the example configuration in the previous section, it is an
+      error to attempt to add an entry to `T_key_to_member_id` with
+      action `T_set_member_id(18)`, because there is not currently any
+      entry in `T_member_id_to_action` with key 18.
   + It is an error to attempt to delete an entry from table
     `T_member_id_to_action` with key `member_id` equal to X if there
-    are currently
+    are currently.
+    + In the example configuration in the previous section, it is an
+      error to attempt to delete the entry with key 12 from table
+      `T_member_id_to_action`, because there is still an entry in
+      table `T_key_to_member_id` with action `T_set_member_id(12)`
+      (the one with key K3).
 
 In other words, the data plane driver software prevents the control
 plane software from writing a state to the data plane where a
