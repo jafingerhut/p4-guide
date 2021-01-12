@@ -1,9 +1,11 @@
 # action_profile tables
 
 Having a table `T` with `implementation = action_profile(N)` in a
-P4_16 program, like this:
+P4_16 program with the v1model architecture, like this:
 
 ```
+    // Program fragment #1
+
     table T {
         key = { <table T keyElementList> }
         actions = { <table T actionList> }
@@ -19,6 +21,8 @@ is functionally equivalent to the code below with two tables:
 
 
 ```
+    // Program fragment #2
+
     // X is the smallest integer such that 2^X >= N, so that a bit<X>
     // value is just large enough to represent an index into a table
     // with N entries.
@@ -42,6 +46,47 @@ is functionally equivalent to the code below with two tables:
     T_key_to_member_id.apply();
     T_member_id_to_action.apply();
 ```
+
+Below is a figure showing an example configuration with a few entries
+in the two tables of Program fragment #2.
+
+<img src="figures/action-profile-example.png" alt="Example table configuration for 2-table implementation of a P4 action profile" width="600" align="middle">
+
+
+# Restrictions enforced on control plane software for action profiles
+
+The rest of this document contains details about the Thrift API for
+the open source simple_switch process, and the commands exposed to
+exercise that API via the simple_switch_CLI command.
+
+The details of other control plane APIs, e.g. the P4Runtime API or
+Barefoot/Intel Runtime API are different.
+
+I believe one property that they all have in common for action
+profiles is:
+
++ member_id existence checking, or "no dangling member_id references":
+  + It is an error to attempt to add an entry to table
+    `T_key_to_member_id` with a `member_id` value that is not
+    currently a key in table `T_member_id_to_action`.
+  + It is an error to attempt to delete an entry from table
+    `T_member_id_to_action` with key `member_id` equal to X if there
+    are currently
+
+In other words, the data plane driver software prevents the control
+plane software from writing a state to the data plane where a
+`member_id` value is assigned by action `T_set_member_id` that results
+in a miss when looking it up in table `T_member_id_to_action`.
+
+If one writes code like in Program fragment #2 and uses the control
+plane APIs for adding, deleting, and modifying entries in tables
+`T_key_to_member_id` and `T_member_id_to_action`, these restrictions
+are _not_ enforced by the data plane driver software.  The control
+plane software _can_ write a configuration to the data plane where a
+miss can occur when looking up table `T_member_id_to_action`.
+
+
+# Details specific to simple_switch Thrift API and simple_switch_CLI commands
 
 In simple_switch_CLI, the following special commands for dealing with
 tables that have an action profile implementation are implemented as
