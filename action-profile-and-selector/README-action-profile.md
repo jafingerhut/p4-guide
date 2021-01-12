@@ -62,12 +62,11 @@ specified in table `T`'s action list.
 
 # Restrictions enforced on control plane software for action profiles
 
-The rest of this document contains details about the Thrift API for
-the open source simple_switch process, and the commands exposed to
-exercise that API via the simple_switch_CLI command.
-
-The details of other control plane APIs, e.g. the P4Runtime API or
-Barefoot/Intel Runtime API are different.
+The next section contains details about the Thrift API for the open
+source simple_switch process, and the commands exposed to exercise
+that API via the simple_switch_CLI command.  The details of other
+control plane APIs, e.g. the P4Runtime API or Barefoot/Intel Runtime
+API are different, but not described here.
 
 I believe one property that they all have in common for action
 profiles is:
@@ -76,14 +75,15 @@ profiles is:
   + It is an error to attempt to add an entry to table
     `T_key_to_member_id` with a `member_id` value that is not
     currently a key in table `T_member_id_to_action`.
-    + In the example configuration in the previous section, it is an
+    + Example: In the configuration of the previous section, it is an
       error to attempt to add an entry to `T_key_to_member_id` with
       action `T_set_member_id(18)`, because there is not currently any
       entry in `T_member_id_to_action` with key 18.
   + It is an error to attempt to delete an entry from table
     `T_member_id_to_action` with key `member_id` equal to X if there
-    are currently.
-    + In the example configuration in the previous section, it is an
+    is currently any action `T_set_member_id(X)` in any entry of
+    `T_key_to_member_id`.
+    + Example: In the configuration of the previous section, it is an
       error to attempt to delete the entry with key 12 from table
       `T_member_id_to_action`, because there is still an entry in
       table `T_key_to_member_id` with action `T_set_member_id(12)`
