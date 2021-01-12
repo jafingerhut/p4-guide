@@ -1,9 +1,12 @@
 # action_selector tables variant 3
 
 Having a table `T` with `implementation =
-action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
+action_selector(HashAlgorithm.H, N, W)` in a P4_16 program with the
+v1model architecture, like this:
 
 ```
+    // Program fragment #1
+
     table T {
         key = {
             // <table T selectorKeyElementList> contains all fields of
@@ -79,6 +82,8 @@ can be done atomically relative to packet processing, by following this sequence
   plane software as empty, and available for use by other groups.
 
 ```
+    // Program fragment #2
+
     // X is the smallest integer such that 2^X >= N, so that a bit<X>
     // value is just large enough to represent an index into a table
     // with N entries.

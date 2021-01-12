@@ -1,7 +1,8 @@
 # action_selector tables variant 1
 
 Having a table `T` with `implementation =
-action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
+action_selector(HashAlgorithm.H, N, W)` in a P4_16 program with the
+v1model architecture, like this:
 
 ```
     // Program fragment #1
