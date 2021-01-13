@@ -30,9 +30,8 @@ v1model architecture, like this:
 
 is functionally equivalent to the code below.
 
-Variants 1 and 2 have a property in common that is nice for the
-control plane software, but a disadvantage for the data plane
-implementation.
+Variants 1 and 2 have a property in common that is nice for the driver
+software, but a disadvantage for the data plane implementation.
 
 When the table match points at a group (not directly at an individual
 member), it calculates a value `T_member_within_group` that is in the
@@ -46,8 +45,8 @@ dependent table search on table `T_group_to_member_id`, which
 increases latency a bit, and requires storage for the table entries.
 
 Variant 3 shown below eliminates that table, but it does so in a way
-that adds a little bit of complexity to the control plane software
-required to configure it.  Instead of mapping a pair `(T_group_id,
+that adds a little bit of complexity to the driver software required
+to configure it.  Instead of mapping a pair `(T_group_id,
 T_member_within_group)` to `T_member_id` via entries of a table, it
 always calculates:
 
@@ -59,11 +58,11 @@ must be consecutive integer values.  Thus as group sizes grow, they
 might "bump into" a `T_member_id` value in use by a different group.
 
 To avoid using the same `T_member_id` value for two different groups,
-the control plane software should implement something like a memory
-allocator with garbage collection and moving of previously-allocated
-memory blocks.  This is more like Java's GC where memory blocks can be
-moved after they are initially allocated to compact the still-live
-objects into a smaller amount of memory, without the restriction of C
+the driver software should implement something like a memory allocator
+with garbage collection and moving of previously-allocated memory
+blocks.  This is more like Java's GC where memory blocks can be moved
+after they are initially allocated to compact the still-live objects
+into a smaller amount of memory, without the restriction of C
 malloc/free, where a block of memory can never be moved after it is
 first allocated.  The software could choose not to implement the
 moving of previously-allocated contiguous groups, with the
@@ -81,15 +80,16 @@ this sequence for the entries of table `T_member_id_to_action`:
   for the group to change its value of `T_group_first_member_id` from
   the current value, to point at the new location.
 + When that is complete, the old range of `T_member_id` values for the
-  group can have their entries removed, and marked in the control
-  plane software as empty, and available for use by other groups.
+  group can have their entries removed, and marked in the driver
+  software as empty, and available for use by other groups.
 
 Note that control plane API group id and member id values, if selected
 by the control plane software, not the driver software, _must_ be
 remapped in the driver software for this variant to work.  Otherwise
 all of the low level data plane restrictions on contiguous ranges will
 "leak out" and put target-specific restrictions on the control plane
-software.  It should not be burdened with those restrictions.
+software.  The control plane software should not be burdened with
+those restrictions.
 
 ```
     // Program fragment #2
