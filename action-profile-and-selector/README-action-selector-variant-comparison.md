@@ -60,7 +60,7 @@ parallel with other operations, but cannot reduce start-to-finish
 latency of this critical path for an individual packet.
 
 
-# What if my target device cannot do integer modulo?
+# What if my target device cannot do integer modulo operations?
 
 Some target devices do not have a capability to calculate an integer
 modulo operation with an arbitrary divisor.  For example, several
@@ -103,9 +103,9 @@ So what can one do in a restricted computing situation where one
 cannot do an integer modulo operation for arbitrary divisors, but let
 us suppose that you _can_ still do integer modulo by any power of 2.
 Those restricted modulo are all equivalent to selecting the least
-significant K bits of a value (e.g. via a bitwise AND operation with a
-constant like 0xff), and is typically available even when general
-integer modulo is not.
+significant K bits of a value (e.g. modulo 256 is the same as a
+bitwise AND operation with 0xff), and is typically available even when
+general integer modulo is not.
 
 The technique described below allows one to make a tradeoff between:
 
@@ -128,4 +128,53 @@ where we can perform the modulo by 1 or 2 exactly, since those are
 powers of 2, and it seems reasonable to make those special cases, and
 not increase the number of members.
 
-For 3 members, though, 
+For 3 members, though, that will not work.  If we make a table of
+members with at least 3*4 = 12 members, rounding that up to the next
+power of 2, which is 16, we can fill in a table of 16 slots with
+multiple copies of the 3 members, such that each member occurs at
+least 4 times, but none more than 5 times.  For example:
+
+| Remainder | member action to use |
+| --------- | -------------------- |
+|  0 | 1 |
+|  1 | 2 |
+|  2 | 3 |
+|  3 | 1 |
+|  4 | 2 |
+|  5 | 3 |
+|  6 | 1 |
+|  7 | 2 |
+|  8 | 3 |
+|  9 | 1 |
+| 10 | 2 |
+| 11 | 3 |
+| 12 | 1 |
+| 13 | 2 |
+| 14 | 3 |
+| 15 | 1 |
+
+Member 1 occurs 5 times, and members 2 and 3 occur 4 times each.  If
+calculating the hash value modulo 16 results in the values 0 through
+15 with equal frequency, then member 1 will be selected 5/4 times more
+than members 2 or 3.
+
+More generally, for N members, if you want a ratio of at most 5/4
+between the most frequently used member and the least frequently used
+member, you should increase the number of members-with-duplicates to
+4*N, then rounded up to the next power of 2.
+
+| desired # of members N | actual # of members after duplication |
+| ---------------------- | ------------------------------------- |
+|          1 |   1 |
+|          2 |   2 |
+|  3 ...   4 |  16 |
+|  5 ...   8 |  32 |
+|  9 ...  16 |  64 |
+| 17 ...  32 | 128 |
+| 33 ...  64 | 256 |
+| 65 ... 128 | 512 |
+
+If you want a ratio of at most (K+1)/K between the most frequently
+used member and the least frequently used member, you should increase
+the number of members-with-duplicates to K*N, then rounded up to the
+next power of 2.
