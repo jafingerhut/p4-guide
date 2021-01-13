@@ -65,8 +65,8 @@ latency of this critical path for an individual packet.
 Some target devices do not have a capability to calculate an integer
 modulo operation with an arbitrary divisor.  For example, several
 switch ASICs implement integer modulo for selecting one among several
-equal cost paths (ECMP) up for any number of members from 1 up to 32,
-but not for larger groups, because of the cost in silicon die area of
+equal cost paths (ECMP) for any number of members from 1 up to 32, but
+not for larger groups, because of the cost in silicon die area of
 implementing the integer modulo operation.  Some very small and cheap
 CPU cores do not implement integer multiply and divide instructions.
 
@@ -78,8 +78,8 @@ For example, if the input values we select for a hash function are
 evenly distributed, and we use a hash function with 16 bits of result,
 such that all values in the range [0, 65535] are evenly distributed,
 then integer modulo gives exactly evenly distributed member selection
-for group sizes that are a power of 2, and for others gives very close
-to equal distribution of members.
+for group sizes that are a power of 2, and for group sizes up to 1K
+gives very close to equal distribution of members.
 
 For example, for a group with 6 members, here are the number of values
 in the range [0, 65535] that give each of the results 0 through 5 when
@@ -99,13 +99,28 @@ packet or bit rates, or that there are few enough of them, that the
 resulting distribution is unequal for those reasons, than that the
 modulo operation is introducing problems.
 
+    Aside: Note that the evenness of distribution gracefully degrades
+    for larger groups, but can be as bad as a 2-to-1 ratio of
+    unevenness if you have groups with size of 32769 or larger, when
+    the hash function used has a 16-bit result.  Action selectors are
+    typically used in packet processing for selecting among groups
+    that are much smaller than that, e.g. up to 256 or so.  If you
+    want close-to-equal selection among larger groups than that, it is
+    likely that some P4 action selector implementations will not
+    support such large groups.  If you find yourself in such a
+    situation, you as a P4 developer could choose to implement your
+    own solution, perhaps based upon one of the variants linked above
+    with multiple P4 tables, and a hash function with more than 16
+    bits of output.
+
 So what can one do in a restricted computing situation where one
-cannot do an integer modulo operation for arbitrary divisors, but let
-us suppose that you _can_ still do integer modulo by any power of 2.
-Those restricted modulo are all equivalent to selecting the least
-significant K bits of a value (e.g. modulo 256 is the same as a
-bitwise AND operation with 0xff), and is typically available even when
-general integer modulo is not.
+cannot do an integer modulo operation for arbitrary divisors?
+
+Let us suppose that you _can_ still do integer modulo by any power of
+2.  Those restricted modulo operations are all equivalent to selecting
+the least significant K bits of a value (e.g. modulo 256 is the same
+as a bitwise AND operation with 0xff).  If your device cannot even do
+that, then this article will not help you.
 
 The technique described below allows one to make a tradeoff between:
 
@@ -119,18 +134,18 @@ The basic idea is that whenever the control plane API requests a group
 with N members, we implement it using a larger group with a number of
 members that is a power of 2.
 
-To make a reasonably small example, let us suppose that we consider it
-acceptable if some members are selected 5/4 times more often than
-other members, but we do not want any unevenness larger than that.
+To give a small example, suppose that we consider it acceptable if
+some members are selected 5/4 times more often than other members, but
+we do not want any unevenness larger than that.
 
 If we want a group of 1 or 2 members, those are small special cases
 where we can perform the modulo by 1 or 2 exactly, since those are
-powers of 2, and it seems reasonable to make those special cases, and
-not increase the number of members.
+powers of 2.  It seems reasonable to make those special cases, and not
+increase the number of members.
 
 For 3 members, though, that will not work.  If we make a table of
 members with at least 3*4 = 12 members, rounding that up to the next
-power of 2, which is 16, we can fill in a table of 16 slots with
+power of 2, which is 16, we can create a group of 16 members with
 multiple copies of the 3 members, such that each member occurs at
 least 4 times, but none more than 5 times.  For example:
 
@@ -176,5 +191,82 @@ member, you should increase the number of members-with-duplicates to
 
 If you want a ratio of at most (K+1)/K between the most frequently
 used member and the least frequently used member, you should increase
-the number of members-with-duplicates to K*N, then rounded up to the
+the number of members-with-duplicates to K*N, then round up to the
 next power of 2.
+
+Adding and removing members can be implemented by taking the physical
+table of members with duplicates, and modifying only a few of its
+members.  For example, to add a 4th member to the 3-member example
+shown above, see the table below for the original members, and which
+ones can be modified so that the resulting 4 members are as evenly
+distributed as possible.  In this example, only 4 members need to be
+overwritten, marked with arrows.  It does not matter exactly which
+members are modified, as long as the final relative frequency is
+correct.  In particular, while the 3-member configuration example
+shows the members being distributed "round robin" order, i.e. 1, 2, 3,
+1, 2, 3, 1, 2, 3, ..., that order is not significant at all.
+
+| Remainder | member action to use for group of 3 | member action to use for group of 4 |
+| --------- | ----------------------------------- | ----------------------------------- |
+|  0 | 1 | 4 <-- |
+|  1 | 2 | 4 <-- |
+|  2 | 3 | 4 <-- |
+|  3 | 1 | 4 <-- |
+|  4 | 2 | 2 |
+|  5 | 3 | 3 |
+|  6 | 1 | 1 |
+|  7 | 2 | 2 |
+|  8 | 3 | 3 |
+|  9 | 1 | 1 |
+| 10 | 2 | 2 |
+| 11 | 3 | 3 |
+| 12 | 1 | 1 |
+| 13 | 2 | 2 |
+| 14 | 3 | 3 |
+| 15 | 1 | 1 |
+
+I do not know of any technique here that will help one to calculate
+the physical members to update that uses some math formula.  The most
+straightfward way I know of is to have driver software maintain a data
+structure that contains a list of which slot numbers each member is
+currently stored in, and a count of the slots.
+
+The invariant to maintain is that by the time you are done doing
+modifies, every member occurs either X or X+1 times, for some integer
+X.
+
+Thus when adding a new member, always overwrite slots of members that
+currently have the most duplicates, not ones with the fewest
+duplicates.
+
+When removing a member, overwrite all places where that member occurs,
+and always overwrite it with a member that currently has the fewest
+number of duplicates.
+
+If we do not need to create a new physical group of members that is
+double or half of the current size, then the method above never needs
+to modify more than X+1 entries.
+
+Such a sequence of multiple modify operations is not atomic relative
+to packet processing, but that might be perfectly acceptable in many
+implementations.  If you want even these operations to appear atomic
+relative to processing data packets, see the next paragraph.
+
+If the number of members ever grows above the point where the current
+physical group size is too small to preserve the desired level of
+unevenness, because we need to double the physical group size, that
+can be done atomically relative to packet processing for at least
+variant 3, using the technique described in the article on [variant
+3](README-action-selector-variant3.md) (search for the word
+"atomically").
+
+A small change to [variant 2](README-action-selector-variant2.md)
+would make it possible for it to make such atomic changes to groups,
+too: adding to the action `T_set_group_size` an assignment to a new
+variable, which could be named `T_remapped_group_id`, and then in the
+table `T_group_to_member_id` replacing the key `T_group_id` with
+`T_remapped_group_id`.  That level of indirection would enable driver
+software to change `T_remapped_group_id` in the data plane via a
+single atomic modify operation on table `T_group_id_to_size`, enabling
+arbitrary changes to a group's membership in the same way as described
+for variant 3.
