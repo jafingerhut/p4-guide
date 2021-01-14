@@ -9,13 +9,24 @@ given in these documents:
 
 Here we summarize the advantages and disadvantages of each.
 
-Note: I am certain someone can devise additional variants that have
+Note 1: I am certain someone can devise additional variants that have
 different advantages and disadvantages as compared to one of these
 three.  These examples are not intended to include all possibilities.
 The intent is to show that there are some implementation choices, each
 choice providing the same packet processing behavior, but with some
 consequences when implementing the device driver software that handles
 control plane API operations.
+
+Note 2: There are at least some implementations of action selectors
+for switch ASICs that provide additional behavior _not_ described in
+any of these variants.  For example, at least one implementation can
+enable a hashed selection among multiple physical ports in a group,
+such that even _without_ any control plane operations required, the
+data plane action selector will avoid selecting any ports that are
+currently down.  This is intended as a way to implement LAG port
+selection with very low latency from the time a port goes down, until
+the switch stops trying to send packets to that port.  That mechanism
+is out of scope for this article.
 
 + Variant 1
   + critical path: 3 dependent table lookups plus 1 integer modulo
