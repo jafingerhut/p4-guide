@@ -63,6 +63,66 @@ where `a2` in this example is one of the actions that the P4 developer
 specified in table `T`'s action list.
 
 
+# Why might an action profile be useful?
+
+Whether you use an action selector extern, or in general two tables
+with a "linking field" like `T_member_id` is for the two-table
+implementation above, what are the properties of this that are useful?
+
+
+## Reducing storage space in the data plane
+
+Storage space in high speed data planes is usually expensive, relative
+to general purpose DRAM in a laptop or server machine (see [How much
+does on-chip memory cost vs. commodity
+DRAM?](docs/cost-of-high-speed-storage.md)).
+
+If you have a table `T` with `M` entries, and the action parameters
+require `W` bits of storage, implementing that as a single P4 table
+will typically take at least `M*W` bits of storage in the data plane.
+If in your use case, the action parameters of those `M` entries can
+all be different from each other, then it might not be possible to
+reduce that.
+
+However, if for a particular table `T` you know that you only need at
+most `N` different sets of `action plus action parameter values` at a
+time, then the storage for an action selector is `M*X + N*W` bits of
+storage, where `X = lg(N)` is the base 2 logarithm of `N`, the number
+of bits required to represent the value `T_member_id` in the P4 code
+above.
+
+As just one example of the storage reduction possible, consider
+`M=100,000` entries with action parameters that include a source MAC
+and destination MAC address, so `W=96` bits.
+
++ With single table, storage is `M*W = 9,600,000` bits.
+
++ With restriction of at most `N = 1,000` different action parameter
+  values and using an action profile (or the two table implementation
+  described above), the storage is `M*X + N*W = 100,000 * 10 + 1,000 *
+  96 = 1,096,000` bits.
+
+
+## Reducing the time to make updates in packet processing behavior
+
+Regardless of the storage requirements, having a level of indirection
+in tables can enable some kinds of updates in packet processing
+behavior to be drastically more efficient, than if those levels of
+indirection are not present.
+
+For example, suppose that you create an action profile member that
+sends all packets to port 7.  In your table, you add 1,000 entries
+with different keys that all use that member.  If at some later point
+in time you wish all of those 1,000 entries to instead perform a
+different action, e.g. one that sends all packets to port 10, then
+updating that one member action suffices to achieve that change in
+behavior.  It requires updating only one table entry in hardware.
+
+If you instead had completely independent actions in all entries of
+your table, you would need to update 1,000 of its entries to achieve
+the same effect.
+
+
 # Restrictions enforced on control plane software for action profiles
 
 The next section contains details about the Thrift API for the open
