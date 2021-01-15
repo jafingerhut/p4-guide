@@ -18,15 +18,9 @@ consequences when implementing the device driver software that handles
 control plane API operations.
 
 Note 2: There are at least some implementations of action selectors
-for switch ASICs that provide additional behavior _not_ described in
-any of these variants.  For example, at least one implementation can
-enable a hashed selection among multiple physical ports in a group,
-such that even _without_ any control plane operations required, the
-data plane action selector will avoid selecting any ports that are
-currently down.  This is intended as a way to implement LAG port
-selection with very low latency from the time a port goes down, until
-the switch stops trying to send packets to that port.  That mechanism
-is out of scope for this article.
+for switch ASICs that provide additional behavior _not_ described
+in any of these variants.  See section [Action selectors with watch
+ports](#action-selectors-with-watch-ports) for more details.
 
 + Variant 1
   + critical path: 3 dependent table lookups plus 1 integer modulo
@@ -281,3 +275,84 @@ software to change `T_remapped_group_id` in the data plane via a
 single atomic modify operation on table `T_group_id_to_size`, enabling
 arbitrary changes to a group's membership in the same way as described
 for variant 3.
+
+
+# Action selectors with watch ports
+
+There are multiple ways to implement this behavior.  Two approaches
+are described below (one with only partial details).
+
+The goal here is to react as quickly as possible to a switch port
+changing from up to down state by no longer sending packets to those
+ports, since those packets would then be lost.  This mechanism is most
+often used for the part of the data plane that implements selecting a
+physical port in a LAG (Link Aggregation Group), because that is the
+point that an actual physical port is selected.
+
+One could consider using this feature for layer 3 forwarding decisions
+that use ECMP.  This is likely to be more expensive to implement than
+doing it only for LAG port selection, because the number of groups and
+their sizes tends to be far larger.
+
+The idea is that when the control plane API adds a member to the
+action selector, it associates a particular physical port with that
+member.  The intent is that if that port should later change state
+from up to down, all members associated with that port should become
+disabled/unselectable as soon as possible.  The assumption is that the
+control plane associates members with ports only when selecting that
+member would cause the packet to be sent out of that port.
+
+It is typical for low level port monitoring driver software to
+maintain the up/down state of the ports.  This is the first part of
+the system that detects and determines that a port will transition
+from state up to down.
+
+Below are two basic approaches for implementing this watch port
+behavior.
+
+(action selector with "watch port" approach #1)
+
+When the driver software detects an up to down transition on a port,
+it finds all action selector members associated with that port, and
+removes those members from the groups they are in.  It uses the same
+modifications of tables in the target that would be done if the
+control plane API requested removing those members.
+
+This removes from the reaction time the latency of the following
+steps:
+
++ notify the control plane about the port going down
++ the control plane determining what API calls to make in response
++ the control plane making those API calls
+
+With this approach, it can still take potentially many update
+operations in the target to reach the desired state of all such
+members being removed.  Using variants 2 or 3 described above, it
+should be usually O(1) updates for a LAG action selector, since a
+physical port would only be a member of one group.
+
+(action selector with "watch port" approach #2)
+
+When the driver software detects an up to down transition on a port,
+it writes a constant number of locations in the target device, perhaps
+as few as one, to indicate this change in port state.  All action
+selectors read that state for each packet being processed, and the
+data plane implementation of those action selectors has additional
+logic to select a member that prevents it from selecting a member
+whose watch port is down.  The details of how this can be done are
+beyond the scope of this article.
+
+This approach can potentially have somewhat lower latency of reaction
+time versus the previous one above, but for LAG selection, any
+potential difference seems to me quite small.
+
+Advantages of approach #1, as compared to approach #2:
++ No additional data plane logic for selecting members than those
+  already described for variants 1, 2, and 3.
+Disadvantages of approach #1:
++ Somewhat longer latency to react to ports going down for LAG, but
+  only a little bit.  Perhaps a bigger advantage in other use cases,
+  if there are any.
+
+The advantages and disadvantages of approach #2 compared to approach
+#1 are just the converse of those described above.
