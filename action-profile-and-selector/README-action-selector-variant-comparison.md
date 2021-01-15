@@ -356,3 +356,19 @@ Disadvantages of approach #1:
 
 The advantages and disadvantages of approach #2 compared to approach
 #1 are just the converse of those described above.
+
+A new potential case resulting from this feature is: What should the
+packet processing behavior be if an action selector group becomes
+empty, because its _last_ member is removed, or disabled?
+
+The PSA architecture proposes a table property
+`psa_empty_group_action` (see the [Action
+Selector](https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-action-selector)
+of the PSA spec), which is assigned an action that should be executed
+if an empty group is ever encountered while looking up a table that
+uses an action selector.  Such a feature is straightforward to
+implement for any of the action selector variants described: simply
+change the group's members not to 0 members, but to the single member
+specified by the `psa_empty_group_action`.  If you implement an action
+selector variant that that enables atomically changing the members of
+a group, this change can also be done atomically.
