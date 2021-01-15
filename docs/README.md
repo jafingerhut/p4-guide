@@ -1,5 +1,15 @@
 # Some articles on P4
 
+The target audience for these two articles is someone implementing the
+P4 action profile and action selector externs on a new target, but
+they might be of interest to a P4 developer who is curious how a
+target device might be working "under the hood":
+
++ [Implementing P4 action profiles using two P4
+  tables](/action-profile-and-selector/README-action-profile.md)
++ [Implementing P4 action selectors using P4 tables and a hash
+  function](/action-profile-and-selector/README-action-selector-variant-comparison.md)
+
 [Generating P4 code for fun and profit](/code-generation/README.md) -
 Using code generation to avoid drudgery in writing programs with
 repetitive code.
