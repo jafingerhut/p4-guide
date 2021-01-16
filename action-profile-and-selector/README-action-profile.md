@@ -65,9 +65,9 @@ specified in table `T`'s action list.
 
 # Why might an action profile be useful?
 
-Whether you use an action selector extern, or in general two tables
-with a "linking field" like `T_member_id` is for the two-table
-implementation above, what are the properties of this that are useful?
+Whether you use an action profile extern, or two tables with a
+"linking field" like `T_member_id` is for the two-table implementation
+above, what are the properties of this that are useful?
 
 
 ## Reducing storage space in the data plane
@@ -75,7 +75,7 @@ implementation above, what are the properties of this that are useful?
 Storage space in high speed data planes is usually expensive, relative
 to general purpose DRAM in a laptop or server machine (see [How much
 does on-chip memory cost vs. commodity
-DRAM?](docs/cost-of-high-speed-storage.md)).
+DRAM?](../docs/cost-of-high-speed-storage.md)).
 
 If you have a table `T` with `M` entries, and the action parameters
 require `W` bits of storage, implementing that as a single P4 table
@@ -85,7 +85,7 @@ all be different from each other, then it might not be possible to
 reduce that.
 
 However, if for a particular table `T` you know that you only need at
-most `N` different sets of `action plus action parameter values` at a
+most `N` different sets of "action plus action parameter values" at a
 time, then the storage for an action selector is `M*X + N*W` bits of
 storage, where `X = lg(N)` is the base 2 logarithm of `N`, the number
 of bits required to represent the value `T_member_id` in the P4 code
@@ -107,8 +107,8 @@ and destination MAC address, so `W=96` bits.
 
 Regardless of the storage requirements, having a level of indirection
 in tables can enable some kinds of updates in packet processing
-behavior to be drastically more efficient, than if those levels of
-indirection are not present.
+behavior to be drastically more efficient, as compared to the
+situation where those levels of indirection are not present.
 
 For example, suppose that you create an action profile member that
 sends all packets to port 7.  In your table, you add 1,000 entries
@@ -163,6 +163,12 @@ plane APIs for adding, deleting, and modifying entries in tables
 are _not_ enforced by the data plane driver software.  The control
 plane software _can_ write a configuration to the data plane where a
 miss can occur when looking up table `T_member_id_to_action`.
+
+Source for P4Runtime API on these control plane restrictions: Search
+for occurrences of the error name "FAILED_PRECONDITION" in the section
+named "ActionProfileMember & ActionProfileGroup" of the P4Runtime API
+specification:
+https://p4.org/p4runtime/spec/v1.3.0/P4Runtime-Spec.html#sec-action-profile-member-and-group
 
 
 # Details specific to simple_switch Thrift API and simple_switch_CLI commands
