@@ -349,10 +349,15 @@ potential difference seems to me quite small.
 Advantages of approach #1, as compared to approach #2:
 + No additional data plane logic for selecting members than those
   already described for variants 1, 2, and 3.
-Disadvantages of approach #1:
+
+Disadvantages of approach #1, as compared to approach #2:
 + Somewhat longer latency to react to ports going down for LAG, but
-  only a little bit.  Perhaps a bigger advantage in other use cases,
-  if there are any.
+  only a little bit.  If an action selector with watch ports were used
+  for some use case other than port selection in a LAG, perhaps there
+  would be a bigger difference here, but more investigation of the
+  details of how approach #2 is implemented in the data plane would be
+  needed, and a better idea of the number and size of action selector
+  groups required.
 
 The advantages and disadvantages of approach #2 compared to approach
 #1 are just the converse of those described above.
