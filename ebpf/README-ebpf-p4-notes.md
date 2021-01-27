@@ -80,8 +80,9 @@ non-packet-processing uses of EBPF here.
 It is possible to disable the verifier and execute EBPF programs
 without passing the verifier's checks, but I believe very few people
 want to do so.  They want the extra safety that comes with passing the
-verifier's checks.  Skipping those leaves you vulnerable to bugs in an
-EBPF program causing memory corruption in kernel data structures.
+verifier's checks.  Skipping those checks leaves you vulnerable to
+bugs in an EBPF program that could cause memory corruption in kernel
+data structures.
 
 Taking C programs as one example source language for targeting EBPF,
 clearly not all C programs can pass the verification checks,
@@ -124,6 +125,48 @@ that passed the Linux kernel verifier would be straightforward to JIT
 compile to a RISC CPU's instruction set.  Probably the most fiddly
 bits of that would be handling EBPF maps correctly, and perhaps
 Netronome might not support all EBPF map types.
+
+Another restriction not mentioned on that page is use of floating
+point arithmetic.  This StackOverflow question and answers:
+
+    https://stackoverflow.com/questions/13886338/use-of-floating-point-in-the-linux-kernel
+
+say that one can use floating point arithmetic operations in the Linux
+kernel, but you must call `kernel_fpu_begin()` before performing
+floating point arithmetic operations, and `kernel_fpu_end()` after
+finishing them, to save any processor-specific floating point state
+that might be there, and if not saved and restored explicitly, would
+in general cause user space programs using floating point operations
+to misbehave due to values of floating point arithmetic operations
+being changed at unpredictable times during their execution.
+
+I do not know whether the EBPF verifier allows one to call
+`kernel_fpu_begin()` and `kernel_fpu_end()` in their EBPF programs.
+If it is allowed, I do not know what the effects might be on
+performance.
+
+As for P4, it is safe in EBPF programs to use integer arithmetic, so
+any tricks you can use to do the mathematical operations you want
+using integer arithmetic, e.g. using fixed-point integer
+representations of non-integer values, will avoid the need to do
+floating point operations in an EBPF program.
+
+Here is an article written by someone who interned at Cloudflare and
+decided to use fixed-point representations so they could use integer
+arithmetic in an EBPF program, and even though they know the results
+were not the same that using floating point operations would give,
+they did find that the method they used produce results close enough
+for the purposes of their application:
+
+    https://blog.cloudflare.com/building-rakelimit/
+
+Another article on why switch/NIC devices that are relatively
+inexpensive per gigabit/second usually do not provide floating point
+operations in the fast path while processing packets, and what a P4
+developer can do about it.  All of those options are available to EBPF
+developers, too:
+
+    https://github.com/jafingerhut/p4-guide/blob/master/docs/floating-point-operations.md
 
 
 # Packet processing in EBPF
