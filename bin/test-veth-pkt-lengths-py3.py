@@ -107,7 +107,6 @@ sent_pkt = Ether(src='00:de:ad:be:ef:fa',dst='00:ca:fe:d0:0d:0f') / IP() / UDP()
 
 intf_name = 'veth0'
 peer_intf_name = 'veth1'
-create_and_cfg_veth_intf(intf_name, peer_intf_name)
 send_pkt_list = []
 for send_pkt_len in [14, 15, 42, 13, 4, 0]:
     # See whether Scapy's Ether() constructor throws an exception from
@@ -137,7 +136,8 @@ print("Packet(s) sent to interface '%s':" % (intf_name))
 for i in range(len(send_pkt_list)):
     pkt = send_pkt_list[i]
     print("%2d len %3d %s" % (i+1, len(pkt), scapy_pkt_to_hex_str(pkt)))
-print("Number of captured packets: %d" % (len(captured_pkt_list)))
+print("Number of captured packets on interface '%s': %d"
+      "" % (intf_name, len(captured_pkt_list)))
 for i in range(len(captured_pkt_list)):
     pkt = captured_pkt_list[i]
     print("%2d len %3d %s" % (i+1, len(pkt), scapy_pkt_to_hex_str(pkt)))
@@ -149,5 +149,3 @@ print(output.rstrip())
 print("output of 'uname -r' command:")
 output = subprocess.check_output(['uname', '-r'], stderr=subprocess.STDOUT)
 print(output.rstrip())
-
-clean_veth_pair(intf_name, peer_intf_name)

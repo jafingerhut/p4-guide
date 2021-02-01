@@ -76,3 +76,104 @@ Kernel version: As output by the `uname -r` command.
 | GOOD    | 4.18.0-22-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
 | GOOD    | 4.18.0-24-generic       | Ubuntu 18.04.2 | installed from Ubuntu via Software Updater |
 | GOOD    | 5.0.0-23-generic        | Ubuntu 18.04.3 | installed from Ubuntu via Software Updater |
+
+
+# What do Linux veth interfaces combined with Scapy do with short packets?
+
+Run the following test program.  Note: this Python program does not
+create and remove veth interfaces while it runs, but assumes that
+`veth0` and `veth1` have already been created and configured in the
+way that the `veth_setup.sh` script does, before it starts.  The
+reason is that it enables one to start a monitoring program like
+Wireshark or tcpdump on those interfaces before the test program
+begins.
+
+    sudo ../bin/veth_setup.sh
+
+    # tcpdump is optional, and if run, should be done in separate
+    # terminal windows from the test program below.
+    sudo tcpdump -xx -e -n --number -v -i veth0
+    sudo tcpdump -xx -e -n --number -v -i veth1
+
+    sudo ../bin/test-veth-pkt-lengths-py3.py
+
+Below are the results I saw using these software versions:
+
++ Ubuntu 18.04.5 Desktop Linux
++ Linux kernel 5.4.0-58-generic
++ Python 3.6.9
++ Scapy 2.4.3 (installed using `sudo pip3 install scapy`)
+
+```
+$ sudo ../bin/test-veth-pkt-lengths-py3.py
+Creating interface 'veth0' with peer 'veth1'...
+Device "veth0" does not exist.
+Error status 1 while trying to show the interface
+Configuring interface 'veth0'
+Configuring interface 'veth1'
+Interface creation done.
+Length 14 bytes - no exception calling Ether(b)
+Length 15 bytes - no exception calling Ether(b)
+Length 42 bytes - no exception calling Ether(b)
+Length 13 bytes - EXCEPTION calling Ether(b)
+<class 'struct.error'>
+Length  4 bytes - EXCEPTION calling Ether(b)
+<class 'struct.error'>
+Length  0 bytes - no exception calling Ether(b)
+sniff start
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+sniff stop returned 6 packet
+Packet(s) sent to interface 'veth0':
+ 1 len  14 00cafed00d0f00deadbeeffa0800
+ 2 len  15 00cafed00d0f00deadbeeffa080045
+ 3 len  42 00cafed00d0f00deadbeeffa08004500001c0001000040117cce7f0000017f0000010035003500080172
+ 4 len  13 00cafed00d0f00deadbeeffa08
+ 5 len   4 00cafed0
+ 6 len   0 
+Number of captured packets on interface 'veth0': 6
+ 1 len  14 00cafed00d0f00deadbeeffa0800
+ 2 len  15 00cafed00d0f00deadbeeffa080045
+ 3 len  42 00cafed00d0f00deadbeeffa08004500001c0001000040117cce7f0000017f0000010035003500080172
+ 4 len  60 00cafed00d0f00deadbeeffa080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+ 5 len  60 00cafed00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+ 6 len  60 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+output of 'uname -a' command:
+b'Linux andy-vm 5.4.0-58-generic #64~18.04.1-Ubuntu SMP Wed Dec 9 17:11:11 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux'
+output of 'uname -r' command:
+b'5.4.0-58-generic'
+Deleting interface pair veth0<->veth1
+```
+
+Conclusions I draw from this output:
+
++ When you use Scapy's `Ether()` call on a value with type `bytes`, it
+  throws an exception if that `bytes` array has a length in bytes in
+  the range [1, 13], inclusive.  This seems reasonable to me, given
+  that an Ethernet header must contain 14 bytes.
+  + For some reason I do not know, calling `Ether()` on a value with
+    type `bytes` with length 0 does not throw an exception.
++ Linux veth interfaces can send and receive packets with lengths 14
+  bytes and longer, and no padding will be added, even though these
+  are shorter than the minimum Ethernet frame length of 64 bytes.
++ It is possible to use Scapy's `Raw()` to create packets shorter than
+  14 bytes, and you can send them to the Linux veth interfaces, but in
+  that case some software somewhere is padding them so that they are
+  received with a length of 60 bytes, which is the minimum Ethernet
+  frame length of 64 bytes, except for the 4-byte CRC at the end.
+  + From running the `tcpdump` commands above on both interfaces
+    `veth0` and `veth1`, both of them show a length of 60 bytes for
+    the last 3 packets, so this padding seems to be added somewhere
+    between the call to `sendp` in the Python test program, and the
+    veth0 interface.
