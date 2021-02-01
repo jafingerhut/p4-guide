@@ -43,7 +43,38 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
+ubuntu_version_warning() {
+    1>&2 echo "This software has only been tested on Ubuntu 16.04 and"
+    1>&2 echo "18.04."
+    1>&2 echo ""
+    1>&2 echo "Proceed installing manually at your own risk of"
+    1>&2 echo "significant time spent figuring out how to make it all"
+    1>&2 echo "work, or consider getting VirtualBox and creating an"
+    1>&2 echo "Ubuntu virtual machine with one of the tested versions."
+}
+
 abort_script=0
+
+lsb_release >& /dev/null
+if [ $? != 0 ]
+then
+    1>&2 echo "No 'lsb_release' found in your command path."
+    ubuntu_version_warning
+    exit 1
+fi
+
+distributor_id=`lsb_release -si`
+ubuntu_release=`lsb_release -s -r`
+if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "16.04" -o "${ubuntu_release}" = "18.04" \) ]
+then
+    echo "Found distributor '${distributor_id}' release '${ubuntu_release}'.  Continuing with installation."
+else
+    ubuntu_version_warning
+    1>&2 echo ""
+    1>&2 echo "Here is what command 'lsb_release -a' shows this OS to be:"
+    lsb_release -a
+    exit 1
+fi
 
 # Minimum required system memory is 2 GBytes, minus a few MBytes
 # because from experiments I have run on several different Ubuntu
@@ -123,21 +154,19 @@ set -x
 # does not speed things up a lot to run multiple jobs in parallel.
 MAX_PARALLEL_JOBS=1
 
-ubuntu_release=`lsb_release -s -r`
-
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It regularly tested on freshly installed Ubuntu 16.04 and 18.04"
-echo "systems, with all Ubuntu software updates as of the date of"
-echo "testing.  See this directory for log files recording the last"
+echo "It is regularly tested on freshly installed Ubuntu 16.04 and"
+echo "18.04 systems, with all Ubuntu software updates as of the date"
+echo "of testing.  See this directory for log files recording the last"
 echo "date this script was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 9.0 GB of disk space."
+echo "The files installed by this script consume about 9 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
@@ -149,8 +178,8 @@ echo "+ protobuf: github.com/google/protobuf v3.6.1"
 echo "+ gRPC: github.com/google/grpc.git v1.17.2"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2019-Jun-10, also installs these things:"
-echo "  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script that changes behavioral-model to install thrift 0.12.0 instead)"
+echo "  which, as of 2020-Dec-12, also installs these things:"
+echo "  + thrift version 0.11.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
@@ -239,6 +268,26 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
+# The step below was not needed in order to get a successful
+# installation on Ubuntu 16.04 before some time around Nov or Dec
+# 2020.  For some reason I am not sure of, it seems that the Python3
+# cffi package installed on Ubuntu 16.04 by default causes the command
+# `sudo pip3 install cffi` in behavioral-model/travis/install-nnpy.sh
+# to fail.
+
+# Removing the Ubuntu package shown below causes 3 other packages that
+# depend upon it to be removed, too, as of 2020-Dec, but it seems
+# these are not essential Ubuntu functionality, and it continues to do
+# most things well without it, so unless I find a better way to avoid
+# this conflict, removing this Ubuntu package seems to be a reasonable
+# workaround.  I will do it only for Ubuntu 16.04 systems, since it
+# seems not to cause a problem for 18.04.
+
+if [ "${ubuntu_release}" = "16.04" ]
+then
+    sudo apt-get --yes purge python3-cffi-backend
+fi
+
 # Install Python2.  This is required for p4c, but there are several
 # earlier packages that check for python in their configure scripts,
 # and on a minimal Ubuntu 18.04 Desktop Linux system they find
@@ -268,15 +317,16 @@ sudo apt-get --yes install pkg-config
 # 19.10, so install it explicitly here.
 sudo apt-get --yes install python3-pip python-pip
 
-pip --version
-pip3 --version
+pip -V  || echo "No such command in PATH: pip"
+pip2 -V || echo "No such command in PATH: pip2"
+pip3 -V || echo "No such command in PATH: pip3"
 # At multiple points I do a 'pip list' command.  This is not required
 # for a successful installation -- I do it mainly because I am curious
 # to see in the log output files from running this script what
 # packages and versions were installed at those times during script
 # execution.
-pip list
-pip3 list
+pip list  || echo "Some error occurred attempting to run command: pip"
+pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
@@ -413,7 +463,7 @@ cd behavioral-model
 git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-thrift-0.12.0.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/behavioral-model-use-correct-libssl-pkg.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
@@ -538,7 +588,7 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
 
-pip list
+pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
 
 set +e

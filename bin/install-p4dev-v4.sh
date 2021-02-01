@@ -36,7 +36,39 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
+ubuntu_version_warning() {
+    1>&2 echo "This software has only been tested on Ubuntu 18.04 and"
+    1>&2 echo "20.04, and is known to fail in a few tests on Ubuntu"
+    1>&2 echo "16.04."
+    1>&2 echo ""
+    1>&2 echo "Proceed installing manually at your own risk of"
+    1>&2 echo "significant time spent figuring out how to make it all"
+    1>&2 echo "work, or consider getting VirtualBox and creating an"
+    1>&2 echo "Ubuntu virtual machine with one of the tested versions."
+}
+
 abort_script=0
+
+lsb_release >& /dev/null
+if [ $? != 0 ]
+then
+    1>&2 echo "No 'lsb_release' found in your command path."
+    ubuntu_version_warning
+    exit 1
+fi
+
+distributor_id=`lsb_release -si`
+ubuntu_release=`lsb_release -s -r`
+if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" \) ]
+then
+    echo "Found distributor '${distributor_id}' release '${ubuntu_release}'.  Continuing with installation."
+else
+    ubuntu_version_warning
+    1>&2 echo ""
+    1>&2 echo "Here is what command 'lsb_release -a' shows this OS to be:"
+    lsb_release -a
+    exit 1
+fi
 
 # Minimum required system memory is 2 GBytes, minus a few MBytes
 # because from experiments I have run on several different Ubuntu
@@ -116,17 +148,15 @@ set -x
 # does not speed things up a lot to run multiple jobs in parallel.
 MAX_PARALLEL_JOBS=1
 
-ubuntu_release=`lsb_release -s -r`
-
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It is regularly tested on freshly installed Ubuntu 20.04 system,"
-echo "with all Ubuntu software updates as of the date of testing.  See"
-echo "this directory for log files recording the last date this script"
-echo "was tested on its supported operating systems:"
+echo "It is regularly tested on freshly installed Ubuntu 18.04 and"
+echo "20.04 system, with all Ubuntu software updates as of the date of"
+echo "testing.  See this directory for log files recording the last"
+echo "date this script was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
@@ -220,6 +250,14 @@ move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     SRC_DIR="${PY3LOCALPATH}/site-packages"
     DST_DIR="${PY3LOCALPATH}/dist-packages"
 
+    # When I tested this script on Ubunt 16.04, there was no
+    # site-packages directory.  Return without doing anything else if
+    # this is the case.
+    if [ ! -d ${SRC_DIR} ]
+    then
+	return 0
+    fi
+
     # Do not move any __pycache__ directory that might be present.
     sudo rm -fr ${SRC_DIR}/__pycache__
 
@@ -303,6 +341,26 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
+# The step below was not needed in order to get a successful
+# installation on Ubuntu 16.04 before some time around Nov or Dec
+# 2020.  For some reason I am not sure of, it seems that the Python3
+# cffi package installed on Ubuntu 16.04 by default causes the command
+# `sudo pip3 install cffi` in behavioral-model/travis/install-nnpy.sh
+# to fail.
+
+# Removing the Ubuntu package shown below causes 3 other packages that
+# depend upon it to be removed, too, as of 2020-Dec, but it seems
+# these are not essential Ubuntu functionality, and it continues to do
+# most things well without it, so unless I find a better way to avoid
+# this conflict, removing this Ubuntu package seems to be a reasonable
+# workaround.  I will do it only for Ubuntu 16.04 systems, since it
+# seems not to cause a problem for 18.04.
+
+if [ "${ubuntu_release}" = "16.04" ]
+then
+    sudo apt-get --yes purge python3-cffi-backend
+fi
+
 # Install Ubuntu packages needed by protobuf v3.6.1, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 # zlib is not required to install protobuf, nor do I think it is
@@ -329,7 +387,7 @@ pip3 -V || echo "No such command in PATH: pip3"
 # packages and versions were installed at those times during script
 # execution.
 pip list  || echo "Some error occurred attempting to run command: pip"
-pip3 list
+pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt

@@ -1,0 +1,319 @@
+This software has only been tested on Ubuntu 16.04 and
+18.04.
+
+Proceed installing manually at your own risk of
+significant time spent figuring out how to make it all
+work, or consider getting VirtualBox and creating an
+Ubuntu virtual machine with one of the tested versions.
+
+Here is what command 'lsb_release -a' shows this OS to be:
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 20.04.1 LTS
+Release:	20.04
+Codename:	focal
+Minimum recommended memory to run this script: 1920 MBytes
+Memory on this system from /proc/meminfo:      1987 MBytes -> enough
+Minimum free disk space to run this script:    10240 MBytes
+Free disk space on this system from df output: 49429 MBytes -> enough
+Found directory containing patches: /home/andy/p4-guide/bin/grpc-v1.17.2-patches-for-ubuntu19.10
+Found directory containing patches: /home/andy/p4-guide/bin/patches
+Passed all sanity checks
++ MAX_PARALLEL_JOBS=1
++ set +x
+This script builds and installs the P4_16 (and also P4_14)
+compiler, and the behavioral-model software packet forwarding
+program, that can behave as just about any legal P4 program.
+
+It is regularly tested on freshly installed Ubuntu 16.04 and
+18.04 systems, with all Ubuntu software updates as of the date
+of testing.  See this directory for log files recording the last
+date this script was tested on its supported operating systems:
+
+    https://github.com/jafingerhut/p4-guide/tree/master/bin/output
+
+The files installed by this script consume about 9 GB of disk space.
+
+On a 2015 MacBook Pro with a decent speed Internet connection
+and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it
+took about 90 to 100 minutes.
+
+Versions of software that will be installed by this script:
+
++ protobuf: github.com/google/protobuf v3.6.1
++ gRPC: github.com/google/grpc.git v1.17.2
++ PI: github.com/p4lang/PI latest version
++ behavioral-model: github.com/p4lang/behavioral-model latest version
+  which, as of 2019-Jun-10, also installs these things:
+  + thrift version 0.12.0 (not 0.9.2, because of a patch in this install script that changes behavioral-model to install thrift 0.12.0 instead)
+  + nanomsg version 1.0.0
+  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22
++ p4c: github.com/p4lang/p4c latest version
++ Mininet: github.com/mininet/mininet latest version
++ Python packages: grpcio 1.17.1, protobuf 3.6.1
++ Python packages: crcmod, latest version
+
+Note that anything installed as 'the latest version' can change
+its precise contents from one run of this script to another.
+That is an intentional property of this script -- to get the
+latest version of that software.  If you want particular
+versions that are not the latest, you can modify this script by
+adding 'git checkout <tag>' and/or 'git checkout <commit-sha>'
+command at the appropriate places.
+
++ set +x
+------------------------------------------------------------
+Time and disk space used before installation begins:
++ date
+Tue 15 Dec 2020 09:53:07 PM PST
++ df -h .
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda5        59G  7.1G   49G  13% /
++ df -BM .
+Filesystem     1M-blocks  Used Available Use% Mounted on
+/dev/sda5         59713M 7223M    49429M  13% /
++ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 20.04.1 LTS
+Release:	20.04
+Codename:	focal
++ python -V
+./p4-guide/bin/install-p4dev-v2.sh: line 235: python: command not found
++ echo 'No such command in PATH: python'
+No such command in PATH: python
++ python2 -V
+./p4-guide/bin/install-p4dev-v2.sh: line 236: python2: command not found
++ echo 'No such command in PATH: python2'
+No such command in PATH: python2
++ python3 -V
+Python 3.8.5
++ pip -V
+./p4-guide/bin/install-p4dev-v2.sh: line 238: pip: command not found
++ echo 'No such command in PATH: pip'
+No such command in PATH: pip
++ pip2 -V
+./p4-guide/bin/install-p4dev-v2.sh: line 239: pip2: command not found
++ echo 'No such command in PATH: pip2'
+No such command in PATH: pip2
++ pip3 -V
+./p4-guide/bin/install-p4dev-v2.sh: line 240: pip3: command not found
++ echo 'No such command in PATH: pip3'
+No such command in PATH: pip3
++ sudo apt-get --yes install git vim
+Reading package lists...
+Building dependency tree...
+Reading state information...
+git is already the newest version (1:2.25.1-1ubuntu3).
+The following packages were automatically installed and are no longer required:
+  python3-click python3-colorama
+Use 'sudo apt autoremove' to remove them.
+Suggested packages:
+  ctags vim-doc vim-scripts
+The following NEW packages will be installed:
+  vim vim-runtime
+0 upgraded, 2 newly installed, 0 to remove and 1 not upgraded.
+Need to get 7,111 kB of archives.
+After this operation, 34.6 MB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu focal/main amd64 vim-runtime all 2:8.1.2269-1ubuntu5 [5,873 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu focal/main amd64 vim amd64 2:8.1.2269-1ubuntu5 [1,238 kB]
+Fetched 7,111 kB in 1s (6,885 kB/s)
+Selecting previously unselected package vim-runtime.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 129256 files and directories currently installed.)
+Preparing to unpack .../vim-runtime_2%3a8.1.2269-1ubuntu5_all.deb ...
+Adding 'diversion of /usr/share/vim/vim81/doc/help.txt to /usr/share/vim/vim81/doc/help.txt.vim-tiny by vim-runtime'
+Adding 'diversion of /usr/share/vim/vim81/doc/tags to /usr/share/vim/vim81/doc/tags.vim-tiny by vim-runtime'
+Unpacking vim-runtime (2:8.1.2269-1ubuntu5) ...
+Selecting previously unselected package vim.
+Preparing to unpack .../vim_2%3a8.1.2269-1ubuntu5_amd64.deb ...
+Unpacking vim (2:8.1.2269-1ubuntu5) ...
+Setting up vim-runtime (2:8.1.2269-1ubuntu5) ...
+Setting up vim (2:8.1.2269-1ubuntu5) ...
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vim (vim) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vimdiff (vimdiff) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rvim (rvim) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rview (rview) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vi (vi) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/view (view) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/ex (ex) in auto mode
+Processing triggers for man-db (2.9.1-1) ...
++ CHILD_PROCESS_PID=2139
++ set +x
++ trap clean_up SIGHUP SIGINT SIGTERM
++ sudo apt-get --yes install python
++ /home/andy/p4-guide/bin/keep-sudo-credentials-fresh.sh
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  python3-click python3-colorama
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  libpython2-stdlib libpython2.7-minimal libpython2.7-stdlib python2
+  python2-minimal python2.7 python2.7-minimal
+Suggested packages:
+  python2-doc python-tk python2.7-doc binfmt-support
+The following NEW packages will be installed:
+  libpython2-stdlib libpython2.7-minimal libpython2.7-stdlib python-is-python2
+  python2 python2-minimal python2.7 python2.7-minimal
+0 upgraded, 8 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3,803 kB of archives.
+After this operation, 16.4 MB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 libpython2.7-minimal amd64 2.7.18-1~20.04 [335 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 python2.7-minimal amd64 2.7.18-1~20.04 [1,270 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python2-minimal amd64 2.7.17-2ubuntu4 [27.5 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 libpython2.7-stdlib amd64 2.7.18-1~20.04 [1,886 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 python2.7 amd64 2.7.18-1~20.04 [248 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libpython2-stdlib amd64 2.7.17-2ubuntu4 [7,072 B]
+Get:7 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python2 amd64 2.7.17-2ubuntu4 [26.5 kB]
+Get:8 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python-is-python2 all 2.7.17-4 [2,496 B]
+Fetched 3,803 kB in 1s (5,400 kB/s)
+Selecting previously unselected package libpython2.7-minimal:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 131092 files and directories currently installed.)
+Preparing to unpack .../0-libpython2.7-minimal_2.7.18-1~20.04_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.18-1~20.04) ...
+Selecting previously unselected package python2.7-minimal.
+Preparing to unpack .../1-python2.7-minimal_2.7.18-1~20.04_amd64.deb ...
+Unpacking python2.7-minimal (2.7.18-1~20.04) ...
+Selecting previously unselected package python2-minimal.
+Preparing to unpack .../2-python2-minimal_2.7.17-2ubuntu4_amd64.deb ...
+Unpacking python2-minimal (2.7.17-2ubuntu4) ...
+Selecting previously unselected package libpython2.7-stdlib:amd64.
+Preparing to unpack .../3-libpython2.7-stdlib_2.7.18-1~20.04_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.18-1~20.04) ...
+Selecting previously unselected package python2.7.
+Preparing to unpack .../4-python2.7_2.7.18-1~20.04_amd64.deb ...
+Unpacking python2.7 (2.7.18-1~20.04) ...
+Selecting previously unselected package libpython2-stdlib:amd64.
+Preparing to unpack .../5-libpython2-stdlib_2.7.17-2ubuntu4_amd64.deb ...
+Unpacking libpython2-stdlib:amd64 (2.7.17-2ubuntu4) ...
+Setting up libpython2.7-minimal:amd64 (2.7.18-1~20.04) ...
+Setting up python2.7-minimal (2.7.18-1~20.04) ...
+Linking and byte-compiling packages for runtime python2.7...
+Setting up python2-minimal (2.7.17-2ubuntu4) ...
+Selecting previously unselected package python2.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 131839 files and directories currently installed.)
+Preparing to unpack .../python2_2.7.17-2ubuntu4_amd64.deb ...
+Unpacking python2 (2.7.17-2ubuntu4) ...
+Selecting previously unselected package python-is-python2.
+Preparing to unpack .../python-is-python2_2.7.17-4_all.deb ...
+Unpacking python-is-python2 (2.7.17-4) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.18-1~20.04) ...
+Setting up python2.7 (2.7.18-1~20.04) ...
+Setting up libpython2-stdlib:amd64 (2.7.17-2ubuntu4) ...
+Setting up python2 (2.7.17-2ubuntu4) ...
+Setting up python-is-python2 (2.7.17-4) ...
+Processing triggers for mime-support (3.64ubuntu1) ...
+Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for desktop-file-utils (0.24-1ubuntu3) ...
++ sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
+Reading package lists...
+Building dependency tree...
+Reading state information...
+g++ is already the newest version (4:9.3.0-1ubuntu2).
+g++ set to manually installed.
+make is already the newest version (4.2.1-1.2).
+make set to manually installed.
+unzip is already the newest version (6.0-25ubuntu1).
+unzip set to manually installed.
+The following packages were automatically installed and are no longer required:
+  python3-click python3-colorama
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  autotools-dev libcurl4 libltdl-dev libsigsegv2 m4
+Suggested packages:
+  autoconf-archive gnu-standards autoconf-doc gettext libtool-doc gfortran
+  | fortran95-compiler gcj-jdk m4-doc
+The following NEW packages will be installed:
+  autoconf automake autotools-dev curl libcurl4 libltdl-dev libsigsegv2
+  libtool m4
+0 upgraded, 9 newly installed, 0 to remove and 1 not upgraded.
+Need to get 1,814 kB of archives.
+After this operation, 7,338 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libsigsegv2 amd64 2.12-2 [13.9 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu focal/main amd64 m4 amd64 1.4.18-4 [199 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu focal/main amd64 autoconf all 2.69-11.1 [321 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu focal/main amd64 autotools-dev all 20180224.1 [39.6 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu focal/main amd64 automake all 1:1.16.1-4ubuntu6 [522 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 libcurl4 amd64 7.68.0-1ubuntu2.4 [234 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 curl amd64 7.68.0-1ubuntu2.4 [161 kB]
+Get:8 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libltdl-dev amd64 2.4.6-14 [162 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtool all 2.4.6-14 [161 kB]
+Fetched 1,814 kB in 0s (4,354 kB/s)
+Selecting previously unselected package libsigsegv2:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 131871 files and directories currently installed.)
+Preparing to unpack .../0-libsigsegv2_2.12-2_amd64.deb ...
+Unpacking libsigsegv2:amd64 (2.12-2) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../1-m4_1.4.18-4_amd64.deb ...
+Unpacking m4 (1.4.18-4) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../2-autoconf_2.69-11.1_all.deb ...
+Unpacking autoconf (2.69-11.1) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../3-autotools-dev_20180224.1_all.deb ...
+Unpacking autotools-dev (20180224.1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../4-automake_1%3a1.16.1-4ubuntu6_all.deb ...
+Unpacking automake (1:1.16.1-4ubuntu6) ...
+Selecting previously unselected package libcurl4:amd64.
+Preparing to unpack .../5-libcurl4_7.68.0-1ubuntu2.4_amd64.deb ...
+Unpacking libcurl4:amd64 (7.68.0-1ubuntu2.4) ...
+Selecting previously unselected package curl.
+Preparing to unpack .../6-curl_7.68.0-1ubuntu2.4_amd64.deb ...
+Unpacking curl (7.68.0-1ubuntu2.4) ...
+Selecting previously unselected package libltdl-dev:amd64.
+Preparing to unpack .../7-libltdl-dev_2.4.6-14_amd64.deb ...
+Unpacking libltdl-dev:amd64 (2.4.6-14) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../8-libtool_2.4.6-14_all.deb ...
+Unpacking libtool (2.4.6-14) ...
+Setting up autotools-dev (20180224.1) ...
+Setting up libsigsegv2:amd64 (2.12-2) ...
+Setting up libcurl4:amd64 (7.68.0-1ubuntu2.4) ...
+Setting up curl (7.68.0-1ubuntu2.4) ...
+Setting up libtool (2.4.6-14) ...
+Setting up m4 (1.4.18-4) ...
+Setting up autoconf (2.69-11.1) ...
+Setting up automake (1:1.16.1-4ubuntu6) ...
+update-alternatives: using /usr/bin/automake-1.16 to provide /usr/bin/automake (automake) in auto mode
+Setting up libltdl-dev:amd64 (2.4.6-14) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.1) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for install-info (6.7.0.dfsg.2-5) ...
++ sudo apt-get --yes install zlib1g-dev
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  python3-click python3-colorama
+Use 'sudo apt autoremove' to remove them.
+The following NEW packages will be installed:
+  zlib1g-dev
+0 upgraded, 1 newly installed, 0 to remove and 1 not upgraded.
+Need to get 155 kB of archives.
+After this operation, 605 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu1.2 [155 kB]
+Fetched 155 kB in 0s (1,015 kB/s)
+Selecting previously unselected package zlib1g-dev:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 132238 files and directories currently installed.)
+Preparing to unpack .../zlib1g-dev_1%3a1.2.11.dfsg-2ubuntu1.2_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu1.2) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu1.2) ...
+Processing triggers for man-db (2.9.1-1) ...
++ sudo apt-get --yes install pkg-config
+Reading package lists...
+Building dependency tree...
+Reading state information...
+pkg-config is already the newest version (0.29.1-0ubuntu4).
+pkg-config set to manually installed.
+The following packages were automatically installed and are no longer required:
+  python3-click python3-colorama
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
++ sudo apt-get --yes install python3-pip python-pip
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package python-pip

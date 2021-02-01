@@ -15,6 +15,10 @@ Start with:
     of running the install script -- it will download approximately 1
     to 2 GByte of data.
 
+Note: These scripts have been reported NOT WORKING on WSL (Windows
+Subsystem for Linux).  I have had success running supported versions
+of Ubuntu Linux using VirtualBox on both macOS and Windows 10 hosts.
+
 Then run the commands below in a terminal.  Note:
 + You may run the commands from any directory you wish -- I typically
   run it from the home directory of my account.  Whichever directory
@@ -29,9 +33,6 @@ Then run the commands below in a terminal.  Note:
   while the script runs.  The only commands run as superuser are those
   that install files in system-wide directories such as
   `/usr/local/bin`.
-+ The script requires several other files in this repository to be
-  present, at least some files in the `bin/patches` directory.  If you
-  copy only the script to another system, it will fail.
 ```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
@@ -73,15 +74,17 @@ informed decision.
   identical to `install-p4dev-v2.sh`, except it uses slightly older
   versions of the Protobuf, Thrift, and gRPC libraries, that were
   until some time during 2019 the latest supported versions.
-* The newest script
-  [`install-p4dev-v4.sh`](install-p4dev-v4.sh) is based on
-  `install-p4dev-v2.sh`, but has several changes enabling it to work
-  on Ubuntu 20.04 Linux systems.  Ubuntu 20.04 has Python3 installed
-  by default, but does not have Python2 installed by default.  The
-  `install-p4dev-v4.sh` script tries to only install Python3 modules,
-  and in fact it will not install Python2 at all except very near the
-  end, because the install script for Mininet causes Python2 to be
-  installed still.  See below 
+* The newest script [`install-p4dev-v4.sh`](install-p4dev-v4.sh) is
+  based on `install-p4dev-v2.sh`, but has several changes enabling it
+  to work on Ubuntu 20.04 Linux systems.  Ubuntu 20.04 has Python3
+  installed by default, but does not have Python2 installed by
+  default.  The `install-p4dev-v4.sh` script tries to only install
+  Python3 modules, and in fact it will not install Python2 at all
+  except very near the end, because the install script for Mininet
+  causes Python2 to be installed still.  The p4lang/tutorials
+  exercises will not work as of 2020-Dec on Ubuntu 20.04 with this
+  install script, unless you make some Python-related changes to the
+  tutorials code -- search for "20.04" below for more details.
 * The older shell script [`install-p4dev.sh`](install-p4dev.sh) does
   not install anything unless you edit it.  The messages that appear
   when you run it explain why, and how to change it if you really want
@@ -141,10 +144,11 @@ fail.  There is an _EXPERIMENTAL_ patch to the `p4lang/tutorials` code
 (meaning it could still have many bugs) in the file
 `p4-guide/bin/patches/tutorials-python3-changes1.patch` that enables
 at least the test described below to work on such a system.  You can
-apply it by using the command `patch -p1 <
-tutorials-python3-changes1.patch` when inside the `tutorials`
-directory after cloning the tutorials repository, if you wish to try
-it out.
+apply it by using the command below when inside the `tutorials`
+directory after cloning the tutorials repository:
+```bash
+patch -p1 < tutorials-python3-changes1.patch
+```
 
 Another quick test is to try running the solution to the `basic`
 exercise in the tutorials repository.  To do so, follow these steps:

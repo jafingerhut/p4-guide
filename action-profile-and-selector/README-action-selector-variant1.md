@@ -1,9 +1,16 @@
 # action_selector tables variant 1
 
+See the comparison between action selector variants at
+[README-action-selector-variant-comparison.md](README-action-selector-variant-comparison.md)
+for links to all of them.
+
 Having a table `T` with `implementation =
-action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
+action_selector(HashAlgorithm.H, N, W)` in a P4_16 program with the
+v1model architecture, like this:
 
 ```
+    // Program fragment #1
+
     table T {
         key = {
             // <table T selectorKeyElementList> contains all fields of
@@ -24,6 +31,8 @@ action_selector(HashAlgorithm.H, N, W)` in a P4_16 program, like this:
 is functionally equivalent to the code below with three tables:
 
 ```
+    // Program fragment #2
+
     // X is the smallest integer such that 2^X >= N, so that a bit<X>
     // value is just large enough to represent an index into a table
     // with N entries.
@@ -77,6 +86,76 @@ is functionally equivalent to the code below with three tables:
     }
     T_member_id_to_action.apply();
 ```
+
+
+# Example table configuration and packet processing
+
+Below is a figure showing an example configuration with several
+entries in the three tables of Program fragment #2.
+
+<img src="figures/action-selector-variant1-example.png" alt="Example table configuration for 'variant 1' 3-table implementation of a P4 action selector" width="900" align="middle">
+
+Example for packet #1 that selects a member from a group with 5
+members:
+
++ packet #1 looks up table `T_key_to_group_or_member_id` and matches
+  the entry with key K4
++ the action `T_set_group_id_and_size` of that entry performs these
+  assignments:
+  + `T_group_id = 38`
+  + `T_group_size = 5`
++ After that action is done, these assignments are performed:
+  + `T_selector_hash = 0xCAFF` (made-up hash value for this example)
+  + `T_member_within_group = 0xCAFF % 5 = 2`
++ Look up table `T_group_to_member_id` with these key field values:
+  + `T_group_id = 38`
+  + `T_member_within_group = 2`
++ the action `T_set_member_id` of the matching entry performs this
+  assignment:
+  + `T_member_id = 10`
++ Look up table `T_member_id_to_action` with key field value:
+  + `T_member_id = 10`
++ the action `a1(4, 17)` is executed, where `a1` is one of the actions
+  that the P4 developer specified in table `T`'s action list.
+
+Example for packet #2 that directly specifies a member in the first
+table lookup:
+
++ packet #2 looks up table `T_key_to_group_or_member_id` and matches
+  the entry with key K5
++ the action `T_set_member_id` of the matching entry performs this
+  assignment:
+  + `T_member_id = 14`
++ The `switch` statement does nothing.  There is an implicit `default`
+  case for the `switch` statement that is a no-op.
++ Look up table `T_member_id_to_action` with key field value:
+  + `T_member_id = 14`
++ the action `a2(29)` is executed, where `a2` is one of the actions
+  that the P4 developer specified in table `T`'s action list.
+
+WARNING: My opinion is that variant 1 described here has a significant
+disadvantage, and anyone implementing P4 on a target device should
+think twice (or three times) before using it.  I believe that the main
+purpose of describing variant 1 in detail is to clearly show what this
+disadvantage is.
+
+In the example configuration above, suppose the control plane software
+wishes to remove a member from group 38, so it will have 4 elements.
+
+What table entries need to be changed to implement this?  There are 3
+entries in table `T_key_to_group_or_member_id`, the ones with keys K1,
+K4, and K6, that all contain the value 5 for the group size.  All of
+those occurrences must be changed to 4.  That can be done, of course,
+but note that depending upon the use case for this table, there could
+be thousands of entries in `T_key_to_group_or_member_id` that need to
+be updated.
+
+This is not necessarily a functional problem for how packets are
+processed, but it is potentially a serious performance problem for
+implementing the control plane software.
+
+
+# Detailed notes/questions on program fragment #2
 
 Note 1: TBD: Should T_group_size be X bits wide?  It needs to be able
 to represent any integer value in the range [1, M], where M is the
