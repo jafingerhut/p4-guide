@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+
+
+import os
+import queue
+import subprocess
+import sys
+import time
+import threading
+
+try:
+    from scapy.all import sniff, sendp, Ether, Raw, IP, UDP
+except:
+    print("Install Scapy.  On Ubuntu 16.04 or 18.04, you can use these commands:")
+    print("    sudo apt-get install python3-pip")
+    print("    pip3 install scapy")
+    sys.exit(1)
+
+def clean_veth_pair(veth0, veth1):
+    
+    if check_intf_exists(veth0):
+        print("Deleting interface pair %s<->%s" % (veth0, veth1))
+        subprocess.call(['ip', 'link', 'del', veth0])
+
+    #removing one side of the pair is enough
+    #if check_intf_exists(veth1):
+    #    print("Deleting interface %s" % (veth1))
+    #    subprocess.call(['ip', 'link', 'del', veth1])
+
+def check_intf_exists(intf_name):
+    intf_exists = False
+    try:
+        args=['ip', 'link', 'show', intf_name]
+        subprocess.check_output(args)
+        intf_exists = True
+    except subprocess.CalledProcessError as e:
+        print("Error status %d while trying to show the interface" % (e.returncode))
+        # We expect it to be 1 if the error was that the interface
+        # does not exist.
+        assert e.returncode == 1
+        intf_exists = False
+    return intf_exists
+
+
+def create_and_cfg_veth_intf(intf_name, peer_intf_name):
+    print("Creating interface '%s' with peer '%s'..."
+          "" % (intf_name, peer_intf_name))
+
+    intf_exists = check_intf_exists(intf_name)
+    if not intf_exists:
+        args=['ip', 'link', 'add', 'name', intf_name, 'type', 'veth',
+              'peer', 'name', peer_intf_name]
+        subprocess.check_output(args)
+
+    for i in range(2):
+        if i == 0:
+            iname = intf_name
+        else:
+            iname = peer_intf_name
+        print("Configuring interface '%s'" % (iname))
+        args=['ip', 'link', 'set', 'dev', iname, 'up']
+        subprocess.check_output(args)
+        args=['ip', 'link', 'set', iname, 'mtu', '9500']
+        subprocess.check_output(args)
+        args=['sysctl', 'net.ipv6.conf.' + iname + '.disable_ipv6=1']
+        subprocess.check_output(args)
+    print("Interface creation done.")
+
+
+def sniff_record(q, intf_name):
+    print("sniff start")
+    pkts = sniff(timeout=3, iface=intf_name)
+    print("sniff stop returned %d packet" % (len(pkts)))
+    q.put(pkts)
+
+def send_pkts_and_capture(intf_name, packet_list):
+    '''Send packets in list `port_packet_list` to simple_switch
+    process, while capturing packets sent to simple_switch, and
+    output by simple_switch, by Scapy sniff() call.'''
+
+    q = queue.Queue()
+    thd = threading.Thread(name="sniff_thread",
+                           target=lambda: sniff_record(q, intf_name))
+    thd.start()
+
+    # The time.sleep() call here gives time for thread 'thd' to start
+    # sniffing packets, before we begin sending packets to the
+    # simple_switch process immediately after that.
+    time.sleep(1)
+
+    for pkt in packet_list:
+        sendp(pkt, iface=intf_name)
+    thd.join()
+    captured_pkt_list = q.get(True)
+#    for pkt in captured_pkt_list:
+#        print("dbg pkt.sniffed_on=%s" % (pkt.sniffed_on))
+#        assert pkt.sniffed_on == intf_name
+    return captured_pkt_list
+
+
+def scapy_pkt_to_hex_str(pkt):
+    return ''.join(['%02x' % (x) for x in bytes(pkt)])
+
+
+
+sent_pkt = Ether(src='00:de:ad:be:ef:fa',dst='00:ca:fe:d0:0d:0f') / IP() / UDP()
+
+intf_name = 'veth0'
+peer_intf_name = 'veth1'
+create_and_cfg_veth_intf(intf_name, peer_intf_name)
+send_pkt_list = []
+for send_pkt_len in [14, 15, 42, 13, 4, 0]:
+    # See whether Scapy's Ether() constructor throws an exception from
+    # trying to create a packet with this length.  At least with
+    # Ubuntu 18.04, Python 3.6.9, and Scapy 2.4.3, I saw it throw
+    # exceptions for any length shorter than 14 bytes, which makes
+    # sense since that is the length of a complete Ethernet header.
+    exc = None
+    b = bytes(sent_pkt)[0:send_pkt_len]
+    assert len(b) == send_pkt_len
+    try:
+        tmp_pkt = Ether(b)
+        exc = None
+    except:
+        exc = sys.exc_info()[0]
+    if exc is None:
+        print("Length %2d bytes - no exception calling Ether(b)"
+              "" % (len(b)))
+    else:
+        print("Length %2d bytes - EXCEPTION calling Ether(b)"
+              "" % (len(b)))
+        print(exc)
+    tmp_pkt = Raw(b)
+    send_pkt_list.append(tmp_pkt)
+captured_pkt_list = send_pkts_and_capture(intf_name, send_pkt_list)
+print("Packet(s) sent to interface '%s':" % (intf_name))
+for i in range(len(send_pkt_list)):
+    pkt = send_pkt_list[i]
+    print("%2d len %3d %s" % (i+1, len(pkt), scapy_pkt_to_hex_str(pkt)))
+print("Number of captured packets: %d" % (len(captured_pkt_list)))
+for i in range(len(captured_pkt_list)):
+    pkt = captured_pkt_list[i]
+    print("%2d len %3d %s" % (i+1, len(pkt), scapy_pkt_to_hex_str(pkt)))
+
+print()
+print("output of 'uname -a' command:")
+output = subprocess.check_output(['uname', '-a'], stderr=subprocess.STDOUT)
+print(output.rstrip())
+print("output of 'uname -r' command:")
+output = subprocess.check_output(['uname', '-r'], stderr=subprocess.STDOUT)
+print(output.rstrip())
+
+clean_veth_pair(intf_name, peer_intf_name)
