@@ -363,7 +363,7 @@ https://qmonnet.github.io/whirl-offload/2016/09/01/dive-into-bpf/
 A series of 7 articles "BPF In Depth" by Greg Marsden:
 
 + ["BPF: A Tour of Program Types"](https://blogs.oracle.com/linux/notes-on-bpf-1), 2019-Jan-08
-+ ["BPF In Depth: BPF Helper Functions"](https://blogs.oracle.com/linux/notes-on-bpf-2, 2019-Jan-10
++ ["BPF In Depth: BPF Helper Functions"](https://blogs.oracle.com/linux/notes-on-bpf-2), 2019-Jan-10
 + ["BPF In Depth: Communicating with Userspace"](https://blogs.oracle.com/linux/notes-on-bpf-3), 2019-Jan-15
 + ["BPF In Depth: Building BPF Programs"](https://blogs.oracle.com/linux/notes-on-bpf-4), 2019-Jan-17
 + ["BPF In Depth: The BPF Bytecode and the BPF Verifier"](https://blogs.oracle.com/linux/notes-on-bpf-5), 2019-Jan-22
