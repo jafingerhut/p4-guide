@@ -212,10 +212,16 @@ the following things are all true:
   turn around and send back to the NIC, or redirect to a different
   NIC.  Details: https://docs.cilium.io/en/latest/bpf/#xdp Search for
   word "BPF program return codes".
-+ TBD detail: I do not know if the result of processing a single
-  packet can be exactly one packet, or more than one.  From the return
-  codes discussion in the previous bullet item, I would guess that no
-  packet replication is supported in XDP today.
++ I believe that the result of processing one packet via an EBPF
+  program on one of the XDP hooks is exactly one packet.  From the
+  return codes discussion in the previous bullet item, I would guess
+  that no packet replication is supported in XDP today.  It is
+  possible to use a "perf event", e.g. by calling
+  `bpf_perf_event_output`.  As mentioned briefly in the [bpf-helpers
+  man page](https://man7.org/linux/man-pages/man7/bpf-helpers.7.html),
+  `bpf_perf_event_output` allows for passing custom structs, only the
+  packet payload, or a combination of both from the EBPF program to a
+  user space program.
 
 Thus it seems like taking an arbitrary EBPF program that processes
 packets, and using automated means to transform it into an equivalent
@@ -353,6 +359,18 @@ flow is.
 TBD: Article to summarize:
 
 https://qmonnet.github.io/whirl-offload/2016/09/01/dive-into-bpf/
+
+A series of 7 articles "BPF In Depth" by Greg Marsden:
+
++ ["BPF: A Tour of Program Types"](https://blogs.oracle.com/linux/notes-on-bpf-1), 2019-Jan-08
++ ["BPF In Depth: BPF Helper Functions"](https://blogs.oracle.com/linux/notes-on-bpf-2, 2019-Jan-10
++ ["BPF In Depth: Communicating with Userspace"](https://blogs.oracle.com/linux/notes-on-bpf-3), 2019-Jan-15
++ ["BPF In Depth: Building BPF Programs"](https://blogs.oracle.com/linux/notes-on-bpf-4), 2019-Jan-17
++ ["BPF In Depth: The BPF Bytecode and the BPF Verifier"](https://blogs.oracle.com/linux/notes-on-bpf-5), 2019-Jan-22
++ ["BPF In Depth: Using BPF to do Packet Transformation"](https://blogs.oracle.com/linux/notes-on-bpf-6), 2019-Jan-24
++ ["BPF In Depth: BPF, tc and Generic Segmentation Offload"](https://blogs.oracle.com/linux/notes-on-bpf-7), 2019-Oct-31
++ ["The Power of XDP"](https://blogs.oracle.com/linux/the-power-of-xdp), 2019-Jun-21
+
 
 The book "BPF Performance Tools" is 880 pages of examples of Linux
 performance and behavior monitoring tools created using EBPF, and only
