@@ -1,0 +1,36 @@
+diff --git a/util/install.sh b/util/install.sh
+index 0a67871..a7cdd45 100755
+--- a/util/install.sh
++++ b/util/install.sh
+@@ -5,6 +5,7 @@
+ 
+ # Fail on error
+ set -e
++set -x
+ 
+ # Fail on unset var usage
+ set -o nounset
+@@ -102,6 +103,7 @@ function version_ge {
+     [ "$1" == "$latest" ]
+ }
+ 
++echo "andydbg: Attempt to detect Python version"
+ # Attempt to detect Python version
+ PYTHON=${PYTHON:-python}
+ PRINTVERSION='import sys; print(sys.version_info)'
+@@ -186,6 +188,7 @@ function mn_deps {
+         # Install pip
+         $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
+         if ! ${PYTHON} -m pip -V; then
++            echo "andydbg: PYTHON_VERSION=${PYTHON_VERSION}"
+             if [ $PYTHON_VERSION == 2 ]; then
+                 wget https://bootstrap.pypa.io/2.6/get-pip.py
+             else
+@@ -200,6 +203,7 @@ function mn_deps {
+ 
+     echo "Installing Mininet core"
+     pushd $MININET_DIR/mininet
++    echo "andydbg: sudo PYTHON=${PYTHON} make install"
+     sudo PYTHON=${PYTHON} make install
+     popd
+ }

@@ -9,6 +9,12 @@
 
 set -x
 
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
+THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+
 lsb_release -a
 python -V  || echo "No such command in PATH: python"
 python2 -V || echo "No such command in PATH: python2"
@@ -20,9 +26,12 @@ pip list  || echo "No such command in PATH: pip"
 pip2 list || echo "No such command in PATH: pip2"
 pip3 list || echo "No such command in PATH: pip3"
 
-find / | sort > files-1-before-mininet.txt
+find / | grep -v '^/proc' | sort > files-1-before-mininet.txt
 
 git clone git://github.com/mininet/mininet mininet
+cd mininet
+patch -p1 < "${PATCH_DIR}/mininet-extra-install-debug-v1.patch"
+cd ..
 sudo ./mininet/util/install.sh -nwv
 
 python -V  || echo "No such command in PATH: python"
@@ -35,5 +44,5 @@ pip list  || echo "No such command in PATH: pip"
 pip2 list || echo "No such command in PATH: pip2"
 pip3 list || echo "No such command in PATH: pip3"
 
-find / | sort > files-2-after-mininet.txt
+find / | grep -v '^/proc' | sort > files-2-after-mininet.txt
 diff files-1-before-mininet.txt files-2-after-mininet.txt > files-diff.txt
