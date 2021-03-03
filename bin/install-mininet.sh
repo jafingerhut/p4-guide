@@ -30,7 +30,7 @@ find / | grep -v '^/proc' | sort > files-1-before-mininet.txt
 
 git clone git://github.com/mininet/mininet mininet
 cd mininet
-patch -p1 < "${PATCH_DIR}/mininet-extra-install-debug-v1.patch"
+patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch"
 cd ..
 sudo ./mininet/util/install.sh -nwv
 
