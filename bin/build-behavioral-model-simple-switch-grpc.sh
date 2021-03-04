@@ -56,28 +56,19 @@ fi
 
 set -x
 
-# Erase any old built files
-make clean
-
 if [ ${DO_UPDATE_FIRST} -eq 1 ]
 then
     # Get updates from master repo
     git pull
 fi
 
-# Compile and install simple_switch and psa_switch, but not simple_switch_grpc
+# Compile and install simple_switch_grpc
+cd targets/simple_switch_grpc
+# Erase any old built files
+make clean
 ./autogen.sh
 # With debug enabled in binaries:
-./configure --with-pi 'CXXFLAGS=-O0 -g'
-# With debug and P4_16 stack operation support enabled in binaries:
-#./configure --enable-WP4-16-stacks 'CXXFLAGS=-O0 -g'
-# Without debug enabled:
-#./configure
-# With more aggressive C++ compiler optimization enabled, but I believe
-# that with all of these options, the resulting simple_switch binary
-# cannot be used to achieve passing results on all p4c tests.
-#./configure 'CXXFLAGS=-g -O3' 'CFLAGS=-g -O3' --disable-logging-macros --disable-elogger
-
+./configure --with-thrift 'CXXFLAGS=-O0 -g'
 make
 sudo make install
 sudo ldconfig
