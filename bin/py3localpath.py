@@ -3,6 +3,10 @@
 import re
 import sys
 
+print("py3localpath.py debug output.  sys.path contains:", file=sys.stderr)
+for x in sys.path:
+    print("    %s" % (x), file=sys.stderr)
+
 l1=[x for x in sys.path if re.match(r'/usr/local/lib/python3.[0-9]+/dist-packages', x)]
 
 if len(l1) == 1:
