@@ -78,10 +78,8 @@ informed decision.
   based on `install-p4dev-v2.sh`, but has several changes enabling it
   to work on Ubuntu 20.04 Linux systems.  Ubuntu 20.04 has Python3
   installed by default, but does not have Python2 installed by
-  default.  The `install-p4dev-v4.sh` script tries to only install
-  Python3 modules, and in fact it will not install Python2 at all
-  except very near the end, because the install script for Mininet
-  causes Python2 to be installed still.  The p4lang/tutorials
+  default.  The `install-p4dev-v4.sh` script only installs Python3
+  modules, and will not install Python2 at all.  The p4lang/tutorials
   exercises will not work as of 2020-Dec on Ubuntu 20.04 with this
   install script, unless you make some Python-related changes to the
   tutorials code -- search for "20.04" below for more details.
@@ -139,9 +137,9 @@ tests with `bmv2/` at the beginning of their names run the
 
 NOTE: If you are using Ubuntu 20.04 and the `install-p4dev-v4.sh`
 script, the latest `tuturials` code as of 2020-Dec still assumes there
-are more Python2 P4-related modules installed, or else most things
-fail.  There is an _EXPERIMENTAL_ patch to the `p4lang/tutorials` code
-(meaning it could still have many bugs) in the file
+are some particular Python2 P4-related modules installed, or else most
+things fail.  There is an _EXPERIMENTAL_ patch to the
+`p4lang/tutorials` code (meaning it could still have bugs) in the file
 `p4-guide/bin/patches/tutorials-python3-changes1.patch` that enables
 at least the test described below to work on such a system.  You can
 apply it by using the command below when inside the `tutorials`
