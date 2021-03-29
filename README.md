@@ -9,7 +9,8 @@ language](http://p4.org).
 
 There are three install scripts in this repository that can assist you
 in building and installing the `p4c` and `behavioral-model` projects
-and their dependencies on an Ubuntu 16.04 or 18.04 Linux machine.
+and their dependencies on an Ubuntu 16.04, 18.04, or 20.04 Linux
+machine.
 
 See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
@@ -173,5 +174,6 @@ Some advantages of P4_16 over P4_14:
 
 Disadvantages of P4_16 vs P4_14:
 
-* Tool and vendor support is not as good for P4_16 as of Jan 2018,
-  but support for P4_16 is improving over time.
+* Tool and vendor support may not have been as good for P4_16 in 2018
+  as it was for P4_14, but as of 2021, P4_16 is supported for most
+  P4-programmable target devices.
