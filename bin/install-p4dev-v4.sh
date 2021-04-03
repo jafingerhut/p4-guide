@@ -177,9 +177,10 @@ echo "  + thrift version 0.11.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
+echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version"
 echo "+ Python packages: grpcio 1.17.1, protobuf 3.6.1"
-echo "+ Python packages: scapy, ipaddr, psutil, crcmod"
+echo "+ Python packages: scapy, ipaddr, psutil, crcmod, pypcap"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
 echo "its precise contents from one run of this script to another."
@@ -666,7 +667,7 @@ cd mininet
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
-sudo ./mininet/util/install.sh -nwv
+sudo ./mininet/util/install.sh -nw
 
 set +x
 echo "end install mininet:"
@@ -675,6 +676,28 @@ date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
+
+set +x
+echo "------------------------------------------------------------"
+
+echo "Installing PTF"
+echo "start install ptf:"
+set -x
+date
+
+sudo pip3 install pypcap
+
+git clone git://github.com/p4lang/ptf
+cd ptf
+sudo python3 setup.py install
+
+set +x
+echo "end install ptf:"
+set -x
+date
+
+cd "${INSTALL_DIR}"
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-ptf-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -694,7 +717,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-miscellaneous-install.txt
+find /usr/lib /usr/local $HOME/.local | sort > usr-local-9-after-miscellaneous-install.txt
 
 pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
@@ -720,7 +743,8 @@ diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-change
 diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
 diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
 diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
-diff usr-local-7-after-mininet-install.txt usr-local-8-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
+diff usr-local-7-after-mininet-install.txt usr-local-8-after-ptf-install.txt > usr-local-file-changes-ptf-install.txt
+diff usr-local-8-after-ptf-install.txt usr-local-9-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
