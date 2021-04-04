@@ -239,7 +239,7 @@ class P4RuntimeTest(BaseTest):
         self.stub = p4runtime_pb2_grpc.P4RuntimeStub(self.channel)
 
         proto_txt_path = testutils.test_param_get("p4info")
-        print("Importing p4info proto from", proto_txt_path)
+        print("Importing p4info proto from {}".format(proto_txt_path))
         self.p4info = p4info_pb2.P4Info()
         with open(proto_txt_path, "rb") as fin:
             google.protobuf.text_format.Merge(fin.read(), self.p4info)
@@ -267,7 +267,7 @@ class P4RuntimeTest(BaseTest):
                     key = (obj_type, suffix)
                     self.p4info_obj_map[key] = obj
                     suffix_count[key] += 1
-        for key, c in suffix_count.items():
+        for key, c in list(suffix_count.items()):
             if c > 1:
                 del self.p4info_obj_map[key]
 
