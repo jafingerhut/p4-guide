@@ -62,9 +62,19 @@ def stringify(n, length):
     Python P4Runtime client operations.  If 'n' does not fit in
     'length' bytes, it is represented in the fewest number of bytes it
     does fit into without loss of precision.  It always returns a
-    string at least one byte long, even if value=width=0."""
-    h = '%x' % n
-    s = ('0'*(len(h) % 2) + h).zfill(length*2).decode('hex')
+    string at least one byte long, even if n=length=0."""
+    assert isinstance(length, int)
+    assert length >= 0
+    assert isinstance(n, int)
+    assert n >= 0
+    if length == 0 and n == 0:
+        length = 1
+    else:
+        n_size_bits = n.bit_length()
+        n_size_bytes = (n_size_bits + 7) // 8
+        if n_size_bytes > length:
+            length = n_size_bytes
+    s = n.to_bytes(length, byteorder='big')
     return s
 
 def ipv4_to_binary(addr):
@@ -74,10 +84,10 @@ def ipv4_to_binary(addr):
     client operations."""
     bytes_ = [int(b, 10) for b in addr.split('.')]
     assert len(bytes_) == 4
-    # Note: The chr(b) call below will throw exception if any b is
-    # outside of the range [0, 255]], so no need to add a separate
-    # check for that here.
-    return "".join(chr(b) for b in bytes_)
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return bytes(bytes_)
 
 def mac_to_binary(addr):
     """Take an argument 'addr' containing an Ethernet MAC address written
@@ -87,10 +97,10 @@ def mac_to_binary(addr):
     operations."""
     bytes_ = [int(b, 16) for b in addr.split(':')]
     assert len(bytes_) == 6
-    # Note: The chr(b) call below will throw exception if any b is
-    # outside of the range [0, 255]], so no need to add a separate
-    # check for that here.
-    return "".join(chr(b) for b in bytes_)
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return bytes(bytes_)
 
 # Used to indicate that the gRPC error Status object returned by the server has
 # an incorrect format.
@@ -402,21 +412,24 @@ class P4RuntimeTest(BaseTest):
             mf = mk.add()
             mf.field_id = mf_id
             mf.lpm.prefix_len = self.pLen
-            mf.lpm.value = ''
+            assert isinstance(self.v, bytes)
+            orig_v_list = list(self.v)
+            mod_v_list = []
 
             # P4Runtime now has strict rules regarding ternary matches: in the
             # case of LPM, trailing bits in the value (after prefix) must be set
             # to 0.
-            first_byte_masked = self.pLen / 8
+            first_byte_masked = self.pLen // 8
             for i in range(first_byte_masked):
-                mf.lpm.value += self.v[i]
-            if first_byte_masked == len(self.v):
+                mod_v_list.append(orig_v_list[i])
+            if first_byte_masked == len(orig_v_list):
+                mf.lpm.value = bytes(mod_v_list)
                 return
             r = self.pLen % 8
-            mf.lpm.value += chr(
-                ord(self.v[first_byte_masked]) & (0xff << (8 - r)))
-            for i in range(first_byte_masked + 1, len(self.v)):
-                mf.lpm.value += '\x00'
+            mod_v_list.append(orig_v_list[first_byte_masked] & (0xff << (8 - r)))
+            for i in range(first_byte_masked + 1, len(orig_v_list)):
+                mod_v_list.append(0)
+            mf.lpm.value = bytes(mod_v_list)
 
     class Ternary(MF):
         def __init__(self, name, v, mask):
@@ -566,6 +579,22 @@ class P4RuntimeTest(BaseTest):
         self.push_update_add_entry_to_action(req, t_name, mk, a_name, params)
         return req, self.write_request(req, store=(mk is not None))
 
+    # A shorter name for send_request_add_entry_to_action, and also
+    # bundles up table name and key into one tuple, and action name
+    # and params into another tuple, for the convenience of the caller
+    # using some helper functions that create these tuples.
+    def table_add(self, table_name_and_key, action_name_and_params):
+        assert isinstance(table_name_and_key, tuple)
+        assert len(table_name_and_key) == 2
+        table_name = table_name_and_key[0]
+        key = table_name_and_key[1]
+        assert isinstance(action_name_and_params, tuple)
+        assert len(action_name_and_params) == 2
+        action_name = action_name_and_params[0]
+        action_params = action_name_and_params[1]
+        return self.send_request_add_entry_to_action(table_name, key,
+                                                     action_name, action_params)
+
     def push_update_add_entry_to_member(self, req, t_name, mk, mbr_id):
         update = req.updates.add()
         update.type = p4runtime_pb2.Update.INSERT
@@ -663,3 +692,31 @@ def autocleanup(f):
         finally:
             test.undo_write_requests(test._reqs)
     return handle
+
+# Copied update_config from the https://github.com/p4lang/PI
+# repository in file proto/ptf/ptf_runner.py, then modified it
+# slightly:
+
+def update_config(config_path, p4info_path, grpc_addr, device_id):
+    '''
+    Performs a SetForwardingPipelineConfig on the device with provided
+    P4Info and binary device config
+    '''
+    channel = grpc.insecure_channel(grpc_addr)
+    stub = p4runtime_pb2_grpc.P4RuntimeStub(channel)
+    print("Sending P4 config")
+    request = p4runtime_pb2.SetForwardingPipelineConfigRequest()
+    request.device_id = device_id
+    config = request.config
+    with open(p4info_path, 'r') as p4info_f:
+        google.protobuf.text_format.Merge(p4info_f.read(), config.p4info)
+    with open(config_path, 'rb') as config_f:
+        config.p4_device_config = config_f.read()
+    request.action = p4runtime_pb2.SetForwardingPipelineConfigRequest.VERIFY_AND_COMMIT
+    try:
+        response = stub.SetForwardingPipelineConfig(request)
+    except Exception as e:
+        print("Error during SetForwardingPipelineConfig", file=sys.stderr)
+        print(str(e), file=sys.stderr)
+        return False
+    return True
