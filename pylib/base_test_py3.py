@@ -20,8 +20,8 @@
 
 # Andy Fingerhut (andy.fingerhut@gmail.com)
 #
-# This file was copied and then slightly modified from the file
-# PI/proto/ptf/base_test.py in the https://github.com/p4lang/PI
+# This file was copied and then modified from the file
+# proto/ptf/base_test.py in the https://github.com/p4lang/PI
 # repository.
 
 from collections import Counter
@@ -845,7 +845,7 @@ def bmv2_json_to_device_config(bmv2_json_fname, bmv2_bin_fname):
             f_out.write(device_config.SerializeToString())
 
 # Copied update_config from the https://github.com/p4lang/PI
-# repository in file PI/proto/ptf/ptf_runner.py, then modified it
+# repository in file proto/ptf/ptf_runner.py, then modified it
 # slightly:
 
 def update_config(config_path, p4info_path, grpc_addr, device_id):
