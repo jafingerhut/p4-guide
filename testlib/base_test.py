@@ -18,6 +18,12 @@
 #
 #
 
+# Andy Fingerhut (andy.fingerhut@gmail.com)
+#
+# This file was copied and then modified from the file
+# proto/ptf/base_test.py in the https://github.com/p4lang/PI
+# repository.
+
 from collections import Counter
 from functools import wraps, partial
 import re
@@ -48,21 +54,15 @@ class partialmethod(partial):
         return partial(self.func, instance,
                        *(self.args or ()), **(self.keywords or {}))
 
-# Convert integer (with length) to binary byte string
-# Equivalent to Python 3.2 int.to_bytes
-# See
-# https://stackoverflow.com/questions/16022556/has-python-3-to-bytes-been-back-ported-to-python-2-7
-# TODO: When P4Runtime implementation is ready for it, use
-# minimum-length byte sequences to represent integers.  For unsigned
-# integers, this should only require removing the zfill() call below.
-def stringify(n, length):
+def stringify(n, length=0):
     """Take a non-negative integer 'n' as the first parameter, and a
     non-negative integer 'length' in units of _bytes_ as the second
-    parameter.  Return a string with binary contents expected by the
-    Python P4Runtime client operations.  If 'n' does not fit in
-    'length' bytes, it is represented in the fewest number of bytes it
-    does fit into without loss of precision.  It always returns a
-    string at least one byte long, even if n=length=0."""
+    parameter (it defaults to 0 if not provided).  Return a string
+    with binary contents expected by the Python P4Runtime client
+    operations.  If 'n' does not fit in 'length' bytes, it is
+    represented in the fewest number of bytes it does fit into without
+    loss of precision.  It always returns a string at least one byte
+    long, even if n=length=0."""
     assert isinstance(length, int)
     assert length >= 0
     assert isinstance(n, int)
@@ -594,6 +594,94 @@ class P4RuntimeTest(BaseTest):
         action_params = action_name_and_params[1]
         return self.send_request_add_entry_to_action(table_name, key,
                                                      action_name, action_params)
+
+    def pre_add_mcast_group(self, mcast_grp_id, port_instance_pair_list):
+        """When a packet is sent from ingress to the packet buffer with
+        v1model architecture standard_metadata field "mcast_grp" equal
+        to `mcast_grp_id`, configure the (egress_port, instance)
+        places to which the packet will be copied.
+
+        The first parameter is the `mcast_grp_id` value.
+
+        The second is a list of 2-tuples.  The first element of each
+        2-tuple is the egress port to which the copy should be sent,
+        and the second is the "replication id", also called
+        "egress_rid" in the P4_16 v1model architecture
+        standard_metadata struct, or "instance" in the P4_16 PSA
+        architecture psa_egress_input_metadata_t struct.  That value
+        can be useful if you want to send multiple copies of the same
+        packet out of the same output port, but want each one to be
+        processed differently during egress processing.  If you want
+        that, put multiple pairs with the same egress port in the
+        replication list, but each with a different value of
+        "replication id".
+        """
+        assert isinstance(mcast_grp_id, int)
+        assert isinstance(port_instance_pair_list, list)
+        for x in port_instance_pair_list:
+            assert isinstance(x, tuple)
+            assert len(x) == 2
+            assert isinstance(x[0], int)
+            assert isinstance(x[1], int)
+        req = p4runtime_pb2.WriteRequest()
+        req.device_id = self.device_id
+        update = req.updates.add()
+        update.type = p4runtime_pb2.Update.INSERT
+        pre_entry = update.entity.packet_replication_engine_entry
+        mc_grp_entry = pre_entry.multicast_group_entry
+        mc_grp_entry.multicast_group_id = mcast_grp_id
+        for x in port_instance_pair_list:
+            replica = mc_grp_entry.replicas.add()
+            replica.egress_port = x[0]
+            replica.instance = x[1]
+        return req, self.write_request(req, store=False)
+
+    def table_dump_helper(self, request):
+        for response in self.stub.Read(request):
+            yield response
+
+    def make_table_read_request(self, table_name):
+        req = p4runtime_pb2.ReadRequest()
+        req.device_id = self.device_id
+        entity = req.entities.add()
+        table = entity.table_entry
+        table.table_id = self.get_table_id(table_name)
+        return req, table
+
+    def table_dump_data(self, table_name):
+        req, table = self.make_table_read_request(table_name)
+        table_entries = []
+        for response in self.table_dump_helper(req):
+            for entity in response.entities:
+                #print('entity.WhichOneof("entity")="%s"'
+                #      '' % (entity.WhichOneof('entity')))
+                assert entity.WhichOneof('entity') == 'table_entry'
+                entry = entity.table_entry
+                table_entries.append(entry)
+                #print(entry)
+                #print('----')
+
+        # Now try to get the default action.  I say 'try' because as
+        # of 2019-Mar-21, this is not yet implemented in the open
+        # source simple_switch_grpc implementation, and in that case
+        # the code above will catch the exception and return 'None'
+        # for the table_default_entry value.
+        table_default_entry = None
+        req, table = self.make_table_read_request(table_name)
+        table.is_default_action = True
+        try:
+            for response in self.table_dump_helper(req):
+                for entity in response.entities:
+                    print('entity.WhichOneof("entity")="%s"'
+                          '' % (entity.WhichOneof('entity')))
+                    assert entity.WhichOneof('entity') == 'table_entry'
+                    entry = entity.table_entry
+                    table_default_entry = entity
+        except grpc._channel._Rendezvous as e:
+            print("Caught exception:")
+            print(e)
+
+        return table_entries, table_default_entry
 
     def push_update_add_entry_to_member(self, req, t_name, mk, mbr_id):
         update = req.updates.add()

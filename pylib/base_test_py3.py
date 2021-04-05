@@ -43,7 +43,6 @@ from google.rpc import status_pb2, code_pb2
 from p4.v1 import p4runtime_pb2
 from p4.v1 import p4runtime_pb2_grpc
 from p4.config.v1 import p4info_pb2
-from p4.tmp import p4config_pb2
 import google.protobuf.text_format
 
 # See https://gist.github.com/carymrobbins/8940382
@@ -55,29 +54,28 @@ class partialmethod(partial):
         return partial(self.func, instance,
                        *(self.args or ()), **(self.keywords or {}))
 
-# Convert integer (with length) to binary byte string
-# Equivalent to Python 3.2 int.to_bytes
-# See
-# https://stackoverflow.com/questions/16022556/has-python-3-to-bytes-been-back-ported-to-python-2-7
-# TODO: When P4Runtime implementation is ready for it, use
-# minimum-length byte sequences to represent integers.  For unsigned
-# integers, this should only require removing the zfill() call below.
-def stringify(n, length):
+def stringify(n, length=0):
     """Take a non-negative integer 'n' as the first parameter, and a
     non-negative integer 'length' in units of _bytes_ as the second
-    parameter.  Return a string with binary contents expected by the
-    Python P4Runtime client operations.  If 'n' does not fit in
-    'length' bytes, it is represented in the fewest number of bytes it
-    does fit into without loss of precision.  It always returns a
-    string at least one byte long, even if n=length=0."""
+    parameter (it defaults to 0 if not provided).  Return a string
+    with binary contents expected by the Python P4Runtime client
+    operations.  If 'n' does not fit in 'length' bytes, it is
+    represented in the fewest number of bytes it does fit into without
+    loss of precision.  It always returns a string at least one byte
+    long, even if n=length=0."""
+    assert isinstance(length, int)
+    assert length >= 0
+    assert isinstance(n, int)
+    assert n >= 0
     if length == 0 and n == 0:
         length = 1
-    while True:
-        try:
-            s = n.to_bytes(length, byteorder='big')
-            return s
-        except OverflowError:
-            length = length + 1
+    else:
+        n_size_bits = n.bit_length()
+        n_size_bytes = (n_size_bits + 7) // 8
+        if n_size_bytes > length:
+            length = n_size_bytes
+    s = n.to_bytes(length, byteorder='big')
+    return s
 
 def int2string(n, width_in_bits):
     """Take a non-negative integer 'n' as the first parameter, and a
@@ -285,7 +283,7 @@ class P4RuntimeTest():
         self.stub = p4runtime_pb2_grpc.P4RuntimeStub(self.channel)
 
 #        proto_txt_path = testutils.test_param_get("p4info")
-        print("Importing p4info proto from", proto_txt_path)
+        print("Importing p4info proto from {}".format(proto_txt_path))
         self.p4info = p4info_pb2.P4Info()
         with open(proto_txt_path, "rb") as fin:
             google.protobuf.text_format.Merge(fin.read(), self.p4info)
@@ -868,7 +866,7 @@ def update_config(config_path, p4info_path, grpc_addr, device_id):
     try:
         response = stub.SetForwardingPipelineConfig(request)
     except Exception as e:
-        print("Error during SetForwardingPipelineConfig")
-        print(str(e))
+        print("Error during SetForwardingPipelineConfig", file=sys.stderr)
+        print(str(e), file=sys.stderr)
         return False
     return True
