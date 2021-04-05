@@ -77,7 +77,7 @@ detected, and similarly the line `demo1.DupEntryTest ... ok` indicates
 that a test named `DupEntryTest` passed.
 
 You can see the Python code for what these automated tests do in the
-file [`ptf/demo1.py`](ptf.demo1.py).  Some comments there may be
+file [`ptf/demo1.py`](ptf/demo1.py).  Some comments there may be
 useful in finding documentation for many of the functions and methods
 used in that test program.
 
