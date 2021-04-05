@@ -43,6 +43,7 @@ from google.rpc import status_pb2, code_pb2
 from p4.v1 import p4runtime_pb2
 from p4.v1 import p4runtime_pb2_grpc
 from p4.config.v1 import p4info_pb2
+from p4.tmp import p4config_pb2
 import google.protobuf.text_format
 
 # See https://gist.github.com/carymrobbins/8940382
