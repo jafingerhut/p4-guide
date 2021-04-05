@@ -1,7 +1,24 @@
-# Compiling
+# Introduction
 
 See [README-using-bmv2.md](../README-using-bmv2.md) for some things
 that are common across different P4 programs executed using bmv2.
+
+This article describes how to:
+
++ compile a simple demo P4 program using the `p4c` P4 compiler
++ execute the compiled program using the `simple_switch` software
+  switch
++ add table entries to the running P4 program using the
+  `simple_switch_CLI` command line utility, and
++ send packets to the running P4 program using `scapy`.
+
+`simple_switch_CLI` uses a control message protocol that is not the
+P4Runtime API.  If you are interested in adding table entries to the
+running P4 program using the P4Runtime API instead, see See
+[README-p4runtime.md](../README-p4runtime.md).
+
+
+# Compiling
 
 To compile the P4_16 version of the code:
 

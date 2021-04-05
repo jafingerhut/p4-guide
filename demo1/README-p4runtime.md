@@ -1,7 +1,19 @@
-# Compiling
+# Introduction
 
 See [README-using-bmv2.md](../README-using-bmv2.md) for some things
 that are common across different P4 programs executed using bmv2.
+
+This article describes how to:
+
++ compile a simple demo P4 program using the `p4c` P4 compiler
++ execute the compiled program using the `simple_switch_grpc` software
+  switch
++ add table entries to the running P4 program using the P4Runtime API
+  message protocol, using a small library of Python code to help you.
++ send packets to the running P4 program using `scapy`.
+
+
+# Compiling
 
 To compile the P4_16 version of the code, in file `demo1.p4_16.p4`:
 
