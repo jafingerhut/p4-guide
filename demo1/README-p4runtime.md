@@ -112,8 +112,6 @@ bt.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4rt.txt', my_dev1_addr, my_dev
 
 h=bt.P4RuntimeTest()
 h.setUp(my_dev1_addr, 'demo1.p4_16.p4rt.txt')
-# Result of successful h.setUp() call is "New connection" output from
-# simple_switch_grpc log.
 ```
 
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it
@@ -148,50 +146,46 @@ h.table_add(('send_frame', None), ('egressImpl.my_drop', []))
 # with colons separating each byte, specified in hex,
 # e.g. '00:de:ad:be:ef:ff'.
 
-# bt.int2string takes a non-negative integer 'n' as the first
-# parameter, and a positive integer 'width_in_bits' as the second
-# parameter.  It returns a string with binary contents expected by the
-# Python P4Runtime client operations.  If 'n' does not fit in
-# 'width_in_bits' bits, an exception is raised.
+# bt.stringify takes a non-negative integer 'n' as its parameter.  It
+# returns a string with binary contents expected by the Python
+# P4Runtime client operations.
 
-# Until and unless simple_switch_grpc is modified so that it can
-# accept P4Runtime API messages with the minimum length encoding of
-# integers, without padding them with 0s to the full width of the
-# field in the P4_16 source code (see Note 1), it would be nice to
-# have some code that would automatically determine the bit width from
-# the P4 Info file, without a user having to look it up and do it
-# themselves.
+# Note: stringify will only work if you are using a version of
+# p4lang/PI repository code from 2021-Mar or later, in particular with
+# the changes made in this PR: https://github.com/p4lang/PI/pull/538
+# Before that change, you must send bit strings with the full bit
+# width of the value as declared in the P4 source code.
 
 # Define a few small helper functions that help construct parameters
 # for the function table_add()
 
-def ipv4_da_lpm_key(h, ipv4_addr_string, prefix_len):
+def key_ipv4_da_lpm(h, ipv4_addr_string, prefix_len):
     return ('ipv4_da_lpm', [h.Lpm('hdr.ipv4.dstAddr',
                             bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
 
-def set_l2ptr(l2ptr_int_val):
-    return ('set_l2ptr', [('l2ptr', bt.int2string(l2ptr_int_val, 32))])
+def act_set_l2ptr(l2ptr_int_val):
+    return ('set_l2ptr', [('l2ptr', bt.stringify(l2ptr_int_val))])
 
-def mac_da_key(h, l2ptr_int_val):
+def key_mac_da(h, l2ptr_int_val):
     return ('mac_da', [h.Exact('meta.fwd_metadata.l2ptr',
-                       bt.int2string(l2ptr_int_val, 32))])
+                       bt.stringify(l2ptr_int_val))])
 
-def set_bd_dmac_intf(bd_int_val, dmac_string, intf_int_val):
+def act_set_bd_dmac_intf(bd_int_val, dmac_string, intf_int_val):
     return ('set_bd_dmac_intf',
-            [('bd', bt.int2string(bd_int_val, 24)),
+            [('bd', bt.stringify(bd_int_val)),
              ('dmac', bt.mac_to_binary(dmac_string)),
-             ('intf', bt.int2string(intf_int_val, 9))])
+             ('intf', bt.stringify(intf_int_val))])
 
-def send_frame_key(h, bd_int_val):
+def key_send_frame(h, bd_int_val):
     return ('send_frame', [h.Exact('meta.fwd_metadata.out_bd',
-                           bt.int2string(bd_int_val, 24))])
+                           bt.stringify(bd_int_val))])
 
-def rewrite_mac(smac_string):
+def act_rewrite_mac(smac_string):
     return ('rewrite_mac', [('smac', bt.mac_to_binary(smac_string))])
 
-h.table_add(ipv4_da_lpm_key(h, '10.1.0.1', 32), set_l2ptr(58))
-h.table_add(mac_da_key(h, 58), set_bd_dmac_intf(9, '02:13:57:ab:cd:ef', 2))
-h.table_add(send_frame_key(h, 9), rewrite_mac('00:11:22:33:44:55'))
+h.table_add(key_ipv4_da_lpm(h, '10.1.0.1', 32), act_set_l2ptr(58))
+h.table_add(key_mac_da(h, 58), act_set_bd_dmac_intf(9, '02:13:57:ab:cd:ef', 2))
+h.table_add(key_send_frame(h, 9), act_rewrite_mac('00:11:22:33:44:55'))
 
 ```
 
@@ -199,9 +193,9 @@ Another set of table entries to forward packets to a different output
 interface:
 
 ```python
-h.table_add(ipv4_da_lpm_key(h, '10.1.0.200', 32), set_l2ptr(81))
-h.table_add(mac_da_key(h, 81), set_bd_dmac_intf(15, '08:de:ad:be:ef:00', 4))
-h.table_add(send_frame_key(h, 15), rewrite_mac('ca:fe:ba:be:d0:0d'))
+h.table_add(key_ipv4_da_lpm(h, '10.1.0.200', 32), act_set_l2ptr(81))
+h.table_add(key_mac_da(h, 81), act_set_bd_dmac_intf(15, '08:de:ad:be:ef:00', 4))
+h.table_add(key_send_frame(h, 15), act_rewrite_mac('ca:fe:ba:be:d0:0d'))
 
 # There is preliminary support for reading the entries of a table that
 # you can try like this, but right now it prints the P4Runtime
@@ -308,116 +302,31 @@ fields explicitly mentioned:
     Ether(src=<smac>, dst=<dmac>) / IP(dst=<hdr.ipv4.dstAddr>, ttl=<ttl>-1)
 
 
-# Experiments
-
-This section records some experiments I have done in interactive
-Python sessions.  Parts of it may become better documented later.
-
-```python
-import base_test as bt
-from p4.v1 import p4runtime_pb2
-import google.protobuf.text_format
-
-p4info_path='demo1.p4_16.p4rt.txt'
-request = p4runtime_pb2.SetForwardingPipelineConfigRequest()
-config = request.config
-with open(p4info_path, 'r') as p4info_f:
-    google.protobuf.text_format.Merge(p4info_f.read(), config.p4info)
-```
-
-
-----------------------------------------
-
-
-# Note on attempts to try minimum-length encoding of numbers in P4Runtime API messages
-
-Note 1:
-
-I have tried adding table entries using calls to `bt.int2string2`,
-which returns fewer zero padding bits than the `bt.int2string` calls
-shown above, and got back an error from the P4Runtime server like this
-printed in the client Python interactive session:
-
-```
->>> h.table_add(ipv4_da_lpm_key(h, '10.1.0.1', 32), set_l2ptr(58))
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "/home/andy/p4-guide/pylib/base_test.py", line 636, in table_add
-    action_name, action_params)
-  File "/home/andy/p4-guide/pylib/base_test.py", line 620, in send_request_add_entry_to_action
-    return req, self.write_request(req, store=(mk is not None))
-  File "/home/andy/p4-guide/pylib/base_test.py", line 522, in write_request
-    rep = self._write(req)
-  File "/home/andy/p4-guide/pylib/base_test.py", line 519, in _write
-    raise P4RuntimeWriteException(e)
-base_test.P4RuntimeWriteException: Error(s) during Write:
-        * At index 0: INVALID_ARGUMENT, ''
-```
-
-There is an issue opened on the p4lang/PI repository to track the fact
-that currently it requires the full size fields, rounded up to a whole
-number of bytes, but it should be able to accept shorter
-representations of integers, too:
-https://github.com/p4lang/PI/issues/454
-
-The last time I saw this error was when I tested with the open source
-tools built from the versions of source code in the repositories given
-below in this section.
-
-For https://github.com/p4lang/p4c
-
-```
-$ git log -n 1 | head -n 3
-commit e5b6c838d06e0075dd0d113600b01f5ae71498de
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Tue Feb 4 15:34:33 2020 -0800
-```
-
-For https://github.com/p4lang/behavioral-model
-
-```
-$ git log -n 1 | head -n 3
-commit b2b86662060f6c843a01cd2996822e4280528fd7
-Author: Antonin Bas <abas@vmware.com>
-Date:   Sat Feb 1 18:49:43 2020 -0800
-```
-
-For https://github.com/p4lang/PI
-
-```
-$ git log -n 1 | head -n 3
-commit f2fcaa37e56a4f0a44ced51a5cfb77fc315c44ac
-Author: Antonin Bas <abas@vmware.com>
-Date:   Tue Jan 21 18:38:18 2020 -0800
-```
-
-
-
 # Last successfully tested with these software versions
 
 For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit e5b6c838d06e0075dd0d113600b01f5ae71498de
+commit 4e64e1dcc54ad9edbdcf6c8542b9a13b16192cf3
 Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Tue Feb 4 15:34:33 2020 -0800
+Date:   Sat Apr 3 02:49:09 2021 -0700
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit b2b86662060f6c843a01cd2996822e4280528fd7
-Author: Antonin Bas <abas@vmware.com>
-Date:   Sat Feb 1 18:49:43 2020 -0800
+commit 27c235944492ef55ba061fcf658b4d8102d53bd8
+Author: Thomas Dreibholz <dreibh@simula.no>
+Date:   Wed Mar 24 19:42:48 2021 +0100
 ```
 
 For https://github.com/p4lang/PI
 
 ```
 $ git log -n 1 | head -n 3
-commit f2fcaa37e56a4f0a44ced51a5cfb77fc315c44ac
+commit 4961fb9fb7a03b8fe7f1511f05fc7a0238b1d88c
 Author: Antonin Bas <abas@vmware.com>
-Date:   Tue Jan 21 18:38:18 2020 -0800
+Date:   Thu Mar 11 20:28:34 2021 -0800
 ```
