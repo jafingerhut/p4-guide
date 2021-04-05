@@ -15,7 +15,7 @@ This article describes how to:
 `simple_switch_CLI` uses a control message protocol that is not the
 P4Runtime API.  If you are interested in adding table entries to the
 running P4 program using the P4Runtime API instead, see See
-[README-p4runtime.md](../README-p4runtime.md).
+[README-p4runtime.md](README-p4runtime.md).
 
 
 # Compiling
