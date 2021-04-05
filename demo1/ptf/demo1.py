@@ -26,6 +26,23 @@ from google.rpc import code_pb2
 
 import base_test as bt
 
+
+# Links to many Python methods useful when writing automated tests:
+
+# The package `ptf.testutils` contains many useful Python methods for
+# writing automated tests, some of which are demonstrated below with
+# calls prefixed by the local alias `tu.`.  You can see the
+# definitions for all Python code in this package, including some
+# documentation for these methods, here:
+
+# https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
+
+# The package `base_test` is included in this repository, and can also
+# be seen at this link:
+
+# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
+
+
 ######################################################################
 # Configure logging
 ######################################################################

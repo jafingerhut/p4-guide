@@ -12,6 +12,10 @@ This article describes how to:
   message protocol, using a small library of Python code to help you.
 + send packets to the running P4 program using `scapy`.
 
+If you are interested in an example automated test for the
+`demo1.p4_16.p4` program that uses the PTF library, see
+[README-ptf.md](README-ptf.md).
+
 
 # Compiling
 

@@ -28,6 +28,10 @@ P4Runtime API for communicating from a controller process (in the
 example run, it is an interactive Python session acting as the
 controller).
 
+If you are interested in an example automated test for the
+`demo1.p4_16.p4` program that uses the PTF library, see
+[README-ptf.md](demo1/README-ptf.md).
+
 
 ### `demo2`
 
