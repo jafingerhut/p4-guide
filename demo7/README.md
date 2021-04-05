@@ -3,14 +3,10 @@
 See [README-using-bmv2.md](../README-using-bmv2.md) for some things
 that are common across different P4 programs executed using bmv2.
 
-The demo7 directory is a work in progress.  The P4_16 program compiles
-without error, but that is about all that is known to work so far.
-
-The intent is to demonstrate how to configure multicast groups from
-the P4Runtime API, and/or using `simple_switch_CLI`, and process
-packets in `simple_switch_grpc`, some of which are forwarded via the
-v1model architecture unicast capability, and others of which are
-forwarded via the v1model architecture multicast capability.
+This example program and instructions below demonstrate how to
+configure multicast groups from the P4Runtime API, and process packets
+that are multicast replicated in the traffic manager before egress
+processing is done independently for each packet copy created.
 
 
 # Compiling
