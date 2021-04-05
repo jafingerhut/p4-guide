@@ -18,7 +18,7 @@ all Python libraries for Python3, not Python2.
 # Compiling and running simple_switch_grpc
 
 These can be done using the same commands described in the [demo1
-P4Runtime README](README-p4runtime.md].
+P4Runtime README](README-p4runtime.md).
 
 
 # Running the PTF test and understanding the output
