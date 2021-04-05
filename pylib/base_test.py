@@ -20,8 +20,8 @@
 
 # Andy Fingerhut (andy.fingerhut@gmail.com)
 #
-# This file was copied and then slightly modified from the file
-# PI/proto/ptf/base_test.py in the https://github.com/p4lang/PI
+# This file was copied and then modified from the file
+# proto/ptf/base_test.py in the https://github.com/p4lang/PI
 # repository.
 
 from collections import Counter
@@ -73,36 +73,6 @@ def stringify(n, length):
     h = '%x' % n
     s = ('0'*(len(h) % 2) + h).zfill(length*2).decode('hex')
     return s
-
-def int2string(n, width_in_bits):
-    """Take a non-negative integer 'n' as the first parameter, and a
-    positive integer 'width_in_bits' as the second parameter.  Return
-    a string with binary contents expected by the Python P4Runtime
-    client operations.  If 'n' does not fit in 'width_in_bits' bits,
-    an exception is raised."""
-    assert isinstance(width_in_bits, int)
-    assert width_in_bits >= 1
-    assert isinstance(n, int) or isinstance(n, long)
-    assert (n >= 0) and (n < (1 << width_in_bits))
-    width_in_bytes = (width_in_bits + 7) / 8
-    return stringify(n, width_in_bytes)
-
-def stringify2(n):
-    """Take a non-negative integer 'n'.  Return a string with binary
-    contents expected by the Python P4Runtime client operations.  'n'
-    is represented in the fewest number of bytes it fits into without
-    loss of precision.  It always returns a string at least one byte
-    long, even if n=0."""
-    h = '%x' % n
-    s = ('0'*(len(h) % 2) + h).decode('hex')
-    return s
-
-def int2string2(n):
-    """Take a non-negative integer 'n', and return a string with binary
-    contents expected by the Python P4Runtime client operations."""
-    assert isinstance(n, int) or isinstance(n, long)
-    assert (n >= 0)
-    return stringify2(n)
 
 def ipv4_to_binary(addr):
     """Take an argument 'addr' containing an IPv4 address written as a
@@ -834,7 +804,7 @@ def bmv2_json_to_device_config(bmv2_json_fname, bmv2_bin_fname):
             f_out.write(device_config.SerializeToString())
 
 # Copied update_config from the https://github.com/p4lang/PI
-# repository in file PI/proto/ptf/ptf_runner.py, then modified it
+# repository in file proto/ptf/ptf_runner.py, then modified it
 # slightly:
 
 def update_config(config_path, p4info_path, grpc_addr, device_id):
