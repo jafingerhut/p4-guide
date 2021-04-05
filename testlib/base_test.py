@@ -26,6 +26,7 @@
 
 from collections import Counter
 from functools import wraps, partial
+import logging
 import re
 import sys
 import threading
@@ -249,7 +250,7 @@ class P4RuntimeTest(BaseTest):
         self.stub = p4runtime_pb2_grpc.P4RuntimeStub(self.channel)
 
         proto_txt_path = testutils.test_param_get("p4info")
-        print("Importing p4info proto from {}".format(proto_txt_path))
+        logging.info("Reading p4info from {}".format(proto_txt_path))
         self.p4info = p4info_pb2.P4Info()
         with open(proto_txt_path, "rb") as fin:
             google.protobuf.text_format.Merge(fin.read(), self.p4info)
@@ -261,6 +262,38 @@ class P4RuntimeTest(BaseTest):
         self._reqs = []
 
         self.set_up_stream()
+
+    def updateConfig(self):
+        '''
+        Performs a SetForwardingPipelineConfig on the device with provided
+        P4Info and binary device config.
+
+        Prerequisite: setUp() method has been called first to create
+        the channel.
+        '''
+        request = p4runtime_pb2.SetForwardingPipelineConfigRequest()
+        request.device_id = self.device_id
+        config = request.config
+        # TBD: It seems like there should be a way to do this without
+        # reading the P4info file again, instead getting the data from
+        # self.p4info as saved when executing the setUp() method
+        # above.  The following commented-out assignment does not work.
+        #config.p4info = self.p4info
+        proto_txt_path = testutils.test_param_get("p4info")
+        with open(proto_txt_path, 'r') as fin:
+            google.protobuf.text_format.Merge(fin.read(), config.p4info)
+        config_path = testutils.test_param_get("config")
+        logging.info("Reading config (compiled P4 program) from {}".format(config_path))
+        with open(config_path, 'rb') as config_f:
+            config.p4_device_config = config_f.read()
+        request.action = p4runtime_pb2.SetForwardingPipelineConfigRequest.VERIFY_AND_COMMIT
+        try:
+            response = self.stub.SetForwardingPipelineConfig(request)
+        except Exception as e:
+            logging.error("Error during SetForwardingPipelineConfig", file=sys.stderr)
+            logging.error(str(e), file=sys.stderr)
+            return False
+        return True
 
     # In order to make writing tests easier, we accept any suffix that uniquely
     # identifies the object among p4info objects of the same type.
@@ -792,7 +825,8 @@ def update_config(config_path, p4info_path, grpc_addr, device_id):
     '''
     channel = grpc.insecure_channel(grpc_addr)
     stub = p4runtime_pb2_grpc.P4RuntimeStub(channel)
-    print("Sending P4 config")
+    print("Sending P4 config from file {} with P4info {}".format(
+        config_path, p4info_path))
     request = p4runtime_pb2.SetForwardingPipelineConfigRequest()
     request.device_id = device_id
     config = request.config
