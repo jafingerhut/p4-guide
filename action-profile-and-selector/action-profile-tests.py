@@ -327,13 +327,13 @@ def main():
     # program port numbers and Linux interfaces.  The data structure
     # returned by port_intf_mapping() is used in multiple places
     # throughout the code.
-    port_int_map = sstf.port_intf_mapping({0: 'veth2',
-                                           1: 'veth4',
-                                           2: 'veth6',
-                                           3: 'veth8',
-                                           4: 'veth10',
-                                           5: 'veth12',
-                                           6: 'veth14'})
+    port_int_map = sstf.port_intf_mapping({0: 'veth0',
+                                           1: 'veth2',
+                                           2: 'veth4',
+                                           3: 'veth6',
+                                           4: 'veth8',
+                                           5: 'veth10',
+                                           6: 'veth12'})
     args = sstf.get_args()
     ss_process_obj = sstf.start_simple_switch(args, port_int_map)
     hdl = runtime_CLI.test_init(args)

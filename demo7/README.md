@@ -265,5 +265,5 @@ configured output ports.
 
 ```python
 pkt1=Ether(src='00:00:c0:01:d0:0d', dst='ff:ff:ff:ff:ff:ff') / IP(src='10.2.3.5', dst='224.3.3.3') / UDP()
-sendp(pkt1, iface='veth2')
+sendp(pkt1, iface='veth0')
 ```

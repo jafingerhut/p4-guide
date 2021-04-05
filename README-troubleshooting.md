@@ -4,7 +4,7 @@ Symptom: You tried running simple_switch and you see a message like
 this:
 
 ```
-[10:59:18.649] [bmv2] [D] [thread 20021] Adding interface veth2 as port 0
+[10:59:18.649] [bmv2] [D] [thread 20021] Adding interface veth0 as port 0
 [10:59:18.649] [bmv2] [E] [thread 20021] Add port operation failed
 ```
 
@@ -14,7 +14,7 @@ in your software switch.  You won't be able to send packet to your P4
 program on that port, and packets sent to that port by your P4 program
 will disappear.
 
-If the interface that failed was a virtual Ethernet one like veth2,
+If the interface that failed was a virtual Ethernet one like veth0,
 the most likely fix is to run this command to create those interfaces:
 
 ```
@@ -95,7 +95,7 @@ before starting a new one, read below.
 
 ```
 $ ps axguw | grep simple_switch
-jafinger 20161  0.2  0.3 223116 14452 pts/1    Sl+  11:11   0:00 simple_switch --log-console -i 0@veth2 action-profile-and-selector/action-profile.json
+jafinger 20161  0.2  0.3 223116 14452 pts/1    Sl+  11:11   0:00 simple_switch --log-console -i 0@veth0 action-profile-and-selector/action-profile.json
 jafinger 20174  0.0  0.0  21536  1036 pts/3    S+   11:11   0:00 grep --color=auto simple_switch
 ```
 

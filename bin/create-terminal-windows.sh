@@ -38,8 +38,8 @@ ${CMD} --geometry=100x23+540+0 --title=simple_switch &
 # entries, and 'scapy' for sending packets
 ${CMD} --geometry=80x21+0+0 --tab --title=compile --tab --title=simple_switch_CLI --tab --title=scapy &
 
-# Bottom left: tcpdump/tshark running on veth2
-${CMD} --geometry=80x19+0+485 --title="port 0 veth2" &
+# Bottom left: tcpdump/tshark running on veth0
+${CMD} --geometry=80x19+0+485 --title="port 0 veth0" &
 
-# Bottom right: tcpdump/tshark running on veth6
-${CMD} --geometry=80x19+700+485 --title="port 2 veth6" &
+# Bottom right: tcpdump/tshark running on veth4
+${CMD} --geometry=80x19+700+485 --title="port 2 veth4" &

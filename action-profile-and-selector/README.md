@@ -17,7 +17,7 @@ To compile the P4_16 version of the code:
 
 # Running
 
-    sudo simple_switch --log-console -i 0@veth2 action-profile.json
+    sudo simple_switch --log-console -i 0@veth0 action-profile.json
 
 See the difference between action-profile.json and
 action-profile-without-implementation.json.  The latter was created by
@@ -219,7 +219,7 @@ to verify:
 In Scapy:
 
     >>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=443)
-    >>> sendp(pkt1, iface='veth2')
+    >>> sendp(pkt1, iface='veth0')
 
 In console log of simple_switch, I saw the packet search table t1 with
 key 0x1bb=443 decimal, get a match, and perform the action foo2 with
@@ -613,7 +613,7 @@ Now try sending some packets that match t2 entry 0 with tcp.srcPort
 
     [ in Scapy session ]
     >>> pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=443)
-    >>> sendp(pkt1, iface='veth2')
+    >>> sendp(pkt1, iface='veth0')
 
 From looking at the console log messages, the packet matched t2 entry
 0, and performed action foo2 with parameter 11 (hex).  The only change
@@ -624,7 +624,7 @@ Now try sending a packet that matches t2 entry 1 with tcp.srcPort 444:
 
     [ in Scapy session ]
     >>> pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=444, dport=5793)
-    >>> sendp(pkt2, iface='veth2')
+    >>> sendp(pkt2, iface='veth0')
 
 Here are some relevant lines of console output from simple_switch for
 table t2 matching:
@@ -652,7 +652,7 @@ before, to see if it will pick the other member of the group.
 
     [ in Scapy session ]
     >>> pkt3=Ether() / IP(dst='10.1.0.2') / TCP(sport=444, dport=5793)
-    >>> sendp(pkt3, iface='veth2')
+    >>> sendp(pkt3, iface='veth0')
 
 Here are some relevant lines of console output from simple_switch for
 table t2 matching:
@@ -734,29 +734,29 @@ number chosen in group 0 goes from 1, then 2, then 3, then repeats in
 that pattern.  This is consistent with the member chosen being
 something like `(hash % number_of_members_in_group)`.
 
-    >>> sendp(Ether() / IP(dst='10.1.0.0') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.0') / TCP(sport=444,dport=5793), iface='veth0')
     [06:59:04.537] [bmv2] [D] [thread 18675] [5.0] [cxt 0] Choosing member 1 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.1') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.1') / TCP(sport=444,dport=5793), iface='veth0')
     [06:59:51.257] [bmv2] [D] [thread 18675] [6.0] [cxt 0] Choosing member 2 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.2') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.2') / TCP(sport=444,dport=5793), iface='veth0')
     [07:00:14.728] [bmv2] [D] [thread 18675] [7.0] [cxt 0] Choosing member 3 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.3') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.3') / TCP(sport=444,dport=5793), iface='veth0')
     [07:00:47.096] [bmv2] [D] [thread 18675] [8.0] [cxt 0] Choosing member 1 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.4') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.4') / TCP(sport=444,dport=5793), iface='veth0')
     [07:01:04.837] [bmv2] [D] [thread 18675] [9.0] [cxt 0] Choosing member 2 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.5') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.5') / TCP(sport=444,dport=5793), iface='veth0')
     [07:01:24.601] [bmv2] [D] [thread 18675] [10.0] [cxt 0] Choosing member 3 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.6') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.6') / TCP(sport=444,dport=5793), iface='veth0')
     [07:01:43.996] [bmv2] [D] [thread 18675] [11.0] [cxt 0] Choosing member 1 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.7') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.7') / TCP(sport=444,dport=5793), iface='veth0')
     [07:02:04.077] [bmv2] [D] [thread 18675] [12.0] [cxt 0] Choosing member 2 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.8') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.8') / TCP(sport=444,dport=5793), iface='veth0')
     [07:02:22.921] [bmv2] [D] [thread 18675] [13.0] [cxt 0] Choosing member 3 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.9') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.9') / TCP(sport=444,dport=5793), iface='veth0')
     [07:02:38.740] [bmv2] [D] [thread 18675] [14.0] [cxt 0] Choosing member 1 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.10') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.10') / TCP(sport=444,dport=5793), iface='veth0')
     [07:02:55.405] [bmv2] [D] [thread 18675] [15.0] [cxt 0] Choosing member 2 from group 0
-    >>> sendp(Ether() / IP(dst='10.1.0.11') / TCP(sport=444,dport=5793), iface='veth2')
+    >>> sendp(Ether() / IP(dst='10.1.0.11') / TCP(sport=444,dport=5793), iface='veth0')
     [07:03:15.038] [bmv2] [D] [thread 18675] [16.0] [cxt 0] Choosing member 3 from group 0
 
 Below is output from the test named

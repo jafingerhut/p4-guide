@@ -288,7 +288,7 @@ Manual testing of counter updates in test program psa-basic-counter-bmv2.p4
 sudo ~/p4-guide/bin/veth_setup.sh
 cd p4c/build
 ./p4c-bm2-psa ../testdata/p4_16_samples/psa-basic-counter-bmv2.p4 -o psa-basic-counter-bmv2.json
-sudo psa_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 psa-basic-counter-bmv2.json
+sudo psa_switch --log-console -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 psa-basic-counter-bmv2.json
 ```
 
 In psa_switch_CLI:
@@ -299,7 +299,7 @@ counter_read cIngress.counter 256
 In scapy:
 ```
 pkt1=Ether(dst='00:00:00:00:00:01', src='00:00:00:00:00:00', type=0xffff)
-sendp(pkt1,iface='veth10')
+sendp(pkt1,iface='veth8')
 ```
 
 I observed that after sending in each of 4 identical packets, the

@@ -31,7 +31,7 @@ To compile the P4_16 version of the code:
 
 # Running
 
-    sudo simple_switch --log-console -i 0@veth2 calling-convention.json
+    sudo simple_switch --log-console -i 0@veth0 calling-convention.json
 
 No table entries need to be added.
 
@@ -45,8 +45,8 @@ scapy session for sending packets
     pkt2=Ether() / IP(dst='192.168.3.4') / TCP(sport=5501, dport=80)
 
     # Send packet at layer2, specifying interface
-    sendp(pkt1, iface="veth2")
-    sendp(pkt2, iface="veth2")
+    sendp(pkt1, iface="veth0")
+    sendp(pkt2, iface="veth0")
 
 
 # Behavior seen during simple_switch run with pkt1 and pkt2

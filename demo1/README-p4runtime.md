@@ -37,15 +37,15 @@ compiler in your system-wide /usr/local/bin directory.
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
-    sudo simple_switch_grpc --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 --no-p4
+    sudo simple_switch_grpc --log-console -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4
 
 To get the log to go to a file instead of the console:
 
-    sudo simple_switch_grpc --log-file ss-log --log-flush -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 --no-p4
+    sudo simple_switch_grpc --log-file ss-log --log-flush -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4
 
 CHECK THIS: If you see "Add port operation failed" messages in the
 output of the `simple_switch_grpc` command, it means that one or more
-of the virtual Ethernet interfaces veth2, veth4, etc. have not been
+of the virtual Ethernet interfaces veth0, veth2, etc. have not been
 created on your system.  Search for "veth" in the file
 [`README-using-bmv2.md`](../README-using-bmv2.md`) (top level
 directory of this repository) for a command to create them.
@@ -267,17 +267,17 @@ fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
 drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 
 # Send packet at layer2, specifying interface
-sendp(fwd_pkt1, iface="veth2")
-sendp(drop_pkt1, iface="veth2")
+sendp(fwd_pkt1, iface="veth0")
+sendp(drop_pkt1, iface="veth0")
 
 fwd_pkt2=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80) / Raw('The quick brown fox jumped over the lazy dog.')
-sendp(fwd_pkt2, iface="veth2")
+sendp(fwd_pkt2, iface="veth0")
 
 # This packet will only be forwarded if you created the 'second set'
 # of example table entries above (or your own, which this packet can
 # match).
 fwd_pkt3=Ether() / IP(dst='10.1.0.200') / TCP(sport=5793, dport=80)
-sendp(fwd_pkt3, iface="veth2")
+sendp(fwd_pkt3, iface="veth0")
 ```
 
 ----------------------------------------

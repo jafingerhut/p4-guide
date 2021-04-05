@@ -49,7 +49,7 @@ latest master version as of 2018-Dec-07.
 
 To run the behavioral model with 1 port numbered 0:
 
-    sudo simple_switch --log-console -i 0@veth2 checksum-ipv4-with-options.json
+    sudo simple_switch --log-console -i 0@veth0 checksum-ipv4-with-options.json
 
 
 No table entries need to be added for the default action 'foo' to be
@@ -140,12 +140,12 @@ len(pkt2_truncated2)
 # 14 Ethernet + 23 incomplete IPv4
 
 # Send packet at layer2, specifying interface
-sendp(pkt1_good, iface="veth2")
-sendp(pkt1_bad, iface="veth2")
-sendp(pkt2_good, iface="veth2")
-sendp(pkt2_bad, iface="veth2")
-sendp(pkt2_truncated1, iface="veth2")
-sendp(pkt2_truncated2, iface="veth2")
+sendp(pkt1_good, iface="veth0")
+sendp(pkt1_bad, iface="veth0")
+sendp(pkt2_good, iface="veth0")
+sendp(pkt2_bad, iface="veth0")
+sendp(pkt2_truncated1, iface="veth0")
+sendp(pkt2_truncated2, iface="veth0")
 ```
 
 Tested behavior with latest versions of behavioral-model and p4c as of
