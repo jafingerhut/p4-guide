@@ -159,6 +159,72 @@ class FwdTest(Demo1Test):
         tu.verify_packets(self, exp_pkt, [eg_port])
 
 
+class PrefixLen0Test(Demo1Test):
+    @bt.autocleanup
+    def runTest(self):
+        in_dmac = 'ee:30:ca:9d:1e:00'
+        in_smac = 'ee:cd:00:7e:70:00'
+        ig_port = 1
+
+        entries = []
+        # 'ip_dst_addr' and 'prefix_len' fields represent the key to
+        # add to the LPM table.  'pkt_in_dst_addr' is one IPv4 address
+        # such that if a packet is sent in with that as the dest
+        # address, it should match the given table entry, not one of
+        # the others.  There may be many other such addresses, but we
+        # just need one for this particular test.
+        entries.append({'ip_dst_addr': '10.1.0.1',
+                        'pkt_in_dst_addr': '10.1.0.1',
+                        'prefix_len': 32,
+                        'eg_port': 2,
+                        'l2ptr': 58,
+                        'bd': 9,
+                        'out_dmac': '02:13:57:ab:cd:ef',
+                        'out_smac': '00:11:22:33:44:55'})
+        entries.append({'ip_dst_addr': '10.1.0.0',
+                        'pkt_in_dst_addr': '10.1.2.3',
+                        'prefix_len': 16,
+                        'eg_port': 3,
+                        'l2ptr': 59,
+                        'bd': 10,
+                        'out_dmac': '02:13:57:ab:cd:f0',
+                        'out_smac': '00:11:22:33:44:56'})
+        entries.append({'ip_dst_addr': '0.0.0.0',
+                        'pkt_in_dst_addr': '20.0.0.1',
+                        'prefix_len': 0,
+                        'eg_port': 4,
+                        'l2ptr': 60,
+                        'bd': 11,
+                        'out_dmac': '02:13:57:ab:cd:f1',
+                        'out_smac': '00:11:22:33:44:57'})
+
+        for e in entries:
+            self.table_add(self.key_ipv4_da_lpm(e['ip_dst_addr'],
+                                                e['prefix_len']),
+                           self.act_set_l2ptr(e['l2ptr']))
+            self.table_add(self.key_mac_da(e['l2ptr']),
+                           self.act_set_bd_dmac_intf(e['bd'], e['out_dmac'],
+                                                     e['eg_port']))
+            self.table_add(self.key_send_frame(e['bd']),
+                           self.act_rewrite_mac(e['out_smac']))
+
+        ttl_in = 100
+        for e in entries:
+            ip_dst_addr = e['pkt_in_dst_addr']
+            eg_port = e['eg_port']
+            pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
+                                          ip_dst=ip_dst_addr, ip_ttl=ttl_in)
+            exp_pkt = tu.simple_tcp_packet(eth_src=e['out_smac'],
+                                           eth_dst=e['out_dmac'],
+                                           ip_dst=ip_dst_addr,
+                                           ip_ttl=ttl_in - 1)
+            tu.send_packet(self, ig_port, pkt_in)
+            tu.verify_packets(self, exp_pkt, [eg_port])
+            # Vary TTL in for each packet tested, just to make them
+            # easy to distinguish from each other.
+            ttl_in = ttl_in - 10
+
+
 class DupEntryTest(Demo1Test):
     @bt.autocleanup
     def runTest(self):

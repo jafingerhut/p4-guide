@@ -442,6 +442,10 @@ class P4RuntimeTest(BaseTest):
             self.pLen = pLen
 
         def add_to(self, mf_id, mk):
+            if self.pLen == 0:
+                # P4Runtime API requires omitting fields that are
+                # completely wildcard.
+                return
             mf = mk.add()
             mf.field_id = mf_id
             mf.lpm.prefix_len = self.pLen
