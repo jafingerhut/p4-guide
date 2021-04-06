@@ -121,7 +121,7 @@ control mainCtrl (inout headers_t hdr,    // includes ethernet, ipv4, etc.
         const default_action = set_firewall_control_packet(0);
     }
     
-    action set_flow_id (FlowId_t flow_id,
+    action tcp_conn_track_hit (FlowId_t flow_id,
 #ifdef WAIT_FOR_P4C_SUPPORT
                         @per_entry_state inout ExpireTimeSelection_t expire_time
 #else
@@ -136,7 +136,7 @@ control mainCtrl (inout headers_t hdr,    // includes ethernet, ipv4, etc.
         }
     }
 
-    action maybe_add_new_flow () {
+    action tcp_conn_track_miss () {
         if (do_add_on_miss) {
             my_flow_id = allocate_flow_id();
             add_succeeded =
@@ -144,12 +144,15 @@ control mainCtrl (inout headers_t hdr,    // includes ethernet, ipv4, etc.
                           (set_flow_id_params_t)
                           {flow_id = my_flow_id,
 		           expire_time = new_expire_time_selection});
+
+                
+                add_entry(set_flow_id(my_flow_id, new_expire_time_selection));
         }
     }
     
     // This table is common to, and looked up, for both
     // host-to-network and network-to-host packets.
-    table allowed_flows {
+    table tcp_conn_track_table {
         key = {
             meta.flowkey.addr1 : exact;  // SA for host->net, DA for net->host
             meta.flowkey.addr2 : exact;  // opposite of addr1
@@ -158,12 +161,12 @@ control mainCtrl (inout headers_t hdr,    // includes ethernet, ipv4, etc.
             meta.flowkey.port2 : exact;  // opposite of port1
         }
         actions = {
-            @tableonly   set_flow_id;
-            @defaultonly maybe_add_new_flow;
+            @tableonly   tcp_conn_track_hit;
+            @defaultonly tcp_conn_track_miss;
         }
         add_on_miss = true;
         size = FLOW_TABLE_SIZE;   // e.g. 10 million
-        const default_action = maybe_add_new_flow;
+        const default_action = tcp_conn_track_miss;
     }
 
     apply {
