@@ -72,7 +72,7 @@ CHECK THIS: If you see "Add port operation failed" messages in the
 output of the simple_switch command, it means that one or more of the
 virtual Ethernet interfaces veth0, veth2, etc. have not been created
 on your system.  Search for "veth" in the file
-[`README-using-bmv2.md`](../README-using-bmv2.md`) (top level
+[`README-using-bmv2.md`](../README-using-bmv2.md) (top level
 directory of this repository) for a command to create them.
 
 See the file
