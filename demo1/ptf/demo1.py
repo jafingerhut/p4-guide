@@ -174,24 +174,24 @@ class PrefixLen0Test(Demo1Test):
         # the others.  There may be many other such addresses, but we
         # just need one for this particular test.
         entries.append({'ip_dst_addr': '10.1.0.1',
-                        'pkt_in_dst_addr': '10.1.0.1',
                         'prefix_len': 32,
+                        'pkt_in_dst_addr': '10.1.0.1',
                         'eg_port': 2,
                         'l2ptr': 58,
                         'bd': 9,
                         'out_dmac': '02:13:57:ab:cd:ef',
                         'out_smac': '00:11:22:33:44:55'})
         entries.append({'ip_dst_addr': '10.1.0.0',
-                        'pkt_in_dst_addr': '10.1.2.3',
                         'prefix_len': 16,
+                        'pkt_in_dst_addr': '10.1.2.3',
                         'eg_port': 3,
                         'l2ptr': 59,
                         'bd': 10,
                         'out_dmac': '02:13:57:ab:cd:f0',
                         'out_smac': '00:11:22:33:44:56'})
         entries.append({'ip_dst_addr': '0.0.0.0',
-                        'pkt_in_dst_addr': '20.0.0.1',
                         'prefix_len': 0,
+                        'pkt_in_dst_addr': '20.0.0.1',
                         'eg_port': 4,
                         'l2ptr': 60,
                         'bd': 11,
