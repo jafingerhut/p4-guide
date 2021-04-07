@@ -19,7 +19,7 @@
 import logging
 import ptf
 import os
-from ptf import config
+import ptf
 import ptf.testutils as tu
 
 from google.rpc import code_pb2
