@@ -47,6 +47,24 @@ See the section with this name in
 [`../demo1/README-p4runtime.md`](../demo1/README-p4runtime.md).
 
 
+# Running automated test using PTF
+
+See the [demo1 PTF README](../demo1/README-ptf.md) for which systems
+on which this has been tested as working.  It requires fairly recent
+versions of some of the open source p4c repositories installed in a
+way that all Python packages are installed as Python3.
+
+After starting `simple_switch_grpc`, run this command in another
+terminal:
+```bash
+sudo ./runptf.sh
+```
+
+See the "Running the PTF test ..." section
+[here](../demo1/README-ptf.md) for some description of what the output
+of a successful PTF test run looks like.
+
+
 # Using a Python interactive session as a controller
 
 To start an interactive Python session that can be used to load the
