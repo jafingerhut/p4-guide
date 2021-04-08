@@ -410,13 +410,13 @@ class P4RuntimeTest(BaseTest):
             if p.name == name:
                 return p.id
 
-    def get_mf_id(self, table_name, name):
+    def get_mf_by_name(self, table_name, field_name):
         t = self.get_obj("tables", table_name)
         if t is None:
             return None
         for mf in t.match_fields:
-            if mf.name == name:
-                return mf.id
+            if mf.name == field_name:
+                return mf
 
     # These are attempts at convenience functions aimed at making writing
     # P4Runtime PTF tests easier.
@@ -430,7 +430,7 @@ class P4RuntimeTest(BaseTest):
             super(P4RuntimeTest.Exact, self).__init__(name)
             self.v = v
 
-        def add_to(self, mf_id, mk):
+        def add_to(self, mf_id, mf_bitwidth, mk):
             mf = mk.add()
             mf.field_id = mf_id
             mf.exact.value = self.v
@@ -441,7 +441,7 @@ class P4RuntimeTest(BaseTest):
             self.v = v
             self.pLen = pLen
 
-        def add_to(self, mf_id, mk):
+        def add_to(self, mf_id, mf_bitwidth, mk):
             if self.pLen == 0:
                 # P4Runtime API requires omitting fields that are
                 # completely wildcard.
@@ -474,23 +474,52 @@ class P4RuntimeTest(BaseTest):
             self.v = v
             self.mask = mask
 
-        def add_to(self, mf_id, mk):
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            mask_int = int.from_bytes(self.mask, byteorder='big')
+            if mask_int == 0:
+                # P4Runtime API requires omitting fields that are
+                # completely wildcard.
+                return
             mf = mk.add()
             mf.field_id = mf_id
-            assert(len(self.mask) == len(self.v))
-            mf.ternary.mask = self.mask
-            mf.ternary.value = ''
             # P4Runtime now has strict rules regarding ternary matches: in the
             # case of Ternary, "don't-care" bits in the value must be set to 0
-            for i in range(len(self.mask)):
-                mf.ternary.value += chr(ord(self.v[i]) & ord(self.mask[i]))
+            # I am sure there are more efficient ways to do this in
+            # Python3, but this should be correct.  It is likely
+            # faster if we chnaged the API of Ternary __init__ so that
+            # it takes int instead of bytes.
+            val_int = int.from_bytes(self.v, byteorder='big')
+            val_int = val_int & mask_int
+            mf.ternary.value = stringify(val_int)
+            mf.ternary.mask = stringify(mask_int)
+
+    class Range(MF):
+        def __init__(self, name, min_val, max_val):
+            super(P4RuntimeTest.Range, self).__init__(name)
+            self.min_val = min_val
+            self.max_val = max_val
+
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            # P4Runtime API requires omitting fields that are
+            # completely wildcard, i.e. the range is [0, 2^W-1] for a
+            # field with type bit<W>.
+            min_val_int = int.from_bytes(self.min_val, byteorder='big')
+            max_val_int = int.from_bytes(self.max_val, byteorder='big')
+            max_val_for_bitwidth = (1 << mf_bitwidth) - 1
+            if (min_val_int == 0) and (max_val_int == max_val_for_bitwidth):
+                return
+            mf = mk.add()
+            mf.field_id = mf_id
+            mf.range.low = self.min_val
+            mf.range.high = self.max_val
 
     # Sets the match key for a p4::TableEntry object. mk needs to be an iterable
     # object of MF instances
     def set_match_key(self, table_entry, t_name, mk):
+        table_obj = self.get_obj("tables", t_name)
         for mf in mk:
-            mf_id = self.get_mf_id(t_name, mf.name)
-            mf.add_to(mf_id, table_entry.match)
+            mf_obj = self.get_mf_by_name(t_name, mf.name)
+            mf.add_to(mf_obj.id, mf_obj.bitwidth, table_entry.match)
 
     def set_action(self, action, a_name, params):
         action_id = self.get_action_id(a_name)
@@ -598,7 +627,8 @@ class P4RuntimeTest(BaseTest):
     # list used for autocleanup, by passing store=False to write_request calls.
     #
 
-    def push_update_add_entry_to_action(self, req, t_name, mk, a_name, params):
+    def push_update_add_entry_to_action(self, req, t_name, mk, a_name, params,
+                                        priority=None):
         update = req.updates.add()
         update.type = p4runtime_pb2.Update.INSERT
         table_entry = update.entity.table_entry
@@ -608,19 +638,24 @@ class P4RuntimeTest(BaseTest):
         else:
             table_entry.is_default_action = True
             update.type = p4runtime_pb2.Update.MODIFY
+        if priority:
+            table_entry.priority = priority
         self.set_action_entry(table_entry, a_name, params)
 
-    def send_request_add_entry_to_action(self, t_name, mk, a_name, params):
+    def send_request_add_entry_to_action(self, t_name, mk, a_name, params,
+                                         priority=None):
         req = p4runtime_pb2.WriteRequest()
         req.device_id = self.device_id
-        self.push_update_add_entry_to_action(req, t_name, mk, a_name, params)
+        self.push_update_add_entry_to_action(req, t_name, mk, a_name, params,
+                                             priority)
         return req, self.write_request(req, store=(mk is not None))
 
     # A shorter name for send_request_add_entry_to_action, and also
     # bundles up table name and key into one tuple, and action name
     # and params into another tuple, for the convenience of the caller
     # using some helper functions that create these tuples.
-    def table_add(self, table_name_and_key, action_name_and_params):
+    def table_add(self, table_name_and_key, action_name_and_params,
+                  priority=None):
         assert isinstance(table_name_and_key, tuple)
         assert len(table_name_and_key) == 2
         table_name = table_name_and_key[0]
@@ -630,7 +665,8 @@ class P4RuntimeTest(BaseTest):
         action_name = action_name_and_params[0]
         action_params = action_name_and_params[1]
         return self.send_request_add_entry_to_action(table_name, key,
-                                                     action_name, action_params)
+                                                     action_name, action_params,
+                                                     priority)
 
     def pre_add_mcast_group(self, mcast_grp_id, port_instance_pair_list):
         """When a packet is sent from ingress to the packet buffer with
