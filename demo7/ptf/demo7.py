@@ -110,35 +110,33 @@ class Demo7Test(bt.P4RuntimeTest):
     def key_ipv4_mc_route_lookup(self, ipv4_addr_string, prefix_len):
         return ('ipv4_mc_route_lookup',
                 [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
+                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
 
-    def act_set_mcast_grp(self, mcast_grp_int_val):
+    def act_set_mcast_grp(self, mcast_grp_int):
         return ('set_mcast_grp',
-                [('mcast_grp', bt.stringify(mcast_grp_int_val))])
+                [('mcast_grp', mcast_grp_int)])
 
     def key_ipv4_da_lpm(self, ipv4_addr_string, prefix_len):
         return ('ipv4_da_lpm',
                 [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
+                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
 
-    def act_set_l2ptr(self, l2ptr_int_val):
-        return ('set_l2ptr', [('l2ptr', bt.stringify(l2ptr_int_val))])
+    def act_set_l2ptr(self, l2ptr_int):
+        return ('set_l2ptr', [('l2ptr', l2ptr_int)])
 
-    def key_mac_da(self, l2ptr_int_val):
-        return ('mac_da', [self.Exact('meta.fwd_metadata.l2ptr',
-                           bt.stringify(l2ptr_int_val))])
+    def key_mac_da(self, l2ptr_int):
+        return ('mac_da', [self.Exact('meta.fwd_metadata.l2ptr', l2ptr_int)])
 
-    def act_set_dmac_intf(self, dmac_string, intf_int_val):
+    def act_set_dmac_intf(self, dmac_string, intf_int):
         return ('set_dmac_intf',
-                [('dmac', bt.mac_to_binary(dmac_string)),
-                 ('intf', bt.stringify(intf_int_val))])
+                [('dmac', bt.mac_to_int(dmac_string)),
+                 ('intf', intf_int)])
 
-    def key_send_frame(self, eg_port_int_val):
-        return ('send_frame', [self.Exact('stdmeta.egress_port',
-                               bt.stringify(eg_port_int_val))])
+    def key_send_frame(self, eg_port_int):
+        return ('send_frame', [self.Exact('stdmeta.egress_port', eg_port_int)])
 
     def act_rewrite_mac(self, smac_string):
-        return ('rewrite_mac', [('smac', bt.mac_to_binary(smac_string))])
+        return ('rewrite_mac', [('smac', bt.mac_to_int(smac_string))])
 
 
 class FwdTest(Demo7Test):
@@ -210,8 +208,7 @@ class FwdTest(Demo7Test):
 
         # See Section 6.4 of RFC 1112 for how the dest MAC address of
         # a forwarded IPv4 multicast packet should be calculated.
-        ip_dst_addr_bin = bt.ipv4_to_binary(ip_dst_addr)
-        ip_dst_addr_int = int.from_bytes(ip_dst_addr_bin, byteorder='big')
+        ip_dst_addr_int = bt.ipv4_to_int(ip_dst_addr)
         mask_23_lsbs = (1 << 23) - 1
         exp_dmac_int = 0x01_00_5e_00_00_00 + (ip_dst_addr_int & mask_23_lsbs)
         exp_dmac = int_to_mac_string(exp_dmac_int)

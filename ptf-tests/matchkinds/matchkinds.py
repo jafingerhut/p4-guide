@@ -88,14 +88,12 @@ class MatchKindsTest(bt.P4RuntimeTest):
                #byte3_val_int, byte3_exact_match):
         return ('t1',
                 [self.Ternary('hdr.ipv4.dstAddr[31:24]',
-                              bt.stringify(byte1_val_int),
-                              bt.stringify(byte1_mask_int)),
+                              byte1_val_int, byte1_mask_int),
                  self.Range('hdr.ipv4.dstAddr[23:16]',
-                            bt.stringify(byte2_min_int),
-                            bt.stringify(byte2_max_int))])
+                            byte2_min_int, byte2_max_int)])
 
     def act_set_dmac(self, dmac_string):
-        return ('set_dmac', [('dmac', bt.mac_to_binary(dmac_string))])
+        return ('set_dmac', [('dmac', bt.mac_to_int(dmac_string))])
 
 
 class FwdTest(MatchKindsTest):

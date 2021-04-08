@@ -90,6 +90,17 @@ def ipv4_to_binary(addr):
     # to add a separate check for that here.
     return bytes(bytes_)
 
+def ipv4_to_int(addr):
+    """Take an argument 'addr' containing an IPv4 address written as a
+    string in dotted decimal notation, e.g. '10.1.2.3', and convert it
+    to an integer."""
+    bytes_ = [int(b, 10) for b in addr.split('.')]
+    assert len(bytes_) == 4
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return int.from_bytes(bytes(bytes_), byteorder='big')
+
 def mac_to_binary(addr):
     """Take an argument 'addr' containing an Ethernet MAC address written
     as a string in hexadecimal notation, with each byte separated by a
@@ -102,6 +113,17 @@ def mac_to_binary(addr):
     # elements of bytes_ is outside of the range [0, 255]], so no need
     # to add a separate check for that here.
     return bytes(bytes_)
+
+def mac_to_int(addr):
+    """Take an argument 'addr' containing an Ethernet MAC address written
+    as a string in hexadecimal notation, with each byte separated by a
+    colon, e.g. '00:de:ad:be:ef:ff', and convert it to an integer."""
+    bytes_ = [int(b, 16) for b in addr.split(':')]
+    assert len(bytes_) == 6
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return int.from_bytes(bytes(bytes_), byteorder='big')
 
 # Used to indicate that the gRPC error Status object returned by the server has
 # an incorrect format.
@@ -428,16 +450,19 @@ class P4RuntimeTest(BaseTest):
     class Exact(MF):
         def __init__(self, name, v):
             super(P4RuntimeTest.Exact, self).__init__(name)
+            assert isinstance(v, int)
             self.v = v
 
         def add_to(self, mf_id, mf_bitwidth, mk):
             mf = mk.add()
             mf.field_id = mf_id
-            mf.exact.value = self.v
+            mf.exact.value = stringify(self.v)
 
     class Lpm(MF):
         def __init__(self, name, v, pLen):
             super(P4RuntimeTest.Lpm, self).__init__(name)
+            assert isinstance(v, int)
+            assert isinstance(pLen, int)
             self.v = v
             self.pLen = pLen
 
@@ -449,34 +474,23 @@ class P4RuntimeTest(BaseTest):
             mf = mk.add()
             mf.field_id = mf_id
             mf.lpm.prefix_len = self.pLen
-            assert isinstance(self.v, bytes)
-            orig_v_list = list(self.v)
-            mod_v_list = []
 
-            # P4Runtime now has strict rules regarding ternary matches: in the
-            # case of LPM, trailing bits in the value (after prefix) must be set
-            # to 0.
-            first_byte_masked = self.pLen // 8
-            for i in range(first_byte_masked):
-                mod_v_list.append(orig_v_list[i])
-            if first_byte_masked == len(orig_v_list):
-                mf.lpm.value = bytes(mod_v_list)
-                return
-            r = self.pLen % 8
-            mod_v_list.append(orig_v_list[first_byte_masked] & (0xff << (8 - r)))
-            for i in range(first_byte_masked + 1, len(orig_v_list)):
-                mod_v_list.append(0)
-            mf.lpm.value = bytes(mod_v_list)
+            # P4Runtime now has strict rules regarding ternary
+            # matches: in the case of LPM, trailing bits in the value
+            # (after prefix) must be set to 0.
+            prefix_mask = ((1 << self.pLen) - 1) << (mf_bitwidth - self.pLen)
+            mf.lpm.value = stringify(self.v & prefix_mask)
 
     class Ternary(MF):
         def __init__(self, name, v, mask):
             super(P4RuntimeTest.Ternary, self).__init__(name)
+            assert isinstance(v, int)
+            assert isinstance(mask, int)
             self.v = v
             self.mask = mask
 
         def add_to(self, mf_id, mf_bitwidth, mk):
-            mask_int = int.from_bytes(self.mask, byteorder='big')
-            if mask_int == 0:
+            if self.mask == 0:
                 # P4Runtime API requires omitting fields that are
                 # completely wildcard.
                 return
@@ -484,18 +498,15 @@ class P4RuntimeTest(BaseTest):
             mf.field_id = mf_id
             # P4Runtime now has strict rules regarding ternary matches: in the
             # case of Ternary, "don't-care" bits in the value must be set to 0
-            # I am sure there are more efficient ways to do this in
-            # Python3, but this should be correct.  It is likely
-            # faster if we chnaged the API of Ternary __init__ so that
-            # it takes int instead of bytes.
-            val_int = int.from_bytes(self.v, byteorder='big')
-            val_int = val_int & mask_int
-            mf.ternary.value = stringify(val_int)
-            mf.ternary.mask = stringify(mask_int)
+            masked_val_int = self.v & self.mask
+            mf.ternary.value = stringify(masked_val_int)
+            mf.ternary.mask = stringify(self.mask)
 
     class Range(MF):
         def __init__(self, name, min_val, max_val):
             super(P4RuntimeTest.Range, self).__init__(name)
+            assert isinstance(min_val, int)
+            assert isinstance(max_val, int)
             self.min_val = min_val
             self.max_val = max_val
 
@@ -503,15 +514,13 @@ class P4RuntimeTest(BaseTest):
             # P4Runtime API requires omitting fields that are
             # completely wildcard, i.e. the range is [0, 2^W-1] for a
             # field with type bit<W>.
-            min_val_int = int.from_bytes(self.min_val, byteorder='big')
-            max_val_int = int.from_bytes(self.max_val, byteorder='big')
             max_val_for_bitwidth = (1 << mf_bitwidth) - 1
-            if (min_val_int == 0) and (max_val_int == max_val_for_bitwidth):
+            if (self.min_val == 0) and (self.max_val == max_val_for_bitwidth):
                 return
             mf = mk.add()
             mf.field_id = mf_id
-            mf.range.low = self.min_val
-            mf.range.high = self.max_val
+            mf.range.low = stringify(self.min_val)
+            mf.range.high = stringify(self.max_val)
 
     # Sets the match key for a p4::TableEntry object. mk needs to be an iterable
     # object of MF instances
@@ -529,7 +538,7 @@ class P4RuntimeTest(BaseTest):
         for p_name, v in params:
             param = action.params.add()
             param.param_id = self.get_param_id(a_name, p_name)
-            param.value = v
+            param.value = stringify(v)
 
     # Sets the action & action data for a p4::TableEntry object. params needs to
     # be an iterable object of 2-tuples (<param_name>, <value>).
