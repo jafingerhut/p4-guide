@@ -84,13 +84,15 @@ class MatchKindsTest(bt.P4RuntimeTest):
     #############################################################
 
     def key_t1(self, byte1_val_int, byte1_mask_int,
-               byte2_min_int, byte2_max_int):
-               #byte3_val_int, byte3_exact_match):
+               byte2_min_int, byte2_max_int,
+               byte3_val_int, byte3_exact_match):
         return ('t1',
                 [self.Ternary('hdr.ipv4.dstAddr[31:24]',
                               byte1_val_int, byte1_mask_int),
                  self.Range('hdr.ipv4.dstAddr[23:16]',
-                            byte2_min_int, byte2_max_int)])
+                            byte2_min_int, byte2_max_int),
+                 self.Optional('hdr.ipv4.dstAddr[15:8]',
+                               byte3_val_int, byte3_exact_match)])
 
     def act_set_dmac(self, dmac_string):
         return ('set_dmac', [('dmac', bt.mac_to_int(dmac_string))])
@@ -109,6 +111,8 @@ class FwdTest(MatchKindsTest):
                         'b1_mask': 0xff,
                         'b2_min': 172,
                         'b2_max': 172,
+                        'b3_val': 1,
+                        'b3_exact_match': True,
                         'priority': 100,
                         'pkt_in_dst_addr': '192.172.1.1',
                         'out_dmac': '00:00:00:00:00:01'})
@@ -116,6 +120,8 @@ class FwdTest(MatchKindsTest):
                         'b1_mask': 0,
                         'b2_min': 172,
                         'b2_max': 172,
+                        'b3_val': 255,
+                        'b3_exact_match': True,
                         'priority': 90,
                         'pkt_in_dst_addr': '193.172.255.255',
                         'out_dmac': '00:00:00:00:00:02'})
@@ -123,14 +129,26 @@ class FwdTest(MatchKindsTest):
                         'b1_mask': 0xff,
                         'b2_min': 0,
                         'b2_max': 255,
+                        'b3_val': 0,
+                        'b3_exact_match': True,
                         'priority': 80,
                         'pkt_in_dst_addr': '192.255.0.0',
                         'out_dmac': '00:00:00:00:00:03'})
+        entries.append({'b1_val': 192,
+                        'b1_mask': 0xff,
+                        'b2_min': 172,
+                        'b2_max': 172,
+                        'b3_val': 0,
+                        'b3_exact_match': False,
+                        'priority': 70,
+                        'pkt_in_dst_addr': '192.172.50.0',
+                        'out_dmac': '00:00:00:00:00:04'})
         
         # Add a set of table entries
         for e in entries:
             self.table_add(self.key_t1(e['b1_val'], e['b1_mask'],
-                                       e['b2_min'], e['b2_max']),
+                                       e['b2_min'], e['b2_max'],
+                                       e['b3_val'], e['b3_exact_match']),
                            self.act_set_dmac(e['out_dmac']),
                            e['priority'])
 

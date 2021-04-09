@@ -522,6 +522,21 @@ class P4RuntimeTest(BaseTest):
             mf.range.low = stringify(self.min_val)
             mf.range.high = stringify(self.max_val)
 
+    class Optional(MF):
+        def __init__(self, name, val, exact_match):
+            super(P4RuntimeTest.Optional, self).__init__(name)
+            assert isinstance(val, int)
+            assert isinstance(exact_match, bool)
+            self.val = val
+            self.exact_match = exact_match
+
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            if self.exact_match == False:
+                return
+            mf = mk.add()
+            mf.field_id = mf_id
+            mf.optional.value = stringify(self.val)
+
     # Sets the match key for a p4::TableEntry object. mk needs to be an iterable
     # object of MF instances
     def set_match_key(self, table_entry, t_name, mk):
