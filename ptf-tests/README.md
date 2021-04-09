@@ -15,13 +15,12 @@ output that running a successful PTF test looks like.
 # Exercising all supported match_kind
 
 + lpm, exact - see PTF test in demo1 directory
-+ range, ternary - see PTF test in ptf-tests/matchkinds directory
++ range, ternary, optional - see PTF test in ptf-tests/matchkinds directory
   + TBD: I wouldn't be surprised if range entries on key fields of
     type `int<W>` work as if they were cast to type `bit<W>` instead.
     True?  If so, that seems tricky to change, unless the field's most
     significant, i.e. sign, bit is negated, as well as all min/max
     values installed by the control plane.
-+ optional - TBD
 
 
 
