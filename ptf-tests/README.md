@@ -23,6 +23,14 @@ output that running a successful PTF test looks like.
     values installed by the control plane.
 
 
+# Multicast configuration and packet replication
+
++ multicast group
+  + configure from controller - see demo7 directory
+  + verify changes in data packet processing as a result of controller changes
+  + read multicast group config from switch - TBD add to demo7 PTF test
+
+
 
 # Things not demonstrated yet
 
@@ -38,10 +46,6 @@ output that running a successful PTF test looks like.
   + configure from controller
   + verify changes in data packet processing as a result of controller changes
   + read mirror session info from switch
-+ multicast group
-  + configure from controller - see demo7 directory
-  + verify changes in data packet processing as a result of controller changes
-  + read multicast group config from switch - TBD add to demo7 PTF test
 + read counters from controller
   + indirect counter
   + direct counter
