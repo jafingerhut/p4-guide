@@ -733,9 +733,39 @@ class P4RuntimeTest(BaseTest):
             replica.instance = x[1]
         return req, self.write_request(req, store=False)
 
-    def table_dump_helper(self, request):
+    def response_dump_helper(self, request):
         for response in self.stub.Read(request):
             yield response
+
+    def make_counter_read_request(self, counter_name, direct=False):
+        req = p4runtime_pb2.ReadRequest()
+        req.device_id = self.device_id
+        entity = req.entities.add()
+        if direct:
+            counter = entity.direct_counter_entry
+            counter_obj = self.get_obj("direct_counters", counter_name)
+            counter.table_entry.table_id = counter_obj.direct_table_id
+        else:
+            counter = entity.counter_entry
+            counter.counter_id = self.get_counter_id(counter_name)
+        return req, counter
+
+    def counter_dump_data(self, counter_name, direct=False):
+        req, counter = self.make_counter_read_request(counter_name, direct)
+        if direct:
+            exp_one_of = 'direct_counter_entry'
+        else:
+            exp_one_of = 'counter_entry'
+        counter_entries = []
+        for response in self.response_dump_helper(req):
+            for entity in response.entities:
+                assert entity.WhichOneof('entity') == exp_one_of
+                if direct:
+                    entry = entity.direct_counter_entry
+                else:
+                    entry = entity.counter_entry
+                counter_entries.append(entry)
+        return counter_entries
 
     def make_table_read_request(self, table_name):
         req = p4runtime_pb2.ReadRequest()
@@ -748,7 +778,7 @@ class P4RuntimeTest(BaseTest):
     def table_dump_data(self, table_name):
         req, table = self.make_table_read_request(table_name)
         table_entries = []
-        for response in self.table_dump_helper(req):
+        for response in self.response_dump_helper(req):
             for entity in response.entities:
                 #print('entity.WhichOneof("entity")="%s"'
                 #      '' % (entity.WhichOneof('entity')))
@@ -767,7 +797,7 @@ class P4RuntimeTest(BaseTest):
         req, table = self.make_table_read_request(table_name)
         table.is_default_action = True
         try:
-            for response in self.table_dump_helper(req):
+            for response in self.response_dump_helper(req):
                 for entity in response.entities:
                     print('entity.WhichOneof("entity")="%s"'
                           '' % (entity.WhichOneof('entity')))
