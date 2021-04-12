@@ -323,7 +323,7 @@ class P4RuntimeTest(BaseTest):
         self.p4info_obj_map = {}
         suffix_count = Counter()
         for obj_type in ["tables", "action_profiles", "actions", "counters",
-                         "direct_counters"]:
+                         "direct_counters", "controller_packet_metadata"]:
             for obj in getattr(self.p4info, obj_type):
                 pre = obj.preamble
                 suffix = None
@@ -348,6 +348,8 @@ class P4RuntimeTest(BaseTest):
 
         def stream_recv(stream):
             for p in stream:
+                logging.debug("stream_recv received and stored stream msg in stream_in_q: %s"
+                              "" % (p))
                 self.stream_in_q.put(p)
 
         self.stream = self.stub.StreamChannel(stream_req_iterator())
@@ -369,6 +371,7 @@ class P4RuntimeTest(BaseTest):
         # election_id.low = 1
         self.stream_out_q.put(req)
 
+        logging.debug("handshake() checking whether arbitration msg received from server")
         rep = self.get_stream_packet("arbitration", timeout=2)
         if rep is None:
             self.fail("Failed to establish handshake")
@@ -388,6 +391,54 @@ class P4RuntimeTest(BaseTest):
         else:
             return msg.packet
 
+    def serializable_enum_dict(self, name):
+        p4info = self.p4info
+        type_info = p4info.type_info
+        #logging.debug("serializable_enum_dict: data=%s"
+        #              "" % (type_info.serializable_enums[name]))
+        name_to_int = {}
+        int_to_name = {}
+        for member in type_info.serializable_enums[name].members:
+            name = member.name
+            int_val = int.from_bytes(member.value, byteorder='big')
+            name_to_int[name] = int_val
+            int_to_name[int_val] = name
+        logging.debug("serializable_enum_dict: name='%s' name_to_int=%s int_to_name=%s"
+                      "" % (name, name_to_int, int_to_name))
+        return name_to_int, int_to_name
+
+    def controller_packet_metadata_p4info_map(self, name):
+        cpm_info = self.get_controller_packet_metadata(name)
+        assert cpm_info != None
+        ret = {}
+        for md in cpm_info.metadata:
+            id = md.id
+            ret[md.id] = {'id': md.id, 'name': md.name, 'bitwidth': md.bitwidth}
+        #logging.debug("controller_packet_metadata_p4info_map: ret=%s" % (ret))
+        return ret
+
+    def decode_packet_in_metadata(self, packet):
+        pktin_info = self.controller_packet_metadata_p4info_map("packet_in")
+        pktin_field_to_val = {}
+        for md in packet.metadata:
+            md_id_int = md.metadata_id
+            md_val_int = int.from_bytes(md.value, byteorder='big')
+            assert md_id_int in pktin_info
+            md_field_info = pktin_info[md_id_int]
+            pktin_field_to_val[md_field_info['name']] = md_val_int
+        ret = {'metadata': pktin_field_to_val,
+               'payload': packet.payload}
+        logging.debug("decode_packet_in_metadata: ret=%s" % (ret))
+        return ret
+
+    def verify_packet_in(self, exp_pktinfo, received_pktinfo):
+        if received_pktinfo != exp_pktinfo:
+            logging.error("PacketIn packet received:")
+            logging.error("%s" % (received_pktinfo))
+            logging.error("PacketIn packet expected:")
+            logging.error("%s" % (exp_pktinfo))
+            assert received_pktinfo == exp_pktinfo
+
     def get_stream_packet(self, type_, timeout=1):
         start = time.time()
         try:
@@ -396,7 +447,11 @@ class P4RuntimeTest(BaseTest):
                 if remaining < 0:
                     break
                 msg = self.stream_in_q.get(timeout=remaining)
+                logging.debug("get_stream_packet dequeuing msg from stream_in_q: %s"
+                              "" % (msg))
                 if not msg.HasField(type_):
+                    logging.debug("get_stream_packet msg has no field type_=%s so discarding"
+                                  "" % (type_))
                     continue
                 return msg
         except:  # timeout expired
@@ -799,8 +854,8 @@ class P4RuntimeTest(BaseTest):
         try:
             for response in self.response_dump_helper(req):
                 for entity in response.entities:
-                    print('entity.WhichOneof("entity")="%s"'
-                          '' % (entity.WhichOneof('entity')))
+                    #print('entity.WhichOneof("entity")="%s"'
+                    #      '' % (entity.WhichOneof('entity')))
                     assert entity.WhichOneof('entity') == 'table_entry'
                     entry = entity.table_entry
                     table_default_entry = entity
@@ -874,7 +929,8 @@ for obj_type, nickname in [("tables", "table"),
                            ("action_profiles", "ap"),
                            ("actions", "action"),
                            ("counters", "counter"),
-                           ("direct_counters", "direct_counter")]:
+                           ("direct_counters", "direct_counter"),
+                           ("controller_packet_metadata", "controller_packet_metadata")]:
     name = "_".join(["get", nickname])
     setattr(P4RuntimeTest, name, partialmethod(
         P4RuntimeTest.get_obj, obj_type))
