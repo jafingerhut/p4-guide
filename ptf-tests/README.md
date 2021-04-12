@@ -48,7 +48,7 @@ output that running a successful PTF test looks like.
   + read mirror session info from switch
 + read counters from controller
   + indirect counter
-  + direct counter
+  + direct counter - partially done in demo2 directory
   + packets only
   + bytes only
   + packets and bytes
