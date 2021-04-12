@@ -31,13 +31,16 @@ output that running a successful PTF test looks like.
   + read multicast group config from switch - TBD add to demo7 PTF test
 
 
+# PacketIn and PacketOut messages between controller and switch
+
+See P4 program and PTF test in ptf-tests/packetinout directory.
+
 
 # Things not demonstrated yet
 
 + idle timeout option for tables
   + verify IdleTimeoutNotification message is sent by data plane to
     controller with expected contents
-+ packet in/out
 + Nothing to configure from controller for these v1model externs
   + hash
   + random
