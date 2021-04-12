@@ -387,7 +387,8 @@ class P4RuntimeTest(BaseTest):
     def get_packet_in(self, timeout=1):
         msg = self.get_stream_packet("packet", timeout)
         if msg is None:
-            self.fail("Packet in not received")
+            #self.fail("Packet in not received")
+            return None
         else:
             return msg.packet
 
@@ -407,18 +408,26 @@ class P4RuntimeTest(BaseTest):
                       "" % (name, name_to_int, int_to_name))
         return name_to_int, int_to_name
 
-    def controller_packet_metadata_p4info_map(self, name):
+    def controller_packet_metadata_dict_key_id(self, name):
         cpm_info = self.get_controller_packet_metadata(name)
         assert cpm_info != None
         ret = {}
         for md in cpm_info.metadata:
             id = md.id
             ret[md.id] = {'id': md.id, 'name': md.name, 'bitwidth': md.bitwidth}
-        #logging.debug("controller_packet_metadata_p4info_map: ret=%s" % (ret))
+        return ret
+
+    def controller_packet_metadata_dict_key_name(self, name):
+        cpm_info = self.get_controller_packet_metadata(name)
+        assert cpm_info != None
+        ret = {}
+        for md in cpm_info.metadata:
+            id = md.id
+            ret[md.name] = {'id': md.id, 'name': md.name, 'bitwidth': md.bitwidth}
         return ret
 
     def decode_packet_in_metadata(self, packet):
-        pktin_info = self.controller_packet_metadata_p4info_map("packet_in")
+        pktin_info = self.controller_packet_metadata_dict_key_id("packet_in")
         pktin_field_to_val = {}
         for md in packet.metadata:
             md_id_int = md.metadata_id
@@ -457,6 +466,25 @@ class P4RuntimeTest(BaseTest):
         except:  # timeout expired
             pass
         return None
+
+    def encode_packet_out_metadata(self, pktout_dict):
+        ret = p4runtime_pb2.PacketOut()
+        ret.payload = pktout_dict['payload']
+        pktout_info = self.controller_packet_metadata_dict_key_name("packet_out")
+        for k, v in pktout_dict['metadata'].items():
+            md = ret.metadata.add()
+            md.metadata_id = pktout_info[k]['id']
+            # I am not sure, but it seems that perhaps some code after
+            # this point expects the bytes array of the values of the
+            # controller metadata fields to be the full width of the
+            # field, not the abbreviated version that omits leading 0
+            # bytes that most P4Runtime API messages expect.
+            bitwidth = pktout_info[k]['bitwidth']
+            bytewidth = (bitwidth + 7) // 8
+            #logging.debug("dbg encode k=%s v=%s bitwidth=%s bytewidth=%s"
+            #              "" % (k, v, bitwidth, bytewidth))
+            md.value = stringify(v, bytewidth)
+        return ret
 
     def send_packet_out(self, packet):
         packet_out_req = p4runtime_pb2.StreamMessageRequest()

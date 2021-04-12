@@ -75,7 +75,6 @@ enum bit<8> PuntReason_t {
 
 @controller_header("packet_out")
 header packet_out_header_t {
-    PortIdToController_t output_port;
     ControllerOpcode_t   opcode;
     bit<8>  reserved1;
     bit<32> operand0;
@@ -193,13 +192,27 @@ control ingressImpl(inout headers_t hdr,
         default_action = my_drop;
     }
 
+    table dbgPacketOutHdr {
+        key = {
+            hdr.packet_out.opcode : exact;
+            hdr.packet_out.reserved1 : exact;
+            hdr.packet_out.operand0 : exact;
+            hdr.packet_out.operand1 : exact;
+            hdr.packet_out.operand2 : exact;
+            hdr.packet_out.operand3 : exact;
+        }
+        actions = { NoAction; }
+        const default_action = NoAction;
+    }
+
     apply {
         if (hdr.packet_out.isValid()) {
             // Process packet from controller
+            dbgPacketOutHdr.apply();
             switch (hdr.packet_out.opcode) {
                 ControllerOpcode_t.SEND_TO_PORT_IN_OPERAND0: {
-                    hdr.packet_out.setInvalid();
                     stdmeta.egress_spec = (bit<9>) hdr.packet_out.operand0;
+                    hdr.packet_out.setInvalid();
                 }
                 default: {
                     hdr.packet_out.setInvalid();
