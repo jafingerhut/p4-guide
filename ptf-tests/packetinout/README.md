@@ -12,7 +12,7 @@ can use:
 $ p4c --target bmv2 --arch v1model --p4runtime-files packetinout.p4info.txt packetinout.p4
 
 # Start simple_switch_grpc with CPU port equal to 510
-$ sudo simple_switch_grpc --log-console -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4 -- --cpu-port 510
+$ sudo simple_switch_grpc --log-console -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4 --dump-packet-data 10000 -- --cpu-port 510
 ```
 
 After that, the following command should give a successful PTF test run:
