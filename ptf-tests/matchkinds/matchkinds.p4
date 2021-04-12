@@ -84,7 +84,7 @@ control ingressImpl(inout headers_t hdr,
         key = {
             hdr.ipv4.dstAddr[31:24]: ternary;
             hdr.ipv4.dstAddr[23:16]: range;
-            hdr.ipv4.dstAddr[15:8]: optional;
+            hdr.ipv4.dstAddr[15: 8]: optional;
         }
         actions = {
             set_dmac;
