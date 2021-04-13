@@ -141,17 +141,6 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
-    action send_to_controller_simple(PuntReason_t punt_reason) {
-        stdmeta.egress_spec = CPU_PORT;
-        hdr.packet_in.setValid();
-        hdr.packet_in.input_port = (PortIdToController_t) stdmeta.ingress_port;
-        hdr.packet_in.punt_reason = punt_reason;
-        hdr.packet_in.opcode = ControllerOpcode_t.NO_OP;
-        hdr.packet_in.operand0 = 0;
-        hdr.packet_in.operand1 = 0;
-        hdr.packet_in.operand2 = 0;
-        hdr.packet_in.operand3 = 0;
-    }
     action send_to_controller_with_details(
         PuntReason_t       punt_reason,
         ControllerOpcode_t opcode,
@@ -172,24 +161,6 @@ control ingressImpl(inout headers_t hdr,
     }
     action my_drop() {
         mark_to_drop(stdmeta);
-    }
-    action set_port(bit<9> port) {
-        stdmeta.egress_spec = port;
-        hdr.ipv4.ttl = hdr.ipv4.ttl |-| 1;
-    }
-    action punt_to_controller() {
-        send_to_controller_simple(PuntReason_t.DEST_ADDRESS_FOR_US);
-    }
-    table ipv4_da_lpm {
-        key = {
-            hdr.ipv4.dstAddr: lpm;
-        }
-        actions = {
-            set_port;
-            punt_to_controller;
-            my_drop;
-        }
-        default_action = my_drop;
     }
 
     table dbgPacketOutHdr {
@@ -221,19 +192,6 @@ control ingressImpl(inout headers_t hdr,
                         hdr.packet_out.operand0, hdr.packet_out.operand1,
                         hdr.packet_out.operand2, hdr.packet_out.operand3);
                 }
-            }
-        } else if (hdr.ipv4.isValid()) {
-            if (hdr.ipv4.ihl == 5) {
-                // No IPv4 options
-                ipv4_da_lpm.apply();
-                if (hdr.ipv4.ttl == 0) {
-                    my_drop();
-                }
-            } else {
-                // For IPv4 packets with options, add a to-controller
-                // header for IPv4 packets with options, and send to
-                // the controller.
-                send_to_controller_simple(PuntReason_t.IP_OPTIONS);
             }
         } else {
             // A real L2/L3 switch would do something else than this

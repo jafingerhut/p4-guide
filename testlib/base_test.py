@@ -479,11 +479,12 @@ class P4RuntimeTest(BaseTest):
             # controller metadata fields to be the full width of the
             # field, not the abbreviated version that omits leading 0
             # bytes that most P4Runtime API messages expect.
-            bitwidth = pktout_info[k]['bitwidth']
-            bytewidth = (bitwidth + 7) // 8
+            #bitwidth = pktout_info[k]['bitwidth']
+            #bytewidth = (bitwidth + 7) // 8
             #logging.debug("dbg encode k=%s v=%s bitwidth=%s bytewidth=%s"
             #              "" % (k, v, bitwidth, bytewidth))
-            md.value = stringify(v, bytewidth)
+            #md.value = stringify(v, bytewidth)
+            md.value = stringify(v)
         return ret
 
     def send_packet_out(self, packet):
