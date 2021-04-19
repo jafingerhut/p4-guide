@@ -12,41 +12,21 @@ data plane network protocols (as opposed to control plane protocols,
 e.g. routing protocols), there are the following two "places" in the
 network that are significant:
 
-+ encap: the place where sequence numbers are added to messages
-+ decap: the place where sequence numbers are removed from messages
++ encap point: the place where sequence numbers are added to messages
++ decap point: the place where sequence numbers are removed from
+  messages
 
-For the typical use of TCP where a client program on computer A
-connects to a server program on computer B, for the messages sent from
-client to server the encap point is the TCP implementation in the
-operating system of computer A, and the decap point is the TCP
-implementation in the operating system of computer B.
+As one example, for the typical use of TCP where a client program on
+computer A connects to a server program on computer B, for the
+messages sent from client to server the encap point is the TCP
+implementation in the operating system of computer A, and the decap
+point is the TCP implementation in the operating system of computer B.
 
 
 ## Guarantees on behavior provided by protocols
 
 Different network protocols use sequence numbers to provide different
 kinds of guarantees.
-
-Aside: When I say "guarantees", such guarantees are conditional.  Such
-a guarantee can be provided if a message in flight from the encap
-point to the decap point with sequence number S is either:
-
-+ delivered to the decap point before the encap point has sent over
-  half of the sequence number space after S, or
-+ it is dropped in the network, i.e. never delivered to the decap point.
-
-Messages delivered to the decap point with a longer latency than this
-can cause aliasing, i.e. the inability of the decap point to
-distinguish old messages from new messages.  Such long-latency network
-behavior makes it impossible for the decap point to provide any of the
-guarantees described below.
-
-In some cases, the protocol implementation at the encap point tries to
-avoid sending new sequence numbers that might be aliased at the decap
-point, e.g. TCP and RDMA RC mode do this.  However, even these
-attempts cannot prevent the decap point from being confused by
-sequence number aliasing if the network takes arbitrarily long to
-deliver messages.
 
 Under the assumption of a network that either drops or delivers
 messages in a timely-enough fashion, below are at least some kinds of
@@ -83,6 +63,30 @@ provide:
   in a different relative order than they entered the encap point.
 
 
+### These guarantees are conditional
+
+When I say "guarantees", such guarantees are conditional.  Such a
+guarantee can be provided if a message in flight from the encap point
+to the decap point with sequence number S is either:
+
++ delivered to the decap point before the encap point has sent over
+  half of the sequence number space after S, or
++ it is dropped in the network, i.e. never delivered to the decap point.
+
+Messages delivered to the decap point with a longer latency than this
+can cause aliasing, i.e. the inability of the decap point to
+distinguish old messages from new messages.  Such high-latency network
+behavior makes it impossible for the decap point to provide any of the
+guarantees described below.
+
+In some cases, the protocol implementation at the encap point tries to
+avoid sending new sequence numbers that might be aliased at the decap
+point, e.g. TCP and RDMA Reliable Connection (RC) mode do this.
+However, even these attempts cannot prevent the decap point from being
+confused by sequence number aliasing if the network takes arbitrarily
+long to deliver messages.
+
+
 
 # References
 
@@ -107,6 +111,8 @@ sequence numbers, and never wrap around.
   appears not to be any kind of IETF standard.
 
 
+
+# Material that may be incorporated later
 
 
 and perhaps the messages are processed
