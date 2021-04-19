@@ -233,9 +233,34 @@ control ingressImpl(inout headers_t hdr,
             }
         } else if (hdr.ipv4.isValid()) {
             // TBD: Update sequence number state for data packet
-            
             SeqNumRegIndex_t idx = (SeqNumRegIndex_t) hdr.ipv4.dstAddr;
-            SeqNum_t pkt_seq_num = (SeqNum_t) hdr.packet_out.operand1;
+            SeqNum_t pkt_seq_num = (SeqNum_t) hdr.ipv4.identification;
+            bit<16> cur_exp_seq_num;
+            bit<16> next_exp_seq_num;
+            seq_num_reg.read(cur_exp_seq_num, (bit<32>) idx);
+            // Determine whether the packet sequence number is in the
+            // "next half space", i.e. in the range [cur_exp_seq_num,
+            // cur_exp_seq_num + 2^15 - 1], with wraparound.  Note
+            // that the normal P4_16 '-' and '+' operators on type
+            // bit<W> operands wraps around, modulo 2^W.
+            bit<16> delta = pkt_seq_num - cur_exp_seq_num;
+            if (delta[15:15] == 0) {
+                // If yes, the packet is considered to be in order,
+                // the packet is accepted and forwarded, and we update
+                // the expected sequence number to be equal to the
+                // packet sequence number plus 1 (perhaps wrapping
+                // around).
+                next_exp_seq_num = pkt_seq_num + 1;
+                stdmeta.egress_spec = 2;
+            } else {
+                // If not, it is in the "previous half space".  In
+                // this case, the packet is considered to be out of
+                // order, it is dropped, and we leave the expected
+                // sequence number as it was.
+                next_exp_seq_num = cur_exp_seq_num;
+                my_drop();
+            }
+            seq_num_reg.write((bit<32>) idx, next_exp_seq_num);
         } else {
             // A real L2/L3 switch would do something else than this
             // simple demo program does.

@@ -182,6 +182,35 @@ class PacketInOutTest(bt.P4RuntimeTest):
         self.verify_packet_in(exp_pktinfo, pktinfo)
         return seqnum_int
 
+    def make_pkt(self, idx, pkt_seqnum):
+        ip_dst_addr = '10.1.1.%d' % (idx)
+        return tu.simple_tcp_packet(ip_dst=ip_dst_addr, ip_id=pkt_seqnum)
+
+    def send_pkt_expect_it_passed(self, idx, pkt_seqnum):
+        ig_port = 0
+        eg_port = 2
+
+        pkt_in = self.make_pkt(idx, pkt_seqnum)
+        tu.send_packet(self, ig_port, pkt_in)
+
+        exp_pkt = pkt_in
+        exp_next_seqnum = (pkt_seqnum + 1) % (1 << 16)
+        tu.verify_packets(self, exp_pkt, [eg_port])
+        seqnum_read_val = self.read_SeqNumReg(idx)
+        if seqnum_read_val != exp_next_seqnum:
+            logging.error("seqnum_read_val={} != {}=exp_next_seqnum"
+                          " pkt_seqnum={}".format(
+                              seqnum_read_val, exp_next_seqnum, pkt_seqnum))
+            assert seqnum_read_val == exp_next_seqnum
+
+    def send_pkt_expect_it_dropped(self, idx, pkt_seqnum):
+        ig_port = 0
+        eg_port = 2
+
+        pkt_in = self.make_pkt(idx, pkt_seqnum)
+        tu.send_packet(self, ig_port, pkt_in)
+        tu.verify_no_other_packets(self)
+
 
 class WriteRegThenReadTest(PacketInOutTest):
     @bt.autocleanup
@@ -200,3 +229,45 @@ class WriteRegThenReadTest(PacketInOutTest):
 
         assert seqnum_read_val1 == seqnum_val1
         assert seqnum_read_val2 == seqnum_val2
+
+
+class PacketsUpdateRegisterTest(PacketInOutTest):
+    @bt.autocleanup
+    def runTest(self):
+        seqnum_idx = 20
+
+        self.write_SeqNumReg(seqnum_idx, 0)
+        seqnum_read_val = self.read_SeqNumReg(seqnum_idx)
+        assert seqnum_read_val == 0
+
+        full_seqnum_span = (1 << 16)
+        half_seqnum_span = (1 << 15)
+        # Sending expected seqnum value should pass the packet
+        self.send_pkt_expect_it_passed(idx=seqnum_idx, pkt_seqnum=0)
+        self.send_pkt_expect_it_passed(idx=seqnum_idx, pkt_seqnum=1)
+        # And packet should also be passed if pkt seqnum is
+        # (half_seqnum_span-1) larger than the expected seqnum, with
+        # wrapping.
+        self.send_pkt_expect_it_passed(idx=seqnum_idx,
+                                       pkt_seqnum=half_seqnum_span)
+        self.send_pkt_expect_it_passed(idx=seqnum_idx,
+                                       pkt_seqnum=full_seqnum_span-1)
+        seqnum_read_val = self.read_SeqNumReg(seqnum_idx)
+        assert seqnum_read_val == 0
+
+        # Packets should be dropped if they are anywhere in the
+        # 'previous half space', with wrapping.
+        self.send_pkt_expect_it_dropped(idx=seqnum_idx,
+                                        pkt_seqnum=half_seqnum_span)
+        self.send_pkt_expect_it_dropped(idx=seqnum_idx,
+                                        pkt_seqnum=full_seqnum_span-1)
+        seqnum_read_val = self.read_SeqNumReg(seqnum_idx)
+        assert seqnum_read_val == 0
+
+        self.send_pkt_expect_it_passed(idx=seqnum_idx,
+                                       pkt_seqnum=half_seqnum_span-1)
+        self.send_pkt_expect_it_dropped(idx=seqnum_idx, pkt_seqnum=0)
+        self.send_pkt_expect_it_dropped(idx=seqnum_idx,
+                                        pkt_seqnum=half_seqnum_span-1)
+        seqnum_read_val = self.read_SeqNumReg(seqnum_idx)
+        assert seqnum_read_val == half_seqnum_span
