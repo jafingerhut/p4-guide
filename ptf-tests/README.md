@@ -46,10 +46,6 @@ See P4 program and PTF test in ptf-tests/registeraccess directory.
 + idle timeout option for tables
   + verify IdleTimeoutNotification message is sent by data plane to
     controller with expected contents
-+ Nothing to configure from controller for these v1model externs
-  + hash
-  + random
-  + Checksum16
 + mirror sessions
   + configure from controller
   + verify changes in data packet processing as a result of controller changes
@@ -86,3 +82,7 @@ See P4 program and PTF test in ptf-tests/registeraccess directory.
     + using watch port feature and having a watched port go down.  Not
       sure if there is even a way with simple_switch_grpc to make a
       port go down?
++ There is nothing to configure from controller for these v1model externs:
+  + hash
+  + random
+  + Checksum16
