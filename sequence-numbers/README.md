@@ -44,7 +44,6 @@ provide:
   are delivered out of the decap point exactly once, in the order they
   are sent to the encap point.  Examples include TCP and Reliable
   Connection (RC) mode RDMA.
-
 + in-order, unreliable, at-most-once delivery: Messages sent into the
   encap point are delivered out of the decap point at most once,
   i.e. either exactly once, or they are lost.  All not-lost messages
@@ -53,7 +52,6 @@ provide:
   middle of the sequence of messages out of the decap point.  Examples
   include L2TPv3 and GRE tunnels with the option to enable sequence
   numbers enabled.
-
 + possibly out-of-order, unreliable, at-most-once delivery: Messages
   sent into the encap point are delivered out of the decap point at
   most once.  Non-lost messages might be delivered out of the decap
@@ -98,25 +96,33 @@ The sender must establish a new security association rather than
 continuing to use an existing one that has exhausted all of its
 sequence numbers, and never wrap around.
 
-+ "IP Encapsulating Security Payload (ESP)", 2005,
-  https://tools.ietf.org/html/rfc4303 - Especially sections 2.2,
-  3.3.3, and 3.4.3
++ GRE - Generic Routing Encapsulation
+  + "Key and Sequence Number Extensions to GRE", 2000,
+    https://tools.ietf.org/html/rfc2890
++ IPsec - Internet Protocol Security
+  + "IP Encapsulating Security Payload (ESP)", 2005,
+    https://tools.ietf.org/html/rfc4303 - Especially sections 2.2,
+    3.3.3, and 3.4.3
+  + "IPsec Anti-Replay Algorithm without Bit Shifting", 2012,
+    https://tools.ietf.org/html/rfc6479
+  + "Analysis and improvement on IPSec anti-replay window protocol",
+    2003, https://ieeexplore.ieee.org/document/1284223 - I have not
+    read this paper yet, so do not know how useful its contents are.
+    It appears not to be any kind of IETF standard.
++ L2TPv3 - Layer 2 Tunneling Protocol, Version 3
+  + "Layer Two Tunneling Protocol - Version 3 (L2TPv3)", 2005,
+    https://tools.ietf.org/html/rfc3931 - especially Appendix C
+    "Processing Sequence Numbers"
++ RDMA (Remote Direct Memory Access), RoCEv2 (RDMA over Converged
+  Ethernet version 2) are defined as part of the Infiniband
+  specifications
+  + https://www.infinibandta.org - I do not know of any public links
+    to the Infiniband specifications.  The only way I know is to get
+    an account on the Infiniband Trade Association's web site, and get
+    it from the member download area.
 
-+ "IPsec Anti-Replay Algorithm without Bit Shifting", 2012,
-  https://tools.ietf.org/html/rfc6479
 
-+ "Analysis and improvement on IPSec anti-replay window protocol",
-  2003, https://ieeexplore.ieee.org/document/1284223 - I have not read
-  this paper yet, so do not know how useful its contents are.  It
-  appears not to be any kind of IETF standard.
-
-
-
-# Material that may be incorporated later
-
-
-and perhaps the messages are processed
-and/or forwarded on from that removal point.
+# Material that may be incorporated above, later
 
 + IPsec tunnels - the tunnel encapsulation point inserts incrementing
   sequence numbers into encapsulated packets, and the tunnel
