@@ -42,19 +42,22 @@ guarantees that protocols with sequence numbers can be used to
 provide:
 
 + in-order, reliable, at-most-once delivery: Every message is
-  delivered out of the decap point exactly once, in the same relative
+  delivered out of the decap point at most once, in the same relative
   order that they entered the encap point.  In exceptional
   circumstances (e.g. partial or complete network failures that
   prevent messages from being delivered to the decap point for too
   long), the connection is broken and only a prefix of the messages
-  entering the encap point are delivered out of the decap point.
-  Examples include TCP and Reliable Connection (RC) mode RDMA.
+  entering the encap point are delivered out of the decap point.  In
+  the common situation that the connection is not broken, all messages
+  are delivered out of the decap point exactly once, in the order they
+  are sent to the encap point.  Examples include TCP and Reliable
+  Connection (RC) mode RDMA.
 
 + in-order, unreliable, at-most-once delivery: Messages sent into the
   encap point are delivered out of the decap point at most once,
   i.e. either exactly once, or they are lost.  All not-lost messages
   are delivered out of the decap point in the same relative order that
-  they were sent to the encap point, but there can be "gaps" in the
+  they were sent to the encap point.  There can be "gaps" in the
   middle of the sequence of messages out of the decap point.  Examples
   include L2TPv3 and GRE tunnels with the option to enable sequence
   numbers enabled.
@@ -65,14 +68,31 @@ provide:
   point in a different relative order than they were sent to the encap
   point.  Examples include IPsec with its rules for detecting replay
   attacks, which explicitly allow the decap point to deliver messages
-  out of it in a different relative order than they entered the encap
-  point.
+  in a different relative order than they entered the encap point.
 
 
 
 # References
 
-IPsec ESP use of sequence numbers in anti-replay attack detection:
+IPsec ESP use of sequence numbers in anti-replay attack detection.
+One interesting difference between IPsec sequence numbers and most
+other network protocols is that no sequence number can ever be
+repeated by the encap point for an IPsec ESP security association.
+The sender must establish a new security association rather than
+continuing to use an existing one that has exhausted all of its
+sequence numbers, and never wrap around.
+
++ "IP Encapsulating Security Payload (ESP)", 2005,
+  https://tools.ietf.org/html/rfc4303
+
++ "IPsec Anti-Replay Algorithm without Bit Shifting", 2012,
+  https://tools.ietf.org/html/rfc6479
+
++ "Analysis and improvement on IPSec anti-replay window protocol",
+  2003, https://ieeexplore.ieee.org/document/1284223 - I have not read
+  this paper yet, so do not know how useful its contents are.  It
+  appears not to be any kind of IETF standard.
+
 
 
 
