@@ -38,12 +38,24 @@ header ipv4_t {
     bit<32> dstAddr;
 }
 
+header ipv6_t {
+    bit<4>   version;
+    bit<8>   traffic_class;
+    bit<20>  flow_label;
+    bit<16>  payload_length;
+    bit<8>   nextHdr;
+    bit<8>   hopLimit;
+    bit<128> srcAddr;
+    bit<128> dstAddr;
+}
+
 struct metadata_t {
 }
 
 struct headers_t {
     ethernet_t ethernet;
     ipv4_t     ipv4;
+    ipv6_t     ipv6;
 }
 
 parser parserImpl(packet_in packet,
@@ -52,6 +64,7 @@ parser parserImpl(packet_in packet,
                   inout standard_metadata_t stdmeta)
 {
     const bit<16> ETHERTYPE_IPV4 = 16w0x0800;
+    const bit<16> ETHERTYPE_IPV6 = 16w0x86dd;
 
     state start {
         transition parse_ethernet;
@@ -60,11 +73,16 @@ parser parserImpl(packet_in packet,
         packet.extract(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
             ETHERTYPE_IPV4: parse_ipv4;
+            ETHERTYPE_IPV6: parse_ipv6;
             default: accept;
         }
     }
     state parse_ipv4 {
         packet.extract(hdr.ipv4);
+        transition accept;
+    }
+    state parse_ipv6 {
+        packet.extract(hdr.ipv6);
         transition accept;
     }
 }
@@ -93,9 +111,24 @@ control ingressImpl(inout headers_t hdr,
         default_action = my_drop;
     }
 
+    table t2 {
+        key = {
+            hdr.ipv6.dstAddr: lpm;
+        }
+        actions = {
+            set_dmac;
+            my_drop;
+        }
+        default_action = my_drop;
+    }
+
     apply {
         stdmeta.egress_spec = 1;
-        t1.apply();
+        if (hdr.ipv4.isValid()) {
+            t1.apply();
+        } else if (hdr.ipv6.isValid()) {
+            t2.apply();
+        }
     }
 }
 
@@ -113,6 +146,7 @@ control deparserImpl(packet_out packet,
     apply {
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv4);
+        packet.emit(hdr.ipv6);
     }
 }
 

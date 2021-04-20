@@ -94,11 +94,16 @@ class MatchKindsTest(bt.P4RuntimeTest):
                  self.Optional('hdr.ipv4.dstAddr[15:8]',
                                byte3_val_int, byte3_exact_match)])
 
+    def key_t2(self, ipv6_addr_string, prefix_len):
+        return ('t2',
+                [self.Lpm('hdr.ipv6.dstAddr',
+                          bt.ipv6_to_int(ipv6_addr_string), prefix_len)])
+
     def act_set_dmac(self, dmac_string):
         return ('set_dmac', [('dmac', bt.mac_to_int(dmac_string))])
 
 
-class FwdTest(MatchKindsTest):
+class IPv4FwdTest(MatchKindsTest):
     @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
@@ -165,3 +170,25 @@ class FwdTest(MatchKindsTest):
             # Vary TTL in for each packet tested, just to make them
             # easy to distinguish from each other.
             ttl_in = ttl_in - 2
+
+
+class IPv6FwdTest(MatchKindsTest):
+    @bt.autocleanup
+    def runTest(self):
+        ip_dst_addr = '2001:0db8::3210'
+        in_dmac = 'ee:30:ca:9d:1e:00'
+        in_smac = 'ee:cd:00:7e:70:00'
+        ig_port = 0
+        eg_port = 1
+        out_dmac = '00:00:00:00:00:01'
+
+        # Add a set of table entries
+        self.table_add(self.key_t2(ip_dst_addr, 128),
+                       self.act_set_dmac(out_dmac))
+
+        pkt_in = tu.simple_tcpv6_packet(eth_src=in_smac, eth_dst=in_dmac,
+                                        ipv6_dst=ip_dst_addr)
+        exp_pkt = tu.simple_tcpv6_packet(eth_src=in_smac, eth_dst=out_dmac,
+                                         ipv6_dst=ip_dst_addr)
+        tu.send_packet(self, ig_port, pkt_in)
+        tu.verify_packets(self, exp_pkt, [eg_port])
