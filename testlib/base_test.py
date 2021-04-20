@@ -28,6 +28,7 @@ from collections import Counter
 from functools import wraps, partial
 import logging
 import re
+import socket
 import sys
 import threading
 import time
@@ -100,6 +101,23 @@ def ipv4_to_int(addr):
     # elements of bytes_ is outside of the range [0, 255]], so no need
     # to add a separate check for that here.
     return int.from_bytes(bytes(bytes_), byteorder='big')
+
+def ipv6_to_binary(addr):
+    """Take an argument 'addr' containing an IPv6 address written in
+    standard syntax, e.g. '2001:0db8::3210', and convert it to a
+    string with binary contents expected by the Python P4Runtime
+    client operations."""
+    return socket.inet_pton(socket.AF_INET6, addr)
+
+def ipv6_to_int(addr):
+    """Take an argument 'addr' containing an IPv6 address written in
+    standard syntax, e.g. '2001:0db8::3210', and convert it to an
+    integer."""
+    bytes_ = socket.inet_pton(socket.AF_INET6, '2001:0db8::3210')
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return int.from_bytes(bytes_, byteorder='big')
 
 def mac_to_binary(addr):
     """Take an argument 'addr' containing an Ethernet MAC address written
