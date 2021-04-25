@@ -28,6 +28,7 @@ from collections import Counter
 from functools import wraps, partial
 import logging
 import re
+import socket
 import sys
 import threading
 import time
@@ -90,6 +91,34 @@ def ipv4_to_binary(addr):
     # to add a separate check for that here.
     return bytes(bytes_)
 
+def ipv4_to_int(addr):
+    """Take an argument 'addr' containing an IPv4 address written as a
+    string in dotted decimal notation, e.g. '10.1.2.3', and convert it
+    to an integer."""
+    bytes_ = [int(b, 10) for b in addr.split('.')]
+    assert len(bytes_) == 4
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return int.from_bytes(bytes(bytes_), byteorder='big')
+
+def ipv6_to_binary(addr):
+    """Take an argument 'addr' containing an IPv6 address written in
+    standard syntax, e.g. '2001:0db8::3210', and convert it to a
+    string with binary contents expected by the Python P4Runtime
+    client operations."""
+    return socket.inet_pton(socket.AF_INET6, addr)
+
+def ipv6_to_int(addr):
+    """Take an argument 'addr' containing an IPv6 address written in
+    standard syntax, e.g. '2001:0db8::3210', and convert it to an
+    integer."""
+    bytes_ = socket.inet_pton(socket.AF_INET6, '2001:0db8::3210')
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return int.from_bytes(bytes_, byteorder='big')
+
 def mac_to_binary(addr):
     """Take an argument 'addr' containing an Ethernet MAC address written
     as a string in hexadecimal notation, with each byte separated by a
@@ -102,6 +131,17 @@ def mac_to_binary(addr):
     # elements of bytes_ is outside of the range [0, 255]], so no need
     # to add a separate check for that here.
     return bytes(bytes_)
+
+def mac_to_int(addr):
+    """Take an argument 'addr' containing an Ethernet MAC address written
+    as a string in hexadecimal notation, with each byte separated by a
+    colon, e.g. '00:de:ad:be:ef:ff', and convert it to an integer."""
+    bytes_ = [int(b, 16) for b in addr.split(':')]
+    assert len(bytes_) == 6
+    # Note: The bytes() call below will throw exception if any
+    # elements of bytes_ is outside of the range [0, 255]], so no need
+    # to add a separate check for that here.
+    return int.from_bytes(bytes(bytes_), byteorder='big')
 
 # Used to indicate that the gRPC error Status object returned by the server has
 # an incorrect format.
@@ -301,7 +341,7 @@ class P4RuntimeTest(BaseTest):
         self.p4info_obj_map = {}
         suffix_count = Counter()
         for obj_type in ["tables", "action_profiles", "actions", "counters",
-                         "direct_counters"]:
+                         "direct_counters", "controller_packet_metadata"]:
             for obj in getattr(self.p4info, obj_type):
                 pre = obj.preamble
                 suffix = None
@@ -326,6 +366,8 @@ class P4RuntimeTest(BaseTest):
 
         def stream_recv(stream):
             for p in stream:
+                logging.debug("stream_recv received and stored stream msg in stream_in_q: %s"
+                              "" % (p))
                 self.stream_in_q.put(p)
 
         self.stream = self.stub.StreamChannel(stream_req_iterator())
@@ -347,6 +389,7 @@ class P4RuntimeTest(BaseTest):
         # election_id.low = 1
         self.stream_out_q.put(req)
 
+        logging.debug("handshake() checking whether arbitration msg received from server")
         rep = self.get_stream_packet("arbitration", timeout=2)
         if rep is None:
             self.fail("Failed to establish handshake")
@@ -362,9 +405,66 @@ class P4RuntimeTest(BaseTest):
     def get_packet_in(self, timeout=1):
         msg = self.get_stream_packet("packet", timeout)
         if msg is None:
-            self.fail("Packet in not received")
+            #self.fail("Packet in not received")
+            return None
         else:
             return msg.packet
+
+    def serializable_enum_dict(self, name):
+        p4info = self.p4info
+        type_info = p4info.type_info
+        #logging.debug("serializable_enum_dict: data=%s"
+        #              "" % (type_info.serializable_enums[name]))
+        name_to_int = {}
+        int_to_name = {}
+        for member in type_info.serializable_enums[name].members:
+            name = member.name
+            int_val = int.from_bytes(member.value, byteorder='big')
+            name_to_int[name] = int_val
+            int_to_name[int_val] = name
+        logging.debug("serializable_enum_dict: name='%s' name_to_int=%s int_to_name=%s"
+                      "" % (name, name_to_int, int_to_name))
+        return name_to_int, int_to_name
+
+    def controller_packet_metadata_dict_key_id(self, name):
+        cpm_info = self.get_controller_packet_metadata(name)
+        assert cpm_info != None
+        ret = {}
+        for md in cpm_info.metadata:
+            id = md.id
+            ret[md.id] = {'id': md.id, 'name': md.name, 'bitwidth': md.bitwidth}
+        return ret
+
+    def controller_packet_metadata_dict_key_name(self, name):
+        cpm_info = self.get_controller_packet_metadata(name)
+        assert cpm_info != None
+        ret = {}
+        for md in cpm_info.metadata:
+            id = md.id
+            ret[md.name] = {'id': md.id, 'name': md.name, 'bitwidth': md.bitwidth}
+        return ret
+
+    def decode_packet_in_metadata(self, packet):
+        pktin_info = self.controller_packet_metadata_dict_key_id("packet_in")
+        pktin_field_to_val = {}
+        for md in packet.metadata:
+            md_id_int = md.metadata_id
+            md_val_int = int.from_bytes(md.value, byteorder='big')
+            assert md_id_int in pktin_info
+            md_field_info = pktin_info[md_id_int]
+            pktin_field_to_val[md_field_info['name']] = md_val_int
+        ret = {'metadata': pktin_field_to_val,
+               'payload': packet.payload}
+        logging.debug("decode_packet_in_metadata: ret=%s" % (ret))
+        return ret
+
+    def verify_packet_in(self, exp_pktinfo, received_pktinfo):
+        if received_pktinfo != exp_pktinfo:
+            logging.error("PacketIn packet received:")
+            logging.error("%s" % (received_pktinfo))
+            logging.error("PacketIn packet expected:")
+            logging.error("%s" % (exp_pktinfo))
+            assert received_pktinfo == exp_pktinfo
 
     def get_stream_packet(self, type_, timeout=1):
         start = time.time()
@@ -374,12 +474,35 @@ class P4RuntimeTest(BaseTest):
                 if remaining < 0:
                     break
                 msg = self.stream_in_q.get(timeout=remaining)
+                logging.debug("get_stream_packet dequeuing msg from stream_in_q: %s"
+                              "" % (msg))
                 if not msg.HasField(type_):
+                    logging.debug("get_stream_packet msg has no field type_=%s so discarding"
+                                  "" % (type_))
                     continue
                 return msg
         except:  # timeout expired
             pass
         return None
+
+    def encode_packet_out_metadata(self, pktout_dict):
+        ret = p4runtime_pb2.PacketOut()
+        ret.payload = pktout_dict['payload']
+        pktout_info = self.controller_packet_metadata_dict_key_name("packet_out")
+        for k, v in pktout_dict['metadata'].items():
+            md = ret.metadata.add()
+            md.metadata_id = pktout_info[k]['id']
+            # I am not sure, but it seems that perhaps some code after
+            # this point expects the bytes array of the values of the
+            # controller metadata fields to be the full width of the
+            # field, not the abbreviated version that omits leading 0
+            # bytes that most P4Runtime API messages expect.
+            bitwidth = pktout_info[k]['bitwidth']
+            bytewidth = (bitwidth + 7) // 8
+            #logging.debug("dbg encode k=%s v=%s bitwidth=%s bytewidth=%s"
+            #              "" % (k, v, bitwidth, bytewidth))
+            md.value = stringify(v, bytewidth)
+        return ret
 
     def send_packet_out(self, packet):
         packet_out_req = p4runtime_pb2.StreamMessageRequest()
@@ -410,13 +533,13 @@ class P4RuntimeTest(BaseTest):
             if p.name == name:
                 return p.id
 
-    def get_mf_id(self, table_name, name):
+    def get_mf_by_name(self, table_name, field_name):
         t = self.get_obj("tables", table_name)
         if t is None:
             return None
         for mf in t.match_fields:
-            if mf.name == name:
-                return mf.id
+            if mf.name == field_name:
+                return mf
 
     # These are attempts at convenience functions aimed at making writing
     # P4Runtime PTF tests easier.
@@ -428,65 +551,100 @@ class P4RuntimeTest(BaseTest):
     class Exact(MF):
         def __init__(self, name, v):
             super(P4RuntimeTest.Exact, self).__init__(name)
+            assert isinstance(v, int)
             self.v = v
 
-        def add_to(self, mf_id, mk):
+        def add_to(self, mf_id, mf_bitwidth, mk):
             mf = mk.add()
             mf.field_id = mf_id
-            mf.exact.value = self.v
+            mf.exact.value = stringify(self.v)
 
     class Lpm(MF):
         def __init__(self, name, v, pLen):
             super(P4RuntimeTest.Lpm, self).__init__(name)
+            assert isinstance(v, int)
+            assert isinstance(pLen, int)
             self.v = v
             self.pLen = pLen
 
-        def add_to(self, mf_id, mk):
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            if self.pLen == 0:
+                # P4Runtime API requires omitting fields that are
+                # completely wildcard.
+                return
             mf = mk.add()
             mf.field_id = mf_id
             mf.lpm.prefix_len = self.pLen
-            assert isinstance(self.v, bytes)
-            orig_v_list = list(self.v)
-            mod_v_list = []
 
-            # P4Runtime now has strict rules regarding ternary matches: in the
-            # case of LPM, trailing bits in the value (after prefix) must be set
-            # to 0.
-            first_byte_masked = self.pLen // 8
-            for i in range(first_byte_masked):
-                mod_v_list.append(orig_v_list[i])
-            if first_byte_masked == len(orig_v_list):
-                mf.lpm.value = bytes(mod_v_list)
-                return
-            r = self.pLen % 8
-            mod_v_list.append(orig_v_list[first_byte_masked] & (0xff << (8 - r)))
-            for i in range(first_byte_masked + 1, len(orig_v_list)):
-                mod_v_list.append(0)
-            mf.lpm.value = bytes(mod_v_list)
+            # P4Runtime now has strict rules regarding ternary
+            # matches: in the case of LPM, trailing bits in the value
+            # (after prefix) must be set to 0.
+            prefix_mask = ((1 << self.pLen) - 1) << (mf_bitwidth - self.pLen)
+            mf.lpm.value = stringify(self.v & prefix_mask)
 
     class Ternary(MF):
         def __init__(self, name, v, mask):
             super(P4RuntimeTest.Ternary, self).__init__(name)
+            assert isinstance(v, int)
+            assert isinstance(mask, int)
             self.v = v
             self.mask = mask
 
-        def add_to(self, mf_id, mk):
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            if self.mask == 0:
+                # P4Runtime API requires omitting fields that are
+                # completely wildcard.
+                return
             mf = mk.add()
             mf.field_id = mf_id
-            assert(len(self.mask) == len(self.v))
-            mf.ternary.mask = self.mask
-            mf.ternary.value = ''
             # P4Runtime now has strict rules regarding ternary matches: in the
             # case of Ternary, "don't-care" bits in the value must be set to 0
-            for i in range(len(self.mask)):
-                mf.ternary.value += chr(ord(self.v[i]) & ord(self.mask[i]))
+            masked_val_int = self.v & self.mask
+            mf.ternary.value = stringify(masked_val_int)
+            mf.ternary.mask = stringify(self.mask)
+
+    class Range(MF):
+        def __init__(self, name, min_val, max_val):
+            super(P4RuntimeTest.Range, self).__init__(name)
+            assert isinstance(min_val, int)
+            assert isinstance(max_val, int)
+            self.min_val = min_val
+            self.max_val = max_val
+
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            # P4Runtime API requires omitting fields that are
+            # completely wildcard, i.e. the range is [0, 2^W-1] for a
+            # field with type bit<W>.
+            max_val_for_bitwidth = (1 << mf_bitwidth) - 1
+            if (self.min_val == 0) and (self.max_val == max_val_for_bitwidth):
+                return
+            mf = mk.add()
+            mf.field_id = mf_id
+            mf.range.low = stringify(self.min_val)
+            mf.range.high = stringify(self.max_val)
+
+    class Optional(MF):
+        def __init__(self, name, val, exact_match):
+            super(P4RuntimeTest.Optional, self).__init__(name)
+            assert isinstance(val, int)
+            assert isinstance(exact_match, bool)
+            self.val = val
+            self.exact_match = exact_match
+
+        def add_to(self, mf_id, mf_bitwidth, mk):
+            if self.exact_match == False:
+                return
+            mf = mk.add()
+            mf.field_id = mf_id
+            mf.optional.value = stringify(self.val)
 
     # Sets the match key for a p4::TableEntry object. mk needs to be an iterable
     # object of MF instances
     def set_match_key(self, table_entry, t_name, mk):
+        table_obj = self.get_obj("tables", t_name)
         for mf in mk:
-            mf_id = self.get_mf_id(t_name, mf.name)
-            mf.add_to(mf_id, table_entry.match)
+            mf_obj = self.get_mf_by_name(t_name, mf.name)
+            mf.add_to(mf_obj.id, mf_obj.bitwidth, table_entry.match)
 
     def set_action(self, action, a_name, params):
         action_id = self.get_action_id(a_name)
@@ -496,7 +654,7 @@ class P4RuntimeTest(BaseTest):
         for p_name, v in params:
             param = action.params.add()
             param.param_id = self.get_param_id(a_name, p_name)
-            param.value = v
+            param.value = stringify(v)
 
     # Sets the action & action data for a p4::TableEntry object. params needs to
     # be an iterable object of 2-tuples (<param_name>, <value>).
@@ -594,7 +752,8 @@ class P4RuntimeTest(BaseTest):
     # list used for autocleanup, by passing store=False to write_request calls.
     #
 
-    def push_update_add_entry_to_action(self, req, t_name, mk, a_name, params):
+    def push_update_add_entry_to_action(self, req, t_name, mk, a_name, params,
+                                        priority=None):
         update = req.updates.add()
         update.type = p4runtime_pb2.Update.INSERT
         table_entry = update.entity.table_entry
@@ -604,19 +763,24 @@ class P4RuntimeTest(BaseTest):
         else:
             table_entry.is_default_action = True
             update.type = p4runtime_pb2.Update.MODIFY
+        if priority:
+            table_entry.priority = priority
         self.set_action_entry(table_entry, a_name, params)
 
-    def send_request_add_entry_to_action(self, t_name, mk, a_name, params):
+    def send_request_add_entry_to_action(self, t_name, mk, a_name, params,
+                                         priority=None):
         req = p4runtime_pb2.WriteRequest()
         req.device_id = self.device_id
-        self.push_update_add_entry_to_action(req, t_name, mk, a_name, params)
+        self.push_update_add_entry_to_action(req, t_name, mk, a_name, params,
+                                             priority)
         return req, self.write_request(req, store=(mk is not None))
 
     # A shorter name for send_request_add_entry_to_action, and also
     # bundles up table name and key into one tuple, and action name
     # and params into another tuple, for the convenience of the caller
     # using some helper functions that create these tuples.
-    def table_add(self, table_name_and_key, action_name_and_params):
+    def table_add(self, table_name_and_key, action_name_and_params,
+                  priority=None):
         assert isinstance(table_name_and_key, tuple)
         assert len(table_name_and_key) == 2
         table_name = table_name_and_key[0]
@@ -626,7 +790,8 @@ class P4RuntimeTest(BaseTest):
         action_name = action_name_and_params[0]
         action_params = action_name_and_params[1]
         return self.send_request_add_entry_to_action(table_name, key,
-                                                     action_name, action_params)
+                                                     action_name, action_params,
+                                                     priority)
 
     def pre_add_mcast_group(self, mcast_grp_id, port_instance_pair_list):
         """When a packet is sent from ingress to the packet buffer with
@@ -669,9 +834,39 @@ class P4RuntimeTest(BaseTest):
             replica.instance = x[1]
         return req, self.write_request(req, store=False)
 
-    def table_dump_helper(self, request):
+    def response_dump_helper(self, request):
         for response in self.stub.Read(request):
             yield response
+
+    def make_counter_read_request(self, counter_name, direct=False):
+        req = p4runtime_pb2.ReadRequest()
+        req.device_id = self.device_id
+        entity = req.entities.add()
+        if direct:
+            counter = entity.direct_counter_entry
+            counter_obj = self.get_obj("direct_counters", counter_name)
+            counter.table_entry.table_id = counter_obj.direct_table_id
+        else:
+            counter = entity.counter_entry
+            counter.counter_id = self.get_counter_id(counter_name)
+        return req, counter
+
+    def counter_dump_data(self, counter_name, direct=False):
+        req, counter = self.make_counter_read_request(counter_name, direct)
+        if direct:
+            exp_one_of = 'direct_counter_entry'
+        else:
+            exp_one_of = 'counter_entry'
+        counter_entries = []
+        for response in self.response_dump_helper(req):
+            for entity in response.entities:
+                assert entity.WhichOneof('entity') == exp_one_of
+                if direct:
+                    entry = entity.direct_counter_entry
+                else:
+                    entry = entity.counter_entry
+                counter_entries.append(entry)
+        return counter_entries
 
     def make_table_read_request(self, table_name):
         req = p4runtime_pb2.ReadRequest()
@@ -684,7 +879,7 @@ class P4RuntimeTest(BaseTest):
     def table_dump_data(self, table_name):
         req, table = self.make_table_read_request(table_name)
         table_entries = []
-        for response in self.table_dump_helper(req):
+        for response in self.response_dump_helper(req):
             for entity in response.entities:
                 #print('entity.WhichOneof("entity")="%s"'
                 #      '' % (entity.WhichOneof('entity')))
@@ -703,10 +898,10 @@ class P4RuntimeTest(BaseTest):
         req, table = self.make_table_read_request(table_name)
         table.is_default_action = True
         try:
-            for response in self.table_dump_helper(req):
+            for response in self.response_dump_helper(req):
                 for entity in response.entities:
-                    print('entity.WhichOneof("entity")="%s"'
-                          '' % (entity.WhichOneof('entity')))
+                    #print('entity.WhichOneof("entity")="%s"'
+                    #      '' % (entity.WhichOneof('entity')))
                     assert entity.WhichOneof('entity') == 'table_entry'
                     entry = entity.table_entry
                     table_default_entry = entity
@@ -780,7 +975,8 @@ for obj_type, nickname in [("tables", "table"),
                            ("action_profiles", "ap"),
                            ("actions", "action"),
                            ("counters", "counter"),
-                           ("direct_counters", "direct_counter")]:
+                           ("direct_counters", "direct_counter"),
+                           ("controller_packet_metadata", "controller_packet_metadata")]:
     name = "_".join(["get", nickname])
     setattr(P4RuntimeTest, name, partialmethod(
         P4RuntimeTest.get_obj, obj_type))

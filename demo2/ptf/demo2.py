@@ -76,7 +76,7 @@ logger.addHandler(ch)
 #logging.error("40 logging.error message")
 
 
-class Demo1Test(bt.P4RuntimeTest):
+class Demo2Test(bt.P4RuntimeTest):
     def setUp(self):
         bt.P4RuntimeTest.setUp(self)
         # This setUp method will be executed once for each test case.
@@ -118,7 +118,7 @@ class Demo1Test(bt.P4RuntimeTest):
         return ('rewrite_mac', [('smac', bt.mac_to_int(smac_string))])
 
 
-class FwdTest(Demo1Test):
+class FwdTest(Demo2Test):
     @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
@@ -157,7 +157,7 @@ class FwdTest(Demo1Test):
         tu.verify_packets(self, exp_pkt, [eg_port])
 
 
-class PrefixLen0Test(Demo1Test):
+class PrefixLen0Test(Demo2Test):
     @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
@@ -174,6 +174,7 @@ class PrefixLen0Test(Demo1Test):
         entries.append({'ip_dst_addr': '10.1.0.1',
                         'prefix_len': 32,
                         'pkt_in_dst_addr': '10.1.0.1',
+                        'pktlen': 232,
                         'eg_port': 2,
                         'l2ptr': 58,
                         'bd': 9,
@@ -182,6 +183,7 @@ class PrefixLen0Test(Demo1Test):
         entries.append({'ip_dst_addr': '10.1.0.0',
                         'prefix_len': 16,
                         'pkt_in_dst_addr': '10.1.2.3',
+                        'pktlen': 216,
                         'eg_port': 3,
                         'l2ptr': 59,
                         'bd': 10,
@@ -190,6 +192,7 @@ class PrefixLen0Test(Demo1Test):
         entries.append({'ip_dst_addr': '0.0.0.0',
                         'prefix_len': 0,
                         'pkt_in_dst_addr': '20.0.0.1',
+                        'pktlen': 200,
                         'eg_port': 4,
                         'l2ptr': 60,
                         'bd': 11,
@@ -211,28 +214,20 @@ class PrefixLen0Test(Demo1Test):
             ip_dst_addr = e['pkt_in_dst_addr']
             eg_port = e['eg_port']
             pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
-                                          ip_dst=ip_dst_addr, ip_ttl=ttl_in)
+                                          ip_dst=ip_dst_addr, ip_ttl=ttl_in,
+                                          pktlen=e['pktlen'])
             exp_pkt = tu.simple_tcp_packet(eth_src=e['out_smac'],
                                            eth_dst=e['out_dmac'],
                                            ip_dst=ip_dst_addr,
-                                           ip_ttl=ttl_in - 1)
+                                           ip_ttl=ttl_in - 1,
+                                           pktlen=e['pktlen'])
             tu.send_packet(self, ig_port, pkt_in)
             tu.verify_packets(self, exp_pkt, [eg_port])
             # Vary TTL in for each packet tested, just to make them
             # easy to distinguish from each other.
             ttl_in = ttl_in - 10
 
-
-class DupEntryTest(Demo1Test):
-    @bt.autocleanup
-    def runTest(self):
-        ip_dst_addr = '10.0.0.1'
-        l2ptr = 58
-
-        def add_entry_once():
-            self.table_add(self.key_ipv4_da_lpm(ip_dst_addr, 32),
-                           self.act_set_l2ptr(l2ptr))
-
-        add_entry_once()
-        with self.assertP4RuntimeError():
-            add_entry_once()
+        counter_entries = self.counter_dump_data('ipv4_da_lpm_stats',
+                                                 direct=True)
+        print("counter_entries:")
+        print(counter_entries)
