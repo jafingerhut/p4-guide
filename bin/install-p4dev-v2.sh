@@ -97,7 +97,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 10 \* 1024`
+min_free_disk_MBytes=`expr 11 \* 1024`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -166,11 +166,11 @@ echo "date this script was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 9 GB of disk space."
+echo "The files installed by this script consume about 11 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
-echo "took about 90 to 100 minutes."
+echo "took about 90 to 110 minutes."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
@@ -178,7 +178,7 @@ echo "+ protobuf: github.com/google/protobuf v3.6.1"
 echo "+ gRPC: github.com/google/grpc.git v1.17.2"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2020-Dec-12, also installs these things:"
+echo "  which, as of 2021-Jun-28, also installs these things:"
 echo "  + thrift version 0.11.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
