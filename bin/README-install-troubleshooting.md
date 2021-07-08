@@ -1,5 +1,28 @@
 # Introduction
 
+Pick one of these alternatives that best fits your situation:
+
+(a) I have a new Ubuntu 16.04, 18.04, or 20.04 Linux system, and I
+    want to install the open source P4 development tools on it.  (This
+    might be a new VM created for this purpose.)
+
+(b) I am comfortable downloading and running a virtual machine image
+    with the P4 open source tools already compiled and installed,
+    e.g. using a virtual machine application like VirtualBox, VMware
+    Fusion, VMware Workstation, Parallels, etc.
+
+If your answer is (a), see the section below "Quick instructions for
+successful install script run".
+
+If your answer is (b), there are several VM images with many of the
+open source P4 development tools already installed available from
+links in this table:
+
+| Date published | Operating system | VM Image link | README link |
+| -------------- | ---------------- | ------------- | ----------- |
+| 2021-Jun-01 | Ubuntu 20.04 | https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing | https://drive.google.com/file/d/1rWhxCq4G4sUv-HIipx4emZJEORyK4pv3/view?usp=sharing |
+| 2021-Jul-07 | Ubuntu 20.04 | https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing | https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing |
+
 
 ## Quick instructions for successful install script run
 
