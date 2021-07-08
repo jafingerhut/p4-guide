@@ -16,12 +16,16 @@ successful install script run".
 
 If your answer is (b), there are several VM images with many of the
 open source P4 development tools already installed available from
-links in this table:
+links in this table.  Each of them comes with a user account named
+'p4' with password 'p4' intended for use in developing P4 programs.
+They also have a user account 'vagrant' (password 'vagrant') that was
+used when building the P4 development tools, and contains copies of
+the source code used in building the binaries for that VM.
 
 | Date published | Operating system | VM Image link | README link |
 | -------------- | ---------------- | ------------- | ----------- |
-| 2021-Jun-01 | Ubuntu 20.04 | https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing | https://drive.google.com/file/d/1rWhxCq4G4sUv-HIipx4emZJEORyK4pv3/view?usp=sharing |
-| 2021-Jul-07 | Ubuntu 20.04 | https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing | https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing |
+| 2021-Jul-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing) | [README](https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing) |
+| 2021-Jun-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing) | (none) |
 
 
 ## Quick instructions for successful install script run
