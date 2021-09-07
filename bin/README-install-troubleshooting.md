@@ -24,6 +24,7 @@ the source code used in building the binaries for that VM.
 
 | Date published | Operating system | VM Image link | README link |
 | -------------- | ---------------- | ------------- | ----------- |
+| 2021-Sep-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1x57EVjPToMMd1bHxhZ6LLVJyQ7TPvF-2/view?usp=sharing) | [README](https://drive.google.com/file/d/1DRtzEI4UCO3Mog84SKM0QyK_cxU0ey7B/view?usp=sharing) |
 | 2021-Jul-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing) | [README](https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing) |
 | 2021-Jun-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing) | (none) |
 
