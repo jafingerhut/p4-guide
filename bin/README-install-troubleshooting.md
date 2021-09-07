@@ -30,6 +30,12 @@ the source code used in building the binaries for that VM.
 
 ## Quick instructions for successful install script run
 
+Note: Ubuntu 16.04 reached its [end of standard support in April
+2021](https://wiki.ubuntu.com/Releases).  I tested the
+`install-p4dev-v2.sh` script on Ubuntu 16.04 until August 2021, and it
+worked fine up to that date, but I do not plan to test it monthly any
+more.  It may continue to work for a significant length of time.
+
 Start with:
 
 + an _unmodified_ _fresh_ installation of Ubuntu Linux 16.04 or 18.04,
