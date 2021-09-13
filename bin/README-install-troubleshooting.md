@@ -114,9 +114,8 @@ informed decision.
   installed by default, but does not have Python2 installed by
   default.  The `install-p4dev-v4.sh` script only installs Python3
   modules, and will not install Python2 at all.  The p4lang/tutorials
-  exercises will not work as of 2020-Dec on Ubuntu 20.04 with this
-  install script, unless you make some Python-related changes to the
-  tutorials code -- search for "20.04" below for more details.
+  exercises will work as of 2021-Sep-13 on Ubuntu 20.04 with this
+  install script.
 * The older shell script [`install-p4dev.sh`](install-p4dev.sh) does
   not install anything unless you edit it.  The messages that appear
   when you run it explain why, and how to change it if you really want
@@ -169,18 +168,16 @@ tests with `bmv2/` at the beginning of their names run the
 
 ### Send ping packets in the solution to `basic` exercise of `p4lang/tutorials` repository
 
-NOTE: If you are using Ubuntu 20.04 and the `install-p4dev-v4.sh`
-script, the latest `tuturials` code as of 2020-Dec still assumes there
-are some particular Python2 P4-related modules installed, or else most
-things fail.  There is an _EXPERIMENTAL_ patch to the
-`p4lang/tutorials` code (meaning it could still have bugs) in the file
-`p4-guide/bin/patches/tutorials-python3-changes1.patch` that enables
-at least the test described below to work on such a system.  You can
-apply it by using the command below when inside the `tutorials`
-directory after cloning the tutorials repository:
-```bash
-patch -p1 < tutorials-python3-changes1.patch
-```
+NOTE: If you are using versions of the install script older than
+`install-p4dev-v4.sh`, you may need to use a version of the
+`p4lang/tutorials` repository at version
+`4914893445ae24bd1fa3b4aeea4910eeb412f7de` or older (end of year
+2020), since the next commit after that updated all Python code to
+Python3, not Python2.
+
+If you are using the `install-p4dev-v4.sh` script, that should install
+only Python3 packages, and should work with the latest version of the
+`p4lang/tutorials` repository.
 
 Another quick test is to try running the solution to the `basic`
 exercise in the tutorials repository.  To do so, follow these steps:
