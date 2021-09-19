@@ -14,6 +14,12 @@ target device might be working "under the hood":
 Using code generation to avoid drudgery in writing programs with
 repetitive code.
 
+[Some alternatives for handling variable length headers in
+P4](/variable-length-header/README.md) - Describes the fairly strict
+limitations that the P4 language has for operating upon header fields
+with type `varbit`, and alternatives for parsing variable-length
+headers without using any fields of type `varbit` at all.
+
 [Why doesn't P4 have floating point
 types?](floating-point-operations.md), and what you can do about it.
 

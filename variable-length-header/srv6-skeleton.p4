@@ -35,10 +35,11 @@ header ipv6_t {
     bit<128> dstAddr;
 }
 
-// Note that P4 does not know the language standards.  If you want to
-// take what is one header in a standards document and divide it up
-// into multiple headers in P4, you may do that, and should if it
-// helps you write correct and understandable code.
+// Note that P4 does not know, or have "baked into it", any IETF or
+// IEEE standards.  If you want to take what is one header in a
+// standards document and divide it up into multiple headers in P4,
+// you may do that.  You should, if it helps you write correct and
+// understandable code.
 
 // In this example we define one header type for the first 8 bytes of
 // the SRv6 (Segment Routing IPv6) extension header, since it always

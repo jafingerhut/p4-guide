@@ -180,3 +180,8 @@ See the file [`README-testing.md`](README-testing.md) for how to use
 Scapy to construct packets containing IPv6 Routing extension headers,
 which I used to test the skeleton P4 programs above using `p4c` and
 `simple_switch`.
+
+Code that has many similar cases for handling different fixed length
+headers can get fairly repetitive.  See the article [Generating P4
+code for fun and profit](/code-generation/README.md) for approaches
+you can use to help in writing such repetitive code.
