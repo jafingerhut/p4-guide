@@ -22,11 +22,12 @@ They also have a user account 'vagrant' (password 'vagrant') that was
 used when building the P4 development tools, and contains copies of
 the source code used in building the binaries for that VM.
 
-| Date published | Operating system | VM Image link | README link |
-| -------------- | ---------------- | ------------- | ----------- |
-| 2021-Sep-12 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZuEM4r_a4RLNq3D9Y3A1aqbiR3gFLE3z/view?usp=sharing) | [README](https://drive.google.com/file/d/16usydz9BrotG0wI5vToqJttsB4TWIcVg/view?usp=sharing) |
-| 2021-Jul-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing) | [README](https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing) |
-| 2021-Jun-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing) | (none) |
+| Date published | Operating system | VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
+| -------------- | ---------------- | ------------- | ----------- | ------------------------ | -------------------------- |
+| 2021-Oct-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1QBbht4npEHfw4Fxvv3id_w8gCPFZBmwm/view?usp=sharing) | [README](https://drive.google.com/file/d/1zHVnMw4u-HUVPZid2XnvNFsNGqy2liqp/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
+| 2021-Sep-12 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZuEM4r_a4RLNq3D9Y3A1aqbiR3gFLE3z/view?usp=sharing) | [README](https://drive.google.com/file/d/16usydz9BrotG0wI5vToqJttsB4TWIcVg/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
+| 2021-Jul-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing) | [README](https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Not tested by me. |
+| 2021-Jun-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing) | (none) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Not tested by me. |
 
 
 ## Quick instructions for successful install script run
