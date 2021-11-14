@@ -82,6 +82,9 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
+# In my testing on 2021-Nov-14, it took about 1.8 GBytes of disk space
+# to run this script.  Check for at least 2.5 GBytes free to leave
+# some room for future growth in the size of the packages.
 min_free_disk_MBytes=`expr 2 \* 1024 + 512`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
@@ -133,9 +136,10 @@ set -e
 set -x
 
 set +x
-echo "This script installs pre-compiled Debian packages of the P4_16 (and also P4_14)"
-echo "compiler, and the behavioral-model software packet forwarding"
-echo "program, that can behave as just about any legal P4 program."
+echo "This script installs pre-compiled Debian packages of the P4_16 (and"
+echo "also P4_14) compiler, and the behavioral-model software packet"
+echo "forwarding program, that can behave as just about any legal P4"
+echo "program."
 echo ""
 echo "It is regularly tested on freshly installed Ubuntu 20.04 systems,"
 echo "with all Ubuntu software updates as of the date of"
@@ -144,7 +148,9 @@ echo "date this script was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 2 GB of disk space."
+echo "As of 2021-Nov-14, the files installed by this script consume about 2"
+echo "GB of disk space.  Running the script downloads about 250 MBytes of"
+echo "data from the Internet."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
