@@ -82,7 +82,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 12 \* 1024`
+min_free_disk_MBytes=`expr 2 \* 1024 + 512`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -103,9 +103,9 @@ then
     exit 1
 fi
 
-PATCH_DIR2="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 
-for dir in "${PATCH_DIR2}"
+for dir in "${PATCH_DIR}"
 do
     if [ -d "${dir}" ]
     then
@@ -132,14 +132,8 @@ echo "Passed all sanity checks"
 set -e
 set -x
 
-# The maximum number of gcc/g++ jobs to run in parallel.  1 is the
-# safest number that enables compiling p4c even on machines with only
-# 2 GB of RAM, and even on machines with significantly more RAM, it
-# does not speed things up a lot to run multiple jobs in parallel.
-MAX_PARALLEL_JOBS=1
-
 set +x
-echo "This script builds and installs the P4_16 (and also P4_14)"
+echo "This script installs pre-compiled Debian packages of the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
@@ -150,35 +144,11 @@ echo "date this script was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 12 GB of disk space."
+echo "The files installed by this script consume about 2 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
-echo "took about 90 to 110 minutes."
-echo ""
-echo "Versions of software that will be installed by this script:"
-echo ""
-echo "+ protobuf: github.com/google/protobuf v3.6.1"
-echo "+ gRPC: github.com/google/grpc.git v1.17.2, with patches for Ubuntu 20.04"
-echo "+ PI: github.com/p4lang/PI latest version"
-echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2021-Jun-28, also installs these things:"
-echo "  + thrift version 0.11.0"
-echo "  + nanomsg version 1.0.0"
-echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
-echo "+ p4c: github.com/p4lang/p4c latest version"
-echo "+ ptf: github.com/p4lang/ptf latest version"
-echo "+ Mininet: github.com/mininet/mininet latest version"
-echo "+ Python packages: grpcio 1.17.1, protobuf 3.6.1"
-echo "+ Python packages: scapy, ipaddr, psutil, crcmod, pypcap"
-echo ""
-echo "Note that anything installed as 'the latest version' can change"
-echo "its precise contents from one run of this script to another."
-echo "That is an intentional property of this script -- to get the"
-echo "latest version of that software.  If you want particular"
-echo "versions that are not the latest, you can modify this script by"
-echo "adding 'git checkout <tag>' and/or 'git checkout <commit-sha>'"
-echo "command at the appropriate places."
+echo "took about 3 minutes."
 echo ""
 
 echo "------------------------------------------------------------"
@@ -276,6 +246,18 @@ date
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
+
+# Check to see which versions of Python-related programs this system
+# has installed when the script is done.
+lsb_release -a
+python -V  || echo "No such command in PATH: python"
+python2 -V || echo "No such command in PATH: python2"
+python3 -V || echo "No such command in PATH: python3"
+pip -V  || echo "No such command in PATH: pip"
+pip2 -V || echo "No such command in PATH: pip2"
+pip3 -V || echo "No such command in PATH: pip3"
+pip list  || echo "Some error occurred attempting to run command: pip"
+pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 set +x
 echo "------------------------------------------------------------"
