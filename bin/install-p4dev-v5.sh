@@ -277,35 +277,6 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
 
-# TODO: Needed?
-#sudo pip3 install pypcap
-
-#set +x
-#echo "------------------------------------------------------------"
-#echo "Installing a few miscellaneous packages"
-#echo "start install miscellaneous packages:"
-#set -x
-#date
-
-# Things needed for `cd tutorials/exercises/basic ; make run` to work:
-# TODO: Needed?
-#sudo apt-get --yes install libgflags-dev net-tools
-#sudo pip3 install psutil crcmod
-#pip3 list
-
-#set +x
-#echo "end install miscellaneous packages:"
-#set -x
-#date
-
-#cd "${INSTALL_DIR}"
-#find /usr/lib /usr/local $HOME/.local | sort > usr-local-9-after-miscellaneous-install.txt
-
-#pip list  || echo "Some error occurred attempting to run command: pip"
-#pip3 list
-
-#set +e
-
 set +x
 echo "------------------------------------------------------------"
 echo "Time and disk space used when installation was complete:"
