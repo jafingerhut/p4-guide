@@ -51,9 +51,10 @@ Start with:
     of running the install script -- it will download approximately 1
     to 2 GByte of data.
 
-If you use the latest `install-p4dev-v5.sh` script, you only need 2.5
-GB of free disk space, and only about 250 MByte of data will be
-downloaded from the Internet.  See the table below for more details.
+If you use the latest `install-p4dev-v5.sh` script (supported only for
+Ubuntu 20.04), you need only 2.5 GB of free disk space, and about 250
+MByte of data will be downloaded from the Internet.  See the table
+below for more details.
 
 Note: These scripts have been reported NOT WORKING on WSL (Windows
 Subsystem for Linux).  I have had success running supported versions
