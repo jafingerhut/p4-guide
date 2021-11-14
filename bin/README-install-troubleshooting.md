@@ -107,7 +107,7 @@ If you wish to run the examples in the
 See the table below if you want to make a more informed decision.
 
 | Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet |
-| ------ | ------------------------------ | ----------- | -
+| ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- |
 | install-p4dev-v5.sh | 20.04        | Every month through 2021 | yes | yes | yes |  2 GB |   3 mins | 250 MB |
 | install-p4dev-v4.sh | 20.04, 18.04 | Every month through 2021 | yes | yes | yes | 12 GB | 100 mins |   2 GB |
 | install-p4dev-v3.sh | DO NOT USE.  Temporary version created while developing install-p4dev-v4.sh | Not tested | -- | -- | -- | -- | -- | -- |
