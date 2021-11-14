@@ -108,10 +108,10 @@ See the table below if you want to make a more informed decision.
 
 | Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet |
 | ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- |
-| install-p4dev-v5.sh | 20.04        | Every month through 2021 | yes | yes | yes |  2 GB |   3 mins | 250 MB |
-| install-p4dev-v4.sh | 20.04, 18.04 | Every month through 2021 | yes | yes | yes | 12 GB | 100 mins |   2 GB |
+| install-p4dev-v5.sh | 20.04        | Monthly through 2021 | yes | yes | yes |  2 GB |   3 mins | 250 MB |
+| install-p4dev-v4.sh | 20.04, 18.04 | Monthly through 2021 | yes | yes | yes | 12 GB | 100 mins |   2 GB |
 | install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- |
-| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 every month through 2021, 16.04 in 2021-Aug | yes | yes | no, Python2 | 11 GB | 100 mins |   2 GB |
+| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 monthly through 2021, 16.04 in 2021-Aug | yes | yes | no, Python2 | 11 GB | 100 mins |   2 GB |
 | install-p4dev-p4runtime.sh | 18.04, 16.04 | 2020-Mar | yes | yes | no, Python2 | 8.5 GB |  70 mins | ? |
 | install-p4dev.sh | -- | 2019-Oct |  no |  no | no, Python2 |  5 GB |  40 mins | ? |
 
