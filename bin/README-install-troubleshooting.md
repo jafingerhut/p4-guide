@@ -41,7 +41,7 @@ more.  It may continue to work for a significant length of time.
 
 Start with:
 
-+ an _unmodified_ _fresh_ installation of Ubuntu Linux 16.04 or 18.04,
++ an _unmodified_ _fresh_ installation of Ubuntu Linux 18.04 or 20.04,
   with ...
   + at least 2 GB of RAM (4 GB recommended)
   + at least 12 GB of free disk space (not 12 GB of disk space total
@@ -50,6 +50,10 @@ Start with:
   + a reliable Internet connection that is up for the entire duration
     of running the install script -- it will download approximately 1
     to 2 GByte of data.
+
+If you use the latest `install-p4dev-v5.sh` script, you only need 2.5
+GB of free disk space, and only about 250 MByte of data will be
+downloaded from the Internet.  See the table below for more details.
 
 Note: These scripts have been reported NOT WORKING on WSL (Windows
 Subsystem for Linux).  I have had success running supported versions
@@ -72,11 +76,11 @@ Then run the commands below in a terminal.  Note:
 ```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
-$ ./p4-guide/bin/install-p4dev-v2.sh |& tee log.txt
+$ ./p4-guide/bin/install-p4dev-v4.sh |& tee log.txt
 ```
-Replace `install-p4dev-v2.sh` with `install-p4dev-p4runtime.sh` if you
-prefer it instead.  More details on the differences between them are
-in the next section.
+Replace `install-p4dev-v4.sh` with `install-p4dev-v5.sh` if you prefer
+it instead.  More details on the differences between them are in the
+next section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
@@ -87,45 +91,29 @@ file is good if you want to see what it did.
 
 ## Which install script should I use?
 
-I would recommend using `install-p4dev-v2.sh` if you have no
-preferences.  See the differences below if you want to make a more
-informed decision.
+I would recommend using `install-p4dev-v5.sh` if you are able to use
+Ubuntu 20.04.  It requires the least disk space, installs quickly, and
+it installs pre-compiled P4 development tools from Debian packages
+that can be updated later to more recent versions as they are
+published, if you wish.
 
-* The script [`install-p4dev-v2.sh`](install-p4dev-v2.sh)
-  installs `p4c`, `behavioral-model` `simple_switch`, plus
-  `simple_switch_grpc`, that can use the P4Runtime API protocol to
-  communicate with a controller (in addition to the older Thrift API).
-  It also installs Mininet and a few other small packages that enable
-  you to run the exercises in the master branch of the
-  [tutorials](https://github.com/p4lang/tutorials) repository.  It
-  uses the latest versions of the Protobuf, Thrift, and gRPC libraries
-  that are supported by the open source P4 development tools.  It has
-  been successfully run on Ubuntu 16.04 and 18.04 systems, with good
-  test results from running `p4c`'s included tests (which exercise
-  little or none of the P4Runtime API code), and running the basic
-  exercise in the [tutorials](https://github.com/p4lang/tutorials)
-  repository.
-* The script
-  [`install-p4dev-p4runtime.sh`](install-p4dev-p4runtime.sh) is nearly
-  identical to `install-p4dev-v2.sh`, except it uses slightly older
-  versions of the Protobuf, Thrift, and gRPC libraries, that were
-  until some time during 2019 the latest supported versions.
-* The newest script [`install-p4dev-v4.sh`](install-p4dev-v4.sh) is
-  based on `install-p4dev-v2.sh`, but has several changes enabling it
-  to work on Ubuntu 20.04 Linux systems.  Ubuntu 20.04 has Python3
-  installed by default, but does not have Python2 installed by
-  default.  The `install-p4dev-v4.sh` script only installs Python3
-  modules, and will not install Python2 at all.  The p4lang/tutorials
-  exercises will work as of 2021-Sep-13 on Ubuntu 20.04 with this
-  install script.
-* The older shell script [`install-p4dev.sh`](install-p4dev.sh) does
-  not install anything unless you edit it.  The messages that appear
-  when you run it explain why, and how to change it if you really want
-  to run it despite its limitations.  This script does _not_ install
-  the software necessary to use the P4Runtime API, and thus is
-  insufficient by itself to enable you to run the exercises in August
-  2019 or later versions of the
-  [tutorials](https://github.com/p4lang/tutorials) repository.
+If you prefer Ubuntu 18.04, then I would recommend
+`install-p4dev-v4.sh`.
+
+If you wish to run the examples in the
+[tutorials](https://github.com/p4lang/tutorials) repository as of
+2021, you need P4Runtime API support and Mininet.
+
+See the table below if you want to make a more informed decision.
+
+| Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet |
+| ------ | ------------------------------ | ----------- | -
+| install-p4dev-v5.sh | 20.04        | Every month through 2021 | yes | yes | yes |  2 GB |   3 mins | 250 MB |
+| install-p4dev-v4.sh | 20.04, 18.04 | Every month through 2021 | yes | yes | yes | 12 GB | 100 mins |   2 GB |
+| install-p4dev-v3.sh | DO NOT USE.  Temporary version created while developing install-p4dev-v4.sh | Not tested | -- | -- | -- | -- | -- | -- |
+| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 every month through 2021, 16.04 in 2021-Aug | yes | yes | no, Python2 | 11 GB | 100 mins |   2 GB |
+| install-p4dev-p4runtime.sh | 18.04, 16.04 | 2020-Mar | yes | yes | no, Python2 | 8.5 GB |  70 mins | ? |
+| install-p4dev.sh | -- | 2019-Oct |  no |  no | no, Python2 |  5 GB |  40 mins | ? |
 
 
 ## Testing your installation
