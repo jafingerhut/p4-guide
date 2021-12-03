@@ -2,9 +2,9 @@
 
 Pick one of these alternatives that best fits your situation:
 
-(a) I have a new Ubuntu 16.04, 18.04, or 20.04 Linux system, and I
-    want to install the open source P4 development tools on it.  (This
-    might be a new VM created for this purpose.)
+(a) I have a new Ubuntu 18.04, or 20.04 Linux system, and I want to
+    install the open source P4 development tools on it.  (This might
+    be a new VM created for this purpose.)
 
 (b) I am comfortable downloading and running a virtual machine image
     with the P4 open source tools already compiled and installed,
@@ -22,22 +22,31 @@ They also have a user account 'vagrant' (password 'vagrant') that was
 used when building the P4 development tools, and contains copies of
 the source code used in building the binaries for that VM.
 
-| Date published | Operating system | VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
+The "Development" VM images contain a copy of the source code from
+which they were built.  If you know how, this source code can be
+updated and compiled again.
+
+The "Release" VM images are smaller, and contain only binaries of the
+P4 development tools, installed via Debian packages, which can be
+upgraded to more recent versions if such have been released.
+
+| Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------- | ----------- | ------------------------ | -------------------------- |
-| 2021-Nov-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1I4_VtoWIG87Pvm3cTcg2JHMmZAtR9wnd/view?usp=sharing) | [README](https://drive.google.com/file/d/1nHFU9wS7AnN8y4mPPV_JwVOvUubk1Bis/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
-| 2021-Oct-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1QBbht4npEHfw4Fxvv3id_w8gCPFZBmwm/view?usp=sharing) | [README](https://drive.google.com/file/d/1zHVnMw4u-HUVPZid2XnvNFsNGqy2liqp/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
-| 2021-Sep-12 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZuEM4r_a4RLNq3D9Y3A1aqbiR3gFLE3z/view?usp=sharing) | [README](https://drive.google.com/file/d/16usydz9BrotG0wI5vToqJttsB4TWIcVg/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
-| 2021-Jul-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing) | [README](https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Not tested by me. |
-| 2021-Jun-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing) | (none) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Not tested by me. |
+| 2021-Dec-03 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1lq6CKGAiwENP4igWOvkm1Yt1od5AN988/view?usp=sharing) | [2 GBytes VM image](https://drive.google.com/file/d/1gcfDV5euOW-95x0Xq4R6m2WdKQ49_AY7/view?usp=sharing) | [README](https://drive.google.com/file/d/1rdMOTd2v5W54H5Hhm8JYJ23vbFEfH4vD/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
+| 2021-Nov-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1I4_VtoWIG87Pvm3cTcg2JHMmZAtR9wnd/view?usp=sharing) | (none) | [README](https://drive.google.com/file/d/1nHFU9wS7AnN8y4mPPV_JwVOvUubk1Bis/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
+| 2021-Oct-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1QBbht4npEHfw4Fxvv3id_w8gCPFZBmwm/view?usp=sharing) | (none) | [README](https://drive.google.com/file/d/1zHVnMw4u-HUVPZid2XnvNFsNGqy2liqp/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
+| 2021-Sep-12 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZuEM4r_a4RLNq3D9Y3A1aqbiR3gFLE3z/view?usp=sharing) | (none) | [README](https://drive.google.com/file/d/16usydz9BrotG0wI5vToqJttsB4TWIcVg/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
+| 2021-Jul-07 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1L0Yc6QOyXNNzEIZyFixcDKlnTl9tC6MA/view?usp=sharing) | (none) | [README](https://drive.google.com/file/d/1xTsj4pMjLYOsMH1TkugEZvu1kDBFxu7J/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Not tested by me. |
+| 2021-Jun-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1ZkE5ynJrASMC54h0aqDwaCOA0I4i48AC/view?usp=sharing) | (none) | (none) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Not tested by me. |
 
 
 ## Quick instructions for successful install script run
 
 Note: Ubuntu 16.04 reached its [end of standard support in April
 2021](https://wiki.ubuntu.com/Releases).  I tested the
-`install-p4dev-v2.sh` script on Ubuntu 16.04 until August 2021, and it
-worked fine up to that date, but I do not plan to test it monthly any
-more.  It may continue to work for a significant length of time.
+`install-p4dev-v2.sh` script on Ubuntu 16.04 monthly until August
+2021, and it worked fine up to that date, but I do not plan to test it
+any longer.  It may continue to work for a significant length of time.
 
 Start with:
 
@@ -224,7 +233,8 @@ Things I did that helped this process go smoothly:
   VirtualBox on a Mac running macOS 10.14 Mojave as the host operating
   system, but installing them as a virtual machine on a different host
   operating system, or on a bare machine, should also work:
-  + [Ubuntu Desktop 18.04.5](http://releases.ubuntu.com/18.04/ubuntu-18.04.5-desktop-amd64.iso) for the amd64 architecture
+  + [Ubuntu Desktop 20.04.3](http://releases.ubuntu.com/20.04/ubuntu-20.04.3-desktop-amd64.iso) for the amd64 architecture
+  + [Ubuntu Desktop 18.04.6](http://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso) for the amd64 architecture
   + [Ubuntu Desktop 16.04.7](http://releases.ubuntu.com/16.04/ubuntu-16.04.7-desktop-amd64.iso) for the amd64 architecture
 + My machine had 2 GBytes of RAM available.  Less than 2 Gbytes will
   almost certainly not be enough.
