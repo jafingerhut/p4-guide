@@ -18,12 +18,11 @@ If your answer is (b), there are several VM images with many of the
 open source P4 development tools already installed available from
 links in this table.  Each of them comes with a user account named
 'p4' with password 'p4' intended for use in developing P4 programs.
-They also have a user account 'vagrant' (password 'vagrant') that was
-used when building the P4 development tools, and contains copies of
-the source code used in building the binaries for that VM.
+They also have a user account 'vagrant' (password 'vagrant').
 
 The "Development" VM images contain a copy of the source code from
-which they were built.  If you know how, this source code can be
+which the P4 development tools were built in the home directory of the
+'vagrant' user account.  If you know how, this source code can be
 updated and compiled again.
 
 The "Release" VM images are smaller, and contain only binaries of the
