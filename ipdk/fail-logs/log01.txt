@@ -1,0 +1,529 @@
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.4ubuntu1).
+git is already the newest version (1:2.17.1-1ubuntu0.9).
+The following additional packages will be installed:
+  cmake-data libjsoncpp1 librhash0 libuv1
+Suggested packages:
+  cmake-doc ninja-build
+The following NEW packages will be installed:
+  cmake cmake-data libjsoncpp1 librhash0 libuv1
+0 upgraded, 5 newly installed, 0 to remove and 0 not upgraded.
+Need to get 4,699 kB of archives.
+After this operation, 24.8 MB of additional disk space will be used.
+Do you want to continue? [Y/n] Get:1 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 cmake-data all 3.10.2-1ubuntu2.18.04.2 [1,332 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libjsoncpp1 amd64 1.7.4-3 [73.6 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 librhash0 amd64 1.3.6-2 [78.1 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu bionic/main amd64 libuv1 amd64 1.18.0-3 [64.4 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 cmake amd64 3.10.2-1ubuntu2.18.04.2 [3,152 kB]
+Fetched 4,699 kB in 5s (1,036 kB/s)
+Selecting previously unselected package cmake-data.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 163609 files and directories currently installed.)
+Preparing to unpack .../cmake-data_3.10.2-1ubuntu2.18.04.2_all.deb ...
+Unpacking cmake-data (3.10.2-1ubuntu2.18.04.2) ...
+Selecting previously unselected package libjsoncpp1:amd64.
+Preparing to unpack .../libjsoncpp1_1.7.4-3_amd64.deb ...
+Unpacking libjsoncpp1:amd64 (1.7.4-3) ...
+Selecting previously unselected package librhash0:amd64.
+Preparing to unpack .../librhash0_1.3.6-2_amd64.deb ...
+Unpacking librhash0:amd64 (1.3.6-2) ...
+Selecting previously unselected package libuv1:amd64.
+Preparing to unpack .../libuv1_1.18.0-3_amd64.deb ...
+Unpacking libuv1:amd64 (1.18.0-3) ...
+Selecting previously unselected package cmake.
+Preparing to unpack .../cmake_3.10.2-1ubuntu2.18.04.2_amd64.deb ...
+Unpacking cmake (3.10.2-1ubuntu2.18.04.2) ...
+Setting up libuv1:amd64 (1.18.0-3) ...
+Setting up cmake-data (3.10.2-1ubuntu2.18.04.2) ...
+Install cmake-data for emacs25
+install/cmake-data: Byte-compiling for emacs25
+Setting up librhash0:amd64 (1.3.6-2) ...
+Setting up libjsoncpp1:amd64 (1.7.4-3) ...
+Setting up cmake (3.10.2-1ubuntu2.18.04.2) ...
+Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1.4) ...
++ export SDE=/home/andy/install
++ SDE=/home/andy/install
++ export SDE_INSTALL=/home/andy/install/install
++ SDE_INSTALL=/home/andy/install/install
++ mkdir -p /home/andy/install/install
++ export LD_LIBRARY_PATH=/home/andy/install/install/lib
++ LD_LIBRARY_PATH=/home/andy/install/install/lib
++ export LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu
++ LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu
++ export LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu:/home/andy/install/install/lib64
++ LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu:/home/andy/install/install/lib64
++ export LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu:/home/andy/install/install/lib64:/usr/local/lib64
++ LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu:/home/andy/install/install/lib64:/usr/local/lib64
++ export LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu:/home/andy/install/install/lib64:/usr/local/lib64:/usr/local/lib
++ LD_LIBRARY_PATH=/home/andy/install/install/lib:/home/andy/install/install/lib/x86_64-linux-gnu:/home/andy/install/install/lib64:/usr/local/lib64:/usr/local/lib
++ cd /home/andy/tmp
++ '[' -d target-syslibs/.git ']'
++ echo 'Found existing target-syslibs/.git directory.   Using that instead of fresh clone'
+Found existing target-syslibs/.git directory.   Using that instead of fresh clone
++ cd target-syslibs
++ mkdir build
++ cd build
++ cmake -DCMAKE_INSTALL_PREFIX=/home/andy/install/install ..
+-- The C compiler identification is GNU 7.5.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Looking for arpa/inet.h
+-- Looking for arpa/inet.h - found
+-- Looking for assert.h
+-- Looking for assert.h - found
+-- Looking for dlfcn.h
+-- Looking for dlfcn.h - found
+-- Looking for fcntl.h
+-- Looking for fcntl.h - found
+-- Looking for float.h
+-- Looking for float.h - found
+-- Looking for inttypes.h
+-- Looking for inttypes.h - found
+-- Looking for limits.h
+-- Looking for limits.h - found
+-- Looking for malloc.h
+-- Looking for malloc.h - found
+-- Looking for netdb.h
+-- Looking for netdb.h - found
+-- Looking for netinet/in.h
+-- Looking for netinet/in.h - found
+-- Looking for stdio.h
+-- Looking for stdio.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Looking for stdlib.h
+-- Looking for stdlib.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for syslog.h
+-- Looking for syslog.h - found
+-- Looking for unistd.h
+-- Looking for unistd.h - found
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for math.h
+-- Looking for math.h - found
+-- Looking for memory.h
+-- Looking for memory.h - found
+-- Looking for sys/file.h
+-- Looking for sys/file.h - found
+-- Looking for sys/ioctl.h
+-- Looking for sys/ioctl.h - found
+-- Looking for sys/time.h
+-- Looking for sys/time.h - found
+-- Looking for sys/param.h
+-- Looking for sys/param.h - found
+-- Looking for sys/resource.h
+-- Looking for sys/resource.h - found
+-- Looking for sys/socket.h
+-- Looking for sys/socket.h - found
+-- Looking for sys/stat.h
+-- Looking for sys/stat.h - found
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for sys/un.h
+-- Looking for sys/un.h - found
+-- Looking for sys/poll.h
+-- Looking for sys/poll.h - found
+-- Looking for sys/select.h
+-- Looking for sys/select.h - found
+-- Looking for sys/epoll.h
+-- Looking for sys/epoll.h - found
+-- Looking for sys/eventfd.h
+-- Looking for sys/eventfd.h - found
+-- Looking for sys/inotify.h
+-- Looking for sys/inotify.h - found
+-- Looking for sys/signalfd.h
+-- Looking for sys/signalfd.h - found
+-- Looking for sched.h
+-- Looking for sched.h - found
+-- Looking for strings.h
+-- Looking for strings.h - found
+-- Looking for string.h
+-- Looking for string.h - found
+-- Looking for pcap/pcap.h
+-- Looking for pcap/pcap.h - not found
+-- Looking for clock_gettime
+-- Looking for clock_gettime - found
+-- Looking for floor
+-- Looking for floor - not found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for getpagesize
+-- Looking for getpagesize - found
+-- Looking for gettimeofday
+-- Looking for gettimeofday - found
+-- Looking for inet_ntoa
+-- Looking for inet_ntoa - found
+-- Looking for memmove
+-- Looking for memmove - found
+-- Looking for memset
+-- Looking for memset - found
+-- Looking for munmap
+-- Looking for munmap - found
+-- Looking for pow
+-- Looking for pow - not found
+-- Looking for regcomp
+-- Looking for regcomp - found
+-- Looking for setenv
+-- Looking for setenv - found
+-- Looking for socket
+-- Looking for socket - found
+-- Looking for sqrt
+-- Looking for sqrt - not found
+-- Looking for strchr
+-- Looking for strchr - found
+-- Looking for strcspn
+-- Looking for strcspn - found
+-- Looking for strdup
+-- Looking for strdup - found
+-- Looking for strerror
+-- Looking for strerror - found
+-- Looking for strrchr
+-- Looking for strrchr - found
+-- Looking for strspn
+-- Looking for strspn - found
+-- Looking for strstr
+-- Looking for strstr - found
+-- Looking for strtol
+-- Looking for strtol - found
+-- Looking for strtoul
+-- Looking for strtoul - found
+-- Looking for strtoull
+-- Looking for strtoull - found
+-- Looking for epoll_ctl
+-- Looking for epoll_ctl - found
+-- Looking for eventfd
+-- Looking for eventfd - found
+-- Looking for inotify_init
+-- Looking for inotify_init - found
+-- Looking for nanosleep
+-- Looking for nanosleep - found
+-- Looking for poll
+-- Looking for poll - found
+-- Looking for select
+-- Looking for select - found
+-- Looking for signalfd
+-- Looking for signalfd - found
+-- Looking for gethostbyname_r
+-- Looking for gethostbyname_r - found
+-- Looking for strerror_r
+-- Looking for strerror_r - found
+-- Looking for ether_aton_r
+-- Looking for ether_aton_r - found
+-- Looking for inet_network
+-- Looking for inet_network - found
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/andy/tmp/target-syslibs/build
++ make clean
++ make
+Scanning dependencies of target zlog_o
+[  3%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/buf.c.o
+[  6%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/category.c.o
+[  9%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/category_table.c.o
+[ 12%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/conf.c.o
+[ 16%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/event.c.o
+[ 19%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/format.c.o
+[ 22%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/level.c.o
+[ 25%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/level_list.c.o
+[ 29%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/mdc.c.o
+[ 32%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/record.c.o
+[ 35%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/record_table.c.o
+[ 38%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/rotater.c.o
+[ 41%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/rule.c.o
+[ 45%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/spec.c.o
+[ 48%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/thread.c.o
+[ 51%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/zc_arraylist.c.o
+[ 54%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/zc_hashtable.c.o
+[ 58%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/zc_profile.c.o
+[ 61%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/zc_util.c.o
+[ 64%] Building C object CMakeFiles/zlog_o.dir/third-party/zlog/src/zlog.c.o
+[ 64%] Built target zlog_o
+Scanning dependencies of target ev_o
+[ 67%] Building C object third-party/libev/CMakeFiles/ev_o.dir/ev.c.o
+[ 67%] Built target ev_o
+Scanning dependencies of target bf_sal_o
+[ 70%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/bf_sys_ver.c.o
+[ 74%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_str.c.o
+[ 77%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_sal.c.o
+[ 80%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_mem.c.o
+[ 83%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_sem.c.o
+[ 87%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_timer.c.o
+[ 90%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_thread.c.o
+[ 93%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_log.c.o
+[ 96%] Building C object src/bf_sal/CMakeFiles/bf_sal_o.dir/linux_usr/bf_sys_dma_hugepages.c.o
+[ 96%] Built target bf_sal_o
+Scanning dependencies of target target_sys
+[100%] Linking C shared library /home/andy/install/install/lib/libtarget_sys.so
+[100%] Built target target_sys
++ sudo ldconfig
++ cd /home/andy/tmp
++ '[' -d target-utils/.git ']'
++ echo 'Found existing target-utils/.git directory.   Using that instead of fresh clone'
+Found existing target-utils/.git directory.   Using that instead of fresh clone
++ cd target-utils
++ mkdir build
++ cd build
++ cmake -DCMAKE_INSTALL_PREFIX=/home/andy/install/install -DCPYTHON=1 -DSTANDALONE=ON ..
+-- The C compiler identification is GNU 7.5.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Looking for arpa/inet.h
+-- Looking for arpa/inet.h - found
+-- Looking for assert.h
+-- Looking for assert.h - found
+-- Looking for dlfcn.h
+-- Looking for dlfcn.h - found
+-- Looking for fcntl.h
+-- Looking for fcntl.h - found
+-- Looking for float.h
+-- Looking for float.h - found
+-- Looking for inttypes.h
+-- Looking for inttypes.h - found
+-- Looking for limits.h
+-- Looking for limits.h - found
+-- Looking for malloc.h
+-- Looking for malloc.h - found
+-- Looking for netdb.h
+-- Looking for netdb.h - found
+-- Looking for netinet/in.h
+-- Looking for netinet/in.h - found
+-- Looking for stdio.h
+-- Looking for stdio.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Looking for stdlib.h
+-- Looking for stdlib.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for syslog.h
+-- Looking for syslog.h - found
+-- Looking for unistd.h
+-- Looking for unistd.h - found
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for math.h
+-- Looking for math.h - found
+-- Looking for memory.h
+-- Looking for memory.h - found
+-- Looking for sys/file.h
+-- Looking for sys/file.h - found
+-- Looking for sys/ioctl.h
+-- Looking for sys/ioctl.h - found
+-- Looking for sys/time.h
+-- Looking for sys/time.h - found
+-- Looking for sys/param.h
+-- Looking for sys/param.h - found
+-- Looking for sys/resource.h
+-- Looking for sys/resource.h - found
+-- Looking for sys/socket.h
+-- Looking for sys/socket.h - found
+-- Looking for sys/stat.h
+-- Looking for sys/stat.h - found
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for sys/un.h
+-- Looking for sys/un.h - found
+-- Looking for sys/poll.h
+-- Looking for sys/poll.h - found
+-- Looking for sys/select.h
+-- Looking for sys/select.h - found
+-- Looking for sys/epoll.h
+-- Looking for sys/epoll.h - found
+-- Looking for sys/eventfd.h
+-- Looking for sys/eventfd.h - found
+-- Looking for sys/inotify.h
+-- Looking for sys/inotify.h - found
+-- Looking for sys/signalfd.h
+-- Looking for sys/signalfd.h - found
+-- Looking for sched.h
+-- Looking for sched.h - found
+-- Looking for strings.h
+-- Looking for strings.h - found
+-- Looking for string.h
+-- Looking for string.h - found
+-- Looking for pcap/pcap.h
+-- Looking for pcap/pcap.h - not found
+-- Looking for clock_gettime
+-- Looking for clock_gettime - found
+-- Looking for floor
+-- Looking for floor - not found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for getpagesize
+-- Looking for getpagesize - found
+-- Looking for gettimeofday
+-- Looking for gettimeofday - found
+-- Looking for inet_ntoa
+-- Looking for inet_ntoa - found
+-- Looking for memmove
+-- Looking for memmove - found
+-- Looking for memset
+-- Looking for memset - found
+-- Looking for munmap
+-- Looking for munmap - found
+-- Looking for pow
+-- Looking for pow - not found
+-- Looking for regcomp
+-- Looking for regcomp - found
+-- Looking for setenv
+-- Looking for setenv - found
+-- Looking for socket
+-- Looking for socket - found
+-- Looking for sqrt
+-- Looking for sqrt - not found
+-- Looking for strchr
+-- Looking for strchr - found
+-- Looking for strcspn
+-- Looking for strcspn - found
+-- Looking for strdup
+-- Looking for strdup - found
+-- Looking for strerror
+-- Looking for strerror - found
+-- Looking for strrchr
+-- Looking for strrchr - found
+-- Looking for strspn
+-- Looking for strspn - found
+-- Looking for strstr
+-- Looking for strstr - found
+-- Looking for strtol
+-- Looking for strtol - found
+-- Looking for strtoul
+-- Looking for strtoul - found
+-- Looking for strtoull
+-- Looking for strtoull - found
+-- Looking for epoll_ctl
+-- Looking for epoll_ctl - found
+-- Looking for eventfd
+-- Looking for eventfd - found
+-- Looking for inotify_init
+-- Looking for inotify_init - found
+-- Looking for nanosleep
+-- Looking for nanosleep - found
+-- Looking for poll
+-- Looking for poll - found
+-- Looking for select
+-- Looking for select - found
+-- Looking for signalfd
+-- Looking for signalfd - found
+-- Looking for gethostbyname_r
+-- Looking for gethostbyname_r - found
+-- Looking for strerror_r
+-- Looking for strerror_r - found
+-- Looking for ether_aton_r
+-- Looking for ether_aton_r - found
+-- Looking for inet_network
+-- Looking for inet_network - found
+CMake Warning (dev) at third-party/cJSON/CMakeLists.txt:4 (project):
+  Policy CMP0048 is not set: project() command manages VERSION variables.
+  Run "cmake --help-policy CMP0048" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+
+  The following variable(s) would be set to empty:
+
+    PROJECT_VERSION
+    PROJECT_VERSION_MAJOR
+    PROJECT_VERSION_MINOR
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Performing Test FLAG_SUPPORTED_stdc89
+-- Performing Test FLAG_SUPPORTED_stdc89 - Success
+-- Performing Test FLAG_SUPPORTED_pedantic
+-- Performing Test FLAG_SUPPORTED_pedantic - Success
+-- Performing Test FLAG_SUPPORTED_Wall
+-- Performing Test FLAG_SUPPORTED_Wall - Success
+-- Performing Test FLAG_SUPPORTED_Wextra
+-- Performing Test FLAG_SUPPORTED_Wextra - Success
+-- Performing Test FLAG_SUPPORTED_Werror
+-- Performing Test FLAG_SUPPORTED_Werror - Success
+-- Performing Test FLAG_SUPPORTED_Wstrictprototypes
+-- Performing Test FLAG_SUPPORTED_Wstrictprototypes - Success
+-- Performing Test FLAG_SUPPORTED_Wwritestrings
+-- Performing Test FLAG_SUPPORTED_Wwritestrings - Success
+-- Performing Test FLAG_SUPPORTED_Wshadow
+-- Performing Test FLAG_SUPPORTED_Wshadow - Success
+-- Performing Test FLAG_SUPPORTED_Winitself
+-- Performing Test FLAG_SUPPORTED_Winitself - Success
+-- Performing Test FLAG_SUPPORTED_Wcastalign
+-- Performing Test FLAG_SUPPORTED_Wcastalign - Success
+-- Performing Test FLAG_SUPPORTED_Wformat2
+-- Performing Test FLAG_SUPPORTED_Wformat2 - Success
+-- Performing Test FLAG_SUPPORTED_Wmissingprototypes
+-- Performing Test FLAG_SUPPORTED_Wmissingprototypes - Success
+-- Performing Test FLAG_SUPPORTED_Wstrictoverflow2
+-- Performing Test FLAG_SUPPORTED_Wstrictoverflow2 - Success
+-- Performing Test FLAG_SUPPORTED_Wcastqual
+-- Performing Test FLAG_SUPPORTED_Wcastqual - Success
+-- Performing Test FLAG_SUPPORTED_Wundef
+-- Performing Test FLAG_SUPPORTED_Wundef - Success
+-- Performing Test FLAG_SUPPORTED_Wswitchdefault
+-- Performing Test FLAG_SUPPORTED_Wswitchdefault - Success
+-- Performing Test FLAG_SUPPORTED_Wconversion
+-- Performing Test FLAG_SUPPORTED_Wconversion - Success
+-- Performing Test FLAG_SUPPORTED_Wccompat
+-- Performing Test FLAG_SUPPORTED_Wccompat - Success
+-- Performing Test FLAG_SUPPORTED_fstackprotectorstrong
+-- Performing Test FLAG_SUPPORTED_fstackprotectorstrong - Success
+-- Performing Test FLAG_SUPPORTED_Wcomma
+-- Performing Test FLAG_SUPPORTED_Wcomma - Failed
+-- Performing Test FLAG_SUPPORTED_Wdoublepromotion
+-- Performing Test FLAG_SUPPORTED_Wdoublepromotion - Success
+-- Performing Test FLAG_SUPPORTED_Wparentheses
+-- Performing Test FLAG_SUPPORTED_Wparentheses - Success
+-- Performing Test FLAG_SUPPORTED_Wformatoverflow
+-- Performing Test FLAG_SUPPORTED_Wformatoverflow - Success
+-- Performing Test FLAG_SUPPORTED_Wunusedmacros
+-- Performing Test FLAG_SUPPORTED_Wunusedmacros - Success
+-- Performing Test FLAG_SUPPORTED_Wmissingvariabledeclarations
+-- Performing Test FLAG_SUPPORTED_Wmissingvariabledeclarations - Failed
+-- Performing Test FLAG_SUPPORTED_Wusedbutmarkedunused
+-- Performing Test FLAG_SUPPORTED_Wusedbutmarkedunused - Failed
+-- Performing Test FLAG_SUPPORTED_Wswitchenum
+-- Performing Test FLAG_SUPPORTED_Wswitchenum - Success
+-- Performing Test FLAG_SUPPORTED_fvisibilityhidden
+-- Performing Test FLAG_SUPPORTED_fvisibilityhidden - Success
+-- Check if the system is big endian
+-- Searching 16 bit integer
+-- Check size of unsigned short
+-- Check size of unsigned short - done
+-- Using unsigned short
+-- Check if the system is big endian - little endian
+-- Could NOT find Libedit (missing: LIBEDIT_LIBRARIES LIBEDIT_INCLUDE_DIR) 
+-- The CXX compiler identification is GNU 7.5.0
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Error: The following variables are used in this project, but they are set to NOTFOUND.
+Please set them or make sure they are set and tested correctly in the CMake files:
+EXPAT_LIB
+    linked by target "clish" in directory /home/andy/tmp/target-utils/third-party/klish
+LIBEDIT_LIBRARIES (ADVANCED)
+    linked by target "clish" in directory /home/andy/tmp/target-utils/third-party/klish
+
+-- Configuring incomplete, errors occurred!
+See also "/home/andy/tmp/target-utils/build/CMakeFiles/CMakeOutput.log".
+See also "/home/andy/tmp/target-utils/build/CMakeFiles/CMakeError.log".
++ make clean
+make: *** No rule to make target 'clean'.  Stop.
++ make
+make: *** No targets specified and no makefile found.  Stop.
++ make install
+make: *** No rule to make target 'install'.  Stop.
++ sudo ldconfig
