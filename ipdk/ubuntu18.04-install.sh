@@ -18,7 +18,7 @@ fi
 TARGET_SYSLIBS_COMMIT="a017b08c91de8fb61c2d89795b000cacde50bcc7"  # 2021-Dec-17
 TARGET_UTILS_COMMIT="b5a03f0797fb6e8c9740bf025772ef87384f40bb"    # 2021-Dec-17
 
-sudo apt install git build-essential cmake
+sudo apt-get install git build-essential cmake
 
 set -x
 
