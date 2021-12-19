@@ -339,5 +339,74 @@ base Fedora system, without using Docker.
 
 # Install code on Fedora in base system, not inside a container
 
-See the script `fedora-step1-install-pkkgs.sh` in this directory for
-my first attempt at a script towards this goal.
+```bash
+export WORKDIR="$HOME/ipdk-try1"
+IPDK_REPO="$HOME/ipdk"
+IPDK_SCRIPTS="${IPDK_REPO}/build/IPDK_Container/scripts"
+```
+
+See the script `fedora-step1-install-pkgs.sh` in this directory for
+my first attempt at a script towards this goal:
+
+```bash
+./fedora-step1-install-pkgs.sh |& tee $HOME/p4-guide/ipdk/log-step1-try1.txt
+```
+
+When I ran it, it seemed to succeed.  Next:
+
+```bash
+$IPDK_SCRIPTS/get_p4ovs_repo.sh $WORKDIR |& tee $HOME/p4-guide/ipdk/log-step2-get-p4ovs-try1.txt
+```
+
+That resulted in a directory `$WORKDIR/P4-OVS` containing 560 MB of
+files.
+
+```bash
+cd $IPDK_SCRIPTS ; ./build_p4sde.sh $WORKDIR |& tee $HOME/p4-guide/ipdk/log-step3-build-p4sde-try1.txt
+```
+
+The first part of execute `build_p4sde.sh` above created a directory
+`$WORKDIR/p4-sde` with about 1 GB of files.  It had quite a few
+submodules, including `target-utils` repeated twice, and all of its submodules, in these directories beneath the `p4-sde` directory:
+
++ p4-sde/p4-driver/third-party/target-utils
++ p4-sde/p4-driver/third-party/tdi/third-party/target-utils
+
+TODO: Is this intentional?  If yes, why?  If no, is it worth the
+effort to optimize it down to one occurrence?
+
+Part of the build ran a command `ninja` with an argument `-j48`, which
+like `make`, causes the build to use 48 subprocesses at once (see
+below).  This requires quite a bit of memory.  My 4 GB VM had
+processes that were killed after quite some time, which is probably
+because of the kernel OOM process killer.
+
+```
+p4-sde/p4-driver/src/lld/dpdk/Makefile.am:   cd build && ninja -j48 && ninja install)
+p4-sde/p4-driver/src/lld/dpdk/Makefile.in:   cd build && ninja -j48 && ninja install)
+p4-sde/p4-driver/src/lld/dpdk/Makefile:      cd build && ninja -j48 && ninja install)
+```
+
+TODO: Either this script should be documented to require a system with
+at least 8 GB of RAM, or whatever minimum amount of RAM works
+consistently, or that `-j48` should be changed to a lower number that
+works with a smaller advertised minimum amount of RAM.
+
+For now, I will try with 8 GB of RAM and see if I can get farther in
+the build steps.
+
+```bash
+cd $IPDK_SCRIPTS ; ./build_p4sde.sh $WORKDIR |& tee $HOME/p4-guide/ipdk/log-step3-build-p4sde-try3.txt
+```
+
+There was an error about lack of proper permissions to run the last
+`ldconfig` command in the script `build_p4sde.sh`, but fortunately it
+was the last command so I simply ran `sudo ldconfig` manually after
+the script was done.
+
+With 8 GB of RAM, the `-j48` option to ninja seemed to have enough
+memory to complete without the kernel doing OOM process killing.
+
+TODO: It still might be nice to patch that line to be `${NUM_CORES}`
+instead.  It will probably take longer to build, but it should also be
+far more likely to succeed building with 4 GB of RAM on the system.
