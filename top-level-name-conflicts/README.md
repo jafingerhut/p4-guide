@@ -11,6 +11,7 @@ of a few common categories that I have seen:
 
 ```
 $ mkdir auto-gen-test-programs
+$ cd auto-gen-test-programs
 $ ../generate-p416-test-programs.py
 $ ../compile-all.sh *.p4
 ```
