@@ -340,16 +340,20 @@ base Fedora system, without using Docker.
 # Install code on Fedora in base system, not inside a container
 
 ```bash
+git clone https://github.com/ipdk-io/ipdk
 export WORKDIR="$HOME/ipdk-try1"
 IPDK_REPO="$HOME/ipdk"
 IPDK_SCRIPTS="${IPDK_REPO}/build/IPDK_Container/scripts"
+ANDY_SCRIPTS="${HOME}/p4-guide/ipdk"
+LOGS="${HOME}/p4-guide/ipdk/logs"
+mkdir -p ${LOGS}
 ```
 
 See the script `fedora-step1-install-pkgs.sh` in this directory for
 my first attempt at a script towards this goal:
 
 ```bash
-./fedora-step1-install-pkgs.sh |& tee $HOME/p4-guide/ipdk/log-step1-try1.txt
+${ANDY_SCRIPTS}/fedora-step1-install-pkgs.sh |& tee ${LOGS}/log-step1-try1.txt
 ```
 
 When I ran it, it seemed to succeed.
@@ -377,7 +381,7 @@ submodules, including `target-utils` repeated twice, and all of its submodules, 
 
 + p4-sde/p4-driver/third-party/target-utils
 + p4-sde/p4-driver/third-party/tdi/third-party/target-utils
-T
+
 I created issue https://github.com/p4lang/p4-dpdk-target/issues/12 to
 ask if this is intentional.
 
