@@ -1,11 +1,23 @@
 #include <core.p4>
 #include <v1model.p4>
 
+enum bit<8> FieldLists {
+    resubmit_fl1 = 0,
+    resubmit_fl2 = 1,
+    resubmit_fl3 = 2,
+    resubmit_fl4 = 3
+}
+
 struct mymeta_t {
+    @field_list(FieldLists.resubmit_fl1, FieldLists.resubmit_fl2, FieldLists.resubmit_fl3, FieldLists.resubmit_fl4)
     bit<3>   resubmit_reason;
+    @field_list(FieldLists.resubmit_fl1)
     bit<128> f1;
+    @field_list(FieldLists.resubmit_fl2)
     bit<160> f2;
+    @field_list(FieldLists.resubmit_fl3)
     bit<256> f3;
+    @field_list(FieldLists.resubmit_fl4)
     bit<64>  f4;
 }
 
@@ -55,12 +67,12 @@ control ingress(inout headers hdr,
     action do_resubmit_reason1() {
         meta.mymeta.resubmit_reason = 1;
         meta.mymeta.f1 = meta.mymeta.f1 + 17;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f1 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl1);
     }
     action do_resubmit_reason2(bit<160> f2_val) {
         meta.mymeta.resubmit_reason = 2;
         meta.mymeta.f2 = f2_val;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f2 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl2);
     }
     action nop() {
     }
@@ -71,12 +83,12 @@ control ingress(inout headers hdr,
         meta.mymeta.resubmit_reason = 3;
         meta.mymeta.f3 = (bit<256>) hdr.ethernet.srcAddr;
         meta.mymeta.f3 = meta.mymeta.f3 + (bit<256>) hdr.ethernet.dstAddr;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f3 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl3);
     }
     action do_resubmit_reason4() {
         meta.mymeta.resubmit_reason = 4;
         meta.mymeta.f4 = (bit<64>) hdr.ethernet.etherType;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f4 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl4);
     }
     action update_metadata(bit<64> x) {
         meta.mymeta.f1 = meta.mymeta.f1 - 2;
@@ -166,23 +178,28 @@ control ingress(inout headers hdr,
         if (meta.mymeta.resubmit_reason == 0) {
             // This is a new packet, not a resubmitted one
             t_first_pass_t1.apply();
-            // Note that even if a resubmit() call was performed while
-            // executing an action for table t_first_pass_t1, we may
-            // do another resubmit() call while executing an action
-            // for table t_first_pass_t2.  In general, the last
-            // resubmit() call should have its field list preserved.
-            // Each resubmit() call causes any earlier resubmit()
-            // calls made during the same execution of the ingress
-            // control to be "forgotten".
+            // Note that even if a resubmit_preserving_field_list()
+            // call was performed while executing an action for table
+            // t_first_pass_t1, we may do another
+            // resubmit_preserving_field_list() call while executing
+            // an action for table t_first_pass_t2.  In general, the
+            // last resubmit_preserving_field_list() call should have
+            // its field list preserved.  Each
+            // resubmit_preserving_field_list() call causes any
+            // earlier resubmit_preserving_field_list() calls made
+            // during the same execution of the ingress control to
+            // have their field list overwritten.
             t_first_pass_t2.apply();
             // Also note that any modifications made to field values
-            // in a field_list given to resubmit(), _after_ the
-            // resubmit call is made, should be preserved in the
-            // recirculated packet.  That is, the value of the fields
-            // that they have when ingress processing is complete is
-            // the value that should be preserved with the resubmitted
-            // packet, _not_ the value that the field had when the
-            // resubmit() call was made.
+            // in a field list given to
+            // resubmit_preserving_field_list(), _after_ the
+            // resubmit_preserving_field_list call is made, should be
+            // preserved in the recirculated packet.  That is, the
+            // value of the fields that they have when ingress
+            // processing is complete is the value that should be
+            // preserved with the resubmitted packet, _not_ the value
+            // that the field had when the
+            // resubmit_preserving_field_list() call was made.
             t_first_pass_t3.apply();
         }
         else if (meta.mymeta.resubmit_reason == 1) {
