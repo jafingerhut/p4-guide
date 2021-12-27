@@ -149,9 +149,9 @@ I used these versions of the p4lang/behavioral-model and p4lang/p4c
 repositories in my testing:
 
 + p4lang/behavioral-model - git commit
-  13370aaf9329fcb369a3ea3989722eb5f61c07f3 dated Aug 16 2018
-+ p4lang/p4c - git commit c534c585f8faba3e10af5776d5538c8a4374b8a6
-  dated Aug 31 2018
+  e1fcd5d54cecf7679f46ac462fdf92e049711e6c dated 2021-Dec-24
++ p4lang/p4c - git commit ce9d7df32e2ab9870b2470df0d06c3618ea6e41e
+  dated 2021-Dec-23
 
 The program demonstrates passing a list of fields to the
 `recirculate_preserving_field_list()`,
@@ -170,6 +170,22 @@ To compile the P4_16 version of the code (which is the only version):
 
     p4c --target bmv2 --arch v1model v1model-special-ops.p4
                                      ^^^^^^^^^^^^^^^^^^^^^^ source code
+
+Note that it is perfectly normal to see warning messages like this
+when compiling this program:
+
+```bash
+[--Wwarn=invalid] warning: no user metadata fields tagged with @field_list(0)
+[--Wwarn=invalid] warning: no user metadata fields tagged with @field_list(0)
+[--Wwarn=invalid] warning: no user metadata fields tagged with @field_list(0)
+[--Wwarn=invalid] warning: no user metadata fields tagged with @field_list(0)
+```
+
+This warning is issued by the compiler when you specify a field list
+numeric id that is "empty", i.e. preserves no user-defined metadata
+fields at all.  This is supported perfectly fine by p4c.  The warning
+is just in case you forgot to add the `@field_list` annotation to one
+or more metadata fields that you wanted to preserve.
 
 Running that command will create these files:
 
@@ -450,9 +466,9 @@ source repository implementations, but perhaps even to the specific
 versions below that I have tested some of this with.
 
 + p4lang/behavioral-model - git commit
-  13370aaf9329fcb369a3ea3989722eb5f61c07f3 dated Aug 16 2018
-+ p4lang/p4c - git commit c534c585f8faba3e10af5776d5538c8a4374b8a6
-  dated Aug 31 2018
+  e1fcd5d54cecf7679f46ac462fdf92e049711e6c dated 2021-Dec-24
++ p4lang/p4c - git commit ce9d7df32e2ab9870b2470df0d06c3618ea6e41e
+  dated 2021-Dec-23
 
 This list of standard_metadata fields comes from that version of p4c,
 in the file:
@@ -468,7 +484,9 @@ recirculated or resubmitted packets at the beginning of ingress
 processing, or for cloned packets at the beginning of egress
 processing, _unless_ you include the field explicitly in the list of
 metadata fields whose values should be preserved, as a parameter to
-the `resubmit`, `recirculate`, or `clone3` primitive operation.
+the `resubmit_preserving_field_list`,
+`recirculate_preserving_field_list`, or `clone_preserving_field_list`
+primitive operation.
 
 At the end of ingress processing, there are multiple of these fields
 that are used to determine what happens to the packet next.  You can
@@ -486,22 +504,6 @@ The `qid` field is in `queueing_metadata` defined on that page:
 + `qid` - This is in the simple_switch documentation about
   `queueing_metadata`, but is not in `v1model.p4`.  TBD: Should it be
   added to v1model.p4?
-
-The fields below are not mentioned in the behavioral-model
-[`simple_switch`
-documentation](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md),
-and there is a comment in the
-[v1model.p4](https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4)
-include file explaining that they are deprecated.  Both were added to
-the p4lang/p4c repository as part of the initial commit in Apr 2016,
-so perhaps they are historical vestiges of some older ideas of how
-v1model should work.
-
-+ `recirculate_port` - There is no mention of this field anywhere in
-  the behavioral-model source code.
-+ `drop` - This field appears to be unused in simple_switch.  It is
-  not mentioned in the source file
-  [`simple_switch.cpp`](https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp).
 
 
 # _Caveat emptor_
