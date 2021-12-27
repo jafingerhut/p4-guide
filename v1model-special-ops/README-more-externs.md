@@ -12,7 +12,7 @@ no-op for direct counters.
 
 Compile source and run simple_switch:
 ```
-p4c --std p4-14 --target bmv2 --arch v1model v1model-more-externs.p4
+p4c --target bmv2 --arch v1model v1model-more-externs.p4
 sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 v1model-more-externs.json
 ```
 

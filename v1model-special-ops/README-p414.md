@@ -24,24 +24,9 @@ I used these versions of the p4lang/behavioral-model and p4lang/p4c
 repositories in my testing:
 
 + p4lang/behavioral-model - git commit
-  20d37301040e6e1b2f6f50f4f66671448946b898 dated Dec 18 2018
-+ p4lang/p4c - git commit d21be8847d900d715a2533e122f33ac8c3bcebdf
-  dated Nov 26 2018
-
-*WARNING*: Compiling this program with version of the open source
-`p4c` compiler from 2018-Nov-26 or somewhat earlier leads to a working
-result in simple_switch, but as of Jan 2019, later versions of `p4c`
-do not produce compiler output that works correctly using BMv2
-simple_switch -- the recirculate, resubmit, clone, and multicast
-operations simply do not occur at all, as they should while processing
-packets.  See the following issue on Github for status of whether this
-problem becomes fixed: https://github.com/p4lang/p4c/issues/1694
-
-*WARNING*: See the section "Caveat emptor" in the file
- [README.md](README.md) for issues that may cause programs you write
- using `recirculate`, `resubmit`, `clone_ingress_pkt_to_egress`, or
- `clone_egress_pkt_to_egress` operations to _not_ preserve the
- metadata fields you specify.
+  e1fcd5d54cecf7679f46ac462fdf92e049711e6c dated 2021-Dec-24
++ p4lang/p4c - git commit ce9d7df32e2ab9870b2470df0d06c3618ea6e41e
+  dated 2021-Dec-23
 
 
 # Compiling
