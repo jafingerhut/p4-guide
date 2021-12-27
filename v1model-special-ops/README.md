@@ -1,5 +1,101 @@
 # Introduction
 
+On 2021-Dec-06, the p4c compiler's bmv2 back end with v1model
+architecture was changed in how you specify what user-defined metadata
+fields to preserve for the resubmit, recirculate, and clone
+operations.
+
+Here is a partial P4 program showing the new way of specifying the
+user-defined metadata fields to preserve:
+
+```
+const bit<8> EMPTY_FL    = 0;
+const bit<8> RESUB_FL_1  = 1;
+const bit<8> CLONE_FL_1  = 2;
+const bit<8> RECIRC_FL_1 = 3;
+
+struct meta_t {
+    @field_list(RESUB_FL_1, CLONE_FL_1)
+    bit<8>  f1;
+    @field_list(RECIRC_FL_1)
+    bit<16> f2;
+    @field_list(CLONE_FL_1)
+    bit<8>  f3;
+    @field_list(RESUB_FL_1)
+    bit<32> f4;
+}
+
+control ingress(inout headers_t hdr,
+                inout meta_t meta,
+                inout standard_metadata_t standard_metadata)
+{
+    // ...
+
+        resubmit(RESUB_FL_1);
+        // The 5 is just an example clone session id, and can be any
+        // number you prefer in the range that bmv2 supports.
+        clone_preserving_field_list(CloneType.I2E, 5, CLONE_FL_1);
+
+}
+
+control egress(inout headers_t hdr,
+               inout meta_t meta,
+               inout standard_metadata_t standard_metadata)
+{
+        recirculate_preserving_field_list(RECIRC_FL_1);
+        // The 5 is just an example clone session id, and can be any
+        // number you prefer in the range that bmv2 supports.
+        clone_preserving_field_list(CloneType.E2E, 8, EMPTY_FL);
+}
+```
+
+Before 2021-Dec-06, the old way of doing this was to give a list of
+user-defined metadata fields to preserve, as shown in the code snippet
+below.  This method is now deprecated.
+
+```
+struct meta_t {
+    bit<8>  f1;
+    bit<16> f2;
+    bit<8>  f3;
+    bit<32> f4;
+}
+
+control ingress(inout headers_t hdr,
+                inout meta_t meta,
+                inout standard_metadata_t standard_metadata)
+{
+    // ...
+
+        resubmit({meta.f1, meta.f4});
+        // The 5 is just an example clone session id, and can be any
+        // number you prefer in the range that bmv2 supports.
+        clone3(CloneType.I2E, 5, {meta.f1, meta.f3});
+
+}
+
+control egress(inout headers_t hdr,
+               inout meta_t meta,
+               inout standard_metadata_t standard_metadata)
+{
+        recirculate({meta.f2});
+        // The 5 is just an example clone session id, and can be any
+        // number you prefer in the range that bmv2 supports.
+        clone3(CloneType.E2E, 8, {});
+}
+```
+
+This older way of doing it had bugs in the p4c implementation for the
+bmv2 back end.  It also did not follow restrictions of the P4_16
+language specification, e.g. that an extern function call with
+direction `out` or `inout` parameters can modify those parameter
+values via copy-out when the call is complete, but cannot otherwise
+modify user-defined variables in a developer's P4 program at any other
+time.
+
+
+# Notes on the program `v1model-special-ops.p4`
+
 The program `v1model-special-ops.p4` demonstrates the use of resubmit,
 recirculate, clone, and multicast replication operations in the BMv2
 simple_switch's implementation of P4_16's v1model architecture.  It
@@ -13,8 +109,11 @@ clone operation.
 See [README-p414.md](README-p414.md) for a P4_14 program that
 exercises similar packet operations.
 
-This program also demonstrates "debug tables".  When you use the
-`--log-console` or `--log-file` command line options to the
+
+# Debug tables
+
+This program also demonstrates what I call "debug tables".  When you
+use the `--log-console` or `--log-file` command line options to the
 `simple_switch` command, then whenever _any_ tables are applied, the
 log output shows:
 
