@@ -11,7 +11,7 @@ fi
 #echo "P is: $P"
 
 # Only show a list of tests
-#ptf --pypath "$P" --test-dir ptf --list
+#ptf --pypath "$P" --test-dir . --list
 #exit 0
 
 # Note that the mapping between switch port number and Linux interface

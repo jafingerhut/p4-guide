@@ -1,6 +1,12 @@
 # Introduction
 
-The script `runptf.sh` in this directory does all of these things for you:
+By running this command in this directory:
+
+```bash
+$ ./runptf.sh
+```
+
+that script does all of these things for you:
 
 + Compiles the P4 program matchkinds.p4, generating the necessary
   P4Info file and compiled BMv2 JSON file
