@@ -20,7 +20,7 @@ As of 2021-Apr-05, this has only been tested to work on the following systems:
   installs all Python libraries for Python3, not Python2.
 
 
-# Compiling and running simple_switch_grpc
+# Compiling the P4 program, and running simple_switch_grpc
 
 These can be done using the same commands described in the [demo1
 P4Runtime README](README-p4runtime.md).
