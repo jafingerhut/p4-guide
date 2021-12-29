@@ -26,16 +26,8 @@ header ethernet_h {
     bit<16>    ether_type;
 }
 
-struct my_ingress_metadata_t {
-    // user-defined ingress metadata
-}
-
 header bridge_metadata_t {
     // user-defined metadata carried over from ingress to egress.
-}
-
-struct my_egress_metadata_t {
-    // user-defined egress metadata
 }
 
 struct my_ingress_headers_t {
@@ -46,6 +38,14 @@ struct my_ingress_headers_t {
 struct my_egress_headers_t {
     bridge_metadata_t bridge_md;
     ethernet_h ethernet;
+}
+
+struct my_ingress_metadata_t {
+    // user-defined ingress metadata
+}
+
+struct my_egress_metadata_t {
+    // user-defined egress metadata
 }
 
 parser MyIngressParser(
