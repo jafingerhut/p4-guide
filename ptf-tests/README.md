@@ -12,11 +12,12 @@ example of doing this, along with some explanation of the kind of
 output that running a successful PTF test looks like.
 
 
-# Exercising all supported match_kind
+# Exercising all supported match kinds
 
-+ lpm, exact - see PTF test in demo1 directory
-+ range, ternary, optional - see PTF test in ptf-tests/matchkinds directory
-  + TBD: I wouldn't be surprised if range entries on key fields of
++ `lpm`, `exact` - see PTF test in [`demo1`](../demo1/README-ptf.md) directory
++ `range`, `ternary`, `optional` - see PTF test in the
+  [`ptf-tests/matchkinds`](matchkinds) directory
+  + TODO: I wouldn't be surprised if range entries on key fields of
     type `int<W>` work as if they were cast to type `bit<W>` instead.
     True?  If so, that seems tricky to change, unless the field's most
     significant, i.e. sign, bit is negated, as well as all min/max
@@ -26,14 +27,15 @@ output that running a successful PTF test looks like.
 # Multicast configuration and packet replication
 
 + multicast group
-  + configure from controller - see demo7 directory
+  + configure from controller - see [`demo7`](../demo7) directory
   + verify changes in data packet processing as a result of controller changes
-  + read multicast group config from switch - TBD add to demo7 PTF test
+  + read multicast group config from switch - TODO add to demo7 PTF test
 
 
 # PacketIn and PacketOut messages between controller and switch
 
-See P4 program and PTF test in ptf-tests/packetinout directory.
+See P4 program and PTF test in the
+[`ptf-tests/packetinout`](packetintout/) directory.
 
 
 # P4 register array access, with read/write from controller via PacketOut/In messages

@@ -11,7 +11,7 @@ fi
 #echo "P is: $P"
 
 # Only show a list of tests
-#ptf --pypath "$P" --test-dir ptf --list
+#ptf --pypath "$P" --test-dir . --list
 #exit 0
 
 # Note that the mapping between switch port number and Linux interface
@@ -20,7 +20,27 @@ fi
 # of getting this mapping other than by telling it on its command
 # line.
 
-ptf \
+p4c --target bmv2 \
+    --arch v1model \
+    --p4runtime-files matchkinds.p4info.txt \
+    matchkinds.p4
+
+sudo simple_switch_grpc \
+     --log-file ss-log \
+     -i 0@veth0 \
+     -i 1@veth2 \
+     -i 2@veth4 \
+     -i 3@veth6 \
+     -i 4@veth8 \
+     -i 5@veth10 \
+     -i 6@veth12 \
+     -i 7@veth14 \
+     --no-p4 &
+echo ""
+echo "Started simple_switch_grpc.  Waiting 2 seconds before starting PTF test ..."
+sleep 2
+
+sudo ptf \
     --pypath "$P" \
     -i 0@veth1 \
     -i 1@veth3 \
@@ -32,3 +52,12 @@ ptf \
     -i 7@veth15 \
     --test-params="grpcaddr='localhost:9559';p4info='matchkinds.p4info.txt';config='matchkinds.json'" \
     --test-dir .
+
+echo ""
+echo "PTF test finished.  Waiting 2 seconds before killing simple_switch_grpc ..."
+sleep 2
+sudo pkill --signal 9 --list-name simple_switch
+echo ""
+echo "Verifying that there are no simple_switch_grpc processes running any longer in 4 seconds ..."
+sleep 4
+ps axguwww | grep simple_switch

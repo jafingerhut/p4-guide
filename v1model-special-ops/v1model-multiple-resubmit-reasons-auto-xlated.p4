@@ -1,11 +1,24 @@
 #include <core.p4>
+#define V1MODEL_VERSION 20200408
 #include <v1model.p4>
 
+enum bit<8> FieldLists {
+    resubmit_fl1 = 0,
+    resubmit_fl2 = 1,
+    resubmit_fl3 = 2,
+    resubmit_fl4 = 3
+}
+
 struct mymeta_t {
+    @field_list(FieldLists.resubmit_fl1, FieldLists.resubmit_fl2, FieldLists.resubmit_fl3, FieldLists.resubmit_fl4) 
     bit<3>   resubmit_reason;
+    @field_list(FieldLists.resubmit_fl1) 
     bit<128> f1;
+    @field_list(FieldLists.resubmit_fl2) 
     bit<160> f2;
+    @field_list(FieldLists.resubmit_fl3) 
     bit<256> f3;
+    @field_list(FieldLists.resubmit_fl4) 
     bit<64>  f4;
 }
 
@@ -47,12 +60,12 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     @name(".do_resubmit_reason1") action do_resubmit_reason1() {
         meta.mymeta.resubmit_reason = 3w1;
         meta.mymeta.f1 = meta.mymeta.f1 + 128w17;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f1 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl1);
     }
     @name(".do_resubmit_reason2") action do_resubmit_reason2(bit<160> f2_val) {
         meta.mymeta.resubmit_reason = 3w2;
         meta.mymeta.f2 = f2_val;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f2 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl2);
     }
     @name(".nop") action nop() {
     }
@@ -63,12 +76,12 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
         meta.mymeta.resubmit_reason = 3w3;
         meta.mymeta.f3 = (bit<256>)hdr.ethernet.srcAddr;
         meta.mymeta.f3 = meta.mymeta.f3 + (bit<256>)hdr.ethernet.dstAddr;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f3 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl3);
     }
     @name(".do_resubmit_reason4") action do_resubmit_reason4() {
         meta.mymeta.resubmit_reason = 3w4;
         meta.mymeta.f4 = (bit<64>)hdr.ethernet.etherType;
-        resubmit({ meta.mymeta.resubmit_reason, meta.mymeta.f4 });
+        resubmit_preserving_field_list((bit<8>)FieldLists.resubmit_fl4);
     }
     @name(".update_metadata") action update_metadata(bit<64> x) {
         meta.mymeta.f1 = meta.mymeta.f1 - 128w2;
