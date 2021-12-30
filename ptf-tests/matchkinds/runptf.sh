@@ -14,12 +14,6 @@ fi
 #ptf --pypath "$P" --test-dir . --list
 #exit 0
 
-# Note that the mapping between switch port number and Linux interface
-# names is best to make it correspond with those given when starting
-# the simple_switch_grpc process.  The `ptf` process has no other way
-# of getting this mapping other than by telling it on its command
-# line.
-
 p4c --target bmv2 \
     --arch v1model \
     --p4runtime-files matchkinds.p4info.txt \
@@ -41,6 +35,12 @@ sudo simple_switch_grpc \
 echo ""
 echo "Started simple_switch_grpc.  Waiting 2 seconds before starting PTF test ..."
 sleep 2
+
+# Note that the mapping between switch port number and Linux interface
+# names is best to make it correspond with those given when starting
+# the simple_switch_grpc process.  The `ptf` process has no other way
+# of getting this mapping other than by telling it on its command
+# line.
 
 sudo ptf \
     --pypath "$P" \
