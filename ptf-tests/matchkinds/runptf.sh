@@ -27,6 +27,8 @@ p4c --target bmv2 \
 
 sudo simple_switch_grpc \
      --log-file ss-log \
+     --log-flush \
+     --dump-packet-data 10000 \
      -i 0@veth0 \
      -i 1@veth2 \
      -i 2@veth4 \
