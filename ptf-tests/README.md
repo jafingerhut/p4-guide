@@ -75,6 +75,7 @@ See P4 program and PTF test in the directory ptf-tests/registeraccess
 + register
   + PI does not yet support reading or writing register arrays.  That
     must be implemented before such a PTF test can be successfully run.
+    See [this p4lang/PI issue](https://github.com/p4lang/PI/issues/376)
   + There _is_ a demo program with PTF test that does register read/write
     from controller using PacketOut and PacketIn messages instead.
 + action profile extern - configure and forwarding packets
