@@ -1,10 +1,12 @@
 # Introduction
 
 This directory is intended to contain examples of PTF tests that run
-automated tests of P4_16 programs, with simple test controller
-software written in Python for adding table entries and other features
-provided by the P4Runtime API, and also for sending packets and
-checking that the expected packets are sent out by the software
+automated tests of P4_16 programs written for the v1model architecture
+implemented by the BMv2 software switch.  Each has simple test
+controller software written in Python for adding table entries, and
+sometimes also other features provided by the P4Runtime API.  Each PTF
+test also typically sends packets to the switch, and checks that the
+packets with the expected contents are sent out by the software
 switch.
 
 See the [demo1 PTF README](../demo1/README-ptf.md) for a first simple
@@ -14,9 +16,10 @@ output that running a successful PTF test looks like.
 
 # Exercising all supported match kinds
 
-+ `lpm`, `exact` - see PTF test in [`demo1`](../demo1/README-ptf.md) directory
-+ `range`, `ternary`, `optional` - see PTF test in the
-  [`ptf-tests/matchkinds`](matchkinds) directory
++ `lpm`, `exact` - see the PTF test in the directory
+  [`demo1`](../demo1/README-ptf.md)
++ `range`, `ternary`, `optional` - see the PTF test in the directory
+  [`ptf-tests/matchkinds`](matchkinds)
   + TODO: I wouldn't be surprised if range entries on key fields of
     type `int<W>` work as if they were cast to type `bit<W>` instead.
     True?  If so, that seems tricky to change, unless the field's most
@@ -27,20 +30,21 @@ output that running a successful PTF test looks like.
 # Multicast configuration and packet replication
 
 + multicast group
-  + configure from controller - see [`demo7`](../demo7) directory
+  + configure from controller - see the PTF test in the directory
+    [`demo7`](../demo7)
   + verify changes in data packet processing as a result of controller changes
   + read multicast group config from switch - TODO add to demo7 PTF test
 
 
 # PacketIn and PacketOut messages between controller and switch
 
-See P4 program and PTF test in the
-[`ptf-tests/packetinout`](packetintout/) directory.
+See P4 program and PTF test in the directory
+[`ptf-tests/packetinout`](packetintout/).
 
 
 # P4 register array access, with read/write from controller via PacketOut/In messages
 
-See P4 program and PTF test in ptf-tests/registeraccess directory.
+See P4 program and PTF test in the directory ptf-tests/registeraccess
 
 
 # Things not demonstrated yet
