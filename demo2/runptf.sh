@@ -16,7 +16,7 @@ fi
 
 p4c --target bmv2 \
     --arch v1model \
-    --p4runtime-files demo2.p4_16.p4rt.txt \
+    --p4runtime-files demo2.p4_16.p4info.txt \
     demo2.p4_16.p4
 
 # Remove any log file written in an earlier run, otherwise
@@ -57,7 +57,7 @@ sudo ptf \
     -i 5@veth11 \
     -i 6@veth13 \
     -i 7@veth15 \
-    --test-params="grpcaddr='localhost:9559';p4info='demo2.p4_16.p4rt.txt';config='demo2.p4_16.json'" \
+    --test-params="grpcaddr='localhost:9559';p4info='demo2.p4_16.p4info.txt';config='demo2.p4_16.json'" \
     --test-dir ptf
 
 echo ""
