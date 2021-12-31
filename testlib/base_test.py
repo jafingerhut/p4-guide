@@ -366,9 +366,10 @@ class P4RuntimeTest(BaseTest):
 
         def stream_recv(stream):
             for p in stream:
-                logging.debug("stream_recv received and stored stream msg in stream_in_q: %s"
-                              "" % (p))
-                self.stream_in_q.put(p)
+                now = time.time()
+                logging.debug("stream_recv received at time %s and stored stream msg in stream_in_q: %s"
+                              "" % (now, p))
+                self.stream_in_q.put({'time': now, 'message': p})
 
         self.stream = self.stub.StreamChannel(stream_req_iterator())
         self.stream_recv_thread = threading.Thread(
@@ -467,6 +468,12 @@ class P4RuntimeTest(BaseTest):
             assert received_pktinfo == exp_pktinfo
 
     def get_stream_packet(self, type_, timeout=1):
+        """Get and return the next stream_in packet that has type
+        equal to type_.  If type_ is None, then get the next stream_in
+        packet regardless of its type.  If type_ is not None, this
+        method reads and discards any messages it finds with a
+        different type.  If no appropriate message to be returned is
+        found within the 'timeout' value (in seconds), return None."""
         start = time.time()
         try:
             while True:
@@ -476,11 +483,42 @@ class P4RuntimeTest(BaseTest):
                 msg = self.stream_in_q.get(timeout=remaining)
                 logging.debug("get_stream_packet dequeuing msg from stream_in_q: %s"
                               "" % (msg))
-                if not msg.HasField(type_):
-                    logging.debug("get_stream_packet msg has no field type_=%s so discarding"
-                                  "" % (type_))
-                    continue
-                return msg
+                if type_ is None or msg['message'].HasField(type_):
+                    return msg['message']
+                logging.debug("get_stream_packet msg=%s has no field type_=%s so discarding"
+                              "" % (msg, type_))
+        except:  # timeout expired
+            pass
+        return None
+
+    def get_stream_packet2(self, type_, timeout=1):
+        """Like get_stream_packet, except it returns two values.  The first is
+        a dictionary with the key 'message' having a value that is the
+        message, and a key 'time' having the value of time.time() when
+        that message was received and stored in an internal queue
+        where it waits to be retrieved by get_stream_packet or this
+        method.  The second return value is a list of dictionaries,
+        each with the same keys, containing all of the received
+        messages that were skipped over in order to get t othe message
+        with the desired type_ value.  As for get_stream_packet, the
+        first return value is None if no stream_in message is
+        retrieved within the specified timeout."""
+        start = time.time()
+        skipped_msginfos = []
+        try:
+            while True:
+                remaining = timeout - (time.time() - start)
+                if remaining < 0:
+                    return None, skipped_msginfos
+                    break
+                msginfo = self.stream_in_q.get(timeout=remaining)
+                logging.debug("get_stream_packet dequeuing msginfo from stream_in_q: %s"
+                              "" % (msginfo))
+                if type_ is None or msg['message'].HasField(type_):
+                    return msginfo, skipped_msginfos
+                logging.debug("get_stream_packet msginfo['message'] has no field type_=%s so discarding"
+                              "" % (type_))
+                skipped_msginfos.append(msginfo)
         except:  # timeout expired
             pass
         return None
