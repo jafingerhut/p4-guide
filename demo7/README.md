@@ -54,11 +54,24 @@ on which this has been tested as working.  It requires fairly recent
 versions of some of the open source p4c repositories installed in a
 way that all Python packages are installed as Python3.
 
-After starting `simple_switch_grpc`, run this command in another
-terminal:
+By running this command in this directory:
+
 ```bash
-sudo ./runptf.sh
+$ ./runptf.sh
 ```
+
+that script does all of these things for you:
+
++ Compiles the P4 program demo7.p4, generating the necessary
+  P4Info file and compiled BMv2 JSON file
++ Starts running simple_switch_grpc as root, with logging output being
+  written to a file name `ss-log.txt`
++ Runs the PTF test in file ptf/demo7.py
++ Kills the simple_switch_grpc process
+
+You must still create the necessary virtual Ethernet interfaces before
+running `runptf.sh`.  See
+[README-using-bmv2.md](../../README-using-bmv2.md) for how to do so.
 
 See the "Running the PTF test ..." section
 [here](../demo1/README-ptf.md) for some description of what the output
