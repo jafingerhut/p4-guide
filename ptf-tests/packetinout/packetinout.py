@@ -66,6 +66,8 @@ logger.addHandler(ch)
 
 
 class PacketInOutTest(bt.P4RuntimeTest):
+    CPU_PORT = 510
+
     def setUp(self):
         bt.P4RuntimeTest.setUp(self)
         # This setUp method will be executed once for each test case.
@@ -100,8 +102,6 @@ class PacketInOutTest(bt.P4RuntimeTest):
 
     def act_punt_to_controller(self):
         return ('punt_to_controller', [])
-
-    CPU_PORT = 510
 
 
 class FwdTest(PacketInOutTest):

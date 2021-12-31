@@ -19,6 +19,11 @@ p4c --target bmv2 \
     --p4runtime-files matchkinds.p4info.txt \
     matchkinds.p4
 
+# Remove any log file written in an earlier run, otherwise
+# simple_switch_grpc will append the new log messages to the end of
+# the existing file.
+/bin/rm -f ss-log.txt
+
 sudo simple_switch_grpc \
      --log-file ss-log \
      --log-flush \

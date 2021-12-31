@@ -19,6 +19,11 @@ p4c --target bmv2 \
     --p4runtime-files packetinout.p4info.txt \
     packetinout.p4
 
+# Remove any log file written in an earlier run, otherwise
+# simple_switch_grpc will append the new log messages to the end of
+# the existing file.
+/bin/rm -f ss-log.txt
+
 # Note that in order for PacketIn and PacketOut messages from the
 # controller from/to the switch to work with `simple_switch_grpc`, you
 # must start it with the `--cpu-port` command line option.  The

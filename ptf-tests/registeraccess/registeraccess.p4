@@ -200,6 +200,7 @@ control ingressImpl(inout headers_t hdr,
             dbgPacketOutHdr.apply();
             switch (hdr.packet_out.opcode) {
                 ControllerOpcode_t.NO_OP: {
+                    log_msg("Processing packet-out with opcode NO_OP");
                 }
                 ControllerOpcode_t.READ_REGISTER: {
                     SeqNumRegIndex_t idx =
@@ -211,11 +212,15 @@ control ingressImpl(inout headers_t hdr,
                         PuntReason_t.OPERATION_RESPONSE, hdr.packet_out.opcode,
                         (bit<32>) idx, (bit<32>) read_data, 0, 0);
                     hdr.packet_out.setInvalid();
+                    log_msg("Processing packet-out with opcode READ_REGISTER, read index {} value {}",
+                        {idx, read_data});
                 }
                 ControllerOpcode_t.WRITE_REGISTER: {
                     SeqNumRegIndex_t idx =
                         (SeqNumRegIndex_t) hdr.packet_out.operand0;
                     SeqNum_t write_data = (SeqNum_t) hdr.packet_out.operand1;
+                    log_msg("Processing packet-out with opcode WRITE_REGISTER, write index {} value {}",
+                        {idx, write_data});
                     seq_num_reg.write((bit<32>) idx, write_data);
 
                     send_to_controller_with_details(
@@ -224,15 +229,17 @@ control ingressImpl(inout headers_t hdr,
                     hdr.packet_out.setInvalid();
                 }
                 default: {
-                    hdr.packet_out.setInvalid();
+                    log_msg("Processing packet-out with unknown opcode {}",
+                        {hdr.packet_out.opcode});
                     send_to_controller_with_details(
                         PuntReason_t.UNRECOGNIZED_OPCODE, hdr.packet_out.opcode,
                         hdr.packet_out.operand0, hdr.packet_out.operand1,
                         hdr.packet_out.operand2, hdr.packet_out.operand3);
+                    hdr.packet_out.setInvalid();
                 }
             }
         } else if (hdr.ipv4.isValid()) {
-            // TBD: Update sequence number state for data packet
+            // Update sequence number state for data packet
             SeqNumRegIndex_t idx = (SeqNumRegIndex_t) hdr.ipv4.dstAddr;
             SeqNum_t pkt_seq_num = (SeqNum_t) hdr.ipv4.identification;
             bit<16> cur_exp_seq_num;
@@ -252,6 +259,8 @@ control ingressImpl(inout headers_t hdr,
                 // around).
                 next_exp_seq_num = pkt_seq_num + 1;
                 stdmeta.egress_spec = 2;
+                log_msg("Processing IPv4 packet with index {} seq_num {} read seq_num {} wrote seq_num {} forward packet",
+                    {idx, pkt_seq_num, cur_exp_seq_num, next_exp_seq_num});
             } else {
                 // If not, it is in the "previous half space".  In
                 // this case, the packet is considered to be out of
@@ -259,12 +268,15 @@ control ingressImpl(inout headers_t hdr,
                 // sequence number as it was.
                 next_exp_seq_num = cur_exp_seq_num;
                 my_drop();
+                log_msg("Processing IPv4 packet with index {} seq_num {} read seq_num {} wrote seq_num {} drop packet",
+                    {idx, pkt_seq_num, cur_exp_seq_num, next_exp_seq_num});
             }
             seq_num_reg.write((bit<32>) idx, next_exp_seq_num);
         } else {
             // A real L2/L3 switch would do something else than this
             // simple demo program does.
             my_drop();
+            log_msg("Processing non-IPv4 packet: drop packet");
         }
     }
 }
