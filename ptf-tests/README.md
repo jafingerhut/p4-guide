@@ -44,7 +44,8 @@ See P4 program and PTF test in the directory
 
 # P4 register array access, with read/write from controller via PacketOut/In messages
 
-See P4 program and PTF test in the directory ptf-tests/registeraccess
+See P4 program and PTF test in the directory
+[`ptf-tests/registeraccess`](registeraccess/).
 
 
 # Things not demonstrated yet
