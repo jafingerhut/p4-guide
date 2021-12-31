@@ -21,7 +21,7 @@ If you are interested in an example automated test for the
 
 To compile the P4_16 version of the code, in file `demo1.p4_16.p4`:
 
-    p4c --target bmv2 --arch v1model --p4runtime-files demo1.p4_16.p4rt.txt demo1.p4_16.p4
+    p4c --target bmv2 --arch v1model --p4runtime-files demo1.p4_16.p4info.txt demo1.p4_16.p4
 
 Running that command will create these files:
 
@@ -29,7 +29,7 @@ Running that command will create these files:
         the P4 source program.
     demo1.p4_16.json - the JSON file format expected by BMv2
         behavioral model `simple_switch_grpc`.
-    demo1.p4_16.p4rt.txt - the text format of the file that describes
+    demo1.p4_16.p4info.txt - the text format of the file that describes
         the P4Runtime API of the program.
 
 Only the last two files are needed to run your P4 program.  You can
@@ -122,12 +122,12 @@ bt.bmv2_json_to_device_config('demo1.p4_16.json', 'demo1.p4_16.bin')
 # version of the P4Runtime info file, into the simple_switch_grpc
 # 'device'.
 
-bt.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4rt.txt', my_dev1_addr, my_dev1_id)
+bt.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4info.txt', my_dev1_addr, my_dev1_id)
 # Result of successful bt.update_config() call is "P4Runtime
 # SetForwardingPipelineConfig" output from simple_switch_grpc log.
 
 h=bt.P4RuntimeTest()
-h.setUp(my_dev1_addr, 'demo1.p4_16.p4rt.txt')
+h.setUp(my_dev1_addr, 'demo1.p4_16.p4info.txt')
 ```
 
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it

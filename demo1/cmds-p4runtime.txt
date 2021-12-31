@@ -4,9 +4,9 @@ my_dev1_addr='localhost:50051'
 my_dev1_id=0
 import base_test
 base_test.bmv2_json_to_device_config('demo1.p4_16.json', 'demo1.p4_16.bin')
-base_test.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4rt.txt', my_dev1_addr, my_dev1_id)
+base_test.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4info.txt', my_dev1_addr, my_dev1_id)
 h=base_test.P4RuntimeTest()
-h.setUp(my_dev1_addr, 'demo1.p4_16.p4rt.txt')
+h.setUp(my_dev1_addr, 'demo1.p4_16.p4info.txt')
 h.table_add('ipv4_da_lpm', None, 'my_drop', [])
 h.table_add('mac_da', None, 'my_drop', [])
 h.table_add('send_frame', None, 'my_drop', [])
