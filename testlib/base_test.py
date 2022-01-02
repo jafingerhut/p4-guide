@@ -217,6 +217,20 @@ class P4RuntimeWriteException(Exception):
                 idx, code_name, p4_error.message)
         return message
 
+    def as_list_of_dicts(self):
+        lst = []
+        for idx, p4_error in self.errors:
+            code_name = code_pb2._CODE.values_by_number[
+                p4_error.canonical_code].name
+            lst.append({'index': idx,
+                        'code': p4_error.code,
+                        'canonical_code': p4_error.canonical_code,
+                        'code_name': code_name,
+                        'details': p4_error.details,
+                        'message': p4_error.message,
+                        'space': p4_error.space})
+        return lst
+
 # Strongly inspired from _AssertRaisesContext in Python's unittest module
 class _AssertP4RuntimeErrorContext(object):
     """A context manager used to implement the assertP4RuntimeError method."""
@@ -813,23 +827,63 @@ class P4RuntimeTest(BaseTest):
                                              priority)
         return req, self.write_request(req, store=(mk is not None))
 
+    def check_table_name_and_key(self, table_name_and_key):
+        assert isinstance(table_name_and_key, tuple)
+        assert len(table_name_and_key) == 2
+
+    def check_action_name_and_params(self, action_name_and_params):
+        assert isinstance(action_name_and_params, tuple)
+        assert len(action_name_and_params) == 2
+
+    def make_table_entry(self, table_name_and_key, action_name_and_params,
+                         priority=None, options=None):
+        self.check_table_name_and_key(table_name_and_key)
+        table_name = table_name_and_key[0]
+        key = table_name_and_key[1]
+        self.check_action_name_and_params(action_name_and_params)
+        action_name = action_name_and_params[0]
+        action_params = action_name_and_params[1]
+
+        table_entry = p4runtime_pb2.TableEntry()
+        table_entry.table_id = self.get_table_id(table_name)
+        if key is not None:
+            self.set_match_key(table_entry, table_name, key)
+        else:
+            table_entry.is_default_action = True
+        if priority:
+            table_entry.priority = priority
+        if options is not None:
+            if 'idle_timeout_ns' in options:
+                table_entry.idle_timeout_ns = options['idle_timeout_ns']
+            if 'elapsed_ns' in options:
+                table_entry.time_since_last_hit.elapsed_ns = options['elapsed_ns']
+            if 'metadata' in options:
+                table_entry.metadata = options['metadata']
+        self.set_action_entry(table_entry, action_name, action_params)
+        return table_entry
+
     # A shorter name for send_request_add_entry_to_action, and also
     # bundles up table name and key into one tuple, and action name
     # and params into another tuple, for the convenience of the caller
     # using some helper functions that create these tuples.
     def table_add(self, table_name_and_key, action_name_and_params,
-                  priority=None):
-        assert isinstance(table_name_and_key, tuple)
-        assert len(table_name_and_key) == 2
-        table_name = table_name_and_key[0]
+                  priority=None, options=None):
+        table_entry = self.make_table_entry(table_name_and_key,
+                                            action_name_and_params, priority,
+                                            options)
+        logging.info("table_add: table_entry={}".format(table_entry))
+        req = p4runtime_pb2.WriteRequest()
+        req.device_id = self.device_id
+        update = req.updates.add()
+        update.type = p4runtime_pb2.Update.INSERT
+        #te = update.entity.table_entry
+        #te = table_entry
+        update.entity.table_entry.CopyFrom(table_entry)
         key = table_name_and_key[1]
-        assert isinstance(action_name_and_params, tuple)
-        assert len(action_name_and_params) == 2
-        action_name = action_name_and_params[0]
-        action_params = action_name_and_params[1]
-        return self.send_request_add_entry_to_action(table_name, key,
-                                                     action_name, action_params,
-                                                     priority)
+        if key is None:
+            update.type = p4runtime_pb2.Update.MODIFY
+        logging.info("table_add: req={}".format(req))
+        return req, self.write_request(req, store=(key is not None))
 
     def pre_add_mcast_group(self, mcast_grp_id, port_instance_pair_list):
         """When a packet is sent from ingress to the packet buffer with
