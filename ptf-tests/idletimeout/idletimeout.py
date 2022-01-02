@@ -21,6 +21,7 @@ import ptf
 import os
 import pprint
 import ptf
+import time
 import ptf.testutils as tu
 
 from google.rpc import code_pb2
@@ -245,14 +246,33 @@ class OneEntryTest(IdleTimeoutTest):
         ig_port = 0
         eg_port = 1
 
-        # Add one table entry
-        entries = []
-        entries.append({'dmac_string': in_dmac,
-                        'output_port': eg_port})
-        
-        for e in entries:
-            self.table_add(self.key_mac_da_fwd(e['dmac_string']),
-                           self.act_set_port(e['output_port']))
+        # Add one table entry with a 5-second idle timeout.
+
+        # Then send approximately one packet every 2 seconds for 10
+        # seconds, all of which match that one table entry.  There
+        # should be no idle timeout notifications from the switch to
+        # the controller during this entire time.
+
+        # Then stop sending packets completely and wait for 10
+        # seconds.  There should be an idle timeout notification
+        # message sent from the switch to the controller approximately
+        # 5 seconds after the last packet was sent that matched the
+        # entry.
+
+        # From running this test with simple_switch_grpc built from
+        # latest source code as of 2021-Dec-31, the switch sends the
+        # first notification after about 5 to 6 seconds, and then if
+        # it continues to be the case that no packets match the entry,
+        # it generates another notification once every 2 seconds after
+        # that.  I do not know if that 2 seconds is configurable.
+
+        # TODO: Does the P4Runtime API specification say anything
+        # about this situation?
+
+        NSEC_PER_SEC = 1000 * 1000 * 1000
+        self.table_add(self.key_mac_da_fwd(in_dmac),
+                       self.act_set_port(eg_port),
+                       options={'idle_timeout_ns': 5 * NSEC_PER_SEC})
 
         # Read back and show the table entries, to see if there are
         # any extra properties related to the idle timeout.
@@ -263,12 +283,77 @@ class OneEntryTest(IdleTimeoutTest):
         print("default_entry_read:")
         print(default_entry_read)
 
-#        for e in entries:
-#            ip_dst_addr = e['pkt_in_dst_addr']
-#            pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
-#                                          ip_dst=ip_dst_addr)
-#            exp_pkt = tu.simple_tcp_packet(eth_src=in_smac,
-#                                           eth_dst=e['out_dmac'],
-#                                           ip_dst=ip_dst_addr)
-#            tu.send_packet(self, ig_port, pkt_in)
-#            tu.verify_packets(self, exp_pkt, [eg_port])
+        ip_dst_addr = '192.168.0.1'
+        pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
+                                      ip_dst=ip_dst_addr)
+        exp_pkt = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
+                                       ip_dst=ip_dst_addr)
+        start = time.time()
+        next_send_time = start
+        num_packets = 0
+        msginfo = None
+        while True:
+            msginfo = self.get_stream_packet2(None, 0.1)
+            if msginfo is not None:
+                break
+            now = time.time()
+            print("time %.2f next_send_time = %.2f"
+                  "" % (now - start, next_send_time - start))
+            if now < next_send_time:
+                print("      sleeping %.2f sec" % (next_send_time - now))
+                time.sleep(next_send_time - now)
+            tu.send_packet(self, ig_port, pkt_in)
+            last_packet_sent = time.time()
+            tu.verify_packets(self, exp_pkt, [eg_port])
+            num_packets += 1
+            print("time %.2f Sent packet #%d and verified expected output packet"
+                  "" % (time.time() - start, num_packets))
+            if num_packets >= 5:
+                break
+            next_send_time = next_send_time + 2.0
+
+        print("time %.2f Sent packets: %d" % (time.time() - start,
+                                              num_packets))
+        print("First packet sent time: %.2f" % (start))
+        print("Last  packet sent time: %.2f abs, %.2f rel"
+              "" % (last_packet_sent, last_packet_sent - start))
+        if msginfo is None:
+            print("No notification message received")
+        else:
+            print("Notification message received while sending packets periodically")
+            pp.pprint(msginfo)
+        entries_read, default_entry_read = self.table_dump_data('mac_da_fwd')
+        print("entries_read:")
+        print(entries_read)
+
+        n_checks = 0
+        while True:
+            n_checks += 1
+            msginfo = self.get_stream_packet2(None, 1.0)
+            now = time.time()
+            if msginfo is not None:
+                break
+            print("time %.2f (%.2f after last pkt) %d checks for notifications - none rcvd yet"
+                  "" % (now - start, now - last_packet_sent, n_checks))
+            if n_checks == 10:
+                break
+
+        assert msginfo is not None
+        print("time %.2f (%.2f after last pkt) %d checks for notifications - one received"
+              "" % (now - start, now - last_packet_sent, n_checks))
+        pp.pprint(msginfo)
+
+        stop_time = time.time() + 10
+        while True:
+            msginfo = self.get_stream_packet2(None, stop_time - time.time())
+            now = time.time()
+            if msginfo is None:
+                break
+            print("time %.2f (%.2f after last pt) received another notification"
+                  "" % (now - start, now - last_packet_sent))
+            pp.pprint(msginfo)
+
+        print("%.2f Reading table entries..." % (time.time() - start))
+        entries_read, default_entry_read = self.table_dump_data('mac_da_fwd')
+        print("entries_read:")
+        print(entries_read)
