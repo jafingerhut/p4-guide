@@ -118,11 +118,13 @@ class IdleTimeoutTest(bt.P4RuntimeTest):
 class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
     def runTest(self):
 
+        ############################################################
         # Attempting to add an entry with the 'idle_timeout_ns' field
         # set to a non-0 value, must return an INVALID_ARGUMENT error
         # if the table being added to does not have the
         # support_idletimeout table property.  Reference:
         # https://p4.org/p4-spec/p4runtime/v1.3.0/P4Runtime-Spec.html#sec-idle-timeout
+        ############################################################
         logger.info("Subtest #1")
         print("Subtest #1")
         got_error = False
@@ -131,13 +133,13 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
                            self.act_set_port(5),
                            options={'idle_timeout_ns': 1000000})
         except bt.P4RuntimeWriteException as e:
-#            print("Got exception: %s" % (e))
-#            n = len(e.errors)
-#            print("len(e.errors)=%s" % (n))
-#            print("e.as_list_of_dicts() ----------")
+            #print("Got exception: %s" % (e))
+            #n = len(e.errors)
+            #print("len(e.errors)=%s" % (n))
+            #print("e.as_list_of_dicts() ----------")
             lst = e.as_list_of_dicts()
-#            pp.pprint(lst)
-#            print("e.as_list_of_dicts() ----------")
+            #pp.pprint(lst)
+            #print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
             lst0 = lst[0]
             assert lst0['code_name'] == 'INVALID_ARGUMENT'
@@ -145,11 +147,13 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
             got_error = True
         assert got_error
 
+        ############################################################
         # Attempting to add an entry with the 'time_since_last_hit' field
         # set to a non-0 value, must return an INVALID_ARGUMENT error
         # if the table being added to does not have the
         # support_idletimeout table property.  Reference:
         # https://p4.org/p4-spec/p4runtime/v1.3.0/P4Runtime-Spec.html#sec-idle-timeout
+        ############################################################
         logger.info("Subtest #2")
         print("Subtest #2")
         got_error = False
@@ -168,11 +172,13 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
             got_error = True
         assert got_error
 
+        ############################################################
         # Attempting to modify a table's default entry with the
         # 'idle_timeout_ns' field set to a non-0 value, must return an
         # INVALID_ARGUMENT error, whether the being modified has the
         # support_idletimeout table property or not.  Reference:
         # https://p4.org/p4-spec/p4runtime/v1.3.0/P4Runtime-Spec.html#sec-idle-timeout
+        ############################################################
         logger.info("Subtest #3")
         print("Subtest #3")
         got_error = False
@@ -189,19 +195,25 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
             assert lst0['code_name'] == 'INVALID_ARGUMENT'
             #assert lst0['message'] == 'has_time_since_last_hit must not be set in WriteRequest'
             got_error = True
-        # The following line is commented out because at least with
-        # latest versions of P4 open source dev tools as of
+        # TODO: The following line is commented out because at least
+        # with latest versions of P4 open source dev tools as of
         # 2021-Dec-31, simple_switch_grpc does NOT return an
         # INVALID_ARGUMENT for this WriteRequest, even though the
         # P4Runtime API spec says it should.
+        if got_error:
+            print("Subtest #3 is passing.  You can uncomment the `assert got_error` line for it in the PTF test now.")
+        else:
+            print("Subtest #3 attempt to modify the default action for table mac_da_fwd should be failing, but is succeeding.  TODO: Create an issue for the p4lang/PI repository for this.")
         #assert got_error
 
+        ############################################################
         # Attempting to modify a table's default entry with the
         # 'time_since_last_hit' field set to a non-0 value, must
         # return an INVALID_ARGUMENT error, whether the being modified
         # has the support_idletimeout table property or not.
         # Reference:
         # https://p4.org/p4-spec/p4runtime/v1.3.0/P4Runtime-Spec.html#sec-idle-timeout
+        ############################################################
         logger.info("Subtest #4")
         print("Subtest #4")
         got_error = False
@@ -220,6 +232,27 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
             got_error = True
         assert got_error
 
+        # TODO: There are likely other operations that should return
+        # error status as well related to idle timeout.  Feel free to
+        # add more here.
+
+
+class OneEntryTest(IdleTimeoutTest):
+    @bt.autocleanup
+    def runTest(self):
+        in_dmac = 'ee:30:ca:9d:1e:00'
+        in_smac = 'ee:cd:00:7e:70:00'
+        ig_port = 0
+        eg_port = 1
+
+        # Add one table entry
+        entries = []
+        entries.append({'dmac_string': in_dmac,
+                        'output_port': eg_port})
+        
+        for e in entries:
+            self.table_add(self.key_mac_da_fwd(e['dmac_string']),
+                           self.act_set_port(e['output_port']))
 
         # Read back and show the table entries, to see if there are
         # any extra properties related to the idle timeout.
@@ -230,39 +263,12 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         print("default_entry_read:")
         print(default_entry_read)
 
-
-# class OneEntryTest(IdleTimeoutTest):
-#     @bt.autocleanup
-#     def runTest(self):
-#         in_dmac = 'ee:30:ca:9d:1e:00'
-#         in_smac = 'ee:cd:00:7e:70:00'
-#         ig_port = 0
-#         eg_port = 1
-
-#         # Add one table entry
-#         entries = []
-#         entries.append({'dmac_string': in_dmac,
-#                         'output_port': eg_port})
-        
-#         for e in entries:
-#             self.table_add(self.key_mac_da_fwd(e['dmac_string']),
-#                            self.act_set_port(e['output_port']))
-
-#         # Read back and show the table entries, to see if there are
-#         # any extra properties related to the idle timeout.
-#         entries_read, default_entry_read = self.table_dump_data('mac_da_fwd')
-#         print("entries_read:")
-#         print(entries_read)
-
-#         print("default_entry_read:")
-#         print(default_entry_read)
-
-# #        for e in entries:
-# #            ip_dst_addr = e['pkt_in_dst_addr']
-# #            pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
-# #                                          ip_dst=ip_dst_addr)
-# #            exp_pkt = tu.simple_tcp_packet(eth_src=in_smac,
-# #                                           eth_dst=e['out_dmac'],
-# #                                           ip_dst=ip_dst_addr)
-# #            tu.send_packet(self, ig_port, pkt_in)
-# #            tu.verify_packets(self, exp_pkt, [eg_port])
+#        for e in entries:
+#            ip_dst_addr = e['pkt_in_dst_addr']
+#            pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
+#                                          ip_dst=ip_dst_addr)
+#            exp_pkt = tu.simple_tcp_packet(eth_src=in_smac,
+#                                           eth_dst=e['out_dmac'],
+#                                           ip_dst=ip_dst_addr)
+#            tu.send_packet(self, ig_port, pkt_in)
+#            tu.verify_packets(self, exp_pkt, [eg_port])
