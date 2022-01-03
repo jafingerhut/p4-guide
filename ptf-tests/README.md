@@ -48,11 +48,24 @@ See P4 program and PTF test in the directory
 [`ptf-tests/registeraccess`](registeraccess/).
 
 
+# Idle timeout notification messages from switch to controller
+
+See P4 program and PTF test in the directory
+[`ptf-tests/idletimeout`](idletimeout/).
+
+It would be a more thorough test if it also exercised a situation
+where there were say 5 entries in the table with `support_timeout =
+true`, and configured those 5 entries with different idle timeout
+durations, then say sent a packet per second matching all 5 entries
+for a while, then stopped sending matching entries for 2 or 3 of them,
+but continued sending matching entries for the rest.  Then verify that
+the idle timeout notifications were generated at approximately the
+correct times for the entries it should, but not for the entries it
+should not.
+
+
 # Things not demonstrated yet
 
-+ idle timeout option for tables
-  + verify IdleTimeoutNotification message is sent by data plane to
-    controller with expected contents
 + mirror sessions
   + configure from controller
   + verify changes in data packet processing as a result of controller changes
@@ -79,6 +92,7 @@ See P4 program and PTF test in the directory
     See [this p4lang/PI issue](https://github.com/p4lang/PI/issues/376)
   + There _is_ a demo program with PTF test that does register read/write
     from controller using PacketOut and PacketIn messages instead.
+    See directory [`ptf-tests/registeraccess`](registeraccess/).
 + action profile extern - configure and forwarding packets
 + action selector extern - configure and forwarding packets
   + 1 element in a group
