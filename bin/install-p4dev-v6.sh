@@ -459,23 +459,24 @@ set -x
 date
 
 # From BUILDING.md of grpc source repository
-sudo apt-get --yes install build-essential autoconf libtool pkg-config
+sudo apt-get --yes install build-essential autoconf libtool pkg-config cmake
+sudo apt-get --yes install libssl-dev
 
 get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04
 git checkout tags/v1.43.0
 git submodule update --init --recursive
-#if [[ "${ubuntu_release}" > "19" ]]
-#then
-#    # Apply patches that seem to be necessary in order for grpc v1.43.0
-#    # to compile and install successfully on an Ubuntu 21.10 system
-#    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
-#    for PATCH_FILE in ${PATCH_DIR}/*.diff
-#    do
-#        patch -p1 < "${PATCH_FILE}"
-#    done
-#fi
+
+mkdir -p cmake/build
+cd cmake/build
+#cmake ../..
+cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DgRPC_INSTALL=ON \
+    -DgRPC_BUILD_TESTS=OFF \
+    -DgRPC_SSL_PROVIDER=package \
+    ../..
 make
 sudo make install
 # I believe the following 2 commands, adapted from similar commands in
