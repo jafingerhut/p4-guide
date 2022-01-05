@@ -144,17 +144,16 @@ which you can find the complete source code for in this directory:
 ```
 
 According to the P4_16 language specification, when the assignment `b
-= a + 5` is performed, since `a` is uninitialized, it can take on any
-of the 512 possible values of `bit<9>`, and thus `b` can take on any
-of those 512 possible values, too, since unsigned addition wraps
-around.
+= a + 5` is performed, since `a` is uninitialized, `a` can take on any
+of the 512 possible values of `bit<9>`.  Thus `b` can be assigned any
+of those 512 possible values, too.
 
 However, after that assignment, `b` is now initialized.  We do not
 know what value it will have, but on any single execution of that
 code, `b` will become a single, initialized, deterministic value.
 
-Then when the value of the expression `b ^ (b ^ 1)` is calculated, `b`
-must have the same value for both times it occurs.  The value of that
+When the value of the expression `b ^ (b ^ 1)` is calculated, `b` must
+have the same value for both times it occurs.  The value of that
 expression is equal to `(b ^ b) ^ 1`, equal to `0 ^ 1`, or always 1.
 
 When running this version of `p4c-bm2-ss` on this program, at least:
@@ -163,8 +162,8 @@ Version 1.2.2 (SHA: 448f019de BUILD: DEBUG)
 ```
 
 there are many compiler passes before the one called
-LocalCopyPropagation.  The last of those passes has transformed this
-part of the program to:
+LocalCopyPropagation.  The last pass before LocalCopyPropagation has
+transformed this part of the program to:
 
 ```
     @name("ingressImpl.a") bit<9> a_0;
@@ -189,7 +188,7 @@ The output of the LocalCopyPropagation pass is this:
 
 Note: In P4_16, the precedence of the `+` operator is higher than the
 `^` operator, and the P4 compiler does not print unnecessary
-parentheses.  Thus the above assignment is equivalent ot the one
+parentheses.  Thus the above assignment is equivalent to the one
 below:
 
 ```
@@ -215,3 +214,24 @@ just after that pass:
 ```bash
 ./show-localcopypropagation-change.sh a1.p4 
 ```
+
+One might be tempted to ask: So if we improve the P4 compiler so that
+it can reason that `b ^ (b ^ 1)` is always 1, and makes that
+replacement itself, we can avoid this issue that way, right?
+
+I do not think that is a fruitful approach.  This is a very simple
+example where a calculation has a single possible correct output.
+There are an _unlimited_ set of such formulas, and in general while
+the restrictions on the P4 language might make these cases decidable
+computational problems, rather than undecidable ones, that does not
+mean they are computable in a reasonable amount of time that you want
+to implement in a compiler.
+
+For example, consider the case where we have the MD5 sum of a 40-byte
+packet header calculated in two different ways in a P4 program,
+assigned to variables `m1` and `m2`, and then we calculate `m1 ^ m2`.
+If those two different calculations both always produce the same value
+for all inputs, then a smart enough compiler could replace `m1 ^ m2`
+with 0.  However, even one tiny subtle bug anywhere in there and you
+could not do that.  Existing SMT solver type of approaches would
+likely not finish this problem in our lifetimes.
