@@ -108,3 +108,92 @@ contents lead to using an uninitialized variable value, but realistic
 restrictions on table entry contents enables one to prove that no
 uninitialized value can possibly affect the observable packet
 processing behavior.
+
+
+# Demonstration of LocalCopyPropagation increasing nondeterminism of input program
+
+Here is the entire body of the ingress control of program `a1.p4`,
+which you can find the complete source code for in this directory:
+
+```
+    apply {
+        bit<9> a;
+        bit<9> b;
+        // b becomes initialized, even though a is still uninitialized
+        b = a + 5;
+        stdmeta.egress_spec = b ^ (b ^ 1);
+    }
+```
+
+According to the P4_16 language specification, when the assignment `b
+= a + 5` is performed, since `a` is uninitialized, it can take on any
+of the 512 possible values of `bit<9>`, and thus `b` can take on any
+of those 512 possible values, too, since unsigned addition wraps
+around.
+
+However, after that assignment, `b` is now initialized.  We do not
+know what value it will have, but on any single execution of that
+code, `b` will become a single, initialized, deterministic value.
+
+Then when the value of the expression `b ^ (b ^ 1)` is calculated, `b`
+must have the same value for both times it occurs.  The value of that
+expression is equal to `(b ^ b) ^ 1`, equal to `0 ^ 1`, or always 1.
+
+When running this version of `p4c-bm2-ss` on this program, at least:
+```
+Version 1.2.2 (SHA: 448f019de BUILD: DEBUG)
+```
+
+there are many compiler passes before the one called
+LocalCopyPropagation.  The last of those passes has transformed this
+part of the program to:
+
+```
+    @name("ingressImpl.a") bit<9> a_0;
+    @name("ingressImpl.b") bit<9> b_0;
+    apply {
+        b_0 = a_0 + 9w5;
+        stdmeta.egress_spec = b_0 ^ (b_0 ^ 9w1);
+    }
+```
+
+This code has exactly the same set of possible behaviors as the input
+program.
+
+The output of the LocalCopyPropagation pass is this:
+
+```
+    @name("ingressImpl.a") bit<9> a_0;
+    apply {
+        stdmeta.egress_spec = a_0 + 9w5 ^ (a_0 + 9w5 ^ 9w1);
+    }
+```
+
+Note: In P4_16, the precedence of the `+` operator is higher than the
+`^` operator, and the P4 compiler does not print unnecessary
+parentheses.  Thus the above assignment is equivalent ot the one
+below:
+
+```
+        stdmeta.egress_spec = (a_0 + 9w5) ^ ((a_0 + 9w5) ^ 9w1);
+```
+
+Now, if `a_0` was initialized when this assignment was performed, its
+set of possible results would be the same as the input program,
+i.e. the result of calculating the formula would always be 1.
+
+However, `a_0` is uninitialized at the time of this assignment.  Thus
+the first occurrence of `a_0` could evaluate to any of the 512
+possible `bit<9>` values, and the second occurrence of `a_0` could
+evaluate to any of the 512 possible values.  A little bit of thinking
+should convince you that thus the value assigned to `egress_spec`
+could be any of the 512 possible `bit<9>` values.
+
+You can run the following command to run the P4 compiler on a v1model
+architecture P4 program, and see the difference between the compiler's
+intermediate result from just before the LocalCopyPropagation pass, to
+just after that pass:
+
+```bash
+./show-localcopypropagation-change.sh a1.p4 
+```

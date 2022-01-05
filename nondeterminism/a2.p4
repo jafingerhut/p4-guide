@@ -30,19 +30,18 @@ control ingressImpl(
     inout metadata_t meta,
     inout standard_metadata_t stdmeta)
 {
+    // Note: P4 precedence of + is higher than ^,
+    // Thus this:         a + 5 ^ a
+    // is equal to this: (a + 5) ^ a
+
+    // That is important when reading the output from passes of the
+    // compiler, which do not print parentheses when they are
+    // unnecessary according to operator precedence rules.
+
     apply {
         bit<9> a;
         bit<9> b;
         bit<9> c;
-
-        // Note: P4 precedence of + is higher than ^,
-        // Thus this:         a + 5 ^ a
-        // is equal to this: (a + 5) ^ a
-
-        // That is important when reading the output from passes of
-        // the compiler, which do not print parentheses when they are
-        // unnecessary according to operator precedence rules.
-
         // b becomes initialized, even though a is still uninitialized
         b = a + 5;
         c = b;
