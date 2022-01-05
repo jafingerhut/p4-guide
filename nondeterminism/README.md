@@ -112,7 +112,25 @@ processing behavior.
 
 # Demonstration of LocalCopyPropagation increasing nondeterminism of input program
 
-Here is the entire body of the ingress control of program `a1.p4`,
+Note: The following example is not of a practical useful P4 program.
+However, the fact that it exists at least raises the question of
+whether the LocalCopyPropagation pass might cause undesirable effects
+when compiling useful program.
+
+It is possible that even given that the LocalCopyPropagation pass has
+this undesirable property, it might be that this is mitigated by one
+or more of the following factors:
+
++ Perhaps there are no practical programs where this is an issue.
++ Even if there are practical programs where the LocalCopyPropagation
+  pass can increase the set of possible behaviors, perhaps it is only
+  when the compiler can detect and warn "a may be uninitialized" as it
+  does for the program `a1.p4`.
+
+However, note that either of those possible factors, even if they are
+true, sound difficult to prove.
+
+Below is the entire body of the ingress control of program `a1.p4`,
 which you can find the complete source code for in this directory:
 
 ```
