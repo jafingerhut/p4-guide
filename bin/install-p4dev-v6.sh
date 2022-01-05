@@ -466,16 +466,16 @@ cd grpc
 # This version works fine with Ubuntu 16.04
 git checkout tags/v1.43.0
 git submodule update --init --recursive
-if [[ "${ubuntu_release}" > "19" ]]
-then
-    # Apply patches that seem to be necessary in order for grpc v1.43.0
-    # to compile and install successfully on an Ubuntu 21.10 system
+#if [[ "${ubuntu_release}" > "19" ]]
+#then
+#    # Apply patches that seem to be necessary in order for grpc v1.43.0
+#    # to compile and install successfully on an Ubuntu 21.10 system
 #    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
 #    for PATCH_FILE in ${PATCH_DIR}/*.diff
 #    do
 #        patch -p1 < "${PATCH_FILE}"
 #    done
-fi
+#fi
 make
 sudo make install
 # I believe the following 2 commands, adapted from similar commands in
