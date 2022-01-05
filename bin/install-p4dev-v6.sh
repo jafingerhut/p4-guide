@@ -49,7 +49,7 @@ fi
 
 distributor_id=`lsb_release -si`
 ubuntu_release=`lsb_release -s -r`
-if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" \) ]
+if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" -o "${ubuntu_release}" = "21.10" \) ]
 then
     echo "Found distributor '${distributor_id}' release '${ubuntu_release}'.  Continuing with installation."
 else
