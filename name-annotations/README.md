@@ -72,6 +72,13 @@ out of 4 of these issues :-)
 
 See the README files in the sub-directories for more details.
 
+actions-1-same-name.p4 has only cosmetic changes from the program
+actions-same-name1.p4 in the ZIP file issue1936.zip attached to [p4c
+issue 1936](https://github.com/p4lang/p4c/issues/1936).
+
+Similarly, actions-2-same-name.p4 has only cosmetic changes from the
+program actions-same-name2.p4 in that same ZIP file.
+
 actions-5-same-name-annot.p4 has only cosmetic changes from the
 program actions-same-name5.p4 in the ZIP file attached to [p4c issue
 2755](https://github.com/p4lang/p4c/issues/2755).
