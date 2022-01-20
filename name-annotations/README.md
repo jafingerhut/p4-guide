@@ -58,7 +58,8 @@ egress, and all in the main control for PNA.
 
 As of 2022-Jan-19, that list includes:
 
-+ https://github.com/p4lang/p4c/issues/1936 Odd behavior with same-named actions
++ https://github.com/p4lang/p4c/issues/1936 Odd behavior with same-named actions (I have since closed this issue, but included its test programs in this directory.  It appears to me this issue is fixed now.)
++ https://github.com/p4lang/p4c/issues/1949 Compiler silently allows duplicate name annotations
 + https://github.com/p4lang/p4c/issues/2716 Is this the intended effect of @name annotations when generating P4Info files?
 + https://github.com/p4lang/p4c/issues/2749 Control-plane name clash introduced by LocalizeAllActions and RemoveActionParameters
 + https://github.com/p4lang/p4c/issues/2755 Incorrect P4Info generation when different actions have same name annotation
@@ -79,6 +80,10 @@ issue 1936](https://github.com/p4lang/p4c/issues/1936).
 Similarly, actions-2-same-name.p4 has only cosmetic changes from the
 program actions-same-name2.p4 in that same ZIP file.
 
+issue-1949.p4 has only cosmetic changes from the program
+issue1949.p4.txt attached to a comment on [p4c issue
+1949](https://github.com/p4lang/p4c/issues/1949).
+
 actions-5-same-name-annot.p4 has only cosmetic changes from the
 program actions-same-name5.p4 in the ZIP file attached to [p4c issue
 2755](https://github.com/p4lang/p4c/issues/2755).
@@ -91,3 +96,43 @@ except the `@name` annotations have been deleted.
 
 Similarly for the relationship between actions-6-no-annot.p4 and
 actions-6-same-name-annot.p4.
+
+
+# One potential way to fix the root cause of some of these issues
+
+As of 2022-Jan-19 and before, p4c can, before the step where the
+P4Info file is generated, take one action in the P4 source code and
+duplicate it into two or more, both with the same string on their
+`@name` annotation.  I personally think that this is the root cause of
+the problem, and what should change in p4c to fix most or all of these
+issues.
+
+For example, if the compiler had these steps in this order, I think
+most or all of these issues should be corrected:
+
++ NO pass of the compiler before control plane API generation is
+  allowed to create new tables or actions from existing ones, except
+  via the compile-time instantiation rules in the P4 language
+  specification.  Nor is any such pass allowed to add `@name`
+  annotations to anything that the user did not write.
++ There should be some code in the compiler, either just before the
+  control plane API generation step, or it could be long before, that
+  gives an error if more than one action has the same `@name`
+  annotation (or the same table, or in general any two things that
+  need different names to identify them separately).
++ Only _after_ control plane API generation is complete, the compiler
+  is allowed to create duplicate actions from actions in the original
+  program, e.g. if the desire is to optimize them separately.  Back
+  end code that generates target-specific files or code for
+  implementing the control plane API must in such a case be able to
+  map a single action name in the P4Info file to the correct one of
+  these duplicates.  It is an exercise for the target-specific control
+  plane software to ensure this is done correctly.
+  + Making such distinctions MIGHT be easier, and/or barely possible,
+    only if such a compiler pass somehow puts some kind of unique
+    identifier on each copy it makes of such actions.
+
+Ideally, nothing in p4c should ever assume that the control plane API
+should use (table name, action name) pairs to disambiguate action
+names.  Sure, a control plane API might choose to do that, but it
+would be best if p4c did not require that.

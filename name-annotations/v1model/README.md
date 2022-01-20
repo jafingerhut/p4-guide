@@ -125,3 +125,38 @@ TODO: Compare the BMv2 JSON files of actions-6-no-annot.p4 and
 actions-6-same-name-annot.p4.  I would not be surprised if they were
 both correct, for the same reasons that the BMv2 JSON file for
 actions-5-same-name-annot.p4 is correct.
+
+
+## issue-1949.p4
+
+Exit status 1 from the following command, and the shown error message:
+```bash
+$ p4c --target bmv2 --arch v1model --p4runtime-files issue-1949.p4info.txt issue-1949.p4
+Attempt to add to json object a value for a label which already exists foo null
+```
+
+Since it seems to me that the source program is not well-defined in
+its control plane API behavior, because of two identical `@name`
+annotations on actions with different behavior, it seems better to get
+some error than none at all.
+
+However, it _does_ generate a P4Info file.  More worrisome, the
+following command gives exit status 0, no error message, and produces
+the same P4Info file as the command above, implying that nothing is
+wrong in the control plane API generation:
+```bash
+$ p4test --p4runtime-files a.p4info.txt issue-1949.p4
+```
+
+P4Info file has 2 actions with names: foo, NoAction, whereas the P4
+source code has NoAction plus two other actions that are functionally
+different from each other in their behavior, so this seems like a bug.
+
+Table t1 has one action_ref to NoAction, which is correct, plus 2
+action_refs to the same id, which seems like a bug.
+
+In my (Andy Fingerhut's) opinion, the correct behavior here is that
+the control plane API generation step of p4c should give an error that
+there are two actions with the same name, because two actions have the
+same `@name` annotation string.  No P4Info file nor binary should be
+generated.
