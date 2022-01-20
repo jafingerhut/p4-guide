@@ -64,9 +64,9 @@ As of 2022-Jan-19, that list includes:
 + https://github.com/p4lang/p4c/issues/2749 Control-plane name clash introduced by LocalizeAllActions and RemoveActionParameters
 + https://github.com/p4lang/p4c/issues/2755 Incorrect P4Info generation when different actions have same name annotation
 
-No, it is not a coincidence that I wrote this article, and created 3
-out of 4 of these issues :-)
-
+No, it is not a coincidence that I wrote this article, and created
+most of these issues.  It is something that has bothered me for a
+while, off and on over time. :-)
 
 
 # Brief notes on some of the P4 programs
