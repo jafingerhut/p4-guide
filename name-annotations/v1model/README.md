@@ -1,0 +1,82 @@
+# Results for v1model and latest p4c as of 2022-Jan-19
+
+```
+$ p4c --version
+p4c 1.2.2 (SHA: 0170f56a0 BUILD: DEBUG)
+```
+
+## actions-5-no-annot.p4
+
+P4Info file has 3 actions with expected names: a1, a2, NoAction
+
+Table t1 has 2 action_refs to actions: a1, NoAction
+
+Table t2 has 2 action_refs to actions: a2, NoAction
+
+No compile time errors or warnings.  Exit status 0.
+
+Summary: I see no surprises here.  This is not a corner case program.
+This is identical to actions-5-same-name-annot.p4, except the `@name`
+annotations have been deleted.
+
+
+## actions-5-same-name-annot.p4
+
+P4Info file has 2 actions named: apiname1, NoAction
+
+Table t1 has 2 action_refs to actions: apiname1, NoAction
+
+Table t2 has 2 action_refs to actions: apiname1 (same id as action
+apinam1 for table t1 above), NoAction
+
+No compile time errors or warnings.  Exit status 0.
+
+Summary: The source program clearly has 2 actions with functionally
+different behaviors.  It is a bug that the P4Info file only mentions
+one action other than NoAction.
+
+The BMv2 JSON file for this program is nearly identical to that for
+actions-5-no-annot.p4.  It does not cause an error when starting
+`simple_switch_grpc`.  I think this is because the BMv2 JSON file has
+its own numerical ids for each action that are independently generated
+from the P4Info file ids for each action, so even even though the two
+actions have the same name `apiname1`, they have different numeric
+ids, and tables `t1` and `t2` in the BMv2 JSON file each use the
+unique numeric id to refer to the correct action elsewhere in the
+file.
+
+
+## actions-6-no-annot.p4
+
+P4Info file has 3 actions with expected names: a1, a2, NoAction
+
+Table t1 has 2 action_refs to actions: a1 (with 2 parameters), NoAction
+
+Table t2 has 2 action_refs to actions: a2 (with 1 parameter), NoAction
+
+No compile time errors or warnings.  Exit status 0.
+
+
+## actions-6-same-name-annot.p4
+
+P4Info file has 2 actions named: apiname1 (with 2 parameters), NoAction
+
+Table t1 has 2 action_refs to actions: apiname1 (with 2 parameters), NoAction
+
+Table t2 has 2 action_refs to actions: apiname1 (with 2 parameters,
+same id as action apinam1 for table t1 above), NoAction
+
+No compile time errors or warnings.  Exit status 0.
+
+Summary: The source program clearly has 2 actions with functionally
+different behaviors.  It is a bug that the P4Info file only mentions
+one action other than NoAction.
+
+I suspect it is a semi-arbitrary implementation choice somewhere in
+p4c that it used 2 parameters for the action it calls apiname1 instead
+of 1.
+
+TODO: Compare the BMv2 JSON files of actions-6-no-annot.p4 and
+actions-6-same-name-annot.p4.  I would not be surprised if they were
+both correct, for the same reasons that the BMv2 JSON file for
+actions-5-same-name-annot.p4 is correct.
