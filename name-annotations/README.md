@@ -98,6 +98,14 @@ Similarly for the relationship between actions-6-no-annot.p4 and
 actions-6-same-name-annot.p4.
 
 
+# Behavior with at least some current P4 compilers
+
+So far I have only detailed the behavior of this code with one version
+of p4c when compiling with p4test, and/or for the BMv2 target with
+v1model architecture.  See [this README](v1model/README.md) for
+detailed analysis of the results.
+
+
 # One potential way to fix the root cause of some of these issues
 
 As of 2022-Jan-19 and before, p4c can, before the step where the
