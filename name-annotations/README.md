@@ -97,6 +97,10 @@ except the `@name` annotations have been deleted.
 Similarly for the relationship between actions-6-no-annot.p4 and
 actions-6-same-name-annot.p4.
 
+actions-7-annot-same-as-action-name.p4 is a minor variation of
+actions-5-same-name-annot.p4 that I wrote on 2022-Jan-19, and to my
+knowledge is not attached to any p4c Github issue.
+
 
 # Behavior with at least some current P4 compilers
 

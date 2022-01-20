@@ -165,3 +165,19 @@ the control plane API generation step of p4c (or an earlier step)
 should give an error that there are two actions with the same name,
 because two actions have the same `@name` annotation string.  No
 P4Info file nor binary should be generated.
+
+
+## actions-7-annot-same-as-action-name.p4 is a minor variation of
+
+P4Info file has 2 actions named: a1, NoAction
+
+Table t1 has 2 action_refs to actions: a1, NoAction
+
+Table t2 has 2 action_refs to actions: a1 (same id as action a1 for
+table t1 above), NoAction
+
+No compile time errors or warnings.  Exit status 0.
+
+Summary: The source program clearly has 2 actions with functionally
+different behaviors (plus NoAction).  It is a bug that the P4Info file
+only mentions one action other than NoAction.
