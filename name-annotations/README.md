@@ -114,12 +114,15 @@ most or all of these issues should be corrected:
   allowed to create new tables or actions from existing ones, except
   via the compile-time instantiation rules in the P4 language
   specification.  Nor is any such pass allowed to add `@name`
-  annotations to anything that the user did not write.
+  annotations that the user did not write in their original code.
 + There should be some code in the compiler, either just before the
   control plane API generation step, or it could be long before, that
   gives an error if more than one action has the same `@name`
   annotation (or the same table, or in general any two things that
   need different names to identify them separately).
+  + Because of the previous bullet item, all of these checks will be
+    done using `@name` annotations written by the developer, not ones
+    created by the compiler.
 + Only _after_ control plane API generation is complete, the compiler
   is allowed to create duplicate actions from actions in the original
   program, e.g. if the desire is to optimize them separately.  Back
@@ -132,7 +135,7 @@ most or all of these issues should be corrected:
     only if such a compiler pass somehow puts some kind of unique
     identifier on each copy it makes of such actions.
 
-Ideally, nothing in p4c should ever assume that the control plane API
-should use (table name, action name) pairs to disambiguate action
-names.  Sure, a control plane API might choose to do that, but it
-would be best if p4c did not require that.
+Nothing in p4c should assume that the control plane API will use
+(table name, action name) pairs to disambiguate action names.  A
+control plane API implementer might choose to do that, but p4c should
+not require it.
