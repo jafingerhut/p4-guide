@@ -72,22 +72,22 @@ P4Info file has 2 actions named: apiname1, NoAction
 Table t1 has 2 action_refs to actions: apiname1, NoAction
 
 Table t2 has 2 action_refs to actions: apiname1 (same id as action
-apinam1 for table t1 above), NoAction
+apiname1 for table t1 above), NoAction
 
 No compile time errors or warnings.  Exit status 0.
 
 Summary: The source program clearly has 2 actions with functionally
-different behaviors.  It is a bug that the P4Info file only mentions
-one action other than NoAction.
+different behaviors (plus NoAction).  It is a bug that the P4Info file
+only mentions one action other than NoAction.
 
 The BMv2 JSON file for this program is nearly identical to that for
 actions-5-no-annot.p4.  It does not cause an error when starting
 `simple_switch_grpc`.  I think this is because the BMv2 JSON file has
 its own numerical ids for each action that are independently generated
 from the P4Info file ids for each action, so even even though the two
-actions have the same name `apiname1`, they have different numeric
-ids, and tables `t1` and `t2` in the BMv2 JSON file each use the
-unique numeric id to refer to the correct action elsewhere in the
+actions have the same name `apiname1`, they have different "BMv2 JSON
+numeric ids", and tables `t1` and `t2` in the BMv2 JSON file each use
+that unique numeric id to refer to the correct action elsewhere in the
 file.
 
 
@@ -101,6 +101,10 @@ Table t2 has 2 action_refs to actions: a2 (with 1 parameter), NoAction
 
 No compile time errors or warnings.  Exit status 0.
 
+Summary: I see no surprises here.  This is not a corner case program.
+This is identical to actions-6-same-name-annot.p4, except the `@name`
+annotations have been deleted.
+
 
 ## actions-6-same-name-annot.p4
 
@@ -109,13 +113,13 @@ P4Info file has 2 actions named: apiname1 (with 2 parameters), NoAction
 Table t1 has 2 action_refs to actions: apiname1 (with 2 parameters), NoAction
 
 Table t2 has 2 action_refs to actions: apiname1 (with 2 parameters,
-same id as action apinam1 for table t1 above), NoAction
+same id as action apiname1 for table t1 above), NoAction
 
 No compile time errors or warnings.  Exit status 0.
 
 Summary: The source program clearly has 2 actions with functionally
-different behaviors.  It is a bug that the P4Info file only mentions
-one action other than NoAction.
+different behaviors (plus NoAction).  It is a bug that the P4Info file
+only mentions one action other than NoAction.
 
 I suspect it is a semi-arbitrary implementation choice somewhere in
 p4c that it used 2 parameters for the action it calls apiname1 instead
@@ -129,7 +133,8 @@ actions-5-same-name-annot.p4 is correct.
 
 ## issue-1949.p4
 
-Exit status 1 from the following command, and the shown error message:
+Exit status 1 from the following command, and an error message as
+shown below:
 ```bash
 $ p4c --target bmv2 --arch v1model --p4runtime-files issue-1949.p4info.txt issue-1949.p4
 Attempt to add to json object a value for a label which already exists foo null
@@ -137,13 +142,13 @@ Attempt to add to json object a value for a label which already exists foo null
 
 Since it seems to me that the source program is not well-defined in
 its control plane API behavior, because of two identical `@name`
-annotations on actions with different behavior, it seems better to get
-some error than none at all.
+annotations on two actions, it seems better to get some error, rather
+than no error.
 
 However, it _does_ generate a P4Info file.  More worrisome, the
 following command gives exit status 0, no error message, and produces
-the same P4Info file as the command above, implying that nothing is
-wrong in the control plane API generation:
+the same P4Info file as the command above, implying (I believe
+wrongly) that nothing is wrong in the control plane API generation:
 ```bash
 $ p4test --p4runtime-files a.p4info.txt issue-1949.p4
 ```
@@ -156,7 +161,7 @@ Table t1 has one action_ref to NoAction, which is correct, plus 2
 action_refs to the same id, which seems like a bug.
 
 In my (Andy Fingerhut's) opinion, the correct behavior here is that
-the control plane API generation step of p4c should give an error that
-there are two actions with the same name, because two actions have the
-same `@name` annotation string.  No P4Info file nor binary should be
-generated.
+the control plane API generation step of p4c (or an earlier step)
+should give an error that there are two actions with the same name,
+because two actions have the same `@name` annotation string.  No
+P4Info file nor binary should be generated.
