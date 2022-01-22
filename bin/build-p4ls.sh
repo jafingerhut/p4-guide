@@ -5,6 +5,10 @@
 # testing I started from a system that had a few packages installed
 # already before my testing began.
 
+# Note: I have not successfully _used_ the resulting binary, named
+# p4lsd, with Emacs or any other text editor or IDE yet.  I am not
+# sure how to do so yet.
+
 set -x
 
 sudo apt-get install \
