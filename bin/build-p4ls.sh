@@ -11,12 +11,22 @@
 
 set -x
 
+# I tried this version of packages installed on an Ubuntu 18.04 system,
+# but there were multiple errors while attempting to compile the p4ls code.
+# I do not know how to successfully compile this code on an Ubuntu 18.04
+# system.
+
+# Failed attempt for Ubuntu 18.04 systems
+#BOOST_VERSION=1.65
+# For Ubuntu 20.04 systems
+BOOST_VERSION=1.71
+
 sudo apt-get install \
     cmake \
     g++ \
-    libboost-iostreams1.71-dev \
-    libboost-log1.71-dev \
-    libboost-wave1.71-dev \
+    libboost-iostreams${BOOST_VERSION}-dev \
+    libboost-log${BOOST_VERSION}-dev \
+    libboost-wave${BOOST_VERSION}-dev \
     ninja-build \
     pkg-config \
     rapidjson-dev
