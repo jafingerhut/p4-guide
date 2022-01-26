@@ -215,11 +215,11 @@ control ingressImpl(inout headers_t hdr,
                     hdr.packet_out.setInvalid();
                 }
                 default: {
-                    hdr.packet_out.setInvalid();
                     send_to_controller_with_details(
                         PuntReason_t.UNRECOGNIZED_OPCODE, hdr.packet_out.opcode,
                         hdr.packet_out.operand0, hdr.packet_out.operand1,
                         hdr.packet_out.operand2, hdr.packet_out.operand3);
+                    hdr.packet_out.setInvalid();
                 }
             }
         } else if (hdr.ipv4.isValid()) {
