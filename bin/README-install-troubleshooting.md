@@ -239,3 +239,26 @@ Things I did that helped this process go smoothly:
   + [Ubuntu Desktop 16.04.7](http://releases.ubuntu.com/16.04/ubuntu-16.04.7-desktop-amd64.iso) for the amd64 architecture
 + My machine had 2 GBytes of RAM available.  Less than 2 Gbytes will
   almost certainly not be enough.
+
+
+## Version of P4 tools installed in Release VM images
+
+The version of the P4 tools compiled and included with the
+"Development" VM images is always the latest version of the source
+code available for that project on Github as of the date of the image,
+for these projects:
+
++ p4c https://github.com/p4lang/p4c
++ behavioral-model https://github.com/p4lang/behavioral-model
++ PI https://github.com/p4lang/PI
++ ptf https://github.com/p4lang/ptf
+
+The version of the P4 tools installed with the "Release" VM images is
+the latest version of the Ubuntu 20.04 package published as of the
+date of the release image, which can be an older version of the source
+code, since the Ubuntu 20.04 packages do not have new versions
+published as often as commits are made to the repositories above.
+
+| Date published | Operating system | p4c version | behavioral-model version |
+| -------------- | ---------------- | ----------- | ------------------------ |
+| 2022-Feb-03 | Ubuntu 20.04 | SHA: b28fbbb 2021-Nov-23 | SHA: 2de095c7 This is not the SHA of any behavioral-model commit SHA in the main branch of its source repository |
