@@ -1,8 +1,8 @@
 Found distributor 'Ubuntu' release '20.04'.  Continuing with installation.
 Minimum recommended memory to run this script: 1920 MBytes
-Memory on this system from /proc/meminfo:      1980 MBytes -> enough
+Memory on this system from /proc/meminfo:      1978 MBytes -> enough
 Minimum free disk space to run this script:    2560 MBytes
-Free disk space on this system from df output: 48863 MBytes -> enough
+Free disk space on this system from df output: 48865 MBytes -> enough
 Found directory containing patches: /home/andy/p4-guide/bin/patches
 Passed all sanity checks
 + set +x
@@ -29,17 +29,17 @@ took about 3 minutes.
 ------------------------------------------------------------
 Time and disk space used before installation begins:
 + date
-Sat 25 Dec 2021 08:52:02 AM PST
+Wed 23 Feb 2022 07:31:33 PM PST
 + df -h .
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda5        59G  7.7G   48G  14% /
 + df -BM .
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda5         59713M 7788M    48863M  14% /
+/dev/sda5         59713M 7787M    48865M  14% /
 + lsb_release -a
 No LSB modules are available.
 Distributor ID:	Ubuntu
-Description:	Ubuntu 20.04.3 LTS
+Description:	Ubuntu 20.04.4 LTS
 Release:	20.04
 Codename:	focal
 + python -V
@@ -66,7 +66,7 @@ No such command in PATH: pip2
 No such command in PATH: pip3
 + sudo apt-get install -qq -y --no-install-recommends --fix-missing curl git wget
 Selecting previously unselected package libcurl4:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 131454 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 122240 files and directories currently installed.)
 Preparing to unpack .../libcurl4_7.68.0-1ubuntu2.7_amd64.deb ...
 Unpacking libcurl4:amd64 (7.68.0-1ubuntu2.7) ...
 Selecting previously unselected package curl.
@@ -88,7 +88,7 @@ OK
 + sudo apt-get update -qq
 + sudo apt-get install -qq -y --no-install-recommends --fix-missing iproute2 net-tools python3 python3-pip tcpdump unzip vim xterm p4lang-p4c p4lang-bmv2 p4lang-pi
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 131467 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 122253 files and directories currently installed.)
 Preparing to unpack .../000-libsigsegv2_2.12-2_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.12-2) ...
 Selecting previously unselected package m4.
@@ -332,8 +332,8 @@ Selecting previously unselected package libhwloc15:amd64.
 Preparing to unpack .../080-libhwloc15_2.1.0+dfsg-4_amd64.deb ...
 Unpacking libhwloc15:amd64 (2.1.0+dfsg-4) ...
 Selecting previously unselected package libxnvctrl0:amd64.
-Preparing to unpack .../081-libxnvctrl0_470.57.01-0ubuntu0.20.04.2_amd64.deb ...
-Unpacking libxnvctrl0:amd64 (470.57.01-0ubuntu0.20.04.2) ...
+Preparing to unpack .../081-libxnvctrl0_470.57.01-0ubuntu0.20.04.3_amd64.deb ...
+Unpacking libxnvctrl0:amd64 (470.57.01-0ubuntu0.20.04.3) ...
 Selecting previously unselected package ocl-icd-libopencl1:amd64.
 Preparing to unpack .../082-ocl-icd-libopencl1_2.2.11-1ubuntu1_amd64.deb ...
 Unpacking ocl-icd-libopencl1:amd64 (2.2.11-1ubuntu1) ...
@@ -473,8 +473,8 @@ Selecting previously unselected package libboost-program-options-dev:amd64.
 Preparing to unpack .../127-libboost-program-options-dev_1.71.0.0ubuntu2_amd64.deb ...
 Unpacking libboost-program-options-dev:amd64 (1.71.0.0ubuntu2) ...
 Selecting previously unselected package libexpat1-dev:amd64.
-Preparing to unpack .../128-libexpat1-dev_2.2.9-1build1_amd64.deb ...
-Unpacking libexpat1-dev:amd64 (2.2.9-1build1) ...
+Preparing to unpack .../128-libexpat1-dev_2.2.9-1ubuntu0.2_amd64.deb ...
+Unpacking libexpat1-dev:amd64 (2.2.9-1ubuntu0.2) ...
 Selecting previously unselected package libpython3.8-dev:amd64.
 Preparing to unpack .../129-libpython3.8-dev_3.8.10-0ubuntu1~20.04.2_amd64.deb ...
 Unpacking libpython3.8-dev:amd64 (3.8.10-0ubuntu1~20.04.2) ...
@@ -626,14 +626,14 @@ Selecting previously unselected package libprotoc17:amd64.
 Preparing to unpack .../178-libprotoc17_3.6.1.3-2ubuntu5_amd64.deb ...
 Unpacking libprotoc17:amd64 (3.6.1.3-2ubuntu5) ...
 Selecting previously unselected package libqt5core5a:amd64.
-Preparing to unpack .../179-libqt5core5a_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../179-libqt5core5a_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libqt5dbus5:amd64.
-Preparing to unpack .../180-libqt5dbus5_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5dbus5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../180-libqt5dbus5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5dbus5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libqt5network5:amd64.
-Preparing to unpack .../181-libqt5network5_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5network5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../181-libqt5network5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5network5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libssl-dev:amd64.
 Preparing to unpack .../182-libssl-dev_1.1.1f-1ubuntu2.10_amd64.deb ...
 Unpacking libssl-dev:amd64 (1.1.1f-1ubuntu2.10) ...
@@ -683,8 +683,8 @@ Selecting previously unselected package python3-grpcio.
 Preparing to unpack .../197-python3-grpcio_1.16.1-1ubuntu5_amd64.deb ...
 Unpacking python3-grpcio (1.16.1-1ubuntu5) ...
 Selecting previously unselected package p4lang-pi.
-Preparing to unpack .../198-p4lang-pi_0.1.0-9_amd64.deb ...
-Unpacking p4lang-pi (0.1.0-9) ...
+Preparing to unpack .../198-p4lang-pi_0.1.0-10_amd64.deb ...
+Unpacking p4lang-pi (0.1.0-10) ...
 Selecting previously unselected package libnanomsg-dev.
 Preparing to unpack .../199-libnanomsg-dev_1.1.5+dfsg-1_amd64.deb ...
 Unpacking libnanomsg-dev (1.1.5+dfsg-1) ...
@@ -695,8 +695,8 @@ Selecting previously unselected package thrift-compiler.
 Preparing to unpack .../201-thrift-compiler_0.13.0-2build2_amd64.deb ...
 Unpacking thrift-compiler (0.13.0-2build2) ...
 Selecting previously unselected package p4lang-bmv2.
-Preparing to unpack .../202-p4lang-bmv2_1.14.0-6_amd64.deb ...
-Unpacking p4lang-bmv2 (1.14.0-6) ...
+Preparing to unpack .../202-p4lang-bmv2_1.14.0-7_amd64.deb ...
+Unpacking p4lang-bmv2 (1.14.0-7) ...
 Selecting previously unselected package python3-pyroute2.
 Preparing to unpack .../203-python3-pyroute2_0.5.9-0ubuntu2_all.deb ...
 Unpacking python3-pyroute2 (0.5.9-0ubuntu2) ...
@@ -713,8 +713,8 @@ Selecting previously unselected package python3-setuptools.
 Preparing to unpack .../207-python3-setuptools_45.2.0-1_all.deb ...
 Unpacking python3-setuptools (45.2.0-1) ...
 Selecting previously unselected package p4lang-p4c.
-Preparing to unpack .../208-p4lang-p4c_1.2.2-7_amd64.deb ...
-Unpacking p4lang-p4c (1.2.2-7) ...
+Preparing to unpack .../208-p4lang-p4c_1.2.2-8_amd64.deb ...
+Unpacking p4lang-p4c (1.2.2-8) ...
 Selecting previously unselected package python-pip-whl.
 Preparing to unpack .../209-python-pip-whl_20.0.2-5ubuntu1.6_all.deb ...
 Unpacking python-pip-whl (20.0.2-5ubuntu1.6) ...
@@ -725,13 +725,13 @@ Selecting previously unselected package python3-pip.
 Preparing to unpack .../211-python3-pip_20.0.2-5ubuntu1.6_all.deb ...
 Unpacking python3-pip (20.0.2-5ubuntu1.6) ...
 Selecting previously unselected package vim-runtime.
-Preparing to unpack .../212-vim-runtime_2%3a8.1.2269-1ubuntu5.4_all.deb ...
+Preparing to unpack .../212-vim-runtime_2%3a8.1.2269-1ubuntu5.7_all.deb ...
 Adding 'diversion of /usr/share/vim/vim81/doc/help.txt to /usr/share/vim/vim81/doc/help.txt.vim-tiny by vim-runtime'
 Adding 'diversion of /usr/share/vim/vim81/doc/tags to /usr/share/vim/vim81/doc/tags.vim-tiny by vim-runtime'
-Unpacking vim-runtime (2:8.1.2269-1ubuntu5.4) ...
+Unpacking vim-runtime (2:8.1.2269-1ubuntu5.7) ...
 Selecting previously unselected package vim.
-Preparing to unpack .../213-vim_2%3a8.1.2269-1ubuntu5.4_amd64.deb ...
-Unpacking vim (2:8.1.2269-1ubuntu5.4) ...
+Preparing to unpack .../213-vim_2%3a8.1.2269-1ubuntu5.7_amd64.deb ...
+Unpacking vim (2:8.1.2269-1ubuntu5.7) ...
 Selecting previously unselected package xterm.
 Preparing to unpack .../214-xterm_353-1ubuntu1.20.04.2_amd64.deb ...
 Unpacking xterm (353-1ubuntu1.20.04.2) ...
@@ -768,7 +768,7 @@ Setting up libboost-date-time1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up libpcre2-16-0:amd64 (10.34-7) ...
 Setting up libboost-container-dev:amd64 (1.71.0.0ubuntu2) ...
 Setting up libnuma-dev:amd64 (2.0.12-1) ...
-Setting up libxnvctrl0:amd64 (470.57.01-0ubuntu0.20.04.2) ...
+Setting up libxnvctrl0:amd64 (470.57.01-0ubuntu0.20.04.3) ...
 Setting up libboost-numpy1.71.0 (1.71.0-6ubuntu6) ...
 Setting up libllvm10:amd64 (1:10.0.0-4ubuntu1) ...
 Setting up libgrpc6:amd64 (1.16.1-1ubuntu5) ...
@@ -777,7 +777,7 @@ Setting up autotools-dev (20180224.1) ...
 Setting up libgmpxx4ldbl:amd64 (2:6.2.0+dfsg-4) ...
 Setting up libpfm4:amd64 (4.10.1+git20-g7700f49-2) ...
 Setting up libboost-math1.71.0:amd64 (1.71.0-6ubuntu6) ...
-Setting up libexpat1-dev:amd64 (2.2.9-1build1) ...
+Setting up libexpat1-dev:amd64 (2.2.9-1ubuntu0.2) ...
 Setting up protobuf-compiler-grpc (1.16.1-1ubuntu5) ...
 Setting up libpython3.8-dev:amd64 (3.8.10-0ubuntu1~20.04.2) ...
 Setting up libboost-atomic1.71.0:amd64 (1.71.0-6ubuntu6) ...
@@ -796,7 +796,7 @@ Setting up libboost-regex1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up libfl2:amd64 (2.6.4-6.2) ...
 Setting up thrift-compiler (0.13.0-2build2) ...
 Setting up libboost-math1.71-dev:amd64 (1.71.0-6ubuntu6) ...
-Setting up libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Setting up libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Setting up libobjc-9-dev:amd64 (9.3.0-17ubuntu1~20.04) ...
 Setting up libgfortran5:amd64 (10.3.0-1ubuntu1~20.04) ...
 Setting up libmpx2:amd64 (8.4.0-3ubuntu2) ...
@@ -806,7 +806,7 @@ Setting up python3-scapy (2.4.3-4) ...
 Setting up libboost-timer1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up libnl-3-dev:amd64 (3.4.0-1) ...
 Setting up ocl-icd-libopencl1:amd64 (2.2.11-1ubuntu1) ...
-Setting up libqt5dbus5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Setting up libqt5dbus5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Setting up libboost-test1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up libnanomsg-dev (1.1.5+dfsg-1) ...
 Setting up libpsm2-2 (11.2.86-1) ...
@@ -826,7 +826,7 @@ Setting up libpsm-infinipath1 (3.3+20.604758e7-6) ...
 update-alternatives: using /usr/lib/libpsm1/libpsm_infinipath.so.1.16 to provide /usr/lib/x86_64-linux-gnu/libpsm_infinipath.so.1 (libpsm_infinipath.so.1) in auto mode
 Setting up libboost-graph1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up cpp-8 (8.4.0-3ubuntu2) ...
-Setting up vim-runtime (2:8.1.2269-1ubuntu5.4) ...
+Setting up vim-runtime (2:8.1.2269-1ubuntu5.7) ...
 Setting up libbpf0:amd64 (1:0.5.0-1) ...
 Setting up libgc-dev:amd64 (1:7.6.4-0.4ubuntu1) ...
 Setting up libboost-stacktrace1.71-dev:amd64 (1.71.0-6ubuntu6) ...
@@ -842,7 +842,7 @@ Setting up librdmacm1:amd64 (28.0-1ubuntu1) ...
 Setting up libboost-chrono1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libevent-extra-2.1-7:amd64 (2.1.11-stable-1) ...
 Setting up libboost-exception1.71-dev:amd64 (1.71.0-6ubuntu6) ...
-Setting up vim (2:8.1.2269-1ubuntu5.4) ...
+Setting up vim (2:8.1.2269-1ubuntu5.7) ...
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vim (vim) in auto mode
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vimdiff (vimdiff) in auto mode
 update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rvim (rvim) in auto mode
@@ -866,7 +866,7 @@ Setting up libhwloc-plugins:amd64 (2.1.0+dfsg-4) ...
 Setting up libclang-cpp10 (1:10.0.0-4ubuntu1) ...
 Setting up llvm-10-runtime (1:10.0.0-4ubuntu1) ...
 Setting up libgrpc-dev:amd64 (1.16.1-1ubuntu5) ...
-Setting up libqt5network5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Setting up libqt5network5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Setting up libboost-system1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libprotobuf-dev:amd64 (3.6.1.3-2ubuntu5) ...
 Setting up libboost-random1.71-dev:amd64 (1.71.0-6ubuntu6) ...
@@ -950,13 +950,13 @@ Setting up mpi-default-bin (1.13) ...
 Setting up libboost-locale-dev:amd64 (1.71.0.0ubuntu2) ...
 Setting up libboost-python-dev (1.71.0.0ubuntu2) ...
 Setting up libboost-type-erasure-dev:amd64 (1.71.0.0ubuntu2) ...
-Setting up p4lang-pi (0.1.0-9) ...
+Setting up p4lang-pi (0.1.0-10) ...
 Setting up clang (1:10.0-50~exp1) ...
 Setting up libboost-graph-parallel1.71-dev (1.71.0-6ubuntu6) ...
 Setting up libopenmpi-dev:amd64 (4.0.3-0ubuntu1) ...
 update-alternatives: using /usr/lib/x86_64-linux-gnu/openmpi/include to provide /usr/include/x86_64-linux-gnu/mpi (mpi-x86_64-linux-gnu) in auto mode
 Setting up libboost-mpi-python1.71.0 (1.71.0-6ubuntu6) ...
-Setting up p4lang-bmv2 (1.14.0-6) ...
+Setting up p4lang-bmv2 (1.14.0-7) ...
 Setting up libboost-graph-parallel-dev (1.71.0.0ubuntu2) ...
 Setting up mpi-default-dev (1.13) ...
 Setting up libboost-mpi1.71-dev (1.71.0-6ubuntu6) ...
@@ -964,12 +964,12 @@ Setting up libboost-mpi-python1.71-dev (1.71.0-6ubuntu6) ...
 Setting up libboost-mpi-python-dev (1.71.0.0ubuntu2) ...
 Setting up libboost-mpi-dev (1.71.0.0ubuntu2) ...
 Setting up libboost-all-dev (1.71.0.0ubuntu2) ...
-Setting up p4lang-p4c (1.2.2-7) ...
+Setting up p4lang-p4c (1.2.2-8) ...
 Processing triggers for mime-support (3.64ubuntu1) ...
 Processing triggers for hicolor-icon-theme (0.17-2) ...
 Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
 Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
-Processing triggers for systemd (245.4-4ubuntu3.13) ...
+Processing triggers for systemd (245.4-4ubuntu3.15) ...
 Processing triggers for man-db (2.9.1-1) ...
 Processing triggers for install-info (6.7.0.dfsg.2-5) ...
 Processing triggers for desktop-file-utils (0.24-1ubuntu3) ...
@@ -1026,7 +1026,7 @@ pymacaroons            0.13.0
 PyNaCl                 1.3.0               
 pyRFC3339              1.1                 
 pyroute2               0.5.9               
-python-apt             2.0.0+ubuntu0.20.4.6
+python-apt             2.0.0+ubuntu0.20.4.7
 python-dateutil        2.7.3               
 python-debian          0.1.36ubuntu1       
 pytz                   2019.3              
@@ -1042,7 +1042,7 @@ simplejson             3.16.0
 six                    1.14.0              
 systemd-python         234                 
 thrift                 0.13.0              
-ubuntu-advantage-tools 27.4                
+ubuntu-advantage-tools 27.6                
 ubuntu-drivers-common  0.0.0               
 ufw                    0.36                
 unattended-upgrades    0.1                 
@@ -1095,7 +1095,7 @@ pymacaroons            0.13.0
 PyNaCl                 1.3.0               
 pyRFC3339              1.1                 
 pyroute2               0.5.9               
-python-apt             2.0.0+ubuntu0.20.4.6
+python-apt             2.0.0+ubuntu0.20.4.7
 python-dateutil        2.7.3               
 python-debian          0.1.36ubuntu1       
 pytz                   2019.3              
@@ -1111,7 +1111,7 @@ simplejson             3.16.0
 six                    1.14.0              
 systemd-python         234                 
 thrift                 0.13.0              
-ubuntu-advantage-tools 27.4                
+ubuntu-advantage-tools 27.6                
 ubuntu-drivers-common  0.0.0               
 ufw                    0.36                
 unattended-upgrades    0.1                 
@@ -1127,17 +1127,17 @@ Collecting scapy
   Downloading scapy-2.4.5.tar.gz (1.1 MB)
 Requirement already up-to-date: ipaddr in /usr/lib/python3/dist-packages (2.2.0)
 Collecting ptf
-  Downloading ptf-0.9.1-1-py3-none-any.whl (58 kB)
+  Downloading ptf-0.9.3-0-py3-none-any.whl (60 kB)
 Collecting psutil
-  Downloading psutil-5.8.0-cp38-cp38-manylinux2010_x86_64.whl (296 kB)
+  Downloading psutil-5.9.0-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (283 kB)
 Collecting grpcio
-  Downloading grpcio-1.43.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.1 MB)
+  Downloading grpcio-1.44.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.3 MB)
 Collecting six==1.16.0
   Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
 Building wheels for collected packages: scapy
   Building wheel for scapy (setup.py): started
   Building wheel for scapy (setup.py): finished with status 'done'
-  Created wheel for scapy: filename=scapy-2.4.5-py2.py3-none-any.whl size=1261545 sha256=447acba931cfc8f15cf6c01f592f59daf1037bec21c7d53eaf061f785147a0ca
+  Created wheel for scapy: filename=scapy-2.4.5-py2.py3-none-any.whl size=1261545 sha256=bbaa31a1383ae8f9274a84078825221c2deafbf010fb83406b6d07ee5274de2a
   Stored in directory: /root/.cache/pip/wheels/51/c7/3d/6c23d4a039ee412a093156be4dbc0725946a2ec64f9b9ab61e
 Successfully built scapy
 ERROR: launchpadlib 1.10.13 requires testresources, which is not installed.
@@ -1154,7 +1154,7 @@ Installing collected packages: scapy, six, ptf, psutil, grpcio
     Found existing installation: grpcio 1.16.1
     Not uninstalling grpcio at /usr/lib/python3/dist-packages, outside environment /usr
     Can't uninstall 'grpcio'. No files were found to uninstall.
-Successfully installed grpcio-1.43.0 psutil-5.8.0 ptf-0.9.1 scapy-2.4.5 six-1.16.0
+Successfully installed grpcio-1.44.0 psutil-5.9.0 ptf-0.9.3 scapy-2.4.5 six-1.16.0
 + echo ------------------------------------------------------------
 ------------------------------------------------------------
 + echo 'Installing Mininet - not necessary to run P4 programs, but useful if'
@@ -1167,7 +1167,7 @@ repository.
 start install mininet:
 + set -x
 + date
-Sat 25 Dec 2021 08:53:40 AM PST
+Wed 23 Feb 2022 07:33:23 PM PST
 + git clone git://github.com/mininet/mininet mininet
 Cloning into 'mininet'...
 + cd mininet
@@ -1219,8 +1219,8 @@ patching file util/install.sh
 + echo 'Detected Linux distribution: Ubuntu 20.04 focal amd64'
 Detected Linux distribution: Ubuntu 20.04 focal amd64
 ++ uname -r
-+ KERNEL_NAME=5.11.0-43-generic
-+ KERNEL_HEADERS=kernel-headers-5.11.0-43-generic
++ KERNEL_NAME=5.13.0-27-generic
++ KERNEL_HEADERS=kernel-headers-5.13.0-27-generic
 + '[' Ubuntu = Raspbian ']'
 + DISTS='Ubuntu|Debian|Fedora|RedHatEnterpriseServer|SUSE LINUX'
 + egrep 'Ubuntu|Debian|Fedora|RedHatEnterpriseServer|SUSE LINUX'
@@ -1255,7 +1255,7 @@ sys.version_info(major=3, minor=8, micro=10, releaselevel='final', serial=0)
 + echo 'Detected Python (python3) version 3'
 Detected Python (python3) version 3
 + KERNEL_IMAGE_OLD=linux-image-2.6.26-33-generic
-+ DRIVERS_DIR=/lib/modules/5.11.0-43-generic/kernel/drivers/net
++ DRIVERS_DIR=/lib/modules/5.13.0-27-generic/kernel/drivers/net
 + OVS_RELEASE=1.4.0
 + OVS_PACKAGE_LOC=https://github.com/downloads/mininet/mininet
 + OVS_BUILDSUFFIX=-ignore
@@ -1307,12 +1307,12 @@ The following NEW packages will be installed:
   python3-lazy-object-proxy python3-logilab-common python3-mccabe
   python3-pycodestyle python3-tk python3-wrapt socat ssh ssh-import-id
   tk8.6-blt2.5
-0 upgraded, 23 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 23 newly installed, 0 to remove and 1 not upgraded.
 Need to get 4,161 kB of archives.
 After this operation, 21.2 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-sftp-server amd64 1:8.2p1-4ubuntu0.3 [51.5 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-server amd64 1:8.2p1-4ubuntu0.3 [377 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 ssh all 1:8.2p1-4ubuntu0.3 [5,080 B]
+Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-sftp-server amd64 1:8.2p1-4ubuntu0.4 [51.5 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-server amd64 1:8.2p1-4ubuntu0.4 [377 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 ssh all 1:8.2p1-4ubuntu0.4 [5,088 B]
 Get:4 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtcl8.6 amd64 8.6.10+dfsg-1 [902 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtk8.6 amd64 8.6.10-1 [714 kB]
 Get:6 http://us.archive.ubuntu.com/ubuntu focal/main amd64 tk8.6-blt2.5 amd64 2.5.3+dfsg-4 [572 kB]
@@ -1334,17 +1334,17 @@ Get:21 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-tk a
 Get:22 http://us.archive.ubuntu.com/ubuntu focal/main amd64 socat amd64 1.7.3.3-2 [323 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu focal/main amd64 ssh-import-id all 5.10-0ubuntu1 [10.0 kB]
 Preconfiguring packages ...
-Fetched 4,161 kB in 1s (6,858 kB/s)
+Fetched 4,161 kB in 0s (10.8 MB/s)
 Selecting previously unselected package openssh-sftp-server.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 156322 files and directories currently installed.)
-Preparing to unpack .../00-openssh-sftp-server_1%3a8.2p1-4ubuntu0.3_amd64.deb ...
-Unpacking openssh-sftp-server (1:8.2p1-4ubuntu0.3) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 147108 files and directories currently installed.)
+Preparing to unpack .../00-openssh-sftp-server_1%3a8.2p1-4ubuntu0.4_amd64.deb ...
+Unpacking openssh-sftp-server (1:8.2p1-4ubuntu0.4) ...
 Selecting previously unselected package openssh-server.
-Preparing to unpack .../01-openssh-server_1%3a8.2p1-4ubuntu0.3_amd64.deb ...
-Unpacking openssh-server (1:8.2p1-4ubuntu0.3) ...
+Preparing to unpack .../01-openssh-server_1%3a8.2p1-4ubuntu0.4_amd64.deb ...
+Unpacking openssh-server (1:8.2p1-4ubuntu0.4) ...
 Selecting previously unselected package ssh.
-Preparing to unpack .../02-ssh_1%3a8.2p1-4ubuntu0.3_all.deb ...
-Unpacking ssh (1:8.2p1-4ubuntu0.3) ...
+Preparing to unpack .../02-ssh_1%3a8.2p1-4ubuntu0.4_all.deb ...
+Unpacking ssh (1:8.2p1-4ubuntu0.4) ...
 Selecting previously unselected package libtcl8.6:amd64.
 Preparing to unpack .../03-libtcl8.6_8.6.10+dfsg-1_amd64.deb ...
 Unpacking libtcl8.6:amd64 (8.6.10+dfsg-1) ...
@@ -1405,16 +1405,16 @@ Unpacking socat (1.7.3.3-2) ...
 Selecting previously unselected package ssh-import-id.
 Preparing to unpack .../22-ssh-import-id_5.10-0ubuntu1_all.deb ...
 Unpacking ssh-import-id (5.10-0ubuntu1) ...
-Setting up openssh-sftp-server (1:8.2p1-4ubuntu0.3) ...
-Setting up openssh-server (1:8.2p1-4ubuntu0.3) ...
+Setting up openssh-sftp-server (1:8.2p1-4ubuntu0.4) ...
+Setting up openssh-server (1:8.2p1-4ubuntu0.4) ...
 
 Creating config file /etc/ssh/sshd_config with new version
 Creating SSH2 RSA key; this may take some time ...
-3072 SHA256:7GMbs38RjeRPtzCOhJWr+A9zkBP4vAQPcaSVwn6wTkM root@andy-vm (RSA)
+3072 SHA256:ELkE47O35qCfT7ObCIUbMACn+AMBjCICTJQjRFhu3pA root@andy-vm (RSA)
 Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:bO9aWuzIDl71M7zW+NrFaNvIPL/6umf5YIZ1tcfI9uc root@andy-vm (ECDSA)
+256 SHA256:TOApAXltebqDf+QDjsgVr6R5fWzpw7eFBdfcyFQp6YE root@andy-vm (ECDSA)
 Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:QOHUalFuKPQDSVrSlDDQXIMuf5yPmm5EJE5c1Iso51E root@andy-vm (ED25519)
+256 SHA256:aPtCBQtGuBWdPGu+4OCeDv33bLZbJt1at4Qw+igP0CM root@andy-vm (ED25519)
 Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
 rescue-ssh.target is a disabled or a static unit, not starting it.
@@ -1432,7 +1432,7 @@ Setting up python3-mccabe (0.6.1-3) ...
 Setting up python3-lazy-object-proxy (1.4.3-1build1) ...
 Setting up pycodestyle (2.5.0-2) ...
 Setting up ncurses-term (6.2-0ubuntu2) ...
-Setting up ssh (1:8.2p1-4ubuntu0.3) ...
+Setting up ssh (1:8.2p1-4ubuntu0.4) ...
 Setting up pep8 (1.7.1-9ubuntu1) ...
 Setting up libtk8.6:amd64 (8.6.10-1) ...
 Setting up python3-astroid (2.3.3-1) ...
@@ -1440,7 +1440,7 @@ Setting up pylint (2.4.4-2) ...
 Setting up tk8.6-blt2.5 (2.5.3+dfsg-4) ...
 Setting up blt (2.5.3+dfsg-4) ...
 Setting up python3-tk:amd64 (3.8.10-0ubuntu1~20.04) ...
-Processing triggers for systemd (245.4-4ubuntu3.13) ...
+Processing triggers for systemd (245.4-4ubuntu3.15) ...
 Processing triggers for man-db (2.9.1-1) ...
 Processing triggers for install-info (6.7.0.dfsg.2-5) ...
 Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
@@ -1455,14 +1455,14 @@ Recommended packages:
   pyflakes
 The following NEW packages will be installed:
   pyflakes3 python3-pyflakes
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 1 not upgraded.
 Need to get 51.9 kB of archives.
 After this operation, 325 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python3-pyflakes all 2.1.1-2 [48.6 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 pyflakes3 all 2.1.1-2 [3,340 B]
-Fetched 51.9 kB in 0s (308 kB/s)
+Fetched 51.9 kB in 0s (368 kB/s)
 Selecting previously unselected package python3-pyflakes.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 160071 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 150857 files and directories currently installed.)
 Preparing to unpack .../python3-pyflakes_2.1.1-2_all.deb ...
 Unpacking python3-pyflakes (2.1.1-2) ...
 Selecting previously unselected package pyflakes3.
@@ -1476,7 +1476,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 python3-pip is already the newest version (20.0.2-5ubuntu1.6).
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
 + python3 -m pip -V
 pip 20.0.2 from /usr/lib/python3/dist-packages/pip (python 3.8)
 + sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install iproute2
@@ -1484,7 +1484,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 iproute2 is already the newest version (5.5.0-1ubuntu1).
-0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
 + sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install cgroup-tools
 Reading package lists...
 Building dependency tree...
@@ -1493,14 +1493,14 @@ The following additional packages will be installed:
   libcgroup1
 The following NEW packages will be installed:
   cgroup-tools libcgroup1
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 1 not upgraded.
 Need to get 109 kB of archives.
 After this operation, 472 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libcgroup1 amd64 0.41-10 [42.9 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 cgroup-tools amd64 0.41-10 [66.2 kB]
-Fetched 109 kB in 0s (587 kB/s)
+Fetched 109 kB in 0s (711 kB/s)
 Selecting previously unselected package libcgroup1:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 160109 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 150895 files and directories currently installed.)
 Preparing to unpack .../libcgroup1_0.41-10_amd64.deb ...
 Unpacking libcgroup1:amd64 (0.41-10) ...
 Selecting previously unselected package cgroup-tools.
@@ -1531,8 +1531,8 @@ Requirement already satisfied: setuptools in /usr/lib/python3/dist-packages (fro
 Building wheels for collected packages: mininet
   Building wheel for mininet (setup.py): started
   Building wheel for mininet (setup.py): finished with status 'done'
-  Created wheel for mininet: filename=mininet-2.3.0-py3-none-any.whl size=159678 sha256=99b05360d0c1dc0f217d9ee80c85a34c5755a040d6d38250acb79a54cf55af6f
-  Stored in directory: /tmp/pip-ephem-wheel-cache-w4gemxj4/wheels/0e/1e/35/ac8f03a4b3ac332b28a82d01ce0bd3f9313ac7b9dd3a92b186
+  Created wheel for mininet: filename=mininet-2.3.0-py3-none-any.whl size=159678 sha256=c8e016a2dc8f47e0de92f6dfe75a56d29f14042a3666b194bd40e1e5ef4d2ed9
+  Stored in directory: /tmp/pip-ephem-wheel-cache-nyrzrxog/wheels/0e/1e/35/ac8f03a4b3ac332b28a82d01ce0bd3f9313ac7b9dd3a92b186
 Successfully built mininet
 Installing collected packages: mininet
 Successfully installed mininet-2.3.0
@@ -1568,21 +1568,21 @@ The following NEW packages will be installed:
   libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark13 libwiretap10
   libwsutil11 libxcb-xinerama0 libxcb-xinput0 qt5-gtk-platformtheme tshark
   wireshark wireshark-common wireshark-qt
-0 upgraded, 25 newly installed, 0 to remove and 0 not upgraded.
+0 upgraded, 25 newly installed, 0 to remove and 1 not upgraded.
 Need to get 28.4 MB of archives.
 After this operation, 141 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libxcb-xinerama0 amd64 1.14-2 [5,260 B]
 Get:2 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libxcb-xinput0 amd64 1.14-2 [29.3 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5gui5 amd64 5.12.8+dfsg-0ubuntu1 [2,971 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5widgets5 amd64 5.12.8+dfsg-0ubuntu1 [2,293 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 libqt5gui5 amd64 5.12.8+dfsg-0ubuntu2.1 [2,971 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 libqt5widgets5 amd64 5.12.8+dfsg-0ubuntu2.1 [2,295 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5svg5 amd64 5.12.8-0ubuntu1 [131 kB]
 Get:6 http://us.archive.ubuntu.com/ubuntu focal/main amd64 liblua5.2-0 amd64 5.2.4-1.1build3 [106 kB]
 Get:7 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5multimedia5 amd64 5.12.8-0ubuntu1 [283 kB]
-Get:8 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5opengl5 amd64 5.12.8+dfsg-0ubuntu1 [136 kB]
+Get:8 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 libqt5opengl5 amd64 5.12.8+dfsg-0ubuntu2.1 [136 kB]
 Get:9 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5multimediawidgets5 amd64 5.12.8-0ubuntu1 [36.8 kB]
 Get:10 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5multimediagsttools5 amd64 5.12.8-0ubuntu1 [104 kB]
 Get:11 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5multimedia5-plugins amd64 5.12.8-0ubuntu1 [197 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libqt5printsupport5 amd64 5.12.8+dfsg-0ubuntu1 [193 kB]
+Get:12 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 libqt5printsupport5 amd64 5.12.8+dfsg-0ubuntu2.1 [193 kB]
 Get:13 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libsmi2ldbl amd64 0.4.8+dfsg2-16 [100 kB]
 Get:14 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libspandsp2 amd64 0.0.6+dfsg-2 [272 kB]
 Get:15 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 libssh-gcrypt-4 amd64 0.9.3-2ubuntu2.2 [202 kB]
@@ -1591,26 +1591,26 @@ Get:17 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libsnappy1v5 amd64 1
 Get:18 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libwsutil11 amd64 3.2.3-1 [61.1 kB]
 Get:19 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libwiretap10 amd64 3.2.3-1 [199 kB]
 Get:20 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libwireshark13 amd64 3.2.3-1 [15.2 MB]
-Get:21 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 qt5-gtk-platformtheme amd64 5.12.8+dfsg-0ubuntu1 [124 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 qt5-gtk-platformtheme amd64 5.12.8+dfsg-0ubuntu2.1 [124 kB]
 Get:22 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 wireshark-common amd64 3.2.3-1 [441 kB]
 Get:23 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 tshark amd64 3.2.3-1 [137 kB]
 Get:24 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 wireshark-qt amd64 3.2.3-1 [3,774 kB]
 Get:25 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 wireshark amd64 3.2.3-1 [5,088 B]
 Preconfiguring packages ...
-Fetched 28.4 MB in 1s (20.6 MB/s)
+Fetched 28.4 MB in 1s (24.4 MB/s)
 Selecting previously unselected package libxcb-xinerama0:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 160158 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 150944 files and directories currently installed.)
 Preparing to unpack .../00-libxcb-xinerama0_1.14-2_amd64.deb ...
 Unpacking libxcb-xinerama0:amd64 (1.14-2) ...
 Selecting previously unselected package libxcb-xinput0:amd64.
 Preparing to unpack .../01-libxcb-xinput0_1.14-2_amd64.deb ...
 Unpacking libxcb-xinput0:amd64 (1.14-2) ...
 Selecting previously unselected package libqt5gui5:amd64.
-Preparing to unpack .../02-libqt5gui5_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5gui5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../02-libqt5gui5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5gui5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libqt5widgets5:amd64.
-Preparing to unpack .../03-libqt5widgets5_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5widgets5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../03-libqt5widgets5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5widgets5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libqt5svg5:amd64.
 Preparing to unpack .../04-libqt5svg5_5.12.8-0ubuntu1_amd64.deb ...
 Unpacking libqt5svg5:amd64 (5.12.8-0ubuntu1) ...
@@ -1621,8 +1621,8 @@ Selecting previously unselected package libqt5multimedia5:amd64.
 Preparing to unpack .../06-libqt5multimedia5_5.12.8-0ubuntu1_amd64.deb ...
 Unpacking libqt5multimedia5:amd64 (5.12.8-0ubuntu1) ...
 Selecting previously unselected package libqt5opengl5:amd64.
-Preparing to unpack .../07-libqt5opengl5_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5opengl5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../07-libqt5opengl5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5opengl5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libqt5multimediawidgets5:amd64.
 Preparing to unpack .../08-libqt5multimediawidgets5_5.12.8-0ubuntu1_amd64.deb ...
 Unpacking libqt5multimediawidgets5:amd64 (5.12.8-0ubuntu1) ...
@@ -1633,8 +1633,8 @@ Selecting previously unselected package libqt5multimedia5-plugins:amd64.
 Preparing to unpack .../10-libqt5multimedia5-plugins_5.12.8-0ubuntu1_amd64.deb ...
 Unpacking libqt5multimedia5-plugins:amd64 (5.12.8-0ubuntu1) ...
 Selecting previously unselected package libqt5printsupport5:amd64.
-Preparing to unpack .../11-libqt5printsupport5_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking libqt5printsupport5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../11-libqt5printsupport5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5printsupport5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package libsmi2ldbl:amd64.
 Preparing to unpack .../12-libsmi2ldbl_0.4.8+dfsg2-16_amd64.deb ...
 Unpacking libsmi2ldbl:amd64 (0.4.8+dfsg2-16) ...
@@ -1660,8 +1660,8 @@ Selecting previously unselected package libwireshark13:amd64.
 Preparing to unpack .../19-libwireshark13_3.2.3-1_amd64.deb ...
 Unpacking libwireshark13:amd64 (3.2.3-1) ...
 Selecting previously unselected package qt5-gtk-platformtheme:amd64.
-Preparing to unpack .../20-qt5-gtk-platformtheme_5.12.8+dfsg-0ubuntu1_amd64.deb ...
-Unpacking qt5-gtk-platformtheme:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Preparing to unpack .../20-qt5-gtk-platformtheme_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking qt5-gtk-platformtheme:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Selecting previously unselected package wireshark-common.
 Preparing to unpack .../21-wireshark-common_3.2.3-1_amd64.deb ...
 Unpacking wireshark-common (3.2.3-1) ...
@@ -1685,12 +1685,12 @@ Setting up libxcb-xinerama0:amd64 (1.14-2) ...
 Setting up libwireshark-data (3.2.3-1) ...
 Setting up liblua5.2-0:amd64 (5.2.4-1.1build3) ...
 Setting up libwireshark13:amd64 (3.2.3-1) ...
-Setting up libqt5gui5:amd64 (5.12.8+dfsg-0ubuntu1) ...
-Setting up libqt5widgets5:amd64 (5.12.8+dfsg-0ubuntu1) ...
-Setting up qt5-gtk-platformtheme:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Setting up libqt5gui5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libqt5widgets5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up qt5-gtk-platformtheme:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Setting up libqt5multimedia5:amd64 (5.12.8-0ubuntu1) ...
-Setting up libqt5printsupport5:amd64 (5.12.8+dfsg-0ubuntu1) ...
-Setting up libqt5opengl5:amd64 (5.12.8+dfsg-0ubuntu1) ...
+Setting up libqt5printsupport5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libqt5opengl5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
 Setting up wireshark-common (3.2.3-1) ...
 Setting up libqt5svg5:amd64 (5.12.8-0ubuntu1) ...
 Setting up tshark (3.2.3-1) ...
@@ -1730,14 +1730,14 @@ Wireshark version 3.2.3 >= 1.12 - returning
 + set +x
 end install mininet:
 + date
-Sat 25 Dec 2021 08:54:21 AM PST
+Wed 23 Feb 2022 07:34:04 PM PST
 + cd /home/andy
 + sort
 + find /usr/lib /usr/local /home/andy/.local
 + lsb_release -a
 No LSB modules are available.
 Distributor ID:	Ubuntu
-Description:	Ubuntu 20.04.3 LTS
+Description:	Ubuntu 20.04.4 LTS
 Release:	20.04
 Codename:	focal
 + python -V
@@ -1777,7 +1777,7 @@ defer                  1.0.6
 distro                 1.4.0               
 distro-info            0.23ubuntu1         
 entrypoints            0.3                 
-grpcio                 1.43.0              
+grpcio                 1.44.0              
 httplib2               0.14.0              
 idna                   2.8                 
 ipaddr                 2.2.0               
@@ -1801,8 +1801,8 @@ Pillow                 7.0.0
 pip                    20.0.2              
 ply                    3.11                
 protobuf               3.6.1               
-psutil                 5.8.0               
-ptf                    0.9.1               
+psutil                 5.9.0               
+ptf                    0.9.3               
 pycairo                1.16.2              
 pycodestyle            2.5.0               
 pycups                 1.9.73              
@@ -1814,7 +1814,7 @@ pymacaroons            0.13.0
 PyNaCl                 1.3.0               
 pyRFC3339              1.1                 
 pyroute2               0.5.9               
-python-apt             2.0.0+ubuntu0.20.4.6
+python-apt             2.0.0+ubuntu0.20.4.7
 python-dateutil        2.7.3               
 python-debian          0.1.36ubuntu1       
 pytz                   2019.3              
@@ -1831,7 +1831,7 @@ six                    1.16.0
 ssh-import-id          5.10                
 systemd-python         234                 
 thrift                 0.13.0              
-ubuntu-advantage-tools 27.4                
+ubuntu-advantage-tools 27.6                
 ubuntu-drivers-common  0.0.0               
 ufw                    0.36                
 unattended-upgrades    0.1                 
@@ -1859,7 +1859,7 @@ defer                  1.0.6
 distro                 1.4.0               
 distro-info            0.23ubuntu1         
 entrypoints            0.3                 
-grpcio                 1.43.0              
+grpcio                 1.44.0              
 httplib2               0.14.0              
 idna                   2.8                 
 ipaddr                 2.2.0               
@@ -1883,8 +1883,8 @@ Pillow                 7.0.0
 pip                    20.0.2              
 ply                    3.11                
 protobuf               3.6.1               
-psutil                 5.8.0               
-ptf                    0.9.1               
+psutil                 5.9.0               
+ptf                    0.9.3               
 pycairo                1.16.2              
 pycodestyle            2.5.0               
 pycups                 1.9.73              
@@ -1896,7 +1896,7 @@ pymacaroons            0.13.0
 PyNaCl                 1.3.0               
 pyRFC3339              1.1                 
 pyroute2               0.5.9               
-python-apt             2.0.0+ubuntu0.20.4.6
+python-apt             2.0.0+ubuntu0.20.4.7
 python-dateutil        2.7.3               
 python-debian          0.1.36ubuntu1       
 pytz                   2019.3              
@@ -1913,7 +1913,7 @@ six                    1.16.0
 ssh-import-id          5.10                
 systemd-python         234                 
 thrift                 0.13.0              
-ubuntu-advantage-tools 27.4                
+ubuntu-advantage-tools 27.6                
 ubuntu-drivers-common  0.0.0               
 ufw                    0.36                
 unattended-upgrades    0.1                 
@@ -1926,13 +1926,13 @@ xkit                   0.0.0
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
 + date
-Sat 25 Dec 2021 08:54:25 AM PST
+Wed 23 Feb 2022 07:34:08 PM PST
 + df -h .
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda5        59G  9.4G   46G  17% /
 + df -BM .
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda5         59713M 9558M    47094M  17% /
+/dev/sda5         59713M 9605M    47046M  17% /
 + cd /home/andy
 + DETS=install-details
 + mkdir -p install-details
