@@ -31,6 +31,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
+| 2022-Mar-01 | Ubuntu 20.04 | [4.5 GByte VM image](https://drive.google.com/file/d/1YctrOCzNOUktbrwkTESHZ16dXn5XtvZl/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/19kJDLUghKM74HnEqOueHU91T0uB3MWMj/view?usp=sharing) | [README](https://drive.google.com/file/d/1sBEExj3ZMtctOTl4wCq3x7xPKU4Q7IWE/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
 | 2022-Feb-03 | Ubuntu 20.04 | [4.5 GByte VM image](https://drive.google.com/file/d/1Zaf_T6g5DwK6QSLmkGEIrZvfxbo0tivI/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/165n4h0_eYyos9PsKMcI8Gx6HIaxJpwSH/view?usp=sharing) | [README](https://drive.google.com/file/d/11DmNzFhRHVlga3_yUmNe0oJsjxAWghpI/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
 | 2022-Jan-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1hFGucuUfpK8bbd0NZmP7s2cilDdDITha/view?usp=sharing) | [2 GBytes VM image](https://drive.google.com/file/d/1_E3V3DEpY2ES-wIWuyQ1lAJo9vK6zG_C/view?usp=sharing) | [README](https://drive.google.com/file/d/13kP8-ktfGVNmzLd_Og6ck3SjPwBLrCa8/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
 | 2021-Dec-03 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1lq6CKGAiwENP4igWOvkm1Yt1od5AN988/view?usp=sharing) | [2 GBytes VM image](https://drive.google.com/file/d/1gcfDV5euOW-95x0Xq4R6m2WdKQ49_AY7/view?usp=sharing) | [README](https://drive.google.com/file/d/1rdMOTd2v5W54H5Hhm8JYJ23vbFEfH4vD/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.26 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.26 |
@@ -119,10 +120,10 @@ See the table below if you want to make a more informed decision.
 
 | Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet |
 | ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- |
-| install-p4dev-v5.sh | 20.04        | Monthly through 2021 | yes | yes | yes |  2 GB |   3 mins | 250 MB |
-| install-p4dev-v4.sh | 20.04, 18.04 | Monthly through 2021 | yes | yes | yes | 12 GB | 100 mins |   2 GB |
+| install-p4dev-v5.sh | 20.04        | Monthly through 2022 | yes | yes | yes |  2 GB |   3 mins | 250 MB |
+| install-p4dev-v4.sh | 20.04, 18.04 | Monthly through 2022 | yes | yes | yes | 12 GB | 100 mins |   2 GB |
 | install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- |
-| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 monthly through 2021, 16.04 in 2021-Aug | yes | yes | no, Python2 | 11 GB | 100 mins |   2 GB |
+| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 monthly through 2022, 16.04 in 2021-Aug | yes | yes | no, Python2 | 11 GB | 100 mins |   2 GB |
 | install-p4dev-p4runtime.sh | 18.04, 16.04 | 2020-Mar | yes | yes | no, Python2 | 8.5 GB |  70 mins | ? |
 | install-p4dev.sh | -- | 2019-Oct |  no |  no | no, Python2 |  5 GB |  40 mins | ? |
 
