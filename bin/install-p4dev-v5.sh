@@ -238,7 +238,7 @@ echo "start install mininet:"
 set -x
 date
 
-git clone git://github.com/mininet/mininet mininet
+git clone https://github.com/mininet/mininet mininet
 cd mininet
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."

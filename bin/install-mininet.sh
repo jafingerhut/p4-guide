@@ -28,7 +28,7 @@ pip3 list || echo "No such command in PATH: pip3"
 
 find / | grep -v '^/proc' | sort > files-1-before-mininet.txt
 
-git clone git://github.com/mininet/mininet mininet
+git clone https://github.com/mininet/mininet mininet
 cd mininet
 patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch"
 cd ..

@@ -380,7 +380,7 @@ echo "repository."
 echo "start install mininet:"
 date
 
-git clone git://github.com/mininet/mininet mininet
+git clone https://github.com/mininet/mininet mininet
 sudo ./mininet/util/install.sh -nwv
 
 echo "end install mininet:"

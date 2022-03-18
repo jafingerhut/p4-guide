@@ -538,7 +538,7 @@ echo "start install mininet:"
 set -x
 date
 
-git clone git://github.com/mininet/mininet mininet
+git clone https://github.com/mininet/mininet mininet
 sudo ./mininet/util/install.sh -nwv
 
 set +x
