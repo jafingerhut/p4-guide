@@ -17,8 +17,8 @@ successful install script run".
 If your answer is (b), there are several VM images with many of the
 open source P4 development tools already installed available from
 links in this table.  Each of them comes with a user account named
-'p4' with password 'p4' intended for use in developing P4 programs.
-They also have a user account 'vagrant' (password 'vagrant').
+`p4` with password `p4` intended for use in developing P4 programs.
+They also have a user account `vagrant` (password `vagrant`).
 
 The "Development" VM images contain a copy of the source code from
 which the P4 development tools were built in the home directory of the
@@ -31,6 +31,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
+| 2022-Apr-02 | Ubuntu 20.04 | [4.5 GByte VM image](https://drive.google.com/file/d/1AnuJslM3i4jzErBuQreVhq9EYXYvta0-/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/18OS5lJeJIZ_lYssCwA7y_zVirxwTS9OT/view?usp=sharing) | [README](https://drive.google.com/file/d/18i4f6cguOnHoRnhtWzfmRCSOLFCt3Ajd/view?usp=sharing) | Yes, with macOS 11.6.5 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
 | 2022-Mar-01 | Ubuntu 20.04 | [4.5 GByte VM image](https://drive.google.com/file/d/1YctrOCzNOUktbrwkTESHZ16dXn5XtvZl/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/19kJDLUghKM74HnEqOueHU91T0uB3MWMj/view?usp=sharing) | [README](https://drive.google.com/file/d/1sBEExj3ZMtctOTl4wCq3x7xPKU4Q7IWE/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
 | 2022-Feb-03 | Ubuntu 20.04 | [4.5 GByte VM image](https://drive.google.com/file/d/1Zaf_T6g5DwK6QSLmkGEIrZvfxbo0tivI/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/165n4h0_eYyos9PsKMcI8Gx6HIaxJpwSH/view?usp=sharing) | [README](https://drive.google.com/file/d/11DmNzFhRHVlga3_yUmNe0oJsjxAWghpI/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
 | 2022-Jan-01 | Ubuntu 20.04 | [4 GByte VM image](https://drive.google.com/file/d/1hFGucuUfpK8bbd0NZmP7s2cilDdDITha/view?usp=sharing) | [2 GBytes VM image](https://drive.google.com/file/d/1_E3V3DEpY2ES-wIWuyQ1lAJo9vK6zG_C/view?usp=sharing) | [README](https://drive.google.com/file/d/13kP8-ktfGVNmzLd_Og6ck3SjPwBLrCa8/view?usp=sharing) | Yes, with macOS 10.14.6 and VirtualBox 6.1.30 | Yes, with Windows 10 Enterprise and VirtualBox 6.1.30 |
@@ -262,5 +263,5 @@ published as often as commits are made to the repositories above.
 
 | Date published | Operating system | p4c version | behavioral-model version |
 | -------------- | ---------------- | ----------- | ------------------------ |
-| 2022-Feb-03 | Ubuntu 20.04 | SHA: b28fbbb 2021-Nov-23 | SHA: 2de095c7 This is not the SHA of any behavioral-model commit SHA in the main branch of its source repository |
 | 2022-Mar-01 | Ubuntu 20.04 | SHA: a9aa5ff 2022-Feb-08 | SHA: c76a03c3 2022-Feb-08 |
+| 2022-Feb-03 | Ubuntu 20.04 | SHA: b28fbbb 2021-Nov-23 | SHA: 2de095c7 This is not the SHA of any behavioral-model commit SHA in the main branch of its source repository |
