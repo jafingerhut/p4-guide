@@ -652,7 +652,7 @@ date
 git clone https://github.com/mininet/mininet mininet
 cd mininet
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
 sudo ./mininet/util/install.sh -nw
 
