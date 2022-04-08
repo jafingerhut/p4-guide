@@ -582,18 +582,7 @@ git log -n 1
 # Remove 'CXXFLAGS ...' part to disable debug
 ./configure --with-pi 'CXXFLAGS=-O0 -g'
 make
-sudo make install
-# Now build simple_switch_grpc
-cd targets/simple_switch_grpc
-./autogen.sh
-# Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-thrift 'CXXFLAGS=-O0 -g'
-# I saw the following near end of output of 'configure' command:
-#Features recap ......................
-#With Sysrepo .................. : no
-#With Thrift ................... : yes
-make
-sudo make install
+sudo make install-strip
 sudo ldconfig
 move_usr_local_lib_python3_from_site_packages_to_dist_packages
 
