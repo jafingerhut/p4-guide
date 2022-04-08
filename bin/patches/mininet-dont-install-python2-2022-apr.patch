@@ -27,7 +27,7 @@ index fd584b8..5886199 100755
  
          $install gcc make socat psmisc xterm ssh iperf telnet \
 -                 ethtool help2man $pf pylint $pep8 \
-+                 ethtool help2man pylint \
++                 ethtool help2man pylint3 \
                   net-tools \
                   ${PYPKG}-pexpect ${PYPKG}-tk
 +        $install --no-install-recommends $pf $pep8
