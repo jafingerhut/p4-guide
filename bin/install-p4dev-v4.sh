@@ -582,18 +582,7 @@ git log -n 1
 # Remove 'CXXFLAGS ...' part to disable debug
 ./configure --with-pi 'CXXFLAGS=-O0 -g'
 make
-sudo make install
-# Now build simple_switch_grpc
-cd targets/simple_switch_grpc
-./autogen.sh
-# Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-thrift 'CXXFLAGS=-O0 -g'
-# I saw the following near end of output of 'configure' command:
-#Features recap ......................
-#With Sysrepo .................. : no
-#With Thrift ................... : yes
-make
-sudo make install
+sudo make install-strip
 sudo ldconfig
 move_usr_local_lib_python3_from_site_packages_to_dist_packages
 
@@ -663,7 +652,7 @@ date
 git clone https://github.com/mininet/mininet mininet
 cd mininet
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
 sudo ./mininet/util/install.sh -nw
 

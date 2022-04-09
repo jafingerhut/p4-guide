@@ -1,0 +1,36 @@
+diff --git a/util/install.sh b/util/install.sh
+index fd584b8..5886199 100755
+--- a/util/install.sh
++++ b/util/install.sh
+@@ -5,6 +5,7 @@
+ 
+ # Fail on error
+ set -e
++set -x
+ 
+ # Fail on unset var usage
+ set -o nounset
+@@ -175,9 +176,9 @@ function mn_deps {
+     else  # Debian/Ubuntu
+         pf=pyflakes
+         pep8=pep8
+-        # Starting around 20.04, installing pyflakes instead of pyflakes3
++        # Starting around 18.04, installing pyflakes instead of pyflakes3
+         # causes Python 2 to be installed, which is exactly NOT what we want.
+-        if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '>=' 20.04` = "1" ]; then
++        if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '>=' 18.04` = "1" ]; then
+                 pf=pyflakes3
+         fi
+         # Debian 11 "bullseye" renamed 
+@@ -189,9 +190,10 @@ function mn_deps {
+         fi
+ 
+         $install gcc make socat psmisc xterm ssh iperf telnet \
+-                 ethtool help2man $pf pylint $pep8 \
++                 ethtool help2man pylint3 \
+                  net-tools \
+                  ${PYPKG}-pexpect ${PYPKG}-tk
++        $install --no-install-recommends $pf $pep8
+         # Install pip
+         $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
+         if ! ${PYTHON} -m pip -V; then
