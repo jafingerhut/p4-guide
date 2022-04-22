@@ -192,13 +192,6 @@ echo "command at the appropriate places."
 echo ""
 set -x
 
-# TBD: Consider adding a check for how much free disk space there is
-# and giving a message about it and aborting if it is too low.  On
-# Ubuntu 16.04, at least, the command `df --output=avail .` shows how
-# many Kbytes are free on the file system containing the directory
-# `.`, which could be interpreted in a bash script without having to
-# parse so much output from a different command like `df -h .`
-
 
 set +x
 REPO_CACHE_DIR="${INSTALL_DIR}/repository-cache"
@@ -442,7 +435,7 @@ sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobu
 sudo pip3 install protobuf==3.6.1
 
 cd "${INSTALL_DIR}"
-get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
+get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
 cd protobuf
 git checkout v3.6.1
 ./autogen.sh
@@ -471,7 +464,7 @@ date
 # From BUILDING.md of grpc source repository
 sudo apt-get --yes install build-essential autoconf libtool pkg-config
 
-get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
+get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
 # This version works fine with Ubuntu 16.04
 git checkout tags/v1.17.2
