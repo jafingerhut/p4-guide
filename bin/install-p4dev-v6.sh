@@ -458,8 +458,11 @@ date
 
 # From BUILDING.md of grpc source repository
 sudo apt-get --yes install build-essential autoconf libtool pkg-config cmake
-# TODO: This package is not mentioned in grpc BUILDING.md instructions:
-#sudo apt-get --yes install libssl-dev
+# TODO: This package is not mentioned in grpc BUILDING.md
+# instructions, but when I tried on Ubuntu 20.04 without it, the
+# building of grpc failed with not being able to find an OpenSSL
+# library.
+sudo apt-get --yes install libssl-dev
 
 get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
