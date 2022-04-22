@@ -24,10 +24,8 @@
 
 # As of 2020-Dec, the open source P4 tools seem to be ready for this.
 
-# In fact, this script does end up installing Python2, but only
-# because installing Mininet as this script currently does, causes
-# Python2 to be installed.  Before that point (near the end), Python2
-# is never installed.
+# Installing Mininet without also installing Python2 required a small
+# patch to Mininet's install scripts, which is used below.
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
@@ -37,9 +35,13 @@ THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_version_warning() {
-    1>&2 echo "This software has only been tested on Ubuntu 18.04 and"
-    1>&2 echo "20.04, and is known to fail in a few tests on Ubuntu"
-    1>&2 echo "16.04."
+    1>&2 echo "This software has only been tested on these systems:"
+    1>&2 echo "    Ubuntu 18.04"
+    1>&2 echo "    Ubuntu 20.04"
+    1>&2 echo ""
+    1>&2 echo "It is known to fail on these systems:"
+    1>&2 echo ""
+    1>&2 echo "    Ubuntu 16.04"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -178,7 +180,7 @@ echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
-echo "+ Mininet: github.com/mininet/mininet latest version"
+echo "+ Mininet: github.com/mininet/mininet latest version as of 2022-Apr-02"
 echo "+ Python packages: grpcio 1.17.1, protobuf 3.6.1"
 echo "+ Python packages: scapy, ipaddr, psutil, crcmod, pypcap"
 echo ""
@@ -642,8 +644,13 @@ echo "start install mininet:"
 set -x
 date
 
+# Pin to a particular version, so that I know the patch below will
+# continue to apply.  Will likely want to update this to newer
+# versions once or twice a year.
+MININET_COMMIT="aa0176fce6fb718a03474f8719261b07b670d30d"  # 2022-Apr-02
 git clone https://github.com/mininet/mininet mininet
 cd mininet
+git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
