@@ -653,7 +653,11 @@ echo "start install ptf:"
 set -x
 date
 
-sudo pip3 install pypcap
+# Attempting this command was causing errors on Ubuntu 22.04 systems.
+# The ptf README says it is optional, so leave it out for now,
+# until/unless someone discovers a way to install it correctly on
+# Ubuntu 22.04.
+#sudo pip3 install pypcap
 
 git clone https://github.com/p4lang/ptf
 cd ptf
