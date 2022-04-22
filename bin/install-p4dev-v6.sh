@@ -480,9 +480,6 @@ echo "end install grpc:"
 set -x
 date
 
-# Let us see if everything works up to this point, before proceeding further
-exit 0
-
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
 
