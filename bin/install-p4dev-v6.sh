@@ -468,13 +468,15 @@ git submodule update --init --recursive
 
 mkdir -p cmake/build
 cd cmake/build
-#cmake ../..
-cmake \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DgRPC_INSTALL=ON \
-    -DgRPC_BUILD_TESTS=OFF \
-    -DgRPC_SSL_PROVIDER=package \
-    ../..
+# This is the command recommended in grpc's BUILDING.md file for Unix:
+cmake ../..
+# Where did the following command come from?
+#cmake \
+#    -DCMAKE_BUILD_TYPE=Release \
+#    -DgRPC_INSTALL=ON \
+#    -DgRPC_BUILD_TESTS=OFF \
+#    -DgRPC_SSL_PROVIDER=package \
+#    ../..
 make
 sudo make install
 # I believe the following 2 commands, adapted from similar commands in
