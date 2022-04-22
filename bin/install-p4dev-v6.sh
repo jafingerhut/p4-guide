@@ -18,6 +18,14 @@
 # This script differs from install-p4dev-v4.sh as follows:
 
 # It installs later versions of protobuf and grpc libraries.
+# Attempt to follow what p4lang repos use for CI testing, as changed
+# by this commit in 2022-Feb:
+# https://github.com/p4lang/third-party/commit/f9d1bd9b63f7bdfe497f69b0ee1335b7b939e095
+#
+# * Update Protobuf to 3.18.1
+# * Update gRPC to 1.43.2
+# * Install more recent Thrift (0.13)
+# * Use python-is-python3 to set up python symlink
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
@@ -27,9 +35,9 @@ THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_version_warning() {
-    1>&2 echo "This software has only been tested on Ubuntu 18.04 and"
-    1>&2 echo "20.04, and is known to fail in a few tests on Ubuntu"
-    1>&2 echo "16.04."
+    1>&2 echo "This software has only been tested on these systems:"
+    1>&2 echo "    Ubuntu 18.04 (TODO)"
+    1>&2 echo "    Ubuntu 20.04 (TODO)"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -49,7 +57,7 @@ fi
 
 distributor_id=`lsb_release -si`
 ubuntu_release=`lsb_release -s -r`
-if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" -o "${ubuntu_release}" = "21.10" \) ]
+if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" -o "${ubuntu_release}" = "22.04" \) ]
 then
     echo "Found distributor '${distributor_id}' release '${ubuntu_release}'.  Continuing with installation."
 else
@@ -158,8 +166,8 @@ echo "took about 90 to 110 minutes."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ protobuf: github.com/google/protobuf v3.14.0"
-echo "+ gRPC: github.com/google/grpc.git v1.43.0"
+echo "+ protobuf: github.com/google/protobuf v3.18.1"
+echo "+ gRPC: github.com/google/grpc.git v1.43.2"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2021-Jun-28, also installs these things:"
@@ -169,7 +177,7 @@ echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as 
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version"
-echo "+ Python packages: grpcio 1.43.0, protobuf 3.14.0"
+echo "+ Python packages: grpcio 1.43.2, protobuf 3.18.1"
 echo "+ Python packages: scapy, ipaddr, psutil, crcmod, pypcap"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -181,13 +189,6 @@ echo "adding 'git checkout <tag>' and/or 'git checkout <commit-sha>'"
 echo "command at the appropriate places."
 echo ""
 set -x
-
-# TBD: Consider adding a check for how much free disk space there is
-# and giving a message about it and aborting if it is too low.  On
-# Ubuntu 16.04, at least, the command `df --output=avail .` shows how
-# many Kbytes are free on the file system containing the directory
-# `.`, which could be interpreted in a bash script without having to
-# parse so much output from a different command like `df -h .`
 
 
 set +x
@@ -352,12 +353,8 @@ then
     sudo apt-get --yes purge python3-cffi-backend
 fi
 
-# Install Ubuntu packages needed by protobuf v3.14.0, from its src/README.md
+# Install Ubuntu packages needed by protobuf v3.18.1, from its src/README.md
 sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
-# zlib is not required to install protobuf, nor do I think it is
-# required by the open source P4 tools for protobuf to be built with
-# support for zlib, but it seems like a reasonable thing to enable.
-sudo apt-get --yes install zlib1g-dev
 
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
@@ -429,12 +426,13 @@ date
 
 echo "Uninstalling Ubuntu python3-protobuf if present"
 sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-sudo pip3 install protobuf==3.14.0
+sudo pip3 install protobuf==3.18.1
 
 cd "${INSTALL_DIR}"
-get_from_nearest https://github.com/google/protobuf protobuf.tar.gz
+get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
 cd protobuf
-git checkout v3.14.0
+git checkout v3.18.1
+git submodule update --init --recursive
 ./autogen.sh
 ./configure
 make
@@ -460,12 +458,12 @@ date
 
 # From BUILDING.md of grpc source repository
 sudo apt-get --yes install build-essential autoconf libtool pkg-config cmake
-sudo apt-get --yes install libssl-dev
+# TODO: This package is not mentioned in grpc BUILDING.md instructions:
+#sudo apt-get --yes install libssl-dev
 
-get_from_nearest https://github.com/google/grpc.git grpc.tar.gz
+get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
-# This version works fine with Ubuntu 16.04
-git checkout tags/v1.43.0
+git checkout tags/v1.43.2
 git submodule update --init --recursive
 
 mkdir -p cmake/build
@@ -484,16 +482,21 @@ sudo make install
 # grpc.
 find /usr/lib /usr/local $HOME/.local | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
+cd ../..
 sudo pip3 install -rrequirements.txt
 GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install .
 sudo ldconfig
 # Save some storage by cleaning up grpc build
-make clean
+# TODO: Is this command useful with latest cmake build infra?
+#make clean
 
 set +x
 echo "end install grpc:"
 set -x
 date
+
+# Let us see if everything works up to this point, before proceeding further
+exit 0
 
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
@@ -564,8 +567,6 @@ cd behavioral-model
 # Get latest updates that are not in the repo cache version
 git pull
 git log -n 1
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-use-correct-libssl-pkg.patch" || echo "Errors while attempting to patch behavioral-model, but continuing anyway ..."
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
@@ -575,18 +576,7 @@ patch -p1 < "${PATCH_DIR}/behavioral-model-use-correct-libssl-pkg.patch" || echo
 # Remove 'CXXFLAGS ...' part to disable debug
 ./configure --with-pi 'CXXFLAGS=-O0 -g'
 make
-sudo make install
-# Now build simple_switch_grpc
-cd targets/simple_switch_grpc
-./autogen.sh
-# Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-thrift 'CXXFLAGS=-O0 -g'
-# I saw the following near end of output of 'configure' command:
-#Features recap ......................
-#With Sysrepo .................. : no
-#With Thrift ................... : yes
-make
-sudo make install
+sudo make install-strip
 sudo ldconfig
 move_usr_local_lib_python3_from_site_packages_to_dist_packages
 
@@ -653,10 +643,10 @@ echo "start install mininet:"
 set -x
 date
 
-git clone git://github.com/mininet/mininet mininet
+git clone https://github.com/mininet/mininet mininet
 cd mininet
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
 sudo ./mininet/util/install.sh -nw
 
@@ -678,7 +668,7 @@ date
 
 sudo pip3 install pypcap
 
-git clone git://github.com/p4lang/ptf
+git clone https://github.com/p4lang/ptf
 cd ptf
 sudo python3 setup.py install
 
