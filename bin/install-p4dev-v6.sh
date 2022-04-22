@@ -142,8 +142,7 @@ set -x
 
 # The maximum number of gcc/g++ jobs to run in parallel.  1 is the
 # safest number that enables compiling p4c even on machines with only
-# 2 GB of RAM, and even on machines with significantly more RAM, it
-# does not speed things up a lot to run multiple jobs in parallel.
+# 2 GB of RAM.
 MAX_PARALLEL_JOBS=1
 
 set +x
@@ -151,10 +150,13 @@ echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It is regularly tested on freshly installed Ubuntu 18.04 and"
-echo "20.04 system, with all Ubuntu software updates as of the date of"
-echo "testing.  See this directory for log files recording the last"
-echo "date this script was tested on its supported operating systems:"
+echo "It is regularly tested on freshly installed versions of these systems:"
+echo "    Ubuntu 18.04 (TODO)"
+echo "    Ubuntu 20.04 (TODO)"
+echo "    Ubuntu 22.04 (TODO)"
+echo "with all Ubuntu software updates as of the date of testing.  See"
+echo "this directory for log files recording the last date this script"
+echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
@@ -176,9 +178,9 @@ echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
-echo "+ Mininet: github.com/mininet/mininet latest version"
-echo "+ Python packages: grpcio 1.43.2, protobuf 3.18.1"
-echo "+ Python packages: scapy, ipaddr, psutil, crcmod, pypcap"
+echo "+ Mininet: github.com/mininet/mininet latest as of 2022-Apr-02"
+echo "+ Python packages: protobuf 3.18.1, grpcio 1.43.2"
+echo "+ Python packages: scapy, ipaddr, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
 echo "its precise contents from one run of this script to another."
@@ -367,7 +369,7 @@ echo "start install protobuf:"
 set -x
 date
 
-# On a freshly installed Ubuntu 20.04.1 or 18.04.5 system, desktop
+# On a freshly installed Ubuntu 18.04, 20.04, or 22.04 system, desktop
 # amd64 minimal installation, the Debian package python3-protobuf is
 # installed.  This is depended upon by another package called
 # python3-macaroonbakery, which in turn is is depended upon by a
@@ -447,19 +449,12 @@ sudo apt-get --yes install libssl-dev
 get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
 git checkout tags/v1.43.2
+# These commands are recommended in grpc's BUILDING.md file for Unix:
 git submodule update --init --recursive
 
 mkdir -p cmake/build
 cd cmake/build
-# This is the command recommended in grpc's BUILDING.md file for Unix:
 cmake ../..
-# Where did the following command come from?
-#cmake \
-#    -DCMAKE_BUILD_TYPE=Release \
-#    -DgRPC_INSTALL=ON \
-#    -DgRPC_BUILD_TESTS=OFF \
-#    -DgRPC_SSL_PROVIDER=package \
-#    ../..
 make
 sudo make install
 # I believe the following 2 commands, adapted from similar commands in
@@ -491,7 +486,7 @@ set -x
 date
 
 # Deps needed to build PI:
-sudo apt-get --yes install libjudy-dev libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
 
 git clone https://github.com/p4lang/PI
 cd PI
@@ -499,17 +494,6 @@ git submodule update --init --recursive
 git log -n 1
 ./autogen.sh
 ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
-# Output I saw:
-#Features recap ......................................
-#Use sysrepo gNMI implementation .............. : no
-#Compile demo_grpc ............................ : no
-#
-#Features recap ......................................
-#Compile for bmv2 ............................. : no
-#Compile C++ frontend ......................... : yes
-#Compile p4runtime.proto and associated fe .... : yes
-#Compile internal RPC ......................... : no
-#Compile PI C CLI ............................. : no
 make
 sudo make install
 
