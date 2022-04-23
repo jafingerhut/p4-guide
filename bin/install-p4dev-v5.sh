@@ -238,10 +238,15 @@ echo "start install mininet:"
 set -x
 date
 
+# Pin to a particular version, so that I know the patch below will
+# continue to apply.  Will likely want to update this to newer
+# versions once or twice a year.
+MININET_COMMIT="aa0176fce6fb718a03474f8719261b07b670d30d"  # 2022-Apr-02
 git clone https://github.com/mininet/mininet mininet
 cd mininet
+git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
 sudo ./mininet/util/install.sh -nw
 
@@ -272,6 +277,12 @@ set -x
 date
 df -h .
 df -BM .
+
+echo "----------------------------------------------------------------------"
+echo "Output of script p4-environment-info.sh"
+echo "----------------------------------------------------------------------"
+"${THIS_SCRIPT_DIR_ABSOLUTE}/p4-environment-info.sh"
+echo "----------------------------------------------------------------------"
 
 cd "${INSTALL_DIR}"
 DETS="install-details"
