@@ -7,10 +7,11 @@ language](http://p4.org).
 
 ## Installing open source P4 development tools
 
-There are three install scripts in this repository that can assist you
+There are install scripts in this repository that can assist you
 in building and installing the `p4c` and `behavioral-model` projects
-and their dependencies on an Ubuntu 16.04, 18.04, or 20.04 Linux
-machine.
+and their dependencies on Ubuntu Linux systems with these versions:
+
++ 18.04, 20.04, or 22.04
 
 See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
