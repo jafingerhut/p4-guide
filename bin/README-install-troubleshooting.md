@@ -128,17 +128,32 @@ If you wish to run the examples in the
 [tutorials](https://github.com/p4lang/tutorials) repository as of
 2021, you need P4Runtime API support and Mininet.
 
-See the table below if you want to make a more informed decision.
+See the tables below if you want to make a more informed decision.
 
-| Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet |
-| ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | -------------- | ------------------------ | ----------------------------------------------- | ----------------------------- |
-| install-p4dev-v6.sh | 22.04, 20.04, 18.04 | Monthly through 2022 | yes | yes | yes | yes | 13 GB | 100 mins |   2 GB |
-| install-p4dev-v5.sh | 20.04        | Monthly through 2022 | yes | yes | yes | yes |  2 GB |   3 mins | 250 MB |
-| install-p4dev-v4.sh | 20.04, 18.04 | Monthly through 2022 | yes | yes | yes | yes | 12 GB | 100 mins |   2 GB |
-| install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- | -- |
-| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 in 2022-Mar, 16.04 in 2021-Aug | yes | yes | no, Python2 | no | 11 GB | 100 mins |   2 GB |
-| install-p4dev-p4runtime.sh | 18.04, 16.04 | 2020-Mar | yes | yes | no, Python2 | no | 8.5 GB |  70 mins | ? |
-| install-p4dev.sh | -- | 2019-Oct |  no |  no | no, Python2 | no |  5 GB |  40 mins | ? |
+The scripts in the next table below have all been tested monthly
+through 2022.  They all include the following:
+
++ P4Runtime API support
++ Mininet
++ Uses Python3 only, no Python2 installed
++ PTF
+
+| Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
+| ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
+| install-p4dev-v6.sh | 22.04, 20.04, 18.04 | 13 GB | 100 mins |   2 GB | v3.18.1 | v1.43.2 |
+| install-p4dev-v5.sh | 20.04               |  2 GB |   3 mins | 250 MB | TODO    | TODO    |
+| install-p4dev-v4.sh | 20.04, 18.04        | 12 GB | 100 mins |   2 GB | v3.6.1  | v1.17.2 |
+
+
+The scripts in the next table below are no longer tested by me.  They
+are listed here only for possible historical interest.
+
+| Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
+| ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | -------------- | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
+| install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 in 2022-Mar, 16.04 in 2021-Aug | yes | yes | no, Python2 | no | 11 GB | 100 mins |   2 GB | v3.6.1 | v1.17.2 |
+| install-p4dev-p4runtime.sh | 18.04, 16.04 | 2020-Mar | yes | yes | no, Python2 | no | 8.5 GB |  70 mins | ? | v3.2.0 | v1.3.2 |
+| install-p4dev.sh | -- | 2019-Oct |  no |  no | no, Python2 | no |  5 GB |  40 mins | ? | v3.2.0 | not installed |
 
 
 ## Testing your installation
