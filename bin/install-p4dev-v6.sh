@@ -432,6 +432,23 @@ date
 cd "${INSTALL_DIR}"
 find /usr/lib /usr/local $HOME/.local | sort > usr-local-2-after-protobuf.txt
 
+# Install cmake v3.16.3 or later.  On Ubuntu 20.04 and later systems,
+# this is easily done via apt-get on the cmake Ubuntu package.  On
+# Ubuntu 18.04, that package is v3.10.2, one that fails to install
+# grpc fully, so download and build cmake v3.16.3 from source code.
+if [ "${ubuntu_release}" = "18.04" ]
+then
+    sudo apt install --yes make g++ libssl-dev
+    git clone https://gitlab.kitware.com/cmake/cmake.git
+    cd cmake
+    git checkout v3.16.3
+    ./bootstrap
+    make
+    sudo make install
+else
+    sudo apt-get --yes install cmake
+fi
+
 set +x
 echo "------------------------------------------------------------"
 echo "Installing grpc, needed for installing p4lang/PI"
@@ -440,7 +457,7 @@ set -x
 date
 
 # From BUILDING.md of grpc source repository
-sudo apt-get --yes install build-essential autoconf libtool pkg-config cmake
+sudo apt-get --yes install build-essential autoconf libtool pkg-config
 # TODO: This package is not mentioned in grpc BUILDING.md
 # instructions, but when I tried on Ubuntu 20.04 without it, the
 # building of grpc failed with not being able to find an OpenSSL
@@ -564,7 +581,7 @@ date
 
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2019-Oct-09
-sudo apt-get --yes install cmake g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python3-pip tcpdump
+sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python3-pip tcpdump
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 sudo pip3 install scapy
