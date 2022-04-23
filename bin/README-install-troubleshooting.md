@@ -2,9 +2,9 @@
 
 Pick one of these alternatives that best fits your situation:
 
-(a) I have a new Ubuntu 18.04, or 20.04 Linux system, and I want to
-    install the open source P4 development tools on it.  (This might
-    be a new VM created for this purpose.)
+(a) I have a new Ubuntu 18.04, 20.04, or 22.04 Linux system, and I
+    want to install the open source P4 development tools on it.  (This
+    might be a new VM created for this purpose.)
 
 (b) I am comfortable downloading and running a virtual machine image
     with the P4 open source tools already compiled and installed,
@@ -64,11 +64,11 @@ any longer.  It may continue to work for a significant length of time.
 
 Start with:
 
-+ an _unmodified_ _fresh_ installation of Ubuntu Linux 18.04 or 20.04,
-  with ...
++ an _unmodified_ _fresh_ installation of Ubuntu Linux 18.04, 20.04,
+  or 22.04, with ...
   + at least 2 GB of RAM (4 GB recommended)
-  + at least 12 GB of free disk space (not 12 GB of disk space total
-    for the VM, but 12 GB free disk space after the OS has been
+  + at least 13 GB of free disk space (not 13 GB of disk space total
+    for the VM, but 13 GB free disk space after the OS has been
     installed), and
   + a reliable Internet connection that is up for the entire duration
     of running the install script -- it will download approximately 1
@@ -102,9 +102,9 @@ $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v4.sh |& tee log.txt
 ```
-Replace `install-p4dev-v4.sh` with `install-p4dev-v5.sh` if you prefer
-it instead.  More details on the differences between them are in the
-next section.
+Replace `install-p4dev-v4.sh` with `install-p4dev-v5.sh` or
+`install-p4dev-v6.sh` if you prefer one of those instead.  More
+details on the differences between them are in the next section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
@@ -122,7 +122,7 @@ that can be updated later to more recent versions as they are
 published, if you wish.
 
 If you prefer Ubuntu 18.04, then I would recommend
-`install-p4dev-v4.sh`.
+`install-p4dev-v4.sh` or `install-p4dev-v6.sh`.
 
 If you wish to run the examples in the
 [tutorials](https://github.com/p4lang/tutorials) repository as of
@@ -132,6 +132,7 @@ See the table below if you want to make a more informed decision.
 
 | Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet |
 | ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | -------------- | ------------------------ | ----------------------------------------------- | ----------------------------- |
+| install-p4dev-v6.sh | 22.04, 20.04, 18.04 | Monthly through 2022 | yes | yes | yes | yes | 13 GB | 100 mins |   2 GB |
 | install-p4dev-v5.sh | 20.04        | Monthly through 2022 | yes | yes | yes | yes |  2 GB |   3 mins | 250 MB |
 | install-p4dev-v4.sh | 20.04, 18.04 | Monthly through 2022 | yes | yes | yes | yes | 12 GB | 100 mins |   2 GB |
 | install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- | -- |

@@ -36,7 +36,7 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 ubuntu_version_warning() {
     1>&2 echo "This software has only been tested on these systems:"
-    1>&2 echo "    Ubuntu 18.04 (TODO)"
+    1>&2 echo "    Ubuntu 18.04"
     1>&2 echo "    Ubuntu 20.04"
     1>&2 echo "    Ubuntu 22.04"
     1>&2 echo ""
@@ -152,7 +152,7 @@ echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It is regularly tested on freshly installed versions of these systems:"
-echo "    Ubuntu 18.04 (TODO)"
+echo "    Ubuntu 18.04"
 echo "    Ubuntu 20.04"
 echo "    Ubuntu 22.04"
 echo "with all Ubuntu software updates as of the date of testing.  See"
