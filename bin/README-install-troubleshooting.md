@@ -141,7 +141,7 @@ through 2022.  They all include the following:
 | Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
 | install-p4dev-v6.sh | 22.04, 20.04, 18.04 | 13 GB | 100 mins |   2 GB | v3.18.1 | v1.43.2 |
-| install-p4dev-v5.sh | 20.04               |  2 GB |   3 mins | 250 MB | TODO    | TODO    |
+| install-p4dev-v5.sh | 20.04               |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? |
 | install-p4dev-v4.sh | 20.04, 18.04        | 12 GB | 100 mins |   2 GB | v3.6.1  | v1.17.2 |
 
 
