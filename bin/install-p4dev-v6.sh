@@ -37,7 +37,8 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 ubuntu_version_warning() {
     1>&2 echo "This software has only been tested on these systems:"
     1>&2 echo "    Ubuntu 18.04 (TODO)"
-    1>&2 echo "    Ubuntu 20.04 (TODO)"
+    1>&2 echo "    Ubuntu 20.04"
+    1>&2 echo "    Ubuntu 22.04"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -89,7 +90,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 12 \* 1024`
+min_free_disk_MBytes=`expr 13 \* 1024`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -152,15 +153,15 @@ echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It is regularly tested on freshly installed versions of these systems:"
 echo "    Ubuntu 18.04 (TODO)"
-echo "    Ubuntu 20.04 (TODO)"
-echo "    Ubuntu 22.04 (TODO)"
+echo "    Ubuntu 20.04"
+echo "    Ubuntu 22.04"
 echo "with all Ubuntu software updates as of the date of testing.  See"
 echo "this directory for log files recording the last date this script"
 echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 12 GB of disk space."
+echo "The files installed by this script consume about 13 GB of disk space."
 echo ""
 echo "On a 2015 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
@@ -178,7 +179,7 @@ echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
-echo "+ Mininet: github.com/mininet/mininet latest as of 2022-Apr-02"
+echo "+ Mininet: github.com/mininet/mininet latest version as of 2022-Apr-02"
 echo "+ Python packages: protobuf 3.18.1, grpcio 1.43.2"
 echo "+ Python packages: scapy, ipaddr, psutil, crcmod"
 echo ""
@@ -691,7 +692,7 @@ df -BM .
 cd "${INSTALL_DIR}"
 DETS="install-details"
 mkdir -p "${DETS}"
-mv usr-local-*.txt "${DETS}"
+mv usr-local-*.txt pip3-list-2b-before-grpc-pip3.txt "${DETS}"
 cd "${DETS}"
 diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
 diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt

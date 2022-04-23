@@ -146,8 +146,7 @@ set -x
 
 # The maximum number of gcc/g++ jobs to run in parallel.  1 is the
 # safest number that enables compiling p4c even on machines with only
-# 2 GB of RAM, and even on machines with significantly more RAM, it
-# does not speed things up a lot to run multiple jobs in parallel.
+# 2 GB of RAM.
 MAX_PARALLEL_JOBS=1
 
 set +x
@@ -155,10 +154,12 @@ echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
-echo "It is regularly tested on freshly installed Ubuntu 18.04 and"
-echo "20.04 system, with all Ubuntu software updates as of the date of"
-echo "testing.  See this directory for log files recording the last"
-echo "date this script was tested on its supported operating systems:"
+echo "It is regularly tested on freshly installed versions of these systems:"
+echo "    Ubuntu 18.04"
+echo "    Ubuntu 20.04"
+echo "with all Ubuntu software updates as of the date of testing.  See"
+echo "this directory for log files recording the last date this script"
+echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
@@ -181,7 +182,7 @@ echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as 
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2022-Apr-02"
-echo "+ Python packages: grpcio 1.17.1, protobuf 3.6.1"
+echo "+ Python packages: protobuf 3.6.1, grpcio 1.17.1"
 echo "+ Python packages: scapy, ipaddr, psutil, crcmod, pypcap"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -701,7 +702,7 @@ df -BM .
 cd "${INSTALL_DIR}"
 DETS="install-details"
 mkdir -p "${DETS}"
-mv usr-local-*.txt "${DETS}"
+mv usr-local-*.txt pip3-list-2b-before-grpc-pip3.txt "${DETS}"
 cd "${DETS}"
 diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
 diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
