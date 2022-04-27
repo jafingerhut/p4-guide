@@ -116,8 +116,8 @@ As of 2022-Jan-19 and before, p4c can, before the step where the
 P4Info file is generated, take one action in the P4 source code and
 duplicate it into two or more, both with the same string on their
 `@name` annotation.  I personally think that this is the root cause of
-the problem, and what should change in p4c to fix most or all of these
-issues.
+the problem, and what we should change in p4c in order to fix most or
+all of these issues.
 
 For example, if the compiler had these steps in this order, I think
 most or all of these issues should be corrected:
@@ -138,7 +138,7 @@ most or all of these issues should be corrected:
 + Only _after_ control plane API generation is complete, the compiler
   is allowed to create duplicate actions from actions in the original
   program, e.g. if the desire is to optimize them separately.  Back
-  end code that generates target-specific files or code for
+  end compiler code that generates target-specific files or code for
   implementing the control plane API must in such a case be able to
   map a single action name in the P4Info file to the correct one of
   these duplicates.  It is an exercise for the target-specific control
@@ -151,3 +151,10 @@ Nothing in p4c should assume that the control plane API will use
 (table name, action name) pairs to disambiguate action names.  A
 control plane API implementer might choose to do that, but p4c should
 not require it.
+
+Rationale: The P4Runtime API in all of its released versions requires
+all action names in the control plane API to be unique, regardless of
+which table can invoke those actions.  For example, if an action named
+`foo` is possible to be the action of an entry in table `t1`, and also
+in table `t2`, action `foo` will only be represented by a single
+object in the P4Info file.
