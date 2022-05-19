@@ -555,7 +555,7 @@ git log -n 1
 # code first, using these commands:
 ./autogen.sh
 # Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-pi 'CXXFLAGS=-O0 -g'
+./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 make
 sudo make install-strip
 sudo ldconfig
