@@ -111,10 +111,9 @@ then
     exit 1
 fi
 
-PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/grpc-v1.17.2-patches-for-ubuntu19.10"
-PATCH_DIR2="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 
-for dir in "${PATCH_DIR1}" "${PATCH_DIR2}"
+for dir in "${PATCH_DIR1}"
 do
     if [ -d "${dir}" ]
     then
