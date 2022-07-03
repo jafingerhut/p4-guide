@@ -448,6 +448,8 @@ else
     sudo apt-get --yes install cmake
 fi
 
+cd "${INSTALL_DIR}"
+
 set +x
 echo "------------------------------------------------------------"
 echo "Installing grpc, needed for installing p4lang/PI"
