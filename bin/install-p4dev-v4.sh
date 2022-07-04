@@ -49,6 +49,59 @@ ubuntu_version_warning() {
     1>&2 echo "Ubuntu virtual machine with one of the tested versions."
 }
 
+check_for_python2_installed() {
+    for p in python python2
+    do
+	which $p > /dev/null
+	e1=$?
+        if [ $e1 -eq 0 ]
+	then
+	    tmp_out=`$p -c 'import sys; print(sys.version_info)' | grep 'major=2'`
+	    e2=$?
+	    if [ $e2 -eq 0 ]
+	    then
+		#echo "Found Python2 installed with cmd name: $p"
+		python2_cmd_name=$p
+		return
+	    fi
+	fi
+    done
+    python2_cmd_name=""
+}
+
+python_version_warning() {
+    1>&2 echo "The following version of Python2 was found installed on"
+    1>&2 echo "this system:"
+    1>&2 echo ""
+    1>&2 echo "Python2 command name: $python2_cmd_name"
+    1>&2 echo "sys.version_info value from that command:"
+    1>&2 echo ""
+    "$python2_cmd_name" -c 'import sys; print(sys.version_info)'
+    1>&2 echo ""
+    1>&2 echo "This script has been tested on systems where Python2"
+    1>&2 echo "was installed, and while it produces no errors while"
+    1>&2 echo "the script is running, the resulting system ends up"
+    1>&2 echo "with a mix of some Python2 packages installed, and some"
+    1>&2 echo "Python3 packages installed, that cause failures when"
+    1>&2 echo "attempting to run many P4 open source development tools"
+    1>&2 echo "in common use cases."
+    1>&2 echo ""
+    1>&2 echo "It is recommended that you only use this install script"
+    1>&2 echo "on systems with no Python2 installed at all, since"
+    1>&2 echo "Python2 is no longer supported as of 2020-Jan-01, and"
+    1>&2 echo "the P4 open source development tools do work well with"
+    1>&2 echo "Python3, and I doubt any changes will be made in P4"
+    1>&2 echo "development tools to improve their working with Python2"
+    1>&2 echo "any longer."
+    1>&2 echo ""
+    1>&2 echo "    https://python.org/doc/sunset-python-2"
+    1>&2 echo ""
+    1>&2 echo "You are welcome to disable this check in your copy of"
+    1>&2 echo "this install script, and force installation anyway, but"
+    1>&2 echo "expect the resulting installation not to work, unless"
+    1>&2 echo "you figure out yourself how to make it work."
+}
+
 abort_script=0
 
 lsb_release >& /dev/null
@@ -137,6 +190,15 @@ then
     echo "script file to a system.  You should run it in the context"
     echo "of a cloned copy of the repository: https://github/jafingerhut/p4-guide"
     exit 1
+fi
+
+check_for_python2_installed
+if [ ! -z "$python2_cmd_name" ]
+then
+    python_version_warning
+    exit 1
+else
+    1>&2 echo "Found no Python2 installed.  Continuing with installation."
 fi
 
 echo "Passed all sanity checks"
