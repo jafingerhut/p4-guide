@@ -31,7 +31,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
-| 2022-Jul-01 | Ubuntu 20.04 | [4.2 GByte VM image](https://drive.google.com/file/d/1usFnO22y2QPJkk1RA4Q4_Npg8Bmjtgwg/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/1d1d_nHuHNFs4e8CusVAcQ9AkXkxSBaQp/view?usp=sharing) | [README](https://drive.google.com/file/d/172swmbRDDzWqnBcwmN3RrLtjS1XEuo8B/view?usp=sharing)
+| 2022-Aug-01 | Ubuntu 20.04 | [4.2 GByte VM image](https://drive.google.com/file/d/1usFnO22y2QPJkk1RA4Q4_Npg8Bmjtgwg/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/1d1d_nHuHNFs4e8CusVAcQ9AkXkxSBaQp/view?usp=sharing) | [README](https://drive.google.com/file/d/172swmbRDDzWqnBcwmN3RrLtjS1XEuo8B/view?usp=sharing) | Combo6 | Combo7 |
 | 2022-Jul-01 | Ubuntu 20.04 | [4.2 GByte VM image](https://drive.google.com/file/d/1A8g2o8vkpfakXenhf2iPFQDx3DCnVuCY/view?usp=sharing) | [2.4 GBytes VM image](https://drive.google.com/file/d/1LcXsGmnYA1ragDnezlFu5GafU2qMLt4C/view?usp=sharing) | [README](https://drive.google.com/file/d/16oTpLekqpQy_Ay3DGtHnDHojBOyM8THQ/view?usp=sharing) | Combo3 | Combo5 |
 | 2022-Jun-01 | Ubuntu 20.04 | [4.2 GByte VM image](https://drive.google.com/file/d/1ABMttwRRV6nsv37iYrKzejgMpXibjOmC/view?usp=sharing) | [2.4 GBytes VM image](https://drive.google.com/file/d/18-9AnDXYofT0wm7QVP86M5ONZK_3Tebh/view?usp=sharing) | [README](https://drive.google.com/file/d/1Gx5gAVggtGfNivvylCWmpyLbLDCM8DQo/view?usp=sharing) | Combo3 | Combo5 |
 | 2022-May-02 | Ubuntu 20.04 | [4.1 GByte VM image](https://drive.google.com/file/d/1KFRliCMfTsF341R1PypC7zUdO7TPmHf6/view?usp=sharing) | [2.3 GBytes VM image](https://drive.google.com/file/d/1Pgh23-sAt6OVCcqOqO-D9dvKGwSKdfcw/view?usp=sharing) | [README](https://drive.google.com/file/d/1LP27-Bg0U2p1-4r7lvpG0sbnQNUcnx-c/view?usp=sharing) | Combo3 | Combo5 |
@@ -55,6 +55,8 @@ Version combinations I have used above for testing VM images:
 | Combo3 | macOS 11.6.5 | VirtualBox 6.1.30 |
 | Combo4 | Windows 10 Enterprise | VirtualBox 6.1.26 |
 | Combo5 | Windows 10 Enterprise | VirtualBox 6.1.30 |
+| Combo6 | macOS 11.6.x | VirtualBox 6.1.36 |
+| Combo7 | Windows 10 Enterprise | VirtualBox 6.1.36 |
 
 
 
