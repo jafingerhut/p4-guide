@@ -1,0 +1,30 @@
+use-vector-for-exactmap-try1.p4(17): [--Werror=type-error] error: c.e1
+    e1;
+    ^^
+  ---- Actual error:
+  use-vector-for-exactmap-try1.p4(11): Cannot unify type 'Vector<struct tuple_0>' with type 'Vector<tuple<bit<16>, bit<32>>>'
+          const_entries = [tuple<bit<16>,bit<32>>;
+                          ^
+  use-vector-for-exactmap-try1.p4(4)
+      ExactMap(int size, Vector<tuple<K,V>> const_entries, V default_value);
+                         ^^^^^^^^^^^^^^^^^^
+  ---- Originating from:
+  use-vector-for-exactmap-try1.p4(11): Type of argument 'const_entries = VectorExpression' (Vector<struct tuple_0>) does not match type of parameter 'const_entries' (Vector<tuple<bit<16>, bit<32>>>)
+          const_entries = [tuple<bit<16>,bit<32>>;
+          ^^^^^^^^^^^^^
+  use-vector-for-exactmap-try1.p4(11)
+          const_entries = [tuple<bit<16>,bit<32>>;
+                          ^
+  use-vector-for-exactmap-try1.p4(4)
+      ExactMap(int size, Vector<tuple<K,V>> const_entries, V default_value);
+                                            ^^^^^^^^^^^^^
+  use-vector-for-exactmap-try1.p4(4)
+      ExactMap(int size, Vector<tuple<K,V>> const_entries, V default_value);
+                         ^^^^^^^^^^^^^^^^^^
+  ---- Originating from:
+  use-vector-for-exactmap-try1.p4(17): Constructor invocation <Method call> does not match constructor declaration ExactMap
+      e1;
+      ^^
+  use-vector-for-exactmap-try1.p4(4)
+      ExactMap(int size, Vector<tuple<K,V>> const_entries, V default_value);
+      ^^^^^^^^
