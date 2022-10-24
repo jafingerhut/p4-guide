@@ -14,14 +14,14 @@ def ends_with(str1, str2):
         return str1[:-len(str2)]
     return False
 
-def get_suf1_suf2(d, suf1, suf2):
+def get_nested_dict(d, suf1, suf2):
     if suf1 not in d:
         return 0
     if suf2 not in d[suf1]:
         return 0
     return d[suf1][suf2]
 
-def increment_suf1_without_suf2(d, suf1, suf2):
+def increment_nested_dict(d, suf1, suf2):
     if suf1 not in d:
         d[suf1] = dict()
     if suf2 not in d[suf1]:
@@ -79,7 +79,8 @@ print("")
 for suf in sorted(dir1_prefix_lst.keys()):
     print("%s %d" % (suf, len(dir1_prefix_lst[suf])))
 
-num_suf1_without_suf2 = collections.defaultdict(dict)
+num_suf1_without_suf2 = {}
+num_suf1_also_suf2 = {}
 
 dir1_prefix_set = dict()
 for suf in dir1_prefix_lst.keys():
@@ -95,13 +96,13 @@ for suf_pair in suf_pair_lst:
             pass
         else:
             print("%s has %s but no %s file" % (f1, suf1, suf2))
-            increment_suf1_without_suf2(num_suf1_without_suf2, suf1, suf2)
+            increment_nested_dict(num_suf1_without_suf2, suf1, suf2)
 print("")
 for suf_pair in suf_pair_lst:
     suf1 = suf_pair[0]
     suf2 = suf_pair[1]
     print("%d files found with %s suffix, but no corresponding %s file"
-          "" % (get_suf1_suf2(num_suf1_without_suf2, suf1, suf2),
+          "" % (get_nested_dict(num_suf1_without_suf2, suf1, suf2),
                 suf1, suf2))
 
 ######################################################################
@@ -147,12 +148,14 @@ print("")
 # For every file foo.p4.entries.txt, there is a file foo.p4.p4info.txt
 # For every file foo.p4info.txt, there is a file foo.p4
 # For every file foo.p4-stderr, there is a file foo.p4
+# For every file foo.p4-error, there is a file foo.p4
 # For every file 'foo-first.p4' there is a file 'foo.p4', and vice versa
 # For every file 'foo-frontend.p4' there is a file 'foo.p4', and vice versa
 # For every file 'foo-midend.p4' there is a file 'foo.p4', and vice versa
 suf_pair_lst = [['.p4.entries.txt', '.p4.p4info.txt'],
                 ['.p4.p4info.txt', '.p4'],
                 ['.p4-stderr', '.p4'],
+                ['.p4-error', '.p4'],
                 ['-first.p4', '.p4'],
                 ['.p4', '-first.p4'],
                 ['-frontend.p4', '.p4'],
@@ -167,14 +170,32 @@ for suf_pair in suf_pair_lst:
             pass
         else:
             print("%s has %s but no %s file" % (f1, suf1, suf2))
-            increment_suf1_without_suf2(num_suf1_without_suf2, suf1, suf2)
+            increment_nested_dict(num_suf1_without_suf2, suf1, suf2)
+
+# Check whether any test programs have both a .p4-stderr and a
+# .p4-error suffix.  Perhaps this is useful because we want CI tests
+# for p4-dpdk back end to have different error messages that CI
+# checks, vs. other p4c back ends.
+suf1 = '.p4-stderr'
+suf2 = '.p4-error'
+for f2 in sorted(dir2_prefix_lst[suf1]):
+    if f2 in dir2_prefix_lst[suf2]:
+        print("%s has both %s and %s suffixes in directory %s"
+              "" % (f2, suf1, suf2, dirname2))
+        increment_nested_dict(num_suf1_also_suf2, suf1, suf2)
+
 print("")
 for suf_pair in suf_pair_lst:
     suf1 = suf_pair[0]
     suf2 = suf_pair[1]
     print("%d files found with %s suffix, but no corresponding %s file"
-          "" % (get_suf1_suf2(num_suf1_without_suf2, suf1, suf2),
+          "" % (get_nested_dict(num_suf1_without_suf2, suf1, suf2),
                 suf1, suf2))
+suf1 = '.p4-stderr'
+suf2 = '.p4-error'
+print("%d files with both %s and %s suffix in directory %s"
+      "" % (get_nested_dict(num_suf1_also_suf2, suf1, suf2),
+            suf1, suf2, dirname2))
 
 ######################################################################
 # Sanity checks between the p4_16_samples and p4_16_samples_outputs
