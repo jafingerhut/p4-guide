@@ -21,7 +21,7 @@ In-Band Network Telemetry (INT)
 P416 Portable NIC Architecture (PNA)
 + v0.5 [[HTML](https://p4.org/p4-spec/docs/PNA-v0.5.0.html) | [PDF](https://p4.org/p4-spec/docs/PNA-v0.5.0.pdf)] (May 2021)
 + Bad: Working draft: [[HTML](https://p4.org/p4-spec/docs/PNA.html) | [PDF](https://p4.org/p4-spec/docs/PNA.pdf)] (bad links copied from 2022-Nov-03 version of p4.org specs page)
-+ Good: Working draft HTML PDF TODO set up scripts to generate these on checkin
++ Good: Working draft: [ [HTML](https://raw.githack.com/p4lang/pna/gh-pages/docs/PNA-working-draft.html) | [PDF](https://raw.githack.com/p4lang/pna/gh-pages/docs/PNA-working-draft.pdf) ] (using raw.githack.com service)
 + Source: [MDK](https://github.com/p4lang/pna/blob/main/PNA.mdk)
 
 P416 Portable Switch Architecture (PSA)
