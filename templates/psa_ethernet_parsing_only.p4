@@ -25,7 +25,11 @@ header ethernet_t {
     bit<16>         etherType;
 }
 
-struct headers_t {
+struct ingress_headers_t {
+    ethernet_t       ethernet;
+}
+
+struct egress_headers_t {
     ethernet_t       ethernet;
 }
 
@@ -41,8 +45,8 @@ struct metadata_t {
 
 parser ingressParserImpl(
     packet_in pkt,
-    out headers_t hdr,
-    inout metadata_t meta,
+    out ingress_headers_t hdr,
+    inout metadata_t umd,
     in psa_ingress_parser_input_metadata_t istd,
     in empty_metadata_t resubmit_meta,
     in empty_metadata_t recirculate_meta)
@@ -54,14 +58,14 @@ parser ingressParserImpl(
 }
 
 control ingressImpl(
-    inout headers_t hdr,
-    inout metadata_t meta,
+    inout ingress_headers_t hdr,
+    inout metadata_t umd,
     in    psa_ingress_input_metadata_t  istd,
     inout psa_ingress_output_metadata_t ostd)
 {
 /*
     action foo() {
-        meta.b = meta.b + 5;
+        umd.b = umd.b + 5;
     }
     table guh {
         key = {
@@ -84,8 +88,8 @@ control ingressImpl(
 
 parser egressParserImpl(
     packet_in pkt,
-    out headers_t hdr,
-    inout metadata_t meta,
+    out egress_headers_t hdr,
+    inout metadata_t umd,
     in psa_egress_parser_input_metadata_t istd,
     in empty_metadata_t normal_meta,
     in empty_metadata_t clone_i2e_meta,
@@ -97,8 +101,8 @@ parser egressParserImpl(
 }
 
 control egressImpl(
-    inout headers_t hdr,
-    inout metadata_t meta,
+    inout egress_headers_t hdr,
+    inout metadata_t umd,
     in    psa_egress_input_metadata_t  istd,
     inout psa_egress_output_metadata_t ostd)
 {
@@ -119,8 +123,8 @@ control ingressDeparserImpl(
     out empty_metadata_t clone_i2e_meta,
     out empty_metadata_t resubmit_meta,
     out empty_metadata_t normal_meta,
-    inout headers_t hdr,
-    in metadata_t meta,
+    inout ingress_headers_t hdr,
+    in metadata_t umd,
     in psa_ingress_output_metadata_t istd)
 {
     CommonDeparserImpl() cp;
@@ -133,8 +137,8 @@ control egressDeparserImpl(
     packet_out pkt,
     out empty_metadata_t clone_e2e_meta,
     out empty_metadata_t recirculate_meta,
-    inout headers_t hdr,
-    in metadata_t meta,
+    inout egress_headers_t hdr,
+    in metadata_t umd,
     in psa_egress_output_metadata_t istd,
     in psa_egress_deparser_input_metadata_t edstd)
 {

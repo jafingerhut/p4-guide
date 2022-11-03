@@ -36,10 +36,10 @@ struct metadata_t {
 */
 }
 
-parser parserImpl(
+parser ingressParserImpl(
     packet_in pkt,
     out headers_t hdr,
-    inout metadata_t meta,
+    inout metadata_t umd,
     inout standard_metadata_t stdmeta)
 {
     state start {
@@ -50,14 +50,14 @@ parser parserImpl(
 
 control verifyChecksum(
     inout headers_t hdr,
-    inout metadata_t meta)
+    inout metadata_t umd)
 {
     apply { }
 }
 
 control ingressImpl(
     inout headers_t hdr,
-    inout metadata_t meta,
+    inout metadata_t umd,
     inout standard_metadata_t stdmeta)
 {
 /*
@@ -65,7 +65,7 @@ control ingressImpl(
         mark_to_drop(stdmeta);
     }
     action foo() {
-        meta.b = meta.b + 5;
+        umd.b = umd.b + 5;
     }
     table guh {
         key = {
@@ -88,7 +88,7 @@ control ingressImpl(
 
 control egressImpl(
     inout headers_t hdr,
-    inout metadata_t meta,
+    inout metadata_t umd,
     inout standard_metadata_t stdmeta)
 {
     apply { }
@@ -96,12 +96,12 @@ control egressImpl(
 
 control updateChecksum(
     inout headers_t hdr,
-    inout metadata_t meta)
+    inout metadata_t umd)
 {
     apply { }
 }
 
-control deparserImpl(
+control egressDeparserImpl(
     packet_out pkt,
     in headers_t hdr)
 {
@@ -110,9 +110,9 @@ control deparserImpl(
     }
 }
 
-V1Switch(parserImpl(),
+V1Switch(ingressParserImpl(),
          verifyChecksum(),
          ingressImpl(),
          egressImpl(),
          updateChecksum(),
-         deparserImpl()) main;
+         egressDeparserImpl()) main;
