@@ -26,3 +26,7 @@ P416 Portable Switch Architecture (PSA)
 Telemetry Report Format
 + v2.0 [[PDF](https://p4.org/p4-spec/docs/telemetry_report_v2_0.pdf)] (October 2020)
 + working draft: [[MDK](https://github.com/p4lang/p4-applications/blob/master/telemetry/specs/telemetry_report.mdk)]
+
+Here is the Github workflow which commits the spec documents to
+gh-pages:
+[madoko-build.yml](https://github.com/p4lang/p4-spec/blob/main/.github/workflows/madoko-build.yml)
