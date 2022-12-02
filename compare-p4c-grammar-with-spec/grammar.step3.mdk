@@ -64,7 +64,7 @@ annotationBody
     ;
 
 annotationToken
-    : UNEXPECTED_TOKEN 
+    : UNEXPECTED_TOKEN
     | ABSTRACT
     | ACTION
     | ACTIONS
@@ -101,7 +101,7 @@ annotationToken
     | STRUCT
     | SWITCH
     | TABLE
-    | THIS             
+    | THIS
     | TRANSITION
     | TRUE
     | TUPLE
@@ -319,7 +319,7 @@ simpleKeysetExpression
     | expression "&&&" expression
     | expression ".." expression
     | DEFAULT
-    | "_"                         
+    | "_"
     ;
 
 valueSetDeclaration
@@ -458,7 +458,7 @@ typeArg
     : typeRef
     | nonTypeName
     | VOID
-    | "_"                         
+    | "_"
     ;
 
 typeArgumentList
@@ -470,7 +470,7 @@ typeArgumentList
 realTypeArg
     : typeRef
     | VOID
-    | "_"                         
+    | "_"
     ;
 
 realTypeArgumentList
@@ -717,8 +717,8 @@ nonEmptyArgList
 argument
     : expression
     | name "=" expression
-    | "_"                                
-    | name "=" "_"                       
+    | "_"
+    | name "=" "_"
     ;
 
 expressionList
