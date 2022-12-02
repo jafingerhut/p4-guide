@@ -60,25 +60,18 @@ annotations
 
 annotation
     : "@" name
-        
     | "@" name "(" annotationBody ")"
-        
     | "@" name "[" expressionList "]"
-        
     | "@" name "[" kvList "]"
-        
     // Experimental: backwards compatibility with P4-14 pragmas (which
     // themselves are experimental!)
     | PRAGMA name annotationBody END_PRAGMA
-        
     ;
 
 annotationBody
     : /* empty */  
     | annotationBody "(" annotationBody ")"
-        
     | annotationBody annotationToken
-        
     ;
 
 annotationToken
@@ -129,12 +122,10 @@ annotationToken
     | LIST             
     | VOID             
     | "_"              
-
     | IDENTIFIER       
     | TYPE_IDENTIFIER  
     | STRING_LITERAL   
     | INTEGER          
-
     | "&&&"            
     | ".."             
     | "<<"             
@@ -145,7 +136,6 @@ annotationToken
     | ">="             
     | "<="             
     | "++"             
-
     | "+"              
     | "|+|"            
     | "-"              
@@ -153,17 +143,14 @@ annotationToken
     | "*"              
     | "/"              
     | "%"              
-
     | "|"              
     | "&"              
     | "^"              
     | "~"              
-
     // Omit parens. These are handled in annotationBody, since they must be
     // balanced.
     // | "("              
     // | ")"              
-
     | "["              
     | "]"              
     | "{"              
@@ -172,7 +159,6 @@ annotationToken
     | L_ANGLE_ARGS     
     | ">"              
     | R_ANGLE_SHIFT    
-
     | "!"              
     | ":"              
     | ","              
@@ -222,18 +208,13 @@ packageTypeDeclaration
 
 instantiation
       : annotations typeRef "(" argumentList ")" name ";"
-                     
       | typeRef "(" argumentList ")" name ";"
-                     
       | annotations typeRef "(" argumentList ")" name "=" objInitializer ";"
-                     
       | typeRef "(" argumentList ")" name "=" objInitializer ";"
-                     
     ;
 
 objInitializer
     : "{"  objDeclarations "}"
-                               
     ;
 
 objDeclarations
@@ -260,7 +241,6 @@ dotPrefix
 parserDeclaration
     : parserTypeDeclaration optConstructorParameters
       "{" parserLocalElements parserStates "}"
-                             
     ;
 
 parserLocalElements
@@ -290,7 +270,6 @@ parserStates
 parserState
     : optAnnotations STATE name 
       "{" parserStatements transitionStatement "}"
-                                      
     ;
 
 parserStatements
@@ -325,7 +304,6 @@ stateExpression
 
 selectExpression
     : SELECT "(" expressionList ")" "{" selectCaseList "}"
-                              
     ;
 
 selectCaseList
@@ -335,7 +313,6 @@ selectCaseList
 
 selectCase
     : keysetExpression ":" name ";"
-      
     ;
 
 keysetExpression
@@ -345,7 +322,6 @@ keysetExpression
 
 tupleKeysetExpression
     : "(" simpleKeysetExpression "," simpleExpressionList ")"
-                                            
     | "(" reducedSimpleKeysetExpression ")" 
     ;
 
@@ -373,13 +349,10 @@ simpleKeysetExpression
 valueSetDeclaration
     : optAnnotations
         VALUESET "<" baseType ">" "(" expression ")" name ";"
-        
     | optAnnotations
         VALUESET "<" tupleType ">" "(" expression ")" name ";"
-        
     | optAnnotations
         VALUESET "<" typeName ">" "(" expression ")" name ";"
-        
     ;
 
 /*************************** CONTROL ************************/
@@ -387,7 +360,6 @@ valueSetDeclaration
 controlDeclaration
     : controlTypeDeclaration optConstructorParameters
       "{" controlLocalDeclarations APPLY controlBody "}"
-        
     ;
 
 controlTypeDeclaration
@@ -440,7 +412,6 @@ methodPrototype
     : optAnnotations functionPrototype ";" 
     | optAnnotations ABSTRACT functionPrototype ";" 
     | optAnnotations TYPE_IDENTIFIER "(" parameterList ")" ";"  // constructor
-                                        
     ;
 
 /************************** TYPES ****************************/
@@ -493,18 +464,11 @@ baseType
     | STRING 
     | INT    
     | BIT "<" INTEGER ">"
-      
     | INT "<" INTEGER ">"
-      
     | VARBIT "<" INTEGER ">"
-      
-
     | BIT "<" "(" expression ")" ">"
-      
     | INT "<" "(" expression ")" ">"
-      
     | VARBIT "<" "(" expression ")" ">"
-      
     ;
 
 typeOrVoid
@@ -613,12 +577,10 @@ specifiedIdentifier
 
 errorDeclaration
     : ERROR "{" identifierList "}"
-        
     ;
 
 matchKindDeclaration
     : MATCH_KIND "{" identifierList "}"
-        
     ;
 
 identifierList
@@ -637,14 +599,8 @@ typedefDeclaration
 assignmentOrMethodCallStatement
     // These rules are overly permissive, but they avoid some conflicts
     : lvalue "(" argumentList ")" ";"
-        
-
     | lvalue "<" typeArgumentList ">" "(" argumentList ")" ";"
-        
-
     | lvalue "=" expression ";"
-        
-
     ;
 
 emptyStatement
@@ -662,9 +618,7 @@ returnStatement
 
 conditionalStatement
     : IF "(" expression ")" statement                 %prec THEN
-        
     | IF "(" expression ")" statement ELSE statement  %prec THEN
-        
     ;
 
 // To support direct invocation of a control or parser without instantiation
@@ -725,7 +679,6 @@ statementOrDeclaration
 tableDeclaration
     : optAnnotations
         TABLE name "{" tablePropertyList "}"
-          
     ;
 
 tablePropertyList
@@ -735,13 +688,9 @@ tablePropertyList
 
 tableProperty
     : KEY "=" "{" keyElementList "}"
-        
     | ACTIONS "=" "{" actionList "}"
-        
     | optAnnotations optCONST ENTRIES "=" "{" entriesList "}"
-        
     | optAnnotations optCONST nonTableKwName "=" initializer ";"
-        
     ;
 
 keyElementList
@@ -751,25 +700,20 @@ keyElementList
 
 keyElement
     : expression ":" name optAnnotations ";"
-                                         
     ;
 
 actionList
     : /* empty */ 
     | actionList optAnnotations actionRef ";"
-             
     ;
 
 actionRef
     : prefixedNonTypeName
-        
     | prefixedNonTypeName "(" argumentList ")"
-        
     ;
 
 entry
     : keysetExpression ":" actionRef optAnnotations ";"
-        
     ;
 
 entriesList
@@ -781,21 +725,17 @@ entriesList
 
 actionDeclaration
     : optAnnotations ACTION name "(" parameterList ")" blockStatement
-        
     ;
 
 /************************* VARIABLES *****************************/
 
 variableDeclaration
     : annotations typeRef name optInitializer ";"
-                                     
     | typeRef name optInitializer ";"
-                                     
     ;
 
 constantDeclaration
     : optAnnotations CONST typeRef name "=" initializer ";"
-                                     
     ;
 
 optInitializer
@@ -843,7 +783,6 @@ prefixedNonTypeName
 
 dot_name:
     "."  name 
-
 lvalue
     : prefixedNonTypeName                
     | THIS                               
@@ -870,9 +809,7 @@ expression
     | "-" expression %prec PREFIX        
     | "+" expression %prec PREFIX        
     | typeName dot_name %prec DOT
-        
     | ERROR "." name
-        
     | expression dot_name %prec DOT      
     | expression "*" expression          
     | expression "/" expression          
@@ -883,11 +820,9 @@ expression
     | expression "|-|" expression        
     | expression "<<" expression         
     | expression R_ANGLE_SHIFT ">" expression %prec R_ANGLE_SHIFT
-        
     | expression "<=" expression         
     | expression ">=" expression         
     | expression "<" expression %prec "<"
-                                         
     | expression ">" expression          
     | expression "!=" expression         
     | expression "==" expression         
@@ -899,11 +834,8 @@ expression
     | expression "||" expression         
     | expression "?" expression ":" expression 
     | expression "<" realTypeArgumentList ">" "(" argumentList ")"
-        
     | expression "(" argumentList ")"
-        
     | namedType "(" argumentList ")"
-        
     | "(" typeRef ")" expression %prec PREFIX 
     ;
 
@@ -922,9 +854,7 @@ nonBraceExpression
     | "-" expression %prec PREFIX        
     | "+" expression %prec PREFIX        
     | typeName dot_name %prec DOT
-        
     | ERROR "." name
-        
     | nonBraceExpression dot_name %prec DOT      
     | nonBraceExpression "*" expression          
     | nonBraceExpression "/" expression          
@@ -935,11 +865,9 @@ nonBraceExpression
     | nonBraceExpression "|-|" expression        
     | nonBraceExpression "<<" expression         
     | nonBraceExpression R_ANGLE_SHIFT ">" expression %prec R_ANGLE_SHIFT
-        
     | nonBraceExpression "<=" expression         
     | nonBraceExpression ">=" expression         
     | nonBraceExpression "<" expression %prec "<"
-                                         
     | nonBraceExpression ">" expression          
     | nonBraceExpression "!=" expression         
     | nonBraceExpression "==" expression         
@@ -951,11 +879,8 @@ nonBraceExpression
     | nonBraceExpression "||" expression         
     | nonBraceExpression "?" expression ":" expression 
     | nonBraceExpression "<" realTypeArgumentList ">" "(" argumentList ")"
-        
     | nonBraceExpression "(" argumentList ")"
-        
     | namedType "(" argumentList ")"
-        
     | "(" typeRef ")" expression %prec PREFIX 
     ;
 
@@ -988,4 +913,3 @@ strList
 
 void P4::P4Parser::error(const Util::SourceInfo& location,
                          const std::string& message) 
-
