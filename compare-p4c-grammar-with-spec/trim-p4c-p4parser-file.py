@@ -4,13 +4,16 @@ import os, sys
 import fileinput
 import re
 
+remove_comments = False
+
 # Read the entire file in as one big string.
 
 lines = []
 keep = False
 for line in fileinput.input():
-    match = re.match(r"^program\s*:", line)
-    if match:
+    match1 = re.match(r"^program\s*:", line)
+    match2 = re.match(r"^p4program", line)
+    if match1 or match2:
         keep = True
         #print("First line kept:\n%s" % (line))
     if keep:
@@ -55,13 +58,23 @@ content = re.sub('r_angle', '">"', content)
 #   line by itself.
 
 lines = content.split('\n')
+
+for i in range(len(lines)):
+    if remove_comments:
+        # Remove end-of line comments beginning with //
+        lines[i] = re.sub(r"//.*$", "", lines[i])
+        # Remove comments of the form /* ... */
+        lines[i] = re.sub(r"/\*.*\*/", "", lines[i])
+    # Remove end-of-line whitespace
+    lines[i] = lines[i].rstrip()
+
 lines2 = []
 
 i = 0
 while i < len(lines):
+    nonterminal = re.match(r"^[a-zA-Z]", lines[i])
     lines2.append(lines[i])
     i += 1
-    nonterminal = re.match(r"^[a-zA-Z]", lines[i])
     if nonterminal:
         while i < len(lines):
             end_of_defn = re.match(r"^\s+;", lines[i])
