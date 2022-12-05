@@ -61,7 +61,7 @@ enum bit<8> ipproto_t {
   VRRP = 112,    /* Virtual Router Redundancy Protocol */
   L2TP = 115,    /* Layer Two Tunneling Protocol Version 3 */
   SCTP = 132,    /* Stream Control Transmission Protocol */
-  MH = 135       /* IPv6 Mobility Extension Header */
+  MH = 135,      /* IPv6 Mobility Extension Header */
   UDPLITE = 136, /* The Lightweight User Datagram Protocol (UDP-Lite) (RFC 3828) */
   MPLS = 137,    /* MPLS (Multi Protocol Label Switching) Encapsulated in IP (RFC 4023, RFC 5332) */
   HIP = 139,     /* Host Identity Protocol */
