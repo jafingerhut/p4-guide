@@ -63,5 +63,7 @@ enum bit<8> ipproto_t {
   SCTP = 132,    /* Stream Control Transmission Protocol */
   MH = 135       /* IPv6 Mobility Extension Header */
   UDPLITE = 136, /* The Lightweight User Datagram Protocol (UDP-Lite) (RFC 3828) */
-  MPLS = 137     /* MPLS (Multi Protocol Label Switching) Encapsulated in IP (RFC 4023, RFC 5332) */
+  MPLS = 137,    /* MPLS (Multi Protocol Label Switching) Encapsulated in IP (RFC 4023, RFC 5332) */
+  HIP = 139,     /* Host Identity Protocol */
+  SHIM6 = 140    /* Site Multihoming by IPv6 Intermediation */
 }
