@@ -1,5 +1,5 @@
 /*
- Copyright 2022 Andy Fingerhut
+Copyright 2022 Andy Fingerhut
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -333,7 +333,7 @@ limitations under the License.
 // Feel free to add new ones as needed.
 //////////////////////////////////////////////////////////////////////
 
-enum bit<16> ether_type_t {
+enum bit<16> etype_t {
     IPV4      = 0x0800, /* IPv4 */
     ARP       = 0x0806, /* Address Resolution Protocol */
     RARP      = 0x8035, /* Reverse ARP, RFC 903 */
