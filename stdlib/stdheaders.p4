@@ -18,241 +18,290 @@ limitations under the License.
 #ifndef _STANDARD_HEADERS_P4_
 #define _STANDARD_HEADERS_P4_
 
+// https://en.wikipedia.org/wiki/Ethernet_frame
 header ethernet_h {
-    bit<48> dstAddr;
-    bit<48> srcAddr;
-    bit<16> etherType;
+    bit<48> dst_addr;
+    bit<48> src_addr;
+    bit<16> ether_type;
 }
 
-header ipv4_h {
-    bit<4>       version;
-    bit<4>       ihl;
-    bit<8>       diffserv;
-    bit<16>      totalLen;
-    bit<16>      identification;
-    bit<3>       flags;
-    bit<13>      fragOffset;
-    bit<8>       ttl;
-    bit<8>       protocol;
-    bit<16>      hdrChecksum;
-    bit<32>      srcAddr;
-    bit<32>      dstAddr;
-}
-
-header snap_header_h {
-    bit<8> dsap;
-    bit<8> ssap;
-    bit<8> control_;
-    bit<24> oui;
-    bit<16> type_;
-}
-
-header roce_header_h {
-    bit<320> ib_grh;
-    bit<96> ib_bth;
-}
-
-header roce_v2_header_h {
-    bit<96> ib_bth;
-}
-
-header fcoe_header_h {
-    bit<4> version;
-    bit<4> type_;
-    bit<8> sof;
-    bit<32> rsvd1;
-    bit<32> ts_upper;
-    bit<32> ts_lower;
-    bit<32> size_;
-    bit<8> eof;
-    bit<24> rsvd2;
-}
-
+// https://en.wikipedia.org/wiki/IEEE_802.1Q
 header vlan_tag_h {
-    bit<3> pcp;
-    bit<1> cfi;
-    bit<12> vid;
-    bit<16> etherType;
+    bit<3>  pcp;    // priority code point
+    bit<1>  dei;    // drop eligible indicator.
+                    // Formerly CFI - canonical format indicator
+    bit<12> vid;    // VLAN identifier
+    bit<16> ether_type;
 }
 
-header vlan_tag_3b_h {
-    bit<3> pcp;
-    bit<1> cfi;
-    bit<4> vid;
-    bit<16> etherType;
-}
-
-header vlan_tag_5b_h {
-    bit<3> pcp;
-    bit<1> cfi;
-    bit<20> vid;
-    bit<16> etherType;
-}
-
-header ieee802_1ah_h {
-    bit<3> pcp;
-    bit<1> dei;
-    bit<1> uca;
-    bit<3> reserved;
-    bit<24> i_sid;
-}
-
-// In the MPLS header, the 3-bit Traffic Class (tc) field was formerly
-// named EXP, but was renamed to Traffic Class as explained in RFC
-// 5462 "Multiprotocol Label Switching (MPLS) Label Stack Entry: 'EXP'
-// Field Renamed to 'Traffic Class' Field"
-
+// RFC 3031 and several later RFCs with addenda and errata
+// https://en.wikipedia.org/wiki/Multiprotocol_Label_Switching
+// https://tools.ietf.org/html/rfc3031
 header mpls_h {
     bit<20> label;
-    bit<3> tc;
-    bit<1> bos;
-    bit<8> ttl;
+    bit<3>  tc;   // traffic class.  Formerly EXP (before 2009, RFC 5462)
+    bit<1>  bos;  // bottom of stack
+    bit<8>  ttl;  // time to live
 }
 
+// RFC 791
+// https://en.wikipedia.org/wiki/IPv4
+// https://tools.ietf.org/html/rfc791
+header ipv4_h {
+    bit<4>  version;            // always 4 for IPv4
+    bit<4>  ihl;                // Internet header length
+    bit<8>  diffserv;           // 6 bits of DSCP followed by 2-bit ECN
+    bit<16> total_len;          // in bytes, including IPv4 header
+    bit<16> identification;
+    bit<3>  flags;              // rsvd:1, DF (don't fragment):1,
+                                // MF (more fragments):1
+    bit<13> frag_offset;
+    bit<8>  ttl;                // time to live
+    bit<8>  protocol;
+    bit<16> hdr_checksum;
+    bit<32> src_addr;
+    bit<32> dst_addr;
+}
+
+// Formerly RFC 2460 and errata, combined into RFC 8200 as of 2017
+// https://en.wikipedia.org/wiki/IPv6
+// https://tools.ietf.org/html/rfc8200
 header ipv6_h {
-    bit<4> version;
-    bit<8> trafficClass;
-    bit<20> flowLabel;
-    bit<16> payloadLen;
-    bit<8> nextHdr;
-    bit<8> hopLimit;
-    bit<128> srcAddr;
-    bit<128> dstAddr;
+    bit<4>  version;
+    bit<8>  traffic_class;
+    bit<20> flow_label;
+    bit<16> payload_len;
+    bit<8>  next_hdr;
+    bit<8>  hop_limit;
+    bit<128> src_addr;
+    bit<128> dst_addr;
 }
 
+// Segment Routing Extension (SRH) -- IETFv7
+header ipv6_srh_h {
+    bit<8>  next_hdr;
+    bit<8>  hdr_ext_len;
+    bit<8>  routing_type;
+    bit<8>  seg_left;
+    bit<8>  last_entry;
+    bit<8>  flags;
+    bit<16> tag;
+}
+
+// Address Resolution Protocol -- RFC 6747
+// https://tools.ietf.org/html/rfc6747
+header arp_h {
+    bit<16> hw_type;
+    bit<16> proto_type;
+    bit<8>  hw_addr_len;
+    bit<8>  proto_addr_len;
+    bit<16> opcode;
+    // ...
+}
+
+header arp_rarp_ipv4_h {
+    bit<48> src_hw_addr;
+    bit<32> src_proto_addr;
+    bit<48> dst_hw_addr;
+    bit<32> dst_proto_addr;
+}
+
+// RFC 792, updated by several other later RFCs
+// https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol
+// https://tools.ietf.org/html/rfc792
 header icmp_h {
-    bit<8> type_;
-    bit<8> code;
-    bit<16> hdrChecksum;
+    bit<8>  type;
+    bit<8>  code;
+    bit<16> checksum;
+    // ICMP Payload follows, but not parsing
 }
 
-header icmpv6_h {
-    bit<8> type_;
-    bit<8> code;
-    bit<16> hdrChecksum;
+// RFC 768
+// https://en.wikipedia.org/wiki/User_Datagram_Protocol
+// https://tools.ietf.org/html/rfc768
+header udp_h {
+    bit<16> src_port;
+    bit<16> dst_port;
+    bit<16> length;
+    bit<16> checksum;
 }
 
+// RFC 793 and several later RFCs that update it
+// https://en.wikipedia.org/wiki/Transmission_Control_Protocol
+// https://tools.ietf.org/html/rfc793
 header tcp_h {
-    bit<16> srcPort;
-    bit<16> dstPort;
-    bit<32> seqNo;
-    bit<32> ackNo;
-    bit<4> dataOffset;
-    bit<4> res;
-    bit<8> flags;
+    bit<16> src_port;
+    bit<16> dst_port;
+    bit<32> seq_no;
+    bit<32> ack_no;
+    bit<4>  data_offset;
+    bit<4>  res;
+    bit<8>  flags;
     bit<16> window;
     bit<16> checksum;
-    bit<16> urgentPtr;
-}
-
-header udp_h {
-    bit<16> srcPort;
-    bit<16> dstPort;
-    bit<16> length_;
-    bit<16> checksum;
+    bit<16> urgent_ptr;
 }
 
 header sctp_h {
-    bit<16> srcPort;
-    bit<16> dstPort;
-    bit<32> verifTag;
+    bit<16> src_port;
+    bit<16> dst_port;
+    bit<32> verif_tag;
     bit<32> checksum;
 }
 
-header gre_h {
-    bit<1> C;
-    bit<1> R;
-    bit<1> K;
-    bit<1> S;
-    bit<1> s;
-    bit<3> recurse;
-    bit<5> flags;
-    bit<3> ver;
-    bit<16> proto;
+// IGMPv1 in RFC 1112
+// IGMPv2 in RFC 2236
+// IGMPv3 in RFC 3376
+// https://en.wikipedia.org/wiki/Internet_Group_Management_Protocol
+// https://tools.ietf.org/html/rfc1112
+// https://tools.ietf.org/html/rfc2236
+// https://tools.ietf.org/html/rfc3376
+// Fixed-length and fixed-format beginning has some similarities
+// between the different versions of IGMP
+header igmp_h {
+    bit<8>  type;
+    bit<8>  code;
+    bit<16> checksum;
+    // ...
 }
 
-// RFC 7637 "NVGRE: Network Virtualization Using Generic Routing
-// Encapsulation"
+// VXLAN -- RFC 7348
+// https://en.wikipedia.org/wiki/Virtual_Extensible_LAN
+// https://tools.ietf.org/html/rfc7348
+header vxlan_h {
+    bit<8>  flags;
+    bit<24> reserved;
+    bit<24> vni;
+    bit<8>  reserved2;
+}
 
+// Generic Protocol Extension for VXLAN -- IETFv4
+// https://datatracker.ietf.org/doc/draft-ietf-nvo3-vxlan-gpe/
+header vxlan_gpe_h {
+    bit<8>  flags;
+    bit<16> reserved;
+    bit<8>  next_proto;
+    bit<24> vni;
+    bit<8>  reserved2;
+}
+
+// Generic Routing Encapsulation (GRE)
+// RFC 1701 was obsoleted by RFC 2784 and RFC 2890
+// https://en.wikipedia.org/wiki/Generic_Routing_Encapsulation
+// https://tools.ietf.org/html/rfc1701
+// https://tools.ietf.org/html/rfc2784
+// https://tools.ietf.org/html/rfc2890
+header gre_h {
+    bit<1>  C;
+    bit<12> reserved0;
+    bit<3>  version;
+    bit<16> proto;
+    // Omit variable length portions.
+}
+
+// Network Virtualisation using GRE (NVGRE) -- RFC 7637
+// https://tools.ietf.org/html/rfc7637
 header nvgre_h {
-    bit<24> tni;
-    bit<8> reserved;
+    bit<24> vsid;
+    bit<8>  flow_id;
+}
+
+// RFC 8926 "Geneve: Generic Network Virtualization Encapsulation"
+// 3 possible options with known type, known length.
+
+header geneve_h {
+    bit<2>  version;
+    bit<6>  opt_len;
+    bit<1>  oam;
+    bit<1>  critical;
+    bit<6>  reserved;
+    bit<16> proto_type;
+    bit<24> vni;
+    bit<8>  reserved2;
+}
+
+#define GENEVE_OPTION_A_TYPE 0x000001
+/* TODO: Would it be convenient to have some kind of sizeof macro ? */
+#define GENEVE_OPTION_A_LENGTH 2 /* in bytes */
+
+header geneve_opt_a_h {
+    bit<16> opt_class;
+    bit<8>  opt_type;
+    bit<3>  reserved;
+    bit<5>  opt_len;
+    bit<32> dt;
+}
+
+#define GENEVE_OPTION_B_TYPE 0x000002
+#define GENEVE_OPTION_B_LENGTH 3 /* in bytes */
+
+header geneve_opt_b_h {
+    bit<16> opt_class;
+    bit<8>  opt_type;
+    bit<3>  reserved;
+    bit<5>  opt_len;
+    bit<64> dt;
+}
+
+#define GENEVE_OPTION_C_TYPE 0x000003
+#define GENEVE_OPTION_C_LENGTH 2 /* in bytes */
+
+header geneve_opt_c_h {
+    bit<16> opt_class;
+    bit<8>  opt_type;
+    bit<3>  reserved;
+    bit<5>  opt_len;
+    bit<32> dt;
 }
 
 /* 8 bytes */
 header erspan_header_v1_h {
-    bit<4> version;
+    bit<4>  version;
     bit<12> vlan;
-    bit<6> priority;
+    bit<6>  priority;
     bit<10> span_id;
-    bit<8> direction;
-    bit<8> truncated;
+    bit<8>  direction;
+    bit<8>  truncated;
 }
 
 /* 8 bytes */
 header erspan_header_v2_h {
-    bit<4> version;
+    bit<4>  version;
     bit<12> vlan;
-    bit<6> priority;
+    bit<6>  priority;
     bit<10> span_id;
     bit<32> unknown7;
 }
 
 header ipsec_esp_h {
     bit<32> spi;
-    bit<32> seqNo;
+    bit<32> seq_no;
 }
 
 header ipsec_ah_h {
-    bit<8> nextHdr;
-    bit<8> length_;
+    bit<8>  next_hdr;
+    bit<8>  length;
     bit<16> zero;
     bit<32> spi;
-    bit<32> seqNo;
-}
-
-header arp_rarp_h {
-    bit<16> hwType;
-    bit<16> protoType;
-    bit<8> hwAddrLen;
-    bit<8> protoAddrLen;
-    bit<16> opcode;
-}
-
-header arp_rarp_ipv4_h {
-    bit<48> srcHwAddr;
-    bit<32> srcProtoAddr;
-    bit<48> dstHwAddr;
-    bit<32> dstProtoAddr;
+    bit<32> seq_no;
 }
 
 header eompls_h {
-    bit<4> zero;
+    bit<4>  zero;
     bit<12> reserved;
-    bit<16> seqNo;
-}
-
-// RFC 7348 "Virtual eXtensible Local Area Network (VXLAN): A
-// Framework for Overlaying Virtualized Layer 2 Networks over Layer 3
-// Networks"
-
-header vxlan_h {
-    bit<8> flags;
-    bit<24> reserved;
-    bit<24> vni;
-    bit<8> reserved2;
+    bit<16> seq_no;
 }
 
 // RFC 8300 "Network Service Header (NSH)"
 
 header nsh_h {
-    bit<1> oam;
-    bit<1> context;
-    bit<6> flags;
-    bit<8> reserved;
-    bit<16> protoType;
+    bit<1>  oam;
+    bit<1>  context;
+    bit<6>  flags;
+    bit<8>  reserved;
+    bit<16> proto_type;
     bit<24> spath;
-    bit<8> sindex;
+    bit<8>  sindex;
 }
 
 header nsh_context_h {
@@ -260,53 +309,5 @@ header nsh_context_h {
     bit<32> network_shared;
     bit<32> service_platform;
     bit<32> service_shared;
-}
-
-// RFC 8926 "Geneve: Generic Network Virtualization Encapsulation"
-// 3 possible options with known type, known length.
-
-header genv_h {
-    bit<2> ver;
-    bit<6> optLen;
-    bit<1> oam;
-    bit<1> critical;
-    bit<6> reserved;
-    bit<16> protoType;
-    bit<24> vni;
-    bit<8> reserved2;
-}
-
-#define GENV_OPTION_A_TYPE 0x000001
-/* TODO: Would it be convenient to have some kind of sizeof macro ? */
-#define GENV_OPTION_A_LENGTH 2 /* in bytes */
-
-header genv_opt_A_h {
-    bit<16> optClass;
-    bit<8> optType;
-    bit<3> reserved;
-    bit<5> optLen;
-    bit<32> dt;
-}
-
-#define GENV_OPTION_B_TYPE 0x000002
-#define GENV_OPTION_B_LENGTH 3 /* in bytes */
-
-header genv_opt_B_h {
-    bit<16> optClass;
-    bit<8> optType;
-    bit<3> reserved;
-    bit<5> optLen;
-    bit<64> dt;
-}
-
-#define GENV_OPTION_C_TYPE 0x000003
-#define GENV_OPTION_C_LENGTH 2 /* in bytes */
-
-header genv_opt_C_h {
-    bit<16> optClass;
-    bit<8> optType;
-    bit<3> reserved;
-    bit<5> optLen;
-    bit<32> dt;
 }
 #endif
