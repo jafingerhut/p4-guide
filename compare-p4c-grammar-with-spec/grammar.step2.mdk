@@ -30,6 +30,7 @@ nonTypeName
 
 name
     : nonTypeName
+    | LIST
     | TYPE_IDENTIFIER
     ;
 
@@ -107,6 +108,7 @@ annotationToken
     | TYPEDEF
     | VARBIT
     | VALUESET
+    | LIST
     | VOID
     | "_"
     | IDENTIFIER
@@ -388,6 +390,7 @@ typeRef
     | typeName
     | specializedType
     | headerStackType
+    | p4listType
     | tupleType
     ;
 
@@ -403,6 +406,10 @@ prefixedType
 
 typeName
     : prefixedType
+    ;
+
+p4listType
+    : LIST "<" typeArg ">"
     ;
 
 tupleType
@@ -544,7 +551,6 @@ typedefDeclaration
     : optAnnotations TYPEDEF typeRef name ";"
     | optAnnotations TYPEDEF derivedTypeDeclaration name ";"
     | optAnnotations TYPE typeRef name ";"
-    | optAnnotations TYPE derivedTypeDeclaration name ";"
     ;
 
 /*************************** STATEMENTS *************************/
