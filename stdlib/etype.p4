@@ -336,6 +336,7 @@ limitations under the License.
 enum bit<16> etype_t {
     IPV4      = 0x0800, /* IPv4 */
     ARP       = 0x0806, /* Address Resolution Protocol */
+    MAC       = 0x6558, /* Transparent Ethernet Bridging */
     RARP      = 0x8035, /* Reverse ARP, RFC 903 */
     AT        = 0x809B, /* AppleTalk protocol */
     AARP      = 0x80F3, /* AppleTalk ARP */
