@@ -15,6 +15,11 @@ limitations under the License.
 */
 
 #include <core.p4>
+// The following line is not needed when using Intel Tofino P4
+// compiler.  It is only here to be able to use open source p4test
+// with tna.p4 include file in Open-Tofino repository for syntax
+// checking.
+#define __TARGET_TOFINO__ 1
 #include <tna.p4>
 
 typedef bit<48> EthernetAddress;

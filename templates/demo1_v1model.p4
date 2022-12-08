@@ -18,17 +18,12 @@ limitations under the License.
 #define V1MODEL_VERSION 20200408
 #include <v1model.p4>
 
-typedef bit<16>  MulticastGroup_t;
-typedef bit<48>  EthernetAddress;
+#include <stdheaders.p4>
 
-header ethernet_t {
-    EthernetAddress dstAddr;
-    EthernetAddress srcAddr;
-    bit<16>         etherType;
-}
+typedef bit<16>  MulticastGroup_t;
 
 struct headers_t {
-    ethernet_t    ethernet;
+    ethernet_h    ethernet;
 }
 
 struct metadata_t {
@@ -70,7 +65,7 @@ control ingressImpl(
     }
     table fwd_by_dest_mac {
         key = {
-            hdr.ethernet.dstAddr : exact;
+            hdr.ethernet.dst_addr : exact;
         }
         actions = {
             unicast_to_port;

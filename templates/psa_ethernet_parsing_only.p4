@@ -17,20 +17,10 @@ limitations under the License.
 #include <core.p4>
 #include <psa.p4>
 
-typedef bit<48>  EthernetAddress;
+#include <stdheaders.p4>
 
-header ethernet_t {
-    EthernetAddress dstAddr;
-    EthernetAddress srcAddr;
-    bit<16>         etherType;
-}
-
-struct ingress_headers_t {
-    ethernet_t       ethernet;
-}
-
-struct egress_headers_t {
-    ethernet_t       ethernet;
+struct headers_t {
+    ethernet_h       ethernet;
 }
 
 struct empty_metadata_t {
@@ -45,7 +35,7 @@ struct metadata_t {
 
 parser ingressParserImpl(
     packet_in pkt,
-    out ingress_headers_t hdr,
+    out headers_t hdr,
     inout metadata_t umd,
     in psa_ingress_parser_input_metadata_t istd,
     in empty_metadata_t resubmit_meta,
@@ -58,7 +48,7 @@ parser ingressParserImpl(
 }
 
 control ingressImpl(
-    inout ingress_headers_t hdr,
+    inout headers_t hdr,
     inout metadata_t umd,
     in    psa_ingress_input_metadata_t  istd,
     inout psa_ingress_output_metadata_t ostd)
@@ -69,7 +59,7 @@ control ingressImpl(
     }
     table guh {
         key = {
-            hdr.ethernet.srcAddr : exact;
+            hdr.ethernet.src_addr : exact;
         }
         actions = {
             foo;
@@ -88,7 +78,7 @@ control ingressImpl(
 
 parser egressParserImpl(
     packet_in pkt,
-    out egress_headers_t hdr,
+    out headers_t hdr,
     inout metadata_t umd,
     in psa_egress_parser_input_metadata_t istd,
     in empty_metadata_t normal_meta,
@@ -101,7 +91,7 @@ parser egressParserImpl(
 }
 
 control egressImpl(
-    inout egress_headers_t hdr,
+    inout headers_t hdr,
     inout metadata_t umd,
     in    psa_egress_input_metadata_t  istd,
     inout psa_egress_output_metadata_t ostd)
@@ -123,7 +113,7 @@ control ingressDeparserImpl(
     out empty_metadata_t clone_i2e_meta,
     out empty_metadata_t resubmit_meta,
     out empty_metadata_t normal_meta,
-    inout ingress_headers_t hdr,
+    inout headers_t hdr,
     in metadata_t umd,
     in psa_ingress_output_metadata_t istd)
 {
@@ -137,7 +127,7 @@ control egressDeparserImpl(
     packet_out pkt,
     out empty_metadata_t clone_e2e_meta,
     out empty_metadata_t recirculate_meta,
-    inout egress_headers_t hdr,
+    inout headers_t hdr,
     in metadata_t umd,
     in psa_egress_output_metadata_t istd,
     in psa_egress_deparser_input_metadata_t edstd)

@@ -15,15 +15,14 @@ limitations under the License.
 */
 
 #include <core.p4>
+// The following line is not needed when using Intel Tofino P4
+// compiler.  It is only here to be able to use open source p4test
+// with tna.p4 include file in Open-Tofino repository for syntax
+// checking.
+#define __TARGET_TOFINO__ 1
 #include <tna.p4>
 
-typedef bit<48> EthernetAddress;
-
-header ethernet_t {
-    EthernetAddress dstAddr;
-    EthernetAddress srcAddr;
-    bit<16>         etherType;
-}
+#include <stdheaders.p4>
 
 header bridge_metadata_t {
     // user-defined metadata carried over from ingress to egress.
@@ -31,12 +30,12 @@ header bridge_metadata_t {
 
 struct ingress_headers_t {
     bridge_metadata_t bridge_md;
-    ethernet_t ethernet;
+    ethernet_h ethernet;
 }
 
 struct egress_headers_t {
     bridge_metadata_t bridge_md;
-    ethernet_t ethernet;
+    ethernet_h ethernet;
 }
 
 struct ingress_metadata_t {
@@ -94,7 +93,7 @@ control ingressImpl(
     }
     table forward_by_destmac {
         key = {
-            hdr.ethernet.dstAddr : exact;
+            hdr.ethernet.dst_addr : exact;
         }
         actions = {
             unicast_to_port;

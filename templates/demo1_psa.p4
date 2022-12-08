@@ -17,20 +17,14 @@ limitations under the License.
 #include <core.p4>
 #include <psa.p4>
 
-typedef bit<48>  EthernetAddress;
-
-header ethernet_t {
-    EthernetAddress dstAddr;
-    EthernetAddress srcAddr;
-    bit<16>         etherType;
-}
+#include <stdheaders.p4>
 
 struct ingress_headers_t {
-    ethernet_t       ethernet;
+    ethernet_h       ethernet;
 }
 
 struct egress_headers_t {
-    ethernet_t       ethernet;
+    ethernet_h       ethernet;
 }
 
 struct empty_metadata_t {
@@ -72,7 +66,7 @@ control ingressImpl(
     }
     table fwd_by_dest_mac {
         key = {
-            hdr.ethernet.dstAddr : exact;
+            hdr.ethernet.dst_addr : exact;
         }
         actions = {
             unicast_to_port;
