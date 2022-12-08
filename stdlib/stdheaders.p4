@@ -15,13 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef _STANDARD_HEADERS_P4_
-#define _STANDARD_HEADERS_P4_
+#ifndef _STDHEADERS_P4_
+#define _STDHEADERS_P4_
+
+typedef bit<48>  EthernetAddress;
+typedef bit<32>  IPv4Address;
+typedef bit<128> IPv6Address;
 
 // https://en.wikipedia.org/wiki/Ethernet_frame
 header ethernet_h {
-    bit<48> dst_addr;
-    bit<48> src_addr;
+    EthernetAddress dst_addr;
+    EthernetAddress src_addr;
     bit<16> ether_type;
 }
 
@@ -59,8 +63,8 @@ header ipv4_h {
     bit<8>  ttl;                // time to live
     bit<8>  protocol;
     bit<16> hdr_checksum;
-    bit<32> src_addr;
-    bit<32> dst_addr;
+    IPv4Address src_addr;
+    IPv4Address dst_addr;
 }
 
 // Formerly RFC 2460 and errata, combined into RFC 8200 as of 2017
@@ -73,8 +77,8 @@ header ipv6_h {
     bit<16> payload_len;
     bit<8>  next_hdr;
     bit<8>  hop_limit;
-    bit<128> src_addr;
-    bit<128> dst_addr;
+    IPv6Address src_addr;
+    IPv6Address dst_addr;
 }
 
 // Segment Routing Extension (SRH) -- IETFv7
@@ -101,9 +105,9 @@ header arp_h {
 
 header arp_rarp_ipv4_h {
     bit<48> src_hw_addr;
-    bit<32> src_proto_addr;
+    IPv4Address src_proto_addr;
     bit<48> dst_hw_addr;
-    bit<32> dst_proto_addr;
+    IPv4Address dst_proto_addr;
 }
 
 // RFC 792, updated by several other later RFCs
@@ -310,4 +314,4 @@ header nsh_context_h {
     bit<32> service_platform;
     bit<32> service_shared;
 }
-#endif
+#endif  // _STDHEADERS_P4_
