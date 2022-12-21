@@ -68,7 +68,7 @@ fi
 # Compile and install simple_switch and psa_switch, but not simple_switch_grpc
 ./autogen.sh
 # With debug enabled in binaries:
-./configure --with-pi 'CXXFLAGS=-O0 -g'
+./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 # With debug and P4_16 stack operation support enabled in binaries:
 #./configure --enable-WP4-16-stacks 'CXXFLAGS=-O0 -g'
 # Without debug enabled:
