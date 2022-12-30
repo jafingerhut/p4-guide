@@ -333,32 +333,32 @@ limitations under the License.
 // Feel free to add new ones as needed.
 //////////////////////////////////////////////////////////////////////
 
-enum bit<16> etype_t {
-    IPV4      = 0x0800, /* IPv4 */
-    ARP       = 0x0806, /* Address Resolution Protocol */
-    MAC       = 0x6558, /* Transparent Ethernet Bridging */
-    RARP      = 0x8035, /* Reverse ARP, RFC 903 */
-    AT        = 0x809B, /* AppleTalk protocol */
-    AARP      = 0x80F3, /* AppleTalk ARP */
-    VLAN      = 0x8100, /* IEEE 802.1Q Customer VLAN Tag Type (C-Tag, formerly called the Q-Tag) */
-    IPX       = 0x8137, /* IPX */
-    IPV6      = 0x86DD, /* IP protocol version 6 */
-    PAUSE     = 0x8808, /* IEEE Pause frames. See 802.3 31B */
-    MPLS      = 0x8847, /* MPLS */
-    MPLS_UPSTREAM = 0x8848, /* MPLS with upstream-assigned label */
-    QINQ      = 0x88A8, /* Service VLAN tag identifier (S-Tag) */
-    LLDP      = 0x88CC, /* Link Layer Discovery Protocol */
-    MACSEC    = 0x88E5, /* IEEE 802.1ae MAC security (MACsec) */
-    PBB       = 0x88E7, /* IEEE 802.1ah Provider Backbone Bridges */
-    PTP       = 0x88F7, /* Precision Time Protocol */
-    DCE       = 0x8903, /* Cisco Data Center Ethernet */
-    FCOE      = 0x8906, /* Fibre Channel over Ethernet */
-    VNTAG     = 0x8926, /* Cisco Virtual Network endpoint Tag */
-    BR        = 0x893F, /* Bridge Port Extension tag (E-TAG) */
-    NSH       = 0x894F, /* Network Service Header, RFC 8300 */
-    ROCE      = 0x8915, /* RDMA over Converged Ethernet */
-    LOOPBACK  = 0x9000, /* Ethernet loopback packet, per IEEE 802.3 */
-    QINQ1     = 0x9100, /* deprecated QinQ VLAN (NOT AN OFFICIALLY REGISTERED ID) */
-    QINQ2     = 0x9200, /* deprecated QinQ VLAN (NOT AN OFFICIALLY REGISTERED ID) */
-    QINQ3     = 0x9300  /* deprecated QinQ VLAN (NOT AN OFFICIALLY REGISTERED ID) */
-}
+typedef bit<16> etype_t;
+
+const etype_t ETYPE_IPV4      = 0x0800; /* IPv4 */
+const etype_t ETYPE_ARP       = 0x0806; /* Address Resolution Protocol */
+const etype_t ETYPE_MAC       = 0x6558; /* Transparent Ethernet Bridging */
+const etype_t ETYPE_RARP      = 0x8035; /* Reverse ARP, RFC 903 */
+const etype_t ETYPE_AT        = 0x809B; /* AppleTalk protocol */
+const etype_t ETYPE_AARP      = 0x80F3; /* AppleTalk ARP */
+const etype_t ETYPE_VLAN      = 0x8100; /* IEEE 802.1Q Customer VLAN Tag Type (C-Tag, formerly called the Q-Tag) */
+const etype_t ETYPE_IPX       = 0x8137; /* IPX */
+const etype_t ETYPE_IPV6      = 0x86DD; /* IP protocol version 6 */
+const etype_t ETYPE_PAUSE     = 0x8808; /* IEEE Pause frames. See 802.3 31B */
+const etype_t ETYPE_MPLS      = 0x8847; /* MPLS */
+const etype_t ETYPE_MPLS_UPSTREAM = 0x8848; /* MPLS with upstream-assigned label */
+const etype_t ETYPE_QINQ      = 0x88A8; /* Service VLAN tag identifier (S-Tag) */
+const etype_t ETYPE_LLDP      = 0x88CC; /* Link Layer Discovery Protocol */
+const etype_t ETYPE_MACSEC    = 0x88E5; /* IEEE 802.1ae MAC security (MACsec) */
+const etype_t ETYPE_PBB       = 0x88E7; /* IEEE 802.1ah Provider Backbone Bridges */
+const etype_t ETYPE_PTP       = 0x88F7; /* Precision Time Protocol */
+const etype_t ETYPE_DCE       = 0x8903; /* Cisco Data Center Ethernet */
+const etype_t ETYPE_FCOE      = 0x8906; /* Fibre Channel over Ethernet */
+const etype_t ETYPE_VNTAG     = 0x8926; /* Cisco Virtual Network endpoint Tag */
+const etype_t ETYPE_BR        = 0x893F; /* Bridge Port Extension tag (E-TAG) */
+const etype_t ETYPE_NSH       = 0x894F; /* Network Service Header, RFC 8300 */
+const etype_t ETYPE_ROCE      = 0x8915; /* RDMA over Converged Ethernet */
+const etype_t ETYPE_LOOPBACK  = 0x9000; /* Ethernet loopback packet, per IEEE 802.3 */
+const etype_t ETYPE_QINQ1     = 0x9100; /* deprecated QinQ VLAN (NOT AN OFFICIALLY REGISTERED ID) */
+const etype_t ETYPE_QINQ2     = 0x9200; /* deprecated QinQ VLAN (NOT AN OFFICIALLY REGISTERED ID) */
+const etype_t ETYPE_QINQ3     = 0x9300; /* deprecated QinQ VLAN (NOT AN OFFICIALLY REGISTERED ID) */

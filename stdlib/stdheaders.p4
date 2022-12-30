@@ -18,6 +18,9 @@ limitations under the License.
 #ifndef _STDHEADERS_P4_
 #define _STDHEADERS_P4_
 
+#include "etype.p4"
+#include "ipproto.p4"
+
 typedef bit<48>  EthernetAddress;
 typedef bit<32>  IPv4Address;
 typedef bit<128> IPv6Address;
@@ -26,7 +29,7 @@ typedef bit<128> IPv6Address;
 header ethernet_h {
     EthernetAddress dst_addr;
     EthernetAddress src_addr;
-    bit<16> ether_type;
+    etype_t ether_type;
 }
 
 // https://en.wikipedia.org/wiki/IEEE_802.1Q
@@ -35,7 +38,7 @@ header vlan_tag_h {
     bit<1>  dei;    // drop eligible indicator.
                     // Formerly CFI - canonical format indicator
     bit<12> vid;    // VLAN identifier
-    bit<16> ether_type;
+    etype_t ether_type;
 }
 
 // RFC 3031 and several later RFCs with addenda and errata
@@ -61,7 +64,7 @@ header ipv4_h {
                                 // MF (more fragments):1
     bit<13> frag_offset;
     bit<8>  ttl;                // time to live
-    bit<8>  protocol;
+    ipproto_t protocol;
     bit<16> hdr_checksum;
     IPv4Address src_addr;
     IPv4Address dst_addr;
@@ -75,7 +78,7 @@ header ipv6_h {
     bit<8>  traffic_class;
     bit<20> flow_label;
     bit<16> payload_len;
-    bit<8>  next_hdr;
+    ipproto_t next_hdr;
     bit<8>  hop_limit;
     IPv6Address src_addr;
     IPv6Address dst_addr;
@@ -83,7 +86,7 @@ header ipv6_h {
 
 // Segment Routing Extension (SRH) -- IETFv7
 header ipv6_srh_h {
-    bit<8>  next_hdr;
+    ipproto_t next_hdr;
     bit<8>  hdr_ext_len;
     bit<8>  routing_type;
     bit<8>  seg_left;
@@ -95,7 +98,9 @@ header ipv6_srh_h {
 // Address Resolution Protocol -- RFC 6747
 // https://tools.ietf.org/html/rfc6747
 header arp_h {
+    // TODO: Is etype_t an accurate type for field hw_type?
     bit<16> hw_type;
+    // TODO: Is etype_t an accurate type for field proto_type?
     bit<16> proto_type;
     bit<8>  hw_addr_len;
     bit<8>  proto_addr_len;
@@ -184,6 +189,7 @@ header vxlan_h {
 header vxlan_gpe_h {
     bit<8>  flags;
     bit<16> reserved;
+    // TODO: Is ipproto_t an accurate type for field next_proto?
     bit<8>  next_proto;
     bit<24> vni;
     bit<8>  reserved2;
@@ -199,6 +205,7 @@ header gre_h {
     bit<1>  C;
     bit<12> reserved0;
     bit<3>  version;
+    // TODO: Is etype_t an accurate type for field proto?
     bit<16> proto;
     // Omit variable length portions.
 }
@@ -219,6 +226,7 @@ header geneve_h {
     bit<1>  oam;
     bit<1>  critical;
     bit<6>  reserved;
+    // TODO: Is etype_t an accurate type for field proto_type?
     bit<16> proto_type;
     bit<24> vni;
     bit<8>  reserved2;
@@ -283,7 +291,7 @@ header ipsec_esp_h {
 }
 
 header ipsec_ah_h {
-    bit<8>  next_hdr;
+    ipproto_t next_hdr;
     bit<8>  length;
     bit<16> zero;
     bit<32> spi;
@@ -303,6 +311,7 @@ header nsh_h {
     bit<1>  context;
     bit<6>  flags;
     bit<8>  reserved;
+    // TODO: Is etype_t an accurate type for field proto_type?
     bit<16> proto_type;
     bit<24> spath;
     bit<8>  sindex;
