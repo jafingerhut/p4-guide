@@ -17,7 +17,6 @@
 # Andy Fingerhut, andy.fingerhut@gmail.com
 
 import logging
-import ptf
 import os
 import ptf
 import ptf.testutils as tu

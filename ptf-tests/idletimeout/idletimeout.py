@@ -17,11 +17,10 @@
 # Andy Fingerhut, andy.fingerhut@gmail.com
 
 import logging
-import ptf
 import os
 import pprint
-import ptf
 import time
+import ptf
 import ptf.testutils as tu
 
 from google.rpc import code_pb2
