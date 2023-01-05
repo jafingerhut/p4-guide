@@ -118,8 +118,8 @@ There are also documents with P4_16 code excerpts showing:
   + [variant
     3](action-profile-and-selector/README-action-selector-variant3.md)
     - uses 3 tables where each has a data dependency on the previous
-    one.  This variant does not have the scalability flaw of variant
-    1.  It reduces the number of dependent table lookups vs. variant 2
+    one.  This variant does not have the scalability flaw of variant 1.
+    It reduces the number of dependent table lookups vs. variant 2
     by requiring that the ids of group members in table
     `T_member_id_to_action` must be consecutive integers.  This
     introduces a requirement in the control software to manage each
