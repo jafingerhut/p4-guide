@@ -22,7 +22,7 @@ To run behavioral model with 3 ports 1, 2, 3:
     # a local file system.  p4c-bmv2 and simple_switch_CLI do not have
     # this limitation.
 
-    sudo simple_switch --log-console -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 demo4.p4_16.json
+    sudo simple_switch --log-console --dump-packet-data 10000 -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 demo4.p4_16.json
 
 To run CLI for controlling and examining simple_switch's table
 contents:

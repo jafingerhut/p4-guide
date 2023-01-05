@@ -208,11 +208,11 @@ P4_16 program, but does exercise similar operations on packets.
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
-    sudo simple_switch --log-console -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 v1model-special-ops.json
+    sudo simple_switch --log-console --dump-packet-data 10000 -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 v1model-special-ops.json
 
 To get the log to go to a file instead of the console:
 
-    sudo simple_switch --log-file ss-log --log-flush -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 v1model-special-ops.json
+    sudo simple_switch --log-file ss-log --log-flush --dump-packet-data 10000 -i 0@veth2 -i 1@veth4 -i 2@veth6 -i 3@veth8 -i 4@veth10 -i 5@veth12 -i 6@veth14 -i 7@veth16 v1model-special-ops.json
 
 CHECK THIS: If you see "Add port operation failed" messages in the
 output of the simple_switch command, it means that one or more of the

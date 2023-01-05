@@ -17,7 +17,7 @@ To compile the P4_16 version of the code:
 
 # Running
 
-    sudo simple_switch --log-console -i 0@veth0 action-profile.json
+    sudo simple_switch --log-console --dump-packet-data 10000 -i 0@veth0 action-profile.json
 
 See the difference between action-profile.json and
 action-profile-without-implementation.json.  The latter was created by

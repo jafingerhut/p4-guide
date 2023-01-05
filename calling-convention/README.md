@@ -31,7 +31,7 @@ To compile the P4_16 version of the code:
 
 # Running
 
-    sudo simple_switch --log-console -i 0@veth0 calling-convention.json
+    sudo simple_switch --log-console --dump-packet-data 10000 -i 0@veth0 calling-convention.json
 
 No table entries need to be added.
 

@@ -25,7 +25,7 @@ compiler in your system-wide /usr/local/bin directory.
 
 To run the behavioral model with 8 ports numbered 0 through 7:
 
-    sudo simple_switch --log-console -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 demo3.p4_16.json
+    sudo simple_switch --log-console --dump-packet-data 10000 -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 demo3.p4_16.json
 
 To run CLI for controlling and examining simple_switch's table
 contents:

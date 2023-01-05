@@ -49,7 +49,7 @@ latest master version as of 2018-Dec-07.
 
 To run the behavioral model with 1 port numbered 0:
 
-    sudo simple_switch --log-console -i 0@veth0 checksum-ipv4-with-options.json
+    sudo simple_switch --log-console --dump-packet-data 10000 -i 0@veth0 checksum-ipv4-with-options.json
 
 
 No table entries need to be added for the default action 'foo' to be
@@ -173,7 +173,7 @@ given the above packets as input.
     # send into port 0 of simple_switch, and write output packets
     # transmitted on port 0 to file 0_out.pcap.
     
-    % simple_switch -i 0@0 --use-files 0 checksum-ipv4-with-options.json
+    % simple_switch --dump-packet-data 10000 -i 0@0 --use-files 0 checksum-ipv4-with-options.json
 
     [ Use Ctrl-C to kill simple_switch process after a second or two
       of inactivity ]
