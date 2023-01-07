@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2021-2023 Intel Corporation
+# Copyright 2023 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import logging
 
 import ptf
 import ptf.testutils as tu
-import base_test as bt
+from ptf.base_tests import BaseTest
+import p4runtime_sh.shell as sh
+import p4runtime_shell_utils as p4rtutil
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -32,11 +34,6 @@ import base_test as bt
 # documentation for these methods, here:
 
 # https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
-
-# The package `base_test` is included in this repository, and can also
-# be seen at this link:
-
-# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
 
 
 ######################################################################
@@ -54,7 +51,7 @@ import base_test as bt
 
 logger = logging.getLogger(None)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
@@ -72,50 +69,65 @@ logger.addHandler(ch)
 #logging.error("40 logging.error message")
 
 
-class Demo2Test(bt.P4RuntimeTest):
+class Demo2Test(BaseTest):
     def setUp(self):
-        bt.P4RuntimeTest.setUp(self)
-        # This setUp method will be executed once for each test case.
-        # It may be a little bit wasteful in time to load the compiled
-        # P4 program for each test, but for only a few tests it is
-        # still quick.  Suggestions welcome on good ways to load the
-        # compiled P4 program only once, yet still allow someone to
-        # select a subset of the test cases to be run from the `ptf`
-        # command line.
-        success = bt.P4RuntimeTest.updateConfig(self)
-        assert success
+        # Setting up PTF dataplane
+        self.dataplane = ptf.dataplane_instance
+        self.dataplane.flush()
 
-    #############################################################
-    # Define a few small helper functions that help construct
-    # parameters for the table_add() method.
-    #############################################################
+        logging.info("Demo1Test.setUp()")
+        grpc_addr = tu.test_param_get("grpcaddr")
+        if grpc_addr is None:
+            grpc_addr = 'localhost:9559'
+        p4info_txt_fname = tu.test_param_get("p4info")
+        p4prog_binary_fname = tu.test_param_get("config")
+        sh.setup(device_id=0,
+                 grpc_addr=grpc_addr,
+                 election_id=(0, 1), # (high_32bits, lo_32bits)
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+        p4rtutil.dump_table("ipv4_da_lpm")
+        p4rtutil.dump_table("mac_da")
+        p4rtutil.dump_table("send_frame")
 
-    def key_ipv4_da_lpm(self, ipv4_addr_string, prefix_len):
-        return ('ipv4_da_lpm',
-                [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
+    def tearDown(self):
+        logging.info("Demo1Test.tearDown()")
+        sh.teardown()
 
-    def act_set_l2ptr(self, l2ptr_int):
-        return ('set_l2ptr', [('l2ptr', l2ptr_int)])
+#############################################################
+# Define a few small helper functions that make adding entries to
+# particular tables in demo2.p4 slightly shorter to write.
+#############################################################
 
-    def key_mac_da(self, l2ptr_int):
-        return ('mac_da', [self.Exact('meta.fwd_metadata.l2ptr', l2ptr_int)])
+def add_ipv4_da_lpm_entry_action_set_l2ptr(ipv4_addr_str, prefix_len_int,
+                                           l2ptr_int):
+    te = sh.TableEntry('ipv4_da_lpm')(action='set_l2ptr')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['l2ptr'] = '%d' % (l2ptr_int)
+    te.insert()
 
-    def act_set_bd_dmac_intf(self, bd_int, dmac_string, intf_int):
-        return ('set_bd_dmac_intf',
-                [('bd', bd_int),
-                 ('dmac', bt.mac_to_int(dmac_string)),
-                 ('intf', intf_int)])
+def add_mac_da_entry_action_set_bd_dmac_intf(l2ptr_int, bd_int, dmac_str,
+                                             intf_int):
+    te = sh.TableEntry('mac_da')(action='set_bd_dmac_intf')
+    te.match['l2ptr'] = '%d' % (l2ptr_int)
+    te.action['bd'] = '%d' % (bd_int)
+    te.action['dmac'] = dmac_str
+    te.action['intf'] = '%d' % (intf_int)
+    te.insert()
 
-    def key_send_frame(self, bd_int):
-        return ('send_frame', [self.Exact('meta.fwd_metadata.out_bd', bd_int)])
-
-    def act_rewrite_mac(self, smac_string):
-        return ('rewrite_mac', [('smac', bt.mac_to_int(smac_string))])
+def add_send_frame_entry_action_rewrite_mac(out_bd_int, smac_str):
+    te = sh.TableEntry('send_frame')(action='rewrite_mac')
+    te.match['out_bd'] = '%d' % (out_bd_int)
+    te.action['smac'] = smac_str
+    te.insert()
 
 
 class FwdTest(Demo2Test):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -138,11 +150,9 @@ class FwdTest(Demo2Test):
         # Add a set of table entries that the packet should match, and
         # be forwarded out with the desired dest and source MAC
         # addresses.
-        self.table_add(self.key_ipv4_da_lpm(ip_dst_addr, 32),
-                       self.act_set_l2ptr(l2ptr))
-        self.table_add(self.key_mac_da(l2ptr),
-                       self.act_set_bd_dmac_intf(bd, out_dmac, eg_port))
-        self.table_add(self.key_send_frame(bd), self.act_rewrite_mac(out_smac))
+        add_ipv4_da_lpm_entry_action_set_l2ptr(ip_dst_addr, 32, l2ptr)
+        add_mac_da_entry_action_set_bd_dmac_intf(l2ptr, bd, out_dmac, eg_port)
+        add_send_frame_entry_action_rewrite_mac(bd, out_smac)
 
         # Check that the entry is hit, expected source and dest MAC
         # have been written into output packet, TTL has been
@@ -154,7 +164,6 @@ class FwdTest(Demo2Test):
 
 
 class PrefixLen0Test(Demo2Test):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -196,14 +205,12 @@ class PrefixLen0Test(Demo2Test):
                         'out_smac': '00:11:22:33:44:57'})
 
         for e in entries:
-            self.table_add(self.key_ipv4_da_lpm(e['ip_dst_addr'],
-                                                e['prefix_len']),
-                           self.act_set_l2ptr(e['l2ptr']))
-            self.table_add(self.key_mac_da(e['l2ptr']),
-                           self.act_set_bd_dmac_intf(e['bd'], e['out_dmac'],
-                                                     e['eg_port']))
-            self.table_add(self.key_send_frame(e['bd']),
-                           self.act_rewrite_mac(e['out_smac']))
+            add_ipv4_da_lpm_entry_action_set_l2ptr(e['ip_dst_addr'],
+                                                   e['prefix_len'], e['l2ptr'])
+            add_mac_da_entry_action_set_bd_dmac_intf(e['l2ptr'], e['bd'],
+                                                     e['out_dmac'],
+                                                     e['eg_port'])
+            add_send_frame_entry_action_rewrite_mac(e['bd'], e['out_smac'])
 
         ttl_in = 100
         for e in entries:
@@ -223,7 +230,35 @@ class PrefixLen0Test(Demo2Test):
             # easy to distinguish from each other.
             ttl_in = ttl_in - 10
 
-        counter_entries = self.counter_dump_data('ipv4_da_lpm_stats',
-                                                 direct=True)
-        print("counter_entries:")
-        print(counter_entries)
+        # Retrieve all table entries and print out counter_data (byte
+        # and packet counts).
+        print("======================================================================")
+        te = sh.TableEntry('ipv4_da_lpm')
+        # You HAVE to set the te.counter_data field to trigger reading
+        # out the counter_data
+        te.counter_data.packet_count = 0
+        for x in te.read():
+            #m = x.match['dstAddr']
+            m = x.match['hdr.ipv4.dstAddr']
+            if m is None:
+                # This case is for p4runtime-shell version 0.3.0 as
+                # published on 2023-Jan-06
+                value = "unknown"
+                prefix_len = 0
+            elif m == "Unset":
+                # This case and the next are only useful with a
+                # proposed change to class MatchKey method __getitem__
+                # described in this issue:
+                # https://github.com/p4lang/p4runtime-shell/issues/105
+                value = "0"
+                prefix_len = 0
+            else:
+                value = m.lpm.value
+                prefix_len = m.lpm.prefix_len
+            if m is None:
+                print(x)
+            print('%s/%d -> pkts:%d bytes:%d'
+                  '' % (value, prefix_len,
+                        x.counter_data.packet_count,
+                        x.counter_data.byte_count))
+        print("======================================================================")

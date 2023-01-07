@@ -60,11 +60,15 @@ def assertP4RuntimeError(self, code=None, msg_regexp=None):
     context = _AssertP4RuntimeErrorContext(self, code, msg_regexp)
     return context
 
-def dump_table(table_name_str):
+def read_all_table_entries(table_name_str):
     tes = []
     def do_save_te(te):
         tes.append(te)
     sh.TableEntry(table_name_str).read(lambda te: do_save_te(te))
+    return tes
+
+def dump_table(table_name_str):
+    tes = read_all_table_entries(table_name_str)
+    logging.info("Table %s contains %d entries" % (table_name_str, len(tes)))
     for te in tes:
         logging.info(str(te))
-    logging.info("Table %s contains %d entries" % (table_name_str, len(tes)))
