@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2021-2023 Intel Corporation
+# Copyright 2023 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import logging
 
 import ptf
 import ptf.testutils as tu
-import base_test as bt
+from ptf.base_tests import BaseTest
+import p4runtime_sh.shell as sh
+import p4runtime_shell_utils as p4rtutil
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -32,11 +34,6 @@ import base_test as bt
 # documentation for these methods, here:
 
 # https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
-
-# The package `base_test` is included in this repository, and can also
-# be seen at this link:
-
-# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
 
 
 def int_to_mac_string(mac_int):
@@ -78,65 +75,63 @@ def set_of_all_ports():
 
 logger = logging.getLogger(None)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class Demo7Test(bt.P4RuntimeTest):
+class Demo7Test(BaseTest):
     def setUp(self):
-        bt.P4RuntimeTest.setUp(self)
-        # This setUp method will be executed once for each test case.
-        # It may be a little bit wasteful in time to load the compiled
-        # P4 program for each test, but for only a few tests it is
-        # still quick.  Suggestions welcome on good ways to load the
-        # compiled P4 program only once, yet still allow someone to
-        # select a subset of the test cases to be run from the `ptf`
-        # command line.
-        success = bt.P4RuntimeTest.updateConfig(self)
-        assert success
+        # Setting up PTF dataplane
+        self.dataplane = ptf.dataplane_instance
+        self.dataplane.flush()
 
-    #############################################################
-    # Define a few small helper functions that help construct
-    # parameters for the table_add() method.
-    #############################################################
+        logging.info("Demo1Test.setUp()")
+        grpc_addr = tu.test_param_get("grpcaddr")
+        if grpc_addr is None:
+            grpc_addr = 'localhost:9559'
+        p4info_txt_fname = tu.test_param_get("p4info")
+        p4prog_binary_fname = tu.test_param_get("config")
+        sh.setup(device_id=0,
+                 grpc_addr=grpc_addr,
+                 election_id=(0, 1), # (high_32bits, lo_32bits)
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+        p4rtutil.dump_table("ipv4_mc_route_lookup")
+        p4rtutil.dump_table("send_frame")
 
-    def key_ipv4_mc_route_lookup(self, ipv4_addr_string, prefix_len):
-        return ('ipv4_mc_route_lookup',
-                [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
+    def tearDown(self):
+        logging.info("Demo1Test.tearDown()")
+        sh.teardown()
 
-    def act_set_mcast_grp(self, mcast_grp_int):
-        return ('set_mcast_grp',
-                [('mcast_grp', mcast_grp_int)])
+#############################################################
+# Define a few small helper functions that help construct
+# parameters for the table_add() method.
+#############################################################
 
-    def key_ipv4_da_lpm(self, ipv4_addr_string, prefix_len):
-        return ('ipv4_da_lpm',
-                [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
+def add_ipv4_mc_route_lookup_entry_action_set_mcast_grp(ipv4_addr_str,
+                                                        prefix_len_int,
+                                                        mcast_grp_int):
+    te = sh.TableEntry('ipv4_mc_route_lookup')(action='set_mcast_grp')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['mcast_grp'] = '%d' % (mcast_grp_int)
+    te.insert()
 
-    def act_set_l2ptr(self, l2ptr_int):
-        return ('set_l2ptr', [('l2ptr', l2ptr_int)])
-
-    def key_mac_da(self, l2ptr_int):
-        return ('mac_da', [self.Exact('meta.fwd_metadata.l2ptr', l2ptr_int)])
-
-    def act_set_dmac_intf(self, dmac_string, intf_int):
-        return ('set_dmac_intf',
-                [('dmac', bt.mac_to_int(dmac_string)),
-                 ('intf', intf_int)])
-
-    def key_send_frame(self, eg_port_int):
-        return ('send_frame', [self.Exact('stdmeta.egress_port', eg_port_int)])
-
-    def act_rewrite_mac(self, smac_string):
-        return ('rewrite_mac', [('smac', bt.mac_to_int(smac_string))])
+def add_send_frame_entry_action_rewrite_mac(eg_port_int, smac_str):
+    te = sh.TableEntry('send_frame')(action='rewrite_mac')
+    te.match['egress_port'] = '%d' % (eg_port_int)
+    te.action['smac'] = smac_str
+    te.insert()
 
 
 class FwdTest(Demo7Test):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -154,8 +149,7 @@ class FwdTest(Demo7Test):
         for eg_port, smac in port_to_smac.items():
             logging.info("adding table entry for eg_port=%d -> smac=%s"
                          "" % (eg_port, smac))
-            self.table_add(self.key_send_frame(eg_port),
-                           self.act_rewrite_mac(smac))
+            add_send_frame_entry_action_rewrite_mac(eg_port, smac)
 
         all_ports = set_of_all_ports()
 
@@ -180,9 +174,10 @@ class FwdTest(Demo7Test):
         mcast_grp_recipients = [{'eg_port': 2, 'egress_rid': 5},
                                 {'eg_port': 5, 'egress_rid': 75},
                                 {'eg_port': 1, 'egress_rid': 111}]
-        two_tuple_list = [(x['eg_port'], x['egress_rid'])
-                          for x in mcast_grp_recipients]
-        self.pre_add_mcast_group(mcast_grp, two_tuple_list)
+        mcg = sh.MulticastGroupEntry(mcast_grp)
+        for x in mcast_grp_recipients:
+            mcg.add(x['eg_port'], x['egress_rid'])
+        mcg.insert()
 
         # Before adding any entries to the table ipv4_mc_route_lookup,
         # the default behavior for sending in an IPv4 packet with a
@@ -194,8 +189,8 @@ class FwdTest(Demo7Test):
         
         # Add a set of table entries that the packet should match, and
         # be forwarded with multicast replication.
-        self.table_add(self.key_ipv4_mc_route_lookup(ip_dst_addr, 32),
-                       self.act_set_mcast_grp(mcast_grp))
+        add_ipv4_mc_route_lookup_entry_action_set_mcast_grp(
+            ip_dst_addr, 32, mcast_grp)
 
         # Check that the entry is hit, expected source and dest MAC
         # have been written into output packet, TTL has been
@@ -204,7 +199,7 @@ class FwdTest(Demo7Test):
 
         # See Section 6.4 of RFC 1112 for how the dest MAC address of
         # a forwarded IPv4 multicast packet should be calculated.
-        ip_dst_addr_int = bt.ipv4_to_int(ip_dst_addr)
+        ip_dst_addr_int = p4rtutil.ipv4_to_int(ip_dst_addr)
         mask_23_lsbs = (1 << 23) - 1
         exp_dmac_int = 0x01_00_5e_00_00_00 + (ip_dst_addr_int & mask_23_lsbs)
         exp_dmac = int_to_mac_string(exp_dmac_int)
