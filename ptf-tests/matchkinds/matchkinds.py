@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2021-2023 Intel Corporation
+# Copyright 2023 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import logging
 
 import ptf
 import ptf.testutils as tu
-import base_test as bt
+from ptf.base_tests import BaseTest
+import p4runtime_sh.shell as sh
+import p4runtime_shell_utils as p4rtutil
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -32,11 +34,6 @@ import base_test as bt
 # documentation for these methods, here:
 
 # https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
-
-# The package `base_test` is included in this repository, and can also
-# be seen at this link:
-
-# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
 
 
 ######################################################################
@@ -54,53 +51,85 @@ import base_test as bt
 
 logger = logging.getLogger(None)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class MatchKindsTest(bt.P4RuntimeTest):
+class MatchKindsTest(BaseTest):
     def setUp(self):
-        bt.P4RuntimeTest.setUp(self)
-        # This setUp method will be executed once for each test case.
-        # It may be a little bit wasteful in time to load the compiled
-        # P4 program for each test, but for only a few tests it is
-        # still quick.  Suggestions welcome on good ways to load the
-        # compiled P4 program only once, yet still allow someone to
-        # select a subset of the test cases to be run from the `ptf`
-        # command line.
-        success = bt.P4RuntimeTest.updateConfig(self)
-        assert success
+        # Setting up PTF dataplane
+        self.dataplane = ptf.dataplane_instance
+        self.dataplane.flush()
 
-    #############################################################
-    # Define a few small helper functions that help construct
-    # parameters for the table_add() method.
-    #############################################################
+        logging.info("Demo1Test.setUp()")
+        grpc_addr = tu.test_param_get("grpcaddr")
+        if grpc_addr is None:
+            grpc_addr = 'localhost:9559'
+        p4info_txt_fname = tu.test_param_get("p4info")
+        p4prog_binary_fname = tu.test_param_get("config")
+        sh.setup(device_id=0,
+                 grpc_addr=grpc_addr,
+                 election_id=(0, 1), # (high_32bits, lo_32bits)
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+        p4rtutil.dump_table("t1")
+        p4rtutil.dump_table("t2")
 
-    def key_t1(self, byte1_val_int, byte1_mask_int,
-               byte2_min_int, byte2_max_int,
-               byte3_val_int, byte3_exact_match):
-        return ('t1',
-                [self.Ternary('hdr.ipv4.dstAddr[31:24]',
-                              byte1_val_int, byte1_mask_int),
-                 self.Range('hdr.ipv4.dstAddr[23:16]',
-                            byte2_min_int, byte2_max_int),
-                 self.Optional('hdr.ipv4.dstAddr[15:8]',
-                               byte3_val_int, byte3_exact_match)])
+    def tearDown(self):
+        logging.info("Demo1Test.tearDown()")
+        sh.teardown()
 
-    def key_t2(self, ipv6_addr_string, prefix_len):
-        return ('t2',
-                [self.Lpm('hdr.ipv6.dstAddr',
-                          bt.ipv6_to_int(ipv6_addr_string), prefix_len)])
+#############################################################
+# Define a few small helper functions that help construct
+# parameters for the table_add() method.
+#############################################################
 
-    def act_set_dmac(self, dmac_string):
-        return ('set_dmac', [('dmac', bt.mac_to_int(dmac_string))])
+def add_t1_entry_action_set_dmac(b1_val_int, b1_mask_int,
+                                 b2_min_int, b2_max_int,
+                                 b3_val_int, b3_exact_match_bool,
+                                 dmac_str, priority_int):
+    te = sh.TableEntry('t1')(action='set_dmac')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to a ternary field like
+    # te.match['dstAddr[31:24]'] a mask of 0.  Just skip assigning to
+    # te.match['dstAddr[31:24]'] completely, and then inserting the
+    # entry will give a wildcard match for that field, as defined in
+    # the P4Runtime API spec.
+    if b1_mask_int != 0:
+        te.match['dstAddr[31:24]'] = '%d&&&%d' % (b1_val_int, b1_mask_int)
+    # TODO: Does p4runtime-shell raise an exception if a range covers
+    # all possible values of the field?  Note: p4runtime-shell raises
+    # an exception if you attempt to explicitly assign to a range
+    # field like te.match['dstAddr[23:16]'] a range that includes all
+    # possible values for the field, and thus is effectively a
+    # wildcard match on the field.  Just skip assigning to
+    # te.match['dstAddr[23:16]'] completely, and then inserting the
+    # entry will give a wildcard match for that field, as defined in
+    # the P4Runtime API spec.
+    if not (b2_min_int == 0 and b2_max_int == 255):
+        te.match['dstAddr[23:16]'] = '%d..%d' % (b2_min_int, b2_max_int)
+    if b3_exact_match_bool:
+        te.match['dstAddr[15:8]'] = '%d' % (b3_val_int)
+    te.action['dmac'] = dmac_str
+    te.priority = priority_int
+    te.insert()
+
+def add_t2_entry_action_set_dmac(ipv6_addr_str, prefix_len_int, dmac_str):
+    te = sh.TableEntry('t2')(action='set_dmac')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv6_addr_str, prefix_len_int)
+    te.action['dmac'] = dmac_str
+    te.insert()
 
 
 class IPv4FwdTest(MatchKindsTest):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -147,11 +176,11 @@ class IPv4FwdTest(MatchKindsTest):
         
         # Add a set of table entries
         for e in entries:
-            self.table_add(self.key_t1(e['b1_val'], e['b1_mask'],
-                                       e['b2_min'], e['b2_max'],
-                                       e['b3_val'], e['b3_exact_match']),
-                           self.act_set_dmac(e['out_dmac']),
-                           e['priority'])
+            add_t1_entry_action_set_dmac(e['b1_val'], e['b1_mask'],
+                                         e['b2_min'], e['b2_max'],
+                                         e['b3_val'], e['b3_exact_match'],
+                                         e['out_dmac'],
+                                         e['priority'])
 
         ttl_in = 200
         for e in entries:
@@ -169,7 +198,6 @@ class IPv4FwdTest(MatchKindsTest):
 
 
 class IPv6FwdTest(MatchKindsTest):
-    @bt.autocleanup
     def runTest(self):
         ip_dst_addr = '2001:0db8::3210'
         in_dmac = 'ee:30:ca:9d:1e:00'
@@ -179,8 +207,7 @@ class IPv6FwdTest(MatchKindsTest):
         out_dmac = '00:00:00:00:00:01'
 
         # Add a set of table entries
-        self.table_add(self.key_t2(ip_dst_addr, 128),
-                       self.act_set_dmac(out_dmac))
+        add_t2_entry_action_set_dmac(ip_dst_addr, 128, out_dmac)
 
         pkt_in = tu.simple_tcpv6_packet(eth_src=in_smac, eth_dst=in_dmac,
                                         ipv6_dst=ip_dst_addr)
