@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2021-2023 Intel Corporation
+# Copyright 2023 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import logging
 
 import ptf
 import ptf.testutils as tu
-import base_test as bt
+from ptf.base_tests import BaseTest
+import p4runtime_sh.shell as sh
+import p4runtime_shell_utils as p4rtutil
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -32,11 +34,6 @@ import base_test as bt
 # documentation for these methods, here:
 
 # https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
-
-# The package `base_test` is included in this repository, and can also
-# be seen at this link:
-
-# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
 
 
 ######################################################################
@@ -54,54 +51,93 @@ import base_test as bt
 
 logger = logging.getLogger(None)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class PacketInOutTest(bt.P4RuntimeTest):
+class PacketInOutTest(BaseTest):
     CPU_PORT = 510
 
     def setUp(self):
-        bt.P4RuntimeTest.setUp(self)
-        # This setUp method will be executed once for each test case.
-        # It may be a little bit wasteful in time to load the compiled
-        # P4 program for each test, but for only a few tests it is
-        # still quick.  Suggestions welcome on good ways to load the
-        # compiled P4 program only once, yet still allow someone to
-        # select a subset of the test cases to be run from the `ptf`
-        # command line.
-        success = bt.P4RuntimeTest.updateConfig(self)
-        assert success
+        # Setting up PTF dataplane
+        self.dataplane = ptf.dataplane_instance
+        self.dataplane.flush()
+
+        logging.info("PacketInOutTest.setUp()")
+        grpc_addr = tu.test_param_get("grpcaddr")
+        if grpc_addr is None:
+            grpc_addr = 'localhost:9559'
+        p4info_txt_fname = tu.test_param_get("p4info")
+        p4prog_binary_fname = tu.test_param_get("config")
+        sh.setup(device_id=0,
+                 grpc_addr=grpc_addr,
+                 election_id=(0, 1), # (high_32bits, lo_32bits)
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+        p4rtutil.dump_table("ipv4_da_lpm")
+
         # Create Python dicts from name to integer values, and integer
         # values to names, for the P4_16 serializable enum types
         # PuntReason_t and ControllerOpcode_t once here during setup.
+        logging.info("Reading p4info from {}".format(p4info_txt_fname))
+        p4info_data = p4rtutil.read_p4info_txt_file(p4info_txt_fname)
+
         self.punt_reason_name2int, self.punt_reason_int2name = \
-            self.serializable_enum_dict('PuntReason_t')
+            p4rtutil.serializable_enum_dict(p4info_data, 'PuntReason_t')
         self.opcode_name2int, self.opcode_int2name = \
-            self.serializable_enum_dict('ControllerOpcode_t')
+            p4rtutil.serializable_enum_dict(p4info_data, 'ControllerOpcode_t')
+        logging.debug("punt_reason_name2int=%s" % (self.punt_reason_name2int))
+        logging.debug("punt_reason_int2name=%s" % (self.punt_reason_int2name))
+        logging.debug("opcode_name2int=%s" % (self.opcode_name2int))
+        logging.debug("opcode_int2name=%s" % (self.opcode_int2name))
 
-    #############################################################
-    # Define a few small helper functions that help construct
-    # parameters for the table_add() method.
-    #############################################################
+        self.p4info_obj_map = p4rtutil.make_p4info_obj_map(p4info_data)
+        self.cpm_packetin_id2data = \
+            p4rtutil.controller_packet_metadata_dict_key_id(self.p4info_obj_map,
+                                                            "packet_in")
+        logging.debug("cpm_packetin_id2data=%s" % (self.cpm_packetin_id2data))
 
-    def key_ipv4_da_lpm(self, ipv4_addr_string, prefix_len):
-        return ('ipv4_da_lpm',
-                [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
+        self.pktin = sh.PacketIn()
 
-    def act_set_port(self, port_int):
-        return ('set_port', [('port', port_int)])
+    def tearDown(self):
+        logging.info("PacketInOutTest.tearDown()")
+        sh.teardown()
 
-    def act_punt_to_controller(self):
-        return ('punt_to_controller', [])
+#############################################################
+# Define a few small helper functions that help construct
+# parameters for the table_add() method.
+#############################################################
+
+def add_ipv4_da_lpm_entry_action_set_port(ipv4_addr_str, prefix_len_int,
+                                          port_int):
+    te = sh.TableEntry('ipv4_da_lpm')(action='set_port')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['port'] = '%d' % (port_int)
+    te.insert()
+
+def add_ipv4_da_lpm_entry_action_punt_to_controller(ipv4_addr_str,
+                                                    prefix_len_int):
+    te = sh.TableEntry('ipv4_da_lpm')(action='punt_to_controller')
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.insert()
+
+def get_exp_num_packetins(pktin, exp_num_packets, timeout_sec):
+    pktlist = []
+    pktin.sniff(lambda p: pktlist.append(p), timeout=timeout_sec)
+    assert len(pktlist) == exp_num_packets
+    return pktlist
 
 
 class FwdTest(PacketInOutTest):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -128,12 +164,11 @@ class FwdTest(PacketInOutTest):
         # Add a set of table entries
         for e in entries:
             if e['eg_port'] == self.CPU_PORT:
-                action = self.act_punt_to_controller()
+                add_ipv4_da_lpm_entry_action_punt_to_controller(
+                    e['ip_dst_addr'], e['prefix_len'])
             else:
-                action = self.act_set_port(e['eg_port'])
-            self.table_add(self.key_ipv4_da_lpm(e['ip_dst_addr'],
-                                                e['prefix_len']),
-                           action)
+                add_ipv4_da_lpm_entry_action_set_port(
+                    e['ip_dst_addr'], e['prefix_len'], e['eg_port'])
 
         ttl_in = 200
         for e in entries:
@@ -147,9 +182,10 @@ class FwdTest(PacketInOutTest):
                 # Packet should not go out of a regular port, but to
                 # the CPU port, and then arrive to the controller as a
                 # PacketIn message.
-                pkt_pb = self.get_packet_in()
-                #print("pkt=%s" % (pkt_pb))
-                pktinfo = self.decode_packet_in_metadata(pkt_pb)
+                pktlist = get_exp_num_packetins(self.pktin, 1, 2)
+                pkt_pb = pktlist[0]
+                pktinfo = p4rtutil.decode_packet_in_metadata(
+                    self.cpm_packetin_id2data, pkt_pb.packet)
                 exp_pktinfo = \
                     {'metadata':
                      {'input_port': ig_port,
@@ -157,16 +193,16 @@ class FwdTest(PacketInOutTest):
                       'opcode': 0, 'operand0': 0, 'operand1': 0,
                       'operand2': 0, 'operand3': 0},
                      'payload': bytes(pkt_in)}
-                self.verify_packet_in(exp_pktinfo, pktinfo)
+                p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
                 tu.verify_no_other_packets(self)
             else:
+                print("Sending packet expected to cause switch to send packet out port %d" % (eg_port))
                 exp_pkt = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
                                                ip_dst=ip_dst_addr,
                                                ip_ttl=ttl_in - 1)
                 tu.verify_packets(self, exp_pkt, [eg_port])
                 # Verify that no PacketIn message was received
-                pkt_pb = self.get_packet_in()
-                assert pkt_pb is None
+                pktlist = get_exp_num_packetins(self.pktin, 0, 2)
 
             # Vary TTL in for each packet tested, just to make them
             # easy to distinguish from each other.
@@ -174,7 +210,6 @@ class FwdTest(PacketInOutTest):
 
 
 class IPOptionsTest(PacketInOutTest):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -196,12 +231,11 @@ class IPOptionsTest(PacketInOutTest):
         # Add a set of table entries
         for e in entries:
             if e['eg_port'] == self.CPU_PORT:
-                action = self.act_punt_to_controller()
+                add_ipv4_da_lpm_entry_action_punt_to_controller(
+                    e['ip_dst_addr'], e['prefix_len'])
             else:
-                action = self.act_set_port(e['eg_port'])
-            self.table_add(self.key_ipv4_da_lpm(e['ip_dst_addr'],
-                                                e['prefix_len']),
-                           action)
+                add_ipv4_da_lpm_entry_action_set_port(
+                    e['ip_dst_addr'], e['prefix_len'], e['eg_port'])
 
         ttl_in = 200
         for e in entries:
@@ -214,15 +248,17 @@ class IPOptionsTest(PacketInOutTest):
                 if send_ip_options:
                     # We do not need to create a packet with 'valid'
                     # IPv4 options in the header.  We simply need to
-                    # send a packet that has the ihl field of the Ipv4
+                    # send a packet that has the ihl field of the IPv4
                     # header greater than 5.  That is all that the P4
                     # program is using to distinguish packets with
                     # IPv4 options vs. those that do not.
                     pkt_in[IP].ihl = 6
                 tu.send_packet(self, ig_port, pkt_in)
                 if send_ip_options:
-                    pkt_pb = self.get_packet_in()
-                    pktinfo = self.decode_packet_in_metadata(pkt_pb)
+                    pktlist = get_exp_num_packetins(self.pktin, 1, 2)
+                    pkt_pb = pktlist[0]
+                    pktinfo = p4rtutil.decode_packet_in_metadata(
+                        self.cpm_packetin_id2data, pkt_pb.packet)
                     exp_pktinfo = \
                         {'metadata':
                          {'input_port': ig_port,
@@ -230,15 +266,17 @@ class IPOptionsTest(PacketInOutTest):
                           'opcode': 0, 'operand0': 0, 'operand1': 0,
                           'operand2': 0, 'operand3': 0},
                          'payload': bytes(pkt_in)}
-                    self.verify_packet_in(exp_pktinfo, pktinfo)
+                    p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
                     tu.verify_no_other_packets(self)
                 else:
                     if eg_port == self.CPU_PORT:
                         # Packet should not go out of a regular port,
                         # but to the CPU port, and then arrive to the
                         # controller as a PacketIn message.
-                        pkt_pb = self.get_packet_in()
-                        pktinfo = self.decode_packet_in_metadata(pkt_pb)
+                        pktlist = get_exp_num_packetins(self.pktin, 1, 2)
+                        pkt_pb = pktlist[0]
+                        pktinfo = p4rtutil.decode_packet_in_metadata(
+                            self.cpm_packetin_id2data, pkt_pb.packet)
                         exp_pktinfo = \
                             {'metadata':
                              {'input_port': ig_port,
@@ -246,7 +284,7 @@ class IPOptionsTest(PacketInOutTest):
                               'opcode': 0, 'operand0': 0, 'operand1': 0,
                               'operand2': 0, 'operand3': 0},
                              'payload': bytes(pkt_in)}
-                        self.verify_packet_in(exp_pktinfo, pktinfo)
+                        p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
                         tu.verify_no_other_packets(self)
                     else:
                         exp_pkt = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
@@ -254,8 +292,7 @@ class IPOptionsTest(PacketInOutTest):
                                                        ip_ttl=ttl_in - 1)
                         tu.verify_packets(self, exp_pkt, [eg_port])
                         # Verify that no PacketIn message was received
-                        pkt_pb = self.get_packet_in()
-                        assert pkt_pb is None
+                        pktlist = get_exp_num_packetins(self.pktin, 0, 2)
 
                 # Vary TTL in for each packet tested, just to make
                 # them easy to distinguish from each other.
@@ -263,7 +300,6 @@ class IPOptionsTest(PacketInOutTest):
 
 
 class ControllerPacketToPortTest(PacketInOutTest):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -279,17 +315,16 @@ class ControllerPacketToPortTest(PacketInOutTest):
             pkt = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
                                        ip_dst=ip_dst_addr, ip_ttl=ttl_in)
             exp_pkt = pkt
-            pktout_dict = {'payload': bytes(pkt),
-                           'metadata': {
-                               'opcode': self.opcode_name2int['SEND_TO_PORT_IN_OPERAND0'],
-                               'reserved1': 0,
-                               'operand0': eg_port,
-                               'operand1': 0,
-                               'operand2': 0,
-                               'operand3': 0}}
-            pktout_pb = self.encode_packet_out_metadata(pktout_dict)
-            self.send_packet_out(pktout_pb)
+            pktout = sh.PacketOut()
+            pktout.payload = bytes(pkt)
+            pktout.metadata['opcode'] = \
+                '%d' % (self.opcode_name2int['SEND_TO_PORT_IN_OPERAND0'])
+            pktout.metadata['reserved1'] = '0'
+            pktout.metadata['operand0'] = '%d' % (eg_port)
+            pktout.metadata['operand1'] = '0'
+            pktout.metadata['operand2'] = '0'
+            pktout.metadata['operand3'] = '0'
+            pktout.send()
             tu.verify_packets(self, exp_pkt, [eg_port])
             # Verify that no PacketIn message was received
-            pkt_pb = self.get_packet_in()
-            assert pkt_pb is None
+            pktlist = get_exp_num_packetins(self.pktin, 0, 2)
