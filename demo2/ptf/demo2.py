@@ -75,7 +75,7 @@ class Demo2Test(BaseTest):
         self.dataplane = ptf.dataplane_instance
         self.dataplane.flush()
 
-        logging.info("Demo1Test.setUp()")
+        logging.info("Demo2Test.setUp()")
         grpc_addr = tu.test_param_get("grpcaddr")
         if grpc_addr is None:
             grpc_addr = 'localhost:9559'
@@ -90,7 +90,7 @@ class Demo2Test(BaseTest):
         p4rtutil.dump_table("send_frame")
 
     def tearDown(self):
-        logging.info("Demo1Test.tearDown()")
+        logging.info("Demo2Test.tearDown()")
         sh.teardown()
 
 #############################################################

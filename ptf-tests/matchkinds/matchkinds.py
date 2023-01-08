@@ -64,7 +64,7 @@ class MatchKindsTest(BaseTest):
         self.dataplane = ptf.dataplane_instance
         self.dataplane.flush()
 
-        logging.info("Demo1Test.setUp()")
+        logging.info("MatchKindsTest.setUp()")
         grpc_addr = tu.test_param_get("grpcaddr")
         if grpc_addr is None:
             grpc_addr = 'localhost:9559'
@@ -78,7 +78,7 @@ class MatchKindsTest(BaseTest):
         p4rtutil.dump_table("t2")
 
     def tearDown(self):
-        logging.info("Demo1Test.tearDown()")
+        logging.info("MatchKindsTest.tearDown()")
         sh.teardown()
 
 #############################################################
