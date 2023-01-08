@@ -116,6 +116,16 @@ def add_t1_entry_action_set_dmac(b1_val_int, b1_mask_int,
     te.priority = priority_int
     te.insert()
 
+def modify_t1_default_action_set_dmac(dmac_str):
+    te = sh.TableEntry('t1')(action='set_dmac')
+    # To cause p4runtime-shell to modify a table's default action:
+    # + set is_default property of the entry to True
+    # + Do NOT assign values to any match ields
+    # + Use modify() method, not insert() method
+    te.action['dmac'] = dmac_str
+    te.is_default = True
+    te.modify()
+
 def add_t2_entry_action_set_dmac(ipv6_addr_str, prefix_len_int, dmac_str):
     te = sh.TableEntry('t2')(action='set_dmac')
     # Note: p4runtime-shell raises an exception if you attempt to
@@ -173,17 +183,32 @@ class IPv4FwdTest(MatchKindsTest):
                         'priority': 70,
                         'pkt_in_dst_addr': '192.172.50.0',
                         'out_dmac': '00:00:00:00:00:04'})
+        entries.append({ # priority None causes t1's default action to be modified below
+                        'priority': None,
+                        'pkt_in_dst_addr': '10.10.1.1',
+                        'out_dmac': '00:00:00:00:00:05'})
         
         # Add a set of table entries
         for e in entries:
-            add_t1_entry_action_set_dmac(e['b1_val'], e['b1_mask'],
-                                         e['b2_min'], e['b2_max'],
-                                         e['b3_val'], e['b3_exact_match'],
-                                         e['out_dmac'],
-                                         e['priority'])
+            if e['priority'] is None:
+                logging.info("Attempting to modify t1's default action")
+                modify_t1_default_action_set_dmac(e['out_dmac'])
+            else:
+                logging.info("Attempting to add entry with priority %s"
+                             "" % (e['priority']))
+                add_t1_entry_action_set_dmac(e['b1_val'], e['b1_mask'],
+                                             e['b2_min'], e['b2_max'],
+                                             e['b3_val'], e['b3_exact_match'],
+                                             e['out_dmac'],
+                                             e['priority'])
 
         ttl_in = 200
         for e in entries:
+            if e['priority'] is None:
+                logging.info("Sending packet that should miss and execute t1's default action")
+            else:
+                logging.info("Sending packet that should match entry with priority %s"
+                             "" % (e['priority']))
             ip_dst_addr = e['pkt_in_dst_addr']
             pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
                                           ip_dst=ip_dst_addr, ip_ttl=ttl_in)
