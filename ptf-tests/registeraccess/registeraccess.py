@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2021-2023 Intel Corporation
+# Copyright 2023 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import logging
 
 import ptf
 import ptf.testutils as tu
-import base_test as bt
+from ptf.base_tests import BaseTest
+import p4runtime_sh.shell as sh
+import p4runtime_shell_utils as p4rtutil
 import scapy.all as scapy
 
 
@@ -33,11 +35,6 @@ import scapy.all as scapy
 # documentation for these methods, here:
 
 # https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
-
-# The package `base_test` is included in this repository, and can also
-# be seen at this link:
-
-# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
 
 
 ######################################################################
@@ -55,66 +52,83 @@ import scapy.all as scapy
 
 logger = logging.getLogger(None)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class PacketInOutTest(bt.P4RuntimeTest):
+def get_exp_num_packetins(pktin, exp_num_packets, timeout_sec):
+    pktlist = []
+    pktin.sniff(lambda p: pktlist.append(p), timeout=timeout_sec)
+    assert len(pktlist) == exp_num_packets
+    return pktlist
+
+
+class RegisterAccessTest(BaseTest):
     CPU_PORT = 510
 
     def setUp(self):
-        bt.P4RuntimeTest.setUp(self)
-        # This setUp method will be executed once for each test case.
-        # It may be a little bit wasteful in time to load the compiled
-        # P4 program for each test, but for only a few tests it is
-        # still quick.  Suggestions welcome on good ways to load the
-        # compiled P4 program only once, yet still allow someone to
-        # select a subset of the test cases to be run from the `ptf`
-        # command line.
-        success = bt.P4RuntimeTest.updateConfig(self)
-        assert success
+        # Setting up PTF dataplane
+        self.dataplane = ptf.dataplane_instance
+        self.dataplane.flush()
+
+        logging.info("RegisterAccessTest.setUp()")
+        grpc_addr = tu.test_param_get("grpcaddr")
+        if grpc_addr is None:
+            grpc_addr = 'localhost:9559'
+        p4info_txt_fname = tu.test_param_get("p4info")
+        p4prog_binary_fname = tu.test_param_get("config")
+        sh.setup(device_id=0,
+                 grpc_addr=grpc_addr,
+                 election_id=(0, 1), # (high_32bits, lo_32bits)
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+
         # Create Python dicts from name to integer values, and integer
         # values to names, for the P4_16 serializable enum types
         # PuntReason_t and ControllerOpcode_t once here during setup.
+        logging.info("Reading p4info from {}".format(p4info_txt_fname))
+        p4info_data = p4rtutil.read_p4info_txt_file(p4info_txt_fname)
+
         self.punt_reason_name2int, self.punt_reason_int2name = \
-            self.serializable_enum_dict('PuntReason_t')
+            p4rtutil.serializable_enum_dict(p4info_data, 'PuntReason_t')
         self.opcode_name2int, self.opcode_int2name = \
-            self.serializable_enum_dict('ControllerOpcode_t')
+            p4rtutil.serializable_enum_dict(p4info_data, 'ControllerOpcode_t')
+        logging.debug("punt_reason_name2int=%s" % (self.punt_reason_name2int))
+        logging.debug("punt_reason_int2name=%s" % (self.punt_reason_int2name))
+        logging.debug("opcode_name2int=%s" % (self.opcode_name2int))
+        logging.debug("opcode_int2name=%s" % (self.opcode_int2name))
 
-    #############################################################
-    # Define a few small helper functions that help construct
-    # parameters for the table_add() method.
-    #############################################################
+        self.p4info_obj_map = p4rtutil.make_p4info_obj_map(p4info_data)
+        self.cpm_packetin_id2data = \
+            p4rtutil.controller_packet_metadata_dict_key_id(self.p4info_obj_map,
+                                                            "packet_in")
+        logging.debug("cpm_packetin_id2data=%s" % (self.cpm_packetin_id2data))
 
-    def key_ipv4_da_lpm(self, ipv4_addr_string, prefix_len):
-        return ('ipv4_da_lpm',
-                [self.Lpm('hdr.ipv4.dstAddr',
-                          bt.ipv4_to_int(ipv4_addr_string), prefix_len)])
+        self.pktin = sh.PacketIn()
 
-    def act_set_port(self, port_int):
-        return ('set_port', [('port', port_int)])
-
-    def act_punt_to_controller(self):
-        return ('punt_to_controller', [])
+    def tearDown(self):
+        logging.info("RegisterAccessTest.tearDown()")
+        sh.teardown()
 
     def write_SeqNumReg(self, idx_int, seqnum_int):
-        logging.debug("write_seqNumReg idx={} seqnum={}".format(
+        logging.info("write_seqNumReg idx={} seqnum={}".format(
             idx_int, seqnum_int))
-        pkt = scapy.Ether()
-        pktout_dict = {'payload': bytes(pkt),
-                       'metadata': {
-                           'opcode': self.opcode_name2int['WRITE_REGISTER'],
-                           'reserved1': 0,
-                           'operand0': idx_int,
-                           'operand1': seqnum_int,
-                           'operand2': 0,
-                           'operand3': 0}}
-        pktout_pb = self.encode_packet_out_metadata(pktout_dict)
-        self.send_packet_out(pktout_pb)
-        logging.debug("write_seqNumReg pktout_dict={}".format(pktout_dict))
+        # Giving an explicit dst MAC address here avoids some warnings
+        # from Scapy.
+        pkt = scapy.Ether(dst='00:00:00:00:00:00')
+        pktout = sh.PacketOut()
+        pktout.payload = bytes(pkt)
+        pktout.metadata['opcode'] = \
+            '%d' % (self.opcode_name2int['WRITE_REGISTER'])
+        pktout.metadata['reserved1'] = '0'
+        pktout.metadata['operand0'] = '%d' % (idx_int)
+        pktout.metadata['operand1'] = '%d' % (seqnum_int)
+        pktout.metadata['operand2'] = '0'
+        pktout.metadata['operand3'] = '0'
+        pktout.send()
+        logging.info("write_seqNumReg pktout={}".format(pktout))
 
         exp_pkt = pkt
         exp_pktinfo = \
@@ -127,27 +141,29 @@ class PacketInOutTest(bt.P4RuntimeTest):
               'operand2': 0,
               'operand3': 0},
              'payload': bytes(exp_pkt)}
-        logging.debug("write_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
+        logging.info("write_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
         tu.verify_no_other_packets(self)
-        pkt_pb = self.get_packet_in()
-        pktinfo = self.decode_packet_in_metadata(pkt_pb)
-        logging.debug("write_seqNumReg pktinfo={}".format(pktinfo))
-        self.verify_packet_in(exp_pktinfo, pktinfo)
+        pktlist = get_exp_num_packetins(self.pktin, 1, 2)
+        pkt_pb = pktlist[0]
+        pktinfo = p4rtutil.decode_packet_in_metadata(
+            self.cpm_packetin_id2data, pkt_pb.packet)
+        logging.info("write_seqNumReg pktinfo={}".format(pktinfo))
+        p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
 
     def read_SeqNumReg(self, idx_int):
-        logging.debug("read_seqNumReg idx={}".format(idx_int))
-        pkt = scapy.Ether()
-        pktout_dict = {'payload': bytes(pkt),
-                       'metadata': {
-                           'opcode': self.opcode_name2int['READ_REGISTER'],
-                           'reserved1': 0,
-                           'operand0': idx_int,
-                           'operand1': 0,
-                           'operand2': 0,
-                           'operand3': 0}}
-        pktout_pb = self.encode_packet_out_metadata(pktout_dict)
-        self.send_packet_out(pktout_pb)
-        logging.debug("read_seqNumReg pktout_dict={}".format(pktout_dict))
+        logging.info("read_seqNumReg idx={}".format(idx_int))
+        pkt = scapy.Ether(dst='00:00:00:00:00:00')
+        pktout = sh.PacketOut()
+        pktout.payload = bytes(pkt)
+        pktout.metadata['opcode'] = \
+            '%d' % (self.opcode_name2int['READ_REGISTER'])
+        pktout.metadata['reserved1'] = '0'
+        pktout.metadata['operand0'] = '%d' % (idx_int)
+        pktout.metadata['operand1'] = '0'
+        pktout.metadata['operand2'] = '0'
+        pktout.metadata['operand3'] = '0'
+        pktout.send()
+        logging.info("read_seqNumReg pktout={}".format(pktout))
 
         exp_pkt = pkt
         exp_pktinfo = \
@@ -161,8 +177,10 @@ class PacketInOutTest(bt.P4RuntimeTest):
               'operand3': 0},
              'payload': bytes(exp_pkt)}
         tu.verify_no_other_packets(self)
-        pkt_pb = self.get_packet_in()
-        pktinfo = self.decode_packet_in_metadata(pkt_pb)
+        pktlist = get_exp_num_packetins(self.pktin, 1, 2)
+        pkt_pb = pktlist[0]
+        pktinfo = p4rtutil.decode_packet_in_metadata(
+            self.cpm_packetin_id2data, pkt_pb.packet)
 
         # We want to check the contents of the response packet that
         # comes back from reading, but we want this function to work
@@ -173,9 +191,9 @@ class PacketInOutTest(bt.P4RuntimeTest):
         # fields contain unxpected values.
         seqnum_int = pktinfo['metadata']['operand1']
         exp_pktinfo['metadata']['operand1'] = seqnum_int
-        logging.debug("read_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
-        logging.debug("read_seqNumReg pktinfo={}".format(pktinfo))
-        self.verify_packet_in(exp_pktinfo, pktinfo)
+        logging.info("read_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
+        logging.info("read_seqNumReg pktinfo={}".format(pktinfo))
+        p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
         return seqnum_int
 
     def make_pkt(self, idx, pkt_seqnum):
@@ -208,8 +226,7 @@ class PacketInOutTest(bt.P4RuntimeTest):
         tu.verify_no_other_packets(self)
 
 
-class WriteRegThenReadTest(PacketInOutTest):
-    @bt.autocleanup
+class WriteRegThenReadTest(RegisterAccessTest):
     def runTest(self):
         seqnum_idx1 = 20
         seqnum_val1 = 75
@@ -227,8 +244,7 @@ class WriteRegThenReadTest(PacketInOutTest):
         assert seqnum_read_val2 == seqnum_val2
 
 
-class PacketsUpdateRegisterTest(PacketInOutTest):
-    @bt.autocleanup
+class PacketsUpdateRegisterTest(RegisterAccessTest):
     def runTest(self):
         seqnum_idx = 20
 
