@@ -2,10 +2,25 @@ import logging
 from collections import Counter
 
 from p4.config.v1 import p4info_pb2
+from google.rpc import code_pb2
 import google.protobuf.text_format
 import p4runtime_sh.p4runtime as p4rt
 import p4runtime_sh.shell as sh
 
+
+def as_list_of_dicts(exc):
+    lst = []
+    for idx, p4_error in exc.errors:
+        code_name = code_pb2._CODE.values_by_number[
+            p4_error.canonical_code].name
+        lst.append({'index': idx,
+                    'code': p4_error.code,
+                    'canonical_code': p4_error.canonical_code,
+                    'code_name': code_name,
+                    'details': p4_error.details,
+                    'message': p4_error.message,
+                    'space': p4_error.space})
+    return lst
 
 def mac_to_int(addr):
     """Take an argument 'addr' containing an Ethernet MAC address written
@@ -117,18 +132,31 @@ def serializable_enum_dict(p4info_data, name):
                   "" % (name, name_to_int, int_to_name))
     return name_to_int, int_to_name
 
-def read_all_table_entries(table_name_str):
+def read_table_normal_entries(table_name_str):
     tes = []
     def do_save_te(te):
         tes.append(te)
     sh.TableEntry(table_name_str).read(lambda te: do_save_te(te))
     return tes
 
+def read_table_default_entry(table_name_str):
+    te = sh.TableEntry(table_name_str)
+    te.is_default = True
+    for x in te.read():
+        default_entry = x
+    return default_entry
+
+def read_all_table_entries(table_name_str):
+    return read_table_normal_entries(table_name_str), \
+        read_table_default_entry(table_name_str)
+
 def dump_table(table_name_str):
-    tes = read_all_table_entries(table_name_str)
-    logging.info("Table %s contains %d entries" % (table_name_str, len(tes)))
-    for te in tes:
-        logging.info(str(te))
+    entries, default_entry = read_all_table_entries(table_name_str)
+    logging.info("Table %s contains %d entries" % (table_name_str, len(entries)))
+    for e in entries:
+        logging.info(str(e))
+    logging.info("Table %s default entry:" % (table_name_str))
+    logging.info(default_entry)
 
 
 # In order to make writing tests easier, we accept any suffix that uniquely
