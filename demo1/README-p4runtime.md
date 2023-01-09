@@ -80,8 +80,8 @@ install table entries:
 
 ```bash
 cd p4-guide/demo1
-export PYTHONPATH="`realpath ../pylib`:$PYTHONPATH"
-python
+export PYTHONPATH="`realpath ../testlib`:$PYTHONPATH"
+python3
 
 # NOTE: For most interactive Python sessions, typing Ctrl-D or the
 # command `quit()` is enough to quit Python and go back to the shell.
@@ -103,127 +103,99 @@ Enter these commands at the `>>> ` prompt of the Python session:
 
 my_dev1_addr='localhost:9559'
 my_dev1_id=0
-import base_test as bt
+p4info_txt_fname='demo1.p4_16.p4info.txt'
+p4prog_binary_fname='demo1.p4_16.json'
+import p4runtime_sh.shell as sh
+# TODO: Only import if needed.
+#import p4runtime_shell_utils as p4rtutil
 
-# If the previous statement gave an error like "ModuleNotFoundError:
-# No module named 'Queue'", then likely you are using Python3.  Good!
-# Use the following line instead to get a Python3 version of that
-# module.
-import base_test_py3 as bt
-
-# Convert the BMv2 JSON file demo1.p4_16.json, created by the p4c
-# compiler, into the binary format file demo1.p4_16.bin expected by
-# simple_switch_grpc.  We will send this binary file to
-# simple_switch_grpc over the P4Runtime connection.
-
-bt.bmv2_json_to_device_config('demo1.p4_16.json', 'demo1.p4_16.bin')
-
-# Load the binary version of the compiled P4 program, and the text
-# version of the P4Runtime info file, into the simple_switch_grpc
-# 'device'.
-
-bt.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4info.txt', my_dev1_addr, my_dev1_id)
-# Result of successful bt.update_config() call is "P4Runtime
-# SetForwardingPipelineConfig" output from simple_switch_grpc log.
-
-h=bt.P4RuntimeTest()
-h.setUp(my_dev1_addr, 'demo1.p4_16.p4info.txt')
+sh.setup(device_id=my_dev1_id,
+         grpc_addr=my_dev1_addr,
+         election_id=(0, 1), # (high_32bits, lo_32bits)
+         config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
 ```
 
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it
 yourself, you can continue to use the same running process, loading
-different compiled P4 programs into it over time, repeating the
-`bt.update_config` call above with the same or different file names.
+different compiled P4 programs into it over time.  Just to
+`sh.tearDown()` to terminate the current P4Runtime API connection to
+the device, and then perform `sh.setup` with the desired parameters to
+connect again and load the desired compiled P4 program.
 
 ----------------------------------------------------------------------
 demo1.p4_16.p4
 ----------------------------------------------------------------------
 
+The full names of the tables and actions begin with 'ingress.' or
+'egress.', but p4runtime-shell adds these prefixes for you, as long as
+the table/action name is unique after that point.
+
+Assign default actions for tables using an empty key, represented by
+None in Python.
+
 ```python
-# The full names of the tables and actions begin with 'ingress.' or
-# 'egress.', but some layer of software between here and there adds
-# these prefixes for you, as long as the table/action name is unique
-# after that point.
+te = sh.TableEntry('ipv4_da_lpm')(action='ingressImpl.my_drop', is_default=True)
+te.modify()
+te = sh.TableEntry('mac_da')(action='ingressImpl.my_drop', is_default=True)
+te.modify()
+te = sh.TableEntry('send_frame')(action='egressImpl.my_drop', is_default=True)
+te.modify()
+```
 
-# assign default actions for tables using an empty key, represented by
-# None in Python.
+Define a few small helper functions that help construct parameters
+for the function table_add()
 
-h.table_add(('ipv4_da_lpm', None), ('ingressImpl.my_drop', []))
-h.table_add(('mac_da', None), ('ingressImpl.my_drop', []))
-h.table_add(('send_frame', None), ('egressImpl.my_drop', []))
+```python
+def add_ipv4_da_lpm_entry_action_set_l2ptr(ipv4_addr_str, prefix_len_int, l2ptr_int):
+    te = sh.TableEntry('ipv4_da_lpm')(action='set_l2ptr')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['l2ptr'] = '%d' % (l2ptr_int)
+    te.insert()
 
-# add new non-default table entries by filling in at least one key field
+def add_mac_da_entry_action_set_bd_dmac_intf(l2ptr_int, bd_int, dmac_str, intf_int):
+    te = sh.TableEntry('mac_da')(action='set_bd_dmac_intf')
+    te.match['l2ptr'] = '%d' % (l2ptr_int)
+    te.action['bd'] = '%d' % (bd_int)
+    te.action['dmac'] = dmac_str
+    te.action['intf'] = '%d' % (intf_int)
+    te.insert()
 
-# bt.ipv4_to_binary takes an IPv4 address written as a string in
-# dotted decimal notation, e.g. '10.1.2.3', and converts it to a
-# string with binary contents expected by the table add operation.
+def add_send_frame_entry_action_rewrite_mac(out_bd_int, smac_str):
+    te = sh.TableEntry('send_frame')(action='rewrite_mac')
+    te.match['out_bd'] = '%d' % (out_bd_int)
+    te.action['smac'] = smac_str
+    te.insert()
 
-# bt.mac_to_binary is similar, but takes a MAC address as a string,
-# with colons separating each byte, specified in hex,
-# e.g. '00:de:ad:be:ef:ff'.
-
-# bt.stringify takes a non-negative integer 'n' as its parameter.  It
-# returns a string with binary contents expected by the Python
-# P4Runtime client operations.
-
-# Note: stringify will only work if you are using a version of
-# p4lang/PI repository code from 2021-Mar or later, in particular with
-# the changes made in this PR: https://github.com/p4lang/PI/pull/538
-# Before that change, you must send bit strings with the full bit
-# width of the value as declared in the P4 source code.
-
-# Define a few small helper functions that help construct parameters
-# for the function table_add()
-
-def key_ipv4_da_lpm(h, ipv4_addr_string, prefix_len):
-    return ('ipv4_da_lpm', [h.Lpm('hdr.ipv4.dstAddr',
-                            bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
-
-def act_set_l2ptr(l2ptr_int_val):
-    return ('set_l2ptr', [('l2ptr', bt.stringify(l2ptr_int_val))])
-
-def key_mac_da(h, l2ptr_int_val):
-    return ('mac_da', [h.Exact('meta.fwd_metadata.l2ptr',
-                       bt.stringify(l2ptr_int_val))])
-
-def act_set_bd_dmac_intf(bd_int_val, dmac_string, intf_int_val):
-    return ('set_bd_dmac_intf',
-            [('bd', bt.stringify(bd_int_val)),
-             ('dmac', bt.mac_to_binary(dmac_string)),
-             ('intf', bt.stringify(intf_int_val))])
-
-def key_send_frame(h, bd_int_val):
-    return ('send_frame', [h.Exact('meta.fwd_metadata.out_bd',
-                           bt.stringify(bd_int_val))])
-
-def act_rewrite_mac(smac_string):
-    return ('rewrite_mac', [('smac', bt.mac_to_binary(smac_string))])
-
-h.table_add(key_ipv4_da_lpm(h, '10.1.0.1', 32), act_set_l2ptr(58))
-h.table_add(key_mac_da(h, 58), act_set_bd_dmac_intf(9, '02:13:57:ab:cd:ef', 2))
-h.table_add(key_send_frame(h, 9), act_rewrite_mac('00:11:22:33:44:55'))
-
+add_ipv4_da_lpm_entry_action_set_l2ptr('10.1.0.1', 32, 58)
+add_mac_da_entry_action_set_bd_dmac_intf(58, 9, '02:13:57:ab:cd:ef', 2)
+add_send_frame_entry_action_rewrite_mac(9, '00:11:22:33:44:55')
 ```
 
 Another set of table entries to forward packets to a different output
 interface:
 
 ```python
-h.table_add(key_ipv4_da_lpm(h, '10.1.0.200', 32), act_set_l2ptr(81))
-h.table_add(key_mac_da(h, 81), act_set_bd_dmac_intf(15, '08:de:ad:be:ef:00', 4))
-h.table_add(key_send_frame(h, 15), act_rewrite_mac('ca:fe:ba:be:d0:0d'))
+add_ipv4_da_lpm_entry_action_set_l2ptr('10.1.0.200', 32, 81)
+add_mac_da_entry_action_set_bd_dmac_intf(81, 15, '08:de:ad:be:ef:00', 4)
+add_send_frame_entry_action_rewrite_mac(15, 'ca:fe:ba:be:d0:0d')
+```
 
-# There is preliminary support for reading the entries of a table that
-# you can try like this, but right now it prints the P4Runtime
-# messages returned without performing any translation of table,
-# search key field, action, or parameter ids to the corresponding
-# names, so it is not very convenient.
+One way to read the entries of a table using `p4runtime-shell` is
+shown below.  It will show the messages in a way similar to the text
+format of Protobuf messages, but with extra string annotations on
+fields such as `field_id` and `action_id` that show the names of these
+things, for easier understanding by people.
 
-# If someone wants to beat me to implementing such a thing, take a
-# look at the code in base_test.py, especially the table_dump_data
-# method.
-
-h.table_dump_data('ipv4_da_lpm')
+```
+te = sh.TableEntry('ipv4_da_lpm')
+for x in te.read():
+	print(x)
 ```
 
 You can also examine the existing entries in a table using the
