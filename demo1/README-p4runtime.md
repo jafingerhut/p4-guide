@@ -106,8 +106,6 @@ my_dev1_id=0
 p4info_txt_fname='demo1.p4_16.p4info.txt'
 p4prog_binary_fname='demo1.p4_16.json'
 import p4runtime_sh.shell as sh
-# TODO: Only import if needed.
-#import p4runtime_shell_utils as p4rtutil
 
 sh.setup(device_id=my_dev1_id,
          grpc_addr=my_dev1_addr,

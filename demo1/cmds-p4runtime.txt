@@ -1,47 +1,62 @@
 # Commands copied from README-p4runtime.md, for convenience
 
+```
 my_dev1_addr='localhost:50051'
 my_dev1_id=0
-import base_test
-base_test.bmv2_json_to_device_config('demo1.p4_16.json', 'demo1.p4_16.bin')
-base_test.update_config('demo1.p4_16.bin', 'demo1.p4_16.p4info.txt', my_dev1_addr, my_dev1_id)
-h=base_test.P4RuntimeTest()
-h.setUp(my_dev1_addr, 'demo1.p4_16.p4info.txt')
-h.table_add('ipv4_da_lpm', None, 'my_drop', [])
-h.table_add('mac_da', None, 'my_drop', [])
-h.table_add('send_frame', None, 'my_drop', [])
+p4info_txt_fname='demo1.p4_16.p4info.txt'
+p4prog_binary_fname='demo1.p4_16.json'
+import p4runtime_sh.shell as sh
+sh.setup(device_id=my_dev1_id,
+         grpc_addr=my_dev1_addr,
+         election_id=(0, 1), # (high_32bits, lo_32bits)
+         config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
 
-def ipv4_da_lpm_key(h, ipv4_addr_string, prefix_len):
-    return [h.Lpm('hdr.ipv4.dstAddr',
-                  base_test.ipv4_to_binary(ipv4_addr_string), prefix_len)]
+te = sh.TableEntry('ipv4_da_lpm')(action='ingressImpl.my_drop', is_default=True)
+te.modify()
+te = sh.TableEntry('mac_da')(action='ingressImpl.my_drop', is_default=True)
+te.modify()
+te = sh.TableEntry('send_frame')(action='egressImpl.my_drop', is_default=True)
+te.modify()
 
-def set_l2ptr_params(h, l2ptr_int_val):
-    return [('l2ptr', base_test.stringify(l2ptr_int_val, 4))]
+def add_ipv4_da_lpm_entry_action_set_l2ptr(ipv4_addr_str, prefix_len_int, l2ptr_int):
+    te = sh.TableEntry('ipv4_da_lpm')(action='set_l2ptr')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['l2ptr'] = '%d' % (l2ptr_int)
+    te.insert()
 
-def mac_da_key(h, l2ptr_int_val):
-    return [h.Exact('meta.fwd_metadata.l2ptr',
-                    base_test.stringify(l2ptr_int_val, 4))]
+def add_mac_da_entry_action_set_bd_dmac_intf(l2ptr_int, bd_int, dmac_str, intf_int):
+    te = sh.TableEntry('mac_da')(action='set_bd_dmac_intf')
+    te.match['l2ptr'] = '%d' % (l2ptr_int)
+    te.action['bd'] = '%d' % (bd_int)
+    te.action['dmac'] = dmac_str
+    te.action['intf'] = '%d' % (intf_int)
+    te.insert()
 
-def set_bd_dmac_intf_params(h, bd_int_val, dmac_string, intf_int_val):
-    return [('bd', base_test.stringify(bd_int_val, 3)),
-            ('dmac', base_test.mac_to_binary(dmac_string)),
-	    ('intf', base_test.stringify(intf_int_val, 2))]
+def add_send_frame_entry_action_rewrite_mac(out_bd_int, smac_str):
+    te = sh.TableEntry('send_frame')(action='rewrite_mac')
+    te.match['out_bd'] = '%d' % (out_bd_int)
+    te.action['smac'] = smac_str
+    te.insert()
 
-def send_frame_key(h, bd_int_val):
-    return [h.Exact('meta.fwd_metadata.out_bd',
-                    base_test.stringify(bd_int_val, 3))]
+add_ipv4_da_lpm_entry_action_set_l2ptr('10.1.0.1', 32, 58)
+add_mac_da_entry_action_set_bd_dmac_intf(58, 9, '02:13:57:ab:cd:ef', 2)
+add_send_frame_entry_action_rewrite_mac(9, '00:11:22:33:44:55')
 
-def rewrite_mac_params(h, smac_string):
-    return [('smac', base_test.mac_to_binary(smac_string))]
+add_ipv4_da_lpm_entry_action_set_l2ptr('10.1.0.200', 32, 81)
+add_mac_da_entry_action_set_bd_dmac_intf(81, 15, '08:de:ad:be:ef:00', 4)
+add_send_frame_entry_action_rewrite_mac(15, 'ca:fe:ba:be:d0:0d')
+```
 
-h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.1.0.1', 32), 'set_l2ptr', set_l2ptr_params(h, 58))
-h.table_add('mac_da', mac_da_key(h, 58), 'set_bd_dmac_intf', set_bd_dmac_intf_params(h, 9, '02:13:57:ab:cd:ef', 2))
-h.table_add('send_frame', send_frame_key(h, 9), 'rewrite_mac', rewrite_mac_params(h, '00:11:22:33:44:55'))
-h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '10.2.0.0', 16), 'set_l2ptr', set_l2ptr_params(h, 60))
-h.table_add('ipv4_da_lpm', ipv4_da_lpm_key(h, '12.13.14.15', 32), 'set_l2ptr', set_l2ptr_params(h, 67))
 
-# Now we have at least 3 table entries in ipv4_da_lpm table
+# Older commands used for debugging long ago, before I started using p4runtime-shell, but perhaps still useful for someone
 
+```
 d = h.table_dump_data('ipv4_da_lpm')
 
 
@@ -107,3 +122,4 @@ Internet for that and protobuf, and found this:
 
 r11.WhichOneof('entity')
 # -> 'table_entry'
+```
