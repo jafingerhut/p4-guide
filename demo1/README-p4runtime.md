@@ -296,25 +296,25 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit 4e64e1dcc54ad9edbdcf6c8542b9a13b16192cf3
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Sat Apr 3 02:49:09 2021 -0700
+commit fcfb044b0070d78ee3a09bed0e26f3f785598f02
+Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
+Date:   Tue Dec 20 16:08:09 2022 +0000
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit 27c235944492ef55ba061fcf658b4d8102d53bd8
-Author: Thomas Dreibholz <dreibh@simula.no>
-Date:   Wed Mar 24 19:42:48 2021 +0100
+commit e97b6a8b4aec6da9f148326f7677f5e46b09e5ee
+Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
+Date:   Mon Dec 12 21:05:06 2022 +0000
 ```
 
 For https://github.com/p4lang/PI
 
 ```
 $ git log -n 1 | head -n 3
-commit 4961fb9fb7a03b8fe7f1511f05fc7a0238b1d88c
-Author: Antonin Bas <abas@vmware.com>
-Date:   Thu Mar 11 20:28:34 2021 -0800
+commit 21592d61b314ba0c44a7409a733dbf9e46da6556
+Author: Antonin Bas <antonin.bas@gmail.com>
+Date:   Tue Dec 20 12:45:36 2022 -0800
 ```
