@@ -232,7 +232,7 @@ class PrefixLen0Test(Demo2Test):
 
         # Retrieve all table entries and print out counter_data (byte
         # and packet counts).
-        print("======================================================================")
+        logging.info("======================================================================")
         te = sh.TableEntry('ipv4_da_lpm')
         # You HAVE to set the te.counter_data field to trigger reading
         # out the counter_data
@@ -256,9 +256,9 @@ class PrefixLen0Test(Demo2Test):
                 value = m.lpm.value
                 prefix_len = m.lpm.prefix_len
             if m is None:
-                print(x)
-            print('%s/%d -> pkts:%d bytes:%d'
-                  '' % (value, prefix_len,
-                        x.counter_data.packet_count,
-                        x.counter_data.byte_count))
-        print("======================================================================")
+                logging.info(x)
+            logging.info('%s/%d -> pkts:%d bytes:%d'
+                         '' % (value, prefix_len,
+                               x.counter_data.packet_count,
+                               x.counter_data.byte_count))
+        logging.info("======================================================================")
