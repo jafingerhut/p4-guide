@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2021-2023 Intel Corporation
+# Copyright 2023 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,16 @@
 
 import logging
 import pprint
+import queue
 import time
 
 import ptf
 import ptf.testutils as tu
-import base_test as bt
+from ptf.base_tests import BaseTest
+import p4runtime_sh.shell as sh
+import p4runtime_sh.utils as shutils
+import p4runtime_sh.p4runtime as p4rt
+import p4runtime_shell_utils as p4rtutil
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -34,11 +39,6 @@ import base_test as bt
 # documentation for these methods, here:
 
 # https://github.com/p4lang/ptf/blob/master/src/ptf/testutils.py
-
-# The package `base_test` is included in this repository, and can also
-# be seen at this link:
-
-# https://github.com/jafingerhut/p4-guide/blob/master/testlib/base_test.py
 
 
 ######################################################################
@@ -56,7 +56,7 @@ import base_test as bt
 
 logger = logging.getLogger(None)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
@@ -65,51 +65,95 @@ logger.addHandler(ch)
 pp = pprint.PrettyPrinter(indent=4)
 
 
-class IdleTimeoutTest(bt.P4RuntimeTest):
+class IdleTimeoutTest(BaseTest):
     def setUp(self):
-        bt.P4RuntimeTest.setUp(self)
-        # This setUp method will be executed once for each test case.
-        # It may be a little bit wasteful in time to load the compiled
-        # P4 program for each test, but for only a few tests it is
-        # still quick.  Suggestions welcome on good ways to load the
-        # compiled P4 program only once, yet still allow someone to
-        # select a subset of the test cases to be run from the `ptf`
-        # command line.
-        success = bt.P4RuntimeTest.updateConfig(self)
-        assert success
+        # Setting up PTF dataplane
+        self.dataplane = ptf.dataplane_instance
+        self.dataplane.flush()
 
-    #############################################################
-    # Define a few small helper functions that help construct
-    # parameters for the table_add() method.
-    #############################################################
+        logging.info("IdleTimeoutTest.setUp()")
+        grpc_addr = tu.test_param_get("grpcaddr")
+        if grpc_addr is None:
+            grpc_addr = 'localhost:9559'
+        p4info_txt_fname = tu.test_param_get("p4info")
+        p4prog_binary_fname = tu.test_param_get("config")
+        sh.setup(device_id=0,
+                 grpc_addr=grpc_addr,
+                 election_id=(0, 1), # (high_32bits, lo_32bits)
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+        self.idlenotes = sh.IdleTimeoutNotification()
 
-    def key_mac_da_fwd(self, dmac_string):
-        # Pass dmac_string as None if you want to make a None key,
-        # which the base_test.table_add() method uses to modify the
-        # default entry of a table.
-        if dmac_string is None:
-            return ('mac_da_fwd', None)
-        return ('mac_da_fwd',
-                [self.Exact('hdr.ethernet.dstAddr',
-                            bt.mac_to_int(dmac_string))])
+    def tearDown(self):
+        logging.info("IdleTimeoutTest.tearDown()")
+        sh.teardown()
 
-    def act_set_port(self, port_int):
-        return ('set_port', [('port', port_int)])
+#############################################################
+# Define a few small helper functions that help construct
+# parameters for the table_add() method.
+#############################################################
 
-    def act_my_drop(self):
-        return ('my_drop', [])
+def get_idle_notes_block_until_timeout_reached(idlenotes, timeout_sec):
+    pktlist = []
+    logging.info("Sniffing for idlenotes for timeout_sec=%s" % (timeout_sec))
+    idlenotes.sniff(lambda p: pktlist.append(p), timeout=timeout_sec)
+    logging.info("    returning %d idle notifications" % (len(pktlist)))
+    return pktlist
 
-    def act_NoAction(self):
-        return ('NoAction', [])
+def get_idle_notes(idlenotes, timeout_sec):
+    pktlist = []
+    logging.info("Checking for idlenotes for timeout_sec=%s" % (timeout_sec))
+    start_time = time.time()
+    try:
+        pktlist.append(idlenotes.notification_queue.get(block=True,
+                                                        timeout=timeout_sec))
+    except KeyboardInterrupt:
+        # User sends an interrupt (e.g. Ctrl-C).
+        pass
+    except queue.Empty:
+        # No item available during timeout.  Exiting
+        pass
+    logging.info("    returning %d idle notifications after %s wait time"
+                 "" % (len(pktlist), time.time() - start_time))
+    return pktlist
 
-    def key_redirect_by_ethertype(self, ethertype_int):
-        # Pass ethertype_int if you want to make a None key, which the
-        # base_test.table_add() method uses to modify the default
-        # entry of a table.
-        if ethertype_int is None:
-            return ('redirect_by_ethertype', None)
-        return ('redirect_by_ethertype',
-                [self.Exact('hdr.ethernet.etherType', ethertype_int)])
+def add_mac_da_fwd_entry_action_set_port(mac_addr_str, port_int,
+                                         idle_timeout_nsec):
+    te = sh.TableEntry('mac_da_fwd')(action='set_port')
+    te.match['dstAddr'] = mac_addr_str
+    te.action['port'] = '%d' % (port_int)
+    te.idle_timeout_ns = idle_timeout_nsec
+    logging.info("add_mac_da_fwd_entry_action_set_port attempting to send this write request:")
+    logging.info(te)
+    te.insert()
+
+def modify_mac_da_fwd_default_action_NoAction(idle_timeout_nsec):
+    te = sh.TableEntry('mac_da_fwd')(action='NoAction')
+    te.is_default = True
+    te.idle_timeout_ns = idle_timeout_nsec
+    logging.debug("modify_mac_da_fwd_default_action_NoAction attempting to send this write request:")
+    logging.debug(te)
+    te.modify()
+
+def modify_mac_da_fwd_default_action_my_drop(elapsed_nsec):
+    te = sh.TableEntry('mac_da_fwd')(action='my_drop')
+    te.is_default = True
+    te.time_since_last_hit.elapsed_ns = elapsed_nsec
+    logging.debug("modify_mac_da_fwd_default_action_my_drop attempting to send this write request:")
+    logging.debug(te)
+    te.modify()
+
+def add_redirect_by_ethertype_entry_action_set_port(ethertype_int,
+                                                    port_int,
+                                                    timeout_nsec,
+                                                    elapsed_nsec):
+    te = sh.TableEntry('redirect_by_ethertype')(action='set_port')
+    te.match['etherType'] = '%d' % (ethertype_int)
+    te.action['port'] = '%d' % (port_int)
+    if timeout_nsec is not None:
+        te.idle_timeout_ns = timeout_nsec
+    if elapsed_nsec is not None:
+        te.time_since_last_hit.elapsed_ns = elapsed_nsec
+    te.insert()
 
 
 class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
@@ -126,15 +170,14 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         print("Subtest #1")
         got_error = False
         try:
-            self.table_add(self.key_redirect_by_ethertype(0x86dd),
-                           self.act_set_port(5),
-                           options={'idle_timeout_ns': 1000000})
-        except bt.P4RuntimeWriteException as e:
+            add_redirect_by_ethertype_entry_action_set_port(
+                0x86dd, 5, 1000000, None)
+        except p4rt.P4RuntimeWriteException as e:
             #print("Got exception: %s" % (e))
             #n = len(e.errors)
             #print("len(e.errors)=%s" % (n))
             #print("e.as_list_of_dicts() ----------")
-            lst = e.as_list_of_dicts()
+            lst = p4rtutil.as_list_of_dicts(e)
             #pp.pprint(lst)
             #print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
@@ -155,17 +198,18 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         print("Subtest #2")
         got_error = False
         try:
-            self.table_add(self.key_redirect_by_ethertype(0x86dd),
-                           self.act_set_port(5),
-                           options={'elapsed_ns': 1000000})
-        except bt.P4RuntimeWriteException as e:
-            lst = e.as_list_of_dicts()
-            #pp.pprint(lst)
-            #print("e.as_list_of_dicts() ----------")
-            assert len(lst) == 1
-            lst0 = lst[0]
-            assert lst0['code_name'] == 'INVALID_ARGUMENT'
-            assert lst0['message'] == 'has_time_since_last_hit must not be set in WriteRequest'
+            add_redirect_by_ethertype_entry_action_set_port(
+                0x86dd, 5, None, 1000000)
+        except shutils.UserError as e:
+            # p4runtime-shell detects an attempt to create a
+            # WriteRequest for a TableEntry with elapsed_ns field set
+            # BEFORE ever sending the message to the server, if that
+            # table does not have the table property enabling idle
+            # timeout (support_timeout=true in v1model architecture).
+            # Check for that exception instead of checking for an
+            # error response from the P4Runtime server, because the
+            # server never even saw the WriteRequest.
+            assert e.info == 'Table has no idle timeouts'
             got_error = True
         assert got_error
 
@@ -180,11 +224,9 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         print("Subtest #3")
         got_error = False
         try:
-            self.table_add(self.key_mac_da_fwd(None),
-                           self.act_NoAction(),
-                           options={'idle_timeout_ns': 1000000})
-        except bt.P4RuntimeWriteException as e:
-            lst = e.as_list_of_dicts()
+            modify_mac_da_fwd_default_action_NoAction(1000000)
+        except p4rt.P4RuntimeWriteException as e:
+            lst = p4rtutil.as_list_of_dicts(e)
             pp.pprint(lst)
             print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
@@ -192,15 +234,14 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
             assert lst0['code_name'] == 'INVALID_ARGUMENT'
             #assert lst0['message'] == 'has_time_since_last_hit must not be set in WriteRequest'
             got_error = True
-        # TODO: The following line is commented out because at least
-        # with latest versions of P4 open source dev tools as of
-        # 2021-Dec-31, simple_switch_grpc does NOT return an
+        # TODO: With latest versions of P4 open source dev tools as of
+        # 2023-Jan-08, simple_switch_grpc does NOT return an
         # INVALID_ARGUMENT for this WriteRequest, even though the
         # P4Runtime API spec says it should.
         if got_error:
-            print("Subtest #3 is passing.  You can uncomment the `assert got_error` line for it in the PTF test now.")
+            logging.info("Subtest #3 is passing.  You can uncomment the `assert got_error` line for it in the PTF test now.")
         else:
-            print("Subtest #3 attempt to modify the default action for table mac_da_fwd should be failing, but is succeeding.  TODO: Create an issue for the p4lang/PI repository for this.")
+            logging.info("Subtest #3 attempt to modify the default action for table mac_da_fwd should be failing, but is succeeding.  TODO: Create an issue for the p4lang/PI repository for this.")
         #assert got_error
 
         ############################################################
@@ -215,11 +256,9 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         print("Subtest #4")
         got_error = False
         try:
-            self.table_add(self.key_mac_da_fwd(None),
-                           self.act_my_drop(),
-                           options={'elapsed_ns': 1000000})
-        except bt.P4RuntimeWriteException as e:
-            lst = e.as_list_of_dicts()
+            modify_mac_da_fwd_default_action_my_drop(1000000)
+        except p4rt.P4RuntimeWriteException as e:
+            lst = p4rtutil.as_list_of_dicts(e)
             #pp.pprint(lst)
             #print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
@@ -235,7 +274,6 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
 
 
 class OneEntryTest(IdleTimeoutTest):
-    @bt.autocleanup
     def runTest(self):
         in_dmac = 'ee:30:ca:9d:1e:00'
         in_smac = 'ee:cd:00:7e:70:00'
@@ -266,18 +304,17 @@ class OneEntryTest(IdleTimeoutTest):
         # about this situation?
 
         NSEC_PER_SEC = 1000 * 1000 * 1000
-        self.table_add(self.key_mac_da_fwd(in_dmac),
-                       self.act_set_port(eg_port),
-                       options={'idle_timeout_ns': 5 * NSEC_PER_SEC})
+        add_mac_da_fwd_entry_action_set_port(in_dmac, eg_port,
+                                             5 * NSEC_PER_SEC)
 
         # Read back and show the table entries, to see if there are
         # any extra properties related to the idle timeout.
-        entries_read, default_entry_read = self.table_dump_data('mac_da_fwd')
-        print("entries_read:")
-        print(entries_read)
+        entries_read, default_entry_read = p4rtutil.read_all_table_entries('mac_da_fwd')
+        logging.info("entries_read:")
+        logging.info(entries_read)
 
-        print("default_entry_read:")
-        print(default_entry_read)
+        logging.info("default_entry_read:")
+        logging.info(default_entry_read)
 
         ip_dst_addr = '192.168.0.1'
         pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
@@ -289,67 +326,67 @@ class OneEntryTest(IdleTimeoutTest):
         num_packets = 0
         msginfo = None
         while True:
-            msginfo = self.get_stream_packet2(None, 0.1)
-            if msginfo is not None:
+            msginfos = get_idle_notes(self.idlenotes, 0.1)
+            if len(msginfos) != 0:
                 break
             now = time.time()
-            print("time %.2f next_send_time = %.2f"
-                  "" % (now - start, next_send_time - start))
+            logging.info("time %.2f next_send_time = %.2f"
+                         "" % (now - start, next_send_time - start))
             if now < next_send_time:
-                print("      sleeping %.2f sec" % (next_send_time - now))
+                logging.info("      sleeping %.2f sec" % (next_send_time - now))
                 time.sleep(next_send_time - now)
             tu.send_packet(self, ig_port, pkt_in)
             last_packet_sent = time.time()
             tu.verify_packets(self, exp_pkt, [eg_port])
             num_packets += 1
-            print("time %.2f Sent packet #%d and verified expected output packet"
-                  "" % (time.time() - start, num_packets))
+            logging.info("time %.2f Sent packet #%d and verified expected output packet"
+                         "" % (time.time() - start, num_packets))
             if num_packets >= 5:
                 break
             next_send_time = next_send_time + 2.0
 
-        print("time %.2f Sent packets: %d" % (time.time() - start,
-                                              num_packets))
-        print("First packet sent time: %.2f" % (start))
-        print("Last  packet sent time: %.2f abs, %.2f rel"
-              "" % (last_packet_sent, last_packet_sent - start))
-        if msginfo is None:
-            print("No notification message received")
+        logging.info("time %.2f Sent packets: %d" % (time.time() - start,
+                                                     num_packets))
+        logging.info("First packet sent time: %.2f" % (start))
+        logging.info("Last  packet sent time: %.2f abs, %.2f rel"
+                     "" % (last_packet_sent, last_packet_sent - start))
+        if len(msginfos) == 0:
+            logging.info("No notification message received")
         else:
-            print("Notification message received while sending packets periodically")
-            pp.pprint(msginfo)
-        entries_read, default_entry_read = self.table_dump_data('mac_da_fwd')
-        print("entries_read:")
-        print(entries_read)
+            logging.info("Notification message received while sending packets periodically")
+            logging.info(pp.pformat(msginfos))
+        entries_read, default_entry_read = p4rtutil.read_all_table_entries('mac_da_fwd')
+        logging.info("entries_read:")
+        logging.info(entries_read)
 
         n_checks = 0
         while True:
             n_checks += 1
-            msginfo = self.get_stream_packet2(None, 1.0)
+            msginfos = get_idle_notes(self.idlenotes, 1.0)
             now = time.time()
-            if msginfo is not None:
+            if len(msginfos) != 0:
                 break
-            print("time %.2f (%.2f after last pkt) %d checks for notifications - none rcvd yet"
+            logging.info("time %.2f (%.2f after last pkt) %d checks for notifications - none rcvd yet"
                   "" % (now - start, now - last_packet_sent, n_checks))
             if n_checks == 10:
                 break
 
-        assert msginfo is not None
-        print("time %.2f (%.2f after last pkt) %d checks for notifications - one received"
-              "" % (now - start, now - last_packet_sent, n_checks))
-        pp.pprint(msginfo)
+        assert len(msginfos) != 0
+        logging.info("time %.2f (%.2f after last pkt) %d checks for notifications - one received"
+                     "" % (now - start, now - last_packet_sent, n_checks))
+        logging.info(pp.pformat(msginfos))
 
         stop_time = time.time() + 10
         while True:
-            msginfo = self.get_stream_packet2(None, stop_time - time.time())
+            msginfos = get_idle_notes(self.idlenotes, stop_time - time.time())
             now = time.time()
-            if msginfo is None:
+            if len(msginfos) == 0:
                 break
-            print("time %.2f (%.2f after last pt) received another notification"
+            logging.info("time %.2f (%.2f after last pt) received another notification"
                   "" % (now - start, now - last_packet_sent))
-            pp.pprint(msginfo)
+            logging.info(pp.pformat(msginfos))
 
-        print("%.2f Reading table entries..." % (time.time() - start))
-        entries_read, default_entry_read = self.table_dump_data('mac_da_fwd')
-        print("entries_read:")
-        print(entries_read)
+        logging.info("%.2f Reading table entries..." % (time.time() - start))
+        entries_read, default_entry_read = p4rtutil.read_all_table_entries('mac_da_fwd')
+        logging.info("entries_read:")
+        logging.info(entries_read)
