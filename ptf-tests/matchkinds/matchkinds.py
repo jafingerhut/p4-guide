@@ -191,8 +191,17 @@ class IPv4FwdTest(MatchKindsTest):
         # Add a set of table entries
         for e in entries:
             if e['priority'] is None:
+                logging.info("=== default entry before =========================")
+                de = p4rtutil.read_table_default_entry('t1')
+                logging.info("%s" % (de))
+                logging.info("==================================================")
                 logging.info("Attempting to modify t1's default action")
                 modify_t1_default_action_set_dmac(e['out_dmac'])
+                # Try reading the default entry
+                logging.info("=== default entry after ==========================")
+                de = p4rtutil.read_table_default_entry('t1')
+                logging.info("%s" % (de))
+                logging.info("==================================================")
             else:
                 logging.info("Attempting to add entry with priority %s"
                              "" % (e['priority']))
@@ -201,6 +210,12 @@ class IPv4FwdTest(MatchKindsTest):
                                              e['b3_val'], e['b3_exact_match'],
                                              e['out_dmac'],
                                              e['priority'])
+                # Try reading all non-default entries
+                logging.info("==================================================")
+                te = sh.TableEntry('t1')
+                for x in te.read():
+                    logging.info("%s" % (x))
+                logging.info("==================================================")
 
         ttl_in = 200
         for e in entries:
