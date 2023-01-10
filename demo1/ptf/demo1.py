@@ -74,7 +74,7 @@ class Demo1Test(BaseTest):
         self.dataplane = ptf.dataplane_instance
         self.dataplane.flush()
 
-        logging.info("Demo1Test.setUp()")
+        logging.debug("Demo1Test.setUp()")
         grpc_addr = tu.test_param_get("grpcaddr")
         if grpc_addr is None:
             grpc_addr = 'localhost:9559'
@@ -84,12 +84,12 @@ class Demo1Test(BaseTest):
                  grpc_addr=grpc_addr,
                  election_id=(0, 1), # (high_32bits, lo_32bits)
                  config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
-        p4rtutil.dump_table("ipv4_da_lpm")
-        p4rtutil.dump_table("mac_da")
-        p4rtutil.dump_table("send_frame")
+        #p4rtutil.dump_table("ipv4_da_lpm")
+        #p4rtutil.dump_table("mac_da")
+        #p4rtutil.dump_table("send_frame")
 
     def tearDown(self):
-        logging.info("Demo1Test.tearDown()")
+        logging.debug("Demo1Test.tearDown()")
         sh.teardown()
 
 #############################################################

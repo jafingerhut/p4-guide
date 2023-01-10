@@ -59,39 +59,177 @@ Adding interface veth8 as port 4
 Adding interface veth10 as port 5
 Adding interface veth12 as port 6
 Adding interface veth14 as port 7
-Server listening on 0.0.0.0:9559
-/usr/local/lib/python3.8/dist-packages/ptf-0.9.1-py3.8.egg/EGG-INFO/scripts/ptf:19: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+/usr/local/lib/python3.8/dist-packages/ptf-0.9.3-py3.8.egg/EGG-INFO/scripts/ptf:19: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
   import imp
-2021-12-31 14:10:28,701 - root - INFO - Importing platform: eth
-2021-12-31 14:10:28,701 - root - DEBUG - Configuration: {'list': False, 'list_test_names': False, 'allow_user': False, 'test_spec': '', 'test_file': None, 'test_dir': 'ptf', 'test_order': 'default', 'test_order_seed': 2746, 'platform': 'eth', 'platform_args': None, 'platform_dir': '/usr/local/lib/python3.8/dist-packages/ptf-0.9.1-py3.8.egg/ptf/platforms', 'interfaces': [(0, 0, 'veth1'), (0, 1, 'veth3'), (0, 2, 'veth5'), (0, 3, 'veth7'), (0, 4, 'veth9'), (0, 5, 'veth11'), (0, 6, 'veth13'), (0, 7, 'veth15')], 'device_sockets': [], 'log_file': 'ptf.log', 'log_dir': None, 'debug': 'verbose', 'profile': False, 'profile_file': 'profile.out', 'xunit': False, 'xunit_dir': 'xunit', 'relax': False, 'test_params': "grpcaddr='localhost:9559';p4info='demo1.p4_16.p4info.txt';config='demo1.p4_16.json'", 'failfast': False, 'fail_skipped': False, 'default_timeout': 2.0, 'default_negative_timeout': 0.1, 'minsize': 0, 'random_seed': None, 'disable_ipv6': False, 'disable_vxlan': False, 'disable_erspan': False, 'disable_geneve': False, 'disable_mpls': False, 'disable_nvgre': False, 'disable_igmp': False, 'disable_rocev2': False, 'qlen': 100, 'test_case_timeout': None, 'socket_recv_size': 4096, 'port_map': {(0, 0): 'veth1', (0, 1): 'veth3', (0, 2): 'veth5', (0, 3): 'veth7', (0, 4): 'veth9', (0, 5): 'veth11', (0, 6): 'veth13', (0, 7): 'veth15'}}
-2021-12-31 14:10:28,703 - root - INFO - port map: {(0, 0): 'veth1', (0, 1): 'veth3', (0, 2): 'veth5', (0, 3): 'veth7', (0, 4): 'veth9', (0, 5): 'veth11', (0, 6): 'veth13', (0, 7): 'veth15'}
-2021-12-31 14:10:28,703 - root - INFO - Autogen random seed: 94376873
-2021-12-31 14:10:28,711 - root - INFO - *** TEST RUN START: Fri Dec 31 14:10:28 2021
+2023-01-09 21:56:37,569 - root - INFO - Importing platform: eth
+2023-01-09 21:56:37,569 - root - INFO - port map: {(0, 0): 'veth1', (0, 1): 'veth3', (0, 2): 'veth5', (0, 3): 'veth7', (0, 4): 'veth9', (0, 5): 'veth11', (0, 6): 'veth13', (0, 7): 'veth15'}
+2023-01-09 21:56:37,569 - root - INFO - Autogen random seed: 41683488
+2023-01-09 21:56:37,570 - root - INFO - *** TEST RUN START: Mon Jan  9 21:56:37 2023
 demo1.FwdTest ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 1.089s
+Ran 1 test in 0.954s
 
 OK
 demo1.PrefixLen0Test ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 2.593s
+Ran 1 test in 2.484s
 
 OK
 demo1.DupEntryTest ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.044s
+Ran 1 test in 0.030s
 
 OK
+Using packet manipulation module: ptf.packet_scapy
+field_id: 1
+lpm {
+  value: "\n\001\000\001"
+  prefix_len: 32
+}
+
+param_id: 1
+value: ":"
+
+field_id: 1
+exact {
+  value: ":"
+}
+
+param_id: 1
+value: "\t"
+
+param_id: 2
+value: "\002\023W\253\315\357"
+
+param_id: 3
+value: "\002"
+
+field_id: 1
+exact {
+  value: "\t"
+}
+
+param_id: 1
+value: "\021\"3DU"
+
+field_id: 1
+lpm {
+  value: "\n\001\000\001"
+  prefix_len: 32
+}
+
+param_id: 1
+value: ":"
+
+field_id: 1
+exact {
+  value: ":"
+}
+
+param_id: 1
+value: "\t"
+
+param_id: 2
+value: "\002\023W\253\315\357"
+
+param_id: 3
+value: "\002"
+
+field_id: 1
+exact {
+  value: "\t"
+}
+
+param_id: 1
+value: "\021\"3DU"
+
+field_id: 1
+lpm {
+  value: "\n\001\000\000"
+  prefix_len: 16
+}
+
+param_id: 1
+value: ";"
+
+field_id: 1
+exact {
+  value: ";"
+}
+
+param_id: 1
+value: "\n"
+
+param_id: 2
+value: "\002\023W\253\315\360"
+
+param_id: 3
+value: "\003"
+
+field_id: 1
+exact {
+  value: "\n"
+}
+
+param_id: 1
+value: "\021\"3DV"
+
+param_id: 1
+value: "<"
+
+field_id: 1
+exact {
+  value: "<"
+}
+
+param_id: 1
+value: "\013"
+
+param_id: 2
+value: "\002\023W\253\315\361"
+
+param_id: 3
+value: "\004"
+
+field_id: 1
+exact {
+  value: "\013"
+}
+
+param_id: 1
+value: "\021\"3DW"
+
+field_id: 1
+lpm {
+  value: "\n\000\000\001"
+  prefix_len: 32
+}
+
+param_id: 1
+value: ":"
+
+field_id: 1
+lpm {
+  value: "\n\000\000\001"
+  prefix_len: 32
+}
+
+param_id: 1
+value: ":"
+
+Exception ignored in: <function EventDescriptor.__del__ at 0x7f061b71c790>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/ptf-0.9.3-py3.8.egg/ptf/ptfutils.py", line 56, in __del__
+AttributeError: 'NoneType' object has no attribute 'close'
 
 PTF test finished.  Waiting 2 seconds before killing simple_switch_grpc ...
 
 Verifying that there are no simple_switch_grpc processes running any longer in 4 seconds ...
-./runptf.sh: line 69: 11317 Killed                  sudo simple_switch_grpc --log-file ss-log --log-flush --dump-packet-data 10000 -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4
-andy       11370  0.0  0.0   9040   660 pts/0    S+   14:10   0:00 grep simple_switch
-
+./runptf.sh: line 69: 35459 Killed                  sudo simple_switch_grpc --log-file ss-log --log-flush --dump-packet-data 10000 -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4
+andy       35517  0.0  0.0  17672   648 pts/3    S+   21:56   0:00 grep simple_switch
 ```
 
 The line `demo1.FwdTest ... ok` indicates that a test named `FwdTest`
