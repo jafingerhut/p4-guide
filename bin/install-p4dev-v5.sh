@@ -228,6 +228,8 @@ find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
 # behavioral-model's runtime_CLI.py source file, in a function named
 # ipv6Addr_to_bytes.
 sudo pip3 install -U scapy ipaddr ptf psutil grpcio
+# p4runtime-shell package, installed from latest source version
+sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 
 echo "------------------------------------------------------------"
 
