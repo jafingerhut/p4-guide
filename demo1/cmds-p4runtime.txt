@@ -1,7 +1,7 @@
 # Commands copied from README-p4runtime.md, for convenience
 
 ```
-my_dev1_addr='localhost:50051'
+my_dev1_addr='localhost:9559'
 my_dev1_id=0
 p4info_txt_fname='demo1.p4_16.p4info.txt'
 p4prog_binary_fname='demo1.p4_16.json'
