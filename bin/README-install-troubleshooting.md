@@ -143,17 +143,19 @@ If you prefer Ubuntu 18.04, then I would recommend
 
 If you wish to run the examples in the
 [tutorials](https://github.com/p4lang/tutorials) repository as of
-2021, you need P4Runtime API support and Mininet.
+2021, you need P4Runtime API support and Mininet.  All of the current
+install scripts listed in the table below include these.
 
 See the tables below if you want to make a more informed decision.
 
 The scripts in the next table below have all been tested monthly
 through 2022.  They all include the following:
 
-+ P4Runtime API support
-+ Mininet
++ [P4Runtime API support](https://github.com/p4lang/p4runtime)
++ [Mininet](http://mininet.org)
++ [PTF](https://github.com/p4lang/ptf)
++ [p4runtime-shell](https://github.com/p4lang/p4runtime-shell)
 + Uses Python3 only, no Python2 installed
-+ PTF
 
 | Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
