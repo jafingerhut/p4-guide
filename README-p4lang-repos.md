@@ -4,30 +4,32 @@ This document aims to be a guide to the public p4lang repositories,
 and some other selected public sources of information about P4,
 related tools, and published research papers.
 
-Caveat emptor: As of this writing, the author is not an expert on
-these topics, and is creating this in hopes of getting up to speed
-with the state of the art more quickly.  Corrections and comments
-are very welcome.
+Caveat emptor: This document was last updated 2023-Jan.  Corrections
+and comments are welcome.
 
 
 ## Quick summary
 
-If all you want to do is compile P4_14 and/or P4_16 source code for
-the bmv2 behavioral model, and use the command line or thrift API it
-provides for adding/removing table entries, then getting copies of and
-following the installation instructions for these 2 repositories is
-all you need:
+If you want to compile P4_14 and/or P4_16 source code for the bmv2
+behavioral model, and use P4Runtime API, or the bmv2-custom Thrift or
+command line API it provides for adding/removing table entries, then
+there are enough steps involved to install these that I would
+recommend following the instructions
+[here](../bin/README-install-troubleshooting.md).  It will download
+copies of the following p4lang repositories, as well as some others
+outside of the p4lang Github organization:
 
-* [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
+* [`p4c`](https://github.com/p4lang/p4c) - P4_16 reference compiler
   (also compiles P4_14 programs)
 * [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
-  Rewrite of the behavioral model as a C++ project without
-  auto-generated code
-
-The bash shell script [`bin/install-p4dev.sh`](bin/install-p4dev.sh)
-can do this for an Ubuntu 16.04 Linux machine, with no interaction
-required other than entering your password for `sudo` commands on
-occasion.
+  The reference P4 software switch.  A rewrite of the behavioral model
+  as a C++ project without auto-generated code.
+* [`PI`](https://github.com/p4lang/PI) - An implementation framework
+  for a P4Runtime server
+* [`ptf`](https://github.com/p4lang/ptf) - Packet Test Framework.  PTF
+  is a Python based dataplane test framework.
+* [`p4runtime-shell`](https://github.com/p4lang/p4runtime-shell) - An
+  interactive Python shell for P4Runtime
 
 
 ## `p4lang` repositories by name
@@ -39,16 +41,20 @@ repositories.
 
 [p4lang organization](https://github.com/p4lang/) on Github
 
-All p4lang repositories as of 2019-Mar-31, sorted by name (case
+All p4lang repositories as of 2023-Jan-15, sorted by name (case
 insensitive), with their descriptions:
 
 * [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
-  Rewrite of the behavioral model as a C++ project without
-  auto-generated code
+  The reference P4 software switch.
 * [`education`](https://github.com/p4lang/education) - P4 for Education
+* [`governance`](https://github.com/p4lang/governance) - The Wiki
+  associated with this repository contains governance documents for
+  the P4 project.
 * [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
   grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
   C#) (forked from grpc/grpc)
+* [`hackathons`](https://github.com/p4lang/hackathons) - This
+  repository contains code that was developed at P4 Hackathon events.
 * [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
   prototyping of Software Defined Networks http://mininet.org (forked
   from [mininet/mininet](https://github.com/mininet/mininet))
@@ -58,10 +64,25 @@ insensitive), with their descriptions:
 * [`p4-build`](https://github.com/p4lang/p4-build) - Infrastructure
   needed to generate, build and install the PD library for a given P4
   program
-* [`p4-hlir`](https://github.com/p4lang/p4-hlir) - (No description)
-* [`p4-spec`](https://github.com/p4lang/p4-spec) - (No description)
-* [`p4app`](https://github.com/p4lang/p4app) - (No description)
-* [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
+* [`p4-constraints`](https://github.com/p4lang/p4-constraints) -
+  Constraints on P4 objects enforced at runtime
+* [`p4-dpdk-target`](https://github.com/p4lang/p4-dpdk-target) - P4
+  driver software for P4 DPDK target.
+* [`p4-hlir`](https://github.com/p4lang/p4-hlir) - An older P4
+  compiler that only supports P4_14.  Superceded by `p4c`.
+* [`p4-spec`](https://github.com/p4lang/p4-spec) - The P4_16 and P4_14
+  language speciications, and also the specification for the Portable
+  Switch Architecture.
+* [`p4app`](https://github.com/p4lang/p4app) - p4app is a tool that
+  can build, run, debug, and test P4 programs.  The philosophy behind
+  p4app is "easy things should be easy" - p4app is designed to make
+  small, simple P4 programs easy to write and easy to share with
+  others.
+* [`p4app-switchML`](https://github.com/p4lang/p4app-switchML) -
+  Switch-Based Training Acceleration for Machine Learning
+* [`p4app-TCP-INT`](https://github.com/p4lang/p4app-TCP-INT) -
+  Lightweight In-band Network Telemetry for TCP
+* [`p4c`](https://github.com/p4lang/p4c) - P4_16 reference compiler
   (also compiles P4_14 programs)
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
   compiler for the behavioral model.  Deprecated.
@@ -71,19 +92,25 @@ insensitive), with their descriptions:
 * [`p4factory`](https://github.com/p4lang/p4factory) - Compile P4 and
   run the P4 behavioral simulator.  Deprecated.
 * [`p4lang.github.io`](https://github.com/p4lang/p4lang.github.io) -
-  P4.org website
+  Deprecated P4.org website
 * [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
   on a P4 dataplane
+* [`p4pi`](https://github.com/p4lang/p4pi) - P4 on Raspberry Pi for
+  Networking Education
 * [`p4runtime`](https://github.com/p4lang/p4runtime) - Specification
   documents for the P4Runtime control-plane API
+* [`p4runtime-shell`](https://github.com/p4lang/p4runtime-shell) - An
+  interactive Python shell for P4Runtime
 * [`papers`](https://github.com/p4lang/papers) - Repository for papers
   related to P4
 * [`PI`](https://github.com/p4lang/PI) - An implementation framework
   for a P4Runtime server
+* [`pna`](https://github.com/p4lang/pna) - Portable NIC Architecture
 * [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
   - Google's data interchange format (forked from
   protocolbuffers/protobuf)
-* [`ptf`](https://github.com/p4lang/ptf) - Packet Test Framework
+* [`ptf`](https://github.com/p4lang/ptf) - Packet Test Framework.  PTF
+  is a Python based dataplane test framework.
 * [`rules_protobuf`](https://github.com/p4lang/rules_protobuf) - Bazel
   rules for building protocol buffers and gRPC services (java, c++,
   go, ...) (forked from pubref/rules_protobuf)
@@ -94,6 +121,18 @@ insensitive), with their descriptions:
   clone, with support for additional packet headers
 * [`switch`](https://github.com/p4lang/switch) - Consolidated switch
   repo (API, SAI and Netlink)
+* [`target-syslib`](https://github.com/p4lang/target-syslib) - The
+  target-syslib package contains sources to build system abstraction
+  functions needed by TDI or any device drivers.
+* [`target-utils`](https://github.com/p4lang/target-utils) - The
+  package contains sources for common utilities and data structures to
+  be used by target driver runtime software.  TDI (Table Driven
+  Interface) uses some of the utils and so do some target specific
+  driver software layers.
+* [`tdi`](https://github.com/p4lang/tdi) - TDI (Table Driven
+  Interface) is a Target Abstraction Interface.  It is a set of APIs
+  that enable configuration and management of P4 programmable and
+  fixed functions of a backend device in a uniform and dynamic way.
 * [`third-party`](https://github.com/p4lang/third-party) - Third-party
   dependencies for p4lang software
 * [`thrift`](https://github.com/p4lang/thrift) - Mirror of Apache
@@ -129,38 +168,48 @@ Specification documents:
   documents for the P4Runtime control-plane API
 * [`p4-applications`](https://github.com/p4lang/p4-applications) - P4
   Applications WG repo
+* [`pna`](https://github.com/p4lang/pna) - Portable NIC Architecture
+  (PNA).
 
-Documentation, research papers, and tutorials:
+Education and learning resources:
 
-* [`papers`](https://github.com/p4lang/papers) - Repository for papers
-  related to P4
 * [`tutorials`](https://github.com/p4lang/tutorials) - P4 language
   tutorials
+* [`p4pi`](https://github.com/p4lang/p4pi) - P4 on Raspberry Pi for
+  Networking Education
 * [`education`](https://github.com/p4lang/education) - P4 for Education
-* [`p4lang.github.io`](https://github.com/p4lang/p4lang.github.io) -
-  P4.org website
+* [`hackathons`](https://github.com/p4lang/hackathons) - This
+  repository contains code that was developed at P4 Hackathon events.
+
+Documentation and research papers:
+
+* [`governance`](https://github.com/p4lang/governance) - The Wiki
+  associated with this repository contains governance documents for
+  the P4 project.
+* [`papers`](https://github.com/p4lang/papers) - Repository for papers
+  related to P4
 
 P4 compilers, some only front end, some front end plus back end for
 one or more P4 targets:
 
-* [`p4c`](https://github.com/p4lang/p4c) - P4_16 prototype compiler
+* [`p4c`](https://github.com/p4lang/p4c) - P4_16 reference compiler
   (also compiles P4_14 programs)
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
   configuration for the behavioral-model (bmv2), as well as the C/C++
-  PD code
+  PD code.  Superceded by `p4c`.
 * [`p4-hlir`](https://github.com/p4lang/p4-hlir) - P4_14 compiler,
   written in Python, which stops at generating an intermediate
   representation, from which one can start in writing a back end
-  compiler.
+  compiler.  Superceded by `p4c`.
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
-  compiler for the behavioral model.  Deprecated.
+  compiler for the behavioral model.  Deprecated.  Superceded by
+  `p4c`.
 
 P4 behavioral models, for running P4 programs on general purpose
 computers:
 
 * [`behavioral-model`](https://github.com/p4lang/behavioral-model) -
-  Rewrite of the behavioral model as a C++ project without
-  auto-generated code.  Also known as `bmv2`.
+  The reference P4 software switch.  Also known as `bmv2`.
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
   compiler for the behavioral model.  Deprecated.
 
@@ -171,53 +220,62 @@ and server code:
   documents for the P4Runtime control-plane API
 * [`PI`](https://github.com/p4lang/PI) - An implementation framework
   for a P4Runtime server
-* [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
-  grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
-  C#) (forked from grpc/grpc)
-* [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
-  - Google's data interchange format (forked from
-  protocolbuffers/protobuf)
+* [`p4runtime-shell`](https://github.com/p4lang/p4runtime-shell) - An
+  interactive Python shell for P4Runtime
+
+Table Driven Interface (TDI) documentation and some implementation
+code:
+
+* [`tdi`](https://github.com/p4lang/tdi) - TDI (Table Driven
+  Interface) is a Target Abstraction Interface.  It is a set of APIs
+  that enable configuration and management of P4 programmable and
+  fixed functions of a backend device in a uniform and dynamic way.
+* [`target-syslib`](https://github.com/p4lang/target-syslib) - The
+  target-syslib package contains sources to build system abstraction
+  functions needed by TDI or any device drivers.
+* [`target-utils`](https://github.com/p4lang/target-utils) - The
+  package contains sources for common utilities and data structures to
+  be used by target driver runtime software.  TDI (Table Driven
+  Interface) uses some of the utils and so do some target specific
+  driver software layers.
+
+Example applications developed using P4:
+
+* [`p4app-switchML`](https://github.com/p4lang/p4app-switchML) -
+  Switch-Based Training Acceleration for Machine Learning
+* [`p4app-TCP-INT`](https://github.com/p4lang/p4app-TCP-INT) -
+  Lightweight In-band Network Telemetry for TCP
 
 Open source tools created by organizations other than p4.org, used by
 one or more `p4lang` repositories:
 
-* [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
-  grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
-  C#) (forked from grpc/grpc)
-* [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
-  - Google's data interchange format (forked from
-  protocolbuffers/protobuf)
-* [`rules_protobuf`](https://github.com/p4lang/rules_protobuf) - Bazel
-  rules for building protocol buffers and gRPC services (java, c++,
-  go, ...) (forked from pubref/rules_protobuf)
-* [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
-  prototyping of Software Defined Networks http://mininet.org (forked
-  from [mininet/mininet](https://github.com/mininet/mininet))
-* [`SAI`](https://github.com/p4lang/SAI) - Switch Abstraction
-  Interface (forked from
-  [opencomputeproject/SAI](https://github.com/opencomputeproject/SAI))
-* [`scapy-vxlan`](https://github.com/p4lang/scapy-vxlan) - A scapy
-  clone, with support for additional packet headers
 * [`third-party`](https://github.com/p4lang/third-party) - Third-party
   dependencies for p4lang software
-* [`thrift`](https://github.com/p4lang/thrift) - Mirror of Apache
-  Thrift (forked from
-  [apache/thrift](https://github.com/apache/thrift))
 
 For creating and running automated tests:
 
-* [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
-  prototyping of Software Defined Networks http://mininet.org (forked
-  from [mininet/mininet](https://github.com/mininet/mininet))
 * [`ntf`](https://github.com/p4lang/ntf) - Network Test Framework
 * [`ptf`](https://github.com/p4lang/ptf) - Packet Test Framework
 * [`scapy-vxlan`](https://github.com/p4lang/scapy-vxlan) - A scapy
   clone, with support for additional packet headers
 
-Remaining to be categorized, but as they have not been updated in
-quite some time as of 2019-Mar-31, they are most likely no longer
-maintained:
+To be categorized:
 
+* [`p4-constraints`](https://github.com/p4lang/p4-constraints) -
+  Constraints on P4 objects enforced at runtime
+* [`p4-dpdk-target`](https://github.com/p4lang/p4-dpdk-target) - P4
+  driver software for P4 DPDK target.
+* [`p4app`](https://github.com/p4lang/p4app) - p4app is a tool that
+  can build, run, debug, and test P4 programs.  The philosophy behind
+  p4app is "easy things should be easy" - p4app is designed to make
+  small, simple P4 programs easy to write and easy to share with
+  others.
+
+The following are probably best considered as only of historical
+interest.
+
+* [`p4lang.github.io`](https://github.com/p4lang/p4lang.github.io) -
+  Deprecated P4.org website
 * [`p4-build`](https://github.com/p4lang/p4-build) - Infrastructure
   needed to generate, build and install the PD library for a given P4
   program
@@ -226,8 +284,37 @@ maintained:
   run the P4 behavioral simulator.  Deprecated.
 * [`p4ofagent`](https://github.com/p4lang/p4ofagent) - Openflow agent
   on a P4 dataplane
+* [`SAI`](https://github.com/p4lang/SAI) - Switch Abstraction
+  Interface (forked from
+  [opencomputeproject/SAI](https://github.com/opencomputeproject/SAI))
 * [`switch`](https://github.com/p4lang/switch) - Consolidated switch
   repo (API, SAI and Netlink)
+
+The following are forks of other repositories that were useful for
+p4lang projects at some point in the past, but as of approximately
+2020 most or all P4 projects use selected versions of the main
+published repositories for these, no longer these forks.
+
+* [`grpc`](https://github.com/p4lang/grpc) - grpc - (forked from
+  grpc/grpc) The C based gRPC (C++, Python, Ruby, Objective-C, PHP,
+  C#) (forked from grpc/grpc).  More recent versions of grpc still
+  used by P4Runtime API implementations.
+* [`mininet`](https://github.com/p4lang/mininet) - Emulator for rapid
+  prototyping of Software Defined Networks http://mininet.org (forked
+  from [mininet/mininet](https://github.com/mininet/mininet)).  More
+  recent versions of Mininet still used by the p4lang/tutorials
+  repository.
+* [`protobuf`](https://github.com/p4lang/protobuf) - Protocol Buffers
+  - Google's data interchange format (forked from
+  protocolbuffers/protobuf).  More recent versions of protobuf still
+  used by P4Runtime API implementations.
+* [`rules_protobuf`](https://github.com/p4lang/rules_protobuf) - Bazel
+  rules for building protocol buffers and gRPC services (java, c++,
+  go, ...) (forked from pubref/rules_protobuf)
+* [`thrift`](https://github.com/p4lang/thrift) - Mirror of Apache
+  Thrift (forked from
+  [apache/thrift](https://github.com/apache/thrift)).  More recent
+  versions of Thrift still used by `behavioral-model` project.
 
 
 ## `p4lang` repository descriptions
@@ -247,7 +334,7 @@ Glossary:
   result of parsing P4 source code, representing all relevant details
   about the source code needed for the back end portion of a compiler
   to generate configuration specific to a particular P4 target.
-* `PD API` - Program Dependent API ?  TBD where to find out more
+* `PD API` - Program Dependent API.  TBD where to find out more
   about this.
 * `PI API` - Program Independent API.  See `PI` repository [docs
   directory](https://github.com/p4lang/PI/blob/master/docs/msg_format.md)
@@ -266,8 +353,8 @@ Glossary:
 
 `p4c` is a front end compiler for both P4_14 and P4_16 programs.  The
 repository also contains a back end for `behavioral-model` (aka
-`bmv2`), and a couple of other sample back ends.  It is intended to be
-able to easily add new back ends to it.
+`bmv2`), and as of 2023, six other back end targets (see the project
+README).  It is intended to be able to easily add new back ends to it.
 
 `p4c` is written in C++, not Python as `p4-hlir` is.
 
@@ -277,7 +364,7 @@ able to easily add new back ends to it.
 `behavioral-model` contains the code for what is often called `bmv2`
 (an abbreviation for "Behavioral Model Version 2").
 
-The 1st version of the behavioral model, produced as output from the
+The first version of the behavioral model, produced as output from the
 code in the `p4c-behavioral` repository, is like a 'P4 to C compiler',
 i.e. source to source translation.  Changing the P4 program requires
 recompiling to a new C program, then recompiling that C code.
@@ -311,8 +398,7 @@ contains the new compiler for both P4_14 and P4_16.
 
 ### `p4c-behavioral`
 
-Deprecated, and may be deleted by 2018.  Use `behavioral-model`
-instead.
+Deprecated.  Use `behavioral-model` instead.
 
 `p4c-behavioral` uses `p4-hlir` as its front end to parse source code
 and produce an IR.  From that IR it generates a C/C++ behavioral model
@@ -335,6 +421,10 @@ C++ PD code.
 
 
 ## Executable files created during installation
+
+This section was last updated in 2019, and kept here only for
+historical reference.  Later versions of p4c and behavioral-model
+install additional executables not listed here.
 
 The executables are shown with the path where they are
 created/installed using the latest README instructions as of March
@@ -372,6 +462,10 @@ code:
 
 
 ## Python modules created during installation
+
+This section was last updated in 2019, and kept here only for
+historical reference.  Later versions of p4lang projects install
+different Python modules.
 
 Python modules currently installed can be shown using 'pip list'
 command.  You can see which directory the files are in using 'pip show
