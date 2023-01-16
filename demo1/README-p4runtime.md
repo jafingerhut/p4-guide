@@ -82,15 +82,15 @@ install table entries:
 cd p4-guide/demo1
 export PYTHONPATH="`realpath ../testlib`:$PYTHONPATH"
 python3
-
-# NOTE: For most interactive Python sessions, typing Ctrl-D or the
-# command `quit()` is enough to quit Python and go back to the shell.
-# For this Python session, one or more of the commands below cause
-# this interactive session to 'hang' if you try that.  In the most
-# commonly used Linux/OSX shells you can type Ctrl-Z to put the Python
-# process in the background and return to the shell prompt.  You may
-# want to kill the process, e.g. using `kill -9 %1` in bash.
 ```
+
+NOTE: For most interactive Python sessions, typing Ctrl-D or the
+command `quit()` is enough to quit Python and go back to the shell.
+For this Python session, one or more of the commands below cause this
+interactive session to 'hang' if you try that.  In the most commonly
+used Linux/OSX shells you can type Ctrl-Z to put the Python process in
+the background and return to the shell prompt.  You may want to kill
+the process, e.g. using `kill -9 %1` in bash.
 
 Enter these commands at the `>>> ` prompt of the Python session:
 
