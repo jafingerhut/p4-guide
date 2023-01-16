@@ -7,17 +7,9 @@ This article describes how to run an automated test of a P4 program
 using a Python library called [`ptf`](https://github.com/p4lang/ptf)
 for "Packet Test Framework"
 
-As of 2021-Apr-05, this has only been tested to work on the following systems:
-
-+ The Ubuntu 20.04 Desktop Linux VM available for download at [this
-  link](https://drive.google.com/file/d/13SwWBEnApknu84fG9otwbL5NC78tut-d/view?usp=sharing),
-  built from versions of the open source P4 development tools as of
-  2021-Apr-05.
-+ An Ubuntu 20.04 Desktop Linux system where all open source P4
-  development tools have been installed using the script named
-  [`install-p4dev-v4.sh` in this
-  repository](../bin/README-install-troubleshooting.md), which
-  installs all Python libraries for Python3, not Python2.
+As of 2022-Dec-01, this has been tested to work on any system with P4
+software installed on it following the instructions on [this
+page](../bin/README-install-troubleshooting.md).
 
 
 # Compiling the P4 program, and running simple_switch_grpc

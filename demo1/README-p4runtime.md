@@ -115,7 +115,7 @@ sh.setup(device_id=my_dev1_id,
 
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it
 yourself, you can continue to use the same running process, loading
-different compiled P4 programs into it over time.  Just to
+different compiled P4 programs into it over time.  Just do
 `sh.tearDown()` to terminate the current P4Runtime API connection to
 the device, and then perform `sh.setup` with the desired parameters to
 connect again and load the desired compiled P4 program.
@@ -140,8 +140,8 @@ te = sh.TableEntry('send_frame')(action='egressImpl.my_drop', is_default=True)
 te.modify()
 ```
 
-Define a few small helper functions that help construct parameters
-for the function table_add()
+Define a few small helper functions that help add entries to tables
+using Python API techniques provided by p4runtime-shell:
 
 ```python
 def add_ipv4_da_lpm_entry_action_set_l2ptr(ipv4_addr_str, prefix_len_int, l2ptr_int):
