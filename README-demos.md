@@ -35,41 +35,46 @@ If you are interested in an example automated test for the
 
 ### `demo2`
 
-The same as demo1, except add a per-prefix match count.
+[`demo2`](demo2/) is the same as demo1, except it adds a per-prefix
+match count.
+
+The [README](demo2/README.md) has instructions for using
+`simple_switch_CLI` to configure table entries and read counters from
+the data plane.  The PTF test [demo2.py](demo2/ptf/demo2.py) shows how
+to do the same operations using P4Runtime API via the Python API
+defined by the
+[`p4runtime-shell`](https://github.com/p4lang/p4runtime-shell)
+project.
 
 
 ### `demo3`
 
-The same as demo2, except add calculation of an ECMP hash, and add
-ECMP group and path tables that can use the ECMP hash to pick one of
-several paths for a packet that matches a single prefix in the longest
-prefix match table.
+[`demo3`](demo3/) is the same as demo2, except it adds calculation of
+an ECMP hash, and adds ECMP group and path tables that can use the
+ECMP hash to pick one of several paths for a packet that matches a
+single prefix in the longest prefix match table.
 
-Note that most P4 programs use 'action profiles' to implement ECMP.
-demo3 does not use those.  There is no strong reason why not -- demo3
-simply demonstrates another way to do ECMP that doesn't require P4
-action profiles, yet still achieves sharing of ECMP table entries
-among many IP prefixes.
+Note that most P4 programs use an extern called 'action profiles' to
+implement ECMP.  demo3 does not use those.  There is no strong reason
+why not -- demo3 simply demonstrates another way to do ECMP that
+doesn't require P4 action profiles, yet still achieves sharing of ECMP
+table entries among many IP prefixes.
 
 
 ### `demo6`
 
-The same as demo2, except adds a very simple use of P4 registers.
+[`demo6`](demo6/) is the same as demo2, except it adds a very simple
+use of P4 registers.
 
 
-### `v1model-special-ops`
+### `demo7`
 
-For P4_16 with the `v1model` architecture implemented in the open
-source `p4c` compiler and BMv2 `simple_switch` software switch, the
-program `v1model-special-ops.p4` demonstrates how to use the resubmit,
-recirculate, clone, and multicast operations.
-
-This directory includes not only the P4 program, but also table
-entries and other configuration commands that can be issued from the
-`simple_switch_CLI` program, plus test packets to send in, that
-demonstrate the operations occurring for those packets.
-
-See the [`README.md`](v1model-special-ops/README.md) for details.
+[`demo7`](demo7/) is a simple P4 program demonstrating how to use
+multicast replication in the `v1model` architecture, including how to
+configure the packet replication engine via `simple_switch_CLI`
+commands, and also via the Python API defined by the
+[`p4runtime-shell`](https://github.com/p4lang/p4runtime-shell)
+project.
 
 
 ### `rewrite-examples`
@@ -152,3 +157,24 @@ There are also documents with P4_16 code excerpts showing:
 The programs in this directory are experimental prototypes as of
 November 2018, written to investigate how a few packet dropping
 techniques might be implemented in the future in P4 programs.
+
+
+### `v1model-special-ops`
+
+For P4_16 with the `v1model` architecture implemented in the open
+source `p4c` compiler and BMv2 `simple_switch` software switch, the
+program `v1model-special-ops.p4` demonstrates how to use the resubmit,
+recirculate, clone, and multicast operations.
+
+Warning: It was written in a perhaps unnecessarily confusing way.  It
+is capable of testing many different special operations in the same P4
+program.  It would have been simpler to understand if each of these
+special operations were tested in their own separate simpler P4
+programs.
+
+This directory includes not only the P4 program, but also table
+entries and other configuration commands that can be issued from the
+`simple_switch_CLI` program, plus test packets to send in, that
+demonstrate the operations occurring for those packets.
+
+See the [`README.md`](v1model-special-ops/README.md) for details.
