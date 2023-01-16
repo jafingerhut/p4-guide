@@ -50,9 +50,7 @@ See the section with this name in
 # Running automated test using PTF
 
 See the [demo1 PTF README](../demo1/README-ptf.md) for which systems
-on which this has been tested as working.  It requires fairly recent
-versions of some of the open source p4c repositories installed in a
-way that all Python packages are installed as Python3.
+on which this has been tested as working.
 
 By running this command in this directory:
 
@@ -86,162 +84,151 @@ install table entries:
 
 ```bash
 cd p4-guide/demo7
-export PYTHONPATH="`realpath ../pylib`:$PYTHONPATH"
-python
-
-# NOTE: For most interactive Python sessions, typing Ctrl-D or the
-# command `quit()` is enough to quit Python and go back to the shell.
-# For this Python session, one or more of the commands below cause
-# this interactive session to 'hang' if you try that.  In the most
-# commonly used Linux/OSX shells you can type Ctrl-Z to put the Python
-# process in the background and return to the shell prompt.  You may
-# want to kill the process, e.g. using `kill -9 %1` in bash.
+export PYTHONPATH="`realpath ../testlib`:$PYTHONPATH"
+python3
 ```
+
+NOTE: For most interactive Python sessions, typing Ctrl-D or the
+command `quit()` is enough to quit Python and go back to the shell.
+For this Python session, one or more of the commands below cause this
+interactive session to 'hang' if you try that.  In the most commonly
+used Linux/OSX shells you can type Ctrl-Z to put the Python process in
+the background and return to the shell prompt.  You may want to kill
+the process, e.g. using `kill -9 %1` in bash.
 
 Enter these commands at the `>>> ` prompt of the Python session:
 
 ```python
-# Note: 50051 is the default TCP port number on which the
-# simple_switch_grpc process is listening for connections until
-# 2020-Dec-03, when the default was changed to TCP port 9559, because
-# 9559 was granted for use for this purpose by IANA shortly before
-# then.
+# Note: 9559 is the default TCP port number on which the
+# simple_switch_grpc process is listening for P4Runtime API control
+# connections.
 
 my_dev1_addr='localhost:9559'
 my_dev1_id=0
-import base_test as bt
+p4info_txt_fname='demo7.p4info.txt'
+p4prog_binary_fname='demo7.json'
+import p4runtime_sh.shell as sh
 
-# If the previous statement gave an error like "ModuleNotFoundError:
-# No module named 'Queue'", then likely you are using Python3.  Good!
-# Use the following line instead to get a Python3 version of that
-# module.
-import base_test_py3 as bt
-
-# Convert the BMv2 JSON file demo7.json, created by the p4c
-# compiler, into the binary format file demo7.bin expected by
-# simple_switch_grpc.  We will send this binary file to
-# simple_switch_grpc over the P4Runtime connection.
-
-bt.bmv2_json_to_device_config('demo7.json', 'demo7.bin')
-
-# Load the binary version of the compiled P4 program, and the text
-# version of the P4Runtime info file, into the simple_switch_grpc
-# 'device'.
-
-bt.update_config('demo7.bin', 'demo7.p4info.txt', my_dev1_addr, my_dev1_id)
-# Result of successful bt.update_config() call is "P4Runtime
-# SetForwardingPipelineConfig" output from simple_switch_grpc log.
-
-h=bt.P4RuntimeTest()
-h.setUp(my_dev1_addr, 'demo7.p4info.txt')
+sh.setup(device_id=my_dev1_id,
+         grpc_addr=my_dev1_addr,
+         election_id=(0, 1), # (high_32bits, lo_32bits)
+         config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
 ```
 
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it
 yourself, you can continue to use the same running process, loading
-different compiled P4 programs into it over time, repeating the
-`bt.update_config` call above with the same or different file names.
+different compiled P4 programs into it over time.  Just do
+`sh.tearDown()` to terminate the current P4Runtime API connection to
+the device, and then perform `sh.setup` with the desired parameters to
+connect again and load the desired compiled P4 program.
 
+The full names of the tables and actions begin with 'ingress.' or
+'egress.', but `p4runtime-shell` adds these prefixes for you, as long
+as the table/action name is unique after that point.
+
+The tables all have `const default_action = <action_name>` in the
+P4_16 program, so the control plane is not allowed to change them.  Do
+not try.  I have, and you get an appropriate error message if you try.
+
+Define a few small helper functions that help add entries to tables
+using Python API techniques provided by p4runtime-shell:
 
 ```python
-# The full names of the tables and actions begin with 'ingress.' or
-# 'egress.', but some layer of software between here and there adds
-# these prefixes for you, as long as the table/action name is unique
-# after that point.
+def add_ipv4_mc_route_lookup_entry_action_set_mcast_grp(ipv4_addr_str,
+                                                        prefix_len_int,
+                                                        mcast_grp_int):
+    te = sh.TableEntry('ipv4_mc_route_lookup')(action='set_mcast_grp')
+    # Note: p4runtime-shell raises an exception if you attempt to
+    # explicitly assign to te.match['dstAddr'] a prefix with length 0.
+    # Just skip assigning to te.match['dstAddr'] completely, and then
+    # inserting the entry will give a wildcard match for that field,
+    # as defined in the P4Runtime API spec.
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['mcast_grp'] = '%d' % (mcast_grp_int)
+    te.insert()
 
-# The tables all have 'const default_action = <action_name>' in the
-# P4_16 program, so the control plane is not allowed to change them.
-# Do not try.  I have, and you get an appropriate error message if you
-# try.
+def add_ipv4_da_lpm_entry_action_set_l2ptr(ipv4_addr_str, prefix_len_int,
+                                           l2ptr_int):
+    te = sh.TableEntry('ipv4_da_lpm')(action='set_l2ptr')
+    if prefix_len_int != 0:
+        te.match['dstAddr'] = '%s/%d' % (ipv4_addr_str, prefix_len_int)
+    te.action['l2ptr'] = '%d' % (l2ptr_int)
+    te.insert()
 
-# add new non-default table entries by filling in at least one key field
+def add_mac_da_entry_action_set_dmac_intf(l2ptr_int, dmac_str, intf_int):
+    te = sh.TableEntry('mac_da')(action='set_dmac_intf')
+    te.match['l2ptr'] = '%d' % (l2ptr_int)
+    te.action['dmac'] = dmac_str
+    te.action['intf'] = '%d' % (intf_int)
+    te.insert()
 
-# bt.ipv4_to_binary takes an IPv4 address written as a string in
-# dotted decimal notation, e.g. '10.1.2.3', and converts it to a
-# string with binary contents expected by the table add operation.
+def add_send_frame_entry_action_rewrite_mac(eg_port_int, smac_str):
+    te = sh.TableEntry('send_frame')(action='rewrite_mac')
+    te.match['egress_port'] = '%d' % (eg_port_int)
+    te.action['smac'] = smac_str
+    te.insert()
 
-# bt.mac_to_binary is similar, but takes a MAC address as a string,
-# with colons separating each byte, specified in hex,
-# e.g. '00:de:ad:be:ef:ff'.
+add_ipv4_mc_route_lookup_entry_action_set_mcast_grp('224.3.3.3', 32, 91)
 
-# bt.stringify takes a non-negative integer 'n' as its parameter.  It
-# returns a string with binary contents expected by the Python
-# P4Runtime client operations.
+add_ipv4_da_lpm_entry_action_set_l2ptr('10.1.0.1', 32, 58)
+add_mac_da_entry_action_set_dmac_intf(58, '02:13:57:ab:cd:ef', 2)
 
-# Note: stringify will only work if you are using a version of
-# p4lang/PI repository code from 2021-Mar or later, in particular with
-# the changes made in this PR: https://github.com/p4lang/PI/pull/538
-# Before that change, you must send bit strings with the full bit
-# width of the value as declared in the P4 source code.
-
-# Define a few small helper functions that help construct parameters
-# for the function table_add()
-
-def key_ipv4_mc_route_lookup(h, ipv4_addr_string, prefix_len):
-    return ('ipv4_mc_route_lookup', [h.Lpm('hdr.ipv4.dstAddr',
-                            bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
-
-def act_set_mcast_grp(mcast_grp_int_val):
-    return ('set_mcast_grp', [('mcast_grp', bt.stringify(mcast_grp_int_val))])
-
-def key_ipv4_da_lpm(h, ipv4_addr_string, prefix_len):
-    return ('ipv4_da_lpm', [h.Lpm('hdr.ipv4.dstAddr',
-                            bt.ipv4_to_binary(ipv4_addr_string), prefix_len)])
-
-def act_set_l2ptr(l2ptr_int_val):
-    return ('set_l2ptr', [('l2ptr', bt.stringify(l2ptr_int_val))])
-
-def key_mac_da(h, l2ptr_int_val):
-    return ('mac_da', [h.Exact('meta.fwd_metadata.l2ptr',
-                       bt.stringify(l2ptr_int_val))])
-
-def act_set_dmac_intf(dmac_string, intf_int_val):
-    return ('set_dmac_intf',
-            [('dmac', bt.mac_to_binary(dmac_string)),
-             ('intf', bt.stringify(intf_int_val))])
-
-def key_send_frame(h, port_int_val):
-    return ('send_frame', [h.Exact('stdmeta.egress_port',
-                           bt.stringify(port_int_val))])
-
-def act_rewrite_mac(smac_string):
-    return ('rewrite_mac', [('smac', bt.mac_to_binary(smac_string))])
-
-h.table_add(key_ipv4_mc_route_lookup(h, '224.3.3.3', 32), act_set_mcast_grp(91))
-h.table_add(key_ipv4_da_lpm(h, '10.1.0.1', 32), act_set_l2ptr(58))
-h.table_add(key_mac_da(h, 58), act_set_dmac_intf('02:13:57:ab:cd:ef', 2))
-
-h.table_add(key_send_frame(h, 0), act_rewrite_mac('00:de:ad:00:00:ff'))
-h.table_add(key_send_frame(h, 1), act_rewrite_mac('00:de:ad:11:11:ff'))
-h.table_add(key_send_frame(h, 2), act_rewrite_mac('00:de:ad:22:22:ff'))
-h.table_add(key_send_frame(h, 3), act_rewrite_mac('00:de:ad:33:33:ff'))
-h.table_add(key_send_frame(h, 4), act_rewrite_mac('00:de:ad:44:44:ff'))
-h.table_add(key_send_frame(h, 5), act_rewrite_mac('00:de:ad:55:55:ff'))
-
-# When a packet is sent from ingress to the packet buffer with
-# mcast_grp=91, configure the (egress_port, instance) places to which
-# the packet will be copied.
-
-# The first parameter is the mcast_grp value.
-
-# The second is a list of 2-tuples.  The first element of each
-# 2-tuples is the egress port to which the copy should be sent, and
-# the second is the "replication id", also called "egress_rid" in the
-# P4_16 v1model architecture standard_metadata struct, or "instance"
-# in the P4_16 PSA architecture psa_egress_input_metadata_t struct.
-# That value can be useful if you want to send multiple copies of the
-# same packet out of the same output port, but want each one to be
-# processed differently during egress processing.  If you want that,
-# put multiple pairs with the same egress port in the replication
-# list, but each with a different value of "replication id".
-
-h.pre_add_mcast_group(91, [(2, 5), (5, 75), (1, 111)])
+add_send_frame_entry_action_rewrite_mac(0, '00:de:ad:00:00:ff')
+add_send_frame_entry_action_rewrite_mac(1, '00:de:ad:11:11:ff')
+add_send_frame_entry_action_rewrite_mac(2, '00:de:ad:22:22:ff')
+add_send_frame_entry_action_rewrite_mac(3, '00:de:ad:33:33:ff')
+add_send_frame_entry_action_rewrite_mac(4, '00:de:ad:44:44:ff')
+add_send_frame_entry_action_rewrite_mac(5, '00:de:ad:55:55:ff')
 ```
 
-I do not have Python code right now that uses the P4Runtime API to
-read the multicast groups configured on `simple_switch_grpc`.  In the
-mean time, you can run the `simple_switch_CLI` command in a separate
-terminal window and use its commands to read table entries and/or the
-multicast configuration state.
+When a packet is sent from ingress to the packet buffer with
+mcast_grp=91, configure the (egress_port, instance) places to which
+the packet will be copied.
+
+In the list of 2-tuples below, the first element of each tuple is the
+egress port to which the copy should be sent, and the second is the
+"replication id", also called `egress_rid` in the P4_16 v1model
+architecture `standard_metadata_t` struct, or `instance` in the P4_16
+PSA architecture `psa_egress_input_metadata_t` struct, and also called
+`instance` in the P4Runtime API `Replica` message.  This value can be
+useful if you want to send multiple copies of the same packet out of
+the same output port, but want each one to be processed differently
+during egress processing.  If you want that, put multiple pairs with
+the same egress port in the replication list, but each with a
+different value of "replication id".
+
+```python
+mcg = sh.MulticastGroupEntry(91)
+for x in [(2, 5), (5, 75), (1, 111)]:
+    mcg.add(x[0], x[1])
+
+mcg.insert()
+```
+
+The following Python code can be used to read a multicast group entry
+from the switch using P4Runtime API, and to select and print values of
+individual parts of the response:
+
+```python
+mcgroups = sh.MulticastGroupEntry(91)
+group_lst = []
+for mcgroup in mcgroups.read():
+    group_lst.append(mcgroup)
+
+print(group_lst)
+
+for group in group_lst:
+    print("group_id: %d" % (group.group_id))
+    for replica in group.replicas:
+        print("    egress_port: %d  instance: %d"
+              "" % (replica.egress_port, replica.instance))
+
+```
+
+You may also use the following `simple_switch_CLI` commands in a
+separate terminal window to read table entries and/or the multicast
+configuration state.
 
 ```bash
 simple_switch_CLI
@@ -297,25 +284,25 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit 4e64e1dcc54ad9edbdcf6c8542b9a13b16192cf3
-Author: Mihai Budiu <mbudiu@vmware.com>
-Date:   Sat Apr 3 02:49:09 2021 -0700
+commit fcfb044b0070d78ee3a09bed0e26f3f785598f02
+Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
+Date:   Tue Dec 20 16:08:09 2022 +0000
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit 27c235944492ef55ba061fcf658b4d8102d53bd8
-Author: Thomas Dreibholz <dreibh@simula.no>
-Date:   Wed Mar 24 19:42:48 2021 +0100
+commit e97b6a8b4aec6da9f148326f7677f5e46b09e5ee
+Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
+Date:   Mon Dec 12 21:05:06 2022 +0000
 ```
 
 For https://github.com/p4lang/PI
 
 ```
 $ git log -n 1 | head -n 3
-commit 4961fb9fb7a03b8fe7f1511f05fc7a0238b1d88c
-Author: Antonin Bas <abas@vmware.com>
-Date:   Thu Mar 11 20:28:34 2021 -0800
+commit 21592d61b314ba0c44a7409a733dbf9e46da6556
+Author: Antonin Bas <antonin.bas@gmail.com>
+Date:   Tue Dec 20 12:45:36 2022 -0800
 ```
