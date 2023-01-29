@@ -228,8 +228,30 @@ find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
 # behavioral-model's runtime_CLI.py source file, in a function named
 # ipv6Addr_to_bytes.
 sudo pip3 install -U scapy ipaddr ptf psutil grpcio
-# p4runtime-shell package, installed from latest source version
-sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+
+# Attempting to install the p4runtime-shell package using the command
+# below gives no errors during installation, but results in a system
+# state where this fails:
+#
+# $ python3
+# >>> from p4.tmp import p4conig_pb2
+# ModuleNotFoundError: No module named 'p4.tmp'
+#
+# And that import must succeed in order for running exercises in the
+# tutorials repository to work.  For now, I will not install
+# p4runtime-shell in this script, until and unless I figure out how to
+# avoid this problem.
+#
+# I believe this happens because before the `sudo pip3 ...' command
+# below is executed, commands above have already created a directory
+# /usr/lib/python3/dist-packages/p4 with a tmp subdirectory and other
+# packages, and then the command below creates a directory
+# /usr/local/lib/python3.8/dist-packages/p4 that does _not_ have a tmp
+# subdirectory.  Perhaps there is a way to run the command below and
+# have it install packages in /usr/lib/python3/dist-packages/p4
+# instead?
+
+#sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 
 echo "------------------------------------------------------------"
 
