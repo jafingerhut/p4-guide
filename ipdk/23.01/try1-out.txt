@@ -1,0 +1,24 @@
+
+IPDK_BASE_DIR: /git
+INSTALL_DEPENDENCIES: y
+SCRIPTS_DIR: /root/scripts
+WORKING_DIR: /root
+
+~ ~/clone
+cp: cannot stat '/git/ipdk/build/networking/scripts': No such file or directory
+cp: cannot stat '/git/ipdk/build/networking/examples': No such file or directory
+cp: cannot stat '/git/ipdk/build/networking/patches': No such file or directory
+cp: cannot stat '/git/ipdk/build/networking/install_nr_modules.sh': No such file or directory
+cp: cannot stat '/git/ipdk/build/networking/run_ovs_cmds': No such file or directory
+~/clone
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 81: /root/scripts/os_ver_details.sh: No such file or directory
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 82: get_os_ver_details: command not found
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 87: /root/scripts/distro_pkg_install.sh: No such file or directory
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 92: cd: /git/ipdk: No such file or directory
+20.04
+ipdk/nr-ubuntu20.04
+/git/ipdk
+
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 100: /root/scripts/install_cmake_3.20.2.sh: No such file or directory
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 101: /root/install_nr_modules.sh: No such file or directory
+/root/clone/ipdk/build/networking/scripts/host_install.sh: line 104: /root/scripts/generate_tls_certs.sh: No such file or directory
