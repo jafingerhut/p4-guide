@@ -52,25 +52,17 @@ Date: 2023-Feb-07
 
 Hardware/OS is as described in section "Andy's macOS 12 system".
 
-```
-$ cd $HOME/Documents/p4-docs/ipdk
-$ git clone https://github.com/ipdk-io/ipdk
-$ cd ipdk
-$ git log -n 1 | head -n 3
-commit 637e132b30d4e8fdddfffe9a157614ae63e04deb
-Merge: 0adb4ef 5214f61
-Author: Artek Koltun <artsiom.koltun@intel.com>
-```
+In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
+within VirtualBox, with all the latest updates as of the date I
+attempted this install.
 
-Created an Ubuntu 20.04 Desktop Linux VM running within VirtualBox,
-with all the latest updates as of the date I attempted this install.
++ VM name: Ubuntu 20.04 ipdk net native try1
 
-VM name: Ubuntu 20.04 ipdk net native try1
-
-Started logged in as a non-root user named `andy`, but first did `sudo bash` to start a bash shell running as `root`.
+Started logged in as a non-root user named `andy`, but then did `sudo
+bash` to start a bash shell running as `root`.
 
 Followed instructions in file `build/networking/README_NATIVE.md`,
-where I used the directory `/home/andy/clone` for `<CLONE-PATH>`.
+where I used the directory `$HOME/clone` for `<CLONE-PATH>`.
 
 ```
 $ sudo bash
@@ -79,6 +71,17 @@ $ sudo bash
 # pwd
 /root/clone
 # git clone https://github.com/ipdk-io/ipdk.git
+# cd ipdk
+# git log -n 1 | head -n 10
+commit dbab9e275a0838a5407e8fbe9fe337191532adc4
+Merge: 067f6e7 f091eab
+Author: Filip Szufnarowski <filip.szufnarowski@intel.com>
+Date:   Tue Feb 7 12:39:25 2023 +0100
+
+    Merge pull request #320 from intelfisz/feat-eliminate-shell-calls-in-storage
+    
+    Eliminate shell calls in storage.
+# cd ..
 # SCRIPT_DIR=$HOME/clone/ipdk/build/networking/scripts $HOME/clone/ipdk/build/networking/scripts/host_install.sh |& tee $HOME/clone/try1-out.txt
 ```
 
@@ -90,3 +93,53 @@ underneath there, as if `<CLONE-PATH>` must be `/git` or else those
 scripts will not work.  If `<CLONE-PATH>` has to be `/git` or nothing
 works, then why not write the instructions with `/git` instead of
 `<CLONE-PATH>`?
+
+Looking at the `host_install.sh` script, it never mentions
+`SCRIPT_DIR`, so that seems obsolete in the instructions.  It does
+mention a `-d` command line option that might be what should be used.
+I will try that in try2 below.
+
+
+## try2: Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
+
+Date: 2023-Feb-07
+
+Hardware/OS is as described in section "Andy's macOS 12 system".
+
+In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
+within VirtualBox, with all the latest updates as of the date I
+attempted this install.
+
++ VM name: Ubuntu 20.04 ipdk net native try2
++ RAM: 8 GB
+
+Started logged in as a non-root user named `andy`, but then did `sudo
+bash` to start a bash shell running as `root`.
+
+Followed my own slightly modified version of the instructions in file
+`build/networking/README_NATIVE.md`, where I used the directory
+`$HOME/clone` for `<CLONE-PATH>`.
+
+```
+$ sudo bash
+# mkdir $HOME/clone
+# cd $HOME/clone
+# pwd
+/root/clone
+# git clone https://github.com/ipdk-io/ipdk.git
+# cd ipdk
+# git log -n 1 | head -n 10
+commit dbab9e275a0838a5407e8fbe9fe337191532adc4
+Merge: 067f6e7 f091eab
+Author: Filip Szufnarowski <filip.szufnarowski@intel.com>
+Date:   Tue Feb 7 12:39:25 2023 +0100
+
+    Merge pull request #320 from intelfisz/feat-eliminate-shell-calls-in-storage
+    
+    Eliminate shell calls in storage.
+# cd ..
+# $HOME/clone/ipdk/build/networking/scripts/host_install.sh -d $HOME/clone |& tee $HOME/clone/try2-out.txt
+```
+
+This run went much longer, with much longer output.  Will add more
+here when it finishes.
