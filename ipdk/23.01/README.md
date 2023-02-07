@@ -46,7 +46,7 @@ $ VBoxManage --version
 6.1.42r155177
 ```
 
-## Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
+## try1: Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
 
 Date: 2023-Feb-07
 
@@ -79,11 +79,14 @@ $ sudo bash
 # pwd
 /root/clone
 # git clone https://github.com/ipdk-io/ipdk.git
-# SCRIPT_DIR=$HOME/clone/ipdk/build/networking/scripts $HOME/clone/ipdk/build/networking/scripts/host_install.sh |& tee $HOME/clone/out.txt
+# SCRIPT_DIR=$HOME/clone/ipdk/build/networking/scripts $HOME/clone/ipdk/build/networking/scripts/host_install.sh |& tee $HOME/clone/try1-out.txt
 ```
 
-This got errors and quit very quickly.  It appears to be looking for
-files in /git/ipdk and subdirectories underneath there, as if
-`<CLONE-PATH>` must be `/git` or else those scripts will not work.  If
-that is true, then why not write the instructions with `/git` instead
-of `<CLONE-PATH>`?
+This got errors and quit very quickly.  See the file
+[`try1-out.txt`](try1-out.txt).
+
+It appears to be looking for files in `/git/ipdk` and subdirectories
+underneath there, as if `<CLONE-PATH>` must be `/git` or else those
+scripts will not work.  If `<CLONE-PATH>` has to be `/git` or nothing
+works, then why not write the instructions with `/git` instead of
+`<CLONE-PATH>`?
