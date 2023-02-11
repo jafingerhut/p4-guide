@@ -97,7 +97,11 @@ works, then why not write the instructions with `/git` instead of
 Looking at the `host_install.sh` script, it never mentions
 `SCRIPT_DIR`, so that seems obsolete in the instructions.  It does
 mention a `-d` command line option that might be what should be used.
-I will try that in try2 below.
+I will try that below.
+
+I have created a PR for the ipdk repo proposing simplifications to the
+README_NATIVE.md instructions that should make them easier to follow
+successfully: https://github.com/ipdk-io/ipdk/pull/376
 
 
 ## try4: Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
