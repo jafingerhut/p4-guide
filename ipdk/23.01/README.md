@@ -100,9 +100,9 @@ mention a `-d` command line option that might be what should be used.
 I will try that in try2 below.
 
 
-## try2: Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
+## try4: Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
 
-Date: 2023-Feb-07
+Date: 2023-Feb-10
 
 Hardware/OS is as described in section "Andy's macOS 12 system".
 
@@ -110,7 +110,7 @@ In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
 within VirtualBox, with all the latest updates as of the date I
 attempted this install.
 
-+ VM name: Ubuntu 20.04 ipdk net native try2
++ VM name: Ubuntu 20.04 ipdk net native try4
 + RAM: 8 GB
 
 Started logged in as a non-root user named `andy`, but then did `sudo
@@ -128,18 +128,23 @@ $ sudo bash
 /root/clone
 # git clone https://github.com/ipdk-io/ipdk.git
 # cd ipdk
-# git log -n 1 | head -n 10
-commit dbab9e275a0838a5407e8fbe9fe337191532adc4
-Merge: 067f6e7 f091eab
-Author: Filip Szufnarowski <filip.szufnarowski@intel.com>
-Date:   Tue Feb 7 12:39:25 2023 +0100
+# git log -n 1
+commit c38906d2a9f94200d3f99fc8fc24a56013a5115b
+Merge: dbab9e2 8763e4f
+Author: Artek Koltun <artsiom.koltun@intel.com>
+Date:   Wed Feb 8 12:57:38 2023 +0100
 
-    Merge pull request #320 from intelfisz/feat-eliminate-shell-calls-in-storage
+    Merge pull request #374 from intelfisz/feat-update-storage-libs
     
-    Eliminate shell calls in storage.
+    Update storage libs.
 # cd ..
-# $HOME/clone/ipdk/build/networking/scripts/host_install.sh -d $HOME/clone |& tee $HOME/clone/try2-out.txt
+# $HOME/clone/ipdk/build/networking/scripts/host_install.sh -d $HOME/clone |& tee $HOME/clone/try4-out.txt
 ```
 
-This run went much longer, with much longer output.  Will add more
-here when it finishes.
+This run took about 29 mins to complete, and appears like it may have
+succeeded.  The output of the install script is in the file
+[`try4-out.txt`](try4-out.txt).
+
+TODO: Test the resulting system to see if it can run P4 programs on
+DPDK, and record any failed or succeeding command sequences and their
+output that distinguishes good from bad results here.
