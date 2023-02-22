@@ -551,3 +551,11 @@ header to a different value than the value 64 it had when I used
 `tcpdump` to capture the packets during a run of `rundemo_TAP_IO.sh`,
 plus recalculate a correct IPv4 header checksum, and the modified
 program was compiled and used when I ran `rundemo_TAP_IO.sh` again.
+
+The original version of `simple_l3.p4` was copied from
+`/root/clone/ipdk/build/networking/examples/simple_l3/simple_l3.p4`
+and a copy is also in this directory in file
+[`simple_l3.p4`](simple_l3.p4).
+
+My modified version is in this directory as
+[`simple_l3.modified.p4`](simple_l3.modified.p4).
