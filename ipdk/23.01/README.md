@@ -15,6 +15,18 @@ Note that I do not yet know all of the intended deployment
 possibilities for the code in this repo yet.  That is also something I
 am hoping to understand.
 
+It appears that the `infrap4d` program compiled and installed using
+the steps below is a combination of at least the following parts:
+
++ The DPDK data plane that can have compiled P4 programs loaded into it.
++ A P4Runtime API server listening on TCP port 9559.
++ A gNMI server
+
+The figure on this page seems to provide evidence that this is true,
+and to explain some other software components included within the
+`infrap4d` process:
+https://github.com/ipdk-io/networking-recipe#infrap4d
+
 
 # Tries starting 2023-Feb-07
 
@@ -112,336 +124,8 @@ more up to date and complete.
 
 ## try5: Attempt to install IPDK Networking Build, IPDK Container on Andy's macOS 12 system
 
-Date: 2023-Feb-11
-
-Hardware/OS is as described in section "Andy's macOS 12 system".
-
-In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
-within VirtualBox, with all the latest updates as of the date I
-attempted this install.
-
-+ VM name: Ubuntu 20.04 ipdk net container try5
-+ RAM: 8 GB
-
-Started logged in as a non-root user named `andy`.
-
-```bash
-$ mkdir $HOME/clone
-$ cd $HOME/clone
-$ pwd
-/home/andy/clone
-$ git clone https://github.com/ipdk-io/ipdk.git
-$ cd ipdk
-$ git log -n 1
-commit c38906d2a9f94200d3f99fc8fc24a56013a5115b
-Merge: dbab9e2 8763e4f
-Author: Artek Koltun <artsiom.koltun@intel.com>
-Date:   Wed Feb 8 12:57:38 2023 +0100
-
-    Merge pull request #374 from intelfisz/feat-update-storage-libs
-    
-    Update storage libs.
-```
-
-Now attempted to start following the instructions listed on this page:
-https://github.com/ipdk-io/ipdk/blob/main/build/networking/README_DOCKER.md
-
-```bash
-$ cd $HOME/clone/ipdk/build
-$ ./ipdk install
-```
-
-The last command above finished in a fraction of a second.
-
-It created a directory $HOME/.ipdk and copies a file named ipdk.env
-into it.
-
-I already had a directory `$HOME/bin` in my shell's command PATH
-before running the command above.  While running `./ipdk install`, it
-also created a symbolic link named `$HOME/bin/ipdk` to
-`$HOME/clone/ipdk/build/scripts/ipdk.sh`.
-
-```bash
-$ cd $HOME/clone/ipdk
-$ ipdk install ubuntu2004
-Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
-Loaded /home/andy/.ipdk/ipdk.env
-User changable IPDK configuration file is already defined at 
-'~/.ipdk/ipdk.env'.
-Changed runtime environment to: ubuntu2004
-IPDK CLI is installed!
-```
-
-The last command above finished very quickly with the output shown.
-It appeared to modify the file `$HOME/.ipdk/ipdk.env`.  I am not sure
-if it changed anything else.
-
-### Install docker on Ubuntu 20.04
-
-I tried following these instructions for installing Docker on Ubuntu
-20.04:
-https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
-
-```bash
-$ sudo apt-get update
-$ sudo apt-get install --yes ca-certificates curl gnupg lsb-release
-$ sudo mkdir -m 0755 -p /etc/apt/keyrings
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-$ sudo apt-get update
-$ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
-The IPDK install steps below require that you follow these "Linux
-post-install steps" that enable a non-root user to run docker commands
-without prefixing them with 'sudo', found here:
-https://docs.docker.com/engine/install/linux-postinstall/
-
-```bash
-$ sudo groupadd docker
-$ sudo usermod -aG docker $USER
-$ newgrp docker
-$ docker run hello-world
-```
-
-### Continue with IPDK install
-
-I was not behind a proxy, so did not attempt to do any of the proxy
-configuration steps described.  They should be unnecessary for my
-current install attempt.
-
-```bash
-$ cd $HOME/clone/ipdk
-$ ipdk build --no-cache |& tee out-ipdk-build--no-cache.txt
-```
-
-The maximum extra disk space used during the above command I saw was a
-bit under 8.5 GB, and since some intermediate files were removed
-during the build, the final disk space was a bit under 7GB more than
-what was used on the system at the start.  This was with 4 CPU cores
-on an x86_64 system -- I am not sure whether it could be more disk
-space if more CPU cores were used.
-
-The RAM required was nearly 6 GB while compiling p4c, with 4 CPU
-cores.  It would likely be about 1.5 GB per CPU core at the highest.
-
-On Andy's macOS 12 system, it took about 33 mins to complete, with a 1
-Gbps Internet connection.
-
-At this point, there was a new docker image created, as shown below:
-
-```bash
-$ docker images -a
-REPOSITORY                               TAG           IMAGE ID       CREATED         SIZE
-ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64   sha-c38906d   8de06103d9f3   27 hours ago    1.69GB
-hello-world                              latest        feb5d9fea6a5   16 months ago   13.3kB
-```
-
-However, I got an error when trying what appears to be one of the next steps, which is running `ipdk start -d`:
-
-```bash
-$ ipdk start -d |& tee out-ipdk-start-d.txt
-fatal: not a git repository (or any of the parent directories): .git
-Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
-Loaded /home/andy/.ipdk/ipdk.env
-Can't find update-binfmts.
-Using docker run!
-Unable to find image 'ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-none' locally
-docker: Error response from daemon: manifest unknown.
-See 'docker run --help'.
-andy@andyvm:~$ docker ps
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-andy@andyvm:~$ docker images
-REPOSITORY                               TAG           IMAGE ID       CREATED         SIZE
-ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64   sha-c38906d   8de06103d9f3   7 days ago      1.69GB
-hello-world                              latest        feb5d9fea6a5   17 months ago   13.3kB
-```
-
-It looks like maybe it got the wrong tag name somehow, with `none`
-instead of the correct SHA digits `c38906d`?
-
-
-
-Try something different this time, making some semi-educated guesses
-about how I should set some environment variable values before running
-the commands:
-
-```bash
-$ docker images
-REPOSITORY                               TAG           IMAGE ID       CREATED         SIZE
-ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64   sha-c38906d   8de06103d9f3   7 days ago      1.69GB
-hello-world                              latest        feb5d9fea6a5   17 months ago   13.3kB
-```
-
-```bash
-$ export SCRIPT_DIR=$HOME/clone/ipdk/build/scripts
-
-$ ipdk start -d |& tee out-ipdk-start-d-try2.txt
-Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
-Loaded /home/andy/.ipdk/ipdk.env
-Can't find update-binfmts.
-Using docker run!
-c69587abe39a81ae7905665ceec32981718d7fc04160f31a3bbede29094a0536
-
-$ docker ps
-CONTAINER ID   IMAGE                                                COMMAND                  CREATED              STATUS              PORTS                                                                                  NAMES
-c69587abe39a   ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-c38906d   "/root/scripts/start…"   About a minute ago   Up About a minute   0.0.0.0:9339->9339/tcp, :::9339->9339/tcp, 0.0.0.0:9559->9559/tcp, :::9559->9559/tcp   ipdk
-
-$ ipdk connect
-Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
-Loaded /home/andy/.ipdk/ipdk.env
-
-WORKING_DIR: /root
-Generating TLS Certificates...
-Generating RSA private key, 4096 bit long modulus (2 primes)
-.................................................................................................++++
-.................................................................................................................................................................................................................................................................++++
-e is 65537 (0x010001)
-Generating RSA private key, 4096 bit long modulus (2 primes)
-....++++
-..............................................................................................++++
-e is 65537 (0x010001)
-Signature ok
-subject=C = US, ST = CA, L = Menlo Park, O = Open Networking Foundation, OU = Stratum, CN = localhost
-Getting CA Private Key
-Generating RSA private key, 4096 bit long modulus (2 primes)
-.++++
-.............................................++++
-e is 65537 (0x010001)
-Signature ok
-subject=C = US, ST = CA, L = Menlo Park, O = Open Networking Foundation, OU = Stratum, CN = Stratum client certificate
-Getting CA Private Key
-Deleting old installed certificates
-Certificates generated and installed successfully in  /usr/share/stratum/certs/
-root@c69587abe39a:~/scripts# 
-```
-
-That looks somewhat promising.  What should I try next?
-
-The instructions suggest this command to verify that there is a
-process named infrap4d running:
-
-```bash
-root@c69587abe39a:~/scripts# ps -ef | grep infrap4d
-root          47       1 99 18:53 ?        00:04:07 /root/networking-recipe/install/sbin/infrap4d
-root         114      84  0 18:57 pts/1    00:00:00 grep --color=auto infrap4d
-```
-
-It looks like it is.  Let's try running the demo bash script to see
-what happens:
-
-```bash
-root@c69587abe39a:~/scripts# /root/scripts/rundemo_TAP_IO.sh
-
-WORKING_DIR: /root
-SCRIPTS_DIR: /root/scripts
-DEPS_INSTALL_DIR: /root/networking-recipe/deps_install
-P4C_INSTALL_DIR: /root/p4c/install
-SDE_INSTALL_DIR: /root/p4-sde/install
-NR_INSTALL_DIR: /root/networking-recipe/install
-
-
-Cleaning from previous run
-
-Cannot remove namespace file "/run/netns/VM0": No such file or directory
-Cannot remove namespace file "/run/netns/VM1": No such file or directory
-
-Setting hugepages up and starting networking-recipe processes
-
-~ ~/scripts
-
-DEPS_INSTALL_DIR: /root/networking-recipe/deps_install
-SDE_INSTALL_DIR: /root/p4-sde/install
-NR_INSTALL_DIR: /root/networking-recipe/install
-P4C_INSTALL_DIR: /root/p4c/install
-
-
-
-Updated Environment Variables ...
-SDE_INSTALL_DIR: /root/p4-sde/install
-LIBRARY_PATH: /root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:
-LD_LIBRARY_PATH: /root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/install/lib:/root/networking-recipe/install/lib64:/root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/install/lib:/root/networking-recipe/install/lib64::/root/p4-sde/install/lib:/root/p4-sde/install/lib64:/root/p4-sde/install/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64:/root/p4-sde/install/lib:/root/p4-sde/install/lib64:/root/p4-sde/install/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-PATH: /root/p4c/install/bin:/root/networking-recipe/deps_install/bin:/root/networking-recipe/deps_install/sbin:/root/networking-recipe/install/bin:/root/networking-recipe/install/sbin:/root/p4c/install/bin:/root/networking-recipe/deps_install/bin:/root/networking-recipe/deps_install/sbin:/root/networking-recipe/install/bin:/root/networking-recipe/install/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-1024
-1024
-
-SDE_INSTALL_DIR: /root/p4-sde/install
-NR_INSTALL_DIR: /root/networking-recipe/install
-
-
-NR_INSTALL_DIR: /root/networking-recipe/install
-DEAMON_MODE_ARGS: 
-
-~/scripts
-
-Creating TAP ports
-
-~ ~/scripts
-setting vhost_dev = true.Set request, successful...!!!
-I20230219 19:06:53.472540   223 gnmi_ctl.cc:103] Client context cancelled.
-setting vhost_dev = true.Set request, successful...!!!
-I20230219 19:06:53.540518   231 gnmi_ctl.cc:103] Client context cancelled.
-~/scripts
-
-Generating dependent files from P4C and pipeline builder
-
-~/examples/simple_l3 ~/scripts
-I20230219 19:06:55.042119   248 tdi_pipeline_builder.cc:114] Found P4 program: simple_l3
-I20230219 19:06:55.042199   248 tdi_pipeline_builder.cc:121] 	Found pipeline: pipe
-~/scripts
-
-Create two Namespaces
-
-
-Move TAP ports to respective namespaces and bringup the ports
-
-
-Assign IP addresses to the TAP ports
-
-
-Add ARP table for neighbor TAP port
-
-
-Add Route to reach neighbor TAP port
-
-
-Programming P4 pipeline
-
-
-Ping from TAP0 port to TAP1 port
-
-PING 2.2.2.2 (2.2.2.2) 56(84) bytes of data.
-64 bytes from 2.2.2.2: icmp_seq=1 ttl=64 time=0.134 ms
-64 bytes from 2.2.2.2: icmp_seq=2 ttl=64 time=0.102 ms
-64 bytes from 2.2.2.2: icmp_seq=3 ttl=64 time=0.176 ms
-64 bytes from 2.2.2.2: icmp_seq=4 ttl=64 time=0.177 ms
-64 bytes from 2.2.2.2: icmp_seq=5 ttl=64 time=0.174 ms
-
---- 2.2.2.2 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4168ms
-rtt min/avg/max/mdev = 0.102/0.152/0.177/0.030 ms
-PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
-64 bytes from 1.1.1.1: icmp_seq=1 ttl=64 time=0.139 ms
-64 bytes from 1.1.1.1: icmp_seq=2 ttl=64 time=0.142 ms
-64 bytes from 1.1.1.1: icmp_seq=3 ttl=64 time=0.091 ms
-64 bytes from 1.1.1.1: icmp_seq=4 ttl=64 time=0.092 ms
-64 bytes from 1.1.1.1: icmp_seq=5 ttl=64 time=0.131 ms
-
---- 1.1.1.1 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4079ms
-rtt min/avg/max/mdev = 0.091/0.119/0.142/0.022 ms
-```
-
-That looks like success, as far as I can tell.
-
-It appears that the infrap4d process is a combination of the DPDK data
-plane that can have compiled P4 programs loaded into it, and also
-includes a P4Runtime API server listening on TCP port 9559.
-
-TODO: Is this true?
-
-TODO: What else does infrap4d include?
+Deleted this section in favor of the `try7` section below, which is
+more up to date and complete.
 
 
 ## try6: Attempt to install IPDK Networking Build, IPDK Native on Andy's macOS 12 system
@@ -559,3 +243,320 @@ and a copy is also in this directory in file
 
 My modified version is in this directory as
 [`simple_l3.modified.p4`](simple_l3.modified.p4).
+
+
+## try7: Attempt to install IPDK Networking Build, IPDK Container on Andy's macOS 12 system
+
+Date: 2023-Feb-21
+
+Hardware/OS is as described in section "Andy's macOS 12 system".
+
+In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
+within VirtualBox, with all the latest updates as of the date I
+attempted this install.
+
++ VM name: Ubuntu 20.04 ipdk net container try5
++ RAM: 8 GB
+
+Started logged in as a non-root user named `andy`.
+
+```bash
+$ mkdir $HOME/clone
+$ cd $HOME/clone
+$ pwd
+/home/andy/clone
+$ git clone https://github.com/ipdk-io/ipdk.git
+$ cd ipdk
+$ git log -n 1
+commit ab099be1b060c33f8b7088130fd7208b8509ea64 (HEAD -> main, origin/main, origin/HEAD)
+Merge: 5351118 9724ac1
+Author: Artek Koltun <artsiom.koltun@intel.com>
+Date:   Fri Feb 17 16:06:26 2023 +0100
+
+    Merge pull request #379 from intelfisz/fiopr
+    
+    Tests FIO in ptf tests
+```
+
+Now attempted to start following the instructions listed on this page:
+https://github.com/ipdk-io/ipdk/blob/main/build/networking/README_DOCKER.md
+
+```bash
+$ cd $HOME/clone/ipdk/build
+$ ./ipdk install
+```
+
+The last command above finished in a fraction of a second.
+
+It created a directory $HOME/.ipdk and copies a file named ipdk.env
+into it.
+
+I already had a directory `$HOME/bin` in my shell's command PATH
+before running the command above.  While running `./ipdk install`, it
+also created a symbolic link named `$HOME/bin/ipdk` to
+`$HOME/clone/ipdk/build/scripts/ipdk.sh`.
+
+```bash
+$ cd $HOME/clone/ipdk
+$ ipdk install ubuntu2004
+Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
+Loaded /home/andy/.ipdk/ipdk.env
+User changable IPDK configuration file is already defined at 
+'~/.ipdk/ipdk.env'.
+Changed runtime environment to: ubuntu2004
+IPDK CLI is installed!
+```
+
+The last command above finished very quickly with the output shown.
+It appeared to modify the file `$HOME/.ipdk/ipdk.env`.  I am not sure
+if it changed anything else.
+
+### Install docker on Ubuntu 20.04
+
+I tried following these instructions for installing Docker on Ubuntu
+20.04:
+https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+```bash
+$ sudo apt-get update
+$ sudo apt-get install --yes ca-certificates curl gnupg lsb-release
+$ sudo mkdir -m 0755 -p /etc/apt/keyrings
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$ sudo apt-get update
+$ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+The IPDK install steps below require that you follow these "Linux
+post-install steps" that enable a non-root user to run docker commands
+without prefixing them with 'sudo', found here:
+https://docs.docker.com/engine/install/linux-postinstall/
+
+```bash
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+$ newgrp docker
+$ docker run hello-world
+```
+
+### Continue with IPDK install
+
+I was not behind a proxy, so did not attempt to do any of the proxy
+configuration steps described.  They should be unnecessary for my
+current install attempt.
+
+```bash
+$ cd $HOME/clone/ipdk
+$ ipdk build --no-cache |& tee out-ipdk-build--no-cache.txt
+```
+
+The maximum extra disk space used during the above command I saw was a
+bit under 8.5 GB, and since some intermediate files were removed
+during the build, the final disk space was a bit under 7GB more than
+what was used on the system at the start.  This was with 4 CPU cores
+on an x86_64 system -- I am not sure whether it could be more disk
+space if more CPU cores were used.
+
+The RAM required was nearly 6 GB while compiling p4c, with 4 CPU
+cores.  It would likely be about 1.5 GB per CPU core at the highest.
+
+On Andy's macOS 12 system, it took about 33 mins to complete, with a 1
+Gbps Internet connection.
+
+At this point, there was a new docker image created, as shown below:
+
+```bash
+$ docker images -a
+REPOSITORY                               TAG           IMAGE ID       CREATED         SIZE
+ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64   sha-c38906d   8de06103d9f3   27 hours ago    1.69GB
+hello-world                              latest        feb5d9fea6a5   16 months ago   13.3kB
+```
+
+To start running an instance of the IPDK container:
+
+```bash
+$ cd $HOME/clone/ipdk
+$ ipdk start -d
+Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
+Loaded /home/andy/.ipdk/ipdk.env
+Can't find update-binfmts.
+Using docker run!
+2c40e1efdc612e14c0102af068c2f4004bb247bdf2269ea8ba27663a6e901d9a
+```
+
+Note: If you run `ipdk start -d`, e.g. after rebooting the system on
+which you installed IPDK, and you see an error message like `fatal:
+not a git repository` followed later by `Unable to find image
+'<some-name>' locally`, as shown in the example output below:
+
+```
+$ ipdk start -d
+fatal: not a git repository (or any of the parent directories): .git
+Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
+Loaded /home/andy/.ipdk/ipdk.env
+Can't find update-binfmts.
+Using docker run!
+Unable to find image 'ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-none' locally
+docker: Error response from daemon: manifest unknown.
+See 'docker run --help'.
+```
+
+This is most likely because you are trying to run the command when the
+current directory is not one that is inside of your cloned copy of the
+`ipdk` repository.  The docker image is created with a hex string that
+is part of the commit SHA of the ipdk git repository at the time the
+docker image was created, so if that changes because you updated your
+clone of the `ipdk` repo, you may need to rebuild the docker image.
+
+```bash
+$ docker ps
+CONTAINER ID   IMAGE                                                COMMAND                  CREATED              STATUS              PORTS                                                                                  NAMES
+2c40e1efdc61   ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-ab099be   "/root/scripts/start…"   About a minute ago   Up About a minute   0.0.0.0:9339->9339/tcp, :::9339->9339/tcp, 0.0.0.0:9559->9559/tcp, :::9559->9559/tcp   ipdk
+
+$ ipdk connect
+fatal: not a git repository (or any of the parent directories): .git
+Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
+Loaded /home/andy/.ipdk/ipdk.env
+
+WORKING_DIR: /root
+Generating TLS Certificates...
+Generating RSA private key, 4096 bit long modulus (2 primes)
+...................................................++++
+............................++++
+e is 65537 (0x010001)
+Generating RSA private key, 4096 bit long modulus (2 primes)
+.....................................................................................................................................................................++++
+...........................++++
+e is 65537 (0x010001)
+Signature ok
+subject=C = US, ST = CA, L = Menlo Park, O = Open Networking Foundation, OU = Stratum, CN = localhost
+Getting CA Private Key
+Generating RSA private key, 4096 bit long modulus (2 primes)
+...................................................................++++
+.................................................................................................................................................++++
+e is 65537 (0x010001)
+Signature ok
+subject=C = US, ST = CA, L = Menlo Park, O = Open Networking Foundation, OU = Stratum, CN = Stratum client certificate
+Getting CA Private Key
+Deleting old installed certificates
+Certificates generated and installed successfully in  /usr/share/stratum/certs/
+root@21e5509506d8:~/scripts# 
+```
+
+The instructions suggest this command to verify that there is a
+process named `infrap4d` running:
+
+```bash
+root@21e5509506d8:~/scripts# ps -ef | grep infrap4d
+root          48       1 99 21:37 ?        00:02:18 /root/networking-recipe/install/sbin/infrap4d
+root         114      85  0 21:39 pts/1    00:00:00 grep --color=auto infrap4d
+```
+
+It looks like it is.  Let's try running the demo bash script to see
+what happens:
+
+```bash
+root@21e5509506d8:~/scripts# /root/scripts/rundemo_TAP_IO.sh
+
+WORKING_DIR: /root
+SCRIPTS_DIR: /root/scripts
+DEPS_INSTALL_DIR: /root/networking-recipe/deps_install
+P4C_INSTALL_DIR: /root/p4c/install
+SDE_INSTALL_DIR: /root/p4-sde/install
+NR_INSTALL_DIR: /root/networking-recipe/install
+
+
+Cleaning from previous run
+
+Cannot remove namespace file "/run/netns/VM0": No such file or directory
+Cannot remove namespace file "/run/netns/VM1": No such file or directory
+
+Setting hugepages up and starting networking-recipe processes
+
+~ ~/scripts
+
+DEPS_INSTALL_DIR: /root/networking-recipe/deps_install
+SDE_INSTALL_DIR: /root/p4-sde/install
+NR_INSTALL_DIR: /root/networking-recipe/install
+P4C_INSTALL_DIR: /root/p4c/install
+
+
+
+Updated Environment Variables ...
+SDE_INSTALL_DIR: /root/p4-sde/install
+LIBRARY_PATH: /root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:
+LD_LIBRARY_PATH: /root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/install/lib:/root/networking-recipe/install/lib64:/root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/install/lib:/root/networking-recipe/install/lib64::/root/p4-sde/install/lib:/root/p4-sde/install/lib64:/root/p4-sde/install/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64:/root/p4-sde/install/lib:/root/p4-sde/install/lib64:/root/p4-sde/install/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
+PATH: /root/p4c/install/bin:/root/networking-recipe/deps_install/bin:/root/networking-recipe/deps_install/sbin:/root/networking-recipe/install/bin:/root/networking-recipe/install/sbin:/root/p4c/install/bin:/root/networking-recipe/deps_install/bin:/root/networking-recipe/deps_install/sbin:/root/networking-recipe/install/bin:/root/networking-recipe/install/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+1024
+1024
+
+SDE_INSTALL_DIR: /root/p4-sde/install
+NR_INSTALL_DIR: /root/networking-recipe/install
+
+
+NR_INSTALL_DIR: /root/networking-recipe/install
+DEAMON_MODE_ARGS: 
+
+~/scripts
+
+Creating TAP ports
+
+~ ~/scripts
+setting vhost_dev = true.Set request, successful...!!!
+I20230222 21:40:41.957209   187 gnmi_ctl.cc:103] Client context cancelled.
+setting vhost_dev = true.Set request, successful...!!!
+I20230222 21:40:42.024011   195 gnmi_ctl.cc:103] Client context cancelled.
+~/scripts
+
+Generating dependent files from P4C and pipeline builder
+
+~/examples/simple_l3 ~/scripts
+I20230222 21:40:43.436168   212 tdi_pipeline_builder.cc:114] Found P4 program: simple_l3
+I20230222 21:40:43.436239   212 tdi_pipeline_builder.cc:121] 	Found pipeline: pipe
+~/scripts
+
+Create two Namespaces
+
+
+Move TAP ports to respective namespaces and bringup the ports
+
+
+Assign IP addresses to the TAP ports
+
+
+Add ARP table for neighbor TAP port
+
+
+Add Route to reach neighbor TAP port
+
+
+Programming P4 pipeline
+
+
+Ping from TAP0 port to TAP1 port
+
+PING 2.2.2.2 (2.2.2.2) 56(84) bytes of data.
+64 bytes from 2.2.2.2: icmp_seq=1 ttl=64 time=0.112 ms
+64 bytes from 2.2.2.2: icmp_seq=2 ttl=64 time=0.107 ms
+64 bytes from 2.2.2.2: icmp_seq=3 ttl=64 time=0.122 ms
+64 bytes from 2.2.2.2: icmp_seq=4 ttl=64 time=0.144 ms
+64 bytes from 2.2.2.2: icmp_seq=5 ttl=64 time=0.108 ms
+
+--- 2.2.2.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4079ms
+rtt min/avg/max/mdev = 0.107/0.118/0.144/0.013 ms
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=64 time=0.123 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=64 time=0.117 ms
+64 bytes from 1.1.1.1: icmp_seq=3 ttl=64 time=0.107 ms
+64 bytes from 1.1.1.1: icmp_seq=4 ttl=64 time=0.132 ms
+64 bytes from 1.1.1.1: icmp_seq=5 ttl=64 time=0.141 ms
+
+--- 1.1.1.1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4071ms
+rtt min/avg/max/mdev = 0.107/0.124/0.141/0.011 ms
+root@21e5509506d8:~/scripts# 
+```
+
+That looks like success, as far as I can tell.
