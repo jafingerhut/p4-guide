@@ -130,6 +130,7 @@ heard of.
 
 ```bash
 # tcpdump options used:
+# -l Make stdout line buffered.  Useful if you want to see the data while capturing it.
 # -e Print the link-level header (i.e. Ethernet) on each dump line.
 # -n Do not convert addresses to names
 # --number Print an optional packet number at the beginning of the line.
@@ -137,12 +138,12 @@ heard of.
 
 # Note: Some versions of tcpdump do not accept the --number
 # option.  If so, just remove that one.
-sudo tcpdump -e -n --number -v -i veth2
-sudo tcpdump -e -n --number -v -i veth6
+sudo tcpdump -l -e -n --number -v -i veth2
+sudo tcpdump -l -e -n --number -v -i veth6
 
 # Add -xx option to get raw hex dump of packet data:
-sudo tcpdump -xx -e -n --number -v -i veth2
-sudo tcpdump -xx -e -n --number -v -i veth6
+sudo tcpdump -l -xx -e -n --number -v -i veth2
+sudo tcpdump -l -xx -e -n --number -v -i veth6
 
 # If you want to use tshark for even more details about decoded
 # packets, but the output for each packet can often spread over 30
