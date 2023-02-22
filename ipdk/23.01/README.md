@@ -539,3 +539,15 @@ With those certificates in place, `rundemo_TAP_IO.sh` started an
 `infrap4d` process, loaded the compiled P4 program into it, added a
 few table entries, and used a `ping` command to send packets through
 it.  It all appeared to go successfully!
+
+Ater these successful tests, I was also able to edit this file:
+
+```
+/root/examples/simple_l3/simple_l3.p4
+```
+
+to another legal P4 program that modified the TTL field in the IPv4
+header to a different value than the value 64 it had when I used
+`tcpdump` to capture the packets during a run of `rundemo_TAP_IO.sh`,
+plus recalculate a correct IPv4 header checksum, and the modified
+program was compiled and used when I ran `rundemo_TAP_IO.sh` again.
