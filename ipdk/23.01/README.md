@@ -138,7 +138,7 @@ In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
 within VirtualBox, with all the latest updates as of the date I
 attempted this install.
 
-+ VM name: Ubuntu 20.04 ipdk net native try4
++ VM name: Ubuntu 20.04 ipdk net native try6
 + RAM: 8 GB
 
 Started logged in as a non-root user named `andy`, but then did `sudo
@@ -255,7 +255,7 @@ In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
 within VirtualBox, with all the latest updates as of the date I
 attempted this install.
 
-+ VM name: Ubuntu 20.04 ipdk net container try5
++ VM name: Ubuntu 20.04 ipdk net container try7
 + RAM: 8 GB
 
 Started logged in as a non-root user named `andy`.
@@ -347,8 +347,11 @@ current install attempt.
 
 ```bash
 $ cd $HOME/clone/ipdk
-$ ipdk build --no-cache |& tee out-ipdk-build--no-cache.txt
+$ ipdk build --no-cache |& tee try7-out.txt
 ```
+
+The output of the install script is in the file
+[`try7-out.txt`](try7-out.txt).
 
 The maximum extra disk space used during the above command I saw was a
 bit under 8.5 GB, and since some intermediate files were removed
