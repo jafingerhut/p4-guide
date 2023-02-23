@@ -684,3 +684,14 @@ WARNING: Interface lo: no address assigned
 
 You can see packets that appear on interface `TAP1` in the other
 terminal window very shortly after they go across that interface.
+
+Note: On TAP interfaces, it appears that perhaps the source and/or
+dest MAC addresses provided by the sender might be overwritten by the
+Linux kernel.  I do not know if there is a way to prevent that
+behavior.
+
+I also do not know if there is a way to enable DPDK to communicate
+over veth interfaces.  This page might give a solution for that, but I
+have not understood it well enough nor tried out any of its
+recommendations:
+https://dpdk.readthedocs.io/en/v17.11/sample_app_ug/kernel_nic_interface.html
