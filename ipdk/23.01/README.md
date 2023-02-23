@@ -562,4 +562,125 @@ rtt min/avg/max/mdev = 0.107/0.124/0.141/0.011 ms
 root@21e5509506d8:~/scripts# 
 ```
 
-That looks like success, as far as I can tell.
+That looks like success!
+
+Note that running the script `rundemo_TAP_IO.sh` kills any `infrap4d`
+process that may be running, and also deletes the network namespaces
+`VM0` and `VM1` if they exist when the script is started (and then
+later in the script creates new network namespaces with those names).
+Thus if you want to do things like run `tcpdump` to capture packets
+into and/or out of `infrap4d`, you need to run those `tcpdump`
+commands after the script is started, but before the packets start
+flowing.
+
+Since the `rundemo_TAP_IO.sh` script ends with the network namespaces
+still existing, and the `infrap4d` process still running, it is much
+easier to do experiments like the ones below after `rundemo_TAP_IO.sh`
+has completed.
+
+Confirm that the interface `TAP0` exists in network namespace `VM0`,
+and interface `TAP1` exists in network namespace `VM1`:
+
+```bash
+root@21e5509506d8:~/scripts# ip netns exec VM0 ip link show
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: TAP0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether a6:a6:fd:48:5c:16 brd ff:ff:ff:ff:ff:ff
+
+root@21e5509506d8:~/scripts# ip netns exec VM1 ip link show
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+3: TAP1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether 42:a2:58:59:c5:98 brd ff:ff:ff:ff:ff:ff
+```
+
+Start `tcpdump` running and recording packets sent on interface `TAP1`
+in namespace `VM1`.  I do this in a separate terminal window in which
+I have run these commands, to connect to the same container as the one
+that the commands above were run in:
+
+(In new terminal window)
+```bash
+$ cd $HOME/clone/ipdk
+$ ipdk connect
+[ ... many lines of output omitted ... ]
+
+root@21e5509506d8:~/scripts# apt install tcpdump
+[ ... many lines of output omitted ... ]
+
+root@21e5509506d8:~/scripts# ip netns exec VM1 tcpdump -i TAP1 -w TAP1-try1.pcap
+```
+
+(back in the original terminal window)
+```bash
+root@21e5509506d8:~/scripts# ip netns exec VM0 ping 2.2.2.2 -c 5
+PING 2.2.2.2 (2.2.2.2) 56(84) bytes of data.
+64 bytes from 2.2.2.2: icmp_seq=1 ttl=64 time=0.108 ms
+64 bytes from 2.2.2.2: icmp_seq=2 ttl=64 time=0.249 ms
+64 bytes from 2.2.2.2: icmp_seq=3 ttl=64 time=0.099 ms
+64 bytes from 2.2.2.2: icmp_seq=4 ttl=64 time=0.130 ms
+64 bytes from 2.2.2.2: icmp_seq=5 ttl=64 time=0.111 ms
+
+--- 2.2.2.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4082ms
+rtt min/avg/max/mdev = 0.099/0.139/0.249/0.055 ms
+```
+
+Now go back to the other terminal window where `tcpdump` is still
+running, and type Ctrl-C to quit `tcpdump`, and then run the following
+command to copy the captured packets in the pcap file into directory
+`/tmp` inside the container.  When the container was started using the
+commands above, directory `/tmp` inside the container is the same
+directory as `$HOME/.ipdk/volume` in the base OS.
+
+```bash
+root@21e5509506d8:~/scripts# cp TAP1-try1.pcap /tmp 
+```
+
+In yet another terminal window running as a normal user in the base
+OS, not inside the IPDK container, let us use these commands to view
+the captured packets using Wireshark:
+
+```bash
+$ sudo apt install --yes wireshark
+$ wireshark ~/.ipdk/volume/TAP1-try1.pcap
+```
+
+I have confirmed that by modifying the file
+`/root/examples/simple_l3/simple_l3.p4` and then running the
+`rundemo_TAP_IO.sh` script again, as long as the changes to the P4
+program compile without errors, the script will update the
+`simple_l3.spec` file that is loaded into `infrap4d`.
+
+Try using Python3 library Scapy to send packets into the DPDK software
+switch:
+
+(in a terminal that is executing commands inside the IPDK container)
+```bash
+root@21e5509506d8:~/scripts# ip netns exec VM1 tcpdump -l -i TAP1 -e -n --number -v
+tcpdump: listening on TAP1, link-type EN10MB (Ethernet), capture size 262144 bytes
+```
+
+Now we can watch in that terminal to see messages printed about each
+packet that appears on the `TAP1` interface in network namespace
+`VM1`.
+
+(in a separate terminal that is executing commands inside the IPDK container)
+```
+root@21e5509506d8:~# pip3 install scapy
+
+root@21e5509506d8:~# ip netns exec VM0 python3
+Python 3.8.10 (default, Nov 14 2022, 12:59:47) 
+[GCC 9.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+
+>>> from scapy.all import *
+WARNING: Interface lo: no address assigned
+
+>>> fwd_pkt1=Ether() / IP(dst='2.2.2.2') / TCP(sport=5793, dport=80)
+>>> sendp(fwd_pkt1, iface='TAP0')
+```
+
+You can see packets that appear on interface `TAP1` in the other
+terminal window very shortly after they go across that interface.
