@@ -118,11 +118,11 @@ Then run the commands below in a terminal.  Note:
 ```bash
 $ sudo apt install git
 $ git clone https://github.com/jafingerhut/p4-guide
-$ ./p4-guide/bin/install-p4dev-v4.sh |& tee log.txt
+$ ./p4-guide/bin/install-p4dev-v6.sh |& tee log.txt
 ```
-Replace `install-p4dev-v4.sh` with `install-p4dev-v5.sh` or
-`install-p4dev-v6.sh` if you prefer one of those instead.  More
-details on the differences between them are in the next section.
+Replace `install-p4dev-v6.sh` with `install-p4dev-v5.sh` if you prefer
+it instead.  More details on the differences between them are in the
+next section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
@@ -138,9 +138,6 @@ Ubuntu 20.04.  It requires the least disk space, installs quickly, and
 it installs pre-compiled P4 development tools from Debian packages
 that can be updated later to more recent versions as they are
 published, if you wish.
-
-If you prefer Ubuntu 18.04, then I would recommend
-`install-p4dev-v4.sh` or `install-p4dev-v6.sh`.
 
 If you wish to run the examples in the
 [tutorials](https://github.com/p4lang/tutorials) repository as of
@@ -162,7 +159,6 @@ through 2023.  They all include the following:
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
 | install-p4dev-v6.sh | 22.04, 20.04, 18.04 | 13 GB | 100 mins |   2 GB | v3.18.1 | v1.43.2 |
 | install-p4dev-v5.sh | 20.04               |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? |
-| install-p4dev-v4.sh | 20.04, 18.04        | 12 GB | 100 mins |   2 GB | v3.6.1  | v1.17.2 |
 
 
 The scripts in the next table below are no longer tested by me.  They
