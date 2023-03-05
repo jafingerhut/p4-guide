@@ -31,6 +31,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
+| 2023-Mar-03 | Ubuntu 20.04 | [4.3 GByte VM image](https://drive.google.com/file/d/1sraVlr7ZMZpaaolJezuly4gPARPIzW4q/view?usp=share_link) | [2.1 GBytes VM image](https://drive.google.com/file/d/11aFyxC9Bau2y1P60M_NtD4MDxRqsLeV2/view?usp=share_link) | [README](https://drive.google.com/file/d/1wSws5Set9PAUHA5fGqsAz4li_gmNHfbh/view?usp=share_link) | Combo14 | Combo15 |
 | 2023-Feb-03 | Ubuntu 20.04 | [4.3 GByte VM image](https://drive.google.com/file/d/1g2DG0rHfySVU5lukSxHw2TkclC_9_dqo/view?usp=share_link) | [2.3 GBytes VM image](https://drive.google.com/file/d/13TeOtX4bkDtMKqTb5X8wt6LrIU9ZoiaC/view?usp=share_link) | [README](https://drive.google.com/file/d/1jCpvf2ftOiW9wf9PVwEaiiXFlDuS9sNh/view?usp=share_link) | Combo12 | Combo13 |
 | 2023-Jan-01 | Ubuntu 20.04 | [4.2 GByte VM image](https://drive.google.com/file/d/1uy5g0lHr1Cb0f9F-d5ujv44nZJepvI8S/view?usp=share_link) | [2.2 GBytes VM image](https://drive.google.com/file/d/1v5v1lbn6mfqywq0LuOFJJhGaY5ruSe1m/view?usp=share_link) | [README](https://drive.google.com/file/d/1A363Mp8TSl_e2GoTB0NGn0flkjM_-4qe/view?usp=share_link) | Combo12 | Combo13 |
 | 2022-Dec-03 | Ubuntu 20.04 | [4.3 GByte VM image](https://drive.google.com/file/d/1_z3TlO_0Magubjg0EGtJ-dEJvJvTmLSW/view?usp=share_link) | [2.4 GBytes VM image](https://drive.google.com/file/d/1XsM7JkWN6I3U-J8ibdbGZROY97WutzT_/view?usp=share_link) | [README](https://drive.google.com/file/d/1P8o4lnsSsF4wwwR0EX6PG-G_O1ajHPPr/view?usp=share_link) | Combo12 | Combo13 |
@@ -69,6 +70,8 @@ Version combinations I have used above for testing VM images:
 | Combo11 | Windows 10 Enterprise | VirtualBox 6.1.40 |
 | Combo12 | macOS 12.6.x | VirtualBox 6.1.40 |
 | Combo13 | Windows 11 Enterprise | VirtualBox 6.1.40 |
+| Combo14 | macOS 12.6.x | VirtualBox 6.1.42 |
+| Combo15 | Windows 11 Enterprise | VirtualBox 6.1.42 |
 
 
 
