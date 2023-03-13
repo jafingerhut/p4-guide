@@ -65,7 +65,9 @@ then
     git pull
 fi
 
-# Compile and install simple_switch and psa_switch, but not simple_switch_grpc
+# Compile and install simple_switch and simple_switch_grpc, and I
+# believe also psa_switch (but the latter is not feature complete and
+# working as of 2023-Mar)
 ./autogen.sh
 # With debug enabled in binaries:
 ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
