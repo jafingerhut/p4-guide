@@ -152,7 +152,10 @@ CONTAINER ID   IMAGE                                                COMMAND     
 c75e8bbdcbac   ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-7978695   "/root/scripts/start…"   27 seconds ago   Up 27 seconds   0.0.0.0:9339->9339/tcp, :::9339->9339/tcp, 0.0.0.0:9559->9559/tcp, :::9559->9559/tcp   ipdk
 ```
 
-TODO
+The `ipdk connect` command starts a bash shell inside the container
+and leaves you at a prompt where you can enter commands for running
+inside of that container.  Sample output of this command is shown
+below:
 
 ```bash
 $ ipdk connect
@@ -623,6 +626,15 @@ In the base OS:
 mkdir ~/my-certs
 sudo cp ~/.ipdk/volume/{ca.crt,client.crt,client.key} ~/my-certs
 sudo chown ${USER}.${USER} ~/my-certs/*
+```
+
+After this setup, you should be able to run the test client program
+with this command.  The `test-client.py` program takes an optional
+parameter that is the name of a directory where it should find the
+files `ca.crt`, `client.crt`, and `client.key` that were copied above.
+
+```bash
+~/p4-guide/ipdk/23.01/test-client.py ~/my-certs/
 ```
 
 
