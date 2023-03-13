@@ -49,11 +49,19 @@ The following steps for installing IPDK are inspired by those given on
 this page:
 https://github.com/ipdk-io/ipdk/blob/main/build/networking/README_DOCKER.md
 
-So far I have only tested these steps on a system where the directory
-`$HOME/bin` already existed, and was on my command path.
+If you already have one of these directories in your command PATH
+before starting the steps below, the `./ipdk install` command will add
+a new symbolic link named `ipdk` to it, and the `export` command below
+is unnecessary.
 
-TODO: Either test that these instructions also work when those things
-are not true, or make them true by adding the necessary steps here.
++ `$HOME/.local/bin`
++ `$HOME/bin`
+
+If you do not already have one of those directories in your command
+PATH, then no symbolic link `ipdk` will be created, and you should
+ensure that the command `export PATH=$HOME/ipdk/build:$PATH` is
+executed every time you start a new shell where you wish to run the
+`ipdk` command in the future.
 
 I was not behind a proxy, so I did not attempt to do any of the proxy
 configuration steps described in the IPDK repo instructions.  See
@@ -70,6 +78,7 @@ cd $HOME
 git clone https://github.com/ipdk-io/ipdk.git
 cd ipdk/build
 ./ipdk install
+export PATH=$HOME/ipdk/build:$PATH
 cd ..
 ipdk install ubuntu2004
 ipdk build --no-cache |& tee ipdk-build-out.txt
