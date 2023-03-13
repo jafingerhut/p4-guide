@@ -23,6 +23,7 @@ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-p
 sudo groupadd docker
 sudo usermod -aG docker $USER
 
+set +x
 echo ""
 echo ""
 echo "If you want all terminal windows to be able to run docker commands"
