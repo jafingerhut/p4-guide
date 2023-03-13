@@ -93,15 +93,14 @@ the DPDK software switch inside of it.
 
 # Notes on running `ipdk` commands
 
-There are `ipdk start` commands to start an instance of the IPDK
-container, and an `ipdk connect` command that gets you to a bash
-prompt running inside of the IPDK container, and several other `ipdk`
+There is an `ipdk start` command to start an instance of the IPDK
+container, an `ipdk connect` command that gets you to a bash prompt
+running inside of the IPDK container, and several other `ipdk`
 sub-commands that are useful for various purposes.
 
-If you run one of these commands, e.g. `ipdk start -d`, and you see an
-error message like `fatal: not a git repository` followed later by
-`Unable to find image '<some-name>' locally`, as shown in the example
-output below:
+If you run one of these commands, and you see an error message like
+`fatal: not a git repository` followed later by `Unable to find image
+'<some-name>' locally`, as shown in the example output below:
 
 ```
 $ ipdk start -d
@@ -117,8 +116,8 @@ See 'docker run --help'.
 
 This is most likely because you are trying to run the command when the
 current directory is not one that is inside of your cloned copy of the
-`ipdk` repository.  To avoid this, simply `cd $HOME/ipdk` and
-try the `ipdk start -d` command again.
+`ipdk` repository.  To avoid this error, simply `cd $HOME/ipdk` and
+try the command again.
 
 Note: The docker image name is created containing a string of hex
 digits at the end.  This hex string is part of the commit SHA of the
@@ -140,7 +139,7 @@ Loaded /home/andy/ipdk/build/scripts/ipdk_default.env
 Loaded /home/andy/.ipdk/ipdk.env
 Can't find update-binfmts.
 Using docker run!
-2c40e1efdc612e14c0102af068c2f4004bb247bdf2269ea8ba27663a6e901d9a
+c75e8bbdcbac8e33c231a6f3348069089854d7f77ec6bf2f91373a98ea3ef42a
 ```
 
 If this succeeds, there will now be a container process running, which
@@ -150,56 +149,55 @@ example output below:
 ```bash
 $ docker ps
 CONTAINER ID   IMAGE                                                COMMAND                  CREATED              STATUS              PORTS                                                                                  NAMES
-2c40e1efdc61   ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-ab099be   "/root/scripts/start…"   About a minute ago   Up About a minute   0.0.0.0:9339->9339/tcp, :::9339->9339/tcp, 0.0.0.0:9559->9559/tcp, :::9559->9559/tcp   ipdk
+c75e8bbdcbac   ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-7978695   "/root/scripts/start…"   27 seconds ago   Up 27 seconds   0.0.0.0:9339->9339/tcp, :::9339->9339/tcp, 0.0.0.0:9559->9559/tcp, :::9559->9559/tcp   ipdk
 ```
 
 TODO
 
 ```bash
 $ ipdk connect
-fatal: not a git repository (or any of the parent directories): .git
 Loaded /home/andy/ipdk/build/scripts/ipdk_default.env
 Loaded /home/andy/.ipdk/ipdk.env
 
 WORKING_DIR: /root
 Generating TLS Certificates...
 Generating RSA private key, 4096 bit long modulus (2 primes)
-...................................................++++
-............................++++
+...........................................................................................++++
+...............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................++++
 e is 65537 (0x010001)
 Generating RSA private key, 4096 bit long modulus (2 primes)
-.....................................................................................................................................................................++++
-...........................++++
+.++++
+.....................................................................................................................................................................................................................++++
 e is 65537 (0x010001)
 Signature ok
 subject=C = US, ST = CA, L = Menlo Park, O = Open Networking Foundation, OU = Stratum, CN = localhost
 Getting CA Private Key
 Generating RSA private key, 4096 bit long modulus (2 primes)
-...................................................................++++
-.................................................................................................................................................++++
+............................................................................................................................................++++
+.++++
 e is 65537 (0x010001)
 Signature ok
 subject=C = US, ST = CA, L = Menlo Park, O = Open Networking Foundation, OU = Stratum, CN = Stratum client certificate
 Getting CA Private Key
 Deleting old installed certificates
 Certificates generated and installed successfully in  /usr/share/stratum/certs/
-root@21e5509506d8:~/scripts# 
+root@c75e8bbdcbac:~/scripts# 
 ```
 
-The instructions suggest this command to verify that there is a
-process named `infrap4d` running:
+The IPDK instructions suggest the command below to verify that there
+is a process named `infrap4d` running:
 
 ```bash
-root@21e5509506d8:~/scripts# ps -ef | grep infrap4d
-root          48       1 99 21:37 ?        00:02:18 /root/networking-recipe/install/sbin/infrap4d
-root         114      85  0 21:39 pts/1    00:00:00 grep --color=auto infrap4d
+root@c75e8bbdcbac:~/scripts# ps -ef | grep infrap4d
+root          47       1 99 12:35 ?        00:02:06 /root/networking-recipe/install/sbin/infrap4d
+root         113      84  0 12:37 pts/1    00:00:00 grep --color=auto infrap4d
 ```
 
-It looks like it is.  Let's try running the demo bash script to see
-what happens:
+It looks like it is.  Now try running the demo bash script to see what
+happens:
 
 ```bash
-root@21e5509506d8:~/scripts# /root/scripts/rundemo_TAP_IO.sh
+root@c75e8bbdcbac:~/scripts# /root/scripts/rundemo_TAP_IO.sh 
 
 WORKING_DIR: /root
 SCRIPTS_DIR: /root/scripts
@@ -247,16 +245,16 @@ Creating TAP ports
 
 ~ ~/scripts
 setting vhost_dev = true.Set request, successful...!!!
-I20230222 21:40:41.957209   187 gnmi_ctl.cc:103] Client context cancelled.
+I20230313 12:38:43.734566   187 gnmi_ctl.cc:103] Client context cancelled.
 setting vhost_dev = true.Set request, successful...!!!
-I20230222 21:40:42.024011   195 gnmi_ctl.cc:103] Client context cancelled.
+I20230313 12:38:43.812232   195 gnmi_ctl.cc:103] Client context cancelled.
 ~/scripts
 
 Generating dependent files from P4C and pipeline builder
 
 ~/examples/simple_l3 ~/scripts
-I20230222 21:40:43.436168   212 tdi_pipeline_builder.cc:114] Found P4 program: simple_l3
-I20230222 21:40:43.436239   212 tdi_pipeline_builder.cc:121] 	Found pipeline: pipe
+I20230313 12:38:45.017838   212 tdi_pipeline_builder.cc:114] Found P4 program: simple_l3
+I20230313 12:38:45.017911   212 tdi_pipeline_builder.cc:121] 	Found pipeline: pipe
 ~/scripts
 
 Create two Namespaces
@@ -280,38 +278,44 @@ Programming P4 pipeline
 Ping from TAP0 port to TAP1 port
 
 PING 2.2.2.2 (2.2.2.2) 56(84) bytes of data.
-64 bytes from 2.2.2.2: icmp_seq=1 ttl=64 time=0.112 ms
-64 bytes from 2.2.2.2: icmp_seq=2 ttl=64 time=0.107 ms
-64 bytes from 2.2.2.2: icmp_seq=3 ttl=64 time=0.122 ms
-64 bytes from 2.2.2.2: icmp_seq=4 ttl=64 time=0.144 ms
-64 bytes from 2.2.2.2: icmp_seq=5 ttl=64 time=0.108 ms
+64 bytes from 2.2.2.2: icmp_seq=1 ttl=64 time=0.119 ms
+64 bytes from 2.2.2.2: icmp_seq=2 ttl=64 time=0.121 ms
+64 bytes from 2.2.2.2: icmp_seq=3 ttl=64 time=0.097 ms
+64 bytes from 2.2.2.2: icmp_seq=4 ttl=64 time=0.126 ms
+64 bytes from 2.2.2.2: icmp_seq=5 ttl=64 time=0.120 ms
 
 --- 2.2.2.2 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4079ms
-rtt min/avg/max/mdev = 0.107/0.118/0.144/0.013 ms
+5 packets transmitted, 5 received, 0% packet loss, time 4088ms
+rtt min/avg/max/mdev = 0.097/0.116/0.126/0.010 ms
 PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
-64 bytes from 1.1.1.1: icmp_seq=1 ttl=64 time=0.123 ms
-64 bytes from 1.1.1.1: icmp_seq=2 ttl=64 time=0.117 ms
-64 bytes from 1.1.1.1: icmp_seq=3 ttl=64 time=0.107 ms
-64 bytes from 1.1.1.1: icmp_seq=4 ttl=64 time=0.132 ms
-64 bytes from 1.1.1.1: icmp_seq=5 ttl=64 time=0.141 ms
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=64 time=0.092 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=64 time=0.141 ms
+64 bytes from 1.1.1.1: icmp_seq=3 ttl=64 time=0.098 ms
+64 bytes from 1.1.1.1: icmp_seq=4 ttl=64 time=0.094 ms
+64 bytes from 1.1.1.1: icmp_seq=5 ttl=64 time=0.146 ms
 
 --- 1.1.1.1 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4071ms
-rtt min/avg/max/mdev = 0.107/0.124/0.141/0.011 ms
-root@21e5509506d8:~/scripts# 
+5 packets transmitted, 5 received, 0% packet loss, time 4092ms
+rtt min/avg/max/mdev = 0.092/0.114/0.146/0.024 ms
+root@c75e8bbdcbac:~/scripts# 
 ```
 
 That looks like success!
 
-Note that running the script `rundemo_TAP_IO.sh` kills any `infrap4d`
-process that may be running, and also deletes the network namespaces
-`VM0` and `VM1` if they exist when the script is started (and then
-later in the script creates new network namespaces with those names).
-Thus if you want to do things like run `tcpdump` to capture packets
-into and/or out of `infrap4d`, you need to run those `tcpdump`
-commands after the script is started, but before the packets start
-flowing.
+Note that very early in running the script `rundemo_TAP_IO.sh`, it
+kills any `infrap4d` process that may be running, and also deletes the
+network namespaces `VM0` and `VM1` if they exist.  Later in the script
+it creates new network namespaces with those names.  Thus if you want
+to do things like run `tcpdump` to capture packets into and/or out of
+`infrap4d`, you need to run those `tcpdump` commands after the script
+is started, but before the packets start flowing.
+
+Even better, you should create your own script based upon the contents
+of `rundemo_TAP_IO.sh` that sets things up like running infrap4d and
+creating namespaces and interfaces, but doesn't send any packets.
+
+
+# TODO
 
 Since the `rundemo_TAP_IO.sh` script ends with the network namespaces
 still existing, and the `infrap4d` process still running, it is much
@@ -442,7 +446,7 @@ https://dpdk.readthedocs.io/en/v17.11/sample_app_ug/kernel_nic_interface.html
 All of the steps below were tested on an Ubuntu 20.04 system, after
 following the IPDK networking container install steps successfully.
 
-Then start an IPDK container and connect to it using these commands:
+Start an IPDK container and connect to it using these commands:
 ```bash
 cd <path-to-your-clone-of-ipdk-repository>
 ipdk start -d
@@ -490,7 +494,7 @@ operating system.
 ## Installing `p4runtime-shell` inside the IPDK container
 
 The commands in this section should be run from inside
-inside of the IPDK networking container, e.g. a prompt that you got to
+inside of the IPDK networking container, i.e. a prompt that you got to
 via an `ipdk connect` command.
 
 Note: Given how the IPDK container is built with the version of the
@@ -501,19 +505,16 @@ you stop the container and start it again, e.g. rebooting the base OS
 stops the container, you will need to repeat the steps below the next
 time you start the container.
 
-Install `git` (the `chmod` command below is needed since `apt-get`
-commands often try to create temporary files in `/tmp`, and for some
-reason the initial permissions on the `/tmp` directory inside the
-container do not allow writing by arbitrary users):
+Install `git` command and `p4runtime-shell` Python package (the
+`chmod` command below is needed since `apt-get` commands often try to
+create temporary files in `/tmp`, and for some reason the initial
+permissions on the `/tmp` directory inside the container do not allow
+writing by arbitrary users):
 
 ```bash
 chmod 777 /tmp
 apt-get update
 apt-get install --yes git
-```
-
-Install the `p4runtime-shell` Python package:
-```bash
 pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 ```
 
@@ -585,6 +586,9 @@ copy of the file in a directory that is not `~/.ipdk/volume`.
 
 ## Installing `p4runtime-shell` in the base OS
 
+Note: You can ignore this section if you prefer to run P4Runtime API
+client programs inside the container.
+
 Run these commands in the base OS:
 
 ```bash
@@ -594,6 +598,9 @@ sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 
 
 ## Making a P4Runtime API connection from Python program running in the base OS, to infrap4d
+
+Note: You can ignore this section if you prefer to run P4Runtime API
+client programs inside the container.
 
 First copy the current cryptographic key/certificate files required
 for a client to authenticate itself to the server.  This step only
