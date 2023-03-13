@@ -833,3 +833,185 @@ On Andy's macOS 12 system, the command above took:
 
 + about 33 mins to complete, with a 1 Gbps Internet connection.
 + about 78 mins to complete, with a 1.5 to 2 MBytes/sec Internet download speed
+
+
+# Running a P4Runtime client program and connecting to DPDK software switch
+
+All of the steps below were tested on an Ubuntu 20.04 system, after
+following the IPDK networking container install steps successfully.
+
+Then start an IPDK container and connect to it using these commands:
+```bash
+cd <path-to-your-clone-of-ipdk-repository>
+ipdk start -d
+ipdk connect
+```
+
+There are 9 cryptographic key/certificate files generated during
+execution of the `ipdk connect` command.  These files are copied into
+the directory `/usr/share/stratum/certs/` inside the container's file
+system.
+
+Below are two ways to successfully set things up so that a small
+Python program can connect to TCP port 9559 of the `infrap4d` process
+inside the container, as a P4Runtime client, and send P4Runtime API
+read and write request messages to `infrap4d`.
+
+The first way shows how to run such a Python test client program
+inside of the container.  One advantage of doing it this way is that
+you can also easily send packets to TAP interfaces from the same test
+client program, and/or read packets output by the DPDK software switch
+on TAP interfaces.
+
+The second way shows how to run such a Python test client program in
+the base OS.  I do not know of any straightforward way to enable such
+a program running in the OS to send packets to or receive packets from
+the DPDK software switch.
+
+Note: These instructions use the `p4runtime-shell` Python package,
+which is only one of many ways to make a P4Runtime API connection from
+a Python program to a P4-programmable network device that is running a
+P4Runtime API server.  You need not install `p4runtime-shell` if you
+do not want to use it, but these instructions do not give details on
+any other ways to make a P4Runtime API connection.
+
+When the instructions say to run a command inside the IPDK container,
+it means at a shell prompt that you can reach via running the `ipdk
+connect` command.
+
+When the instructions say to run a command outside the IPDK container,
+or in the base OS, the command should be executed in a terminal window
+that is _not_ inside the IPDK container, but on the base Ubuntu 20.04
+operating system.
+
+
+## Installing `p4runtime-shell` inside the IPDK container
+
+The commands in this section should be run from inside
+inside of the IPDK networking container, e.g. a prompt that you got to
+via an `ipdk connect` command.
+
+Note: Given how the IPDK container is built with the version of the
+Github ipdk repo available as of 2023-Mar-12, neither the `git`
+command nor the `p4runtime-shell` Python package are installed inside
+of the container when you first start a container process.  Thus if
+you stop the container and start it again, e.g. rebooting the base OS
+stops the container, you will need to repeat the steps below the next
+time you start the container.
+
+Install `git` (the `chmod` command below is needed since `apt-get`
+commands often try to create temporary files in `/tmp`, and for some
+reason the initial permissions on the `/tmp` directory inside the
+container do not allow writing by arbitrary users):
+
+```bash
+chmod 777 /tmp
+apt-get update
+apt-get install --yes git
+```
+
+Install the `p4runtime-shell` Python package:
+```bash
+pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+```
+
+If all of the above steps succeeded, you should see at least the
+following P4-related Python packages installed.  The hex digits at the
+end of the `p4runtime-shell` version may differ from what you see
+below, if updates to the `p4runtime-shell` repo on Github have been
+made after this document was written.
+
+```bash
+# pip3 list | grep p4
+p4runtime                1.3.0
+p4runtime-shell          0.0.3.post5+g2603e13
+```
+
+
+## Making a P4Runtime API connection from Python program running inside the IPDK container, to infrap4d
+
+Prerequisite: You have installed the `p4runtime-shell` Python package
+inside the IPDK container.
+
+Copy the test Python P4Runtime client program `test-client.py` from
+the base OS into the container, by running these commands in the base
+OS:
+
+```bash
+cp <TODO-path>/test-client.py 
+```
+
+Then run this command inside the container:
+
+```bash
+cp /tmp/test-client.py ~
+```
+
+After this setup, you should be able to run the test client program
+with this command:
+
+```bash
+~/test-client.py
+```
+
+Troubleshooting: Normally you would think that inside the container,
+you could simply run `/tmp/test-client.py`, but for some reason I do
+not understand, doing that fails when I try it on my system, with an
+error message like the one below:
+
+```bash
+# /tmp/test-client.py 
+Traceback (most recent call last):
+  File "/tmp/test-client.py", line 5, in <module>
+    import p4runtime_sh.shell as sh
+  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/shell.py", line 27, in <module>
+    from p4runtime_sh.p4runtime import (P4RuntimeClient, P4RuntimeException, parse_p4runtime_error,
+  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/p4runtime.py", line 26, in <module>
+    from p4.v1 import p4runtime_pb2
+ImportError: dynamic module does not define module export function (PyInit_p4)
+```
+
+That error does not occur for me if I copy the `test-client.py` file
+from `/tmp` to another directory, e.g. the `root` user's home
+directory.
+
+I get a similar error if, in the base OS, I try to run
+`test-client.py` when it is stored inside of the directory
+`~/.ipdk/volume`.  Again, the workaround is to run that program with a
+copy of the file in a directory that is not `~/.ipdk/volume`.
+
+
+## Installing `p4runtime-shell` in the base OS
+
+Run these commands in the base OS:
+
+```bash
+sudo apt-get install --yes python3-pip
+sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+```
+
+
+## Making a P4Runtime API connection from Python program running in the base OS, to infrap4d
+
+First copy the current cryptographic key/certificate files required
+for a client to authenticate itself to the server.  This step only
+needs to be done once each time these files change.  One event that
+causes these files to change is running `ipdk connect` from the base
+OS.
+
+When the IPDK container is started, it is done in a way such that the
+directory `/tmp` inside the container is equivalent to the directory
+`$HOME/.ipdk/volume` in the base OS.  That is, any changes made to the
+directory on one side is immediately reflected on the other side.
+
+Inside the container:
+```bash
+cp /usr/share/stratum/certs/{ca.crt,client.key,client.crt} /tmp/
+```
+
+In the base OS:
+```bash
+mkdir ~/my-certs
+sudo cp ~/.ipdk/volume/{ca.crt,client.crt,client.key} ~/my-certs
+sudo chown ${USER}.${USER} ~/my-certs/*
+```
