@@ -288,8 +288,8 @@ $ ./ipdk install
 
 The last command above finished in a fraction of a second.
 
-It created a directory $HOME/.ipdk and copies a file named ipdk.env
-into it.
+It created a directory `$HOME/.ipdk` and copied a file named
+`ipdk.env` into it.
 
 I already had a directory `$HOME/bin` in my shell's command PATH
 before running the command above.  While running `./ipdk install`, it
@@ -318,13 +318,13 @@ I tried following these instructions for installing Docker on Ubuntu
 https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 ```bash
-$ sudo apt-get update
-$ sudo apt-get install --yes ca-certificates curl gnupg lsb-release
-$ sudo mkdir -m 0755 -p /etc/apt/keyrings
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-$ sudo apt-get update
-$ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get update
+sudo apt-get install --yes ca-certificates curl gnupg lsb-release
+sudo mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 The IPDK install steps below require that you follow these "Linux
@@ -333,11 +333,19 @@ without prefixing them with 'sudo', found here:
 https://docs.docker.com/engine/install/linux-postinstall/
 
 ```bash
-$ sudo groupadd docker
-$ sudo usermod -aG docker $USER
-$ newgrp docker
-$ docker run hello-world
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+docker run hello-world
 ```
+
+At this point, docker commands like `docker run hello-world` should
+succeed _in that terminal window where you ran the `newgrp docker`
+command_, but if you create a new terminal window without running
+`newgrp docker`, it will fail.  If you reboot the system at this
+point, then you should be able to run docker commands without `sudo`
+in any new terminal window you create.
+
 
 ### Continue with IPDK install
 
@@ -406,10 +414,14 @@ See 'docker run --help'.
 
 This is most likely because you are trying to run the command when the
 current directory is not one that is inside of your cloned copy of the
-`ipdk` repository.  The docker image is created with a hex string that
-is part of the commit SHA of the ipdk git repository at the time the
-docker image was created, so if that changes because you updated your
-clone of the `ipdk` repo, you may need to rebuild the docker image.
+`ipdk` repository.  To avoid this, simply `cd $HOME/clone/ipdk` and
+try the `ipdk start -d` command again.
+
+Note: The docker image name is created containing a string of hex
+digits at the end.  This hex string is part of the commit SHA of the
+ipdk git repository at the time the docker image was created, so if
+that changes because you updated your clone of the `ipdk` repo, you
+may need to rebuild the docker image.
 
 ```bash
 $ docker ps
@@ -695,3 +707,129 @@ over veth interfaces.  This page might give a solution for that, but I
 have not understood it well enough nor tried out any of its
 recommendations:
 https://dpdk.readthedocs.io/en/v17.11/sample_app_ug/kernel_nic_interface.html
+
+
+## try8: Attempt to install IPDK Networking Build, IPDK Container on Andy's macOS 12 system
+
+Except for being a slightly later date, and the version of the ipdk
+repo being slightly newer than try7, everything here went the same as
+in try7.
+
+Date: 2023-Mar-12
+
+Hardware/OS is as described in section "Andy's macOS 12 system".
+
+In macOS host system, created an Ubuntu 20.04 Desktop Linux VM running
+within VirtualBox, with all the latest updates as of the date I
+attempted this install.
+
++ VM name: Ubuntu 20.04 ipdk net container try8
++ RAM: 8 GB
+
+Started logged in as a non-root user named `andy`.
+
+```bash
+$ mkdir $HOME/clone
+$ cd $HOME/clone
+$ pwd
+/home/andy/clone
+$ git clone https://github.com/ipdk-io/ipdk.git
+$ cd ipdk
+$ git log -n 1
+commit 7978695ecfa84ebe9720b95d1eae8142d521d1ee (HEAD -> main, origin/main, origin/HEAD)
+Merge: ab099be db1b3cb
+Author: Filip Szufnarowski <filip.szufnarowski@intel.com>
+Date:   Mon Mar 6 12:42:50 2023 +0100
+
+    Merge pull request #380 from intelfisz/fix-build-failures
+    
+    Fix storage vm failures
+```
+
+Now attempted to start following the instructions listed on this page:
+https://github.com/ipdk-io/ipdk/blob/main/build/networking/README_DOCKER.md
+
+```bash
+$ cd $HOME/clone/ipdk/build
+$ ./ipdk install
+```
+
+The last command above finished in a fraction of a second.
+
+It created a directory `$HOME/.ipdk` and copied a file named
+`ipdk.env` into it.
+
+I already had a directory `$HOME/bin` in my shell's command PATH
+before running the command above.  While running `./ipdk install`, it
+also created a symbolic link named `$HOME/bin/ipdk` to
+`$HOME/clone/ipdk/build/scripts/ipdk.sh`.
+
+```bash
+$ cd $HOME/clone/ipdk
+$ ipdk install ubuntu2004
+Loaded /home/andy/clone/ipdk/build/scripts/ipdk_default.env
+Loaded /home/andy/.ipdk/ipdk.env
+User changable IPDK configuration file is already defined at 
+'~/.ipdk/ipdk.env'.
+Changed runtime environment to: ubuntu2004
+IPDK CLI is installed!
+```
+
+The last command above finished very quickly with the output shown.
+It appeared to modify the file `$HOME/.ipdk/ipdk.env`.  I am not sure
+if it changed anything else.
+
+### Install docker on Ubuntu 20.04
+
+I tried following these instructions for installing Docker on Ubuntu
+20.04:
+https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+```bash
+sudo apt-get update
+sudo apt-get install --yes ca-certificates curl gnupg lsb-release
+sudo mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+The IPDK install steps below require that you follow these "Linux
+post-install steps" that enable a non-root user to run docker commands
+without prefixing them with 'sudo', found here:
+https://docs.docker.com/engine/install/linux-postinstall/
+
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+docker run hello-world
+```
+
+At this point, docker commands like `docker run hello-world` should
+succeed _in that terminal window where you ran the `newgrp docker`
+command_, but if you create a new terminal window without running
+`newgrp docker`, it will fail.  If you reboot the system at this
+point, then you should be able to run docker commands without `sudo`
+in any new terminal window you create.
+
+
+### Continue with IPDK install
+
+I was not behind a proxy, so did not attempt to do any of the proxy
+configuration steps described.  They should be unnecessary for my
+current install attempt.
+
+```bash
+$ cd $HOME/clone/ipdk
+$ ipdk build --no-cache |& tee try8-out.txt
+```
+
+The output of the install script is in the file
+[`try8-out.txt`](try8-out.txt).
+
+On Andy's macOS 12 system, the command above took:
+
++ about 33 mins to complete, with a 1 Gbps Internet connection.
++ about 78 mins to complete, with a 1.5 to 2 MBytes/sec Internet download speed
