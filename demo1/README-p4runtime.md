@@ -113,6 +113,27 @@ sh.setup(device_id=my_dev1_id,
          config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
 ```
 
+Advanced note #1 (i.e. you can skip on first reading and follow
+everything below perfectly well): The `sh.setup` call shown above does
+not use SSL authentication or encryption on the connection.  `setup`
+can take an optional `ssl_options` parameter that lets the caller
+supply the necessary cryptographic keys and certificates.  See TODO
+for an example.
+
+Advanced note #2: The `sh.setup` call will attempt to load a compiled
+P4 program into the device if you provide the optional `config`
+parameter as shown in the example above.  If you do not supply that
+parameter, `sh.setup` will attempt to connect to the device and leave
+whatever P4 program is loaded into it as it currently it (if there is
+one).  Whether `sh.setup` loads a compiled P4 program into the device
+or not, if it succeeds in connecting, the object `sh.context` is
+initialized to contain information about the P4 objects such as
+tables, actions, counters, meters, etc. that are part of the P4
+program currently loaded in the device.  For example, evaluating
+`list(sh.context.get_tables())` returns a Python list of one tuple per
+P4 table in the currently loaded P4 program.  See TODO for more
+examples.
+
 Note: Unless the `simple_switch_grpc` process crashes, or you kill it
 yourself, you can continue to use the same running process, loading
 different compiled P4 programs into it over time.  Just do
