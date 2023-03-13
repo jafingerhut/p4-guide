@@ -938,7 +938,7 @@ the base OS into the container, by running these commands in the base
 OS:
 
 ```bash
-cp <TODO-path>/test-client.py 
+cp ~/p4-guide/ipdk/23.01/test-client.py ~/.ipdk/volume
 ```
 
 Then run this command inside the container:
