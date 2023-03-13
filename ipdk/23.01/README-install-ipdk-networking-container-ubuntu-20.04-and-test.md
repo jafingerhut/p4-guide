@@ -443,10 +443,46 @@ with this command:
 ~/test-client.py
 ```
 
-Troubleshooting: Normally you would think that inside the container,
-you could simply run `/tmp/test-client.py`, but for some reason I do
-not understand, doing that fails when I try it on my system, with an
-error message like the one below:
+
+### Troubleshooting: `No valid forwarding pipeline config has been pushed`
+
+If you try to run the test client program and see an error message
+like this:
+
+```bash
+# ~/test-client.py
+CRITICAL:root:Error when retrieving P4Info
+CRITICAL:root:P4Runtime RPC error (FAILED_PRECONDITION): No valid forwarding pipeline config has been pushed for any node so far.
+```
+
+That is an indication that while `infrap4d` is running, no compiled P4
+program has been loaded into it yet.
+
+One way to load such a P4 program is to cause that to happen from your
+P4Runtime API client program, which should result in sending a
+`SetForwardingPipelineConfig` message from the client to `infrap4d`.
+The `test-client.py` program does not attempt to do this.  It expects
+there to already be a compiled P4 program and P4Info file loaded into
+the device.
+
+There is a command `p4rt-ctl` that can be run from inside of the
+container to do this.  A sample command line can be found within the
+`rundemo_TAP_IO.sh` script, copied below (note that the two files
+shown on this command line do not exist in the container when it is
+first started -- they are created by a `p4c` P4 compilation command
+that can also be found in the `rundemo_TAP_IO.sh` script):
+
+```bash
+p4rt-ctl set-pipe br0 /root/examples/simple_l3/simple_l3.pb.bin /root/examples/simple_l3/p4Info.txt
+```
+
+
+### Troubleshooting: Do not try to run test client from `/tmp` directory
+
+Normally you would think that inside the container, you could simply
+run `/tmp/test-client.py`, but for some reason I do not understand,
+doing that fails when I try it on my system, with an error message
+like the one below:
 
 ```bash
 # /tmp/test-client.py 
