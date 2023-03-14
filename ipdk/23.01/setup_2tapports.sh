@@ -114,3 +114,18 @@ ip link set TAP0 netns VM0
 ip netns exec VM0 ip link set dev TAP0 up
 ip link set TAP1 netns VM1
 ip netns exec VM1 ip link set dev TAP1 up
+
+echo "Assign IP addresses to the TAP ports"
+
+ip netns exec VM0 ip addr add 1.1.1.1/24 dev TAP0
+ip netns exec VM1 ip addr add 2.2.2.2/24 dev TAP1
+
+echo "Add ARP table for neighbor TAP port"
+
+ip netns exec VM0 ip neigh add 2.2.2.2 dev TAP0 lladdr "$(ip netns exec VM1 ip -o link show TAP1 | awk -F" " '{print $17}')"
+ip netns exec VM1 ip neigh add 1.1.1.1 dev TAP1 lladdr "$(ip netns exec VM0 ip -o link show TAP0 | awk -F" " '{print $17}')"
+
+echo "Add Route to reach neighbor TAP port"
+
+ip netns exec VM0 ip route add 2.2.2.0/24 via 1.1.1.1 dev TAP0
+ip netns exec VM1 ip route add 1.1.1.0/24 via 2.2.2.2 dev TAP1

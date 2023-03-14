@@ -115,3 +115,11 @@ popd || exit
 echo "Loading compiled P4 program into infrap4d"
 
 p4rt-ctl set-pipe br0 "${P4_BINARY_FNAME}" "${P4INFO_FNAME}"
+
+# TODO: Consider making the following steps optional later, in case we
+# want to do them in a separate control plane program.
+
+p4rt-ctl add-entry br0 ingress.ipv4_host \
+    "hdr.ipv4.dst_addr=1.1.1.1,action=ingress.send(0)"
+p4rt-ctl add-entry br0 ingress.ipv4_host \
+    "hdr.ipv4.dst_addr=2.2.2.2,action=ingress.send(1)"
