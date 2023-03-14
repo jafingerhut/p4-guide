@@ -559,32 +559,30 @@ files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 
 # Additional experiments #1
 
-The commands below have only been tested when run inside the IPDK
-container.
-
-From the base OS, you can copy them to the container using the command:
+From the base OS, you can copy some bash scripts to the container
+using the command:
 
 ```bash
 cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
 ```
 
-The scripts below are adapted with minor variations from
-`rundemo_TAP_IO.sh` that is included with IPDK.  They perform these
-functions:
+These scripts below were adapted with minor variations from
+`rundemo_TAP_IO.sh`, which is included with IPDK.  The scripts perform
+these functions:
 
 + `setup_2tapports.sh` - Starts up an `infrap4d` process, creates a
-  couple of network namespaces, and connects each of these namespaces
-  via one TAP interface to the `infrap4d` process.
+  network namespace, and connects that namespace via two TAP
+  interfaces to the `infrap4d` process.
 + `compile_p4_prog.sh` - Compiles the source code of a P4 program to
-  produce a binary and P4Info file.
-+ `load_p4_prog.sh` - Loads a compiled P4 program binary and P4Info
+  produce a P4Info file and a DPDK binary file.
++ `load_p4_prog.sh` - Loads a P4Info file and compiled DPDK binary
   file into into the running `infrap4d` process.
 
-`rundemo_TAP_IO.sh` does all of those steps one after the other,
-followed by running a couple of `ping` commands to test packet
-forwarding through `infrap4d`.  These separate scripts give a user a
-little bit more fine-grained control over when they want to perform
-these steps.
+`rundemo_TAP_IO.sh` does very similar steps as all of the above
+combined, one after the other, followed by running a couple of `ping`
+commands to test packet forwarding through `infrap4d`.  These separate
+scripts give a user a little bit more fine-grained control over when
+they want to perform these steps.
 
 Example command lines:
 
@@ -621,6 +619,91 @@ Error: P4Runtime RPC error (FAILED_PRECONDITION): Only a single forwarding pipel
 This might be a restriction imposed by `infrap4d`.  A workaround is to
 kill the `infrap4d` process, start a new one, and load the desired P4
 program into the new `infrap4d` process.
+
+
+## An exercise in using those scripts
+
+Copy a modified version of the `simple_l3.p4` P4 program that we have
+been using up to this point.
+
+In the base OS:
+```bash
+cp -pr ~/p4-guide/ipdk/23.01/simple_l3_modecr/ ~/.ipdk/volume/
+```
+
+These instructions demonstrate using the Python Scapy package to
+create a simple test packet to send into the DPDK software switch, and
+`tshark` or `wireshark` to view the packets output by the switch.
+
+In the base OS:
+```bash
+sudo apt-get install --yes tshark wireshark
+sudo pip3 install scapy
+python3
+```
+
+At the Python interactive prompt, create a pcap file `pkt1.pcap` with
+one Eth+IPv4+ICMP packet in it:
+
+```python
+from scapy.all import *
+pkt1=Ether(src='40:de:ad:be:ef:10', dst='00:00:00:00:00:05') / IP(dst='2.2.2.2', src='1.1.1.1') / ICMP(type=8)
+wrpcap('pkt1.pcap', [pkt1])
+```
+
+Use `tshark` to decode it and verify it has the desired fields:
+```bash
+tshark -V -r pkt1.pcap
+cp pkt1.pcap ~/.ipdk/volume
+```
+
+In the container:
+```bash
+apt-get install --yes tcpdump tcpreplay
+cp -pr /tmp/simple_l3_modecr/ /root/examples/
+/tmp/compile_p4_prog.sh -p /root/examples/simple_l3_modecr -s simple_l3_modecr.p4
+/tmp/setup_2tapports.sh
+/tmp/load_p4_prog.sh -p /root/examples/simple_l3_modecr/simple_l3_modecr.pb.bin -i /root/examples/simple_l3_modecr/p4Info.txt
+
+# Check if table entries have been added
+p4rt-ctl dump-entries br0
+```
+
+Set up `tcpdump` to capture packets coming out of the switch to the TAP1
+interface:
+
+```bash
+ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
+```
+
+Use `tcpreplay` to send packets into the switch on TAP0 interface:
+
+```bash
+ip netns exec VM0 tcpreplay -i TAP0 /tmp/pkt1.pcap
+```
+
+Kill the `tcpdump` process so it completes writing packets to the file
+and stops appending more data to the file.
+
+```bash
+killall tcpdump
+```
+
+You can copy the file `TAP1-try1.pcap` to the base OS and use
+`tshark`, `wireshark`, or any program you like to examine it:
+
+In the container:
+```bash
+cp TAP1-try1.pcap /tmp
+```
+
+In the base OS, use commands like one of these (tune the tshark
+options to your preference):
+
+```bash
+tshark -V -r ~/.ipdk/volume/TAP1-try1.pcap
+wireshark ~/.ipdk/volume/TAP1-try1.pcap
+```
 
 
 # Additional experiments #2
