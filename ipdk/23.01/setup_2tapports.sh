@@ -60,10 +60,9 @@ echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
 echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
 echo ""
 
-echo "Deleting namespaces VM0, VM1 (if any) and killing infrap4d processes ..."
+echo "Deleting namespace VM0 and killing infrap4d processes ..."
 
 ip netns del VM0
-ip netns del VM1
 
 killall infrap4d
 
@@ -103,17 +102,18 @@ gnmi-ctl set "device:virtual-device,name:TAP1,pipeline-name:pipe,\
     mempool-name:MEMPOOL0,mtu:1500,port-type:TAP"
 popd || exit
 
-echo "Create two namespaces VM0, VM1"
+echo "Create one namespace VM0"
 
 ip netns add VM0
-ip netns add VM1
 
-echo "Move TAP ports to respective namespaces and bringup the ports"
+echo "Move TAP ports to namespace VM0 and bring up the ports"
 
 ip link set TAP0 netns VM0
 ip netns exec VM0 ip link set dev TAP0 up
-ip link set TAP1 netns VM1
-ip netns exec VM1 ip link set dev TAP1 up
+ip link set TAP1 netns VM0
+ip netns exec VM0 ip link set dev TAP1 up
+
+exit 0
 
 echo "Assign IP addresses to the TAP ports"
 
