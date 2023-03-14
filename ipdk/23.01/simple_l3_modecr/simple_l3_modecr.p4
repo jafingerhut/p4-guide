@@ -138,6 +138,7 @@ control ingress(
 )
 {
     InternetChecksum() ck;
+    InternetChecksum() ck2;
 
     // recalculate the IPv4 header checksum
     action calc_ipv4_no_option_header_checksum() {
@@ -173,15 +174,18 @@ control ingress(
     }
 
     action calc_icmp_header_checksum() {
-        ck.clear();
+        // For some reason, DPDK seems to have a bug if I try to use
+        // instance ck in this action.  Use a separate instance ck2 as
+        // a workaround.
+        ck2.clear();
         bit<16> word0 = hdr.icmp.icmp_type ++ hdr.icmp.code;
-        ck.add({
+        ck2.add({
             /* 16-bit word  0 */ word0,
             /* 16-bit word  1 skip hdr.icmp.checksum, */
             /* 16-bit word  2 */ hdr.icmp.identifier,
             /* 16-bit word  3 */ hdr.icmp.sequence_num
             });
-        hdr.icmp.checksum = ck.get();
+        hdr.icmp.checksum = ck2.get();
     }
 
     action copy_src_mac_to_icmp_and_id_fields() {
