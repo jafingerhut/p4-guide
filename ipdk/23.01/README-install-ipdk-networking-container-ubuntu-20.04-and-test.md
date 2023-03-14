@@ -209,7 +209,7 @@ It looks like it is.  Now try running the demo bash script to see what
 happens:
 
 ```bash
-root@c75e8bbdcbac:~/scripts# /root/scripts/rundemo_TAP_IO.sh 
+root@c75e8bbdcbac:~/scripts# /root/scripts/rundemo_TAP_IO.sh
 
 WORKING_DIR: /root
 SCRIPTS_DIR: /root/scripts
@@ -485,7 +485,7 @@ doing that fails when I try it on my system, with an error message
 like the one below:
 
 ```bash
-# /tmp/test-client.py 
+# /tmp/test-client.py
 Traceback (most recent call last):
   File "/tmp/test-client.py", line 5, in <module>
     import p4runtime_sh.shell as sh
@@ -557,7 +557,73 @@ files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 ```
 
 
-# Additional experiments
+# Additional experiments #1
+
+The commands below have only been tested when run inside the IPDK
+container.
+
+From the base OS, you can copy them to the container using the command:
+
+```bash
+cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
+```
+
+The scripts below are adapted with minor variations from
+`rundemo_TAP_IO.sh` that is included with IPDK.  They perform these
+functions:
+
++ `setup_2tapports.sh` - Starts up an `infrap4d` process, creates a
+  couple of network namespaces, and connects each of these namespaces
+  via one TAP interface to the `infrap4d` process.
++ `compile_p4_prog.sh` - Compiles the source code of a P4 program to
+  produce a binary and P4Info file.
++ `load_p4_prog.sh` - Loads a compiled P4 program binary and P4Info
+  file into into the running `infrap4d` process.
+
+`rundemo_TAP_IO.sh` does all of those steps one after the other,
+followed by running a couple of `ping` commands to test packet
+forwarding through `infrap4d`.  These separate scripts give a user a
+little bit more fine-grained control over when they want to perform
+these steps.
+
+Example command lines:
+
+```bash
+/tmp/setup_2tapports.sh
+```
+
+For `compile_p4_prog.sh`, `-p` specifies the directory where the
+source file specified by `-s` can be found, and is also the directory
+where the compiled output files are written if compilation succeeds.
+
+```bash
+/tmp/compile_p4_prog.sh -p /root/examples/simple_l3 -s simple_l3.p4
+```
+
+For `load_p4_prog.sh`, `-p` specifies the compiled binary file to load
+into the `infrap4d` process, which has a suffix of `.pb.bin` in place
+of the `.p4` when created by the `compile_p4_prog.sh` script.  The
+option `-i specifies the P4Info file, which when created by
+`compile_p4_prog.sh` always has the name `p4Info.txt`.
+
+```bash
+/tmp/load_p4_prog.sh -p /root/examples/simple_l3/simple_l3.pb.bin -i /root/examples/simple_l3/p4Info.txt
+```
+
+Troubleshooting: In my testing, attempting to load a P4 program into
+the same `infrap4d` process more than once fails after the first time
+with an error message like this:
+
+```
+Error: P4Runtime RPC error (FAILED_PRECONDITION): Only a single forwarding pipeline can be pushed for any node so far.
+```
+
+This might be a restriction imposed by `infrap4d`.  A workaround is to
+kill the `infrap4d` process, start a new one, and load the desired P4
+program into the new `infrap4d` process.
+
+
+# Additional experiments #2
 
 Nothing in this section is required to install or use the IPDK
 container.  It describes some experiments that I ran to try out a few
@@ -625,7 +691,7 @@ commands above, directory `/tmp` inside the container is the same
 directory as `$HOME/.ipdk/volume` in the base OS.
 
 ```bash
-root@21e5509506d8:~/scripts# cp TAP1-try1.pcap /tmp 
+root@21e5509506d8:~/scripts# cp TAP1-try1.pcap /tmp
 ```
 
 In yet another terminal window running as a normal user in the base
