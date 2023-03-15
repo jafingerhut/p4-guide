@@ -97,7 +97,22 @@ hello-world                              latest        feb5d9fea6a5   16 months 
 
 The creation of the IPDK container is now complete.  All later
 instructions are for starting instances of this container, and running
-the DPDK software switch inside of it.
+the DPDK software switch inside of it, but see the next section for
+some additional software you may want to install in the base OS.
+
+
+# Useful extra software to install in base OS
+
+Several of the instructions below use the Python Scapy package to
+create simple test packets to send into the DPDK software switch, and
+`tshark` or `wireshark` to view the packets output by the switch.
+
+In the base OS:
+```bash
+sudo apt-get install --yes tshark wireshark
+sudo pip3 install scapy
+python3
+```
 
 
 # Notes on running `ipdk` commands
@@ -638,31 +653,9 @@ In the base OS:
 cp -pr ~/p4-guide/ipdk/23.01/simple_l3_modecr/ ~/.ipdk/volume/
 ```
 
-These instructions demonstrate using the Python Scapy package to
-create a simple test packet to send into the DPDK software switch, and
-`tshark` or `wireshark` to view the packets output by the switch.
-
-In the base OS:
-```bash
-sudo apt-get install --yes tshark wireshark
-sudo pip3 install scapy
-python3
-```
-
-At the Python interactive prompt, create a pcap file `pkt1.pcap` with
-one Eth+IPv4+ICMP packet in it:
-
-```python
-from scapy.all import *
-pkt1=Ether(src='40:de:ad:be:ef:10', dst='00:00:00:00:00:05') / IP(dst='2.2.2.2', src='1.1.1.1') / ICMP(type=8)
-wrpcap('pkt1.pcap', [pkt1])
-```
-
-Use `tshark` to decode it and verify it has the desired fields:
-```bash
-tshark -V -r pkt1.pcap
-cp pkt1.pcap ~/.ipdk/volume
-```
+The directory `/root/examples/simple_l3_modecr` already contains a
+pcap file that can be used for sending packets.  See the program
+`gen-pcaps.py` in that directory for how it was created.
 
 In the container:
 ```bash
@@ -690,7 +683,7 @@ ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
 Use `tcpreplay` to send packets into the switch on TAP0 interface:
 
 ```bash
-ip netns exec VM0 tcpreplay -i TAP0 /tmp/pkt1.pcap
+ip netns exec VM0 tcpreplay -i TAP0 /root/examples/simple_l3_modecr/pkt1.pcap
 ```
 
 Kill the `tcpdump` process so it completes writing packets to the file
@@ -756,7 +749,7 @@ cp -pr /tmp/add_on_miss0/ /root/examples/
 p4rt-ctl dump-entries br0
 ```
 
-The `/root/examples/add_on_miss0` directory already contains several
+The directory `/root/examples/add_on_miss0` already contains several
 pcap files that can be used for sending packets.  See the program
 `gen-pcaps.py` for how they were created.
 
@@ -775,6 +768,17 @@ port.  Immediately check the table entries.
 ip netns exec VM0 tcpreplay -i TAP0 /root/examples/add_on_miss0/tcp-syn1.pcap
 p4rt-ctl dump-entries br0 ct_tcp_table
 ```
+
+Note: I have asked the DPDK data plane developers, and confirmed that
+for p4c-dpdk add-on-miss tables as of 2023-Mar-15, there is currently
+no way to read the current set of entries from the control plane.  If
+you try, you get back no entries.  That matches the experience I have
+seen, which is that I can confirm from writing the P4 program in a way
+that it modifies output packets differently depending upon whether a
+`ct_tcp_table` hit or miss occurred, I sometimes see misses, then hits
+for later packets sent before the original entry ages out.  But I
+never see any entries in `ct_tcp_table` when trying to read them from
+the control plane.
 
 Kill the `tcpdump` process so it completes writing packets to the file
 and stops appending more data to the file.
@@ -861,8 +865,7 @@ OS, not inside the IPDK container, let us use these commands to view
 the captured packets using Wireshark:
 
 ```bash
-$ sudo apt install --yes wireshark
-$ wireshark ~/.ipdk/volume/TAP1-try1.pcap
+wireshark ~/.ipdk/volume/TAP1-try1.pcap
 ```
 
 I have confirmed that by modifying the file
