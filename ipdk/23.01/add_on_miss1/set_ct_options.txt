@@ -1,0 +1,3 @@
+match 0x2/0x2 priority 0x3 action tcp_syn_packet 
+match 0x1/0x1 priority 0x2 action tcp_fin_or_rst_packet 
+match 0x4/0x4 priority 0x1 action tcp_fin_or_rst_packet 
