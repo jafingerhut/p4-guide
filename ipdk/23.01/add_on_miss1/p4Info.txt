@@ -24,7 +24,6 @@ tables {
   }
   const_default_action_id: 23970644
   size: 1024
-  is_const_table: true
 }
 tables {
   preamble {

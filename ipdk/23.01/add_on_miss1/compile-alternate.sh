@@ -11,6 +11,7 @@
 # 
 #     Deprecate unified build in favor of unity build. (#3491)
 
+set -x
 mkdir -p pipe
 
 #p4c --arch pna --target dpdk \

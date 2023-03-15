@@ -243,11 +243,14 @@ control MainControlImpl(
             tcp_fin_or_rst_packet;
             tcp_other_packets;
         }
-        const entries = {
-            TCP_SYN_MASK &&& TCP_SYN_MASK: tcp_syn_packet;
-            TCP_FIN_MASK &&& TCP_FIN_MASK: tcp_fin_or_rst_packet;
-            TCP_RST_MASK &&& TCP_RST_MASK: tcp_fin_or_rst_packet;
-        }
+        // Comenting out the 'const entries' for now, since I am not
+        // sure whether DPDK supports them.  I will add these entries
+        // at init time from the control plane.
+//        const entries = {
+//            TCP_SYN_MASK &&& TCP_SYN_MASK: tcp_syn_packet;
+//            TCP_FIN_MASK &&& TCP_FIN_MASK: tcp_fin_or_rst_packet;
+//            TCP_RST_MASK &&& TCP_RST_MASK: tcp_fin_or_rst_packet;
+//        }
         const default_action = tcp_other_packets;
     }
     
