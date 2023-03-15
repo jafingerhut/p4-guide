@@ -13,3 +13,9 @@ record the output packet.
 `simple_l3_modecr.conf` is almost an exact copy of `simple_l3.conf`
 from that same directory, with two occurrences of `simple_l3` replaced
 with `simple_l3_modecr`.
+
+The pcap file was created by running this command on an Ubuntu 20.04
+system with the Python scapy package installed:
+```bash
+./gen-pcaps.py
+```
