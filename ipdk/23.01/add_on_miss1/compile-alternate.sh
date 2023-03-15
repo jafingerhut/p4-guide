@@ -14,14 +14,19 @@
 set -x
 mkdir -p pipe
 
-#p4c --arch pna --target dpdk \
-#    --output pipe \
-#    --p4runtime-files p4Info.txt \
-#    --bf-rt-schema bf-rt.json \
-#    --context pipe/context.json \
-#    add_on_miss1.p4
+# This section of the script is intended to enable you to
+# enable/disable these preprocessor #define symbols by
+# commenting/uncommenting individual lines.
+MACRO_DEFINES=""
+#MACRO_DEFINES="-DDONT_USE_IDLE_TIMEOUT_WITH_AUTO_DELETE $MACRO_DEFINES"
+# As of the version of p4c shown above, p4c-dpdk always gives an error
+# if you attempt to assign a value of PNA_IdleTimeout_t.AUTO_DELETE to
+# table property pna_idle_timeout, because AUTO_DELETE is not in
+# DPDK's versionn of pna.p4 yet.
+#MACRO_DEFINES="-DUSE_PNA_IDLE_TIMEOUT_AUTO_DELETE $MACRO_DEFINES"
 
-p4c-dpdk --arch pna \
+p4c-dpdk ${MACRO_DEFINES} \
+    --arch pna \
     --p4runtime-files p4Info.txt \
     --bf-rt-schema bf-rt.json \
     --context pipe/context.json \

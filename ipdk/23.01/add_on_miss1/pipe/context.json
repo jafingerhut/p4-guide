@@ -1,6 +1,6 @@
 {
   "program_name" : "add_on_miss1",
-  "build_date" : "Wed Mar 15 01:13:23 2023",
+  "build_date" : "Wed Mar 15 14:18:21 2023",
   "compile_command" : "p4c-dpdk --arch pna --p4runtime-files p4Info.txt --bf-rt-schema bf-rt.json --context pipe/context.json -o pipe/add_on_miss1.spec add_on_miss1.p4",
   "compiler_version" : "0.1 (SHA: ca1f3474d BUILD: DEBUG)",
   "schema_version" : "0.1",
@@ -97,7 +97,7 @@
       "size" : 65536,
       "p4_hidden" : false,
       "add_on_miss" : true,
-      "idle_timeout_with_auto_delete" : false,
+      "idle_timeout_with_auto_delete" : true,
       "stateful_table_refs" : [],
       "statistics_table_refs" : [],
       "meter_table_refs" : [],

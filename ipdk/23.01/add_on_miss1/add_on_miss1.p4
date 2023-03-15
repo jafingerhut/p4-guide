@@ -168,8 +168,7 @@ struct ct_tcp_table_hit_params_t {
 
 // Note 1:
 
-// I attempted to compile the program with the call to
-// set_entry_expire_time() uncommented using a version of p4c built
+// These notes were tested with p4c-dpdk built
 // from this source code of repository https://github.com/p4lang/p4c
 
 // $ git log -n 1 | head -n 5
@@ -179,21 +178,33 @@ struct ct_tcp_table_hit_params_t {
 // 
 //     Deprecate unified build in favor of unity build. (#3491)
 
-// but I got this error message that I do not understand:
+// As of that version of p4c-dpdk and its support for the PNA
+// architecture, these things appear to be true:
 
-// add_on_miss1.p4(228): [--Werror=unexpected] error: set_entry_expire_time must only be called from within an action with ' ct_tcp_table_hit' property equal to true
-//                 set_entry_expire_time(new_expire_time_profile_id);
-//                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Its support appears to correspond with what was published with PNA
+// version 0.5, without several changes made in PNA version 0.7.
 
-// Note 2:
+// In particular, for tables with 'add_on_miss = true', it is a
+// compile time error if you attempt to assign to the table property
+// pna_idle_timeout the new PNA v0.7 value of
+// PNA_IdleTimeout_t.AUTO_DELETE.
 
-// I attempted to compile the program with the call to
-// restart_expire_timer() uncommented using the same version of p4c
-// mentioned in Note 1, but I got this error message:
+// Instead, you may assign the following table property in a table
+// that has add_on_miss true:
 
-// add_on_miss1.p4(261): [--Werror=unexpected] error: restart_expire_timer must only be called from within an action with ' ct_tcp_table_hit' property equal to true
-//                 restart_expire_timer();
-//                 ^^^^^^^^^^^^^^^^^^^^^^
+//        idle_timeout_with_auto_delete = true;
+
+// If you do NOT assign true to table property
+// idle_timeout_with_auto_delete, then it is a compile time error to
+// attempt to call either of these extern functions in the table's hit
+// action:
+
+// + set_entry_expire_time
+// + restart_expire_timer
+
+// Either or both of those extern functions _are_ supported in an
+// add-on-miss table's hit action as long as you do assign true to
+// table property idle_timeout_with_auto_delete.
 
 control MainControlImpl(
     inout headers_t  hdr,
@@ -257,14 +268,14 @@ control MainControlImpl(
     action ct_tcp_table_hit () {
         if (update_aging_info) {
             if (update_expire_time) {
-                // See Note 1 for why this is commented out
-                //set_entry_expire_time(new_expire_time_profile_id);
+                // See Note 1
+                set_entry_expire_time(new_expire_time_profile_id);
                 // This is implicit and automatic part of the behavior
                 // of set_entry_expire_time() call:
                 //restart_expire_timer();
             } else {
-                // See Note 2 for why this is commented out
-                //restart_expire_timer();
+                // See Note 1
+                restart_expire_timer();
             }
             // a target might also support additional statements here
         } else {
@@ -321,9 +332,27 @@ control MainControlImpl(
         // from the data plane.
         add_on_miss = true;
 
+#ifndef DONT_USE_IDLE_TIMEOUT_WITH_AUTO_DELETE
+        // This table property was the documented way in PNA version
+        // 0.5 to enable the following feature:
+
+        // + The data plane auto-deletes entries when the entry had
+        //   not been matched in more than a configured time interval.
+
+        // As of PNA version 0.7, see the property pna_idle_timeout.
+
+        // See Note 1.  As of the version of p4c-dpdk described there,
+        // p4c-dpdk implements this table property, NOT yet the new
+        // value for pna_idle_timeout shown below.
+        idle_timeout_with_auto_delete = true;
+#endif  // DONT_USE_IDLE_TIMEOUT_WITH_AUTO_DELETE
+
+#ifdef USE_PNA_IDLE_TIMEOUT_AUTO_DELETE
         // As of 2023-Mar-14, p4c-dpdk implementation of PNA
         // architecture does not implement value AUTO_DELETE yet.
-        pna_idle_timeout = PNA_IdleTimeout_t.NOTIFY_CONTROL;
+        pna_idle_timeout = PNA_IdleTimeout_t.AUTO_DELETE;
+#endif  // USE_PNA_IDLE_TIMEOUT
+
         const default_action = ct_tcp_table_miss;
     }
 

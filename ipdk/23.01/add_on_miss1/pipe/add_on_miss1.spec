@@ -56,6 +56,8 @@ struct metadata_t {
 	bit<16> MainControlImpl_ct_tcp_table_key_1
 	bit<16> MainControlImpl_ct_tcp_table_key_2
 	bit<8> MainControlT_do_add_on_miss
+	bit<8> MainControlT_update_aging_info
+	bit<8> MainControlT_update_expire_time
 	bit<8> MainControlT_new_expire_time_profile_id
 	bit<32> MainControlT_key
 	bit<32> MainControlT_key_0
@@ -76,32 +78,43 @@ action drop args none {
 
 action tcp_syn_packet args none {
 	mov m.MainControlT_do_add_on_miss 1
+	mov m.MainControlT_update_aging_info 1
+	mov m.MainControlT_update_expire_time 1
 	mov m.MainControlT_new_expire_time_profile_id 0x1
 	return
 }
 
 action tcp_fin_or_rst_packet args none {
 	mov m.MainControlT_do_add_on_miss 0
+	mov m.MainControlT_update_aging_info 1
+	mov m.MainControlT_update_expire_time 1
 	mov m.MainControlT_new_expire_time_profile_id 0x0
 	return
 }
 
 action tcp_other_packets args none {
 	mov m.MainControlT_do_add_on_miss 0
+	mov m.MainControlT_update_aging_info 1
+	mov m.MainControlT_update_expire_time 1
 	mov m.MainControlT_new_expire_time_profile_id 0x2
 	return
 }
 
 action ct_tcp_table_hit args none {
-	return
+	jmpneq LABEL_END_6 m.MainControlT_update_aging_info 0x1
+	jmpneq LABEL_FALSE_3 m.MainControlT_update_expire_time 0x1
+	rearm m.MainControlT_new_expire_time_profile_id
+	jmp LABEL_END_6
+	LABEL_FALSE_3 :	rearm
+	LABEL_END_6 :	return
 }
 
 action ct_tcp_table_miss args none {
-	jmpneq LABEL_FALSE_2 m.MainControlT_do_add_on_miss 0x1
+	jmpneq LABEL_FALSE_4 m.MainControlT_do_add_on_miss 0x1
 	learn ct_tcp_table_hit m.MainControlT_new_expire_time_profile_id
-	jmp LABEL_END_6
-	LABEL_FALSE_2 :	drop
-	LABEL_END_6 :	return
+	jmp LABEL_END_8
+	LABEL_FALSE_4 :	drop
+	LABEL_END_8 :	return
 }
 
 action send args instanceof send_arg_t {
@@ -178,6 +191,7 @@ apply {
 	jmp MAINPARSERIMPL_ACCEPT
 	MAINPARSERIMPL_PARSE_TCP :	extract h.tcp
 	MAINPARSERIMPL_ACCEPT :	mov m.MainControlT_do_add_on_miss 0
+	mov m.MainControlT_update_expire_time 0
 	jmpneq LABEL_END m.pna_main_input_metadata_direction 0x1
 	jmpnv LABEL_END h.ipv4
 	jmpnv LABEL_END h.tcp
