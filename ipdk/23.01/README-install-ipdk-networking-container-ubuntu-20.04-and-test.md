@@ -665,6 +665,10 @@ cp -pr /tmp/simple_l3_modecr/ /root/examples/
 /tmp/setup_2tapports.sh
 /tmp/load_p4_prog.sh -p /root/examples/simple_l3_modecr/simple_l3_modecr.pb.bin -i /root/examples/simple_l3_modecr/p4Info.txt
 
+# Run tiny controller program that adds a couple of table entries via
+# P4Runtime API
+/root/examples/simple_l3_modecr/controller.py
+
 # Check if table entries have been added
 p4rt-ctl dump-entries br0
 ```
