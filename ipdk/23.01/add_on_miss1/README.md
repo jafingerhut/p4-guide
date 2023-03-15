@@ -28,3 +28,9 @@ architecture.
 I used the script `install-p4dev-v6.sh` described on this page:
 
 + https://github.com/jafingerhut/p4-guide/blob/master/bin/README-install-troubleshooting.md
+
+The pcap files were created by running this command on an Ubuntu 20.04
+system with the Python scapy package installed:
+```bash
+./gen-pcaps.py
+```
