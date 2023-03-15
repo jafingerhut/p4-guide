@@ -1,7 +1,7 @@
 {
   "program_name" : "add_on_miss1",
-  "build_date" : "Tue Mar 14 23:42:22 2023",
-  "compile_command" : "p4c-dpdk --arch pna --p4runtime-files p4Info.txt --bf-rt-schema bf-rt.json --context pipe/context.json add_on_miss1.p4",
+  "build_date" : "Wed Mar 15 00:06:32 2023",
+  "compile_command" : "p4c-dpdk --arch pna --p4runtime-files p4Info.txt --bf-rt-schema bf-rt.json --context pipe/context.json -o pipe/add_on_miss1.spec add_on_miss1.p4",
   "compiler_version" : "0.1 (SHA: ca1f3474d BUILD: DEBUG)",
   "schema_version" : "0.1",
   "target" : "DPDK",

@@ -24,4 +24,5 @@ p4c-dpdk --arch pna \
     --p4runtime-files p4Info.txt \
     --bf-rt-schema bf-rt.json \
     --context pipe/context.json \
+    -o pipe/add_on_miss1.spec \
     add_on_miss1.p4
