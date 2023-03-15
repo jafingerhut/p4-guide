@@ -1,0 +1,214 @@
+{
+  "program_name" : "add_on_miss0",
+  "build_date" : "Wed Mar 15 02:00:22 2023",
+  "compile_command" : "p4c-dpdk --arch pna --p4runtime-files p4Info.txt --bf-rt-schema bf-rt.json --context pipe/context.json -o pipe/add_on_miss0.spec add_on_miss0.p4",
+  "compiler_version" : "0.1 (SHA: ca1f3474d BUILD: DEBUG)",
+  "schema_version" : "0.1",
+  "target" : "DPDK",
+  "tables" : [
+    {
+      "name" : "MainControlImpl.ct_tcp_table",
+      "target_name" : "MainControlImpl.ct_tcp_table",
+      "direction" : "",
+      "handle" : 17749373,
+      "table_type" : "match",
+      "size" : 65536,
+      "p4_hidden" : false,
+      "add_on_miss" : true,
+      "idle_timeout_with_auto_delete" : false,
+      "stateful_table_refs" : [],
+      "statistics_table_refs" : [],
+      "meter_table_refs" : [],
+      "match_key_fields" : [
+        {
+          "name" : "hdr.ipv4.src_addr",
+          "instance_name" : "hdr.ipv4",
+          "field_name" : "src_addr",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 32,
+          "bit_width_full" : 32,
+          "position" : 0
+        },
+        {
+          "name" : "hdr.ipv4.dst_addr",
+          "instance_name" : "hdr.ipv4",
+          "field_name" : "dst_addr",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 32,
+          "bit_width_full" : 32,
+          "position" : 1
+        },
+        {
+          "name" : "hdr.ipv4.protocol",
+          "instance_name" : "hdr.ipv4",
+          "field_name" : "protocol",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 8,
+          "bit_width_full" : 8,
+          "position" : 2
+        },
+        {
+          "name" : "hdr.tcp.src_port",
+          "instance_name" : "hdr.tcp",
+          "field_name" : "src_port",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 16,
+          "bit_width_full" : 16,
+          "position" : 3
+        },
+        {
+          "name" : "hdr.tcp.dst_port",
+          "instance_name" : "hdr.tcp",
+          "field_name" : "dst_port",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 16,
+          "bit_width_full" : 16,
+          "position" : 4
+        }
+      ],
+      "actions" : [
+        {
+          "name" : "MainControlImpl.ct_tcp_table_hit",
+          "target_name" : "MainControlImpl.ct_tcp_table_hit",
+          "handle" : 17749373,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : []
+        },
+        {
+          "name" : "MainControlImpl.ct_tcp_table_miss",
+          "target_name" : "MainControlImpl.ct_tcp_table_miss",
+          "handle" : 22853387,
+          "constant_default_action" : true,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : true,
+          "p4_parameters" : []
+        }
+      ],
+      "match_attributes" : {
+        "stage_tables" : [
+          {
+            "action_format" : [
+              {
+                "action_name" : "MainControlImpl.ct_tcp_table_hit",
+                "action_handle" : 17749373,
+                "immediate_fields" : []
+              },
+              {
+                "action_name" : "MainControlImpl.ct_tcp_table_miss",
+                "action_handle" : 22853387,
+                "immediate_fields" : []
+              }
+            ]
+          }
+        ]
+      },
+      "default_action_handle" : 22853387
+    },
+    {
+      "name" : "MainControlImpl.ipv4_host",
+      "target_name" : "MainControlImpl.ipv4_host",
+      "direction" : "",
+      "handle" : 47903772,
+      "table_type" : "match",
+      "size" : 65536,
+      "p4_hidden" : false,
+      "add_on_miss" : false,
+      "idle_timeout_with_auto_delete" : false,
+      "stateful_table_refs" : [],
+      "statistics_table_refs" : [],
+      "meter_table_refs" : [],
+      "match_key_fields" : [
+        {
+          "name" : "hdr.ipv4.dst_addr",
+          "instance_name" : "hdr.ipv4",
+          "field_name" : "dst_addr",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 32,
+          "bit_width_full" : 32,
+          "position" : 0
+        }
+      ],
+      "actions" : [
+        {
+          "name" : "MainControlImpl.send",
+          "target_name" : "MainControlImpl.send",
+          "handle" : 22742608,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : [
+            {
+              "name" : "port",
+              "start_bit" : 0,
+              "bit_width" : 32,
+              "position" : 0,
+              "byte_array_index" : 0
+            }
+          ]
+        },
+        {
+          "name" : "MainControlImpl.drop",
+          "target_name" : "MainControlImpl.drop",
+          "handle" : 24740121,
+          "constant_default_action" : true,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : true,
+          "p4_parameters" : []
+        },
+        {
+          "name" : "NoAction",
+          "target_name" : "NoAction",
+          "handle" : 21257015,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : []
+        }
+      ],
+      "match_attributes" : {
+        "stage_tables" : [
+          {
+            "action_format" : [
+              {
+                "action_name" : "MainControlImpl.send",
+                "action_handle" : 22742608,
+                "immediate_fields" : [
+                  {
+                    "param_name" : "port",
+                    "dest_start" : 0,
+                    "dest_width" : 32
+                  }
+                ]
+              },
+              {
+                "action_name" : "MainControlImpl.drop",
+                "action_handle" : 24740121,
+                "immediate_fields" : []
+              },
+              {
+                "action_name" : "NoAction",
+                "action_handle" : 21257015,
+                "immediate_fields" : []
+              }
+            ]
+          }
+        ]
+      },
+      "default_action_handle" : 24740121
+    }
+  ],
+  "externs" : []
+}

@@ -1,0 +1,133 @@
+pkg_info {
+  arch: "pna"
+}
+tables {
+  preamble {
+    id: 35731637
+    name: "MainControlImpl.ct_tcp_table"
+    alias: "ct_tcp_table"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.src_addr"
+    bitwidth: 32
+    match_type: EXACT
+  }
+  match_fields {
+    id: 2
+    name: "hdr.ipv4.dst_addr"
+    bitwidth: 32
+    match_type: EXACT
+  }
+  match_fields {
+    id: 3
+    name: "hdr.ipv4.protocol"
+    bitwidth: 8
+    match_type: EXACT
+  }
+  match_fields {
+    id: 4
+    name: "hdr.tcp.src_port"
+    bitwidth: 16
+    match_type: EXACT
+  }
+  match_fields {
+    id: 5
+    name: "hdr.tcp.dst_port"
+    bitwidth: 16
+    match_type: EXACT
+  }
+  action_refs {
+    id: 17749373
+    annotations: "@tableonly"
+    scope: TABLE_ONLY
+  }
+  action_refs {
+    id: 22853387
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  const_default_action_id: 22853387
+  size: 1024
+}
+tables {
+  preamble {
+    id: 47903772
+    name: "MainControlImpl.ipv4_host"
+    alias: "ipv4_host"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.dst_addr"
+    bitwidth: 32
+    match_type: EXACT
+  }
+  action_refs {
+    id: 22742608
+  }
+  action_refs {
+    id: 24740121
+  }
+  action_refs {
+    id: 21257015
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  const_default_action_id: 24740121
+  size: 65536
+}
+actions {
+  preamble {
+    id: 21257015
+    name: "NoAction"
+    alias: "NoAction"
+    annotations: "@noWarn(\"unused\")"
+  }
+}
+actions {
+  preamble {
+    id: 24740121
+    name: "MainControlImpl.drop"
+    alias: "drop"
+  }
+}
+actions {
+  preamble {
+    id: 17749373
+    name: "MainControlImpl.ct_tcp_table_hit"
+    alias: "ct_tcp_table_hit"
+  }
+}
+actions {
+  preamble {
+    id: 22853387
+    name: "MainControlImpl.ct_tcp_table_miss"
+    alias: "ct_tcp_table_miss"
+  }
+}
+actions {
+  preamble {
+    id: 22742608
+    name: "MainControlImpl.send"
+    alias: "send"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 32
+    type_name {
+      name: "PortId_t"
+    }
+  }
+}
+type_info {
+  new_types {
+    key: "PortId_t"
+    value {
+      translated_type {
+        uri: "p4.org/pna/v1/PortId_t"
+        sdn_bitwidth: 32
+      }
+    }
+  }
+}
