@@ -54,6 +54,8 @@ struct metadata_t {
 	bit<8> MainControlImpl_ct_tcp_table_ipv4_protocol
 	bit<16> MainControlImpl_ct_tcp_table_tcp_src_port
 	bit<16> MainControlImpl_ct_tcp_table_tcp_dst_port
+	bit<48> MainControlT_tmp
+	bit<48> MainControlT_tmp_0
 	bit<8> MainControlT_new_expire_time_profile_id
 }
 metadata instanceof metadata_t
@@ -69,11 +71,19 @@ action drop args none {
 }
 
 action ct_tcp_table_hit args none {
+	mov m.MainControlT_tmp h.ethernet.src_addr
+	and m.MainControlT_tmp 0xFFFFFFFFFF00
+	mov h.ethernet.src_addr m.MainControlT_tmp
+	or h.ethernet.src_addr 0xF1
 	return
 }
 
 action ct_tcp_table_miss args none {
 	learn ct_tcp_table_hit m.MainControlT_new_expire_time_profile_id
+	mov m.MainControlT_tmp_0 h.ethernet.src_addr
+	and m.MainControlT_tmp_0 0xFFFFFFFFFF00
+	mov h.ethernet.src_addr m.MainControlT_tmp_0
+	or h.ethernet.src_addr 0xA5
 	return
 }
 

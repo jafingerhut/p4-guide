@@ -210,12 +210,18 @@ control MainControlImpl(
     ExpireTimeProfileId_t new_expire_time_profile_id;
 
     action ct_tcp_table_hit () {
+        // Make a change to the packet that is visible in the packet
+        // output by the device, for debug purposes
+        hdr.ethernet.src_addr[7:0] = 0xf1;
     }
 
     action ct_tcp_table_miss() {
         add_entry(action_name = "ct_tcp_table_hit",  // name of action
             action_params = (ct_tcp_table_hit_params_t) {},
             expire_time_profile_id = new_expire_time_profile_id);
+        // Make a change to the packet that is visible in the packet
+        // output by the device, for debug purposes
+        hdr.ethernet.src_addr[7:0] = 0xa5;
     }
 
     table ct_tcp_table {
