@@ -1,0 +1,296 @@
+{
+  "program_name" : "add_on_miss1",
+  "build_date" : "Tue Mar 14 23:42:22 2023",
+  "compile_command" : "p4c-dpdk --arch pna --p4runtime-files p4Info.txt --bf-rt-schema bf-rt.json --context pipe/context.json add_on_miss1.p4",
+  "compiler_version" : "0.1 (SHA: ca1f3474d BUILD: DEBUG)",
+  "schema_version" : "0.1",
+  "target" : "DPDK",
+  "tables" : [
+    {
+      "name" : "MainControlImpl.set_ct_options",
+      "target_name" : "MainControlImpl.set_ct_options",
+      "direction" : "",
+      "handle" : 48249440,
+      "table_type" : "match",
+      "size" : 65536,
+      "p4_hidden" : false,
+      "add_on_miss" : false,
+      "idle_timeout_with_auto_delete" : false,
+      "stateful_table_refs" : [],
+      "statistics_table_refs" : [],
+      "meter_table_refs" : [],
+      "match_key_fields" : [
+        {
+          "name" : "hdr.tcp.flags",
+          "instance_name" : "hdr.tcp",
+          "field_name" : "flags",
+          "match_type" : "ternary",
+          "start_bit" : 0,
+          "bit_width" : 8,
+          "bit_width_full" : 8,
+          "position" : 0
+        }
+      ],
+      "actions" : [
+        {
+          "name" : "MainControlImpl.tcp_syn_packet",
+          "target_name" : "MainControlImpl.tcp_syn_packet",
+          "handle" : 23677896,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : []
+        },
+        {
+          "name" : "MainControlImpl.tcp_fin_or_rst_packet",
+          "target_name" : "MainControlImpl.tcp_fin_or_rst_packet",
+          "handle" : 27056431,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : []
+        },
+        {
+          "name" : "MainControlImpl.tcp_other_packets",
+          "target_name" : "MainControlImpl.tcp_other_packets",
+          "handle" : 23970644,
+          "constant_default_action" : true,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : true,
+          "p4_parameters" : []
+        }
+      ],
+      "match_attributes" : {
+        "stage_tables" : [
+          {
+            "action_format" : [
+              {
+                "action_name" : "MainControlImpl.tcp_syn_packet",
+                "action_handle" : 23677896,
+                "immediate_fields" : []
+              },
+              {
+                "action_name" : "MainControlImpl.tcp_fin_or_rst_packet",
+                "action_handle" : 27056431,
+                "immediate_fields" : []
+              },
+              {
+                "action_name" : "MainControlImpl.tcp_other_packets",
+                "action_handle" : 23970644,
+                "immediate_fields" : []
+              }
+            ]
+          }
+        ]
+      },
+      "default_action_handle" : 23970644
+    },
+    {
+      "name" : "MainControlImpl.ct_tcp_table",
+      "target_name" : "MainControlImpl.ct_tcp_table",
+      "direction" : "",
+      "handle" : 17749373,
+      "table_type" : "match",
+      "size" : 65536,
+      "p4_hidden" : false,
+      "add_on_miss" : true,
+      "idle_timeout_with_auto_delete" : false,
+      "stateful_table_refs" : [],
+      "statistics_table_refs" : [],
+      "meter_table_refs" : [],
+      "match_key_fields" : [
+        {
+          "name" : "ipv4_addr_0",
+          "instance_name" : "key_0",
+          "field_name" : "<null>",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 32,
+          "bit_width_full" : 32,
+          "position" : 0
+        },
+        {
+          "name" : "ipv4_addr_1",
+          "instance_name" : "key_1",
+          "field_name" : "<null>",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 32,
+          "bit_width_full" : 32,
+          "position" : 1
+        },
+        {
+          "name" : "hdr.ipv4.protocol",
+          "instance_name" : "hdr.ipv4",
+          "field_name" : "protocol",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 8,
+          "bit_width_full" : 8,
+          "position" : 2
+        },
+        {
+          "name" : "tcp_port_0",
+          "instance_name" : "key_3",
+          "field_name" : "<null>",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 16,
+          "bit_width_full" : 16,
+          "position" : 3
+        },
+        {
+          "name" : "tcp_port_1",
+          "instance_name" : "key_4",
+          "field_name" : "<null>",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 16,
+          "bit_width_full" : 16,
+          "position" : 4
+        }
+      ],
+      "actions" : [
+        {
+          "name" : "MainControlImpl.ct_tcp_table_hit",
+          "target_name" : "MainControlImpl.ct_tcp_table_hit",
+          "handle" : 17749373,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : []
+        },
+        {
+          "name" : "MainControlImpl.ct_tcp_table_miss",
+          "target_name" : "MainControlImpl.ct_tcp_table_miss",
+          "handle" : 22853387,
+          "constant_default_action" : true,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : true,
+          "p4_parameters" : []
+        }
+      ],
+      "match_attributes" : {
+        "stage_tables" : [
+          {
+            "action_format" : [
+              {
+                "action_name" : "MainControlImpl.ct_tcp_table_hit",
+                "action_handle" : 17749373,
+                "immediate_fields" : []
+              },
+              {
+                "action_name" : "MainControlImpl.ct_tcp_table_miss",
+                "action_handle" : 22853387,
+                "immediate_fields" : []
+              }
+            ]
+          }
+        ]
+      },
+      "default_action_handle" : 22853387
+    },
+    {
+      "name" : "MainControlImpl.ipv4_host",
+      "target_name" : "MainControlImpl.ipv4_host",
+      "direction" : "",
+      "handle" : 47903772,
+      "table_type" : "match",
+      "size" : 65536,
+      "p4_hidden" : false,
+      "add_on_miss" : false,
+      "idle_timeout_with_auto_delete" : false,
+      "stateful_table_refs" : [],
+      "statistics_table_refs" : [],
+      "meter_table_refs" : [],
+      "match_key_fields" : [
+        {
+          "name" : "hdr.ipv4.dst_addr",
+          "instance_name" : "hdr.ipv4",
+          "field_name" : "dst_addr",
+          "match_type" : "exact",
+          "start_bit" : 0,
+          "bit_width" : 32,
+          "bit_width_full" : 32,
+          "position" : 0
+        }
+      ],
+      "actions" : [
+        {
+          "name" : "MainControlImpl.send",
+          "target_name" : "MainControlImpl.send",
+          "handle" : 22742608,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : [
+            {
+              "name" : "port",
+              "start_bit" : 0,
+              "bit_width" : 32,
+              "position" : 0,
+              "byte_array_index" : 0
+            }
+          ]
+        },
+        {
+          "name" : "MainControlImpl.drop",
+          "target_name" : "MainControlImpl.drop",
+          "handle" : 24740121,
+          "constant_default_action" : true,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : true,
+          "p4_parameters" : []
+        },
+        {
+          "name" : "NoAction",
+          "target_name" : "NoAction",
+          "handle" : 21257015,
+          "constant_default_action" : false,
+          "is_compiler_added_action" : false,
+          "allowed_as_hit_action" : true,
+          "allowed_as_default_action" : false,
+          "p4_parameters" : []
+        }
+      ],
+      "match_attributes" : {
+        "stage_tables" : [
+          {
+            "action_format" : [
+              {
+                "action_name" : "MainControlImpl.send",
+                "action_handle" : 22742608,
+                "immediate_fields" : [
+                  {
+                    "param_name" : "port",
+                    "dest_start" : 0,
+                    "dest_width" : 32
+                  }
+                ]
+              },
+              {
+                "action_name" : "MainControlImpl.drop",
+                "action_handle" : 24740121,
+                "immediate_fields" : []
+              },
+              {
+                "action_name" : "NoAction",
+                "action_handle" : 21257015,
+                "immediate_fields" : []
+              }
+            ]
+          }
+        ]
+      },
+      "default_action_handle" : 24740121
+    }
+  ],
+  "externs" : []
+}

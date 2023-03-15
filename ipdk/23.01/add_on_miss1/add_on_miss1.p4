@@ -33,9 +33,6 @@ header ethernet_h {
     etype_t ether_type;
 }
 
-const bit<8> IPPROTO_TCP = 6;
-const bit<8> IPPROTO_UDP = 17;
-
 // RFC 791
 // https://en.wikipedia.org/wiki/IPv4
 // https://tools.ietf.org/html/rfc791
@@ -87,13 +84,20 @@ header udp_h {
     bit<16> checksum;
 }
 
+// Define names for different expire time profile id values.
+
+const ExpireTimeProfileId_t EXPIRE_TIME_PROFILE_TCP_NOW    = (ExpireTimeProfileId_t) 0;
+const ExpireTimeProfileId_t EXPIRE_TIME_PROFILE_TCP_NEW    = (ExpireTimeProfileId_t) 1;
+const ExpireTimeProfileId_t EXPIRE_TIME_PROFILE_TCP_ESTABLISHED = (ExpireTimeProfileId_t) 2;
+const ExpireTimeProfileId_t EXPIRE_TIME_PROFILE_TCP_NEVER  = (ExpireTimeProfileId_t) 3;
+
 /*************************************************************************
  **************  I N G R E S S   P R O C E S S I N G   *******************
  *************************************************************************/
 
     /***********************  H E A D E R S  ************************/
 
-struct my_ingress_headers_t {
+struct headers_t {
     ethernet_h   ethernet;
     ipv4_h       ipv4;
     tcp_h        tcp;
@@ -102,10 +106,7 @@ struct my_ingress_headers_t {
 
     /******  G L O B A L   I N G R E S S   M E T A D A T A  *********/
 
-struct my_ingress_metadata_t {
-}
-
-struct empty_metadata_t {
+struct metadata_t {
 }
 
     /***********************  P A R S E R  **************************/
@@ -147,7 +148,52 @@ parser MainParserImpl(
     }
 }
 
+// As of 2023-Mar-14, p4c-dpdk implementation of PNA architecture
+// still requires PreControl.
+
+control PreControlImpl(
+    in    headers_t hdr,
+    inout metadata_t meta,
+    in    pna_pre_input_metadata_t  istd,
+    inout pna_pre_output_metadata_t ostd)
+{
+    apply {
+    }
+}
+
     /***************** M A T C H - A C T I O N  *********************/
+
+struct ct_tcp_table_hit_params_t {
+}
+
+// Note 1:
+
+// I attempted to compile the program with the call to
+// set_entry_expire_time() uncommented using a version of p4c built
+// from this source code of repository https://github.com/p4lang/p4c
+
+// $ git log -n 1 | head -n 5
+// commit ca1f3474d532aa5c8eea5db5adbd838bc8b52d07
+// Author: Fabian Ruffy <5960321+fruffy@users.noreply.github.com>
+// Date:   Thu Feb 23 10:40:19 2023 -0500
+// 
+//     Deprecate unified build in favor of unity build. (#3491)
+
+// but I got this error message that I do not understand:
+
+// add_on_miss1.p4(228): [--Werror=unexpected] error: set_entry_expire_time must only be called from within an action with ' ct_tcp_table_hit' property equal to true
+//                 set_entry_expire_time(new_expire_time_profile_id);
+//                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+// Note 2:
+
+// I attempted to compile the program with the call to
+// restart_expire_timer() uncommented using the same version of p4c
+// mentioned in Note 1, but I got this error message:
+
+// add_on_miss1.p4(261): [--Werror=unexpected] error: restart_expire_timer must only be called from within an action with ' ct_tcp_table_hit' property equal to true
+//                 restart_expire_timer();
+//                 ^^^^^^^^^^^^^^^^^^^^^^
 
 control MainControlImpl(
     inout headers_t  hdr,
@@ -155,7 +201,6 @@ control MainControlImpl(
     in    pna_main_input_metadata_t  istd,
     inout pna_main_output_metadata_t ostd)
 {
-
     action drop () {
         drop_packet();
     }
@@ -168,7 +213,7 @@ control MainControlImpl(
     ExpireTimeProfileId_t new_expire_time_profile_id;
 
     // Outputs from actions of ct_tcp_table
-    AddEntryErrorStatus_t add_status;
+    bool add_status;
     
     action tcp_syn_packet () {
         do_add_on_miss = true;
@@ -209,12 +254,14 @@ control MainControlImpl(
     action ct_tcp_table_hit () {
         if (update_aging_info) {
             if (update_expire_time) {
-                set_entry_expire_time(new_expire_time_profile_id);
+                // See Note 1 for why this is commented out
+                //set_entry_expire_time(new_expire_time_profile_id);
                 // This is implicit and automatic part of the behavior
                 // of set_entry_expire_time() call:
                 //restart_expire_timer();
             } else {
-                restart_expire_timer();
+                // See Note 2 for why this is commented out
+                //restart_expire_timer();
             }
             // a target might also support additional statements here
         } else {
@@ -250,14 +297,14 @@ control MainControlImpl(
         /* add_on_miss table is restricted to have all exact match fields */
         key = {
             // other key fields also possible, e.g. VRF
-            SelectByDirection(is_net_port(istd.input_port), hdr.ipv4.srcAddr, hdr.ipv4.dstAddr):
+            SelectByDirection(istd.direction, hdr.ipv4.src_addr, hdr.ipv4.dst_addr):
                 exact @name("ipv4_addr_0");
-            SelectByDirection(is_net_port(istd.input_port), hdr.ipv4.dstAddr, hdr.ipv4.srcAddr):
+            SelectByDirection(istd.direction, hdr.ipv4.dst_addr, hdr.ipv4.src_addr):
                 exact @name("ipv4_addr_1");
             hdr.ipv4.protocol : exact;
-            SelectByDirection(is_net_port(istd.input_port), hdr.tcp.srcPort, hdr.tcp.dstPort):
+            SelectByDirection(istd.direction, hdr.tcp.src_port, hdr.tcp.dst_port):
                 exact @name("tcp_port_0");
-            SelectByDirection(is_net_port(istd.input_port), hdr.tcp.dstPort, hdr.tcp.srcPort):
+            SelectByDirection(istd.direction, hdr.tcp.dst_port, hdr.tcp.src_port):
                 exact @name("tcp_port_1");
         }
         actions = {
@@ -271,24 +318,14 @@ control MainControlImpl(
         // from the data plane.
         add_on_miss = true;
 
-        // TODO: Andy Fingerhut added the next line to the example on
-        // 2022-Apr-26, but this table property is not yet documented
-        // anywhere.
-        // default_idle_timeout_for_data_plane_added_entries = 1;
-
-        // Value AUTO_DELETE of table property pna_idle_timeout is new
-        // in PNA relative to PSA.  It is similar to the value
-        // NOTIFY_CONTROL in the PSA architecture, except that entries
-        // that have not been matched for their idle time interval
-        // will be deleted, without the control plane having to delete
-        // the entry.  Also, no notification messages will be sent to
-        // the control plane when this happens.
-        pna_idle_timeout = PNA_IdleTimeout_t.AUTO_DELETE;
+        // As of 2023-Mar-14, p4c-dpdk implementation of PNA
+        // architecture does not implement value AUTO_DELETE yet.
+        pna_idle_timeout = PNA_IdleTimeout_t.NOTIFY_CONTROL;
         const default_action = ct_tcp_table_miss;
     }
 
     action send(PortId_t port) {
-        send_to_port(ostd, port);
+        send_to_port(port);
     }
 
     table ipv4_host {
@@ -327,7 +364,7 @@ control MainControlImpl(
 
         do_add_on_miss = false;
         update_expire_time = false;
-        if (is_host_port(istd.input_port) &&
+        if ((istd.direction == PNA_Direction_t.HOST_TO_NET) &&
             hdr.ipv4.isValid() && hdr.tcp.isValid())
         {
             set_ct_options.apply();
@@ -361,6 +398,7 @@ control MainDeparserImpl(
 
 PNA_NIC(
     MainParserImpl(),
+    PreControlImpl(),
     MainControlImpl(),
     MainDeparserImpl()
     ) main;
