@@ -16,23 +16,6 @@ here:
 the directory above, with two occurrences of `simple_l3` replaced with
 `add_on_miss0`.
 
-The following compiler output files:
-
-+ `p4Info.txt`
-+ `bf-rt.json`
-+ `pipe/context.json`
-+ `set_ct_options.txt`
-
-were created using the script `compile-alternate.sh` on an Ubuntu
-20.04 system with open source P4 development tools installed as
-described below, NOT inside the IPDK container, which as of release
-23.01 seems not to use a version of p4c that supports the PNA
-architecture.
-
-I used the script `install-p4dev-v6.sh` described on this page:
-
-+ https://github.com/jafingerhut/p4-guide/blob/master/bin/README-install-troubleshooting.md
-
 The pcap files were created by running this command on an Ubuntu 20.04
 system with the Python scapy package installed:
 ```bash
