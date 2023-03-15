@@ -1,5 +1,12 @@
 # Introduction
 
+This document describes several early failed, and successful, attempts
+at installing IPDK and attempting to run P4 programs on the DPDK
+software switch.  After I found a working sequence, I streamlined the
+instructions somewhat and put them
+[here](README-install-ipdk-networking-container-ubuntu-20.04-and-test.md).
+Most likely you will find that document more useful than this one.
+
 These are my notes on attempts to install IPDK by following public
 instructions in this repository:
 
