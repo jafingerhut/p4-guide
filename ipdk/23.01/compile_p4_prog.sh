@@ -125,11 +125,18 @@ then
     echo "----------------------------------------"
 fi
 
-p4c --arch "${P4_ARCH}" --target dpdk \
-    --output "${P4_DIR}"/pipe \
+# As of 2013-Feb-23, latest version of the command 'p4c' does not support
+# this combination of options: --arch pna --target dpdk
+
+# But also as of that version, the command 'p4c-dpdk' does support
+# both '--arch psa' and '--arch pna' as command line options.
+
+mkdir -p "${P4_DIR}/pipe"
+p4c-dpdk --arch "${P4_ARCH}" \
     --p4runtime-files "${P4_DIR}"/p4Info.txt \
     --bf-rt-schema "${P4_DIR}"/bf-rt.json \
     --context "${P4_DIR}"/pipe/context.json \
+    -o "${P4_DIR}/pipe/${BASE_FNAME}.spec" \
     "${P4_DIR}/${P4_SRC_FNAME}"
 
 if [ ${DEBUG_LEVEL} -ge 2 ]
