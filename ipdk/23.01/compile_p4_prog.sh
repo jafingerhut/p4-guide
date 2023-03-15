@@ -15,12 +15,13 @@ usage() {
     echo "  -w|--workdir: Working directory"
     echo "  -p|--p4dir: Directory containing P4 source file, and in which to write output files"
     echo "  -s|--srcfile: Base file name containing P4 source code, which must be in the P4 directory"
+    echo "  -a|--arch: P4 architecture to use.  Supported values: psa, pna (default: pna)"
     echo ""
 }
 
 # Parse command-line options.
-SHORTOPTS=hw:p:s:
-LONGOPTS=help,workdir:,p4dir:,srcfile:
+SHORTOPTS=hw:p:s:a:
+LONGOPTS=help,workdir:,p4dir:,srcfile:,arch:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
@@ -29,6 +30,7 @@ eval set -- "${GETOPTS}"
 WORKING_DIR=/root
 P4_DIR=""
 P4_SRC_FNAME=""
+P4_ARCH="pna"
 DEBUG_LEVEL=1
 
 # Process command-line options.
@@ -45,6 +47,9 @@ while true ; do
         shift 2 ;;
     -s|--srcfile)
         P4_SRC_FNAME="${2}"
+        shift 2 ;;
+    -a|--arch)
+        P4_ARCH="${2}"
         shift 2 ;;
     --)
         shift
@@ -120,7 +125,7 @@ then
     echo "----------------------------------------"
 fi
 
-p4c --arch psa --target dpdk \
+p4c --arch "${P4_ARCH}" --target dpdk \
     --output "${P4_DIR}"/pipe \
     --p4runtime-files "${P4_DIR}"/p4Info.txt \
     --bf-rt-schema "${P4_DIR}"/bf-rt.json \

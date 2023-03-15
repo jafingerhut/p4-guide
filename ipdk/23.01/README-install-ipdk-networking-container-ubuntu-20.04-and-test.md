@@ -593,9 +593,11 @@ Example command lines:
 For `compile_p4_prog.sh`, `-p` specifies the directory where the
 source file specified by `-s` can be found, and is also the directory
 where the compiled output files are written if compilation succeeds.
+The `-a` option specifies whether to compile the program with the
+`pna` or `psa` architecture, defaulting to `pna` if not specified.
 
 ```bash
-/tmp/compile_p4_prog.sh -p /root/examples/simple_l3 -s simple_l3.p4
+/tmp/compile_p4_prog.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
 ```
 
 For `load_p4_prog.sh`, `-p` specifies the compiled binary file to load
@@ -661,7 +663,7 @@ In the container:
 ```bash
 apt-get install --yes tcpdump tcpreplay
 cp -pr /tmp/simple_l3_modecr/ /root/examples/
-/tmp/compile_p4_prog.sh -p /root/examples/simple_l3_modecr -s simple_l3_modecr.p4
+/tmp/compile_p4_prog.sh -p /root/examples/simple_l3_modecr -s simple_l3_modecr.p4 -a psa
 /tmp/setup_2tapports.sh
 /tmp/load_p4_prog.sh -p /root/examples/simple_l3_modecr/simple_l3_modecr.pb.bin -i /root/examples/simple_l3_modecr/p4Info.txt
 
