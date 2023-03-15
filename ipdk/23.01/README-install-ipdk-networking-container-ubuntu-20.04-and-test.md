@@ -557,7 +557,12 @@ files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 ```
 
 
-# Additional experiments #1
+# Compiling a P4 program, loading it into infrap4d, sending packets in, and capturing packets out
+
+Prerequisites: You have started the IPDK container, and followed the
+instructions in the section above [Installing `p4runtime-shell` inside
+the IPDK
+container](#installing-p4runtime-shell-inside-the-IPDK-container).
 
 From the base OS, you can copy some bash scripts to the container
 using the command:
@@ -603,7 +608,7 @@ The `-a` option specifies whether to compile the program with the
 For `load_p4_prog.sh`, `-p` specifies the compiled binary file to load
 into the `infrap4d` process, which has a suffix of `.pb.bin` in place
 of the `.p4` when created by the `compile_p4_prog.sh` script.  The
-option `-i specifies the P4Info file, which when created by
+option `-i` specifies the P4Info file, which when created by
 `compile_p4_prog.sh` always has the name `p4Info.txt`.
 
 ```bash
@@ -710,6 +715,74 @@ options to your preference):
 tshark -V -r ~/.ipdk/volume/TAP1-try1.pcap
 wireshark ~/.ipdk/volume/TAP1-try1.pcap
 ```
+
+
+# Testing a P4 program for the PNA architecture using add-on-miss
+
+I was especially interested in DPDK's implementation of this new
+feature in the P4 Portable NIC Architecture
+(https://github.com/p4lang/pna), where you can do an apply on a P4
+table, and if it gets a miss, the miss action can optionally cause an
+entry to be added to the table, without the control plane having to do
+so.
+
+Prerequisites: You have started the IPDK container, and followed the
+instructions in the section above [Installing `p4runtime-shell` inside
+the IPDK
+container](#installing-p4runtime-shell-inside-the-IPDK-container).
+
+From base OS:
+
+```bash
+cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
+cp -pr ~/p4-guide/ipdk/23.01/add_on_miss0/ ~/.ipdk/volume/
+```
+
+In the container:
+```bash
+apt-get install --yes tcpdump tcpreplay
+cp -pr /tmp/add_on_miss0/ /root/examples/
+
+/tmp/compile_p4_prog.sh -p /root/examples/add_on_miss0 -s add_on_miss0.p4 -a pna
+
+/tmp/setup_2tapports.sh
+/tmp/load_p4_prog.sh -p /root/examples/add_on_miss0/add_on_miss0.pb.bin -i /root/examples/add_on_miss0/p4Info.txt
+
+# Run tiny controller program that adds a couple of table entries via
+# P4Runtime API
+/root/examples/add_on_miss0/controller.py
+
+# Check if table entries have been added
+p4rt-ctl dump-entries br0
+```
+
+The `/root/examples/add_on_miss0` directory already contains several
+pcap files that can be used for sending packets.  See the program
+`gen-pcaps.py` for how they were created.
+
+Set up `tcpdump` to capture packets coming out of the switch to the TAP1
+interface:
+
+```bash
+ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
+```
+
+Send TCP SYN packet on TAP0 interface, which should cause new entry to
+be added to table `ct_tcp_entry`, and also be forwarded out the TAP1
+port.  Immediately check the table entries.
+
+```bash
+ip netns exec VM0 tcpreplay -i TAP0 /root/examples/add_on_miss0/tcp-syn1.pcap
+p4rt-ctl dump-entries br0 ct_tcp_table
+```
+
+Kill the `tcpdump` process so it completes writing packets to the file
+and stops appending more data to the file.
+
+```bash
+killall tcpdump
+```
+
 
 
 # Additional experiments #2
