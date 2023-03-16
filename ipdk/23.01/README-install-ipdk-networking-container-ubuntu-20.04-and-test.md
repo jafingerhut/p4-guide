@@ -787,6 +787,29 @@ and stops appending more data to the file.
 killall tcpdump
 ```
 
+Attempting to add an entry to the add-on-miss table `ct_tcp_table`
+from the control plane returns an error, as shown below:
+
+```bash
+root@48ac7ef995ac:~/scripts# /root/examples/add_on_miss0/write-ct-tcp-table.py
+
+[ ... some lines of output omitted here for brevity ... ]
+
+Traceback (most recent call last):
+  File "/root/examples/add_on_miss0/write-ct-tcp-table.py", line 41, in <module>
+    add_ct_tcp_table_entry_action_ct_tcp_table_hit("1.1.1.1", "2.2.2.2",
+  File "/root/examples/add_on_miss0/write-ct-tcp-table.py", line 39, in add_ct_tcp_table_entry_action_ct_tcp_table_hit
+    te.insert()
+  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/shell.py", line 694, in insert
+    self._write(p4runtime_pb2.Update.INSERT)
+  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/shell.py", line 688, in _write
+    client.write_update(update)
+  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/p4runtime.py", line 124, in handle
+    raise P4RuntimeWriteException(e) from None
+p4runtime_sh.p4runtime.P4RuntimeWriteException: Error(s) during Write:
+	* At index 0: INTERNAL, 'Error adding table entry with table_name: pipe.MainControlImpl.ct_tcp_table, table_id: 35731637, table_type: 2048, tdi_table_key { hdr.ipv4.src_addr { field_id: 1 key_type: 0 field_size: 32 value: 0x01010101 } hdr.ipv4.dst_addr { field_id: 2 key_type: 0 field_size: 32 value: 0x02020202 } hdr.ipv4.protocol { field_id: 3 key_type: 0 field_size: 8 value: 0x06 } hdr.tcp.src_port { field_id: 4 key_type: 0 field_size: 16 value: 0x0014 } hdr.tcp.dst_port { field_id: 5 key_type: 0 field_size: 16 value: 0x0050 } }, tdi_table_data { action_id: 17749373 }'
+```
+
 
 
 # Additional experiments #2
