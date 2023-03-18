@@ -6,17 +6,17 @@ The IPDK instructions and build scripts come from this repository:
 
 + https://github.com/ipdk-io/ipdk
 
-It appears that the `infrap4d` program compiled and installed using
-the steps below is a combination of at least the following parts:
+The `infrap4d` program compiled and installed using the steps below is
+a combination of at least the following parts:
 
 + The DPDK data plane that can have compiled P4 programs loaded into it.
 + A P4Runtime API server listening on TCP port 9559.
 + A gNMI server
 
-The figure on this page seems to provide evidence that this is true,
-and to explain some other software components included within the
-`infrap4d` process:
-https://github.com/ipdk-io/networking-recipe#infrap4d
+Source: The figure on this page shows the above parts, and also some
+other software components included within the `infrap4d` process:
+
++ https://github.com/ipdk-io/networking-recipe#infrap4d
 
 
 # Installing IPDK using the networking docker build steps
@@ -26,6 +26,11 @@ an x86_64 architecture CPU with 8 GB of RAM, and a little over 40
 GBytes of free disk space.  It had 4 virtual CPU cores, and at its
 most consumed a little bit under 9 GBytes of disk space out of
 whatever free space existed when starting.
+
+Note: If you try to build on a system with more than 4 virtual CPU
+cores, the build scripts may try to run more compilations in parallel,
+and thus may require more than 8 GB of RAM to succeed, failing if you
+do not have enough RAM to run all of those processes simultaneously.
 
 It was running in a VM inside of VirtualBox on a macOS host system, but
 hopefully that part should be irrelevant for others following these steps.
@@ -67,11 +72,11 @@ I was not behind a proxy, so I did not attempt to do any of the proxy
 configuration steps described in the IPDK repo instructions.  See
 there if you are behind a proxy.
 
-All of the commands except the one beginning `ipdk build` should
-complete very quickly.  The `ipdk build` command took 33 mins on a
-2019-era MacBook Pro with a 1 Gbps Internet connection, but almost 80
-minutes on the same laptop with a download speed ranging between 1.5
-to 2 MBytes per second.
+All of the commands immediately below except the one beginning `ipdk
+build` should complete very quickly.  The `ipdk build` command took 33
+mins on a 2019-era MacBook Pro with a 1 Gbps Internet connection, but
+almost 80 minutes on the same laptop with a download speed ranging
+between 1.5 to 2 MBytes per second.
 
 ```bash
 cd $HOME
@@ -101,7 +106,7 @@ the DPDK software switch inside of it, but see the next section for
 some additional software you may want to install in the base OS.
 
 
-# Useful extra software to install in base OS
+# Useful extra software to install in the base OS
 
 Several of the instructions below use the Python Scapy package to
 create simple test packets to send into the DPDK software switch, and
@@ -812,6 +817,30 @@ p4runtime_sh.p4runtime.P4RuntimeWriteException: Error(s) during Write:
 
 
 
+# Attempt to compile and load DASH P4 program into DPDK
+
+In the base OS:
+```bash
+cd $HOME
+git clone https://github.com/sonic-net/DASH
+cd DASH
+cp -pr dash-pipeline ~/.ipdk/volume
+```
+
+In IPDK container:
+```bash
+cp -pr /tmp/dash-pipeline /root/examples
+
+/tmp/compile_p4_prog.sh -p /root/examples/dash-pipeline/bmv2 -s dash_pipeline.p4 -a pna
+```
+
+TODO: As of 2023-Mar-15, the compilation step above fails.  There
+appears to be a bug in how p4c-dpdk attempts to generate the output
+file `context.json`.  See this issue for when it is resolved:
+
++ https://github.com/p4lang/p4c/issues/3928
+
+
 # Additional experiments #2
 
 Nothing in this section is required to install or use the IPDK
@@ -939,6 +968,27 @@ over veth interfaces.  This page might give a solution for that, but I
 have not understood it well enough nor tried out any of its
 recommendations:
 https://dpdk.readthedocs.io/en/v17.11/sample_app_ug/kernel_nic_interface.html
+
+
+
+# Useful extra software to install inside the IPDK networking container
+
+These instructions are also spread throughout the document, but they
+are collected here in case you want a quick way to install all
+additional software inside an IPDK container, after creating a new
+one.
+
+In the base OS:
+```
+cd $HOME
+git clone https://github.com/jafingerhut/p4-guide
+/bin/cp -p ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume
+```
+
+In the container:
+```
+/tmp/install-ipdk-container-extra-pkgs.sh
+```
 
 
 # Latest tested version of IPDK
