@@ -753,12 +753,12 @@ p4rt-ctl dump-entries br0 ct_tcp_table
 Note: I have asked the DPDK data plane developers, and confirmed that
 for p4c-dpdk add-on-miss tables as of 2023-Mar-15, there is currently
 no way to read the current set of entries from the control plane.  If
-you try, you get back no entries.  That matches the experience I have
-seen, which is that I can confirm from writing the P4 program in a way
-that it modifies output packets differently depending upon whether a
-`ct_tcp_table` hit or miss occurred, I sometimes see misses, then hits
-for later packets sent before the original entry ages out.  But I
-never see any entries in `ct_tcp_table` when trying to read them from
+you try, you get back no entries.  That matches the behavior I have
+seen.  I have confirmed using `add_on_miss0.p4`, which modifies output
+packets differently depending upon whether a `ct_tcp_table` hit or
+miss occurred, that I sometimes see misses, then hits for later
+packets that are sent before the original table entry ages out.  I
+have never seen any entries when trying to read `ct_tcp_table` from
 the control plane.
 
 Kill the `tcpdump` process so it completes writing packets to the file
@@ -792,7 +792,7 @@ p4runtime_sh.p4runtime.P4RuntimeWriteException: Error(s) during Write:
 ```
 
 
-## Running add_on_miss0.p4 P4 program and testing it from a PTF test
+## Running P4 program `add_on_miss0.p4` and testing it from a PTF test
 
 Here we give steps for running a PTF test with program
 `add_on_miss0.p4` loaded.
