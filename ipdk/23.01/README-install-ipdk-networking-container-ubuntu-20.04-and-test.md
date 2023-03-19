@@ -231,78 +231,7 @@ happens:
 ```bash
 root@c75e8bbdcbac:~/scripts# /root/scripts/rundemo_TAP_IO.sh
 
-WORKING_DIR: /root
-SCRIPTS_DIR: /root/scripts
-DEPS_INSTALL_DIR: /root/networking-recipe/deps_install
-P4C_INSTALL_DIR: /root/p4c/install
-SDE_INSTALL_DIR: /root/p4-sde/install
-NR_INSTALL_DIR: /root/networking-recipe/install
-
-
-Cleaning from previous run
-
-Cannot remove namespace file "/run/netns/VM0": No such file or directory
-Cannot remove namespace file "/run/netns/VM1": No such file or directory
-
-Setting hugepages up and starting networking-recipe processes
-
-~ ~/scripts
-
-DEPS_INSTALL_DIR: /root/networking-recipe/deps_install
-SDE_INSTALL_DIR: /root/p4-sde/install
-NR_INSTALL_DIR: /root/networking-recipe/install
-P4C_INSTALL_DIR: /root/p4c/install
-
-
-
-Updated Environment Variables ...
-SDE_INSTALL_DIR: /root/p4-sde/install
-LIBRARY_PATH: /root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:
-LD_LIBRARY_PATH: /root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/install/lib:/root/networking-recipe/install/lib64:/root/networking-recipe/deps_install/lib:/root/networking-recipe/deps_install/lib64:/root/networking-recipe/install/lib:/root/networking-recipe/install/lib64::/root/p4-sde/install/lib:/root/p4-sde/install/lib64:/root/p4-sde/install/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64:/root/p4-sde/install/lib:/root/p4-sde/install/lib64:/root/p4-sde/install/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-PATH: /root/p4c/install/bin:/root/networking-recipe/deps_install/bin:/root/networking-recipe/deps_install/sbin:/root/networking-recipe/install/bin:/root/networking-recipe/install/sbin:/root/p4c/install/bin:/root/networking-recipe/deps_install/bin:/root/networking-recipe/deps_install/sbin:/root/networking-recipe/install/bin:/root/networking-recipe/install/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-1024
-1024
-
-SDE_INSTALL_DIR: /root/p4-sde/install
-NR_INSTALL_DIR: /root/networking-recipe/install
-
-
-NR_INSTALL_DIR: /root/networking-recipe/install
-DEAMON_MODE_ARGS: 
-
-~/scripts
-
-Creating TAP ports
-
-~ ~/scripts
-setting vhost_dev = true.Set request, successful...!!!
-I20230313 12:38:43.734566   187 gnmi_ctl.cc:103] Client context cancelled.
-setting vhost_dev = true.Set request, successful...!!!
-I20230313 12:38:43.812232   195 gnmi_ctl.cc:103] Client context cancelled.
-~/scripts
-
-Generating dependent files from P4C and pipeline builder
-
-~/examples/simple_l3 ~/scripts
-I20230313 12:38:45.017838   212 tdi_pipeline_builder.cc:114] Found P4 program: simple_l3
-I20230313 12:38:45.017911   212 tdi_pipeline_builder.cc:121] 	Found pipeline: pipe
-~/scripts
-
-Create two Namespaces
-
-
-Move TAP ports to respective namespaces and bringup the ports
-
-
-Assign IP addresses to the TAP ports
-
-
-Add ARP table for neighbor TAP port
-
-
-Add Route to reach neighbor TAP port
-
+[ ... most of output omitted here.  See link below for file containing full example output when things are working as expected ... ]
 
 Programming P4 pipeline
 
@@ -332,7 +261,8 @@ rtt min/avg/max/mdev = 0.092/0.114/0.146/0.024 ms
 root@c75e8bbdcbac:~/scripts# 
 ```
 
-That looks like success!
+That looks like success!  [Here](output-rundemo_TAP_IO.txt) is the
+full example output from a working IPDK installation.
 
 Note that very early in running the script `rundemo_TAP_IO.sh`, it
 kills any `infrap4d` process that may be running, and also deletes the
