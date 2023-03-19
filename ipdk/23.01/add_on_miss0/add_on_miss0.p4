@@ -166,35 +166,6 @@ control PreControlImpl(
 struct ct_tcp_table_hit_params_t {
 }
 
-// Note 1:
-
-// I attempted to compile the program with the call to
-// set_entry_expire_time() uncommented using a version of p4c built
-// from this source code of repository https://github.com/p4lang/p4c
-
-// $ git log -n 1 | head -n 5
-// commit ca1f3474d532aa5c8eea5db5adbd838bc8b52d07
-// Author: Fabian Ruffy <5960321+fruffy@users.noreply.github.com>
-// Date:   Thu Feb 23 10:40:19 2023 -0500
-// 
-//     Deprecate unified build in favor of unity build. (#3491)
-
-// but I got this error message that I do not understand:
-
-// add_on_miss1.p4(228): [--Werror=unexpected] error: set_entry_expire_time must only be called from within an action with ' ct_tcp_table_hit' property equal to true
-//                 set_entry_expire_time(new_expire_time_profile_id);
-//                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-// Note 2:
-
-// I attempted to compile the program with the call to
-// restart_expire_timer() uncommented using the same version of p4c
-// mentioned in Note 1, but I got this error message:
-
-// add_on_miss1.p4(261): [--Werror=unexpected] error: restart_expire_timer must only be called from within an action with ' ct_tcp_table_hit' property equal to true
-//                 restart_expire_timer();
-//                 ^^^^^^^^^^^^^^^^^^^^^^
-
 control MainControlImpl(
     inout headers_t  hdr,
     inout metadata_t meta,
@@ -211,17 +182,21 @@ control MainControlImpl(
 
     action ct_tcp_table_hit () {
         // Make a change to the packet that is visible in the packet
-        // output by the device, for debug purposes
+        // output by the device, for debug purposes only.  I cannot
+        // imagine any reason why someone would want to make a change
+        // like this to a packet in a production P4 program.
         hdr.ethernet.src_addr[7:0] = 0xf1;
     }
 
     action ct_tcp_table_miss() {
+        // Make a change to the packet that is visible in the packet
+        // output by the device, for debug purposes only.  I cannot
+        // imagine any reason why someone would want to make a change
+        // like this to a packet in a production P4 program.
+        hdr.ethernet.src_addr[7:0] = 0xa5;
         add_entry(action_name = "ct_tcp_table_hit",  // name of action
             action_params = (ct_tcp_table_hit_params_t) {},
             expire_time_profile_id = new_expire_time_profile_id);
-        // Make a change to the packet that is visible in the packet
-        // output by the device, for debug purposes
-        hdr.ethernet.src_addr[7:0] = 0xa5;
     }
 
     table ct_tcp_table {
