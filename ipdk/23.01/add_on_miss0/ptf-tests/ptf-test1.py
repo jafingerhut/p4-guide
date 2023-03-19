@@ -184,20 +184,21 @@ class OneEntryTest(IdleTimeoutTest):
         # 40 seconds after the first packet send, send in another
         # identical packet that should hit.
         schedule = [
-            {'delta_time':  5, 'exp_hit': 1, 'exp_pkt': exp_pkt_for_hit},
-            {'delta_time': 25, 'exp_hit': 1, 'exp_pkt': exp_pkt_for_hit},
-            {'delta_time': 35, 'exp_hit': 0, 'exp_pkt': exp_pkt_for_miss},
-            {'delta_time': 40, 'exp_hit': 1, 'exp_pkt': exp_pkt_for_hit}
+            {'delta_time':  5, 'exp_hit': True},
+            {'delta_time': 25, 'exp_hit': True},
+            {'delta_time': 35, 'exp_hit': False},
+            {'delta_time': 40, 'exp_hit': True}
             ]
         
         for sched_item in schedule:
             delta_time = sched_item['delta_time']
             exp_hit = sched_item['exp_hit']
-            if exp_hit == 1:
+            if exp_hit:
                 exp_word = 'hit'
+                exp_pkt = exp_pkt_for_hit
             else:
                 exp_word = 'miss'
-            exp_pkt = sched_item['exp_pkt']
+                exp_pkt = exp_pkt_for_miss
 
             next_send_time = first_pkt_time + delta_time
             now = time.time()
