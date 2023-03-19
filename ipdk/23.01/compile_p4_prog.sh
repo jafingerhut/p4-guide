@@ -139,6 +139,18 @@ p4c-dpdk --arch "${P4_ARCH}" \
     -o "${P4_DIR}/pipe/${BASE_FNAME}.spec" \
     "${P4_DIR}/${P4_SRC_FNAME}"
 
+# Try omitting generation of context.json file.
+# When I tried this, the command tdi_pipeline_builder below failed
+# with this error message:
+# E20230316 18:12:51.956828  3194 utils.cc:112] StratumErrorSpace::ERR_FILE_NOT_FOUND: pipe/context.json not found.
+# E20230316 18:12:51.957978  3194 tdi_pipeline_builder.cc:126] Return Error: ReadFileToString(pipeline["context"], &context_content) failed with StratumErrorSpace::ERR_FILE_NOT_FOUND: pipe/context.json not found.
+
+#p4c-dpdk --arch "${P4_ARCH}" \
+#    --p4runtime-files "${P4_DIR}"/p4Info.txt \
+#    --bf-rt-schema "${P4_DIR}"/bf-rt.json \
+#    -o "${P4_DIR}/pipe/${BASE_FNAME}.spec" \
+#    "${P4_DIR}/${P4_SRC_FNAME}"
+
 if [ ${DEBUG_LEVEL} -ge 2 ]
 then
     echo ""
