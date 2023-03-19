@@ -166,10 +166,12 @@ control PreControlImpl(
 struct ct_tcp_table_hit_params_t {
 }
 
-// Note 1:
+//////////////////////////////////////////////////////////////////////
+// Note 1
+//////////////////////////////////////////////////////////////////////
 
-// These notes were tested with p4c-dpdk built
-// from this source code of repository https://github.com/p4lang/p4c
+// These notes were tested with p4c-dpdk built from the version below
+// of the source code in repository https://github.com/p4lang/p4c
 
 // $ git log -n 1 | head -n 5
 // commit ca1f3474d532aa5c8eea5db5adbd838bc8b52d07
@@ -181,8 +183,8 @@ struct ct_tcp_table_hit_params_t {
 // As of that version of p4c-dpdk and its support for the PNA
 // architecture, these things appear to be true:
 
-// Its support appears to correspond with what was published with PNA
-// version 0.5, without several changes made in PNA version 0.7.
+// Its support corresponds with what was published in PNA version 0.5,
+// without several changes made in PNA version 0.7.
 
 // In particular, for tables with 'add_on_miss = true', it is a
 // compile time error if you attempt to assign to the table property
@@ -266,6 +268,11 @@ control MainControlImpl(
     }
     
     action ct_tcp_table_hit () {
+        // Make a change that is visible in the packet output by the
+        // device, for debug purposes only.  I cannot imagine any
+        // reason why someone would want to make a change like this to
+        // a packet in a production P4 program.
+        hdr.ethernet.src_addr[7:0] = 0xf1;
         if (update_aging_info) {
             if (update_expire_time) {
                 // See Note 1
@@ -293,14 +300,18 @@ control MainControlImpl(
     }
 
     action ct_tcp_table_miss() {
+        // Make a change to the packet that is visible in the packet
+        // output by the device, for debug purposes only.  I cannot
+        // imagine any reason why someone would want to make a change
+        // like this to a packet in a production P4 program.
+        hdr.ethernet.src_addr[7:0] = 0xa5;
         if (do_add_on_miss) {
             // This example does not need to use allocate_flow_id(),
             // because no later part of the P4 program uses its return
             // value for anything.
             add_status =
                 add_entry(action_name = "ct_tcp_table_hit",  // name of action
-                          action_params = (ct_tcp_table_hit_params_t)
-                                          {},
+                          action_params = (ct_tcp_table_hit_params_t) {},
                           expire_time_profile_id = new_expire_time_profile_id);
         } else {
             drop_packet();
@@ -326,37 +337,40 @@ control MainControlImpl(
             @defaultonly ct_tcp_table_miss;
         }
 
-        // New PNA table property 'add_on_miss = true' indicates that
-        // this table can use extern function add_entry() in its
-        // default (i.e. miss) action to add a new entry to the table
-        // from the data plane.
+        // Table property 'add_on_miss = true' is new in the PNA
+        // architecture.  It indicates that this table can use extern
+        // function add_entry() in its default (i.e. miss) action to
+        // add a new entry to the table from the data plane, without
+        // any action required from the control plane software.
         add_on_miss = true;
 
-#ifndef DONT_USE_IDLE_TIMEOUT_WITH_AUTO_DELETE
-        // This table property was the documented way in PNA version
-        // 0.5 to enable the following feature:
-
-        // + The data plane auto-deletes entries when the entry had
-        //   not been matched in more than a configured time interval.
-
-        // As of PNA version 0.7, see the property pna_idle_timeout.
-
-        // See Note 1.  As of the version of p4c-dpdk described there,
-        // p4c-dpdk implements this table property, NOT yet the new
-        // value for pna_idle_timeout shown below.
+        // Table property 'idle_timeout_with_auto_delete = true' was
+        // the method documented in PNA version 0.5 to enable the
+        // following feature:
+        //
+        // + The data plane auto-deletes entries when the table entry
+        //   had never been matched in longer than a configured time
+        //   interval.
+        //
+        // This table property is supported by p4c-dpdk and the DPDK
+        // back end as of 2023-Mar-19.
+        //
+        // If p4c-dpdk and DPDK are updated to support PNA version
+        // 0.7, the 'idle_timeout_with_auto_delete' table property
+        // should be replaced with the following instead:
+        //
+        // pna_idle_timeout = PNA_IdleTimeout_t.AUTO_DELETE;
         idle_timeout_with_auto_delete = true;
-#endif  // DONT_USE_IDLE_TIMEOUT_WITH_AUTO_DELETE
-
-#ifdef USE_PNA_IDLE_TIMEOUT_AUTO_DELETE
-        // As of 2023-Mar-14, p4c-dpdk implementation of PNA
-        // architecture does not implement value AUTO_DELETE yet.
-        pna_idle_timeout = PNA_IdleTimeout_t.AUTO_DELETE;
-#endif  // USE_PNA_IDLE_TIMEOUT
 
         const default_action = ct_tcp_table_miss;
     }
 
     action send(PortId_t port) {
+        // Make a change to the packet that is visible in the packet
+        // output by the device, for debug purposes only.  I cannot
+        // imagine any reason why someone would want to make a change
+        // like this to a packet in a production P4 program.
+        hdr.ethernet.src_addr[15:8] = (bit<8>) ((istd.direction == PNA_Direction_t.HOST_TO_NET) ? 0 : 1);
         send_to_port(port);
     }
 
@@ -392,7 +406,7 @@ control MainControlImpl(
         // contents of the packet header fields and the direction of
         // the packet, and perhaps some earlier P4 table entries
         // populated by control plane software, but _not_ upon the
-        // current entries installed in the ct_tcp_table.
+        // current entries installed in ct_tcp_table.
 
         do_add_on_miss = false;
         update_expire_time = false;
@@ -401,12 +415,9 @@ control MainControlImpl(
         {
             set_ct_options.apply();
         }
-
-        // ct_tcp_table is a bidirectional table
         if (hdr.ipv4.isValid() && hdr.tcp.isValid()) {
             ct_tcp_table.apply();
         }
-
         if (hdr.ipv4.isValid()) {
             ipv4_host.apply();
         }
