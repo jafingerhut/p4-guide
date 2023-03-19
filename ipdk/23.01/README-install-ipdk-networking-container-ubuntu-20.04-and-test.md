@@ -818,20 +818,20 @@ p4runtime_sh.p4runtime.P4RuntimeWriteException: Error(s) during Write:
 
 ## Running add_on_miss0.p4 P4 program and testing it from a PTF test
 
-Try to run a PTF test with program add_on_miss0.p4 loaded.
+Here we give steps for running a PTF test with program
+`add_on_miss0.p4` loaded.
 
 Note: The only way I have successfully installed and run the PTF
 package inside the IPDK container so far is in a Python virtual
-environment.  If someone finds a way to avoid creating a virtual
-environment, I would not mind knowing how, but these instructions have
-been tested working.
+environment.  If someone finds a way to successfully run a PTF test
+without creating a virtual environment, I would not mind knowing how.
 
 Also note that these instructions use the script
 `setup_2tapports_in_default_ns.sh`, not `setup_2tapports.sh` as
 previous examples above have done.  This makes it easier for the PTF
 test to send packets on the TAP ports and check output packets on the
-TAP ports, if those interfaces are in the same network namespace where
-the PTF process is running.
+TAP ports, because those TAP interfaces are in the same network
+namespace where the PTF process is running.
 
 ```bash
 /tmp/install-ipdk-container-extra-pkgs.sh
