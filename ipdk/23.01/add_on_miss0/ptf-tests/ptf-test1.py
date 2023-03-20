@@ -145,7 +145,7 @@ class OneEntryTest(IdleTimeoutTest):
         pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
                                       ip_src=ip_src_addr, ip_dst=ip_dst_addr,
                                       tcp_sport=sport, tcp_dport=dport)
-        # add_on_miss.p4 replaces least significant 8 bits of source
+        # add_on_miss0.p4 replaces least significant 8 bits of source
         # MAC address with 0xf1 on a hit of table ct_tcp_table, or
         # 0xa5 on a miss.
         out_smac_for_miss = in_smac[:-2] + 'a5'
