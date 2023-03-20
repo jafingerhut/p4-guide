@@ -370,7 +370,7 @@ control MainControlImpl(
         // output by the device, for debug purposes only.  I cannot
         // imagine any reason why someone would want to make a change
         // like this to a packet in a production P4 program.
-        hdr.ethernet.src_addr[15:8] = ((istd.direction == PNA_Direction_t.HOST_TO_NET) ? 8w0 : 8w1);
+        //hdr.ethernet.src_addr[15:8] = ((istd.direction == PNA_Direction_t.HOST_TO_NET) ? 8w0 : 8w1);
         send_to_port(port);
     }
 
