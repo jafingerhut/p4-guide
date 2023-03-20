@@ -878,6 +878,7 @@ test to send packets on the TAP ports and check output packets on the
 TAP ports, because those TAP interfaces are in the same network
 namespace where the PTF process is running.
 
+In the container:
 ```bash
 /tmp/install-ipdk-container-extra-pkgs.sh
 cd $HOME
@@ -910,6 +911,7 @@ cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
 cp -pr ~/p4-guide/ipdk/23.01/add_on_miss1/ ~/.ipdk/volume/
 ```
 
+In the container:
 ```bash
 /tmp/install-ipdk-container-extra-pkgs.sh
 cd $HOME
