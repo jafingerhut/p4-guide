@@ -14,10 +14,10 @@ pip3 install scapy
 
 ######################################################################
 # I have not gotten PTF working after installing it 'globally' inside
-# the IPDK container.  I get some Python exception when rying to run a
-# PTF test when it is installed that way.  I have successfully run PTF
-# tests from inside of a Python virtual environment before, so install
-# PTF inside of one.
+# the IPDK container.  I get some Python exception when trying to run
+# a PTF test when it is installed that way.  I have successfully run
+# PTF tests from inside of a Python virtual environment before, so
+# install PTF inside of one.
 
 apt-get install --yes python3-virtualenv
 

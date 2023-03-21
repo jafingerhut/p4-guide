@@ -9,8 +9,11 @@ The IPDK instructions and build scripts come from this repository:
 The `infrap4d` program compiled and installed using the steps below is
 a combination of at least the following parts:
 
-+ The DPDK data plane that can have compiled P4 programs loaded into it.
-+ A P4Runtime API server listening on TCP port 9559.
++ The DPDK data plane, which you may compile P4 programs and load the
+  binaries into it to execute them.
++ A P4Runtime API server, by default listening on TCP port 9559 for
+  incoming connection requests from P4Runtime API clients
+  (i.e. controller programs).
 + A gNMI server
 
 Source: The figure on this page shows the above parts, and also some
@@ -106,17 +109,74 @@ the DPDK software switch inside of it, but see the next section for
 some additional software you may want to install in the base OS.
 
 
+# Running commands in the base OS vs. running commands in the container
+
+Every time the instructions say to run a command "in the base OS",
+that means you should have some shell at a prompt that is running in
+the base Ubuntu 20.04 operating system, e.g. a shell from where you
+started the IPDK container.
+
+Every time the instructions say to run a command "inside the
+container", that means you should have some shell at a prompt reached
+by running the `ipdk connect` command.
+
+The file system contents (and thus which software packages are
+available for use), the Linux networking namespaces, and probably many
+other things, are different when running commands in the base OS
+vs. running commands inside the container.
+
+
+# Sharing files between the base OS and container
+
+The following two directories are different 'views' of one underlying
+directory:
+
++ In the base OS: `$HOME/.ipdk/volume`
++ In the container: `/tmp`
+
+Thus, in the base OS, if you copy files to the directory
+`$HOME/.ipdk/volume`, they will be visible in directory `/tmp` inside
+the container, and vice versa.
+
+
 # Useful extra software to install in the base OS
 
 Several of the instructions below use the Python Scapy package to
 create simple test packets to send into the DPDK software switch, and
-`tshark` or `wireshark` to view the packets output by the switch.
+`tshark` or `wireshark` to view the packets output by the switch, in
+the base OS (i.e. not run inside the container).
 
 In the base OS:
 ```bash
 sudo apt-get install --yes tshark wireshark
 sudo pip3 install scapy
 python3
+```
+
+
+# Useful extra software to install in the container
+
+Every time the container is started on a system, via some variant of
+the `ipdk start` command, its file system is in the same initial state
+as every other time it is started.
+
+Commands like `git`, `tcpdump`, and `tcpreplay` are not installed in
+the IPDK container when it is first built.  Thus every time you start
+another instance of the container, those commands will not be
+available.
+
+A simple bash script is included in this repository that can be run
+inside the container that will install those commands, and a few other
+useful software packages, inside the container.
+
+In the base OS:
+```bash
+cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
+```
+
+In the container:
+```bash
+/tmp/install-ipdk-container-extra-pkgs.sh
 ```
 
 
@@ -363,60 +423,15 @@ P4Runtime API server.  You need not install `p4runtime-shell` if you
 do not want to use it, but these instructions do not give details on
 any other ways to make a P4Runtime API connection.
 
-When the instructions say to run a command inside the IPDK container,
-it means at a shell prompt that you can reach via running the `ipdk
-connect` command.
 
-When the instructions say to run a command outside the IPDK container,
-or in the base OS, the command should be executed in a terminal window
-that is _not_ inside the IPDK container, but on the base Ubuntu 20.04
-operating system.
+## Installing `p4runtime-shell` and other software inside the IPDK container
 
-
-## Installing `p4runtime-shell` inside the IPDK container
-
-The commands in this section should be run from inside
-inside of the IPDK networking container, i.e. a prompt that you got to
-via an `ipdk connect` command.
-
-Note: Given how the IPDK container is built with the version of the
-Github ipdk repo available as of 2023-Mar-12, neither the `git`
-command nor the `p4runtime-shell` Python package are installed inside
-of the container when you first start a container process.  Thus if
-you stop the container and start it again, e.g. rebooting the base OS
-stops the container, you will need to repeat the steps below the next
-time you start the container.
-
-Install `git` command and `p4runtime-shell` Python package (the
-`chmod` command below is needed since `apt-get` commands often try to
-create temporary files in `/tmp`, and for some reason the initial
-permissions on the `/tmp` directory inside the container do not allow
-writing by arbitrary users):
-
-```bash
-chmod 777 /tmp
-apt-get update
-apt-get install --yes git
-pip3 install git+https://github.com/p4lang/p4runtime-shell.git
-```
-
-If all of the above steps succeeded, you should see at least the
-following P4-related Python packages installed.  The hex digits at the
-end of the `p4runtime-shell` version may differ from what you see
-below, if updates to the `p4runtime-shell` repo on Github have been
-made after this document was written.
-
-```bash
-# pip3 list | grep p4
-p4runtime                1.3.0
-p4runtime-shell          0.0.3.post5+g2603e13
-```
+Follow the steps described in the section [Useful extra software to
+install in the
+container](#useful-extra-software-to-install-in-the-container).
 
 
 ## Making a P4Runtime API connection from Python program running inside the IPDK container, to infrap4d
-
-Prerequisite: You have installed the `p4runtime-shell` Python package
-inside the IPDK container.
 
 Copy the test Python P4Runtime client program `test-client.py` from
 the base OS into the container, by running these commands in the base
@@ -556,18 +571,10 @@ files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 # Compiling a P4 program, loading it into infrap4d, sending packets in, and capturing packets out
 
 Prerequisites: You have started the IPDK container, and followed the
-instructions in the section above [Installing `p4runtime-shell` inside
-the IPDK
-container](#installing-p4runtime-shell-inside-the-IPDK-container).
+steps described in the section [Useful extra software to install in
+the container](#useful-extra-software-to-install-in-the-container).
 
-From the base OS, you can copy some bash scripts to the container
-using the command:
-
-```bash
-cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
-```
-
-These scripts below were adapted with minor variations from
+The scripts below were adapted with minor variations from
 `rundemo_TAP_IO.sh`, which is included with IPDK.  The scripts perform
 these functions:
 
@@ -626,6 +633,10 @@ program into the new `infrap4d` process.
 
 ## An exercise in using those scripts
 
+Prerequisites: You have started the IPDK container, and followed the
+steps described in the section [Useful extra software to install in
+the container](#useful-extra-software-to-install-in-the-container).
+
 Copy a modified version of the `simple_l3.p4` P4 program that we have
 been using up to this point.
 
@@ -640,7 +651,6 @@ pcap file that can be used for sending packets.  See the program
 
 In the container:
 ```bash
-apt-get install --yes tcpdump tcpreplay
 cp -pr /tmp/simple_l3_modecr/ /root/examples/
 /tmp/compile_p4_prog.sh -p /root/examples/simple_l3_modecr -s simple_l3_modecr.p4 -a psa
 /tmp/setup_2tapports.sh
@@ -652,6 +662,15 @@ cp -pr /tmp/simple_l3_modecr/ /root/examples/
 
 # Check if table entries have been added
 p4rt-ctl dump-entries br0
+```
+
+The output from the `p4rt-ctl dump-entries br0` command above should
+look very similar to this if everything went well:
+
+```bash
+Table entries for bridge br0:
+  table=ingress.ipv4_host hdr.ipv4.dst_addr=0x01010101 actions=ingress.send(port=0x00000000)
+  table=ingress.ipv4_host hdr.ipv4.dst_addr=0x02020202 actions=ingress.send(port=0x00000001)
 ```
 
 Set up `tcpdump` to capture packets coming out of the switch to the TAP1
@@ -701,20 +720,16 @@ entry to be added to the table, without the control plane having to do
 so.
 
 Prerequisites: You have started the IPDK container, and followed the
-instructions in the section above [Installing `p4runtime-shell` inside
-the IPDK
-container](#installing-p4runtime-shell-inside-the-IPDK-container).
+steps described in the section [Useful extra software to install in
+the container](#useful-extra-software-to-install-in-the-container).
 
-From base OS:
-
+In the base OS:
 ```bash
-cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
 cp -pr ~/p4-guide/ipdk/23.01/add_on_miss0/ ~/.ipdk/volume/
 ```
 
 In the container:
 ```bash
-apt-get install --yes tcpdump tcpreplay
 cp -pr /tmp/add_on_miss0/ /root/examples/
 
 /tmp/compile_p4_prog.sh -p /root/examples/add_on_miss0 -s add_on_miss0.p4 -a pna
@@ -841,7 +856,7 @@ correspond very closely with the corresponding definitions of those
 table properties in the P4 source code.
 
 The `timeout` part is not from the P4 source code, but is a default
-value included for tables with idle timeout durations, probably
+value included for tables with idle timeout durations, I believe
 corresponding with those having a supported value of
 `pna_idle_timeout` or `idle_timeout_with_auto_delete` table
 properties.
@@ -861,7 +876,11 @@ that.  Thus the expire time for all entries created in `ct_tcp_table`
 will always be 30 seconds for program `add_on_miss0.p4`.
 
 
-## Running P4 program `add_on_miss0.p4` and testing it from a PTF test
+# Running P4 program `add_on_miss0.p4` and testing it from a PTF test
+
+Prerequisites: You have started the IPDK container, and followed the
+steps described in the section [Useful extra software to install in
+the container](#useful-extra-software-to-install-in-the-container).
 
 Here we give steps for running a PTF test with program
 `add_on_miss0.p4` loaded.
@@ -878,9 +897,13 @@ test to send packets on the TAP ports and check output packets on the
 TAP ports, because those TAP interfaces are in the same network
 namespace where the PTF process is running.
 
+In base OS:
+```bash
+cp -pr ~/p4-guide/ipdk/23.01/add_on_miss0/ ~/.ipdk/volume/
+```
+
 In the container:
 ```bash
-/tmp/install-ipdk-container-extra-pkgs.sh
 cd $HOME
 source my-venv/bin/activate
 cp -pr /tmp/add_on_miss0/ /root/examples/
@@ -893,7 +916,11 @@ pushd /root/examples/add_on_miss0/ptf-tests
 ```
 
 
-## Running P4 program `add_on_miss1.p4` and testing it from a PTF test
+# Running P4 program `add_on_miss1.p4` and testing it from a PTF test
+
+Prerequisites: You have started the IPDK container, and followed the
+steps described in the section [Useful extra software to install in
+the container](#useful-extra-software-to-install-in-the-container).
 
 P4 program `add_on_miss1.p4` has different logic for deciding whether
 to add an entry to table `ct_tcp_table`.  It also uses the extern
@@ -904,16 +931,13 @@ additional side effect of restarting the expire timer of the entry.
 Thus data packets continuing to match the entry will keep it from
 being deleted, unlike `add_on_miss0.p4`.
 
-From base OS:
-
+In the base OS:
 ```bash
-cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
 cp -pr ~/p4-guide/ipdk/23.01/add_on_miss1/ ~/.ipdk/volume/
 ```
 
 In the container:
 ```bash
-/tmp/install-ipdk-container-extra-pkgs.sh
 cd $HOME
 source my-venv/bin/activate
 cp -pr /tmp/add_on_miss1/ /root/examples/
@@ -930,22 +954,28 @@ pushd /root/examples/add_on_miss1/ptf-tests
 
 In the base OS:
 ```bash
-cd $HOME
-git clone https://github.com/sonic-net/DASH
-cd DASH
-cp -pr dash-pipeline ~/.ipdk/volume
+cp -pr ~/p4-guide/ipdk/23.01/dash/ ~/.ipdk/volume/
 ```
 
 In IPDK container:
 ```bash
-cp -pr /tmp/dash-pipeline /root/examples
+cp -pr /tmp/dash /root/examples
 
-/tmp/compile_p4_prog.sh -p /root/examples/dash-pipeline/bmv2 -s dash_pipeline.p4 -a pna
+cd /root/examples/dash
+./compile-alternate.sh
 ```
 
-TODO: As of 2023-Mar-15, the compilation step above fails.  There
-appears to be a bug in how p4c-dpdk attempts to generate the output
-file `context.json`.  See this issue for when it is resolved:
+TODO: As of 2023-Mar-15, the compilation step above fails.  Below is
+an example of the error message that occurs:
+
+```bash
+terminate called after throwing an instance of 'Util::CompilerBug'
+  what():  In file: /root/P4C/backends/dpdk/dpdkContext.cpp:221
+Compiler Bug: unable to find id for dash_ingress.outbound_ConntrackOut_conntrackOut
+```
+
+There appears to be a bug in how p4c-dpdk attempts to generate the
+output file `context.json`.  See this issue for when it is resolved:
 
 + https://github.com/p4lang/p4c/issues/3928
 
@@ -1078,26 +1108,6 @@ have not understood it well enough nor tried out any of its
 recommendations:
 https://dpdk.readthedocs.io/en/v17.11/sample_app_ug/kernel_nic_interface.html
 
-
-
-# Useful extra software to install inside the IPDK networking container
-
-These instructions are also spread throughout the document, but they
-are collected here in case you want a quick way to install all
-additional software inside an IPDK container, after creating a new
-one.
-
-In the base OS:
-```
-cd $HOME
-git clone https://github.com/jafingerhut/p4-guide
-/bin/cp -p ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume
-```
-
-In the container:
-```
-/tmp/install-ipdk-container-extra-pkgs.sh
-```
 
 
 # Latest tested version of IPDK
