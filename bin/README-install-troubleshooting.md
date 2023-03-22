@@ -11,8 +11,9 @@ Pick one of these alternatives that best fits your situation:
     e.g. using a virtual machine application like VirtualBox, VMware
     Fusion, VMware Workstation, Parallels, etc.
 
-If your answer is (a), see the section below "Quick instructions for
-successful install script run".
+If your answer is (a), see the section below [Quick instructions for
+successful install script
+run](#quick-instructions-for-successful-install-script-run).
 
 If your answer is (b), there are several VM images with many of the
 open source P4 development tools already installed available from
