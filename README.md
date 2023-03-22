@@ -11,7 +11,7 @@ There are install scripts in this repository that can assist you
 in building and installing the `p4c` and `behavioral-model` projects
 and their dependencies on Ubuntu Linux systems with these versions:
 
-+ 18.04, 20.04, or 22.04
++ 20.04 or 22.04
 
 See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
