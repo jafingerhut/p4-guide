@@ -35,8 +35,9 @@ cores, the build scripts may try to run more compilations in parallel,
 and thus may require more than 8 GB of RAM to succeed, failing if you
 do not have enough RAM to run all of those processes simultaneously.
 
-It was running in a VM inside of VirtualBox on a macOS host system, but
-hopefully that part should be irrelevant for others following these steps.
+It was running in a VM created using VirtualBox on a macOS host
+system, but hopefully that part should be irrelevant for others
+following these steps.
 
 Start logged in as a non-root user `$USER`.
 
@@ -103,27 +104,31 @@ ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64   sha-c38906d   8de06103d9f3   27 hours a
 hello-world                              latest        feb5d9fea6a5   16 months ago   13.3kB
 ```
 
-The creation of the IPDK container is now complete.  All later
-instructions are for starting instances of this container, and running
-the DPDK software switch inside of it, but see the next section for
-some additional software you may want to install in the base OS.
+The creation of the container is now complete.  All later instructions
+are for starting instances of this container, installing some
+additional software packages in the container, and running the DPDK
+software switch inside of it.
 
 
 # Running commands in the base OS vs. running commands in the container
 
 Every time the instructions say to run a command "in the base OS",
-that means you should have some shell at a prompt that is running in
-the base Ubuntu 20.04 operating system, e.g. a shell from where you
-started the IPDK container.
+that means you should have some command shell that is running in the
+base Ubuntu 20.04 operating system.  You should _not_ have run `ipdk
+connect` in this shell.
 
-Every time the instructions say to run a command "inside the
-container", that means you should have some shell at a prompt reached
-by running the `ipdk connect` command.
+Every time the instructions say to run a command "in the container",
+that means you should have some shell at a prompt reached by running
+the `ipdk connect` command.
 
 The file system contents (and thus which software packages are
 available for use), the Linux networking namespaces, and probably many
 other things, are different when running commands in the base OS
-vs. running commands inside the container.
+vs. running commands in the container.
+
+You will likely find it convenient to have at least two command shell
+windows open at the same time, one at a prompt in the base OS, and the
+other at a prompt in the container.
 
 
 # Sharing files between the base OS and container
@@ -135,8 +140,8 @@ directory:
 + In the container: `/tmp`
 
 Thus, in the base OS, if you copy files to the directory
-`$HOME/.ipdk/volume`, they will be visible in directory `/tmp` inside
-the container, and vice versa.
+`$HOME/.ipdk/volume`, they will be visible in directory `/tmp` in the
+container, and vice versa.
 
 
 # Useful extra software to install in the base OS
@@ -144,7 +149,7 @@ the container, and vice versa.
 Several of the instructions below use the Python Scapy package to
 create simple test packets to send into the DPDK software switch, and
 `tshark` or `wireshark` to view the packets output by the switch, in
-the base OS (i.e. not run inside the container).
+the base OS.
 
 In the base OS:
 ```bash
@@ -161,13 +166,13 @@ the `ipdk start` command, its file system is in the same initial state
 as every other time it is started.
 
 Commands like `git`, `tcpdump`, and `tcpreplay` are not installed in
-the IPDK container when it is first built.  Thus every time you start
+the container when it is first built.  Thus every time you start
 another instance of the container, those commands will not be
 available.
 
-A simple bash script is included in this repository that can be run
-inside the container that will install those commands, and a few other
-useful software packages, inside the container.
+A simple bash script is included in this repository that will install
+those commands, and a few other useful software packages, in the
+container.
 
 In the base OS:
 ```bash
@@ -182,10 +187,10 @@ In the container:
 
 # Notes on running `ipdk` commands
 
-There is an `ipdk start` command to start an instance of the IPDK
+There is an `ipdk start` command to start an instance of the
 container, an `ipdk connect` command that gets you to a bash prompt
-running inside of the IPDK container, and several other `ipdk`
-sub-commands that are useful for various purposes.
+running in of the container, and several other `ipdk` sub-commands
+that are useful for various purposes.
 
 If you run one of these commands, and you see an error message like
 `fatal: not a git repository` followed later by `Unable to find image
@@ -219,8 +224,9 @@ may need to rebuild the docker image.
 
 You may skip this section.  It is NOT required for installing IPDK.
 
-To start running an instance of the IPDK container:
+To start running an instance of the container:
 
+In the base OS:
 ```bash
 $ cd $HOME/ipdk
 $ ipdk start -d
@@ -235,17 +241,18 @@ If this succeeds, there will now be a container process running, which
 you can see in the output of the `docker ps` command as shown in the
 example output below:
 
+In the base OS:
 ```bash
 $ docker ps
 CONTAINER ID   IMAGE                                                COMMAND                  CREATED              STATUS              PORTS                                                                                  NAMES
 c75e8bbdcbac   ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:sha-7978695   "/root/scripts/start…"   27 seconds ago   Up 27 seconds   0.0.0.0:9339->9339/tcp, :::9339->9339/tcp, 0.0.0.0:9559->9559/tcp, :::9559->9559/tcp   ipdk
 ```
 
-The `ipdk connect` command starts a bash shell inside the container
-and leaves you at a prompt where you can enter commands for running
-inside of that container.  Sample output of this command is shown
-below:
+The `ipdk connect` command starts a bash shell in the container and
+leaves you at a prompt where you can enter commands for running in
+that container.  Sample output of this command is shown below:
 
+In the base OS:
 ```bash
 $ ipdk connect
 Loaded /home/andy/ipdk/build/scripts/ipdk_default.env
@@ -277,8 +284,9 @@ root@c75e8bbdcbac:~/scripts#
 ```
 
 The IPDK instructions suggest the command below to verify that there
-is a process named `infrap4d` running:
+is a process named `infrap4d` running.
 
+In the container:
 ```bash
 root@c75e8bbdcbac:~/scripts# ps -ef | grep infrap4d
 root          47       1 99 12:35 ?        00:02:06 /root/networking-recipe/install/sbin/infrap4d
@@ -286,8 +294,9 @@ root         113      84  0 12:37 pts/1    00:00:00 grep --color=auto infrap4d
 ```
 
 It looks like it is.  Now try running the demo bash script to see what
-happens:
+happens.
 
+In the container:
 ```bash
 root@c75e8bbdcbac:~/scripts# /root/scripts/rundemo_TAP_IO.sh
 
@@ -388,7 +397,10 @@ known methods at present.
 All of the steps below were tested on an Ubuntu 20.04 system, after
 following the IPDK networking container install steps successfully.
 
-Start an IPDK container and connect to it using these commands:
+Start an instance of the container and connect to it using these
+commands.
+
+In the base OS:
 ```bash
 cd <path-to-your-clone-of-ipdk-repository>
 ipdk start -d
@@ -397,19 +409,19 @@ ipdk connect
 
 There are 9 cryptographic key/certificate files generated during
 execution of the `ipdk connect` command.  These files are copied into
-the directory `/usr/share/stratum/certs/` inside the container's file
+the directory `/usr/share/stratum/certs/` in the container's file
 system.
 
 Below are two ways to successfully set things up so that a small
 Python program can connect to TCP port 9559 of the `infrap4d` process
-inside the container, as a P4Runtime client, and send P4Runtime API
-read and write request messages to `infrap4d`.
+in the container, as a P4Runtime client, and send P4Runtime API read
+and write request messages to `infrap4d`.
 
-The first way shows how to run such a Python test client program
-inside of the container.  One advantage of doing it this way is that
-you can also easily send packets to TAP interfaces from the same test
-client program, and/or read packets output by the DPDK software switch
-on TAP interfaces.
+The first way shows how to run such a Python test client program in
+the container.  One advantage of doing it this way is that you can
+also easily send packets to TAP interfaces from the same test client
+program, and/or read packets output by the DPDK software switch on TAP
+interfaces.
 
 The second way shows how to run such a Python test client program in
 the base OS.  I do not know of any straightforward way to enable such
@@ -424,25 +436,24 @@ do not want to use it, but these instructions do not give details on
 any other ways to make a P4Runtime API connection.
 
 
-## Installing `p4runtime-shell` and other software inside the IPDK container
+## Installing `p4runtime-shell` and other software in the container
 
 Follow the steps described in the section [Useful extra software to
 install in the
 container](#useful-extra-software-to-install-in-the-container).
 
 
-## Making a P4Runtime API connection from Python program running inside the IPDK container, to infrap4d
+## Making a P4Runtime API connection from Python program running in the container, to infrap4d
 
 Copy the test Python P4Runtime client program `test-client.py` from
-the base OS into the container, by running these commands in the base
-OS:
+the base OS into the container, by running these commands.
 
+In the base OS:
 ```bash
 cp ~/p4-guide/ipdk/23.01/test-client.py ~/.ipdk/volume
 ```
 
-Then run this command inside the container:
-
+In the container:
 ```bash
 cp /tmp/test-client.py ~
 ```
@@ -450,6 +461,7 @@ cp /tmp/test-client.py ~
 After this setup, you should be able to run the test client program
 with this command:
 
+In the container:
 ```bash
 ~/test-client.py
 ```
@@ -458,8 +470,9 @@ with this command:
 ### Troubleshooting: `No valid forwarding pipeline config has been pushed`
 
 If you try to run the test client program and see an error message
-like this:
+like the one below:
 
+In the container:
 ```bash
 # ~/test-client.py
 CRITICAL:root:Error when retrieving P4Info
@@ -476,13 +489,14 @@ The `test-client.py` program does not attempt to do this.  It expects
 there to already be a compiled P4 program and P4Info file loaded into
 the device.
 
-There is a command `p4rt-ctl` that can be run from inside of the
-container to do this.  A sample command line can be found within the
+There is a command `p4rt-ctl` that can be run in the container to do
+this.  A sample command line can be found within the
 `rundemo_TAP_IO.sh` script, copied below (note that the two files
 shown on this command line do not exist in the container when it is
 first started -- they are created by a `p4c` P4 compilation command
 that can also be found in the `rundemo_TAP_IO.sh` script):
 
+In the container:
 ```bash
 p4rt-ctl set-pipe br0 /root/examples/simple_l3/simple_l3.pb.bin /root/examples/simple_l3/p4Info.txt
 ```
@@ -490,11 +504,12 @@ p4rt-ctl set-pipe br0 /root/examples/simple_l3/simple_l3.pb.bin /root/examples/s
 
 ### Troubleshooting: Do not try to run test client from `/tmp` directory
 
-Normally you would think that inside the container, you could simply
-run `/tmp/test-client.py`, but for some reason I do not understand,
-doing that fails when I try it on my system, with an error message
-like the one below:
+Normally you would think that in the container, you could simply run
+`/tmp/test-client.py`, but for some reason I do not understand, doing
+that fails when I try it on my system, with an error message like the
+one below:
 
+In the container:
 ```bash
 # /tmp/test-client.py
 Traceback (most recent call last):
@@ -512,18 +527,17 @@ from `/tmp` to another directory, e.g. the `root` user's home
 directory.
 
 I get a similar error if, in the base OS, I try to run
-`test-client.py` when it is stored inside of the directory
-`~/.ipdk/volume`.  Again, the workaround is to run that program with a
-copy of the file in a directory that is not `~/.ipdk/volume`.
+`test-client.py` when it is stored in the directory `~/.ipdk/volume`.
+Again, the workaround is to run that program with a copy of the file
+in a directory that is not `~/.ipdk/volume`.
 
 
 ## Installing `p4runtime-shell` in the base OS
 
 Note: You can ignore this section if you prefer to run P4Runtime API
-client programs inside the container.
+client programs in the container.
 
-Run these commands in the base OS:
-
+In the base OS:
 ```bash
 sudo apt-get install --yes python3-pip
 sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
@@ -533,7 +547,7 @@ sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 ## Making a P4Runtime API connection from Python program running in the base OS, to infrap4d
 
 Note: You can ignore this section if you prefer to run P4Runtime API
-client programs inside the container.
+client programs in the container.
 
 First copy the current cryptographic key/certificate files required
 for a client to authenticate itself to the server.  This step only
@@ -541,12 +555,12 @@ needs to be done once each time these files change.  One event that
 causes these files to change is running `ipdk connect` from the base
 OS.
 
-When the IPDK container is started, it is done in a way such that the
-directory `/tmp` inside the container is equivalent to the directory
+When the container is started, it is done in a way such that the
+directory `/tmp` in the container is equivalent to the directory
 `$HOME/.ipdk/volume` in the base OS.  That is, any changes made to the
 directory on one side is immediately reflected on the other side.
 
-Inside the container:
+In the container:
 ```bash
 cp /usr/share/stratum/certs/{ca.crt,client.key,client.crt} /tmp/
 ```
@@ -563,6 +577,7 @@ with this command.  The `test-client.py` program takes an optional
 parameter that is the name of a directory where it should find the
 files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 
+In the base OS:
 ```bash
 ~/p4-guide/ipdk/23.01/test-client.py ~/my-certs/
 ```
@@ -570,9 +585,9 @@ files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 
 # Compiling a P4 program, loading it into infrap4d, sending packets in, and capturing packets out
 
-Prerequisites: You have started the IPDK container, and followed the
-steps described in the section [Useful extra software to install in
-the container](#useful-extra-software-to-install-in-the-container).
+Prerequisites: You have started the container, and followed the steps
+described in the section [Useful extra software to install in the
+container](#useful-extra-software-to-install-in-the-container).
 
 The scripts below were adapted with minor variations from
 `rundemo_TAP_IO.sh`, which is included with IPDK.  The scripts perform
@@ -592,8 +607,9 @@ commands to test packet forwarding through `infrap4d`.  These separate
 scripts give a user a little bit more fine-grained control over when
 they want to perform these steps.
 
-Example command lines:
+Example command lines for these commands are described below.
 
+In the container:
 ```bash
 /tmp/setup_2tapports.sh
 ```
@@ -604,6 +620,7 @@ where the compiled output files are written if compilation succeeds.
 The `-a` option specifies whether to compile the program with the
 `pna` or `psa` architecture, defaulting to `pna` if not specified.
 
+In the container:
 ```bash
 /tmp/compile_p4_prog.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
 ```
@@ -614,6 +631,7 @@ of the `.p4` when created by the `compile_p4_prog.sh` script.  The
 option `-i` specifies the P4Info file, which when created by
 `compile_p4_prog.sh` always has the name `p4Info.txt`.
 
+In the container:
 ```bash
 /tmp/load_p4_prog.sh -p /root/examples/simple_l3/simple_l3.pb.bin -i /root/examples/simple_l3/p4Info.txt
 ```
@@ -633,9 +651,9 @@ program into the new `infrap4d` process.
 
 ## An exercise in using those scripts
 
-Prerequisites: You have started the IPDK container, and followed the
-steps described in the section [Useful extra software to install in
-the container](#useful-extra-software-to-install-in-the-container).
+Prerequisites: You have started the container, and followed the steps
+described in the section [Useful extra software to install in the
+container](#useful-extra-software-to-install-in-the-container).
 
 Copy a modified version of the `simple_l3.p4` P4 program that we have
 been using up to this point.
@@ -676,12 +694,14 @@ Table entries for bridge br0:
 Set up `tcpdump` to capture packets coming out of the switch to the TAP1
 interface:
 
+In the container:
 ```bash
 ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
 ```
 
 Use `tcpreplay` to send packets into the switch on TAP0 interface:
 
+In the container:
 ```bash
 ip netns exec VM0 tcpreplay -i TAP0 /root/examples/simple_l3_modecr/pkt1.pcap
 ```
@@ -689,21 +709,24 @@ ip netns exec VM0 tcpreplay -i TAP0 /root/examples/simple_l3_modecr/pkt1.pcap
 Kill the `tcpdump` process so it completes writing packets to the file
 and stops appending more data to the file.
 
+In the container:
 ```bash
 killall tcpdump
 ```
 
 You can copy the file `TAP1-try1.pcap` to the base OS and use
-`tshark`, `wireshark`, or any program you like to examine it:
+`tshark`, `wireshark`, or any program you like to examine it.
 
 In the container:
 ```bash
 cp TAP1-try1.pcap /tmp
 ```
 
-In the base OS, use commands like one of these (tune the tshark
-options to your preference):
+Now use commands like one of those below.  There are many command line
+options that cause `tshark` to generate different output formats
+describing packets.
 
+In the base OS:
 ```bash
 tshark -V -r ~/.ipdk/volume/TAP1-try1.pcap
 wireshark ~/.ipdk/volume/TAP1-try1.pcap
@@ -719,9 +742,9 @@ table, and if it gets a miss, the miss action can optionally cause an
 entry to be added to the table, without the control plane having to do
 so.
 
-Prerequisites: You have started the IPDK container, and followed the
-steps described in the section [Useful extra software to install in
-the container](#useful-extra-software-to-install-in-the-container).
+Prerequisites: You have started the container, and followed the steps
+described in the section [Useful extra software to install in the
+container](#useful-extra-software-to-install-in-the-container).
 
 In the base OS:
 ```bash
@@ -748,9 +771,10 @@ The directory `/root/examples/add_on_miss0` already contains several
 pcap files that can be used for sending packets.  See the program
 `gen-pcaps.py` for how they were created.
 
-Set up `tcpdump` to capture packets coming out of the switch to the TAP1
-interface:
+Set up `tcpdump` to capture packets coming out of the switch to the
+TAP1 interface.
 
+In the container:
 ```bash
 ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
 ```
@@ -759,6 +783,7 @@ Send TCP SYN packet on TAP0 interface, which should cause new entry to
 be added to table `ct_tcp_entry`, and also be forwarded out the TAP1
 port.  Immediately check the table entries.
 
+In the container:
 ```bash
 ip netns exec VM0 tcpreplay -i TAP0 /root/examples/add_on_miss0/tcp-syn1.pcap
 p4rt-ctl dump-entries br0 ct_tcp_table
@@ -778,6 +803,7 @@ the control plane.
 Kill the `tcpdump` process so it completes writing packets to the file
 and stops appending more data to the file.
 
+In the container:
 ```bash
 killall tcpdump
 ```
@@ -785,6 +811,7 @@ killall tcpdump
 Attempting to add an entry to the add-on-miss table `ct_tcp_table`
 from the control plane returns an error, as shown below:
 
+In the container:
 ```bash
 root@48ac7ef995ac:~/scripts# /root/examples/add_on_miss0/write-ct-tcp-table.py
 
@@ -878,17 +905,17 @@ will always be 30 seconds for program `add_on_miss0.p4`.
 
 # Running P4 program `add_on_miss0.p4` and testing it from a PTF test
 
-Prerequisites: You have started the IPDK container, and followed the
-steps described in the section [Useful extra software to install in
-the container](#useful-extra-software-to-install-in-the-container).
+Prerequisites: You have started the container, and followed the steps
+described in the section [Useful extra software to install in the
+container](#useful-extra-software-to-install-in-the-container).
 
 Here we give steps for running a PTF test with program
 `add_on_miss0.p4` loaded.
 
 Note: The only way I have successfully installed and run the PTF
-package inside the IPDK container so far is in a Python virtual
-environment.  If someone finds a way to successfully run a PTF test
-without creating a virtual environment, I would not mind knowing how.
+package in the container so far is in a Python virtual environment.
+If someone finds a way to successfully run a PTF test without creating
+a virtual environment, I would not mind knowing how.
 
 Also note that these instructions use the script
 `setup_2tapports_in_default_ns.sh`, not `setup_2tapports.sh` as
@@ -918,9 +945,9 @@ pushd /root/examples/add_on_miss0/ptf-tests
 
 # Running P4 program `add_on_miss1.p4` and testing it from a PTF test
 
-Prerequisites: You have started the IPDK container, and followed the
-steps described in the section [Useful extra software to install in
-the container](#useful-extra-software-to-install-in-the-container).
+Prerequisites: You have started the container, and followed the steps
+described in the section [Useful extra software to install in the
+container](#useful-extra-software-to-install-in-the-container).
 
 P4 program `add_on_miss1.p4` has different logic for deciding whether
 to add an entry to table `ct_tcp_table`.  It also uses the extern
@@ -957,7 +984,7 @@ In the base OS:
 cp -pr ~/p4-guide/ipdk/23.01/dash/ ~/.ipdk/volume/
 ```
 
-In IPDK container:
+In the container:
 ```bash
 cp -pr /tmp/dash /root/examples
 
@@ -994,6 +1021,7 @@ has completed.
 Confirm that the interface `TAP0` exists in network namespace `VM0`,
 and interface `TAP1` exists in network namespace `VM1`:
 
+In the container:
 ```bash
 root@21e5509506d8:~/scripts# ip netns exec VM0 ip link show
 1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
@@ -1043,8 +1071,8 @@ rtt min/avg/max/mdev = 0.099/0.139/0.249/0.055 ms
 Now go back to the other terminal window where `tcpdump` is still
 running, and type Ctrl-C to quit `tcpdump`, and then run the following
 command to copy the captured packets in the pcap file into directory
-`/tmp` inside the container.  When the container was started using the
-commands above, directory `/tmp` inside the container is the same
+`/tmp` in the container.  When the container was started using the
+commands above, directory `/tmp` in the container is the same
 directory as `$HOME/.ipdk/volume` in the base OS.
 
 ```bash
@@ -1052,9 +1080,10 @@ root@21e5509506d8:~/scripts# cp TAP1-try1.pcap /tmp
 ```
 
 In yet another terminal window running as a normal user in the base
-OS, not inside the IPDK container, let us use these commands to view
-the captured packets using Wireshark:
+OS, not in the container, let us use these commands to view the
+captured packets using Wireshark:
 
+In the base OS:
 ```bash
 wireshark ~/.ipdk/volume/TAP1-try1.pcap
 ```
@@ -1068,7 +1097,7 @@ program compile without errors, the script will update the
 Try using Python3 library Scapy to send packets into the DPDK software
 switch:
 
-(in a terminal that is executing commands inside the IPDK container)
+In the container:
 ```bash
 root@21e5509506d8:~/scripts# ip netns exec VM1 tcpdump -l -i TAP1 -e -n --number -v
 tcpdump: listening on TAP1, link-type EN10MB (Ethernet), capture size 262144 bytes
@@ -1078,7 +1107,7 @@ Now we can watch in that terminal to see messages printed about each
 packet that appears on the `TAP1` interface in network namespace
 `VM1`.
 
-(in a separate terminal that is executing commands inside the IPDK container)
+(in a separate terminal that is executing commands in the container)
 ```
 root@21e5509506d8:~# pip3 install scapy
 
