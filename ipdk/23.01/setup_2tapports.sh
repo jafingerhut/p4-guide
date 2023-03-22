@@ -9,21 +9,23 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "setup_2tapports.sh: -w|--workdir -h|--help"
+    echo "setup_2tapports.sh: -v|--verbose -w|--workdir -h|--help"
     echo ""
     echo "  -h|--help: Displays help"
+    echo "  -v|--verbose: Enable verbose/debug output"
     echo "  -w|--workdir: Working directory"
     echo ""
 }
 
 # Parse command-line options.
-SHORTOPTS=:h,w:
-LONGOPTS=help,workdir:
+SHORTOPTS=:hv,w:
+LONGOPTS=help,verbose,workdir:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
 
 # Set defaults.
+VERBOSE=0
 WORKING_DIR=/root
 
 # Process command-line options.
@@ -32,6 +34,9 @@ while true ; do
     -h|--help)
         usage
         exit 1 ;;
+    -v|--verbose)
+        VERBOSE=1
+        shift 1 ;;
     -w|--workdir)
         WORKING_DIR="${2}"
         shift 2 ;;
@@ -51,14 +56,17 @@ SDE_INSTALL_DIR="${WORKING_DIR}"/p4-sde/install
 NR_INSTALL_DIR="${WORKING_DIR}"/networking-recipe/install
 
 # Display argument data after parsing commandline arguments
-echo ""
-echo "WORKING_DIR: ${WORKING_DIR}"
-echo "SCRIPTS_DIR: ${SCRIPTS_DIR}"
-echo "DEPS_INSTALL_DIR: ${DEPS_INSTALL_DIR}"
-echo "P4C_INSTALL_DIR: ${P4C_INSTALL_DIR}"
-echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
-echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
-echo ""
+if [ ${VERBOSE} -ge 1 ]
+then
+    echo ""
+    echo "WORKING_DIR: ${WORKING_DIR}"
+    echo "SCRIPTS_DIR: ${SCRIPTS_DIR}"
+    echo "DEPS_INSTALL_DIR: ${DEPS_INSTALL_DIR}"
+    echo "P4C_INSTALL_DIR: ${P4C_INSTALL_DIR}"
+    echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
+    echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
+    echo ""
+fi
 
 echo "Deleting namespace VM0 and killing infrap4d processes ..."
 
@@ -73,26 +81,26 @@ unset https_proxy
 unset HTTP_PROXY
 unset HTTPS_PROXY
 
-pushd "${WORKING_DIR}" || exit
+pushd "${WORKING_DIR}" > /dev/null || exit
 # shellcheck source=/dev/null
 . "${SCRIPTS_DIR}"/initialize_env.sh --sde-install-dir="${SDE_INSTALL_DIR}" \
       --nr-install-dir="${NR_INSTALL_DIR}" --deps-install-dir="${DEPS_INSTALL_DIR}" \
-      --p4c-install-dir="${P4C_INSTALL_DIR}"
+      --p4c-install-dir="${P4C_INSTALL_DIR}" > /dev/null
 
 # shellcheck source=/dev/null
-. "${SCRIPTS_DIR}"/set_hugepages.sh
+. "${SCRIPTS_DIR}"/set_hugepages.sh > /dev/null
 
 # shellcheck source=/dev/null
 . "${SCRIPTS_DIR}"/setup_nr_cfg_files.sh --nr-install-dir="${NR_INSTALL_DIR}" \
-      --sde-install-dir="${SDE_INSTALL_DIR}"
+      --sde-install-dir="${SDE_INSTALL_DIR}" > /dev/null
 
 # shellcheck source=/dev/null
-. "${SCRIPTS_DIR}"/run_infrap4d.sh --nr-install-dir="${NR_INSTALL_DIR}"
-popd || exit
+. "${SCRIPTS_DIR}"/run_infrap4d.sh --nr-install-dir="${NR_INSTALL_DIR}" > /dev/null
+popd > /dev/null || exit
 
 echo "Creating TAP ports"
 
-pushd "${WORKING_DIR}" || exit
+pushd "${WORKING_DIR}" > /dev/null || exit
 # Wait for networking-recipe processes to start gRPC server and open ports for clients to connect.
 sleep 1
 
@@ -100,7 +108,7 @@ gnmi-ctl set "device:virtual-device,name:TAP0,pipeline-name:pipe,\
     mempool-name:MEMPOOL0,mtu:1500,port-type:TAP"
 gnmi-ctl set "device:virtual-device,name:TAP1,pipeline-name:pipe,\
     mempool-name:MEMPOOL0,mtu:1500,port-type:TAP"
-popd || exit
+popd > /dev/null || exit
 
 echo "Create one namespace VM0"
 

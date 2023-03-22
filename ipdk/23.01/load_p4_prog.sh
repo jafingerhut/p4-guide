@@ -9,9 +9,10 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "load_p4_prog.sh: -w|--workdir -h|--help -p|--p4bin -i|--p4info"
+    echo "load_p4_prog.sh: -v|--verbose -w|--workdir -h|--help -p|--p4bin -i|--p4info"
     echo ""
     echo "  -h|--help: Displays help"
+    echo "  -v|--verbose: Enable verbose/debug output"
     echo "  -w|--workdir: Working directory"
     echo "  -p|--p4bin: compiled P4 binary output for DPDK"
     echo "  -i|--p4info: P4Info file resulting from compiling P4 source file"
@@ -19,17 +20,17 @@ usage() {
 }
 
 # Parse command-line options.
-SHORTOPTS=hw:p:i:
-LONGOPTS=help,workdir:,p4bin:,p4info:
+SHORTOPTS=hvw:p:i:
+LONGOPTS=help,verbose,workdir:,p4bin:,p4info:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
 
 # Set defaults.
+VERBOSE=0
 WORKING_DIR=/root
 P4_DIR=""
 P4_SRC_FNAME=""
-DEBUG_LEVEL=1
 
 # Process command-line options.
 while true ; do
@@ -37,6 +38,9 @@ while true ; do
     -h|--help)
         usage
         exit 1 ;;
+    -v|--verbose)
+        VERBOSE=1
+        shift 1 ;;
     -w|--workdir)
         WORKING_DIR="${2}"
         shift 2 ;;
@@ -91,26 +95,29 @@ SDE_INSTALL_DIR="${WORKING_DIR}"/p4-sde/install
 NR_INSTALL_DIR="${WORKING_DIR}"/networking-recipe/install
 
 # Display argument data after parsing commandline arguments
-echo ""
-echo "WORKING_DIR: ${WORKING_DIR}"
-echo "SCRIPTS_DIR: ${SCRIPTS_DIR}"
-echo "DEPS_INSTALL_DIR: ${DEPS_INSTALL_DIR}"
-echo "P4C_INSTALL_DIR: ${P4C_INSTALL_DIR}"
-echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
-echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
-echo ""
+if [ ${VERBOSE} -ge 1 ]
+then
+    echo ""
+    echo "WORKING_DIR: ${WORKING_DIR}"
+    echo "SCRIPTS_DIR: ${SCRIPTS_DIR}"
+    echo "DEPS_INSTALL_DIR: ${DEPS_INSTALL_DIR}"
+    echo "P4C_INSTALL_DIR: ${P4C_INSTALL_DIR}"
+    echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
+    echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
+    echo ""
+fi
 
 unset http_proxy
 unset https_proxy
 unset HTTP_PROXY
 unset HTTPS_PROXY
 
-pushd "${WORKING_DIR}" || exit
+pushd "${WORKING_DIR}" > /dev/null || exit
 # shellcheck source=/dev/null
 . "${SCRIPTS_DIR}"/initialize_env.sh --sde-install-dir="${SDE_INSTALL_DIR}" \
       --nr-install-dir="${NR_INSTALL_DIR}" --deps-install-dir="${DEPS_INSTALL_DIR}" \
-      --p4c-install-dir="${P4C_INSTALL_DIR}"
-popd || exit
+      --p4c-install-dir="${P4C_INSTALL_DIR}" > /dev/null
+popd > /dev/null || exit
 
 echo "Loading compiled P4 program into infrap4d"
 

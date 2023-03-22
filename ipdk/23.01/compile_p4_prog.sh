@@ -9,9 +9,10 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "compile_p4_prog.sh: -w|--workdir -h|--help -p|--p4dir -s|--srcfile"
+    echo "compile_p4_prog.sh: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile"
     echo ""
     echo "  -h|--help: Displays help"
+    echo "  -v|--verbose: Enable verbose/debug output"
     echo "  -w|--workdir: Working directory"
     echo "  -p|--p4dir: Directory containing P4 source file, and in which to write output files"
     echo "  -s|--srcfile: Base file name containing P4 source code, which must be in the P4 directory"
@@ -20,18 +21,18 @@ usage() {
 }
 
 # Parse command-line options.
-SHORTOPTS=hw:p:s:a:
-LONGOPTS=help,workdir:,p4dir:,srcfile:,arch:
+SHORTOPTS=hvw:p:s:a:
+LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:,arch:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
 
 # Set defaults.
+VERBOSE=0
 WORKING_DIR=/root
 P4_DIR=""
 P4_SRC_FNAME=""
 P4_ARCH="pna"
-DEBUG_LEVEL=1
 
 # Process command-line options.
 while true ; do
@@ -39,6 +40,9 @@ while true ; do
     -h|--help)
         usage
         exit 1 ;;
+    -v|--verbose)
+        VERBOSE=1
+        shift 1 ;;
     -w|--workdir)
         WORKING_DIR="${2}"
         shift 2 ;;
@@ -91,33 +95,36 @@ SDE_INSTALL_DIR="${WORKING_DIR}"/p4-sde/install
 NR_INSTALL_DIR="${WORKING_DIR}"/networking-recipe/install
 
 # Display argument data after parsing commandline arguments
-echo ""
-echo "WORKING_DIR: ${WORKING_DIR}"
-echo "SCRIPTS_DIR: ${SCRIPTS_DIR}"
-echo "DEPS_INSTALL_DIR: ${DEPS_INSTALL_DIR}"
-echo "P4C_INSTALL_DIR: ${P4C_INSTALL_DIR}"
-echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
-echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
-echo ""
+if [ ${VERBOSE} -ge 1 ]
+then
+    echo ""
+    echo "WORKING_DIR: ${WORKING_DIR}"
+    echo "SCRIPTS_DIR: ${SCRIPTS_DIR}"
+    echo "DEPS_INSTALL_DIR: ${DEPS_INSTALL_DIR}"
+    echo "P4C_INSTALL_DIR: ${P4C_INSTALL_DIR}"
+    echo "SDE_INSTALL_DIR: ${SDE_INSTALL_DIR}"
+    echo "NR_INSTALL_DIR: ${NR_INSTALL_DIR}"
+    echo ""
+fi
 
 unset http_proxy
 unset https_proxy
 unset HTTP_PROXY
 unset HTTPS_PROXY
 
-pushd "${WORKING_DIR}" || exit
+pushd "${WORKING_DIR}" > /dev/null || exit
 # shellcheck source=/dev/null
 . "${SCRIPTS_DIR}"/initialize_env.sh --sde-install-dir="${SDE_INSTALL_DIR}" \
       --nr-install-dir="${NR_INSTALL_DIR}" --deps-install-dir="${DEPS_INSTALL_DIR}" \
-      --p4c-install-dir="${P4C_INSTALL_DIR}"
-popd || exit
+      --p4c-install-dir="${P4C_INSTALL_DIR}" > /dev/null
+popd > /dev/null || exit
 
 echo "Compiling P4 program ${P4_SRC_FNAME}"
 
 # TODO: I do not think the next line is needed
 #export OUTPUT_DIR="${P4_DIR}"
 
-if [ ${DEBUG_LEVEL} -ge 2 ]
+if [ ${VERBOSE} -ge 2 ]
 then
     echo ""
     echo "Files in ${P4_DIR} just before p4c:"
@@ -151,7 +158,7 @@ p4c-dpdk --arch "${P4_ARCH}" \
 #    -o "${P4_DIR}/pipe/${BASE_FNAME}.spec" \
 #    "${P4_DIR}/${P4_SRC_FNAME}"
 
-if [ ${DEBUG_LEVEL} -ge 2 ]
+if [ ${VERBOSE} -ge 2 ]
 then
     echo ""
     echo "Files in ${P4_DIR} just after p4c:"
@@ -160,12 +167,12 @@ then
 fi
 
 echo "Running pipeline builder"
-pushd "${P4_DIR}" || exit
+pushd "${P4_DIR}" > /dev/null || exit
 tdi_pipeline_builder --p4c_conf_file=${BASE_FNAME}.conf \
     --bf_pipeline_config_binary_file=${BASE_FNAME}.pb.bin
-popd || exit
+popd > /dev/null || exit
 
-if [ ${DEBUG_LEVEL} -ge 1 ]
+if [ ${VERBOSE} -ge 1 ]
 then
     echo ""
     echo "Files in ${P4_DIR} just after tdi_pipeline_builder:"
