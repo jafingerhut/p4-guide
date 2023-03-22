@@ -78,19 +78,6 @@ Version combinations I have used above for testing VM images:
 
 ## Quick instructions for successful install script run
 
-Notes:
-
-+ Ubuntu 18.04 reached its [end of standard
-  support](https://wiki.ubuntu.com/Releases) in April 2023.  I tested
-  `install-p4dev-v4.sh` on Ubuntu 18.04 monthly until Feb 2023, and
-  `install-p4dev-v6.sh` monthly until March 2023, but discontinued
-  testing those combinations at that time.  They might continue
-  working after that, but I have no plans to update those scripts to
-  work on Ubuntu 18.04 after those dates.
-+ Similarly Ubuntu 16.04 reached its end of standard support in April
-  2021.  I tested the `install-p4dev-v2.sh` script on Ubuntu 16.04
-  monthly until August 2021, but I do not plan to test it any longer.
-
 Start with:
 
 + an _unmodified_ _fresh_ installation of Ubuntu Linux 20.04
@@ -110,7 +97,13 @@ below for more details.
 
 Note: These scripts have been reported NOT WORKING on WSL (Windows
 Subsystem for Linux).  I have had success running supported versions
-of Ubuntu Linux using VirtualBox on both macOS and Windows 10 hosts.
+of Ubuntu Linux using VirtualBox on these host operating systems:
+
++ macOS 10.14.x
++ macOS 10.15.x
++ macOS 12.6.x
++ Windows 10
++ Windows 11
 
 Then run the commands below in a terminal.  Note:
 + You may run the commands from any directory you wish -- I typically
@@ -140,6 +133,19 @@ install to work.  It causes the output of the script to be saved to
 the file `log.txt`, as well as appear in the terminal window.  The
 output is about 10,000 lines long on a good run, so saving it to a
 file is good if you want to see what it did.
+
+Historical notes:
+
++ Ubuntu 18.04 reached its [end of standard
+  support](https://wiki.ubuntu.com/Releases) in April 2023.  I tested
+  `install-p4dev-v4.sh` on Ubuntu 18.04 monthly until Feb 2023, and
+  `install-p4dev-v6.sh` monthly until March 2023, but discontinued
+  testing those combinations at that time.  They might continue
+  working after that, but I have no plans to update those scripts to
+  work on Ubuntu 18.04 after those dates.
++ Similarly Ubuntu 16.04 reached its end of standard support in April
+  2021.  I tested the `install-p4dev-v2.sh` script on Ubuntu 16.04
+  monthly until August 2021, but I do not plan to test it any longer.
 
 
 ## Which install script should I use?
@@ -175,7 +181,7 @@ through 2023.  They all include the following:
 The scripts in the next table below are no longer tested by me.  They
 are listed here only for possible historical interest.
 
-| Script | Versions of Ubuntu it works on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
+| Script | Versions of Ubuntu it was formerly tested on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
 | ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | -------------- | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
 | install-p4dev-v4.sh | 20.04, 18.04 | 2023-Feb | yes | yes | yes | yes | 12 GB | 100 mins | 2 GB | v3.6.1 | v1.17.2 |
 | install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- | -- | -- | -- |
@@ -226,19 +232,8 @@ tests with `bmv2/` at the beginning of their names run the
 
 ### Send ping packets in the solution to `basic` exercise of `p4lang/tutorials` repository
 
-NOTE: If you are using versions of the install script older than
-`install-p4dev-v4.sh`, you may need to use a version of the
-`p4lang/tutorials` repository at version
-`4914893445ae24bd1fa3b4aeea4910eeb412f7de` or older (end of year
-2020), since the next commit after that updated all Python code to
-Python3, not Python2.
-
-If you are using the `install-p4dev-v5.sh` or `install-p4dev-v6.sh`
-script, that should install only Python3 packages, and should work
-with the latest version of the `p4lang/tutorials` repository.
-
-Another quick test is to try running the solution to the `basic`
-exercise in the tutorials repository.  To do so, follow these steps:
+A quick test is to try running the solution to the `basic` exercise in
+the tutorials repository.  To do so, follow these steps:
 
 ```bash
 $ git clone https://github.com/p4lang/tutorials
@@ -265,6 +260,18 @@ $ git checkout basic.p4
 This test exercises at least `p4c` for the v1model architecture,
 `simple_switch_grpc`, and a portion of the P4Runtime API
 implementation in `simple_switch_grpc` for adding table entries.
+
+Historical note: If you are trying to use versions of the install
+script older than `install-p4dev-v4.sh` (no longer tested by me, so
+use at your own risk of lost time trying to make things work), you may
+need to use a version of the `p4lang/tutorials` repository at version
+`4914893445ae24bd1fa3b4aeea4910eeb412f7de` or older (end of year
+2020), since the next commit after that updated all Python code to
+Python3, not Python2.
+
+If you are using the `install-p4dev-v5.sh` or `install-p4dev-v6.sh`
+script, that should install only Python3 packages, and should work
+with the latest version of the `p4lang/tutorials` repository.
 
 
 ## Details
