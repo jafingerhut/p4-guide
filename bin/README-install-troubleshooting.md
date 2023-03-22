@@ -2,7 +2,7 @@
 
 Pick one of these alternatives that best fits your situation:
 
-(a) I have a new Ubuntu 18.04, 20.04, or 22.04 Linux system, and I
+(a) I have a new Ubuntu 20.04 or 22.04 Linux system, and I
     want to install the open source P4 development tools on it.  (This
     might be a new VM created for this purpose.)
 
@@ -77,15 +77,22 @@ Version combinations I have used above for testing VM images:
 
 ## Quick instructions for successful install script run
 
-Note: Ubuntu 16.04 reached its [end of standard support in April
-2021](https://wiki.ubuntu.com/Releases).  I tested the
-`install-p4dev-v2.sh` script on Ubuntu 16.04 monthly until August
-2021, and it worked fine up to that date, but I do not plan to test it
-any longer.  It may continue to work for a significant length of time.
+Notes:
+
++ Ubuntu 18.04 reached its [end of standard
+  support](https://wiki.ubuntu.com/Releases) in April 2023.  I tested
+  `install-p4dev-v4.sh` on Ubuntu 18.04 monthly until Feb 2023, and
+  `install-p4dev-v6.sh` monthly until March 2023, but discontinued
+  testing those combinations at that time.  They might continue
+  working after that, but I have no plans to update those scripts to
+  work on Ubuntu 18.04 after those dates.
++ Similarly Ubuntu 16.04 reached its end of standard support in April
+  2021.  I tested the `install-p4dev-v2.sh` script on Ubuntu 16.04
+  monthly until August 2021, but I do not plan to test it any longer.
 
 Start with:
 
-+ an _unmodified_ _fresh_ installation of Ubuntu Linux 18.04, 20.04,
++ an _unmodified_ _fresh_ installation of Ubuntu Linux 20.04
   or 22.04, with ...
   + at least 2 GB of RAM (4 GB recommended)
   + at least 13 GB of free disk space (not 13 GB of disk space total
@@ -160,8 +167,8 @@ through 2023.  They all include the following:
 
 | Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
-| install-p4dev-v6.sh | 22.04, 20.04, 18.04 | 13 GB | 100 mins |   2 GB | v3.18.1 | v1.43.2 |
-| install-p4dev-v5.sh | 20.04               |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? |
+| install-p4dev-v6.sh | 22.04, 20.04 | 13 GB | 100 mins |   2 GB | v3.18.1 | v1.43.2 |
+| install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? |
 
 
 The scripts in the next table below are no longer tested by me.  They
@@ -225,9 +232,9 @@ NOTE: If you are using versions of the install script older than
 2020), since the next commit after that updated all Python code to
 Python3, not Python2.
 
-If you are using the `install-p4dev-v4.sh` script, that should install
-only Python3 packages, and should work with the latest version of the
-`p4lang/tutorials` repository.
+If you are using the `install-p4dev-v5.sh` or `install-p4dev-v6.sh`
+script, that should install only Python3 packages, and should work
+with the latest version of the `p4lang/tutorials` repository.
 
 Another quick test is to try running the solution to the `basic`
 exercise in the tutorials repository.  To do so, follow these steps:
@@ -278,14 +285,11 @@ Things I did that helped this process go smoothly:
   packages installed by these scripts, you may not end up with a
   working installation of the open source P4 development tools.
   
-  In particular, I tested with all of the Ubuntu install images linked
-  below.  In my testing, I installed them as a virtual machine using
-  VirtualBox on a Mac running macOS 10.14 Mojave as the host operating
-  system, but installing them as a virtual machine on a different host
-  operating system, or on a bare machine, should also work:
-  + [Ubuntu Desktop 20.04.3](http://releases.ubuntu.com/20.04/ubuntu-20.04.3-desktop-amd64.iso) for the amd64 architecture
-  + [Ubuntu Desktop 18.04.6](http://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso) for the amd64 architecture
-  + [Ubuntu Desktop 16.04.7](http://releases.ubuntu.com/16.04/ubuntu-16.04.7-desktop-amd64.iso) for the amd64 architecture
+  In my testing, I installed Ubuntu Desktop Linux as a virtual machine
+  using VirtualBox on a Mac running a relatively recent version of
+  macOS as the host operating system.  Installing them as a virtual
+  machine on a different host operating system, or on a bare machine,
+  should also work.
 + My machine had 2 GBytes of RAM available.  Less than 2 Gbytes will
   almost certainly not be enough.
 
