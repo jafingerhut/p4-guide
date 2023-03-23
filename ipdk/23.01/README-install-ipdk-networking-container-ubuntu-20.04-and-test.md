@@ -1006,6 +1006,33 @@ output file `context.json`.  See this issue for when it is resolved:
 
 + https://github.com/p4lang/p4c/issues/3928
 
+Until that bug is fixed, as a workaround I have included the compiler
+output files in my p4-guide git repo, including the
+`dash_pipeline.pb.bin` file, which I created with this command:
+
+```bash
+pushd /root/examples/dash
+/tmp/tdi_pipeline_builder.sh -p /root/examples/dash -s dash_pipeline.p4
+```
+
+Now start the DPDK software switch and load the compiled DASH P4
+program into it:
+
+```bash
+/tmp/setup_2tapports_in_default_ns.sh
+/tmp/load_p4_prog.sh -p /root/examples/dash/dash_pipeline.pb.bin -i /root/examples/dash/p4Info.txt
+```
+
+As of 2023-Mar-23, every time I try to load this DPDK binary in this
+way, I see this error message:
+
+```bash
+Error: P4Runtime RPC error (INTERNAL): 'bf_pal_device_add(dev_id, &device_profile)' failed with error message: Unexpected error. 
+```
+
+I am checking with DPDK developers to see why this occurs, and if
+there is a way to prevent it.
+
 
 # Latest tested version of IPDK
 
