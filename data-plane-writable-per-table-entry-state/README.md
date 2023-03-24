@@ -1,8 +1,11 @@
-Related Github issues:
+Related links:
 
 + "Design syntax and semantics to indicate persistent storage of
   per-table-entry data across packets, modifiable in data plane"
   https://github.com/p4lang/p4-spec/issues/1177
+
++ Notes from some meetings focused on this issue:
+  https://docs.google.com/presentation/d/15vZJETWr0Cyht-dcQFnat28A3c9FoY7Z
 
 
 prog1.p4 and prog2.p4 are two programs intended to be functionally
