@@ -369,32 +369,13 @@ action NoAction args none {
 }
 
 action vxlan_decap_1 args none {
-	mov h.MainControlT_hdr_0_udp h.udp
-	mov h.MainControlT_hdr_0_vxlan h.vxlan
-	mov h.MainControlT_hdr_0_inner_ethe1 h.inner_ethernet
-	mov h.MainControlT_hdr_0_inner_ipv4 h.inner_ipv4
-	mov h.MainControlT_hdr_0_inner_ipv6 h.inner_ipv6
-	mov h.MainControlT_hdr_0_inner_udp h.inner_udp
-	mov h.MainControlT_hdr_0_inner_tcp h.inner_tcp
 	invalidate h.MainControlT_hdr_0_inner_ethe1
 	invalidate h.MainControlT_hdr_0_inner_ipv4
 	invalidate h.MainControlT_hdr_0_inner_ipv6
 	invalidate h.MainControlT_hdr_0_vxlan
 	invalidate h.MainControlT_hdr_0_udp
 	invalidate h.MainControlT_hdr_0_inner_tcp
-	mov h.MainControlT_hdr_0_udp h.inner_udp
 	invalidate h.MainControlT_hdr_0_inner_udp
-	mov h.ethernet h.inner_ethernet
-	mov h.ipv4 h.inner_ipv4
-	mov h.ipv6 h.inner_ipv6
-	mov h.udp h.inner_udp
-	mov h.tcp h.inner_tcp
-	mov h.vxlan h.MainControlT_hdr_0_vxlan
-	mov h.inner_ethernet h.MainControlT_hdr_0_inner_ethe1
-	mov h.inner_ipv4 h.MainControlT_hdr_0_inner_ipv4
-	mov h.inner_ipv6 h.MainControlT_hdr_0_inner_ipv6
-	mov h.inner_udp h.MainControlT_hdr_0_inner_udp
-	mov h.inner_tcp h.MainControlT_hdr_0_inner_tcp
 	return
 }
 
@@ -1284,32 +1265,13 @@ apply {
 	LABEL_END_7 :	table direction_lookup
 	table appliance
 	jmpneq LABEL_FALSE_4 m.local_metadata__direction1 0x1
-	mov h.MainControlT_hdr_1_udp h.udp
-	mov h.MainControlT_hdr_1_vxlan h.vxlan
-	mov h.MainControlT_hdr_1_inner_ethe2 h.inner_ethernet
-	mov h.MainControlT_hdr_1_inner_ipv4 h.inner_ipv4
-	mov h.MainControlT_hdr_1_inner_ipv6 h.inner_ipv6
-	mov h.MainControlT_hdr_1_inner_udp h.inner_udp
-	mov h.MainControlT_hdr_1_inner_tcp h.inner_tcp
 	invalidate h.MainControlT_hdr_1_inner_ethe2
 	invalidate h.MainControlT_hdr_1_inner_ipv4
 	invalidate h.MainControlT_hdr_1_inner_ipv6
 	invalidate h.MainControlT_hdr_1_vxlan
 	invalidate h.MainControlT_hdr_1_udp
 	invalidate h.MainControlT_hdr_1_inner_tcp
-	mov h.MainControlT_hdr_1_udp h.inner_udp
 	invalidate h.MainControlT_hdr_1_inner_udp
-	mov h.ethernet h.inner_ethernet
-	mov h.ipv4 h.inner_ipv4
-	mov h.ipv6 h.inner_ipv6
-	mov h.udp h.inner_udp
-	mov h.tcp h.inner_tcp
-	mov h.vxlan h.MainControlT_hdr_1_vxlan
-	mov h.inner_ethernet h.MainControlT_hdr_1_inner_ethe2
-	mov h.inner_ipv4 h.MainControlT_hdr_1_inner_ipv4
-	mov h.inner_ipv6 h.MainControlT_hdr_1_inner_ipv6
-	mov h.inner_udp h.MainControlT_hdr_1_inner_udp
-	mov h.inner_tcp h.MainControlT_hdr_1_inner_tcp
 	jmp LABEL_END_8
 	LABEL_FALSE_4 :	jmpneq LABEL_END_8 m.local_metadata__direction1 0x2
 	mov m.dash_ingress_inbound_routing_vxlan_vni h.vxlan.vni
@@ -1320,32 +1282,13 @@ apply {
 	LABEL_SWITCH :	mov m.dash_ingress_pa_validation_local_metadata__vnet_id10 m.local_metadata__vnet_id10
 	mov m.dash_ingress_pa_validation_ipv4_src_addr h.ipv4.src_addr
 	table pa_validation
-	mov h.MainControlT_hdr_7_udp h.udp
-	mov h.MainControlT_hdr_7_vxlan h.vxlan
-	mov h.MainControlT_hdr_7_inner_ethe3 h.inner_ethernet
-	mov h.MainControlT_hdr_7_inner_ipv4 h.inner_ipv4
-	mov h.MainControlT_hdr_7_inner_ipv6 h.inner_ipv6
-	mov h.MainControlT_hdr_7_inner_udp h.inner_udp
-	mov h.MainControlT_hdr_7_inner_tcp h.inner_tcp
 	invalidate h.MainControlT_hdr_7_inner_ethe3
 	invalidate h.MainControlT_hdr_7_inner_ipv4
 	invalidate h.MainControlT_hdr_7_inner_ipv6
 	invalidate h.MainControlT_hdr_7_vxlan
 	invalidate h.MainControlT_hdr_7_udp
 	invalidate h.MainControlT_hdr_7_inner_tcp
-	mov h.MainControlT_hdr_7_udp h.inner_udp
 	invalidate h.MainControlT_hdr_7_inner_udp
-	mov h.ethernet h.inner_ethernet
-	mov h.ipv4 h.inner_ipv4
-	mov h.ipv6 h.inner_ipv6
-	mov h.udp h.inner_udp
-	mov h.tcp h.inner_tcp
-	mov h.vxlan h.MainControlT_hdr_7_vxlan
-	mov h.inner_ethernet h.MainControlT_hdr_7_inner_ethe3
-	mov h.inner_ipv4 h.MainControlT_hdr_7_inner_ipv4
-	mov h.inner_ipv6 h.MainControlT_hdr_7_inner_ipv6
-	mov h.inner_udp h.MainControlT_hdr_7_inner_udp
-	mov h.inner_tcp h.MainControlT_hdr_7_inner_tcp
 	LABEL_END_8 :	mov m.local_metadata__is_overlay_ip_v619 0x0
 	mov m.local_metadata__ip_protocol21 0x0
 	mov h.dpdk_pseudo_header.pseudo 0x0
@@ -1460,30 +1403,13 @@ apply {
 	mov m.dash_ingress_outbound_outbound_ca_to_pa_dash_outbound_ca_t11 m.local_metadata__dst_ip_addr22
 	table outbound_outbound_ca_to_pa_dash_outbound_ca_to_pa
 	table outbound_vnet_dash_vnet
-	mov h.MainControlT_hdr_8_ethernet h.ethernet
-	mov h.MainControlT_hdr_8_ipv4 h.ipv4
-	mov h.MainControlT_hdr_8_ipv6 h.ipv6
-	mov h.MainControlT_hdr_8_udp h.udp
-	mov h.MainControlT_hdr_8_tcp h.tcp
-	mov h.MainControlT_hdr_8_vxlan h.vxlan
-	mov h.MainControlT_hdr_8_inner_ethe4 h.inner_ethernet
-	mov h.MainControlT_hdr_8_inner_ipv4 h.inner_ipv4
-	mov h.MainControlT_hdr_8_inner_ipv6 h.inner_ipv6
-	mov h.MainControlT_hdr_8_inner_udp h.inner_udp
-	mov h.MainControlT_hdr_8_inner_tcp h.inner_tcp
-	mov h.MainControlT_hdr_8_inner_ethe4 h.ethernet
 	mov h.MainControlT_hdr_8_inner_ethe4.dst_addr m.local_metadata__encap_data_overlay_dmac8
 	invalidate h.MainControlT_hdr_8_ethernet
-	mov h.MainControlT_hdr_8_inner_ipv4 h.ipv4
 	invalidate h.MainControlT_hdr_8_ipv4
-	mov h.MainControlT_hdr_8_inner_ipv6 h.ipv6
 	invalidate h.MainControlT_hdr_8_ipv6
-	mov h.MainControlT_hdr_8_inner_tcp h.tcp
 	invalidate h.MainControlT_hdr_8_tcp
-	mov h.MainControlT_hdr_8_inner_udp h.udp
 	invalidate h.MainControlT_hdr_8_udp
 	validate h.MainControlT_hdr_8_ethernet
-	mov h.MainControlT_hdr_8_ethernet.dst_addr m.local_metadata__encap_data_underlay_dmac7
 	mov h.MainControlT_hdr_8_ethernet.src_addr m.local_metadata__encap_data_underlay_smac6
 	mov h.MainControlT_hdr_8_ethernet.ether_type 0x800
 	validate h.MainControlT_hdr_8_ipv4
@@ -1531,17 +1457,6 @@ apply {
 	mov h.MainControlT_hdr_8_vxlan.reserved_2 0x0
 	mov h.MainControlT_hdr_8_vxlan.flags 0x0
 	mov h.MainControlT_hdr_8_vxlan.vni m.local_metadata__encap_data_vni2
-	mov h.ethernet h.MainControlT_hdr_8_ethernet
-	mov h.ipv4 h.MainControlT_hdr_8_ipv4
-	mov h.ipv6 h.MainControlT_hdr_8_ipv6
-	mov h.udp h.MainControlT_hdr_8_udp
-	mov h.tcp h.MainControlT_hdr_8_tcp
-	mov h.vxlan h.MainControlT_hdr_8_vxlan
-	mov h.inner_ethernet h.MainControlT_hdr_8_inner_ethe4
-	mov h.inner_ipv4 h.MainControlT_hdr_8_inner_ipv4
-	mov h.inner_ipv6 h.MainControlT_hdr_8_inner_ipv6
-	mov h.inner_udp h.MainControlT_hdr_8_inner_udp
-	mov h.inner_tcp h.MainControlT_hdr_8_inner_tcp
 	jmp LABEL_END_16
 	jmp LABEL_END_16
 	LABEL_FALSE_12 :	jmpneq LABEL_END_16 m.local_metadata__direction1 0x2
@@ -1616,28 +1531,11 @@ apply {
 	mov m.dash_ingress_inbound_ConntrackOut_conntrackOut_retval_2 m.MainControlT_retval_14
 	mov m.dash_ingress_inbound_ConntrackOut_conntrackOut_local_metad13 m.local_metadata__eni_id12
 	table inbound_ConntrackOut_conntrackOut
-	mov m.MainControlT_inbound_tmp h.ethernet.dst_addr
-	mov h.MainControlT_hdr_9_ethernet h.ethernet
-	mov h.MainControlT_hdr_9_ipv4 h.ipv4
-	mov h.MainControlT_hdr_9_ipv6 h.ipv6
-	mov h.MainControlT_hdr_9_udp h.udp
-	mov h.MainControlT_hdr_9_tcp h.tcp
-	mov h.MainControlT_hdr_9_vxlan h.vxlan
-	mov h.MainControlT_hdr_9_inner_ethe5 h.inner_ethernet
-	mov h.MainControlT_hdr_9_inner_ipv4 h.inner_ipv4
-	mov h.MainControlT_hdr_9_inner_ipv6 h.inner_ipv6
-	mov h.MainControlT_hdr_9_inner_udp h.inner_udp
-	mov h.MainControlT_hdr_9_inner_tcp h.inner_tcp
-	mov h.MainControlT_hdr_9_inner_ethe5 h.ethernet
 	mov h.MainControlT_hdr_9_inner_ethe5.dst_addr m.MainControlT_inbound_tmp
 	invalidate h.MainControlT_hdr_9_ethernet
-	mov h.MainControlT_hdr_9_inner_ipv4 h.ipv4
 	invalidate h.MainControlT_hdr_9_ipv4
-	mov h.MainControlT_hdr_9_inner_ipv6 h.ipv6
 	invalidate h.MainControlT_hdr_9_ipv6
-	mov h.MainControlT_hdr_9_inner_tcp h.tcp
 	invalidate h.MainControlT_hdr_9_tcp
-	mov h.MainControlT_hdr_9_inner_udp h.udp
 	invalidate h.MainControlT_hdr_9_udp
 	validate h.MainControlT_hdr_9_ethernet
 	mov h.MainControlT_hdr_9_ethernet.dst_addr m.local_metadata__encap_data_underlay_dmac7
@@ -1688,17 +1586,6 @@ apply {
 	mov h.MainControlT_hdr_9_vxlan.reserved_2 0x0
 	mov h.MainControlT_hdr_9_vxlan.flags 0x0
 	mov h.MainControlT_hdr_9_vxlan.vni m.local_metadata__encap_data_vni2
-	mov h.ethernet h.MainControlT_hdr_9_ethernet
-	mov h.ipv4 h.MainControlT_hdr_9_ipv4
-	mov h.ipv6 h.MainControlT_hdr_9_ipv6
-	mov h.udp h.MainControlT_hdr_9_udp
-	mov h.tcp h.MainControlT_hdr_9_tcp
-	mov h.vxlan h.MainControlT_hdr_9_vxlan
-	mov h.inner_ethernet h.MainControlT_hdr_9_inner_ethe5
-	mov h.inner_ipv4 h.MainControlT_hdr_9_inner_ipv4
-	mov h.inner_ipv6 h.MainControlT_hdr_9_inner_ipv6
-	mov h.inner_udp h.MainControlT_hdr_9_inner_udp
-	mov h.inner_tcp h.MainControlT_hdr_9_inner_tcp
 	LABEL_END_16 :	mov m.dash_ingress_eni_meter_local_metadata__eni_id12 m.local_metadata__eni_id12
 	mov m.dash_ingress_eni_meter_local_metadata__direction1 m.local_metadata__direction1
 	mov m.dash_ingress_eni_meter_local_metadata__dropped0 m.local_metadata__dropped0
