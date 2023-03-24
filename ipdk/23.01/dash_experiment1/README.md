@@ -37,3 +37,21 @@ index 78236a404..c36d61a42 100644
          else
              m->member = shortenString(m->member, 30);
 ```
+
+Steps to try out on a machine with IPDK container installed, after
+starting the container:
+
+In the base OS:
+```bash
+/bin/cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
+/bin/cp -pr ~/p4-guide/ipdk/23.01/dash_experiment1/ ~/.ipdk/volume/
+```
+
+In the container:
+```bash
+cp -pr /tmp/dash_experiment1 /root/examples
+cd /root/examples/dash_experiment1
+/tmp/tdi_pipeline_builder.sh -p /root/examples/dash_experiment1 -s dash_pipeline.p4
+/tmp/setup_2tapports_in_default_ns.sh
+/tmp/load_p4_prog.sh -p /root/examples/dash_experiment1/dash_pipeline.pb.bin -i /root/examples/dash_experiment1/p4Info.txt
+```
