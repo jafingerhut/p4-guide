@@ -1,8 +1,8 @@
 {
   "program_name" : "dash_pipeline",
-  "build_date" : "Fri Mar 24 07:21:47 2023",
+  "build_date" : "Fri Mar 24 12:06:55 2023",
   "compile_command" : "p4c-dpdk -DTARGET_DPDK_PNA -DPNA_CONNTRACK --arch pna --p4runtime-files p4Info.txt --bf-rt-schema bf-rt.json --context pipe/context.json -o pipe/dash_pipeline.spec dash_pipeline.p4",
-  "compiler_version" : "0.1 (SHA: 846f6729d BUILD: DEBUG)",
+  "compiler_version" : "0.1 (SHA: ae3263117 BUILD: DEBUG)",
   "schema_version" : "0.1",
   "target" : "DPDK",
   "tables" : [
