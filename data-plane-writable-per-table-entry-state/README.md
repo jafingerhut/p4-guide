@@ -3,8 +3,7 @@ Related links:
 + "Design syntax and semantics to indicate persistent storage of
   per-table-entry data across packets, modifiable in data plane"
   https://github.com/p4lang/p4-spec/issues/1177
-
-+ Notes from some meetings focused on this issue:
++ Notes from some 2023-Mar meetings focused on this issue:
   https://docs.google.com/presentation/d/15vZJETWr0Cyht-dcQFnat28A3c9FoY7Z
 
 
