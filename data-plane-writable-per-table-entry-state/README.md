@@ -23,6 +23,9 @@ primary proposals:
       to `regname.read()` once near the beginning of the action body,
       and a call to `regname.write()` once near the end of the action
       body, for each regname that you want to access in that action.
+    + Minor: There is not yet a proposed way to combine this with
+      PNA's add-on-miss `add_entry()` extern function, but I suspect
+      this is doable without a lot of trouble.
 + Modify the language spec, enabling some kinds of action parameters
   to be assigned values in action bodies.
   + Short example programs:
