@@ -104,15 +104,27 @@ control MainControlImpl(
 {
     bit<8> control_global;
     
-    DirectRegister<bit<8>>() r1;
-    DirectRegister<bit<16>>() r2;
-    DirectRegister<bit<24>>() r3;
+    // This sample program is nearly the same as prog2.p4.  The only
+    // difference is that it uses a very minor proposed language
+    // extension of enabling externs to be declared locally within
+    // bodies of actions, rather than at the top level within a
+    // control.
 
-    // Because a1 only accesses r1 and r2, but never r3
-    // (straightforward to analyze at compile time in P4 compiler),
-    // the back end is free NOT to allocate storage for r3 in table
-    // entries that have action a1.
+    // Mihai Budiu created a PR on open source p4c on 2023-Mar-24 that
+    // would enable this here: https://github.com/p4lang/p4c/pull/3938
+
+    // Like prog1.p4, this makes it easier for a P4 developer to
+    // quickly see which modifiable data can be accessed by each
+    // action.  It also avoids the need to declare a table property
+    // like `registers` in prog2.p4 that declares which DirectRegister
+    // externs can be accessed by a table.  Instead in this program,
+    // it is implied by the action definitions themselves.
+
     action a1(bit<8> p1) {
+#ifdef P4C_SUPPORTS_DECLARING_EXTERN_INSTANCES_INSIDE_ACTION_BODIES
+        DirectRegister<bit<8>>() r1;
+        DirectRegister<bit<16>>() r2;
+#endif
         bit<8> v1;
         bit<16> v2;
         v1 = r1.read() + p1;
@@ -126,25 +138,28 @@ control MainControlImpl(
         r2.write(v2);
     }
 
-    // Because a2 can only access r1, but never r2 nor r3, the target
-    // only needs to allocate space for r1 in table entries with
-    // action a2.
     action a2() {
+        // Note: Since r1 is declared locally inside of this action,
+        // it can be declared with the same name, but a different data
+        // type, in different actions.  I do not take advantage of
+        // that possibility in this sample program.
+#ifdef P4C_SUPPORTS_DECLARING_EXTERN_INSTANCES_INSIDE_ACTION_BODIES
+        DirectRegister<bit<8>>() r1;
+#endif
         control_global = control_global + r1.read();
         r1.write(control_global);
     }
 
-    // Because a3 access none of r1, nor r2, nor r3, target need not
-    // allocate space to store any of them in table entries with
-    // action a3.
+    // A "normal" action that does not contain any data-plane-writable
+    // state that is saved across packets.
     action a3(PortId_t p) {
         send_to_port(p);
     }
 
-    // Because a4 accesses only r3, the target only needs to allocate
-    // space for r3 in table entries using action a4, but not allocate
-    // space for r1 or r2.
     action a4() {
+#ifdef P4C_SUPPORTS_DECLARING_EXTERN_INSTANCES_INSIDE_ACTION_BODIES
+        DirectRegister<bit<24>>() r3;
+#endif
         bit<24> tmp = r3.read();
         if (hdr.ipv4.protocol == 6) {
             tmp = tmp + (bit<24>) (hdr.ipv4.totalLen - hdr.ipv4.minSizeInBytes());
@@ -159,7 +174,6 @@ control MainControlImpl(
         actions = {
             a1; a2; a3; a4;
         }
-        registers = { r1, r2, r3 };
     }
     apply {
         if (hdr.ipv4.isValid()) {

@@ -8,27 +8,96 @@ Related links:
   https://docs.google.com/presentation/d/15vZJETWr0Cyht-dcQFnat28A3c9FoY7Z
 
 
-prog1.p4 and prog2.p4 are two programs intended to be functionally
-identical in their behavior, written with two different styles of
-data-plane-modifiable per-table-entry data.
+The discussion of how to enable this feature in P4 programs has two
+primary proposals:
+
++ Use a P4 extern definition, perhaps named `DirectRegister`
+  + Short example programs:
+    [`prog2.p4`](p2-multiple-directregisters-per-table/prog2.p4) and
+    [`prog3.p4`](p3-local-directregisters-per-action/prog3.p4)
+  + Advantages:
+    + This requires no changes to the P4 language spec.  This is one
+      of many examples of how externs are intended to be used.
+  + Disadvantages:
+    + The syntax is a little bit more verbose, e.g. per action, a call
+      to `regname.read()` once near the beginning of the action body,
+      and a call to `regname.write()` once near the end of the action
+      body, for each regname that you want to access in that action.
++ Modify the language spec, enabling some kinds of action parameters
+  to be assigned values in action bodies.
+  + Short example programs:
+    [`prog1.p4`](p1-assignable-action-params/prog1.p4)
+  + Two minor variations proposed:
+    + Introduce a keyword before the action parameter such as `rmw` to
+      explicitly indicate that it is writable in the action body.
+    + No new keyword.  Simply allow P4 developers to assign values to
+      action parameters that have no direction keyword, and that
+      implies they are writable parameters.
+  + Advantages:
+    + More concise, and fairly natural-looking syntax for modifying
+      these values: simply assign to them and they will be modified.
+  + Disadvantages:
+    + What if in the next year or two we discover significant
+      drawbacks to this approach?  e.g. the control plane API issues
+      we have not yet thought through in detail lead us to wish for
+      further changes to the language definition?  Or different target
+      vendors decide they would like to tweak the design because of
+      implementation issues discovered one year from now?  Do we
+      remove the feature?  Make significant and probably
+      backwards-incompatible changes in its definition?  See also Note
+      1 below.
+
+
+Note 1: The best known response to this concern is: do not change the
+language spec now, but instead one or more p4c developers create an
+experimental implementation of the feature soon, and multiple vendors
+use that to develop their full implementations of this feature,
+including control plane APIs.  When there is some significant
+implementation and field use experience with this feature by multiple
+vendors, those vendors come back to the P4 language design work group
+and propose to change the language spec at that time.
 
 
 # prog1.p4
 
-prog1.p4 uses the approach of a directionless action parameter can
+A "directionless action parameter" is a parameter of an action that
+has no direction keyword before it, e.g. "in", "out", or "inout".
+
+prog1.p4 uses an approach where a directionless action parameter can
 represent one of two things:
 
-+ its currently defined meaning as read only in the data plane,
-  modifiable only by the control plane, if its value is only "read" in
-  the body of the action.
-+ the new proposed meaning of writable in the data plane, with its new
-  value stored in the table entry, and accessible by the next packet
-  to match that entry.
++ Its currently defined in the P4 language spec, which is: the
+  parameter value is read only in the data plane, and writable only
+  by the control plane.
+  + If a directionless action parameter is only "read" (i.e. used in
+    expressions, such as `if` conditions or expressions on the right
+    hand side of assignment statements), then this is the case.
++ The new proposed meaning of "writable in the data plane", with the
+  parameter's new value stored in the table entry and accessible by
+  the next packet to match that entry.
+  + If a directionless action parameter is every assigned a value, or
+    modified in any way (e.g. passed as a parameter to a
+    function/extern-function/sub-action in a parameter that is `out`
+    or `inout`), then this is the case.  Note: If you attempt to do
+    this with the latest version of open source p4c as of today, you
+    get a compile time error that you are not allowed to modify the
+    value of the action parameter.
 
-prog1.p4 does not use the 'rmw' or any other keyword on modifiable
+prog1.p4 does not use the `rmw` or any other keyword on writable
 action parameters, nor any annotation.  It simply distinguishes
 between the two cases above by whether there is an assignment to the
 action parameter in the action's definition, or not.
+
+Aside: If people strongly prefer that there be a distinctive keyword
+like `rmw` on writable action parameters, that is understandable.  One
+advantage of such a keyword is that it makes it explicitly declared by
+the P4 developer that they _want_ the action parameter to be writable.
+Also, someone reading the code can very quickly read this intent in
+the parameter list of the action definition, without having to read
+the entire action definition.  Note: Action definitions in
+programmable NIC applications are likely to be longer, and contain
+multiple cases using `if` statements, than many earlier P4 actions
+commonly written.
 
 Proposed control plane API extension:
 

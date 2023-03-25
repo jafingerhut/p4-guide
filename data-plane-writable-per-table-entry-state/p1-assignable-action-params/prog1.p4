@@ -25,10 +25,6 @@ extern DirectRegister<T> {
 
 typedef bit<48>  EthernetAddress;
 
-typedef bit<8>  type1_t;
-typedef bit<16> type2_t;
-typedef bit<24> type3_t;
-
 header ethernet_t {
     EthernetAddress dstAddr;
     EthernetAddress srcAddr;
@@ -94,15 +90,15 @@ control MainControlImpl(
     in    pna_main_input_metadata_t  istd,
     inout pna_main_output_metadata_t ostd)
 {
-    type1_t tmp;
+    bit<8> control_global;
     
     // Because a1 assigns to r1 and r2 in its body, their assigned
     // values are recorded in the table entry for future packets to
     // access.  Because p1 is only read, a1 never modifies it and only
     // the control plane can change its value.
-    action a1(type1_t p1, type1_t r1, type2_t r2) {
-        type1_t v1;
-        type2_t v2;
+    action a1(bit<8> p1, bit<8> r1, bit<16> r2) {
+        bit<8> v1;
+        bit<16> v2;
         v1 = r1 + p1;
         v2 = r2;
         if (hdr.ipv4.protocol == 17) {
@@ -111,6 +107,14 @@ control MainControlImpl(
             v2 = v2 + hdr.ipv4.identification;
         }
 #ifdef P4C_SUPPORTS_ASSIGNING_TO_ACTION_PARAMETERS
+        // The #ifdef is here to make it easy to compile the rest of
+        // this code with open source p4test and see that there are no
+        // compile-time errors.  If you include these assignments
+        // below, as of 2023-Mar p4test DOES give compile-time errors
+        // for those lines, by design.  Enabling such assignments
+        // requires not only a change to p4c, but if it is to be an
+        // official part of the language, changes to the P4 language
+        // spec as well.
         r1 = v1;
         r2 = v2;
 #endif
@@ -118,10 +122,10 @@ control MainControlImpl(
 
     // Because a2 assigns to r1 in its body, its value persists across
     // packets.
-    action a2(type1_t r1) {
-        tmp = tmp + r1;
+    action a2(bit<8> r1) {
+        control_global = control_global + r1;
 #ifdef P4C_SUPPORTS_ASSIGNING_TO_ACTION_PARAMETERS
-        r1 = tmp;
+        r1 = control_global;
 #endif
     }
 
@@ -131,24 +135,29 @@ control MainControlImpl(
         send_to_port(p);
     }
 
+    // Because a4 assigns to r3 in its body, its value persists across
+    // packets.
+    action a4(bit<24> r3) {
+        if (hdr.ipv4.protocol == 6) {
+#ifdef P4C_SUPPORTS_ASSIGNING_TO_ACTION_PARAMETERS
+            r3 = r3 + (bit<24>) (hdr.ipv4.totalLen - hdr.ipv4.minSizeInBytes());
+#endif
+        }
+    }
+
     table t1 {
         key = {
             hdr.ipv4.dstAddr: lpm;
         }
         actions = {
-            a1;
-            a2;
-            a3;
+            a1; a2; a3; a4;
         }
-#ifdef P4C_SUPPORTS_NEW_TABLE_PROPERTY_REGISTERS
-        registers = { r1; r2; r3; }
-#endif
     }
     apply {
         if (hdr.ipv4.isValid()) {
-            tmp = (type1_t) hdr.ipv4.totalLen;
+            control_global = (bit<8>) hdr.ipv4.totalLen;
             t1.apply();
-            hdr.ipv4.identification = (bit<16>) tmp;
+            hdr.ipv4.identification = (bit<16>) control_global;
         }
     }
 }
