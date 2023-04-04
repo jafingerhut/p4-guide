@@ -83,7 +83,20 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=DEBUG
 # Copied from p4c/Dockerfile
 #cmake .. '-DCMAKE_CXX_FLAGS:STRING=-O3'
-make -j${MAX_PARALLEL_JOBS}
+
+# Make all back ends, including:
+# gtestp4c
+# p4c-bm2-psa
+# p4c-bm2-ss
+# p4c-dpdk
+# p4c-ebpf
+# p4c-graphs
+# p4c-ubpf
+# p4test
+#make -j${MAX_PARALLEL_JOBS}
+
+# Make only the explicitly listed back ends:
+make -j${MAX_PARALLEL_JOBS} p4c-dpdk p4test p4c-bm2-ss
 
 set +x
 echo ""
