@@ -146,3 +146,20 @@ entries using that action for those instances.
 TODO: It would be good to propose a reasonable syntax for how a PNA
 add_entry() call can provide the initial values for an entry that it
 creates in the data plane.
+
+
+# prog3.p4
+
+prog3.p4 is nearly the same as prog2.p4.  The only difference is that
+it uses a very minor proposed language extension of enabling instances
+of extern objects to be declared locally within bodies of actions,
+rather than at the top level within a control.
+
+Mihai Budiu created a PR on open source p4c on 2023-Mar-24 that would
+enable this here: https://github.com/p4lang/p4c/pull/3938
+
+Like prog1.p4, this makes it easier for a P4 developer to quickly see
+which modifiable data can be accessed by each action.  It also avoids
+the need to declare a table property like `registers` in prog2.p4 that
+declares which DirectRegister externs can be accessed by a table.  In
+prog3.p4, it is implied by the action definitions themselves.
