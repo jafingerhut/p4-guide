@@ -368,6 +368,9 @@ pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
 pip3 -V || echo "No such command in PATH: pip3"
 
+# On new systems if you have never checked repos you should do that first
+sudo apt-get --yes update
+
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
 sudo apt-get --yes install git vim
