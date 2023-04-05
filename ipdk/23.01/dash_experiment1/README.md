@@ -12,30 +12,14 @@ https://github.com/p4lang/p4c repo source code, plus one patch given
 below.
 
 ```
-commit cb087245d72b953e44293c1524f1717a32d17f73 (HEAD -> main, origin/main, origin/HEAD)
-Author: Fabian Ruffy <5960321+fruffy@users.noreply.github.com>
-Date:   Fri Mar 17 10:02:18 2023 -0400
+$ git clone https://github.com/p4lang/p4c
+$ cd p4c
+$ git log -n 1
+commit 9ffc798976265c2de0651696980532159aef6d6b (HEAD -> main, origin/main, origin/HEAD)
+Author: Usha Gupta <usha.gupta@intel.com>
+Date:   Wed Apr 5 10:58:04 2023 +0530
 
-    Use Ubuntu 22.04 for Testgen PTF tests.  (#3923)
-```
-
-Patch:
-
-
-```
-diff --git a/backends/dpdk/dpdkAsmOpt.h b/backends/dpdk/dpdkAsmOpt.h
-index 78236a404..c36d61a42 100644
---- a/backends/dpdk/dpdkAsmOpt.h
-+++ b/backends/dpdk/dpdkAsmOpt.h
-@@ -199,7 +199,7 @@ class ShortenTokenLength : public Transform {
-     static ordered_map<cstring, cstring> origNameMap;
-
-     const IR::Node *preorder(IR::Member *m) override {
--        if (m->toString().startsWith("m."))
-+        if (m->toString().startsWith("m.") || m->toString().startsWith("t."))
-             m->member = shortenString(m->member);
-         else
-             m->member = shortenString(m->member, 30);
+    Change array index[] in table keys in context.json to $ to match with the key name in bfrt.json (#3963)
 ```
 
 Steps to try out on a machine with IPDK container installed, after

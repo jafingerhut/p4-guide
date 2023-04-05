@@ -166,7 +166,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -178,7 +178,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -293,7 +293,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -305,7 +305,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -420,7 +420,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -432,7 +432,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -1047,7 +1047,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -1059,7 +1059,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -1174,7 +1174,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -1186,7 +1186,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -1301,7 +1301,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
@@ -1313,7 +1313,7 @@
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
-          "match_type" : "Range",
+          "match_type" : "Ternary",
           "type" : {
             "type" : "bytes",
             "width" : 16
