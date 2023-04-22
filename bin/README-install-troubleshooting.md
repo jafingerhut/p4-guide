@@ -156,6 +156,19 @@ it installs pre-compiled P4 development tools from Debian packages
 that can be updated later to more recent versions as they are
 published, if you wish.
 
+Minor note: As of 2023-Jan when I updated the PTF tests in this
+p4-guide repository to use p4runtime-shell as the Python API for table
+add/delete/modify, a system that results from running
+`install-p4dev-v5.sh` can run the exercises in the p4lang/tutorials
+repository, but does not have the `p4runtime-shell` package installed,
+so cannot run the PTF tests in the p4-guide repository.  If you
+install `p4runtime-shell` system-wide, you can then run the PTF tests
+in the p4-guide repository, but then the exercises in p4lang/tutorials
+fail to run, probably because of some conflict in how the Python
+packages are installed.  This can probably be worked around by using
+Python virtual environments, but I have not tested this.  A system
+installed using `install-p4dev-v6.sh` does not have this issue.
+
 If you wish to run the examples in the
 [tutorials](https://github.com/p4lang/tutorials) repository as of
 2021, you need P4Runtime API support and Mininet.  All of the current
