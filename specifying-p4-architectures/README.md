@@ -1,16 +1,122 @@
 # Introduction
 
+This article describes features that would be desirable in a currently
+hypothetical language for precisely describing P4 architectures.
+
+
+# Glossary
+
++ PSA - Portable Switch Architecture https://p4.org/specs
++ PNA - Portable NIC Architecture https://p4.org/specs
+  https://github.com/p4lang/pna
++ TNA - Tofino Native Architecture
+  https://github.com/barefootnetworks/Open-Tofino
++ v1model - The v1model architecture as implemented in the BMv2
+  software switch https://github.com/p4lang/behavioral-model
++ DPDK - Data Plane Development Kit https://www.dpdk.org
+  https://github.com/p4lang/p4c/tree/main/backends/dpdk
+
+
+# Background
+
 A P4 parser lets you precisely specify how a packet header parser
 behaves.
 
-TODO: The P4-16 language spec does not fully specify the control plane
-API of parser value sets, but does give English prose specifying the
-data plane behavior.
-
 A P4 control lets you precisely specify how a part of a packet
 processing device behaves that typically contains one or more P4
-tables, and invocations of some xtern functions or methods.
+tables, and invocations of some extern functions or methods.  P4
+controls are also used to define the behavior of deparsers.
 
+While P4 parsers and controls might be used within a network device to
+specify most of how the device processes packets, there is always
+additional behavior of the device that is _not_ specified in a P4
+parser or control [see Note 1].
+
+This additional behavior is specified in a P4 architecture, where
+prominent examples of these include:
+
++ PSA
++ PNA
++ TNA
+
+A P4 developer must know something about a device's P4 architecture in
+order to successfully write P4 code for the device, e.g. in order to
+know what code they must write in order to drop a packet, send a
+packet to a single port, replicate a packet, etc. [see Note 2].
+
+Note 1: Except perhaps in toy example P4 architectures.
+
+Note 2: Some may find it surprising that there is no standard way
+across all P4 architectures to drop a packet, nor to send a packet to
+a single output port.  In fact, the means of doing these things is
+slightly different in all of the example architectures mentioned in
+this document.
+
+
+# How P4 architectures are specified today
+
+The ways of describing a P4 architecture that are common today include:
+
++ A combination of P4 include files, English text, and pseudocode used
+  to define PSA, PNA, and TNA.  The P4 include files define the inputs
+  and outputs of P4 parsers and controls in the architecture, and
+  extern functions, objects, and methods, but the behavior of these
+  things is _not_ defined in the P4 include files, only the data plane
+  API.
++ Implementations of P4 architectures are described in voluminous
+  detail in their implementations.  Examples include:
+  + The C++ code in https://github.com/p4lang/behavioral-model that
+    implements the v1model architecture.
+  + The C and/or C++ code in the P4 DPDK implementation of PSA and PNA.
+  + Many tens of thousands of lines of Verilog/VHDL implementing an
+    ASIC like Tofino, specifying the behavior down to the precise bit
+    level and what happens in every part of the ASIC on every clock
+    cycle.
+
+It is not possible today to feed English text and pseudocode into
+formal analysis tools.  It might be possible to do so with C, C++,
+Verilog, or VHDL implementations, but for many purposes we would
+prefer a much shorter human-readable precise specification instead of
+these more detailed specifications.
+
+
+# Goals of a new language for specifying P4 architectures
+
+The goals of such a specification language include:
+
++ Precisely describe the behavior of a P4 architecture, in enough
+  detail for at least the following purposes:
+  + Consume this language in formal analysis tools such as P4testgen,
+    using this description to predict the expected possible behaviors
+    of the device.
+  + Consume this language in a behavioral model such as the BMv2
+    software switch `simple_switch`, or some other software switch
+    such as P4 DPDK or P4 EBPF, and simulate a device with that P4
+    architecture.
++ Be concise enough that at least the essentials of a P4 architecture
+  like the PSA could be written in a few
+  hundred lines of code/specification.  Human readers are a primary
+  "target" for specifications written in this language.
+
+In summary, we want to enable writing specificaitons that are a
+precise and "executable", with little effort required to use a single
+specification for both of these purposes.
+
+Non-goals of such a specification language are:
+
++ Precisely describe the behavior of a P4 architecture down to the
+  level of detail of doing performance simulations
+  + For example, the proposed language would not be targeted at
+    defining how a packet scheduling algorithm in a traffic manager
+    works.  At most one might use the language to describe that there
+    are multiple FIFO packet queues in a traffic manager, and a packet
+    scheduling algorithm non-deterministically selects among the
+    non-empty packet queues to choose the next packet to transmit.
++ Achieving the highest performance implementation on any particular
+  target device, whether a general purpose CPU or otherwise.
+  + We are not trying to _prevent_ high performance implementations in
+    this language, but such concerns should be lower priority than the
+    goals described above.
 
 
 # Capabilities needed in a language for specifying architectures
@@ -19,10 +125,14 @@ Note: P4 parsers and controls can assign values to metadata and/or
 call extern functions that indicate that a packet should be dropped
 later, but parsers and controls are fundamentally "one packet plus
 metadata in, one packet plus metadata out" kinds of entites in the
-P4-16 language specification (TODO: link to public Github issue with
-discussion on this topic).  Thus all actual dropping or replicating of
-a packet happens _outside_ of parsers and controls.  If these
-operations are desired, they must be done in the architecture.
+P4-16 language specification:
+
++ Some discussion of this topic among P4 language designers can be
+  found here: https://github.com/p4lang/p4-spec/issues/893
+
+Thus all actual dropping or replicating of a packet happens _outside_
+of parsers and controls.  If these operations are desired, they must
+be done in the architecture.
 
 Opinion: Packet contents should be represented by a sequence of bytes,
 from some minimum length up to some maximum length specified by the
@@ -35,6 +145,8 @@ architecture definition, it is likely that there will be
 architecture-defined metadata fields associated with a packet that are
 not visible to the P4 developer.
 
+Capabilities are named "C<number>" below.
+
 
 ## C1
 
@@ -42,10 +154,13 @@ Receive packets from "outside the device", labeled with metadata
 indicating where the packet came from, and optionally additional
 metadata.
 
+
 ## C2
 
 Send packets to "outside the device", labeled with metadata indicating
-where the packet should go to, and optional additional metadata.
+where the packet should go to, and optional metadata associated with
+the packet.
+
 
 ## C3
 
@@ -57,24 +172,30 @@ Make a clone of a packet, both the packet contents and its associated
 metadata.
   
 You might wonder: Why not provide fancier operations than merely
-cloning a packet, e.g. a packet replication engine primitive.  My
-answer is: because we want to be able to _defin_ how a packet
-replication engine primitive works, out of simpler primitive
-operations.  There are many possible ways to define the capabilities
-of a packet replication engine (e.g. Tofino ASICs have more features
-and options in their packet replication engines than defined in PSA).
-Making exactly one clone of a packet, then modifying the clone and
-directing where it goes, within a looping construct, is about the
-simplest set of primitive operations I can think of that would enable
-defining the behavior of any packet replication engine, and it also
-enables defining packet mirroring/cloning operations, too.
+cloning a packet?  For example, why not provide a a packet replication
+engine as a primitive?
+
+Answer: Because we want to be able to _define_ how a packet
+replication engine works, out of simpler primitive operations.  There
+are many possible ways to define the capabilities of a packet
+replication engine (e.g. Tofino ASICs have more features and options
+in their packet replication engines than defined in PSA).  Making
+exactly one clone of a packet, then modifying the clone and directing
+where it goes, within a loop, is about the simplest set of primitive
+operations I can think of that would enable defining the behavior of
+any packet replication engine.
+
+It also enables defining packet mirroring/cloning operations, too.
+
 
 ## C5
 
 Create a new packet with specified contents and metadata.
 
 This is useful for defining the behavior of things like TNA's packet
-generators.
+generators, which can create new packets that did not come from
+outside of the device, but can be created based on various internal
+triggers, e.g. a configurable length of time has passed.
 
 
 ## C6
@@ -82,10 +203,10 @@ generators.
 Parsers must output the offset of the first bit/byte of a packet that
 they did not parse.
 
-This is necessary in order for the architecture to pass this value on
-to the part of the device that deparses the packet, and optionally
-appends the unparsed portion of the packet to the end of the deparsed
-headers.
+This is necessary in order for the architecture to carry this value
+with the packet to the part of the device that deparses the packet,
+and optionally appends the unparsed portion of the packet to the end
+of the deparsed headers.
 
 
 ## What we should be able to specify with C1 through C6
@@ -113,9 +234,11 @@ convenient.
 Using this, we should be able to specify the behavior of Register and
 Counter externs.
 
+
 ## C8
 
 Get the current time.
+
 
 ## C9
 
@@ -134,9 +257,11 @@ a periodic background task iterates over all indexes of the Meter,
 adding tokens to its bucket(s).
 
 With neither C8 nor C9, I do not see any way to specify the behavior
-of Meter externs.  C8 is also needed for providing metadata to P4
-developers like traffic manager enqueue time, dequeue time, length of
-time a packet spent in a queue, etc.
+of Meter externs.
+
+C8 is also needed in defining P4 architectures that provide metadata
+to P4 developers like traffic manager enqueue time, dequeue time,
+length of time a packet spent in a queue, etc.
 
 C9 seems to be necessary in order to specify the behavior of TNA
 packet generators.
@@ -157,18 +282,33 @@ Define a way to send messages to the "local runtime software".
 C11 is needed for implementing the Digest extern.
 
 
+## Other straightforward-looking features
 
-TODO: Other externs that look easy, in the sense that they are pure
-functions of their current state and data plane method input
-parameters.
+TODO: Other externs that look easy, in the sense that their behavior
+is either:
+
++ output is pure function of inputs, with on internal state
+
+or the slightly more complicated, but still easy to specify and
+formally reason about:
+
++ There is internal state that can be updated either via control plane
+  API, or during packet processing.
+  + The return value(s) are a pure function of the input parameters
+    and current internal state.
+  + The next internal state is also a pure function of the input
+    parameters and the current internal state.
 
 + Hash
 + Checksum
 + InternetChecksum
 + Random
 
+
+## Other features that might need a bit more thought
+
 TODO: Other architecture features that will need a bit more thought to
-figure out how to specify.
+figure out a syntax and semantics for specifying them:
 
 DirectCounter/Meter - like Counter and Meter, but need a way to
 specify that their state is one-to-one with entries of a table, and
@@ -199,3 +339,18 @@ these implementations are at least slightly different from each other:
 and any of those that implement the P4Runtime API watch port feature
 seem to require a way for an architecture definition to respond to
 link down events.
+
+
+## Control plane APIs
+
+It seems reasonable to consider including in such a specification
+language a way to specify the effects of control plane API operations.
+
+One way that might simplify this is to adopt the TDI "philosophy"
+which I would describe as follows:
+
++ For every extern object or fixed function block, define one or a few
+  P4 tables that represent its configuration state.
++ All control plane API operations on this object are invokable from
+  control plane software as an add/delete/modify operation on one of
+  those P4 tables.
