@@ -11,8 +11,21 @@ hypothetical language for precisely describing P4 architectures.
   https://github.com/p4lang/pna
 + TNA - Tofino Native Architecture
   https://github.com/barefootnetworks/Open-Tofino
+
++ TNA packet generators - See Section 9 "Packet Generation" of
+  https://github.com/barefootnetworks/Open-Tofino/blob/master/PUBLIC_Tofino-Native-Arch.pdf
+  for details.
+  + Given that P4 is fundamentally a language for processing packets,
+    it is often very useful in a P4-programmable network device to
+    have a feature that enables certain kinds of events to cause
+    packets to be created and injected into the packet processing
+    pipeline of the device.  This effectively generalizes a user's P4
+    code from only processing packets, to processing a mix of packets
+    and events.
 + v1model - The v1model architecture as implemented in the BMv2
   software switch https://github.com/p4lang/behavioral-model
+  and at least partially documented here
+  https://github.com/p4lang/behavioral-model/blob/main/docs/simple_switch.md
 + DPDK - Data Plane Development Kit https://www.dpdk.org
   https://github.com/p4lang/p4c/tree/main/backends/dpdk
 
@@ -66,12 +79,17 @@ The ways of describing a P4 architecture that are common today include:
 + Implementations of P4 architectures are described in voluminous
   detail in their implementations.  Examples include:
   + The C++ code in https://github.com/p4lang/behavioral-model that
-    implements the v1model architecture.
+    implements the v1model architecture.  The implementation is spread
+    over many files, but as an example of part of the C++ code that
+    may be of particular interest, see the methods
+    [`ingress_thread`](https://github.com/p4lang/behavioral-model/blob/6ec3ef834fb5e2eb6da39f79d31fee9c0d7594f9/targets/simple_switch/simple_switch.cpp#L478)
+    and
+    [`egress_thread`](https://github.com/p4lang/behavioral-model/blob/6ec3ef834fb5e2eb6da39f79d31fee9c0d7594f9/targets/simple_switch/simple_switch.cpp#L644)
   + The C and/or C++ code in the P4 DPDK implementation of PSA and PNA.
   + Many tens of thousands of lines of Verilog/VHDL implementing an
     ASIC like Tofino, specifying the behavior down to the precise bit
-    level and what happens in every part of the ASIC on every clock
-    cycle.
+    level and what happens in every flip-flop, logic gate, SRAM word,
+    and TCAM entry of the ASIC on every clock cycle.
 
 It is not possible today to feed English text and pseudocode into
 formal analysis tools.  It might be possible to do so with C, C++,
@@ -98,7 +116,7 @@ The goals of such a specification language include:
   hundred lines of code/specification.  Human readers are a primary
   "target" for specifications written in this language.
 
-In summary, we want to enable writing specificaitons that are a
+In summary, we want to enable writing specifications that are a
 precise and "executable", with little effort required to use a single
 specification for both of these purposes.
 
@@ -145,7 +163,7 @@ architecture definition, it is likely that there will be
 architecture-defined metadata fields associated with a packet that are
 not visible to the P4 developer.
 
-Capabilities are named "C<number>" below.
+Capabilities are given names of the form `C<number>` below.
 
 
 ## C1
@@ -166,7 +184,8 @@ the packet.
 
 Drop a packet.
 
-# C4
+
+## C4
 
 Make a clone of a packet, both the packet contents and its associated
 metadata.
@@ -178,12 +197,12 @@ engine as a primitive?
 Answer: Because we want to be able to _define_ how a packet
 replication engine works, out of simpler primitive operations.  There
 are many possible ways to define the capabilities of a packet
-replication engine (e.g. Tofino ASICs have more features and options
-in their packet replication engines than defined in PSA).  Making
-exactly one clone of a packet, then modifying the clone and directing
-where it goes, within a loop, is about the simplest set of primitive
-operations I can think of that would enable defining the behavior of
-any packet replication engine.
+replication engine (e.g. TNA has many more features and options in its
+packet replication engine than defined in PSA).  Making exactly one
+clone of a packet, then modifying the clone and directing where it
+goes, within a loop, is about the simplest set of primitive operations
+I can think of that would enable defining the behavior of any packet
+replication engine.
 
 It also enables defining packet mirroring/cloning operations, too.
 
@@ -195,7 +214,8 @@ Create a new packet with specified contents and metadata.
 This is useful for defining the behavior of things like TNA's packet
 generators, which can create new packets that did not come from
 outside of the device, but can be created based on various internal
-triggers, e.g. a configurable length of time has passed.
+triggers, e.g. a configurable length of time has passed (see the link
+in the glossary for more details).
 
 
 ## C6
@@ -211,11 +231,12 @@ of the deparsed headers.
 
 ## What we should be able to specify with C1 through C6
 
-Operations that should be specifiable using the primitives above:
+P4 architecture features that we should be able to specify using the
+capabilities C1 through C6:
 
 + resubmit
 + recirculate
-+ multicast
++ multicast replication
 + unicast
 + drop
 + mirror/clone
@@ -248,8 +269,11 @@ Meter externs require at least one of C8 or C9.
 
 C8 enables a specification/implementation of Meter externs that
 explicilty store for each index the last time that the Meter was
-updated, and use this stored value to add new tokens to its buckets
-the next time it is updated.
+updated, `last_update_time`.  Every time an index of the Meter is
+updated, the implementation reads `last_update_time`value, determines
+how much time has elapsed since then, and calculates the number of new
+tokens that should be added to the Meter's bucket(s) from that elapsed
+time and the control plane configuration of the Meter index.
 
 C9 enables a specification/implementation of Meter externs that does
 not need to store the last time that the Meter was updated.  Instead,
@@ -271,8 +295,8 @@ packet generators.
 
 Define tasks that run when a port down or port up event occurs.
 
-C10 is needed for implementing one of the options in the TNA packet
-generator.
+C10 is needed for implementing the "Port down trigger" option of TNA
+packet generators (see glossary for link to details).
 
 
 ## C11
@@ -280,6 +304,37 @@ generator.
 Define a way to send messages to the "local runtime software".
 
 C11 is needed for implementing the Digest extern.
+
+
+## C12
+
+There should be a looping construct.  See discussion of C4 on packet
+replication engines for one example architecture feature that is
+definitely desired in order to fully specify a P4 architecture.
+
+For the purposes of formally reasoning about a P4 architecture, it is
+probably desirable to limit such loops to be bounded to a finite
+number of iterations.
+
+One approach would be to limit all looping features to a constant
+maximum number of iterations, where the constant is known at "compile
+time".  This might be sufficient.  For example, a parameter of an
+architecture specification could be "K is the longest packet
+replication list supported for any multicast group", and thus for
+example K=10,000 would be a compile-time known limit on the maximum
+number of iterations of the loop specifying the behavior of the packet
+replication engine.  In practice, all implementations of P4
+architectures have such finite size limits.
+
+Another approach would be a little more vague, where the looping
+construct was allowed to iterate over elements of a list/array data
+structure in the specification language, with the understanding that
+all such list/arrays at run time have a finite length, even if the
+maximum length is not known at compile time.
+
+I am sure that better experts than I on formal analysis tools can
+provide input on whether the distinction above is significant, and
+what the tradeoffs are.
 
 
 ## Other straightforward-looking features
