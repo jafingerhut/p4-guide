@@ -337,6 +337,16 @@ provide input on whether the distinction above is significant, and
 what the tradeoffs are.
 
 
+## C13
+
+Be able to do arithmetic and evaluate conditions on variables of P4-16
+data types, especially `bit<W>`, but in general all P4-16 types.
+
+This strongly suggests that this specification language should be a
+superset of P4-16, including as a subset all P4-16 data types and
+operations on them.
+
+
 ## Other straightforward-looking features
 
 TODO: Other externs that look easy, in the sense that their behavior
@@ -396,7 +406,7 @@ seem to require a way for an architecture definition to respond to
 link down events.
 
 
-## Control plane APIs
+# Control plane APIs
 
 It seems reasonable to consider including in such a specification
 language a way to specify the effects of control plane API operations.
