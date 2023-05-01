@@ -263,7 +263,7 @@ Get the current time.
 
 ## C9
 
-Define background tasks that run periodically.
+Define background processes that run periodically.
 
 Meter externs require at least one of C8 or C9.
 
@@ -277,7 +277,7 @@ time and the control plane configuration of the Meter index.
 
 C9 enables a specification/implementation of Meter externs that does
 not need to store the last time that the Meter was updated.  Instead,
-a periodic background task iterates over all indexes of the Meter,
+a periodic background process iterates over all indexes of the Meter,
 adding tokens to its bucket(s).
 
 With neither C8 nor C9, I do not see any way to specify the behavior
@@ -293,7 +293,7 @@ packet generators.
 
 ## C10
 
-Define tasks that run when a port down or port up event occurs.
+Define processes that run when a port down or port up event occurs.
 
 C10 is needed for implementing the "Port down trigger" option of TNA
 packet generators (see glossary for link to details).
@@ -382,9 +382,9 @@ are added and deleted.
 
 idle timeout, both PSA version and PNA more general version - like
 DirectCounter and DirectMeter in that they have per-table-entry state
-required.  This also requires a way to run periodic background tasks,
-e.g. to determine if it is time to send an idle timeout notification
-to the controller.
+required.  This also requires a way to run periodic background
+processes, e.g. to determine if it is time to send an idle timeout
+notification to the controller.
 
 new match kinds - this seems like it will require some kind of in-code
 definition of how the existing match kinds behave.

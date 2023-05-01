@@ -4,14 +4,17 @@ This directory contains a first attempt at specifying the PSA
 (Portable Switch Architecture) using a language that I will be
 experimenting with as I go.
 
-The structure of this specification is a set of tasks with guard
-conditions on each task.  Any task whose guard condition is true can
-be executed, and the choice between them is arbitrary.  Logically one
-event is processed at a time in the system.  Of course a real
-implementation would often perform many of these tasks in parallel,
-but for simplicity of writing and understanding the specification, the
-code is written in a way that assumes that at most one task is
-executed at a time.
+The structure of this specification is a set of processes with guard
+conditions on each process.  Any process whose guard condition is true
+can be executed, and the choice between them is arbitrary.  Logically
+one process is executed at a time in the system.  Of course a real
+implementation would often perform many of these processes in
+parallel, but for simplicity of writing and understanding the
+specification, the code is written in a way that assumes that at most
+one process is executed at a time.
+
+This is similar to the looping statement `do` in the Guarded Command
+Language: https://en.wikipedia.org/wiki/Guarded_Command_Language
 
 Because of this, a real implementation might allow behavior that is
 visible to "the outside" that is impossible according to this
@@ -123,3 +126,38 @@ package PSA_Switch<IH, IM, EH, EM, NM, CI2EM, CE2EM, RESUBM, RECIRCM> (
     EgressPipeline<EH, EM, NM, CI2EM, CE2EM, RECIRCM> egress,
     BufferingQueueingEngine bqe);
 ```
+
+
+
+# A note on the "granularity" of specification psa-try1
+
+There are many possible specifications of PSA using this style.
+
+One could make what each process does smaller than `psa-try1` does.
+For example, there could be a process that instead of executing all of
+the ingress parser, ingress control, and ingress deparser on each
+packet before finishing, could operate as follows:
+
++ One process executes only the ingress parser on a packet, saving all
+  intermediate results in a queue that is after the ingress parser,
+  but before the ingress control.
++ Another process executes only the ingress control on a packet,
+  saving all intermediate results in a queue that is after the ingress
+  control, but before the ingress deparser.
++ Yet another process executes only the ingress deparser on a packet.
+
+And similarly for egress parser, egress control, and egress deparser.
+
+One could even imagine breaking down the ingress control into multiple
+parts, each executed by a separate process, e.g. 12 processes, one per
+Tofino1 MAU stage.  However, that would require some way to take the
+ingress control and split it into multiple parts, such that composing
+them is equivalent to the ingress control code that the P4 developer
+writes.
+
+I mention this simply to point out that, as usual, there is more than
+one way to do things, including writing specifications.
+
+I would guess that specifications written in these different ways
+might have different possible behaviors that were visible externally,
+but do not have any examples of this at this time.
