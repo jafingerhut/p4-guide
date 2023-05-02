@@ -1,3 +1,18 @@
+// new_packet_available() returns true when there is a packet ready to
+// be received from a port.  This includes any port in PortIdSet,
+// including PSA_PORT_CPU, but not PSA_PORT_RECIRCULATE.
+extern bool new_packet_available();
+
+// get_new_packet should only be called when new_packet_available()
+// returns true.  It returns the contents of the new packet as a
+// return value, and the port on which it arrived as an 'out'
+// parameter.
+extern packet get_new_packet(out PortId_t port);
+
+// transmit_packet sends a packet to a port of the device.  port must
+// be in the set PortIdSet, and must not be equal to
+// PSA_PORT_RECIRCULATE.
+extern void transmit_packet(packet p, PortId_t port);
 
 // time_now() is an extern function supplied by the PSA
 // implementation.
@@ -12,10 +27,6 @@ extern error get_parser_error();
 // that the last invocation of IngressParser or EgressParser did not
 // extract or advance past.
 extern int get_parser_offset_bits();
-
-// Send a packet to a port of the device.  port must be in the set
-// PortIdSet, and must not be equal to PSA_PORT_RECIRCULATE.
-extern void transmit_packet(packet p, PortId_t port);
 
 // Represents a sequence of bits with a packet's contents
 extern packet {
@@ -35,7 +46,7 @@ extern packet {
     // and append only the data of p after the first 32 bits).
     void append_with_offset(packet p, in int offset);
 
-    // Return the length of the 
+    // Return the length of the packet, in bits
     int length_bits();
 }
 
@@ -48,7 +59,9 @@ list<newq_packet_t> newq;
 
 struct resubq_packet_t {
     PortId_t ingress_port;
-    RESUBM user_resubm;   // RESUBM is the type from the P4 program's instantiation of the PSA_Switch package
+    // Type RESUBM is from the P4 program's instantiation of the
+    // PSA_Switch package
+    RESUBM user_resubm;
     packet p;
 }
 
@@ -61,7 +74,9 @@ struct recircq_packet_t {
     // PSA somewhat by having _multiple_ recirculation ports, not
     // merely one.
     PortId_t ingress_port;
-    RECIRCM user_recircm;   // RECIRCM is the type from the P4 program's instantiation of the PSA_Switch package
+    // Type RECIRCM is from the P4 program's instantiation of the
+    // PSA_Switch package
+    RECIRCM user_recircm;
     packet p;
 }
 
@@ -79,13 +94,12 @@ struct tmq_packet_t {
     // instance is always 0 for NORMAL_UNICAST packets.
     EgressInstance_t instance;
 
-    // Note that at most one of user_nm, user_ci2em, and user_ce2em
-    // below is initialized for any particular packet.  Which one
-    // depends upon the value of packet_path.  We could explicitly
-    // define this as a union if one wished to do so, and if a syntax
-    // and semantics are defined for unions.
+    // Note: Exactly one of user_nm, user_ci2em, and user_ce2em below
+    // is used for any particular packet.  Which one depends upon the
+    // value of packet_path.  We could explicitly define this as a
+    // union, if a syntax and semantics are defined for unions.
 
-    // NM, CI2EM, and CE2EM are the types from the P4 program's
+    // The types NM, CI2EM, and CE2EM are from the P4 program's
     // instantiation of the PSA_Switch package.
     NM user_nm;
     CI2EM user_ci2em;
@@ -95,28 +109,33 @@ struct tmq_packet_t {
 }
 
 // TODO: What is a good syntax to declare something like a
-// two-dimensional array/dictionary of queues?
+// two-dimensional array of queues (or nested dictionary, in Python's
+// sense of the term dictionary)?
 
 // The intent is that for each pair (x, y) where x is in PortIdSet,
-// and y is in ClassOfServiceIdSet, there is a separate object
+// and y is in ClassOfServiceIdSet, there is a separate list object
 // tmq[x][y]
 
 list<tmq_packet_t> tmq[PortIdSet][ClassOfServiceIdSet];
 
 //////////////////////////////////////////////////////////////////////
-// New methods introduced for operating on values with type list in
+// New methods introduced for operating on values with type `list` in
 // this code:
 //
-// bool empty() - return true if the list contains 0 elements,
+// bool empty() - Return true if the list contains 0 elements,
 // otherwise false.
 //
-// T dequeue() - return the first element of the list, and modify the
+// T dequeue() - Return the first element of the list, and modify the
 // list so it no longer contains this element.  T is the type of
 // element contained in the list.
 //
-// void maybe_enqueue(T e) - nondeterministically choose to either (a)
+// void maybe_enqueue(T e) - Nondeterministically choose to either (a)
 // do nothing, or (b) modify the list so it contains all elements it
-// did before, plus the value e at the end.
+// did before, plus the value e appended at the end.  The value of `e`
+// is handled by P4_16 copy-in behavior, meaning that if e is a left
+// value, the caller can modify e's value after maybe_enqueue()
+// returns, and be guaranteed that such modifications will never
+// change the value appended to the list.
 //
 // Another possible set of parameters one might want for a
 // specification like this is the maximum number of elements that a
@@ -124,42 +143,50 @@ list<tmq_packet_t> tmq[PortIdSet][ClassOfServiceIdSet];
 //////////////////////////////////////////////////////////////////////
 
 
-// This process takes in new packets from outside, either from a front
-// panel port or the CPU port, when such a packet is available.
+// Process receive_new_packet takes in new packets from outside,
+// either from a front panel port or the CPU port, when such a packet
+// is available.
 process receive_new_packet {
     guard {
-        // TODO: I do not know a good way to write this, but basically
-        // "whenever the environment has a new packet ready to send to
-        // this device".
-        true
+        new_packet_available();
     }
     apply {
-        // TODO: Need some way to get these values describing the new
-        // received packet: p (with type packet) and input_port, which
-        // can be any port in PortIdSet except PSA_PORT_RECIRCULATE.
-        packet p = TODO;
-        PortId_t input_port = TODO;
+        PortId_t input_port;
+        packet p = get_new_packet(input_port);
         newq_packet_t newp = {ingress_port = input_port, packet = p};
-        // Method maybe_enqueue() might _not_ append the packet,
-        // causing the packet to be dropped, for
-        // implementation-specific reasons that are difficult to
-        // predict.  From the point of view of the specification, this
-        // is like a nondeterministic choice to drop or keep the
-        // packet.  The parameter value is passed by copy-in, so the
-        // caller is free to modify newp after maybe_enqueue()
-        // returns, and this will never affect the earlier enqueued
-        // packet+metadata contents.
+        // Note: Method maybe_enqueue() might _not_ append the packet
+        // to the list newq.  If it does not, then effectively the
+        // received packet p is dropped without ever being processed
+        // by the device.
+        //
+        // Pretty much every real network device has this possible
+        // behavior, but implementations often differ on exactly what
+        // conditions they use to determine whether to drop or keep
+        // the packet.  This specification does not attempt to
+        // enumerate such cases, but simply make it a possible
+        // behavior.
+        //
+        // If someone wants to avoid this dropping behavior, they use
+        // flow control and/or congestion control mechanisms to
+        // prevent the sender from sending packets when the receiver
+        // does not have a place to store the received packet,
+        // e.g. Ethernet pause frames.
+        // https://en.wikipedia.org/wiki/Ethernet_flow_control
         newq.maybe_enqueue(newp);
     }
 }
 
-// This is a control that can be invoked from several processes.  It
-// is _not_ a process.
+// ingress_processing is a control, written so that is useful to be
+// called from several processes defined below.  It is _not_ a
+// process.  In this kind of specification, the only way that any
+// control or parser will ever be called is from a process, either
+// directly, or indirectly via calls to intermediate controls or
+// parsers.
 control ingress_processing (
-    psa_ingress_parser_input_metadata_t istd,
+    in psa_ingress_parser_input_metadata_t istd,
     packet p,
-    RESUBM user_resubm,
-    RECIRCM user_recircm)
+    in RESUBM user_resubm,
+    in RECIRCM user_recircm)
 {
     apply {
         // Even though hdr is uninitialized here, because it is an
@@ -184,8 +211,7 @@ control ingress_processing (
 
         psa_ingress_output_metadata_t ostd;
         // See Section 6.2 of PSA spec for initial values of some
-        // fields of ostd that P4 developers writing Ingress code can
-        // assume have been initialized.
+        // fields of ostd that PSA promises are initialized.
         ostd.class_of_service = 0;
         ostd.clone = false;
         //ostd.clone_session_id; // initial value is undefined
@@ -197,9 +223,9 @@ control ingress_processing (
 
         packet_out buffer2;
         CI2EM clone_i2e_meta;
-        RESUBM resubmit_meta;
+        RESUBM resubmit_meta_out;
         NM normal_meta;
-        IngressDeparser.apply(buffer2, clone_i2e_meta, resubmit_meta,
+        IngressDeparser.apply(buffer2, clone_i2e_meta, resubmit_meta_out,
             normal_meta, hdr, user_meta, ostd);
 
         // Take the packet data output by the deparser (in buffer2),
@@ -237,33 +263,18 @@ control ingress_processing (
             // in any queues.
             return;  // This is the standard P4_16 return statement
         }
-
-        //////////////////////////////////////////////////////////////////////
         if (ClassOfServiceIdSet.member(ostd.class_of_service)) {
             ostd.class_of_service = 0;    // use default class 0 instead
             // Recommended to log error about unsupported
             // ostd.class_of_service value.
         }
-
         // TODO: Check whether the resulting packet is in the range of
         // lengths supported by the implementation, and drop it if its
         // length is outside of that range.
-
-        // Note: Some implementations might support a different range
-        // of packet lengths as stored in the traffic manager queues,
-        // than they do when sent and received on ports connected to
-        // other devices.  This is useful for supporting internal
-        // headers added to maximum-length packets while the packet is
-        // on its way from ingress to egress, but egress always
-        // removes those internal-only headers.  If you want to write
-        // a specification that includes that feature, a
-        // straightforward way is to define another parameter that is
-        // a different maximum packet length supported internally.
-
         if (ostd.resubmit) {
             resubq_packet_t resubp = {
                 ingress_port = istd.ingress_port,
-                user_resubm = resubmit_meta,
+                user_resubm = resubmit_meta_out,
                 p = modp};
             resubq.maybe_enqueue(resubp);
             return;
@@ -277,16 +288,18 @@ control ingress_processing (
             return;   // Do not continue below.
         }
         if (PortIdSet.member(ostd.egress_port)) {
-            // enqueue one packet for output port ostd.egress_port
-            // with class of service ostd.class_of_service
-            // Note: The values that are given as ... should never be
-            // used later, so the particular value does not matter.
+            // Enqueue one packet for output port ostd.egress_port
+            // with class of service ostd.class_of_service.  See
+            // comments elsewhere in this file about variable names
+            // beginning with `garbage`.
+            CI2EM garbage_ci2em;
+            CE2EM garbage_ce2em;
             tmq_packet_t normalp = {
                 packet_path = PSA_PacketPath_t.NORMAL_UNICAST,
                 instance = 0,
                 user_nm = normal_meta,
-                user_ci2em = (CI2EM) ...,
-                user_ce2em = (CE2EM) ...,
+                user_ci2em = garbage_ci2em,
+                user_ce2em = garbage_ce2em,
                 packet = modp};
             tmq[ostd.egress_port][ostd.class_of_service].maybe_enqueue(normalp);
         } else {
@@ -308,8 +321,17 @@ process ingress_processing_newq {
         psa_ingress_parser_input_metadata_t istd = {
             ingress_port = newp.ingress_port,
             packet_path = PSA_PacketPath_t.NORMAL};
-        ingress_processing.apply(istd, newp.p, (RESUBM) ...,
-            (RECIRCM) ...);
+        // The variables with names beginning with `garbage` are
+        // explicitly uninitialized.  Thus this specification allows
+        // _any_ possible values for these.  A correct PSA program
+        // will never use these values in a way that affects the
+        // packet processing behavior.  By making these values
+        // uninitialized in this specification, formal analysis tools
+        // can explicitly represent this fact, and possibly find bugs
+        // in P4 programs that use these values incorrectly.
+        RESUBM garbage_resubm;
+        RECIRCM garbage_recircm;
+        ingress_processing.apply(istd, newp.p, garbage_resubm, garbage_recircm);
     }
 }
 
@@ -323,8 +345,9 @@ process ingress_processing_resubq {
         psa_ingress_parser_input_metadata_t istd = {
             ingress_port = resubp.ingress_port,
             packet_path = PSA_PacketPath_t.RESUBMIT};
+        RECIRCM garbage_recircm;
         ingress_processing.apply(istd, resubp.p, resubp.user_resubm,
-            (RECIRCM) ...);
+            garbage_recircm);
     }
 }
 
@@ -338,7 +361,8 @@ process ingress_processing_recircq {
         psa_ingress_parser_input_metadata_t istd = {
             ingress_port = recircp.ingress_port,
             packet_path = PSA_PacketPath_t.RECIRCULATE};
-        ingress_processing.apply(istd, recircp.p, (RESUBM) ...,
+        RESUBM garbage_resubm;
+        ingress_processing.apply(istd, recircp.p, garbage_resubm,
             recircp.user_recircm);
     }
 }
@@ -363,8 +387,8 @@ process egress_processing {
             egress_port = egress_port,
             packet_path = pkt.packet_path};
 
-        IH hdr;
-        IM user_meta;
+        EH hdr;
+        EM user_meta;
         packet_in buffer = pkt.to_packet_in();
         Timestamp_t egress_timestamp = time_now();
 
@@ -383,8 +407,7 @@ process egress_processing {
 
         psa_egress_output_metadata_t ostd;
         // See Section 6.5 of PSA spec for initial values of some
-        // fields of ostd that P4 developers writing Egress code can
-        // assume have been initialized.
+        // fields of ostd that PSA promises are initialized.
         ostd.clone = false;
         // ostd.clone_session_id; // initial value is undefined
         ostd.drop = false;

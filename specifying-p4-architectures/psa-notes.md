@@ -35,44 +35,46 @@ typedef bit<unspecified> TimestampUint_t;
   and `PSA_PORT_RECIRCULATE`, and it really only makes sense to call
   an implementation a switch if it contains multiple other port ids
   used to identify front panel ports.  TODO: Is 0 allowed in this set?
-
 + `PSA_PORT_CPU` - A positive integer that is in `PortIdSet`.
-
 + `PSA_PORT_RECIRCULATE` - A positive integer that is in `PortIdSet`,
   and is not equal to `PSA_PORT_CPU`.
-
 + `MulticastGroupIdSet` - Non-empty set of non-negative integers, each
   a multicast group id value supported by the implementation.  Each
   must be a value of type `MulticastGroupUint_t`.  TODO: Is 0 allowed
   in this set?
-
 + `CloneSessionIdSet` - Non-empty set of non-negative integers, each a
   clone session id value supported by the implementation.  Each must
   be a value of type `CloneSessionIdUint_t`.  TODO: Is 0 allowed in
   this set?
-
 + `PSA_CLONE_SESSION_TO_CPU` - An integer in the set
   `CloneSessionIdSet`.  It is called out separately simply because it
   is a name that P4 developers writing code for PSA devices can rely
   on the fact that this value exists and is stable, even though the
   numeric value might differ from one PSA implementation to another.
-
 + `ClassOfServiceIdSet` - Non-empty set of non-negative integers, each
   a class of service value supported by the implementation.  Each must
   be a value of type `ClassOfServiceUint_t`.  The value 0 must be in
   this set.
-
 + `MinPacketLength`, `MaxPacketLength` - In units of bytes.
   `MinPacketLength` >= 1 byte.  `MaxPacketLength` >=
   `MinPacketLength`.  Both of these values must be of type
-  `PacketLengthUint_t`.  Example: An implementation supporting Jumbo
-  Ethernet frames might support packet lengths in the range
-  `MinPacketLength`=64 bytes up to and including
-  `MaxPacketLength`=9216 bytes.  See the Wikipedia page on Jumbo
-  frames and some of the links to other articles it contains.  It
-  appears there is no one single standard value for the longest Jumbo
-  Frame supported across all devices.
-
+  `PacketLengthUint_t`.
+  + Example: An implementation supporting Jumbo Ethernet frames might
+    support packet lengths in the range `MinPacketLength`=64 bytes up
+    to and including `MaxPacketLength`=9216 bytes.  See the Wikipedia
+    page on Jumbo frames and some of the links to other articles it
+    contains.  It appears there is no one single standard value for
+    the longest Jumbo Frame supported across all devices.
+  + Note: Some implementations might support a larger range of packet
+    lengths for packets stored in the traffic manager queues, than
+    they support for packets sent and received on ports connected to
+    other devices.  This is useful for supporting internal headers
+    added to maximum-length packets while the packet is on its way
+    from ingress to egress, but egress always removes those
+    internal-only headers.  If you want to write a specification that
+    includes that feature, a straightforward way is to define another
+    parameter that is a different maximum packet length supported
+    internally.
 + `EgressInstanceSet` - Non-empty set of non-negative integers, each a
   alue of type `EgressInstance_t` that is supported by the
   implementation.  Each must be a value of type
@@ -160,3 +162,13 @@ longer than `MaxPacketLength`, e.g. if one or more headers are added
 and the payload is long.
 
 PSA does not specify what happens for such packets.
+
+Some possible behaviors in this situation include:
+
++ Truncate packets that are too long by discarding any bits after the
+  maximum supported length.
++ Pad packets that are too short by appending 0 bits, or unspecified
+  garbage data, to the end of the packet.
++ Disard such packets.
++ The device crashes, because it was not designed to anticipate this
+  possibility.
