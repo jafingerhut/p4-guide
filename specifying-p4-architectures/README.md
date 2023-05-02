@@ -352,7 +352,7 @@ operations on them.
 TODO: Other externs that look easy, in the sense that their behavior
 is either:
 
-+ output is pure function of inputs, with on internal state
++ output is pure function of inputs, with no internal state
 
 or the slightly more complicated, but still easy to specify and
 formally reason about:

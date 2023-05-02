@@ -70,17 +70,6 @@ This example specification will drop packets output by a deparser that
 are shorter than `MinPacketLength`, or longer than `MaxPacketLength`.
 
 
-## Useful operations / primitives for a P4 architecture specification language
-
-Operations / notation that seems generally useful for specifying many
-architectures, not only this one:
-
-##
-
-Convert a header to/from a bit vector - useful for specifying behavior
-of emit() and extract().
-
-
 # State that is "global" in the architecture
 
 ## Traffic manager configuration state
@@ -98,10 +87,10 @@ or all packets processed.
   for port `port`, ready to do egress processing
 
 I will consider the set of ports and classes to be unchanging for now.
-Some implementations may enable ports to be enabled or disabled at run
-time (e.g. reconfiguring a 100 Gbps Ethernet port to operate instead
-as 4 separate 25 Gbps Ethernet ports), or to add or remove classes to
-a port at run time.
+Some implementations may provide a feature where ports can be enabled
+or disabled at run time (e.g. reconfiguring a 100 Gbps Ethernet port
+to operate instead as 4 separate 25 Gbps Ethernet ports), or classes
+can be added or removed at run time.
 
 
 ## Ingress dynamic state
