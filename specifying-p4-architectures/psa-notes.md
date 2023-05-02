@@ -87,6 +87,31 @@ sets mentioned above.  It seems likely to me that most implementations
 would not have gaps in the other sets.
 
 
+# Parameters when loading a particular P4 program in the PSA architecture
+
+There are several types, usually defined as P4 structs, that a P4
+developer writing a program for PNA creates.  In an implementation,
+values of several of these types need to be "carried along" with
+packets, e.g. the user-defined metadata struct that is output by the
+IngressParser, input to Ingress control, typically modified by Ingress
+control code, then output to the IngressDeparser.  This struct type is
+called `IH` in the `psa.p4` include file, excerpted below.
+
+```
+package PSA_Switch<IH, IM, EH, EM, NM, CI2EM, CE2EM, RESUBM, RECIRCM> (
+    IngressPipeline<IH, IM, NM, CI2EM, RESUBM, RECIRCM> ingress,
+    PacketReplicationEngine pre,
+    EgressPipeline<EH, EM, NM, CI2EM, CE2EM, RECIRCM> egress,
+    BufferingQueueingEngine bqe);
+```
+
+I will use the types `IH`, `IM`, etc. that are type parameters to the
+package `PSA_Switch` in the specification `psa-try1.p4` whenever it is
+convenient.  The architecture definition never "looks inside" values
+of these types -- it simply carries values of these types with packets
+at appropriate parts of the packet flow.
+
+
 # Details that the PSA specification is vague about
 
 

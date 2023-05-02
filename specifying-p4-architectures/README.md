@@ -375,6 +375,9 @@ formally reason about:
 TODO: Other architecture features that will need a bit more thought to
 figure out a syntax and semantics for specifying them:
 
+
+### Features with per-table-entry state modified in data plane
+
 DirectCounter/Meter - like Counter and Meter, but need a way to
 specify that their state is one-to-one with entries of a table, and
 such state is added and deleted when the corresponding table entries
@@ -386,11 +389,30 @@ required.  This also requires a way to run periodic background
 processes, e.g. to determine if it is time to send an idle timeout
 notification to the controller.
 
-new match kinds - this seems like it will require some kind of in-code
-definition of how the existing match kinds behave.
 
-ActionProfile - This modifies how one gets from a matching entry to
-the action plus action-parameters that should be invoked.
+### Features that modify the behavior of match-action tables
+
+For all of the architecture features in this section, it seems like
+writing precise specifications for them would be best done if we first
+define the existing behavior of normal P4 tables in a concise manner,
+e.g. model them in the specification language as a set of (key, value)
+pairs, with a specification language primitive for "execute the action
+specified by this value".
+
+new match kinds - Given the kind of specification of existing
+match-action tables described above, which should include the behavior
+of standard match kinds like exact, lpm, ternary, defining new match
+kinds should become a modification of the part of that specification
+describing how search keys are compared against table entry keys, and
+whether they match.
+
+add-on-miss feature of PNA - Given the above, a definition of
+add-on-miss would become a simple enhancement to that specification:
+on a miss, add a new (key, value) pair in the data plane if the extern
+function `add_entry` is called.
+
+ActionProfile - This modifies how one gets from a matching table entry
+to the "action plus action-parameters that should be invoked".
 
 ActionSelector - This modifies how one gets from a matching entry to
 the action plus action-parameters that should be invoked, in a more

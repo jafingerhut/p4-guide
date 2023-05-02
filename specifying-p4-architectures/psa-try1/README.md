@@ -16,9 +16,15 @@ one process is executed at a time.
 This is similar to the looping statement `do` in the Guarded Command
 Language: https://en.wikipedia.org/wiki/Guarded_Command_Language
 
-Because of this, a real implementation might allow behavior that is
-visible to "the outside" that is impossible according to this
-specification.
+It seems desirable if an architecture specification can describe all
+possible behaviors for a correct implementation of an architecture,
+and then implementations might restrict themselves to a subset of what
+the specification allows.  I do not yet know if `psa-try1.p4` achieves
+that goal.
+
+Because of the level of granularity of the processes in `psa-try1.p4`,
+a real implementation might allow behavior that is visible to "the
+outside" that is impossible according to this specification.
 
 TODO: I cannot think of an example of this at the moment, but have
 marked this with TODO to remind me to think of it more later, after
@@ -111,29 +117,11 @@ e.g. one per some kind of traffic class value.  Similarly it might
 have a separate `newq` per (input port, traffic class) pair.
 
 
-## Egress dynamic state
-
-
-# Top level "parameters" when instantiating a particular P4 program in the PSA architecture
-
-The types `IH`, `IM`, etc. that are type parameters to the package
-`PSA_Switch` in the psa.p4 include file, exercpted below:
-
-```
-package PSA_Switch<IH, IM, EH, EM, NM, CI2EM, CE2EM, RESUBM, RECIRCM> (
-    IngressPipeline<IH, IM, NM, CI2EM, RESUBM, RECIRCM> ingress,
-    PacketReplicationEngine pre,
-    EgressPipeline<EH, EM, NM, CI2EM, CE2EM, RECIRCM> egress,
-    BufferingQueueingEngine bqe);
-```
-
-
-
-# A note on the "granularity" of specification psa-try1
+# A note on the "granularity" of specification psa-try1.p4
 
 There are many possible specifications of PSA using this style.
 
-One could make what each process does smaller than `psa-try1` does.
+One could make what each process does smaller than `psa-try1.p4` does.
 For example, there could be a process that instead of executing all of
 the ingress parser, ingress control, and ingress deparser on each
 packet before finishing, could operate as follows:
