@@ -156,7 +156,8 @@ struct tmq_packet_t {
 
 // TODO: What is a good syntax to declare something like a
 // two-dimensional array of queues (or nested dictionary, in Python's
-// sense of the term dictionary)?
+// sense of the term dictionary)?  We could instead make this an
+// instance of ExactMap extern with port and class_of_service as keys.
 
 // The intent is that for each pair (x, y) where x is in PortIdSet,
 // and y is in ClassOfServiceIdSet, there is a separate list object
@@ -314,10 +315,10 @@ control ingress_processing (
         // processing is complete" of PSA spec.  The code below is
         // _very_ similar to that.
         if (ostd.clone) {
-            // TODO: Make the sets like CloneSessionIdSet an extern
-            // object that has a method called 'member' returning a
-            // boolean.  Either that or make CloneSessionIdSet an
-            // instance of the ExactMap extern that returns a bool.
+            // TODO: Consider making sets like CloneSessionIdSet
+            // instances of ExactMap extern object, where lookup
+            // method takes clone session id as key and returns a
+            // bool.
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
                     clone_session_entry[ostd.clone_session_id];
