@@ -11,7 +11,6 @@ hypothetical language for precisely describing P4 architectures.
   https://github.com/p4lang/pna
 + TNA - Tofino Native Architecture
   https://github.com/barefootnetworks/Open-Tofino
-
 + TNA packet generators - See Section 9 "Packet Generation" of
   https://github.com/barefootnetworks/Open-Tofino/blob/master/PUBLIC_Tofino-Native-Arch.pdf
   for details.
@@ -116,8 +115,8 @@ The goals of such a specification language include:
   hundred lines of code/specification.  Human readers are a primary
   "target" for specifications written in this language.
 
-In summary, we want to enable writing specifications that are a
-precise and "executable", with little effort required to use a single
+In summary, we want to enable writing specifications that are precise
+and "executable", with little effort required to use a single
 specification for both of these purposes.
 
 Non-goals of such a specification language are:
@@ -303,7 +302,9 @@ packet generators (see glossary for link to details).
 
 Define a way to send messages to the "local runtime software".
 
-C11 is needed for implementing the Digest extern.
+C11 is needed for implementing the Digest extern, and for sending idle
+timeout notification messages for tables with the idle timeout option
+enabled.
 
 
 ## C12
@@ -345,6 +346,11 @@ data types, especially `bit<W>`, but in general all P4-16 types.
 This strongly suggests that this specification language should be a
 superset of P4-16, including as a subset all P4-16 data types and
 operations on them.
+
+Interestingly (to me), the recent addition of the `list` data type to
+the P4-16 language spec could be quite useful in using P4-16 as an
+architecture specification language, especially by introducing some
+operations that enable such lists to be modified at run time.
 
 
 ## Other straightforward-looking features

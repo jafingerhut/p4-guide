@@ -1,3 +1,72 @@
+//////////////////////////////////////////////////////////////////////
+// Parameter values that must be chosen as part of creating a
+// particular instantiation of this specification:
+//////////////////////////////////////////////////////////////////////
+
+// Bit widths for these types:
+
+// PortId_t
+// MulticastGroup_t
+// CloneSessionId_t
+// ClassOfService_t
+// PacketLength_t
+// EgressInstance_t
+// Timestamp_t
+
+// Sets of valid values for several types:
+
+// PortIdSet
+// PSA_PORT_CPU - not currently used in this specification
+// PSA_PORT_RECIRCULATE
+// MulticastGroupIdSet - not currently used in this specification
+// CloneSessionIdSet
+// PSA_CLONE_SESSION_TO_CPU - not currently used in this specification
+// ClassOfServiceIdSet
+// MinPacketLengthBytes
+// MaxPacketLengthBytes
+// EgressInstanceSet - not currently used in this specification
+
+//////////////////////////////////////////////////////////////////////
+// Definitions from the psa.p4 include file
+//////////////////////////////////////////////////////////////////////
+
+// Assume that anything defined within the psa.p4 include file can be
+// used in this specification, e.g. at least these definitions are
+// used:
+
+// enum PSA_PacketPath_t
+// struct psa_ingress_parser_input_metadata_t
+// struct psa_ingress_input_metadata_t
+// struct psa_ingress_output_metadata_t
+// struct psa_egress_parser_input_metadata_t
+// struct psa_egress_input_metadata_t
+// struct psa_egress_output_metadata_t
+// struct psa_egress_deparser_input_metadata_t
+
+//////////////////////////////////////////////////////////////////////
+// Types, parser, and control definitions from a user's P4 program
+// written for PSA
+//////////////////////////////////////////////////////////////////////
+
+// Types from the user's P4 program written for PSA, from the
+// instantiation of the PSA_Switch package.
+
+// IH IM EH EM NM CI2EM CE2EM RESUBM RECIRCM
+
+// Parsers and controls from the user's P4 program written for PSA,
+// for which the names below are used when calling them from this
+// specification.  These are the names used when defining the
+// parameter list of these objects within the psa.p4 include file:
+
+// IngressParser Ingress IngressDeparser
+// EgressParser  Egress  EgressDeparser
+
+//////////////////////////////////////////////////////////////////////
+// Extern functions that we rely upon to implement this specification,
+// and that seem generally useful for many other P4 architecture
+// specifications, too.
+//////////////////////////////////////////////////////////////////////
+
 // new_packet_available() returns true when there is a packet ready to
 // be received from a port.  This includes any port in PortIdSet,
 // including PSA_PORT_CPU, but not PSA_PORT_RECIRCULATE.
@@ -58,6 +127,34 @@ extern packet {
     // resulting packet is at most packet_length_bytes bytes long.
     void tuncate_to_length_bytes(in int packet_length_bytes);
 }
+
+//////////////////////////////////////////////////////////////////////
+// New methods introduced for operating on values with type `list`
+// used in this specification
+//////////////////////////////////////////////////////////////////////
+
+// bool empty() - Return true if the list contains 0 elements,
+// otherwise false.
+//
+// T dequeue() - Return the first element of the list, and modify the
+// list so it no longer contains this element.  T is the type of
+// element contained in the list.
+//
+// void maybe_enqueue(T e) - Nondeterministically choose to either (a)
+// do nothing, or (b) modify the list so it contains all elements it
+// did before, plus the value e appended at the end.  The value of `e`
+// is handled by P4_16 copy-in behavior, meaning that if e is a left
+// value, the caller can modify e's value after maybe_enqueue()
+// returns, and be guaranteed that such modifications will never
+// change the value appended to the list.
+//
+// Another possible set of parameters one might want for a
+// specification like this is the maximum number of elements that a
+// queue is allowed to contain.
+
+//////////////////////////////////////////////////////////////////////
+// Configuration state for the traffic manager (aka packet buffer)
+//////////////////////////////////////////////////////////////////////
 
 // Configuration state for multicast packet replication lists,
 // modifiable only via control plane API.
@@ -178,34 +275,10 @@ struct tmq_packet_t {
 
 list<tmq_packet_t> tmq[PortIdSet][ClassOfServiceIdSet];
 
-//////////////////////////////////////////////////////////////////////
-// New methods introduced for operating on values with type `list` in
-// this code:
-//
-// bool empty() - Return true if the list contains 0 elements,
-// otherwise false.
-//
-// T dequeue() - Return the first element of the list, and modify the
-// list so it no longer contains this element.  T is the type of
-// element contained in the list.
-//
-// void maybe_enqueue(T e) - Nondeterministically choose to either (a)
-// do nothing, or (b) modify the list so it contains all elements it
-// did before, plus the value e appended at the end.  The value of `e`
-// is handled by P4_16 copy-in behavior, meaning that if e is a left
-// value, the caller can modify e's value after maybe_enqueue()
-// returns, and be guaranteed that such modifications will never
-// change the value appended to the list.
-//
-// Another possible set of parameters one might want for a
-// specification like this is the maximum number of elements that a
-// queue is allowed to contain.
-//////////////////////////////////////////////////////////////////////
 
-
-// Process receive_new_packet takes in new packets from outside,
-// either from a front panel port or the CPU port, when such a packet
-// is available.
+// Process receive_new_packet takes in new packets from outside, when
+// such a packet is available.  These can come either from a front
+// panel port, or the CPU port.
 process receive_new_packet {
     guard {
         new_packet_available();
@@ -236,6 +309,11 @@ process receive_new_packet {
     }
 }
 
+// replicate_packet is a control, not a process.  It is only called
+// when invoked explicitly from a process (perhaps indirectly via one
+// or more other controls in the call stack).  It is common code used
+// for multicast packet replication and packet clone operations, which
+// in PSA can make multiple clones of a packet.
 control replicate_packet (
     packet p,
     in PSA_PacketPath_t packet_path,
@@ -364,8 +442,8 @@ control ingress_processing (
             // Recommended to log error about unsupported
             // ostd.class_of_service value.
         }
-        if ((modp.length_bits() < (8 * MinPacketLength)) ||
-            (modp.length_bits() > (8 * MaxPacketLength)))
+        if ((modp.length_bits() < (8 * MinPacketLengthBytes)) ||
+            (modp.length_bits() > (8 * MaxPacketLengthBytes)))
         {
             // TODO: Increment control-plane readable error count
             // specific to this reason for dropping the packet.
@@ -390,6 +468,13 @@ control ingress_processing (
                 ostd.class_of_service,
                 mcast_group_replication_list.lookup({ostd.multicast_group}),
                 normal_meta, garbage_ci2em, garbage_ce2em);
+            // TODO: Figure out what to do if ostd.multicast_group is
+            // not in the set MulticastGroupIdSet.  One simple
+            // approach is to define that for such values,
+            // mcast_group_replication_list.lookup() always returns an
+            // empty list.  It would be nice for debugging purposes if
+            // there was a counter incremented when this situation
+            // occurs.
             return;   // Do not continue below.
         }
         if (PortIdSet.member(ostd.egress_port)) {
@@ -557,8 +642,8 @@ process egress_processing {
             // Drop the packet by _not_ enqueueing it anywhere.
             return;   // Do not continue below.
         }
-        if ((modp.length_bits() < (8 * MinPacketLength)) ||
-            (modp.length_bits() > (8 * MaxPacketLength)))
+        if ((modp.length_bits() < (8 * MinPacketLengthBytes)) ||
+            (modp.length_bits() > (8 * MaxPacketLengthBytes)))
         {
             // TODO: Increment control-plane readable error count
             // specific to this reason for dropping the packet.

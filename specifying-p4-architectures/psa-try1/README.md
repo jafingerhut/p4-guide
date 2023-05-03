@@ -26,9 +26,9 @@ Because of the level of granularity of the processes in `psa-try1.p4`,
 a real implementation might allow behavior that is visible to "the
 outside" that is impossible according to this specification.
 
-TODO: I cannot think of an example of this at the moment, but have
-marked this with TODO to remind me to think of it more later, after
-the specification is written.
+See the section [Example variant of psa-try1 that has more externally
+observable
+behaviors](example-variant-of-psa-try1-that-has-more-externally-observable-behaviors) for an example of this.
 
 
 # Parameters defining a PSA implementation
@@ -67,7 +67,8 @@ counter and meter operations invoked during egress.
 ## What happens if a packet output by a deparser is outside of supported range of lengths?
 
 This example specification will drop packets output by a deparser that
-are shorter than `MinPacketLength`, or longer than `MaxPacketLength`.
+are shorter than `MinPacketLengthBytes`, or longer than
+`MaxPacketLengthBytes`.
 
 
 # State that is "global" in the architecture
@@ -161,7 +162,7 @@ might have different possible behaviors that were visible externally,
 but do not have any examples of this at this time.
 
 
-# Example of variant of psa-try1.p4 that has more externally observable behaviors
+# Example variant of psa-try1 that has more externally observable behaviors
 
 This is not just a variant for the sake of making up a variant.  I
 believe that this variant of psa-try1.p4 is actually closer to how

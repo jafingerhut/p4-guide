@@ -55,16 +55,16 @@ typedef bit<unspecified> TimestampUint_t;
   a class of service value supported by the implementation.  Each must
   be a value of type `ClassOfServiceUint_t`.  The value 0 must be in
   this set.
-+ `MinPacketLength`, `MaxPacketLength` - In units of bytes.
-  `MinPacketLength` >= 1 byte.  `MaxPacketLength` >=
-  `MinPacketLength`.  Both of these values must be of type
++ `MinPacketLengthBytes`, `MaxPacketLengthBytes` - In units of bytes.
+  `MinPacketLengthBytes` >= 1 byte.  `MaxPacketLengthBytes` >=
+  `MinPacketLengthBytes`.  Both of these values must be of type
   `PacketLengthUint_t`.
   + Example: An implementation supporting Jumbo Ethernet frames might
-    support packet lengths in the range `MinPacketLength`=64 bytes up
-    to and including `MaxPacketLength`=9216 bytes.  See the Wikipedia
-    page on Jumbo frames and some of the links to other articles it
-    contains.  It appears there is no one single standard value for
-    the longest Jumbo Frame supported across all devices.
+    support packet lengths in the range `MinPacketLengthBytes`=64
+    bytes up to and including `MaxPacketLengthBytes`=9216 bytes.  See
+    the Wikipedia page on Jumbo frames and some of the links to other
+    articles it contains.  It appears there is no one single standard
+    value for the longest Jumbo Frame supported across all devices.
   + Note: Some implementations might support a larger range of packet
     lengths for packets stored in the traffic manager queues, than
     they support for packets sent and received on ports connected to
@@ -156,10 +156,10 @@ This is not specified in PSA.
 
 ## What happens if a packet output by a deparser is outside of supported range of lengths?
 
-A deparsed packet could be shorter than `MinPacketLength`, e.g. if one
-or more headers are removed and the payload is short, or could be
-longer than `MaxPacketLength`, e.g. if one or more headers are added
-and the payload is long.
+A deparsed packet could be shorter than `MinPacketLengthBytes`,
+e.g. if one or more headers are removed and the payload is short, or
+could be longer than `MaxPacketLengthBytes`, e.g. if one or more
+headers are added and the payload is long.
 
 PSA does not specify what happens for such packets.
 
