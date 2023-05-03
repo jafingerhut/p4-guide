@@ -72,6 +72,15 @@ are shorter than `MinPacketLength`, or longer than `MaxPacketLength`.
 
 # State that is "global" in the architecture
 
+This figure gives an overview of the packet queues that represent the
+global state of the architecture specification, and what each process
+does.
+
+<img src="psa-try1-figure.png"
+alt="Figure showing processes, packet queues, and P4-programmable blocks in specification psa-try1"
+align="center"/>
+
+
 ## Traffic manager configuration state
 
 This state changes only when the control plane makes explicit API
