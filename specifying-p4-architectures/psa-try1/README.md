@@ -147,3 +147,42 @@ one way to do things, including writing specifications.
 I would guess that specifications written in these different ways
 might have different possible behaviors that were visible externally,
 but do not have any examples of this at this time.
+
+
+# Example of variant of psa-try1.p4 that has more externally observable behaviors
+
+This is not just a variant for the sake of making up a variant.  I
+believe that this variant of psa-try1.p4 is actually closer to how
+some switch ASICs work than psa-try1.p4 is.
+
+Sending a unicast packet from ingress to the traffic manager (TM) is
+just a single enqueue operation, and the common case for most switches
+in operation.
+
+Sending a multicast packet from ingress to the TM often goes through a
+little hardware logic that does the packet replication in such a way
+that at most one copy of the packet is created every clock cycle or
+so.
+
+If packet A arrives and is multicast to a group with 10 output ports,
+and immediately afterwards packet B arrives and is unicast to one of
+those 10 output ports, say port P, such a switch implementation could
+enqueue packet B in the TM queue for port P _before_ it creates the
+copy of packet A going to port B and enqueueing it.
+
+psa-try1.p4 will never exhibit this behavior, because it models the
+behavior such that all copies are made of one packet, before the next
+packet does ingress processing.
+
+We could write a variant of psa-try1.p4 such that during ingress
+processing, it puts packets to be multicast after ingress processing
+into a new queue `multicastq`, and a new process representing the
+packet replication engine will dequeue packets from `multicastq`,
+replicate them, and enqueue the copies in the appropriate `tmq`'s.
+However, unicast packets from ingress processing will go straight to
+being enqueued in the destination `tmq`.
+
+So this is just one of probably many possible examples showing that
+how one chooses to write a specification in this "collection of
+processes connected by queues" style can affect the externally
+observable behaviors.
