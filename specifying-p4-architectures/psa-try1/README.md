@@ -28,7 +28,7 @@ outside" that is impossible according to this specification.
 
 See the section [Example variant of psa-try1 that has more externally
 observable
-behaviors](example-variant-of-psa-try1-that-has-more-externally-observable-behaviors) for an example of this.
+behaviors](#example-variant-of-psa-try1-that-has-more-externally-observable-behaviors) for an example of this.
 
 
 # Parameters defining a PSA implementation
