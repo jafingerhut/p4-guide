@@ -66,17 +66,22 @@ struct replication_list_entry_t {
     EgressInstance_t instance;
 }
 
-// TODO: We could instead make mcast_group_replication_list a table
-// with multicast group id as the key.  Alternately an ExactMap extern
-// instance.
+// ExactMap is an extern defined here:
+// https://github.com/p4lang/pna/pull/52
 
 // Note that there is an assumption here that the control plane API
 // for configuring multicast group replication lists checks that all
 // port and instance values in the replication list are supported.
-list<replication_list_entry_t> mcast_group_replication_list[MulticastGroupIdSet];
 
-// Configuration state for clone sessions, modifiable only via control
-// plane API.
+struct mcast_group_key_t {
+    MulticastGroup_t mcast_group;
+}
+
+ExactMap<mcast_group_key_t, list<replication_list_entry_t>>
+    mcast_group_replication_list;
+
+// clone_session_entry is configuration state for clone sessions,
+// modifiable only via control plane API.
 
 // Note that there is an assumption here that the control plane API
 // for configuring clone sessions only permits values of
@@ -90,7 +95,11 @@ struct clone_session_entry_t {
     PacketLength_t packet_length_bytes;
 }
 
-clone_session_entry_t clone_session_entry[CloneSessionIdSet];
+struct clone_session_id_key_t {
+    CloneSessionId_t clone_session_id;
+}
+
+ExactMap<clone_session_id_key_t, clone_session_entry_t> clone_session_entry;
 
 //////////////////////////////////////////////////////////////////////
 // Packet queues
@@ -156,8 +165,12 @@ struct tmq_packet_t {
 
 // TODO: What is a good syntax to declare something like a
 // two-dimensional array of queues (or nested dictionary, in Python's
-// sense of the term dictionary)?  We could instead make this an
-// instance of ExactMap extern with port and class_of_service as keys.
+// sense of the term dictionary)?
+
+// We could make tmq an instance of the ExactMap extern with port and
+// class_of_service as keys, but that has the implication that the
+// keys and values can be configured via a control plane API, which
+// for tmq it likely would not be.
 
 // The intent is that for each pair (x, y) where x is in PortIdSet,
 // and y is in ClassOfServiceIdSet, there is a separate list object
@@ -315,13 +328,9 @@ control ingress_processing (
         // processing is complete" of PSA spec.  The code below is
         // _very_ similar to that.
         if (ostd.clone) {
-            // TODO: Consider making sets like CloneSessionIdSet
-            // instances of ExactMap extern object, where lookup
-            // method takes clone session id as key and returns a
-            // bool.
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
-                    clone_session_entry[ostd.clone_session_id];
+                    clone_session_entry.lookup({ostd.clone_session_id});
                 packet() cloned_pkt;
                 cloned_pkt.copy(modp);
                 if (e.truncate) {
@@ -371,7 +380,7 @@ control ingress_processing (
             CE2EM garbage_ce2em;
             replicate_packet.apply(modp, PSA_PacketPath_t.NORMAL_MULTICAST,
                 ostd.class_of_service,
-                mcast_group_replication_list[ostd.multicast_group],
+                mcast_group_replication_list.lookup({ostd.multicast_group}),
                 normal_meta, garbage_ci2em, garbage_ce2em);
             return;   // Do not continue below.
         }
@@ -516,7 +525,7 @@ process egress_processing {
         if (ostd.clone) {
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
-                    clone_session_entry[ostd.clone_session_id];
+                    clone_session_entry.lookup({ostd.clone_session_id});
                 packet() cloned_pkt;
                 cloned_pkt.copy(modp);
                 if (e.truncate) {
