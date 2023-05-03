@@ -336,6 +336,10 @@ control ingress_processing (
                 if (e.truncate) {
                     cloned_pkt.truncate_to_length_bytes(e.packet_length_bytes);
                 }
+                // TODO: If e.truncate is false, should probably make
+                // a check to see if the packet has a supported length
+                // here, and if not, skip the call to replicate_packet
+                // below and increment an error count instead.
                 NM garbage_nm;  // See Note 1
                 CE2EM garbage_ce2em;
                 replicate_packet.apply(cloned_pkt, PSA_PacketPath_t.CLONE_I2E,
@@ -360,9 +364,13 @@ control ingress_processing (
             // Recommended to log error about unsupported
             // ostd.class_of_service value.
         }
-        // TODO: Check whether the resulting packet is in the range of
-        // lengths supported by the implementation, and drop it if its
-        // length is outside of that range.
+        if ((modp.length_bits() < (8 * MinPacketLength)) ||
+            (modp.length_bits() > (8 * MaxPacketLength)))
+        {
+            // TODO: Increment control-plane readable error count
+            // specific to this reason for dropping the packet.
+            return;
+        }
         if (ostd.resubmit) {
             resubq_packet_t resubp = {
                 ingress_port = istd.ingress_port,
@@ -515,10 +523,6 @@ process egress_processing {
         modp.from_packet_out(buffer2);
         modp.append_with_offset(pkt, first_unparsed_bit_offset);
 
-        // TODO: Check whether the resulting packet is in the range of
-        // lengths supported by the implementation, and drop it if its
-        // length is outside of that range.
-
         // Refer to section 6.5 "Behavior of packets after egress
         // processing is complete" of PSA spec.  The code below is
         // _very_ similar to that.
@@ -531,6 +535,10 @@ process egress_processing {
                 if (e.truncate) {
                     cloned_pkt.truncate_to_length_bytes(e.packet_length_bytes);
                 }
+                // TODO: If e.truncate is false, should probably make
+                // a check to see if the packet has a supported length
+                // here, and if not, skip the call to replicate_packet
+                // below and increment an error count instead.
                 NM garbage_nm;  // See Note 1
                 CI2EM garbage_ci2em;
                 replicate_packet.apply(cloned_pkt, PSA_PacketPath_t.CLONE_E2E,
@@ -548,6 +556,13 @@ process egress_processing {
         if (ostd.drop) {
             // Drop the packet by _not_ enqueueing it anywhere.
             return;   // Do not continue below.
+        }
+        if ((modp.length_bits() < (8 * MinPacketLength)) ||
+            (modp.length_bits() > (8 * MaxPacketLength)))
+        {
+            // TODO: Increment control-plane readable error count
+            // specific to this reason for dropping the packet.
+            return;
         }
         if (istd.egress_port == PSA_PORT_RECIRCULATE) {
             recircq_packet_t recircp = {

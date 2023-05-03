@@ -87,6 +87,18 @@ This state changes only when the control plane makes explicit API
 calls to change it.  Processing packets never causes it to change,
 except perhaps for any packet/byte counters that might be included.
 
+`mcast_group_replication_list` is an instance of the `ExactMap`
+extern.  Its value represents the multicast group configuration table,
+i.e. for each multicast group id, what are the list of (egress_port,
+instance) pairs to make packet copies for?
+
+`clone_session_entry` is an instance of the `ExactMap` extern.  Its
+value represents the clone session configuration table, i.e. for each
+clone session id, where should cloned copies of the packet be sent,
+with what class_of_service value, and should the packet be truncated
+to a specified maximum length, or not?
+
+
 ## Traffic manager dynamic state
 
 This state can change as packets are processed, perhaps even for most
