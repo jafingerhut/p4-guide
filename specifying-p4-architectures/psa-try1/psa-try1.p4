@@ -30,7 +30,7 @@ extern int get_parser_offset_bits();
 
 // Represents a sequence of bits with a packet's contents
 extern packet {
-    packet();  // constructor
+    packet();  // constructor that returns a packet with length 0
 
     // Return a packet_in object that has the same packet contents as
     // this packet.
@@ -40,6 +40,11 @@ extern packet {
     // packet in p
     void from_packet_out(packet_out p);
 
+    // Copy the contents of p into this instance of type packet.
+    // Afterwards, any modifications made to p or this instance have
+    // no effect on the value of the other.
+    void copy(packet p);
+
     // Append to this packet the contents of another packet p,
     // starting at the specified bit offset within p (0 for the
     // beginning of p, 32 if you want to skip the first 32 bits of p
@@ -48,7 +53,48 @@ extern packet {
 
     // Return the length of the packet, in bits
     int length_bits();
+
+    // Remove any part of the packet at the end such that the
+    // resulting packet is at most packet_length_bytes bytes long.
+    void tuncate_to_length_bytes(in int packet_length_bytes);
 }
+
+// Configuration state for multicast packet replication lists,
+// modifiable only via control plane API.
+struct replication_list_entry_t {
+    PortId_t         egress_port;
+    EgressInstance_t instance;
+}
+
+// TODO: We could instead make mcast_group_replication_list a table
+// with multicast group id as the key.  Alternately an ExactMap extern
+// instance.
+
+// Note that there is an assumption here that the control plane API
+// for configuring multicast group replication lists checks that all
+// port and instance values in the replication list are supported.
+list<replication_list_entry_t> mcast_group_replication_list[MulticastGroupIdSet];
+
+// Configuration state for clone sessions, modifiable only via control
+// plane API.
+
+// Note that there is an assumption here that the control plane API
+// for configuring clone sessions only permits values of
+// class_of_service in ClassOfServiceIdSet.  Similarly that all port
+// and instance values in replication_list are supported, and
+// packet_length_bytes is a value supported by the implementation.
+struct clone_session_entry_t {
+    ClassOfService_t class_of_service;
+    list<replication_list_entry_t> replication_list;
+    bool truncate;
+    PacketLength_t packet_length_bytes;
+}
+
+clone_session_entry_t clone_session_entry[CloneSessionIdSet];
+
+//////////////////////////////////////////////////////////////////////
+// Packet queues
+//////////////////////////////////////////////////////////////////////
 
 struct newq_packet_t {
     PortId_t ingress_port;
@@ -176,6 +222,35 @@ process receive_new_packet {
     }
 }
 
+control replicate_packet (
+    packet p,
+    in PSA_PacketPath_t packet_path,
+    in ClassOfService_t class_of_service,
+    in list<replication_list_entry_t> replication_list,
+    in NM user_nm,
+    in CI2EM user_ci2em,
+    in CE2EM user_ce2em)
+{
+    replication_list_entry_t e;
+    tmq_packet_t tm_pkt;
+    apply {
+        tm_pkt = {
+            packet_path = packet_path,
+            instance = 0,  // this value is overwritten below
+            user_nm = user_nm,
+            user_ci2em = user_ci2em,
+            user_ce2em = user_ce2em,
+            p = p};
+        // See discussion about capability C12 in
+        // specifying-p4-architectures/README.md about different
+        // options for guaranteeing finiteness of this loop.
+        for (e in replication_list) {
+            tm_pkt.instance = e.instance;
+            tmq[e.egress_port][class_of_service].maybe_enqueue(tm_pkt);
+        }
+    }
+}
+
 // ingress_processing is a control, written so that is useful to be
 // called from several processes defined below.  It is _not_ a
 // process.  In this kind of specification, the only way that any
@@ -241,14 +316,21 @@ control ingress_processing (
         if (ostd.clone) {
             // TODO: Make the sets like CloneSessionIdSet an extern
             // object that has a method called 'member' returning a
-            // boolean.
+            // boolean.  Either that or make CloneSessionIdSet an
+            // instance of the ExactMap extern that returns a bool.
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
-                // TODO: implement clone behavior.  Since this can
-                // perform multicast replication on packets, which is
-                // very similar to normal multicast, it would be nice
-                // to have a sub-control that implements multicast
-                // replication in a way that can be used both here and
-                // also below.
+                clone_session_entry_t e =
+                    clone_session_entry[ostd.clone_session_id];
+                packet() cloned_pkt;
+                cloned_pkt.copy(modp);
+                if (e.truncate) {
+                    cloned_pkt.truncate_to_length_bytes(e.packet_length_bytes);
+                }
+                NM garbage_nm;  // See Note 1
+                CE2EM garbage_ce2em;
+                replicate_packet.apply(cloned_pkt, PSA_PacketPath_t.CLONE_I2E,
+                    e.class_of_service, e.replication_list,
+                    garbage_nm, clone_i2e_meta, garbage_ce2em);
             } else {
                 // Do not create any cloned packets.  TODO: Increment
                 // an error counter that can be read by control plane
@@ -284,15 +366,18 @@ control ingress_processing (
             // control plane configuration of multicast group
             // ostd.multicast_group.  Every copy will have the same
             // value of ostd.class_of_service
-            TODO: implement this
+            CI2EM garbage_ci2em;  // See Note 1
+            CE2EM garbage_ce2em;
+            replicate_packet.apply(modp, PSA_PacketPath_t.NORMAL_MULTICAST,
+                ostd.class_of_service,
+                mcast_group_replication_list[ostd.multicast_group],
+                normal_meta, garbage_ci2em, garbage_ce2em);
             return;   // Do not continue below.
         }
         if (PortIdSet.member(ostd.egress_port)) {
             // Enqueue one packet for output port ostd.egress_port
-            // with class of service ostd.class_of_service.  See
-            // comments elsewhere in this file about variable names
-            // beginning with `garbage`.
-            CI2EM garbage_ci2em;
+            // with class of service ostd.class_of_service.
+            CI2EM garbage_ci2em;  // See Note 1
             CE2EM garbage_ce2em;
             tmq_packet_t normalp = {
                 packet_path = PSA_PacketPath_t.NORMAL_UNICAST,
@@ -321,15 +406,7 @@ process ingress_processing_newq {
         psa_ingress_parser_input_metadata_t istd = {
             ingress_port = newp.ingress_port,
             packet_path = PSA_PacketPath_t.NORMAL};
-        // The variables with names beginning with `garbage` are
-        // explicitly uninitialized.  Thus this specification allows
-        // _any_ possible values for these.  A correct PSA program
-        // will never use these values in a way that affects the
-        // packet processing behavior.  By making these values
-        // uninitialized in this specification, formal analysis tools
-        // can explicitly represent this fact, and possibly find bugs
-        // in P4 programs that use these values incorrectly.
-        RESUBM garbage_resubm;
+        RESUBM garbage_resubm;  // See Note 1
         RECIRCM garbage_recircm;
         ingress_processing.apply(istd, newp.p, garbage_resubm, garbage_recircm);
     }
@@ -437,16 +514,18 @@ process egress_processing {
         // _very_ similar to that.
         if (ostd.clone) {
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
-                // TODO: Make this as similar to the ingress-to-egress
-                // clone specification code above, ideally calling the
-                // same sub-control with one different input parameter
-                // value.
-                ClassOfService_t cos = TODO;
-                if (ClassOfServiceIdSet.member(cos)) {
-                    cos = 0;    // use default class 0 instead
-                    // TODO: Recommended to log error about
-                    // unsupported ostd.class_of_service value.
+                clone_session_entry_t e =
+                    clone_session_entry[ostd.clone_session_id];
+                packet() cloned_pkt;
+                cloned_pkt.copy(modp);
+                if (e.truncate) {
+                    cloned_pkt.truncate_to_length_bytes(e.packet_length_bytes);
                 }
+                NM garbage_nm;  // See Note 1
+                CI2EM garbage_ci2em;
+                replicate_packet.apply(cloned_pkt, PSA_PacketPath_t.CLONE_E2E,
+                    e.class_of_service, e.replication_list,
+                    garbage_nm, garbage_ci2em, clone_e2e_meta);
             } else {
                 // Do not create a clone.  TODO: Recommended to log
                 // error about unsupported ostd.clone_session_id
@@ -476,3 +555,13 @@ process egress_processing {
         transmit_packet(modp, istd.egress_port);
     }
 }
+
+// Note 1:
+
+// The variables with names beginning with `garbage` are explicitly
+// uninitialized.  Thus this specification allows _any_ possible
+// values for these variables.  A correct PSA program will never use
+// these values in a way that affects the packet processing behavior.
+// By making these values uninitialized in this specification, formal
+// analysis tools can explicitly represent this fact, and possibly
+// find bugs in P4 programs that use these values incorrectly.
