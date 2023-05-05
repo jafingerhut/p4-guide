@@ -31,7 +31,7 @@ The errors with psa-try1.p4 with that version of p4test that remain are:
     "Data Extraction" the following "The packet_in extern is special:
     it cannot be instantiated by the user explicitly."
   + I cannot think of any straightforward way to write a P4-16
-    architecture speciication without being able to create objects of
+    architecture specification without being able to create objects of
     type packet_in and packet_out.
 + p4test does not support declaring structs with members that are
   extern types.
