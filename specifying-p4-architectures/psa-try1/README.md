@@ -19,16 +19,14 @@ Language: https://en.wikipedia.org/wiki/Guarded_Command_Language
 It seems desirable if an architecture specification can describe all
 possible behaviors for a correct implementation of an architecture,
 and then implementations might restrict themselves to a subset of what
-the specification allows.  I do not yet know if `psa-try1.p4` achieves
-that goal.
+the specification allows.
 
-Because of the level of granularity of the processes in `psa-try1.p4`,
-a real implementation might allow behavior that is visible to "the
-outside" that is impossible according to this specification.
-
-See the section [Example variant of psa-try1 that has more externally
-observable
-behaviors](example-variant-of-psa-try1-that-has-more-externally-observable-behaviors) for an example of this.
+Depending upon the desired set of allowed behaviors of PSA
+implementations, I believe that `psa-try1.p4` does _not_ achieve that
+goal.  See the section [Example variant of psa-try1 that has more
+externally observable
+behaviors](example-variant-of-psa-try1-that-has-more-externally-observable-behaviors)
+for an example of this.
 
 
 # Parameters defining a PSA implementation
@@ -53,6 +51,11 @@ of the Ethernet frame:
 + Start frame delimiter
 + Ethernet FCS (Frame Check Sequence, aka CRC)
 + Ethernet Interpacket gap
+
+The is, the first byte of packets received and sent by this
+specification will be the first byte of the destination MAC address,
+and the last byte will be the last byte of the Ethernet payload, just
+before the FCS.
 
 
 ## What packet length is used when updating Counter and Meter externs that use packet length?
@@ -89,15 +92,20 @@ calls to change it.  Processing packets never causes it to change,
 except perhaps for any packet/byte counters that might be included.
 
 `mcast_group_replication_list` is an instance of the `ExactMap`
-extern.  Its value represents the multicast group configuration table,
-i.e. for each multicast group id, what are the list of (egress_port,
-instance) pairs to make packet copies for?
+extern, defined here:
 
-`clone_session_entry` is an instance of the `ExactMap` extern.  Its
-value represents the clone session configuration table, i.e. for each
-clone session id, where should cloned copies of the packet be sent,
-with what class_of_service value, and should the packet be truncated
-to a specified maximum length, or not?
++ https://github.com/p4lang/pna/pull/52
+
+The current state of `mcast_group_replication_list` represents the
+multicast group configuration table, i.e. for each multicast group id,
+what are the list of (egress_port, instance) pairs to make packet
+copies for?
+
+`clone_session_entry` is another instance of the `ExactMap` extern.
+Its current state represents the clone session configuration table,
+i.e. for each clone session id, where should cloned copies of the
+packet be sent, with what class_of_service value, and should the
+packet be truncated to a specified maximum length, or not?
 
 
 ## Traffic manager dynamic state

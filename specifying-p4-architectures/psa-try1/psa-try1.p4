@@ -666,6 +666,11 @@ process egress_processing {
     }
 }
 
+// TODO: If you want to model the behavior of P4Runtime API PacketIn
+// and PacketOut messages, then the CPU port numbered PSA_PORT_CPU
+// packets should have additional special case code for handling them
+// that is not written yet.
+
 // Note 1:
 
 // The variables with names beginning with `garbage` are explicitly
