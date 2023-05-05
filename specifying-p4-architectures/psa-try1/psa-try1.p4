@@ -1,3 +1,7 @@
+#include <core.p4>
+#include <psa.p4>
+#include "ExactMap.p4"
+
 //////////////////////////////////////////////////////////////////////
 // Parameter values that must be chosen as part of creating a
 // particular instantiation of this specification:
@@ -26,6 +30,27 @@
 // MaxPacketLengthBytes
 // EgressInstanceSet - not currently used in this specification
 
+extern Set<T> {
+    Set();
+
+    // Return true if x is an element of the set, otherwise false
+    bool member(in T x);
+}
+
+Set<PortId_t>() PortIdSet;
+Set<CloneSessionId_t>() CloneSessionIdSet;
+Set<ClassOfService_t>() ClassOfServiceIdSet;
+
+const int NUM_MULTICAST_GROUPS = 1024;
+const int NUM_CLONE_SESSIONS = 1024;
+const PacketLength_t MinPacketLengthBytes = (PacketLength_t) 64;
+const PacketLength_t MaxPacketLengthBytes = (PacketLength_t) (9 * 1024);
+
+// Just a tiny utility function to keep the casts in one place
+PacketLengthUint_t bytes_to_bits(PacketLength_t length_bytes) {
+    return (8 * (PacketLengthUint_t) length_bytes);
+}
+
 //////////////////////////////////////////////////////////////////////
 // Definitions from the psa.p4 include file
 //////////////////////////////////////////////////////////////////////
@@ -53,6 +78,28 @@
 
 // IH IM EH EM NM CI2EM CE2EM RESUBM RECIRCM
 
+// These are placeholder definitions to make p4test happy.  They
+// should be replaced with the user program's definition of these
+// types.
+struct IH {
+}
+struct IM {
+}
+struct EH {
+}
+struct EM {
+}
+struct NM {
+}
+struct CI2EM {
+}
+struct CE2EM {
+}
+struct RESUBM {
+}
+struct RECIRCM {
+}
+
 // Parsers and controls from the user's P4 program written for PSA,
 // for which the names below are used when calling them from this
 // specification.  These are the names used when defining the
@@ -61,27 +108,129 @@
 // IngressParser Ingress IngressDeparser
 // EgressParser  Egress  EgressDeparser
 
+// These are placeholder definitions to make p4test happy.  They
+// should be replaced with the user program's definition of these
+// parsers and controls.
+parser ingressParserImpl(
+    packet_in pkt,
+    out IH hdr,
+    inout IM meta,
+    in psa_ingress_parser_input_metadata_t istd,
+    in RESUBM resubmit_meta,
+    in RECIRCM recirculate_meta)
+{
+    state start { transition accept; }
+}
+
+control ingressImpl(
+    inout IH hdr,
+    inout IM meta,
+    in    psa_ingress_input_metadata_t  istd,
+    inout psa_ingress_output_metadata_t ostd)
+{
+    apply { }
+}
+
+control ingressDeparserImpl(
+    packet_out pkt,
+    out CI2EM clone_i2e_meta,
+    out RESUBM resubmit_meta,
+    out NM normal_meta,
+    inout IH hdr,
+    in IM meta,
+    in psa_ingress_output_metadata_t istd)
+{
+    apply { }
+}
+
+parser egressParserImpl(
+    packet_in pkt,
+    out EH hdr,
+    inout EM meta,
+    in psa_egress_parser_input_metadata_t istd,
+    in NM normal_meta,
+    in CI2EM clone_i2e_meta,
+    in CE2EM clone_e2e_meta)
+{
+    state start { transition accept; }
+}
+
+control egressImpl(
+    inout EH hdr,
+    inout EM meta,
+    in    psa_egress_input_metadata_t  istd,
+    inout psa_egress_output_metadata_t ostd)
+{
+    apply { }
+}
+
+control egressDeparserImpl(
+    packet_out pkt,
+    out CE2EM clone_e2e_meta,
+    out RECIRCM recirculate_meta,
+    inout EH hdr,
+    in EM meta,
+    in psa_egress_output_metadata_t istd,
+    in psa_egress_deparser_input_metadata_t edstd)
+{
+    apply { }
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // Extern functions that we rely upon to implement this specification,
 // and that seem generally useful for many other P4 architecture
 // specifications, too.
 //////////////////////////////////////////////////////////////////////
 
+// Represents a sequence of bits with a packet's contents
+extern packet {
+    packet();  // constructor that returns a packet with length 0
+
+    // get_new_packet should only be called when
+    // new_packet_available() returns true.  It modifies this instance
+    // of packet so that it holds the contents of the new packet, and
+    // return the port on which it arrived as an 'out' parameter.
+    void get_new_packet(out PortId_t port);
+
+    // transmit_packet sends a packet to a port of the device.  port
+    // must be in the set PortIdSet, and must not be equal to
+    // PSA_PORT_RECIRCULATE.
+    void transmit_packet(in PortId_t port);
+
+    // Return a packet_in object that has the same packet contents as
+    // this packet.
+    packet_in to_packet_in();
+
+    // Replace any contents of this packet with the contents of the
+    // packet_out object p
+    void from_packet_out(packet_out p);
+
+    // Copy the contents of p into this instance of type packet.
+    // Afterwards, any modifications made to p or this instance have
+    // no effect on the value of the other.
+#ifdef EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS
+    void copy(packet p);
+
+    // Append to this packet the contents of another packet p,
+    // starting at the specified bit offset within p (0 for the
+    // beginning of p, 32 if you want to skip the first 32 bits of p
+    // and append only the data of p after the first 32 bits).
+    void append_with_offset(packet p, in PacketLength_t offset);
+#endif
+
+    // Return the length of the packet, in bits
+    PacketLength_t length_bits();
+
+    // Remove any part of the packet at the end such that the
+    // resulting packet is at most packet_length_bytes bytes long.
+    void truncate_to_length_bytes(in PacketLength_t packet_length_bytes);
+}
+
 // new_packet_available() returns true when there is a packet ready to
 // be received from a port.  This includes any port in PortIdSet,
 // including PSA_PORT_CPU, but not PSA_PORT_RECIRCULATE.
 extern bool new_packet_available();
-
-// get_new_packet should only be called when new_packet_available()
-// returns true.  It returns the contents of the new packet as a
-// return value, and the port on which it arrived as an 'out'
-// parameter.
-extern packet get_new_packet(out PortId_t port);
-
-// transmit_packet sends a packet to a port of the device.  port must
-// be in the set PortIdSet, and must not be equal to
-// PSA_PORT_RECIRCULATE.
-extern void transmit_packet(packet p, PortId_t port);
 
 // time_now() is an extern function supplied by the PSA
 // implementation.
@@ -95,62 +244,36 @@ extern error get_parser_error();
 // Return the offset, in units of bits, of the first bit of the packet
 // that the last invocation of IngressParser or EgressParser did not
 // extract or advance past.
-extern int get_parser_offset_bits();
-
-// Represents a sequence of bits with a packet's contents
-extern packet {
-    packet();  // constructor that returns a packet with length 0
-
-    // Return a packet_in object that has the same packet contents as
-    // this packet.
-    packet_in to_packet_in();
-
-    // Replace any contents of this packet with the contents of the
-    // packet_out object p
-    void from_packet_out(packet_out p);
-
-    // Copy the contents of p into this instance of type packet.
-    // Afterwards, any modifications made to p or this instance have
-    // no effect on the value of the other.
-    void copy(packet p);
-
-    // Append to this packet the contents of another packet p,
-    // starting at the specified bit offset within p (0 for the
-    // beginning of p, 32 if you want to skip the first 32 bits of p
-    // and append only the data of p after the first 32 bits).
-    void append_with_offset(packet p, in int offset);
-
-    // Return the length of the packet, in bits
-    int length_bits();
-
-    // Remove any part of the packet at the end such that the
-    // resulting packet is at most packet_length_bytes bytes long.
-    void tuncate_to_length_bytes(in int packet_length_bytes);
-}
+extern PacketLength_t get_parser_offset_bits();
 
 //////////////////////////////////////////////////////////////////////
 // New methods introduced for operating on values with type `list`
 // used in this specification
 //////////////////////////////////////////////////////////////////////
 
-// bool empty() - Return true if the list contains 0 elements,
-// otherwise false.
-//
-// T dequeue() - Return the first element of the list, and modify the
-// list so it no longer contains this element.  T is the type of
-// element contained in the list.
-//
-// void maybe_enqueue(T e) - Nondeterministically choose to either (a)
-// do nothing, or (b) modify the list so it contains all elements it
-// did before, plus the value e appended at the end.  The value of `e`
-// is handled by P4_16 copy-in behavior, meaning that if e is a left
-// value, the caller can modify e's value after maybe_enqueue()
-// returns, and be guaranteed that such modifications will never
-// change the value appended to the list.
-//
 // Another possible set of parameters one might want for a
 // specification like this is the maximum number of elements that a
 // queue is allowed to contain.
+extern Queue<T> {
+    Queue();
+
+    // Return true if the queue is empty, otherwise false.
+    bool empty();
+
+    // Return the first element of the list, and modify the list so it
+    // no longer contains this element.  T is the type of element
+    // contained in the list.
+    T dequeue();
+
+    // Nondeterministically choose to either (a) do nothing, or (b)
+    // modify the list so it contains all elements it did before, plus
+    // the value e appended at the end.  The value of `e` is handled
+    // by P4_16 copy-in behavior, meaning that if e is a left value,
+    // the caller can modify e's value after maybe_enqueue() returns,
+    // and be guaranteed that such modifications will never change the
+    // value appended to the list.
+    void maybe_enqueue(in T e);
+}
 
 //////////////////////////////////////////////////////////////////////
 // Configuration state for the traffic manager (aka packet buffer)
@@ -163,9 +286,6 @@ struct replication_list_entry_t {
     EgressInstance_t instance;
 }
 
-// ExactMap is an extern defined here:
-// https://github.com/p4lang/pna/pull/52
-
 // Note that there is an assumption here that the control plane API
 // for configuring multicast group replication lists checks that all
 // port and instance values in the replication list are supported.
@@ -174,7 +294,7 @@ struct mcast_group_key_t {
     MulticastGroup_t mcast_group;
 }
 
-ExactMap<mcast_group_key_t, list<replication_list_entry_t>>
+ExactMap<mcast_group_key_t, list<replication_list_entry_t>>(size=NUM_MULTICAST_GROUPS)
     mcast_group_replication_list;
 
 // clone_session_entry is configuration state for clone sessions,
@@ -187,7 +307,9 @@ ExactMap<mcast_group_key_t, list<replication_list_entry_t>>
 // packet_length_bytes is a value supported by the implementation.
 struct clone_session_entry_t {
     ClassOfService_t class_of_service;
+#ifdef LIST_SUPPORTED_INSIDE_STRUCT
     list<replication_list_entry_t> replication_list;
+#endif
     bool truncate;
     PacketLength_t packet_length_bytes;
 }
@@ -196,7 +318,8 @@ struct clone_session_id_key_t {
     CloneSessionId_t clone_session_id;
 }
 
-ExactMap<clone_session_id_key_t, clone_session_entry_t> clone_session_entry;
+ExactMap<clone_session_id_key_t, clone_session_entry_t>(size=NUM_CLONE_SESSIONS)
+    clone_session_entry;
 
 //////////////////////////////////////////////////////////////////////
 // Packet queues
@@ -204,20 +327,24 @@ ExactMap<clone_session_id_key_t, clone_session_entry_t> clone_session_entry;
 
 struct newq_packet_t {
     PortId_t ingress_port;
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
     packet p;
+#endif
 }
 
-list<newq_packet_t> newq;
+Queue<newq_packet_t>() newq;
 
 struct resubq_packet_t {
     PortId_t ingress_port;
     // Type RESUBM is from the P4 program's instantiation of the
     // PSA_Switch package
     RESUBM user_resubm;
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
     packet p;
+#endif
 }
 
-list<resubq_packet_t> resubq;
+Queue<resubq_packet_t>() resubq;
 
 struct recircq_packet_t {
     // To implement PSA as written, the ingress_port will _always_ be
@@ -229,10 +356,12 @@ struct recircq_packet_t {
     // Type RECIRCM is from the P4 program's instantiation of the
     // PSA_Switch package
     RECIRCM user_recircm;
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
     packet p;
+#endif
 }
 
-list<recircq_packet_t> recircq;
+Queue<recircq_packet_t>() recircq;
 
 struct tmq_packet_t {
     // egress_port can be inferred from which tmq the packet is in,
@@ -257,7 +386,9 @@ struct tmq_packet_t {
     CI2EM user_ci2em;
     CE2EM user_ce2em;
 
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
     packet p;
+#endif
 }
 
 // TODO: What is a good syntax to declare something like a
@@ -273,20 +404,32 @@ struct tmq_packet_t {
 // and y is in ClassOfServiceIdSet, there is a separate list object
 // tmq[x][y]
 
-list<tmq_packet_t> tmq[PortIdSet][ClassOfServiceIdSet];
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
+Queue<tmq_packet_t>() tmq[PortIdSet][ClassOfServiceIdSet];
+#endif
 
 
 // Process receive_new_packet takes in new packets from outside, when
 // such a packet is available.  These can come either from a front
 // panel port, or the CPU port.
+#ifdef PROCESS_SUPPORTED
 process receive_new_packet {
     guard {
         new_packet_available();
     }
+#else
+control receive_new_packet() {
+#endif
+    packet() p;
     apply {
         PortId_t input_port;
-        packet p = get_new_packet(input_port);
-        newq_packet_t newp = {ingress_port = input_port, packet = p};
+        p.get_new_packet(input_port);
+        newq_packet_t newp = {
+            ingress_port = input_port,
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+            packet = p
+#endif
+        };
         // Note: Method maybe_enqueue() might _not_ append the packet
         // to the list newq.  If it does not, then effectively the
         // received packet p is dropped without ever being processed
@@ -328,18 +471,23 @@ control replicate_packet (
     apply {
         tm_pkt = {
             packet_path = packet_path,
-            instance = 0,  // this value is overwritten below
+            instance = (EgressInstance_t) 0,  // this value is overwritten below
             user_nm = user_nm,
             user_ci2em = user_ci2em,
             user_ce2em = user_ce2em,
-            p = p};
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+            p = p
+#endif
+        };
         // See discussion of capability C12 in
         // specifying-p4-architectures/README.md describing some
         // options for guaranteeing finiteness of this loop.
+#ifdef FOR_LOOP_SUPPORTED
         for (e in replication_list) {
             tm_pkt.instance = e.instance;
             tmq[e.egress_port][class_of_service].maybe_enqueue(tm_pkt);
         }
+#endif
     }
 }
 
@@ -355,6 +503,8 @@ control ingress_processing (
     in RESUBM user_resubm,
     in RECIRCM user_recircm)
 {
+    packet() modp;
+    packet() cloned_pkt;
     apply {
         // Even though hdr is uninitialized here, because it is an
         // 'out' parameter to the parser IngressParser, IngressParser
@@ -365,11 +515,11 @@ control ingress_processing (
         IM user_meta;
         packet_in buffer = p.to_packet_in();
         Timestamp_t ingress_timestamp = time_now();
-        IngressParser.apply(buffer, hdr, user_meta, istd,
+        ingressParserImpl.apply(buffer, hdr, user_meta, istd,
             user_resubm, user_recircm);
 
         error parser_error = get_parser_error();
-        int first_unparsed_bit_offset = get_parser_offset_bits();
+        PacketLength_t first_unparsed_bit_offset = get_parser_offset_bits();
         psa_ingress_input_metadata_t istd2 = {
             ingress_port = istd.ingress_port,
             packet_path = istd.packet_path,
@@ -379,28 +529,29 @@ control ingress_processing (
         psa_ingress_output_metadata_t ostd;
         // See Section 6.2 of PSA spec for initial values of some
         // fields of ostd that PSA promises are initialized.
-        ostd.class_of_service = 0;
+        ostd.class_of_service = (ClassOfService_t) 0;
         ostd.clone = false;
         //ostd.clone_session_id; // initial value is undefined
         ostd.drop = true;
         ostd.resubmit = false;
-        ostd.multicast_group = 0;
+        ostd.multicast_group = (MulticastGroup_t) 0;
         //ostd.egress_port;      // initial value is undefined
-        Ingress.apply(hdr, user_meta, istd2, ostd);
+        ingressImpl.apply(hdr, user_meta, istd2, ostd);
 
         packet_out buffer2;
         CI2EM clone_i2e_meta;
         RESUBM resubmit_meta_out;
         NM normal_meta;
-        IngressDeparser.apply(buffer2, clone_i2e_meta, resubmit_meta_out,
+        ingressDeparserImpl.apply(buffer2, clone_i2e_meta, resubmit_meta_out,
             normal_meta, hdr, user_meta, ostd);
 
         // Take the packet data output by the deparser (in buffer2),
         // and append any portion of the packet that was not parsed by
         // the ingress parser.
-        packet() modp;
         modp.from_packet_out(buffer2);
+#ifdef EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS
         modp.append_with_offset(p, first_unparsed_bit_offset);
+#endif
 
         // Refer to section 6.2 "Behavior of packets after ingress
         // processing is complete" of PSA spec.  The code below is
@@ -409,8 +560,9 @@ control ingress_processing (
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
                     clone_session_entry.lookup({ostd.clone_session_id});
-                packet() cloned_pkt;
+#ifdef EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS
                 cloned_pkt.copy(modp);
+#endif
                 if (e.truncate) {
                     cloned_pkt.truncate_to_length_bytes(e.packet_length_bytes);
                 }
@@ -421,7 +573,12 @@ control ingress_processing (
                 NM garbage_nm;  // See Note 1
                 CE2EM garbage_ce2em;
                 replicate_packet.apply(cloned_pkt, PSA_PacketPath_t.CLONE_I2E,
-                    e.class_of_service, e.replication_list,
+                    e.class_of_service,
+#ifdef LIST_SUPPORTED_INSIDE_STRUCT
+                    e.replication_list,
+#else
+                    (list<replication_list_entry_t>) {},
+#endif
                     garbage_nm, clone_i2e_meta, garbage_ce2em);
             } else {
                 // Do not create any cloned packets.  TODO: Increment
@@ -438,12 +595,12 @@ control ingress_processing (
             return;  // This is the standard P4_16 return statement
         }
         if (ClassOfServiceIdSet.member(ostd.class_of_service)) {
-            ostd.class_of_service = 0;    // use default class 0 instead
+            ostd.class_of_service = (ClassOfService_t) 0;  // use default class 0 instead
             // Recommended to log error about unsupported
             // ostd.class_of_service value.
         }
-        if ((modp.length_bits() < (8 * MinPacketLengthBytes)) ||
-            (modp.length_bits() > (8 * MaxPacketLengthBytes)))
+        if (((PacketLengthUint_t) modp.length_bits() < bytes_to_bits(MinPacketLengthBytes)) ||
+            ((PacketLengthUint_t) modp.length_bits() > bytes_to_bits(MaxPacketLengthBytes)))
         {
             // TODO: Increment control-plane readable error count
             // specific to this reason for dropping the packet.
@@ -453,11 +610,14 @@ control ingress_processing (
             resubq_packet_t resubp = {
                 ingress_port = istd.ingress_port,
                 user_resubm = resubmit_meta_out,
-                p = modp};
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+                p = modp
+#endif
+            };
             resubq.maybe_enqueue(resubp);
             return;
         }
-        if (ostd.multicast_group != 0) {
+        if ((MulticastGroupUint_t) ostd.multicast_group != 0) {
             // Make 0 or more copies of the packet according to the
             // control plane configuration of multicast group
             // ostd.multicast_group.  Every copy will have the same
@@ -484,12 +644,17 @@ control ingress_processing (
             CE2EM garbage_ce2em;
             tmq_packet_t normalp = {
                 packet_path = PSA_PacketPath_t.NORMAL_UNICAST,
-                instance = 0,
+                instance = (EgressInstance_t) 0,
                 user_nm = normal_meta,
                 user_ci2em = garbage_ci2em,
                 user_ce2em = garbage_ce2em,
-                packet = modp};
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+                packet = modp
+#endif
+            };
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
             tmq[ostd.egress_port][ostd.class_of_service].maybe_enqueue(normalp);
+#endif
         } else {
             // Drop the packet, by _not_ putting the packet into any
             // queues.  TODO: Recommended to log error about
@@ -500,10 +665,14 @@ control ingress_processing (
 }
 
 // This process performs ingress processing on one new packet.
+#ifdef PROCESS_SUPPORTED
 process ingress_processing_newq {
     guard {
         !newq.empty()
     }
+#else
+control ingress_processing_newq() {
+#endif
     apply {
         newq_packet_t newp = newq.dequeue();
         psa_ingress_parser_input_metadata_t istd = {
@@ -511,57 +680,90 @@ process ingress_processing_newq {
             packet_path = PSA_PacketPath_t.NORMAL};
         RESUBM garbage_resubm;  // See Note 1
         RECIRCM garbage_recircm;
-        ingress_processing.apply(istd, newp.p, garbage_resubm, garbage_recircm);
+        ingress_processing.apply(istd,
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+            newp.p,
+#else
+            packet(),
+#endif
+            garbage_resubm, garbage_recircm);
     }
 }
 
 // This process performs ingress processing on one resubmitted packet.
+#ifdef PROCESS_SUPPORTED
 process ingress_processing_resubq {
     guard {
         !resubq.empty()
     }
+#else
+control ingress_processing_resubq() {
+#endif
     apply {
         resubq_packet_t resubp = resubq.dequeue();
         psa_ingress_parser_input_metadata_t istd = {
             ingress_port = resubp.ingress_port,
             packet_path = PSA_PacketPath_t.RESUBMIT};
         RECIRCM garbage_recircm;
-        ingress_processing.apply(istd, resubp.p, resubp.user_resubm,
-            garbage_recircm);
+        ingress_processing.apply(istd,
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+            resubp.p,
+#else
+            packet(),
+#endif
+            resubp.user_resubm, garbage_recircm);
     }
 }
 
 // This process performs ingress processing on one recirculated packet.
+#ifdef PROCESS_SUPPORTED
 process ingress_processing_recircq {
     guard {
         !recircq.empty()
     }
+#else
+control ingress_processing_recircq () {
+#endif
     apply {
-        resubq_packet_t recircp = recircq.dequeue();
+        recircq_packet_t recircp = recircq.dequeue();
         psa_ingress_parser_input_metadata_t istd = {
             ingress_port = recircp.ingress_port,
             packet_path = PSA_PacketPath_t.RECIRCULATE};
         RESUBM garbage_resubm;
-        ingress_processing.apply(istd, recircp.p, garbage_resubm,
-            recircp.user_recircm);
+        ingress_processing.apply(istd,
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+            recircp.p,
+#else
+            packet(),
+#endif
+            garbage_resubm, recircp.user_recircm);
     }
 }
 
 // This process performs egress processing on one packet currently in
 // the traffic manager.
+#ifdef PROCESS_SUPPORTED
 process egress_processing {
     guard {
         // TODO: Need some syntax to represent "at least one of the
         // tmq queues is non-empty"
     }
+#else
+control egress_processing () {
+#endif
+    packet() modp;
+    packet() cloned_pkt;
     apply {
         // TODO: Need some way to get the values egress_port and
         // class_of_service of the non-empty tmq that we are going to
         // dequeue a packet from.
-        PortId_t egress_port = TODO;
-        ClassOfService_t class_of_service = TODO;
-        
-        tmq_packet_t pkt = tmq[egress_port][class_of_service].dequeue();
+        PortId_t egress_port;  // TODO initialize this
+        ClassOfService_t class_of_service;  // TODO initialize this
+
+        tmq_packet_t pkt;
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
+        pkt = tmq[egress_port][class_of_service].dequeue();
+#endif
 
         psa_egress_parser_input_metadata_t istd = {
             egress_port = egress_port,
@@ -569,13 +771,13 @@ process egress_processing {
 
         EH hdr;
         EM user_meta;
-        packet_in buffer = pkt.to_packet_in();
+        packet_in buffer = pkt.p.to_packet_in();
         Timestamp_t egress_timestamp = time_now();
 
-        EgressParser.apply(buffer, hdr, user_meta, istd, pkt.user_nm,
+        egressParserImpl.apply(buffer, hdr, user_meta, istd, pkt.user_nm,
             pkt.user_ci2em, pkt.user_ce2em);
         error parser_error = get_parser_error();
-        int first_unparsed_bit_offset = get_parser_offset_bits();
+        PacketLength_t first_unparsed_bit_offset = get_parser_offset_bits();
 
         psa_egress_input_metadata_t istd2 = {
             class_of_service = class_of_service,
@@ -591,22 +793,23 @@ process egress_processing {
         ostd.clone = false;
         // ostd.clone_session_id; // initial value is undefined
         ostd.drop = false;
-        Egress.apply(hdr, user_meta, istd2, ostd);
+        egressImpl.apply(hdr, user_meta, istd2, ostd);
 
         packet_out buffer2;
         CE2EM clone_e2e_meta;
         RECIRCM recirculate_meta;
         psa_egress_deparser_input_metadata_t edstd = {
             egress_port = egress_port};
-        EgressDeparser.apply(buffer2, clone_e2e_meta, recirculate_meta,
+        egressDeparserImpl.apply(buffer2, clone_e2e_meta, recirculate_meta,
             hdr, user_meta, istd2, edstd);
 
         // Take the packet data output by the deparser (in buffer2),
         // and append any portion of the packet that was not parsed by
         // the egress parser.
-        packet() modp;
         modp.from_packet_out(buffer2);
+#ifdef EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS
         modp.append_with_offset(pkt, first_unparsed_bit_offset);
+#endif
 
         // Refer to section 6.5 "Behavior of packets after egress
         // processing is complete" of PSA spec.  The code below is
@@ -615,8 +818,9 @@ process egress_processing {
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
                     clone_session_entry.lookup({ostd.clone_session_id});
-                packet() cloned_pkt;
+#ifdef EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS
                 cloned_pkt.copy(modp);
+#endif
                 if (e.truncate) {
                     cloned_pkt.truncate_to_length_bytes(e.packet_length_bytes);
                 }
@@ -627,7 +831,12 @@ process egress_processing {
                 NM garbage_nm;  // See Note 1
                 CI2EM garbage_ci2em;
                 replicate_packet.apply(cloned_pkt, PSA_PacketPath_t.CLONE_E2E,
-                    e.class_of_service, e.replication_list,
+                    e.class_of_service,
+#ifdef LIST_SUPPORTED_INSIDE_STRUCT
+                    e.replication_list,
+#else
+                    (list<replication_list_entry_t>) {},
+#endif
                     garbage_nm, garbage_ci2em, clone_e2e_meta);
             } else {
                 // Do not create a clone.  TODO: Recommended to log
@@ -642,8 +851,8 @@ process egress_processing {
             // Drop the packet by _not_ enqueueing it anywhere.
             return;   // Do not continue below.
         }
-        if ((modp.length_bits() < (8 * MinPacketLengthBytes)) ||
-            (modp.length_bits() > (8 * MaxPacketLengthBytes)))
+        if (((PacketLengthUint_t) modp.length_bits() < bytes_to_bits(MinPacketLengthBytes)) ||
+            ((PacketLengthUint_t) modp.length_bits() > bytes_to_bits(MaxPacketLengthBytes)))
         {
             // TODO: Increment control-plane readable error count
             // specific to this reason for dropping the packet.
@@ -653,7 +862,10 @@ process egress_processing {
             recircq_packet_t recircp = {
                 ingress_port = istd.egress_port,
                 user_recircm = recirculate_meta,
-                p = modp};
+#ifdef EXTERN_SUPPORTED_IN_STRUCT
+                p = modp
+#endif
+            };
             recircq.maybe_enqueue(recircp);
             return;
         }
@@ -662,7 +874,7 @@ process egress_processing {
         // Ethernet port, the implementation of transmit_packet is
         // responsible for calculating and appending Ethernet FCS at
         // the end.
-        transmit_packet(modp, istd.egress_port);
+        modp.transmit_packet(istd.egress_port);
     }
 }
 
