@@ -20,10 +20,19 @@ Date:   Thu Jan 26 10:38:16 2023 -0500
 
 The errors with psa-try1.p4 with that version of p4test that remain are:
 
-+ p4test does not support declaring variables of type packet_in or
-  packet_out.  I am guessing it would if the extern definitions for
-  packet_in and packet_out in core.p4 had constructor methods defined
-  for those externs, but it does not.
++ p4test does not support declaring variables of type `packet_in` or
+  `packet_out`.  I am guessing it would if the extern definitions for
+  `packet_in` and `packet_out` in core.p4 had constructor methods
+  defined for those externs, but it does not.  I believe that core.p4
+  does not declare such constructor methods by design, in order to
+  prevent people from declaring variables of these types in P4
+  programs.
+  + Supporting evidence: The P4-16 language spec says in Section 13.8
+    "Data Extraction" the following "The packet_in extern is special:
+    it cannot be instantiated by the user explicitly."
+  + I cannot think of any straightforward way to write a P4-16
+    architecture speciication without being able to create objects of
+    type packet_in and packet_out.
 + p4test does not support declaring structs with members that are
   extern types.
 
