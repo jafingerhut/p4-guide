@@ -185,11 +185,14 @@ little hardware logic that does the packet replication in such a way
 that at most one copy of the packet is created every clock cycle or
 so.
 
-If packet A arrives and is multicast to a group with 10 output ports,
-and immediately afterwards packet B arrives and is unicast to one of
+If packet P1 arrives and is multicast to a group with 10 output ports,
+and immediately afterwards packet P2 arrives and is unicast to one of
 those 10 output ports, say port P, such a switch implementation could
-enqueue packet B in the TM queue for port P _before_ it creates the
-copy of packet A going to port B and enqueueing it.
+enqueue packet P2 in the TM queue for port P _before_ it creates the
+copy of packet P1 going to port P and enqueueing it.
+
+After that, typically packet P2 will be transmitted by the switch on
+port P before the copy of packet P1 going to port P.
 
 psa-try1.p4 will never exhibit this behavior, because it models the
 behavior such that all copies are made of one packet, before the next
