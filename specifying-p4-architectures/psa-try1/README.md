@@ -25,7 +25,7 @@ Depending upon the desired set of allowed behaviors of PSA
 implementations, I believe that `psa-try1.p4` does _not_ achieve that
 goal.  See the section [Example variant of psa-try1 that has more
 externally observable
-behaviors](example-variant-of-psa-try1-that-has-more-externally-observable-behaviors)
+behaviors](#example-variant-of-psa-try1-that-has-more-externally-observable-behaviors)
 for an example of this.
 
 
