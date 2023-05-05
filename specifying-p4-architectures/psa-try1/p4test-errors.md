@@ -43,6 +43,10 @@ following reasons:
 + ARRAY_OF_QUEUES_SUPPORTED - The definition of tmq is a
   two-dimensional array of Queue extern instances, which P4-16 does
   not support.
+  + We could work around this temporarily by putting all packets into
+    a single tmq, but to me that seems like a strange restriction on
+    writing specifications of traffic managers, overly limiting the
+    possible orders that packets can be transmitted out of the device.
 + EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS - p4test gives an error if
   you try to define an extern object where a method takes a parameter
   whose type is the same extern type that is currently being defined.
@@ -51,9 +55,25 @@ following reasons:
   It is not explicitly stated in the P4-16 language spec whether this
   is supported or not, but it makes sense if the answer is "no, it is
   not supported".
+  + The only extern that psa-try1.p4 currently uses as members of a
+    struct are instances of my made-up `packet` extern.  We could
+    replace the `packet` extern with a struct type containing a
+    maximum-packet-length bit vector and a packet length field, which
+    would work around this restriction.
 + FOR_LOOP_SUPPORTED - There is no for loop construct in P4-16.
+  + This is currently only used for packet replication for multicast
+    groups and clone sessions.  I have a way to avoid the need of a
+    for loop, by creating a process that only creates one copy of a
+    packet each time the process is executed, then puts the packet in
+    a queue that feeds back into the same process until that process
+    exhausts all copies required, in case that idea is useful to
+    anyone.
 + LIST_SUPPORTED_INSIDE_STRUCT - p4test gives an error if you try to
   declare a struct type with a member with type `list`.  The latest
   P4-16 language spec explicitly disallows this.
+  + This is currently only used for multicast and clone session
+    replication lists, which I know a way to work around as mentioned
+    above, but long term it does seem very convenient if struct
+    members could have type list.
 + PROCESS_SUPPORTED - P4-16 does not define a `process` construct as
   used in psa-try1.p4, because I made it up.

@@ -406,6 +406,11 @@ struct tmq_packet_t {
 
 #ifdef ARRAY_OF_QUEUES_SUPPORTED
 Queue<tmq_packet_t>() tmq[PortIdSet][ClassOfServiceIdSet];
+#else
+// As a workaround, put all packets into a single tmq.  This
+// significantly restricts the possible orders that packets can be
+// processed in a PSA device, though.
+Queue<tmq_packet_t>() tmq;
 #endif
 
 
@@ -654,6 +659,8 @@ control ingress_processing (
             };
 #ifdef ARRAY_OF_QUEUES_SUPPORTED
             tmq[ostd.egress_port][ostd.class_of_service].maybe_enqueue(normalp);
+#else
+            tmq.maybe_enqueue(normalp);
 #endif
         } else {
             // Drop the packet, by _not_ putting the packet into any
@@ -763,6 +770,8 @@ control egress_processing () {
         tmq_packet_t pkt;
 #ifdef ARRAY_OF_QUEUES_SUPPORTED
         pkt = tmq[egress_port][class_of_service].dequeue();
+#else
+        pkt = tmq.dequeue();
 #endif
 
         psa_egress_parser_input_metadata_t istd = {
