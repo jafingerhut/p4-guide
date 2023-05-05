@@ -106,7 +106,7 @@ extern packet {
     packet_in to_packet_in();
 
     // Replace any contents of this packet with the contents of the
-    // packet in p
+    // packet_out object p
     void from_packet_out(packet_out p);
 
     // Copy the contents of p into this instance of type packet.
@@ -333,8 +333,8 @@ control replicate_packet (
             user_ci2em = user_ci2em,
             user_ce2em = user_ce2em,
             p = p};
-        // See discussion about capability C12 in
-        // specifying-p4-architectures/README.md about different
+        // See discussion of capability C12 in
+        // specifying-p4-architectures/README.md describing some
         // options for guaranteeing finiteness of this loop.
         for (e in replication_list) {
             tm_pkt.instance = e.instance;

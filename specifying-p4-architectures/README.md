@@ -103,17 +103,19 @@ The goals of such a specification language include:
 
 + Precisely describe the behavior of a P4 architecture, in enough
   detail for at least the following purposes:
-  + Consume this language in formal analysis tools such as P4testgen,
+  + Consume this language in formal analysis tools such as P4testgen
+    (https://github.com/p4lang/p4c/tree/main/backends/p4tools/modules/testgen),
     using this description to predict the expected possible behaviors
     of the device.
   + Consume this language in a behavioral model such as the BMv2
     software switch `simple_switch`, or some other software switch
     such as P4 DPDK or P4 EBPF, and simulate a device with that P4
-    architecture.
+    architecture.  It would be nice if it could also be consumed by P4
+    implementations for FPGAs that support users creating their own
+    custom P4 architectures, but that likely requires more work.
 + Be concise enough that at least the essentials of a P4 architecture
-  like the PSA could be written in a few
-  hundred lines of code/specification.  Human readers are a primary
-  "target" for specifications written in this language.
+  like the PSA can be written in a few hundred lines.  Human readers
+  are a primary "target" for specifications written in this language.
 
 In summary, we want to enable writing specifications that are precise
 and "executable", with little effort required to use a single
@@ -134,6 +136,11 @@ Non-goals of such a specification language are:
   + We are not trying to _prevent_ high performance implementations in
     this language, but such concerns should be lower priority than the
     goals described above.
++ Describe the behavior of an implementation in rare scenarios like
+  single-event upsets
+  (https://en.wikipedia.org/wiki/Single-event_upset).  We are not
+  trying to prevent this from being possible, but also not expending
+  any effort to ensure that this is possible.
 
 
 # Capabilities needed in a language for specifying architectures
