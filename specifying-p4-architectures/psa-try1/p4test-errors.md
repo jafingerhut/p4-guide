@@ -47,19 +47,6 @@ following reasons:
     a single tmq, but to me that seems like a strange restriction on
     writing specifications of traffic managers, overly limiting the
     possible orders that packets can be transmitted out of the device.
-+ EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS - p4test gives an error if
-  you try to define an extern object where a method takes a parameter
-  whose type is the same extern type that is currently being defined.
-+ EXTERN_SUPPORTED_IN_STRUCT - p4test gives an error if you try to
-  declare a struct type with a member that is an extern object type.
-  It is not explicitly stated in the P4-16 language spec whether this
-  is supported or not, but it makes sense if the answer is "no, it is
-  not supported".
-  + The only extern that psa-try1.p4 currently uses as members of a
-    struct are instances of my made-up `packet` extern.  We could
-    replace the `packet` extern with a struct type containing a
-    maximum-packet-length bit vector and a packet length field, which
-    would work around this restriction.
 + FOR_LOOP_SUPPORTED - There is no for loop construct in P4-16.
   + This is currently only used for packet replication for multicast
     groups and clone sessions.  I have a way to avoid the need of a
@@ -75,5 +62,27 @@ following reasons:
     replication lists, which I know a way to work around as mentioned
     above, but long term it does seem very convenient if struct
     members could have type list.
++ P4C_SUPPORTS_LONGER_BIT_VECTORS - p4test gives an error if one
+  attempts to declare a type `bit<W>` with W > 2048.
 + PROCESS_SUPPORTED - P4-16 does not define a `process` construct as
   used in psa-try1.p4, because I made it up.
+
+
+The symbols below used to be ones I used in `#ifdef` directives to
+comment out sections of illegal code, but since then I changed the
+type `packet` from an extern object to a struct, and now those parts
+of the code that gave errors are gone.
+
++ EXTERN_CAN_USE_SELF_TYPE_IN_DEFINITIONS - p4test gives an error if
+  you try to define an extern object where a method takes a parameter
+  whose type is the same extern type that is currently being defined.
++ EXTERN_SUPPORTED_IN_STRUCT - p4test gives an error if you try to
+  declare a struct type with a member that is an extern object type.
+  It is not explicitly stated in the P4-16 language spec whether this
+  is supported or not, but it makes sense if the answer is "no, it is
+  not supported".
+  + The only extern that psa-try1.p4 currently uses as members of a
+    struct are instances of my made-up `packet` extern.  We could
+    replace the `packet` extern with a struct type containing a
+    maximum-packet-length bit vector and a packet length field, which
+    would work around this restriction.
