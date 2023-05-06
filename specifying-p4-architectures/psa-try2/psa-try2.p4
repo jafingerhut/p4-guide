@@ -44,6 +44,7 @@ Set<ClassOfService_t>() ClassOfServiceIdSet;
 const int NUM_MULTICAST_GROUPS = 1024;
 const int NUM_CLONE_SESSIONS = 1024;
 const int NUM_REPLICATION_LIST_ENTRIES = 256 * 1024;
+const int REPLICATION_ENTRY_INDEX_SIZE = 18;
 const PacketLength_t MinPacketLengthBytes = (PacketLength_t) 64;
 const PacketLength_t MaxPacketLengthBytes = (PacketLength_t) (9 * 1024);
 
@@ -291,7 +292,7 @@ extern Queue<T> {
 //////////////////////////////////////////////////////////////////////
 
 // An index into the ExactMap named TODO
-typedef bit<20> ReplicationEntryIndex_t;
+typedef bit<(REPLICATION_ENTRY_INDEX_SIZE)> ReplicationEntryIndex_t;
 
 // Configuration state for multicast packet replication lists,
 // modifiable only via control plane API.
@@ -312,6 +313,13 @@ ExactMap<replication_entry_key_t, replication_list_entry_t>
 // Note that there is an assumption here that the control plane API
 // for configuring multicast group replication lists checks that all
 // port and instance values in the replication list are supported.
+
+// Also note that any implementation of modify replication lists for
+// multicast groups or clone session entries using this specification
+// should iterate through the list of (egress_port, instance) pairs,
+// and allocate a currently-unused ReplicationEntryIndex_t value in
+// the replication_entries ExactMap instance to store them, creating a
+// linked list of them using their next_index values.
 
 struct mcast_group_key_t {
     MulticastGroup_t mcast_group;
