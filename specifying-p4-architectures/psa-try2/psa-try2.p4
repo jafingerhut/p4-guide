@@ -613,7 +613,10 @@ control ingress_processing (
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
                     clone_session_entry.lookup({ostd.clone_session_id});
-                cloned_pkt = modp;
+                // Note: ingress-to-egress clone makes a copy of the
+                // packet as it was input to the ingress parser, NOT
+                // modp.
+                cloned_pkt = p;
                 if (e.truncate) {
                     truncate_to_length_bytes(cloned_pkt, e.packet_length_bytes);
                 }
@@ -652,10 +655,12 @@ control ingress_processing (
             return;
         }
         if (ostd.resubmit) {
+            // Note: The contents of a resubmitted packet is the same
+            // as it was input to the ingress parser, NOT modp.
             resubq_packet_t resubp = {
                 ingress_port = istd.ingress_port,
                 user_resubm = resubmit_meta_out,
-                p = modp
+                p = p
             };
             resubq.maybe_enqueue(resubp);
             return;
@@ -892,6 +897,8 @@ PROCESS egress_processing
             if (CloneSessionIdSet.member(ostd.clone_session_id)) {
                 clone_session_entry_t e =
                     clone_session_entry.lookup({ostd.clone_session_id});
+                // Note: egress-to-egress clone makes a copy of the
+                // packet as it was output to the egress deparser.
                 cloned_pkt = modp;
                 if (e.truncate) {
                     truncate_to_length_bytes(cloned_pkt, e.packet_length_bytes);
