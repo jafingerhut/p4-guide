@@ -270,18 +270,17 @@ extern Queue<T> {
     // Return true if the queue is empty, otherwise false.
     bool empty();
 
-    // Return the first element of the list, and modify the list so it
-    // no longer contains this element.  T is the type of element
-    // contained in the list.
+    // Return the first element of the queue, and modify the queue so
+    // it no longer contains this element.
     T dequeue();
 
     // Nondeterministically choose to either (a) do nothing, or (b)
-    // modify the list so it contains all elements it did before, plus
-    // the value e appended at the end.  The value of `e` is handled
-    // by P4_16 copy-in behavior, meaning that if e is a left value,
-    // the caller can modify e's value after maybe_enqueue() returns,
-    // and be guaranteed that such modifications will never change the
-    // value appended to the list.
+    // modify the queue so it contains all elements it did before,
+    // plus the value e appended at the end.  The value of `e` is
+    // handled by P4_16 copy-in behavior, meaning that if e is a left
+    // value, the caller can modify e's value after maybe_enqueue()
+    // returns, and be guaranteed that such modifications will never
+    // change the value appended to the queue.
     void maybe_enqueue(in T e);
 }
 
@@ -328,7 +327,8 @@ struct clone_session_id_key_t {
     CloneSessionId_t clone_session_id;
 }
 
-ExactMap<clone_session_id_key_t, clone_session_entry_t>(size=NUM_CLONE_SESSIONS)
+ExactMap<clone_session_id_key_t, clone_session_entry_t>
+    (size=NUM_CLONE_SESSIONS)
     clone_session_entry;
 
 //////////////////////////////////////////////////////////////////////
@@ -368,9 +368,16 @@ struct recircq_packet_t {
 Queue<recircq_packet_t>() recircq;
 
 struct tmq_packet_t {
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
     // egress_port can be inferred from which tmq the packet is in,
     // and thus need not have a separate field to record it.
     // Similarly for class_of_service.
+#else
+    // If there is only one tmq, then these values should be recorded
+    // with each packet.
+    PortId_t egress_port;
+    ClassOfService_t class_of_service;
+#endif
 
     // For packets in a tmq, packet_path must be one of these values:
     // NORMAL_UNICAST, NORMAL_MULTICAST, CLONE_I2E, CLONE_E2E
@@ -393,6 +400,7 @@ struct tmq_packet_t {
     packet p;
 }
 
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
 // TODO: What is a good syntax to declare something like a
 // two-dimensional array of queues (or nested dictionary, in Python's
 // sense of the term dictionary)?
@@ -405,8 +413,6 @@ struct tmq_packet_t {
 // The intent is that for each pair (x, y) where x is in PortIdSet,
 // and y is in ClassOfServiceIdSet, there is a separate list object
 // tmq[x][y]
-
-#ifdef ARRAY_OF_QUEUES_SUPPORTED
 Queue<tmq_packet_t>() tmq[PortIdSet][ClassOfServiceIdSet];
 #else
 // As a workaround, put all packets into a single tmq.  This
@@ -483,8 +489,12 @@ control replicate_packet (
     tmq_packet_t tm_pkt;
     apply {
         tm_pkt = {
+#ifndef ARRAY_OF_QUEUES_SUPPORTED
+            egress_port = (PortId_t) 0,  // this value is overwritten later
+            class_of_service = class_of_service,
+#endif
             packet_path = packet_path,
-            instance = (EgressInstance_t) 0,  // this value is overwritten below
+            instance = (EgressInstance_t) 0,  // this value is overwritten later
             user_nm = user_nm,
             user_ci2em = user_ci2em,
             user_ce2em = user_ce2em,
@@ -495,6 +505,9 @@ control replicate_packet (
         // options for guaranteeing finiteness of this loop.
 #ifdef FOR_LOOP_SUPPORTED
         for (e in replication_list) {
+#ifndef ARRAY_OF_QUEUES_SUPPORTED
+            tm_pkt.egress_port = e.egress_port;
+#endif
             tm_pkt.instance = e.instance;
             tmq[e.egress_port][class_of_service].maybe_enqueue(tm_pkt);
         }
@@ -646,6 +659,10 @@ control ingress_processing (
             CI2EM garbage_ci2em;  // See Note 1
             CE2EM garbage_ce2em;
             tmq_packet_t normalp = {
+#ifndef ARRAY_OF_QUEUES_SUPPORTED
+                egress_port = ostd.egress_port,
+                class_of_service = ostd.class_of_service,
+#endif
                 packet_path = PSA_PacketPath_t.NORMAL_UNICAST,
                 instance = (EgressInstance_t) 0,
                 user_nm = normal_meta,
@@ -737,8 +754,12 @@ PROCESS ingress_processing_recircq
 PROCESS egress_processing
 #ifdef PROCESS_SUPPORTED
     guard {
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
         // TODO: Need some syntax to represent "at least one of the
         // tmq queues is non-empty"
+#else
+        !tmq.empty();
+#endif
     }
 #else
     ()  // empty list of parameters to control as workaround
@@ -747,17 +768,18 @@ PROCESS egress_processing
     packet modp;
     packet cloned_pkt;
     apply {
+        PortId_t egress_port;
+        ClassOfService_t class_of_service;
+        tmq_packet_t pkt;
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
         // TODO: Need some way to get the values egress_port and
         // class_of_service of the non-empty tmq that we are going to
         // dequeue a packet from.
-        PortId_t egress_port;  // TODO initialize this
-        ClassOfService_t class_of_service;  // TODO initialize this
-
-        tmq_packet_t pkt;
-#ifdef ARRAY_OF_QUEUES_SUPPORTED
         pkt = tmq[egress_port][class_of_service].dequeue();
 #else
         pkt = tmq.dequeue();
+        egress_port = pkt.egress_port;
+        class_of_service = pkt.class_of_service;
 #endif
 
         psa_egress_parser_input_metadata_t istd = {

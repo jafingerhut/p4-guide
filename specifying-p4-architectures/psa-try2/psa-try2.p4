@@ -272,18 +272,17 @@ extern Queue<T> {
     // Return true if the queue is empty, otherwise false.
     bool empty();
 
-    // Return the first element of the list, and modify the list so it
-    // no longer contains this element.  T is the type of element
-    // contained in the list.
+    // Return the first element of the queue, and modify the queue so
+    // it no longer contains this element.
     T dequeue();
 
     // Nondeterministically choose to either (a) do nothing, or (b)
-    // modify the list so it contains all elements it did before, plus
-    // the value e appended at the end.  The value of `e` is handled
-    // by P4_16 copy-in behavior, meaning that if e is a left value,
-    // the caller can modify e's value after maybe_enqueue() returns,
-    // and be guaranteed that such modifications will never change the
-    // value appended to the list.
+    // modify the queue so it contains all elements it did before,
+    // plus the value e appended at the end.  The value of `e` is
+    // handled by P4_16 copy-in behavior, meaning that if e is a left
+    // value, the caller can modify e's value after maybe_enqueue()
+    // returns, and be guaranteed that such modifications will never
+    // change the value appended to the queue.
     void maybe_enqueue(in T e);
 }
 
@@ -291,7 +290,7 @@ extern Queue<T> {
 // Configuration state for the traffic manager (aka packet buffer)
 //////////////////////////////////////////////////////////////////////
 
-// An index into the ExactMap named TODO
+// An index into the ExactMap named 'replication_entries'.
 typedef bit<(REPLICATION_ENTRY_INDEX_SIZE)> ReplicationEntryIndex_t;
 
 // Configuration state for multicast packet replication lists,
@@ -314,12 +313,14 @@ ExactMap<replication_entry_key_t, replication_list_entry_t>
 // for configuring multicast group replication lists checks that all
 // port and instance values in the replication list are supported.
 
-// Also note that any implementation of modify replication lists for
-// multicast groups or clone session entries using this specification
-// should iterate through the list of (egress_port, instance) pairs,
-// and allocate a currently-unused ReplicationEntryIndex_t value in
-// the replication_entries ExactMap instance to store them, creating a
-// linked list of them using their next_index values.
+// Also note that any implementation of control plane modification of
+// replication lists for multicast groups or clone session entries
+// using this specification should iterate through the list of
+// (egress_port, instance) pairs, and allocate a currently-unused
+// ReplicationEntryIndex_t value in the replication_entries ExactMap
+// instance to store them, creating a linked list of them using their
+// next_index values.  It should also free up all of the linked list
+// entries that were formerly being used.
 
 struct mcast_group_key_t {
     MulticastGroup_t mcast_group;
@@ -388,9 +389,16 @@ struct recircq_packet_t {
 Queue<recircq_packet_t>() recircq;
 
 struct tmq_packet_t {
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
     // egress_port can be inferred from which tmq the packet is in,
     // and thus need not have a separate field to record it.
     // Similarly for class_of_service.
+#else
+    // If there is only one tmq, then these values should be recorded
+    // with each packet.
+    PortId_t egress_port;
+    ClassOfService_t class_of_service;
+#endif
 
     // For packets in a tmq, packet_path must be one of these values:
     // NORMAL_UNICAST, NORMAL_MULTICAST, CLONE_I2E, CLONE_E2E
@@ -413,6 +421,7 @@ struct tmq_packet_t {
     packet p;
 }
 
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
 // TODO: What is a good syntax to declare something like a
 // two-dimensional array of queues (or nested dictionary, in Python's
 // sense of the term dictionary)?
@@ -425,8 +434,6 @@ struct tmq_packet_t {
 // The intent is that for each pair (x, y) where x is in PortIdSet,
 // and y is in ClassOfServiceIdSet, there is a separate list object
 // tmq[x][y]
-
-#ifdef ARRAY_OF_QUEUES_SUPPORTED
 Queue<tmq_packet_t>() tmq[PortIdSet][ClassOfServiceIdSet];
 #else
 // As a workaround, put all packets into a single tmq.  This
@@ -514,6 +521,10 @@ control replicate_packet (
     replicate_packet_t rep_pkt;
     apply {
         tm_pkt = {
+#ifndef ARRAY_OF_QUEUES_SUPPORTED
+            egress_port = (PortId_t) 0,  // this value is overwritten later
+            class_of_service = class_of_service,
+#endif
             packet_path = packet_path,
             instance = (EgressInstance_t) 0,  // this value is overwritten later
             user_nm = user_nm,
@@ -675,6 +686,10 @@ control ingress_processing (
             CI2EM garbage_ci2em;  // See Note 1
             CE2EM garbage_ce2em;
             tmq_packet_t normalp = {
+#ifndef ARRAY_OF_QUEUES_SUPPORTED
+                egress_port = ostd.egress_port,
+                class_of_service = ostd.class_of_service,
+#endif
                 packet_path = PSA_PacketPath_t.NORMAL_UNICAST,
                 instance = (EgressInstance_t) 0,
                 user_nm = normal_meta,
@@ -782,6 +797,8 @@ PROCESS replicate_one_copy
 #ifdef ARRAY_OF_QUEUES_SUPPORTED
         tmq[e.egress_port][rep_pkt.class_of_service].maybe_enqueue(rep_pkt.tm_pkt);
 #else
+        rep_pkt.tm_pkt.egress_port = e.egress_port;
+        rep_pkt.tm_pkt.class_of_service = rep_pkt.class_of_service;
         tmq.maybe_enqueue(rep_pkt.tm_pkt);
 #endif
         if (e.next_index != 0) {
@@ -796,8 +813,12 @@ PROCESS replicate_one_copy
 PROCESS egress_processing
 #ifdef PROCESS_SUPPORTED
     guard {
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
         // TODO: Need some syntax to represent "at least one of the
         // tmq queues is non-empty"
+#else
+        !tmq.empty();
+#endif
     }
 #else
     ()  // empty list of parameters to control as workaround
@@ -806,17 +827,18 @@ PROCESS egress_processing
     packet modp;
     packet cloned_pkt;
     apply {
+        PortId_t egress_port;
+        ClassOfService_t class_of_service;
+        tmq_packet_t pkt;
+#ifdef ARRAY_OF_QUEUES_SUPPORTED
         // TODO: Need some way to get the values egress_port and
         // class_of_service of the non-empty tmq that we are going to
         // dequeue a packet from.
-        PortId_t egress_port;  // TODO initialize this
-        ClassOfService_t class_of_service;  // TODO initialize this
-
-        tmq_packet_t pkt;
-#ifdef ARRAY_OF_QUEUES_SUPPORTED
         pkt = tmq[egress_port][class_of_service].dequeue();
 #else
         pkt = tmq.dequeue();
+        egress_port = pkt.egress_port;
+        class_of_service = pkt.class_of_service;
 #endif
 
         psa_egress_parser_input_metadata_t istd = {
