@@ -200,13 +200,14 @@ packet does ingress processing.
 
 We could write a variant of psa-try1.p4 such that during ingress
 processing, it puts packets to be multicast after ingress processing
-into a new queue `multicastq`, and a new process representing the
-packet replication engine will dequeue packets from `multicastq`,
-replicate them, and enqueue the copies in the appropriate `tmq`'s.
-However, unicast packets from ingress processing will go straight to
-being enqueued in the destination `tmq`.
+into a new queue `replicateq`, and a new process `replicate_one_copy`
+representing the packet replication engine will dequeue packets from
+`replicateq`, replicate them, and enqueue the copies in the
+appropriate `tmq`'s.  However, unicast packets from ingress processing
+will go straight to being enqueued in the destination `tmq`.  See
+`psa-try2.p4` for an example of such a specification.
 
-So this is just one of probably many possible examples showing that
-how one chooses to write a specification in this "collection of
-processes connected by queues" style can affect the externally
-observable behaviors.
+This is just one of probably many examples demonstrating that how one
+chooses to write a specification in this "collection of processes
+connected by queues" style can affect the externally observable
+behaviors.
