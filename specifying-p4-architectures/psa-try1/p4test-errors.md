@@ -5,17 +5,20 @@ program, using this version:
 ```bash
 $ p4test --version
 p4test
-Version 1.2.3.5 (SHA: 1f34073a3 BUILD: DEBUG)
+Version 1.2.3.9 (SHA: bee193967 BUILD: DEBUG)
 ```
 
 That corresponds to p4c source code as of this commit:
 
 ```
-commit 1f34073a3245b8a37dbfe377f8477e25adadffd8 (HEAD -> main, origin/main, origin/HEAD)
-Author: Fabian Ruffy <5960321+fruffy@users.noreply.github.com>
-Date:   Thu Jan 26 10:38:16 2023 -0500
+commit bee193967522b2bd835a1792571977897eed0c38 (HEAD -> main, origin/main, origin/HEAD)
+Author: Han Wang <han2.wang@intel.com>
+Date:   Sat May 6 22:43:51 2023 +1200
 
-    Fix flawed code in up4.p4 and the pins switch models. (#3857)
+    Allowing local_copyprop to propagate MethodCallExpression into table … (#4003)
+    
+    * Allowing local_copyprop to propagate MethodCallExpression into table key.
+    * do not propagate union.isValid() to table key
 ```
 
 The errors with psa-try1.p4 with that version of p4test that remain are:
