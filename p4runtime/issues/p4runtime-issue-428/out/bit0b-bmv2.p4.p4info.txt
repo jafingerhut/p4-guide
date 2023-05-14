@@ -1,0 +1,62 @@
+pkg_info {
+  arch: "v1model"
+}
+tables {
+  preamble {
+    id: 36416361
+    name: "ingress.match_on_bit0_test"
+    alias: "match_on_bit0_test"
+  }
+  match_fields {
+    id: 1
+    name: "h.eth_hdr.dst_addr"
+    bitwidth: 48
+    match_type: EXACT
+  }
+  match_fields {
+    id: 2
+    name: "h.h.b8"
+    bitwidth: 8
+    match_type: EXACT
+  }
+  match_fields {
+    id: 3
+    name: "h.h.b0b"
+    match_type: EXACT
+  }
+  action_refs {
+    id: 17347281
+  }
+  action_refs {
+    id: 21257015
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 16
+}
+actions {
+  preamble {
+    id: 21257015
+    name: "NoAction"
+    alias: "NoAction"
+    annotations: "@noWarn(\"unused\")"
+  }
+}
+actions {
+  preamble {
+    id: 17347281
+    name: "ingress.a1"
+    alias: "a1"
+  }
+  params {
+    id: 1
+    name: "x"
+  }
+  params {
+    id: 2
+    name: "y"
+    bitwidth: 48
+  }
+}
+type_info {
+}
