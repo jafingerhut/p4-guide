@@ -10,7 +10,7 @@ the table index id values as "next pointers".
 
 The specification code explicitly walks through this linked list
 representation when replicating packets, creating exactly one packet
-copy per execution of the new process named TODO.
+copy per execution of the new process named `replicate_one_copy`.
 
 This also eliminates the only use of a `for` loop that existed in
 psa-try1.p4.
@@ -28,26 +28,24 @@ Same as psa-try1.p4
 
 # State that is "global" in the architecture
 
-TODO: The top level structure of processes is the same as psa-try1.p4,
+The top level structure of processes is the same as psa-try1.p4,
 except for the additional process named `replicate_one_copy` that
 creates one copy of a packet to be replicated, and then re-enqueues
-the packet in a new queue named `replicateq` that contains packets
-waiting to have one or more copy made of them.
+the packet with some metadata in a new queue named `replicateq` that
+contains packets waiting to have one or more copy made of them.  The
+metadata includes fields describing what copy to make next.
 
-This figure gives an overview of the packet queues that represent the
-global state of the architecture specification, and what each process
-does.
-
-<img src="psa-try1-figure.png"
-alt="Figure showing processes, packet queues, and P4-programmable blocks in specification psa-try1"
-align="center"/>
+There is no figure yet that captures all of the queues and processes
+of psa-try2.p4.  The closest is the figure for psa-try1.p4, which does
+not include the process `replicate_one_copy`, nor the queue
+`replicateq`.
 
 
 ## Traffic manager configuration state
 
-TODO: Similar to psa-try1.p4, except for the way that replication
-lists are reprsented as a linked list of elements of the ExactMap
-instance named `replication_entries`.
+Nearly identical to psa-try1.p4.  The only difference is the way that
+packet replication lists are reprsented as a linked list of entries
+within the ExactMap instance named `replication_entries`.
 
 
 ## Traffic manager dynamic state
