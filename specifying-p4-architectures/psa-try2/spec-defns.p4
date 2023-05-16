@@ -73,6 +73,24 @@ extern error get_parser_error();
 extern PacketLength_t get_parser_offset_bits();
 
 
+// My intent is that Queue represents a FIFO (first-in, first-out)
+// queue of elements of type T.  Some people who buy network devices
+// _really_ care about packets in a single application flow leaving
+// the device in the same relative order that they arrived to the
+// device, at least in the common case when no table updates are being
+// performed (and often they want this behavior even when most kinds
+// of table updates are performed).  The performance of several
+// reliable transport protocols such as some versions of TCP, and some
+// versions of Infiniband RDMA, are heavily reliant upon this (they do
+// not behave incorrectly if packets are reordered, but they can have
+// much lower average throughput the more that packets are reordered).
+
+// If someone wants to make a variant of these specifications where
+// they explicitly want to allow behaviors where one or more of these
+// "queues" can arbitrarily reorder values within them, I would
+// recommend creating a different extern name for such things,
+// e.g. perhaps named something like UnorderedQueue.
+
 // Another possible set of parameters one might want for a
 // specification like this is the maximum number of elements that a
 // queue is allowed to contain.
