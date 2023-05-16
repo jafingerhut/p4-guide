@@ -95,6 +95,8 @@ extern PacketLength_t get_parser_offset_bits();
 // specification like this is the maximum number of elements that a
 // queue is allowed to contain.
 extern Queue<T> {
+    // The initial state of instances of Queue is an empty queue of
+    // data values of type T.
     Queue();
 
     // Return true if the queue is empty, otherwise false.
