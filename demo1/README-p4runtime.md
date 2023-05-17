@@ -95,11 +95,10 @@ the process, e.g. using `kill -9 %1` in bash.
 Enter these commands at the `>>> ` prompt of the Python session:
 
 ```python
-# Note: 50051 is the default TCP port number on which the
-# simple_switch_grpc process is listening for connections until
-# 2020-Dec-03, when the default was changed to TCP port 9559, because
-# 9559 was granted for use for this purpose by IANA shortly before
-# then.
+# Note: 9559 is the default TCP port number on which the
+# simple_switch_grpc process is listening for incoming TCP connections,
+# over which a client program can send P4Runtime API messages to
+# simple_switch_grpc.
 
 my_dev1_addr='localhost:9559'
 my_dev1_id=0
