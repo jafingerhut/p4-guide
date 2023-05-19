@@ -114,4 +114,9 @@ extern Queue<T> {
     // returns, and be guaranteed that such modifications will never
     // change the value appended to the queue.
     void maybe_enqueue(in T e);
+
+    // Always modify the queue so that the value e is added at the
+    // end.  It is up to the caller to ensure that the queue depth
+    // remains below some finite upper bound.
+    void always_enqueue(in T e);
 }
