@@ -853,6 +853,206 @@ PROCESS egress_processing
     }
 }
 
+//////////////////////////////////////////////////////////////////////
+// extern Register notes
+//////////////////////////////////////////////////////////////////////
+
+// I am assuming for the moment that the PSA Register extern is simple
+// enough in its data plane and control plane API that I can consider
+// it an understood "primitive type".
+
+// Here is a copy of the extern definition of Register copied from the
+// psa.p4 include file:
+
+// extern Register<T, S> {
+//   /// Instantiate an array of <size> registers. The initial value is
+//   /// undefined.
+//   Register(bit<32> size);
+//   /// Initialize an array of <size> registers and set their value to
+//   /// initial_value.
+//   Register(bit<32> size, T initial_value);
+//
+//   @noSideEffects
+//   T    read  (in S index);
+//   void write (in S index, in T value);
+// }
+
+// Basically, each instance of a Register extern is specified as
+// having its state, independent of all other state in the PSA
+// specification elsewhere in this file, and from all other extern
+// instances.  This state consists of an array A of 'size' elements,
+// each with type T, accessed by an index in the range [0, size-1].  A
+// read(index) method call from the developer's P4 program returns the
+// current value at the given index value, and a write(index,
+// new_value) method call from the developer's P4 program writes the
+// value new_values at the given index.
+
+// Control plane APIs for reading and writing the values at individual
+// indexes also exist, and function identically to the data plane
+// operations.
+
+//////////////////////////////////////////////////////////////////////
+// extern Counter notes
+//////////////////////////////////////////////////////////////////////
+
+// Assuming that the Register extern exists and works as specified in
+// comments above, we will use it here in order to specify an
+// implementation for the Counter extern.
+
+// Here is a copy of the extern definition of Counter copied from the
+// psa.p4 include file:
+
+// extern Counter<W, S> {
+//   Counter(bit<32> n_counters, PSA_CounterType_t type);
+//   void count(in S index);
+// }
+
+// Consider an instance of extern Counter instantiated as follows:
+
+// Counter(4096, PSA_CounterType_t.PACKETS_AND_BYTES) my_counter_inst;
+
+// The specification for how my_counter_inst behaves is as follows:
+
+// The type of each counter entry.  Note that this is a
+// _specification_, which is not necessarily the same as a
+// cost-effective implementation.  An implementation is free to have a
+// small number of bits in the data plane, and do all kinds of fancy
+// hardware and/or software between there and a control plane API to
+// read-and-clear these fast path values into cheaper general CPU
+// memory, and then implement read operations from that general CPU
+// memory.
+
+// Note: All names beginning with "my_counter_inst_" below are
+// intended to be independent for each instance of the Counter extern.
+
+// The next two lines are example values for a Counter extern instance
+// constructed with n_counters=4096 and type S being bit<12>.
+const bit<32> my_counter_inst_constructor_call_n_counters = 4096;
+typedef bit<12> my_counter_inst_type_S;
+
+struct PSA_Counter_entry_PACKETS_AND_BYTES {
+    bit<64> packet_count;
+    bit<64> byte_count;
+}
+
+Register<PSA_Counter_entry_PACKETS_AND_BYTES, my_counter_inst_type_S>(
+    size = my_counter_inst_constructor_call_n_counters,
+    initial_value = {packet_count=0, byte_count=0}) my_counter_inst_impl_reg;
+
+struct PSA_Counter_delayed_update<S> {
+    S index;
+    bit<64> packet_len_bytes;
+}
+
+// This specification explicitly models the possible behavior that a
+// counter update has been invoked by the data plane while processing
+// a packet, but this update is not yet visible to control plane read
+// operations, even though the packet may have finished processing
+// some time ago.  This is modeled by having the count() method create
+// a counter update object and enqueue it on my_counter_inst_update_q.
+
+Queue<PSA_Counter_delayed_update<my_counter_inst_type_S>>() my_counter_inst_update_q;
+
+// The parameter `pkt` below is the packet that is currently being
+// processed by the thread that invoked this `count` method.  I do not
+// have any great suggestions on how to represent that this value gets
+// to this method call, except by making it a parameter.
+
+void count(in packet pkt, in my_counter_inst_type_S index) {
+    PSA_Counter_delayed_update<my_counter_inst_type_S> upd = {
+        index = index,
+        packet_len_bytes = (bit<64>) (pkt.len_bits >> 3)
+    };
+    my_counter_inst_update_q.always_enqueue(upd);
+}
+
+// There is a separate process in the specification for each instance
+// of the Counter extern.
+
+PROCESS my_counter_inst_execute_counter_update
+#ifdef PROCESS_SUPPORTED
+    guard {
+        !my_counter_inst_update_q.empty();
+    }
+#else
+    ()  // empty list of parameters to control as workaround
+#endif
+{
+    PSA_Counter_delayed_update<my_counter_inst_type_S> upd;
+    PSA_Counter_entry_PACKETS_AND_BYTES c;
+    apply {
+        // Pull the next delayed update from the queue and actually
+        // perform it.
+        upd = my_counter_inst_update_q.dequeue();
+        c = my_counter_inst_impl_reg.read(upd.index);
+        // Assume for this specification that counter values saturate
+        // at their maximum value rather than wrapping around.
+        c.packet_count = c.packet_count |+| 1;
+        c.byte_count = c.byte_count |+| upd.packet_len_bytes;
+        my_counter_inst_impl_reg.write(upd.index, c);
+    }
+}
+
+// Note: If the Counter extern is instantiated with type
+// PSA_CounterType_t.PACKETS, then we could create a separate variant
+// of the specification above that only maintained a packet count, and
+// no byte count.  Alternately, we could use exactly the specification
+// above, but define the control plane API such that it only returns a
+// packet count, never a byte count.
+
+// Similarly for Counter extern instantiated with type
+// PSA_CounterType_t.BYTES
+
+// TODO: The control plane API can be specified as:
+
+// A control plane read of the counter state for index idx will read
+// and return the value in the my_counter_inst_impl_reg at index idx.
+
+// A control plane write of a value to index idx will write the
+// provided value in my_counter_inst_impl_reg at index idx.
+
+// A control plane clear is just a write with value 0.
+
+// Note that in this specification (as in some implementations), a
+// control plane read or write will have no effect on the contents of
+// the update queue, and there is no way that the control plane can
+// observe the contents of the update queue.
+
+//////////////////////////////////////////////////////////////////////
+// extern Meter notes
+//////////////////////////////////////////////////////////////////////
+
+// There are no simple-to-specify implementations of Meter that would
+// be specified with a queue of delayed updates, in the way that the
+// Counter extern is specified above.
+
+// Reason: The execute() methods in the data plane need to return a
+// color value "immediately" to the calling thread that is processing
+// a packet.
+
+// Note: There DO EXIST such fancy implementations, e.g. in a switch
+// ASIC that supports cut-through forwarding, so the packet length is
+// actually _unknown_ at the time that the execute() method is called.
+// I believe what they basically do is use a too-small placeholder
+// value for the packet length to determine a color value quickly, and
+// then enqueue another meter update for the rest of the packet length
+// later, after the end of the packet has arrived.  I will not attempt
+// to specify a Meter extern behavior like that here, other than in
+// this comment.
+
+// Also note that there are an unlimited variety of precise bit-level
+// behaviors possible for meters.  Different implementations can have
+// different sets of supported values for the rate and token bucket
+// size parameters, and they can differ not only in the minimum and
+// maximum values supported, but also in the set of intermediate
+// values supported.
+
+// It is thus either quite difficult, or impossible, to write a
+// specification that matches the behavior of all acceptable
+// implementations of the Meter extern.
+
+//////////////////////////////////////////////////////////////////////
+
 // TODO: If you want to model the behavior of P4Runtime API PacketIn
 // and PacketOut messages, then the CPU port numbered PSA_PORT_CPU
 // packets should have additional special case code for handling them
