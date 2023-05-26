@@ -188,9 +188,9 @@ through 2023.  They all include the following:
 + [p4runtime-shell](https://github.com/p4lang/p4runtime-shell)
 + Uses Python3 only, no Python2 installed
 
-| Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
+| Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
-| install-p4dev-v6.sh | 22.04, 20.04 | 13 GB | 100 mins |   2 GB | v3.18.1 | v1.43.2 |
+| install-p4dev-v6.sh | 22.04, 20.04 | 20 GB | 160 mins |   2 GB | v3.18.1 | v1.43.2 |
 | install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? |
 
 

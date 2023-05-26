@@ -143,7 +143,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 13 \* 1024`
+min_free_disk_MBytes=`expr 20 \* 1024`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -222,11 +222,11 @@ echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
-echo "The files installed by this script consume about 13 GB of disk space."
+echo "The files installed by this script consume about 20 GB of disk space."
 echo ""
-echo "On a 2015 MacBook Pro with a decent speed Internet connection"
+echo "On a 2019 MacBook Pro with a decent speed Internet connection"
 echo "and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it"
-echo "took about 90 to 110 minutes."
+echo "took about 140 to 180 minutes."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
