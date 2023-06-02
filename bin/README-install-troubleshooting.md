@@ -87,15 +87,15 @@ Start with:
 + an _unmodified_ _fresh_ installation of Ubuntu Linux 20.04
   or 22.04, with ...
   + at least 2 GB of RAM (4 GB recommended)
-  + at least 13 GB of free disk space (not 13 GB of disk space total
-    for the VM, but 13 GB free disk space after the OS has been
+  + at least 20 GB of free disk space (not 20 GB of disk space total
+    for the VM, but 20 GB free disk space after the OS has been
     installed), and
   + a reliable Internet connection that is up for the entire duration
     of running the install script -- it will download approximately 1
     to 2 GByte of data.
 
 If you use the latest `install-p4dev-v5.sh` script (supported only for
-Ubuntu 20.04), you need only 2.5 GB of free disk space, and about 250
+Ubuntu 20.04), you need only 3 GB of free disk space, and about 250
 MByte of data will be downloaded from the Internet.  See the table
 below for more details.
 
