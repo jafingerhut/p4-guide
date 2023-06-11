@@ -119,7 +119,7 @@ else
     1>&2 echo ""
     1>&2 echo "Here is what command 'lsb_release -a' shows this OS to be:"
     lsb_release -a
-    exit 1
+    #exit 1
 fi
 
 # Minimum required system memory is 2 GBytes, minus a few MBytes
@@ -473,7 +473,7 @@ date
 
 echo "Uninstalling Ubuntu python3-protobuf if present"
 sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-sudo pip3 install protobuf==3.18.1
+sudo pip3 install --break-system-packages protobuf==3.18.1
 
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
@@ -547,8 +547,8 @@ sudo make install
 find /usr/lib /usr/local $HOME/.local | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
-sudo pip3 install -rrequirements.txt
-GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install .
+sudo pip3 install --break-system-packages -rrequirements.txt
+GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install --break-system-packages .
 sudo ldconfig
 # Save some storage by cleaning up grpc build
 # TODO: Is this command useful with latest cmake build infra?
@@ -651,7 +651,7 @@ sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-d
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
-sudo pip3 install scapy ply
+sudo pip3 install --break-system-packages scapy ply
 # Earlier versions of this script installed the Ubuntu package
 # python-ipaddr.  However, that no longer exists in Ubuntu 20.04.  PIP
 # for Python3 can install the ipaddr module, which is good enough to
@@ -661,7 +661,7 @@ sudo pip3 install scapy ply
 # those failing tests, the code that requires this module is in
 # behavioral-model's runtime_CLI.py source file, in a function named
 # ipv6Addr_to_bytes.
-sudo pip3 install ipaddr
+sudo pip3 install --break-system-packages ipaddr
 pip3 list
 
 # Clone p4c and its submodules:
@@ -749,9 +749,9 @@ date
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
 sudo apt-get --yes install libgflags-dev net-tools
-sudo pip3 install psutil crcmod
+sudo pip3 install --break-system-packages psutil crcmod
 # p4runtime-shell package, installed from latest source version
-sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+sudo pip3 install --break-system-packages git+https://github.com/p4lang/p4runtime-shell.git
 pip3 list
 
 set +x
