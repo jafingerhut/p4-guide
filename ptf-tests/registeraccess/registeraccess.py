@@ -59,6 +59,8 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
+verbose = False
+
 def get_exp_num_packetins(pktin, exp_num_packets, timeout_sec):
     pktlist = []
     pktin.sniff(lambda p: pktlist.append(p), timeout=timeout_sec)
@@ -128,7 +130,8 @@ class RegisterAccessTest(BaseTest):
         pktout.metadata['operand2'] = '0'
         pktout.metadata['operand3'] = '0'
         pktout.send()
-        logging.info("write_seqNumReg pktout={}".format(pktout))
+        if verbose:
+            logging.info("write_seqNumReg pktout={}".format(pktout))
 
         exp_pkt = pkt
         exp_pktinfo = \
@@ -141,13 +144,15 @@ class RegisterAccessTest(BaseTest):
               'operand2': 0,
               'operand3': 0},
              'payload': bytes(exp_pkt)}
-        logging.info("write_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
+        if verbose:
+            logging.info("write_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
         tu.verify_no_other_packets(self)
         pktlist = get_exp_num_packetins(self.pktin, 1, 2)
         pkt_pb = pktlist[0]
         pktinfo = p4rtutil.decode_packet_in_metadata(
             self.cpm_packetin_id2data, pkt_pb.packet)
-        logging.info("write_seqNumReg pktinfo={}".format(pktinfo))
+        if verbose:
+            logging.info("write_seqNumReg pktinfo={}".format(pktinfo))
         p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
 
     def read_SeqNumReg(self, idx_int):
@@ -163,7 +168,8 @@ class RegisterAccessTest(BaseTest):
         pktout.metadata['operand2'] = '0'
         pktout.metadata['operand3'] = '0'
         pktout.send()
-        logging.info("read_seqNumReg pktout={}".format(pktout))
+        if verbose:
+            logging.info("read_seqNumReg pktout={}".format(pktout))
 
         exp_pkt = pkt
         exp_pktinfo = \
@@ -190,9 +196,12 @@ class RegisterAccessTest(BaseTest):
         # match.  We will still catch any problems if any of the other
         # fields contain unxpected values.
         seqnum_int = pktinfo['metadata']['operand1']
+        logging.info("read_seqNumReg idx={} seqnum={}".format(idx_int,
+                                                              seqnum_int))
         exp_pktinfo['metadata']['operand1'] = seqnum_int
-        logging.info("read_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
-        logging.info("read_seqNumReg pktinfo={}".format(pktinfo))
+        if verbose:
+            logging.info("read_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
+            logging.info("read_seqNumReg pktinfo={}".format(pktinfo))
         p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
         return seqnum_int
 
@@ -205,6 +214,8 @@ class RegisterAccessTest(BaseTest):
         eg_port = 2
 
         pkt_in = self.make_pkt(idx, pkt_seqnum)
+        logging.info("Sending data packet with seqnum={}"
+                     " expecting it to be forwarded".format(pkt_seqnum))
         tu.send_packet(self, ig_port, pkt_in)
 
         exp_pkt = pkt_in
@@ -222,6 +233,8 @@ class RegisterAccessTest(BaseTest):
         eg_port = 2
 
         pkt_in = self.make_pkt(idx, pkt_seqnum)
+        logging.info("Sending data packet with seqnum={}"
+                     " expecting it to be dropped".format(pkt_seqnum))
         tu.send_packet(self, ig_port, pkt_in)
         tu.verify_no_other_packets(self)
 
