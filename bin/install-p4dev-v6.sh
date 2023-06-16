@@ -645,6 +645,34 @@ echo "start install p4c:"
 set -x
 date
 
+# On Ubuntu, installing llvm causes a particular version of the
+# libz3-dev package to be installed, but that version does not
+# currently work with the p4tools back end.  Install a dummy empty
+# version of a package named libz3-dev that satisfies apt-get without
+# installing the real libz3-ev and libz3-4 packages, and instead
+# install a precompiled binary version of the Z3 library tested to
+# work with the p4tools back end.
+sudo apt-get install -y equivs
+DUMMY_LIBZ3_DEV_EQUIVS="${THIS_SCRIPT_DIR_ABSOLUTE}/libz3-dev"
+equivs-build "${DUMMY_LIBZ3_DEV_EQUIVS}"
+sudo dpkg -i libz3-dev_4.8.7-build1_all.deb
+function install_z3_for_p4testgen() {
+    # This is needed to pull Z3.
+    sudo apt-get install -y wget zip
+    # Install a recent version of Z3
+    Z3_VERSION="z3-4.8.14"
+    Z3_DIST="${Z3_VERSION}-x64-glibc-2.31"
+
+    pushd /tmp
+    wget https://github.com/Z3Prover/z3/releases/download/${Z3_VERSION}/${Z3_DIST}.zip
+    unzip ${Z3_DIST}.zip
+    sudo cp -r ${Z3_DIST}/bin/libz3.* /usr/local/lib/
+    sudo cp -r ${Z3_DIST}/include/* /usr/local/include/
+    popd
+    rm -rf /tmp/${Z3_DIST}
+}
+install_z3_for_p4testgen
+
 # Install Ubuntu dependencies needed by p4c, from its README.md
 # Matches latest p4c README.md instructions as of 2019-Oct-09
 sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python3-pip tcpdump
@@ -671,7 +699,7 @@ git log -n 1
 mkdir build
 cd build
 # Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
@@ -730,7 +758,7 @@ date
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-sudo python3 setup.py install
+sudo pip install .
 
 set +x
 echo "end install ptf:"
