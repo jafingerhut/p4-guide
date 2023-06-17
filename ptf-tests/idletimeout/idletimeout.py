@@ -80,7 +80,8 @@ class IdleTimeoutTest(BaseTest):
         sh.setup(device_id=0,
                  grpc_addr=grpc_addr,
                  election_id=(0, 1), # (high_32bits, lo_32bits)
-                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
+                 verbose=False)
         self.idlenotes = sh.IdleTimeoutNotification()
 
     def tearDown(self):
@@ -378,7 +379,10 @@ class OneEntryTest(IdleTimeoutTest):
 
         stop_time = time.time() + 10
         while True:
-            msginfos = get_idle_notes(self.idlenotes, stop_time - time.time())
+            wait_time = stop_time - time.time()
+            if wait_time <= 0:
+                wait_time = 0.001
+            msginfos = get_idle_notes(self.idlenotes, wait_time)
             now = time.time()
             if len(msginfos) == 0:
                 break

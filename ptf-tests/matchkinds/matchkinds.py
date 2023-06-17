@@ -73,7 +73,8 @@ class MatchKindsTest(BaseTest):
         sh.setup(device_id=0,
                  grpc_addr=grpc_addr,
                  election_id=(0, 1), # (high_32bits, lo_32bits)
-                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
+                 verbose=False)
         p4rtutil.dump_table("t1")
         p4rtutil.dump_table("t2")
 

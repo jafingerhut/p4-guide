@@ -97,7 +97,8 @@ class Demo7Test(BaseTest):
         sh.setup(device_id=0,
                  grpc_addr=grpc_addr,
                  election_id=(0, 1), # (high_32bits, lo_32bits)
-                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname))
+                 config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
+                 verbose=False)
         p4rtutil.dump_table("ipv4_mc_route_lookup")
         p4rtutil.dump_table("send_frame")
 
@@ -174,52 +175,56 @@ class FwdTest(Demo7Test):
         mcast_grp_recipients = [{'eg_port': 2, 'egress_rid': 5},
                                 {'eg_port': 5, 'egress_rid': 75},
                                 {'eg_port': 1, 'egress_rid': 111}]
-        mcast_grp_recipients = []
 
-        num_copies = 100  # works
+        try_long_mcast_replication_list = False
+        if try_long_mcast_replication_list:
+            mcast_grp_recipients = []
 
-        # num_copies 200 seems to hang somewhere.  I see these results
-        # in simple_switch log file ss-log.txt:
+            num_copies = 100  # works
 
-        # $ grep 'Replicating packet on port ' ss-log.txt  | wc
-        #     200    2600   16800
-        # $ grep 'Sending packet of length ' ss-log.txt | wc
-        #     151    2114   42582
+            # num_copies 200 seems to hang somewhere.  I see these results
+            # in simple_switch log file ss-log.txt:
 
-        # Some internal buffer size limit within simple_switch,
-        # perhaps?
-        num_copies = 200
+            # $ grep 'Replicating packet on port ' ss-log.txt  | wc
+            #     200    2600   16800
+            # $ grep 'Sending packet of length ' ss-log.txt | wc
+            #     151    2114   42582
 
-        num_copies = 150
-        # num_copies = 150 hangs
-        # 150 replicated packets in ss-log.txt
-        # 123 sent packets in ss-log.txt
+            # Some internal buffer size limit within simple_switch,
+            # perhaps?
+            #num_copies = 200
 
-        num_copies = 125
-        # num_copies = 125 try 1 hangs
-        # 125 replicated packets in ss-log.txt
-        # 101 sent packets in ss-log.txt
+            #num_copies = 150
+            # num_copies = 150 hangs
+            # 150 replicated packets in ss-log.txt
+            # 123 sent packets in ss-log.txt
 
-        # num_copies = 125 try 2 hangs
-        # 125 replicated packets in ss-log.txt
-        # 120 sent packets in ss-log.txt
+            #num_copies = 125
+            # num_copies = 125 try 1 hangs
+            # 125 replicated packets in ss-log.txt
+            # 101 sent packets in ss-log.txt
 
-        # num_copies = 125 try 3 hangs
-        # 125 replicated packets in ss-log.txt
-        # 125 sent packets in ss-log.txt
-        # 93 'Expecting output packets on port ' lines in PTF log output
-        # Perhaps some packets are getting lost between egres and PTF
-        # receiving them on veth port?
+            # num_copies = 125 try 2 hangs
+            # 125 replicated packets in ss-log.txt
+            # 120 sent packets in ss-log.txt
 
-        #num_copies = 100
-        # num_copies = 100 hangs
-        # 100 replicated packets in ss-log.txt
-        # 92 sent packets in ss-log.txt
+            # num_copies = 125 try 3 hangs
+            # 125 replicated packets in ss-log.txt
+            # 125 sent packets in ss-log.txt
+            # 93 'Expecting output packets on port ' lines in PTF log output
+            # Perhaps some packets are getting lost between egres and PTF
+            # receiving them on veth port?
 
-        # Then it worked 3 out of 3 times in a row after that.
+            #num_copies = 100
+            # num_copies = 100 hangs
+            # 100 replicated packets in ss-log.txt
+            # 92 sent packets in ss-log.txt
 
-        for x in range(1,num_copies+1):
-            mcast_grp_recipients.append({'eg_port': 2, 'egress_rid': x})
+            # Then it worked 3 out of 3 times in a row after that.
+
+            for x in range(1,num_copies+1):
+                mcast_grp_recipients.append({'eg_port': 2, 'egress_rid': x})
+
         logging.info("len(mcast_grp_recipients)=%d"
                      "" % (len(mcast_grp_recipients)))
         mcg = sh.MulticastGroupEntry(mcast_grp)
