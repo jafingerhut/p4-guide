@@ -127,6 +127,9 @@ then
 elif [ "${ID}" = "fedora" ]
 then
     case "${VERSION_ID}" in
+	35)
+	    supported_distribution=1
+	    ;;
 	36)
 	    supported_distribution=1
 	    ;;
@@ -742,9 +745,21 @@ echo "start install p4c:"
 set -x
 date
 
-# Install Ubuntu dependencies needed by p4c, from its README.md
-# Matches latest p4c README.md instructions as of 2019-Oct-09
-sudo apt-get --yes install g++ git automake libtool libgc-dev bison flex libfl-dev libgmp-dev libboost-dev libboost-iostreams-dev libboost-graph-dev llvm pkg-config python3-pip tcpdump
+if [ "${ID}" = "ubuntu" ]
+then
+    # Install Ubuntu dependencies needed by p4c, from its README.md
+    # Matches latest p4c README.md instructions as of 2019-Oct-09
+    sudo apt-get --yes install g++ git automake libtool libgc-dev \
+         bison flex libfl-dev libgmp-dev \
+         libboost-dev libboost-iostreams-dev libboost-graph-dev \
+         llvm pkg-config python3-pip tcpdump
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y install g++ git automake libtool gc-devel \
+         bison flex libfl-devel gmp-devel \
+         boost-devel boost-iostreams boost-graph \
+         llvm pkgconf python3-pip tcpdump
+fi
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
@@ -845,7 +860,13 @@ set -x
 date
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
-sudo apt-get --yes install libgflags-dev net-tools
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes install libgflags-dev net-tools
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y install gflags-devel net-tools
+fi
 sudo pip3 install psutil crcmod
 # p4runtime-shell package, installed from latest source version
 sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
