@@ -39,18 +39,26 @@ echo "$ uname -a"
 uname -a
 
 echo ""
-echo "$ lsb_release -a"
-lsb_release -a
+source /etc/os-release
+echo "ID=${ID}"
+echo "VERSION_ID=${VERSION_ID}"
 
-get_package_info make
 get_package_info gcc
 get_package_info g++
-get_package_info llvm-config
+get_package_info make
 get_package_info cmake
+get_package_info autoconf
+get_package_info automake
+get_package_info as
+get_package_info bison
+get_package_info flex
+get_package_info llvm-config
 get_package_info python
 get_package_info pip
 get_package_info python3
 get_package_info pip3
+get_package_info libtool
+get_package_info pkg-config
 get_package_info mn
 get_package_info protoc
 get_package_info thrift
