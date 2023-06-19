@@ -107,6 +107,7 @@ then
     linux_version_warning
     exit 1
 fi
+source /etc/os-release
 
 supported_distribution=0
 tried_but_got_build_errors=0
@@ -126,6 +127,9 @@ then
 elif [ "${ID}" = "fedora" ]
 then
     case "${VERSION_ID}" in
+	36)
+	    supported_distribution=1
+	    ;;
 	37)
 	    supported_distribution=1
 	    ;;
@@ -313,7 +317,10 @@ get_from_nearest() {
 # https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
 # https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
 
-PY3LOCALPATH=`${THIS_SCRIPT_DIR_ABSOLUTE}/py3localpath.py`
+if [ "${ID}" = "ubuntu" ]
+then
+    PY3LOCALPATH=`${THIS_SCRIPT_DIR_ABSOLUTE}/py3localpath.py`
+fi
 
 move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     local SRC_DIR
@@ -378,7 +385,6 @@ df -BM .
 
 # Check to see which versions of Python-related programs this system
 # already has installed, before the script starts installing things.
-lsb_release -a
 python -V  || echo "No such command in PATH: python"
 python2 -V || echo "No such command in PATH: python2"
 python3 -V || echo "No such command in PATH: python3"
@@ -661,7 +667,10 @@ sudo make install
 
 # Save about 0.25G of storage by cleaning up PI build
 make clean
-move_usr_local_lib_python3_from_site_packages_to_dist_packages
+if [ "${ID}" = "ubuntu" ]
+then
+    move_usr_local_lib_python3_from_site_packages_to_dist_packages
+fi
 
 set +x
 echo "end install PI:"
@@ -715,7 +724,10 @@ ${CONFIG_CMD_PREFIX} ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 make
 sudo make install-strip
 sudo ldconfig
-move_usr_local_lib_python3_from_site_packages_to_dist_packages
+if [ "${ID}" = "ubuntu" ]
+then
+    move_usr_local_lib_python3_from_site_packages_to_dist_packages
+fi
 
 set +x
 echo "end install behavioral-model:"
