@@ -656,12 +656,11 @@ git log -n 1
 ./autogen.sh
 if [ "${ID}" = "ubuntu" ]
 then
-    CONFIG_CMD_PREFIX=""
+    ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 elif [ "${ID}" = "fedora" ]
 then
-    CONFIG_CMD_PREFIX="PKG_CONFIG_PATH=/usr/local/lib/pkgconfig"
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 fi
-${CONFIG_CMD_PREFIX} ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 make
 sudo make install
 
@@ -715,12 +714,11 @@ patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
 # Remove 'CXXFLAGS ...' part to disable debug
 if [ "${ID}" = "ubuntu" ]
 then
-    CONFIG_CMD_PREFIX=""
+    ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 elif [ "${ID}" = "fedora" ]
 then
-    CONFIG_CMD_PREFIX="PKG_CONFIG_PATH=/usr/local/lib/pkgconfig"
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 fi
-${CONFIG_CMD_PREFIX} ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 make
 sudo make install-strip
 sudo ldconfig

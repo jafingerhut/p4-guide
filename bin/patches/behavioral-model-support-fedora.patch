@@ -1,8 +1,8 @@
 diff --git a/install_deps.sh b/install_deps.sh
-index 4c5a45d..3d5a97d 100755
+index 4c5a45d..8226508 100755
 --- a/install_deps.sh
 +++ b/install_deps.sh
-@@ -1,28 +1,57 @@
+@@ -1,28 +1,58 @@
  #!/bin/bash
  set -e
 -ubuntu_release=`lsb_release -s -r`
@@ -33,6 +33,7 @@ index 4c5a45d..3d5a97d 100755
 +    1>&2 echo "No file /etc/os-release.  Cannot determine what OS this is."
 +    exit 1
 +fi
++source /etc/os-release
 +if [ "${ID}" = "ubuntu" ]
 +then
 +    sudo apt-get install -y \
