@@ -34,11 +34,11 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
-ubuntu_version_warning() {
-    1>&2 echo "This software has only been tested on these systems:"
-    1>&2 echo "    Ubuntu 18.04"
-    1>&2 echo "    Ubuntu 20.04"
-    1>&2 echo "    Ubuntu 22.04"
+linux_version_warning() {
+    1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
+    1>&2 echo "This script only supports these:"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 18.04 20.04 22.04"
+    1>&2 echo "    ID fedora, VERSION_ID in 37"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -101,24 +101,42 @@ python_version_warning() {
 
 abort_script=0
 
-lsb_release >& /dev/null
-if [ $? != 0 ]
+if [ ! -r /etc/os-release ]
 then
-    1>&2 echo "No 'lsb_release' found in your command path."
-    ubuntu_version_warning
+    1>&2 echo "No file /etc/os-release.  Cannot determine what OS this is."
+    linux_version_warning
     exit 1
 fi
 
-distributor_id=`lsb_release -si`
-ubuntu_release=`lsb_release -s -r`
-if [ "${distributor_id}" = "Ubuntu" -a \( "${ubuntu_release}" = "18.04" -o "${ubuntu_release}" = "20.04" -o "${ubuntu_release}" = "22.04" \) ]
+supported_distribution=0
+tried_but_got_build_errors=0
+if [ "${ID}" = "ubuntu" ]
 then
-    echo "Found distributor '${distributor_id}' release '${ubuntu_release}'.  Continuing with installation."
+    case "${VERSION_ID}" in
+	18.04)
+	    supported_distribution=1
+	    ;;
+	20.04)
+	    supported_distribution=1
+	    ;;
+	22.04)
+	    supported_distribution=1
+	    ;;
+    esac
+elif [ "${ID}" = "fedora" ]
+then
+    case "${VERSION_ID}" in
+	37)
+	    supported_distribution=1
+	    ;;
+    esac
+fi
+
+if [ ${supported_distribution} -eq 1 ]
+then
+    echo "Found supported ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
 else
-    ubuntu_version_warning
-    1>&2 echo ""
-    1>&2 echo "Here is what command 'lsb_release -a' shows this OS to be:"
-    lsb_release -a
+    linux_version_warning
     exit 1
 fi
 
@@ -369,11 +387,18 @@ pip2 -V || echo "No such command in PATH: pip2"
 pip3 -V || echo "No such command in PATH: pip3"
 
 # On new systems if you have never checked repos you should do that first
-sudo apt-get --yes update
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
-sudo apt-get --yes install git vim
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes update
+    sudo apt-get --yes install git vim
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y update
+    sudo dnf -y install git vim
+fi
 
 # Run a child process in the background that will keep sudo
 # credentials fresh.  The hope is that after a user enters their
@@ -401,17 +426,25 @@ set -x
 trap clean_up SIGHUP SIGINT SIGTERM
 
 # Install Ubuntu packages needed by protobuf v3.18.1, from its src/README.md
-sudo apt-get --yes install autoconf automake libtool curl make g++ unzip
 
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
-sudo apt-get --yes install pkg-config
 
 # It appears that some part of the build process for Thrift 0.12.0
 # requires that pip3 has been installed first.  Without this, there is
 # an error during building Thrift 0.12.0 where a Python 3 program
 # cannot import from the setuptools package.
-sudo apt-get --yes install python3-pip
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes install \
+	 autoconf automake libtool curl make g++ unzip \
+	 pkg-config python3-pip
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y install \
+	 autoconf automake libtool curl make g++ unzip \
+	 pkg-config python3-pip
+fi
 
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
@@ -471,9 +504,15 @@ date
 # Then did 'sudo pip3 install protobuf==3.6.1'
 # At that point, attempting to import any of the 3 modules above gave NO error.
 
-echo "Uninstalling Ubuntu python3-protobuf if present"
-sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-sudo pip3 install protobuf==3.18.1
+if [ "${ID}" = "ubuntu" ]
+then
+    echo "Uninstalling Ubuntu python3-protobuf if present"
+    sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
+    sudo pip3 install protobuf==3.18.1
+elif [ "${ID}" = "fedora" ]
+then
+    sudo pip3 install protobuf==3.18.1
+fi
 
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
@@ -500,18 +539,25 @@ find /usr/lib /usr/local $HOME/.local | sort > usr-local-2-after-protobuf.txt
 # this is easily done via apt-get on the cmake Ubuntu package.  On
 # Ubuntu 18.04, that package is v3.10.2, one that fails to install
 # grpc fully, so download and build cmake v3.16.3 from source code.
-if [ "${ubuntu_release}" = "18.04" ]
+if [ "${ID}" = "ubuntu" ]
 then
-    sudo apt install --yes make g++ libssl-dev
-    git clone https://gitlab.kitware.com/cmake/cmake.git
-    cd cmake
-    git checkout v3.16.3
-    ./bootstrap
-    make
-    sudo make install
-else
-    sudo apt-get --yes install cmake
+    if [ "${VERSION_ID}" = "18.04" ]
+    then
+	sudo apt install --yes make g++ libssl-dev
+	git clone https://gitlab.kitware.com/cmake/cmake.git
+	cd cmake
+	git checkout v3.16.3
+	./bootstrap
+	make
+	sudo make install
+    else
+	sudo apt-get --yes install cmake
+    fi
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y install cmake
 fi
+
 
 cd "${INSTALL_DIR}"
 
@@ -523,12 +569,29 @@ set -x
 date
 
 # From BUILDING.md of grpc source repository
-sudo apt-get --yes install build-essential autoconf libtool pkg-config
-# TODO: This package is not mentioned in grpc BUILDING.md
-# instructions, but when I tried on Ubuntu 20.04 without it, the
-# building of grpc failed with not being able to find an OpenSSL
-# library.
-sudo apt-get --yes install libssl-dev
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes install build-essential autoconf libtool pkg-config
+    # TODO: This package is not mentioned in grpc BUILDING.md
+    # instructions, but when I tried on Ubuntu 20.04 without it, the
+    # building of grpc failed with not being able to find an OpenSSL
+    # library.
+    sudo apt-get --yes install libssl-dev
+elif [ "${ID}" = "fedora" ]
+then
+    # I am not sure that the 'Development Tools' group on Fedora is
+    # identical to installing the build-essential package on Ubuntu,
+    # but there is at least significant overlap between what they
+    # install.
+    sudo dnf group install -y 'Development Tools'
+    # python3-devel is needed on Fedora systems for the `pip3 install
+    # .` step below
+    sudo dnf -y install autoconf libtool pkg-config python3-devel
+    # TODO: Should I install openssl-devel here on Fedora?  There is
+    # no package named libssl-dev or libssl-devel.  It seems like it
+    # might be unnecessary, as without doing so the build of grpc
+    # below went through with no errors.
+fi
 
 get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
@@ -570,14 +633,29 @@ set -x
 date
 
 # Deps needed to build PI:
-sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+elif [ "${ID}" = "fedora" ]
+then
+    # Any other libraries output from 'dnf search libtool' that need
+    # to be installed?
+    sudo dnf -y install readline-devel valgrind libtool boost-devel boost-system boost-thread
+fi
 
 git clone https://github.com/p4lang/PI
 cd PI
 git submodule update --init --recursive
 git log -n 1
 ./autogen.sh
-./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
+if [ "${ID}" = "ubuntu" ]
+then
+    CONFIG_CMD_PREFIX=""
+elif [ "${ID}" = "fedora" ]
+then
+    CONFIG_CMD_PREFIX="PKG_CONFIG_PATH=/usr/local/lib/pkgconfig"
+fi
+${CONFIG_CMD_PREFIX} ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 make
 sudo make install
 
@@ -617,6 +695,8 @@ cd behavioral-model
 # Get latest updates that are not in the repo cache version
 git pull
 git log -n 1
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
@@ -624,7 +704,14 @@ git log -n 1
 # code first, using these commands:
 ./autogen.sh
 # Remove 'CXXFLAGS ...' part to disable debug
-./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
+if [ "${ID}" = "ubuntu" ]
+then
+    CONFIG_CMD_PREFIX=""
+elif [ "${ID}" = "fedora" ]
+then
+    CONFIG_CMD_PREFIX="PKG_CONFIG_PATH=/usr/local/lib/pkgconfig"
+fi
+${CONFIG_CMD_PREFIX} ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 make
 sudo make install-strip
 sudo ldconfig
