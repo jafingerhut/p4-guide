@@ -794,7 +794,7 @@ git log -n 1
 mkdir build
 cd build
 # Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG $*
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
@@ -853,7 +853,8 @@ date
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-sudo python3 setup.py install
+#sudo python3 setup.py install
+sudo pip install .
 
 set +x
 echo "end install ptf:"
