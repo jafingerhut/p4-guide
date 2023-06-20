@@ -1,8 +1,8 @@
 diff --git a/install_deps.sh b/install_deps.sh
-index 4c5a45d..8226508 100755
+index 4c5a45d..81a175b 100755
 --- a/install_deps.sh
 +++ b/install_deps.sh
-@@ -1,28 +1,58 @@
+@@ -1,28 +1,56 @@
  #!/bin/bash
  set -e
 -ubuntu_release=`lsb_release -s -r`
@@ -77,9 +77,7 @@ index 4c5a45d..8226508 100755
 +         bison \
 +         pkg-config \
 +         g++ \
-+         openssl-devel \
-+         thrift-devel \
-+         nanomsg-devel
++         openssl-devel
 +fi
  
  tmpdir=`mktemp -d -p .`
