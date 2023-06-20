@@ -784,7 +784,7 @@ git log -n 1
 mkdir build
 cd build
 # Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
