@@ -1,8 +1,16 @@
 diff --git a/util/install.sh b/util/install.sh
-index 04f85b0..2dd7a71 100755
+index 04f85b0..ca21130 100755
 --- a/util/install.sh
 +++ b/util/install.sh
-@@ -165,7 +165,7 @@ function mn_deps {
+@@ -5,6 +5,7 @@
+ 
+ # Fail on error
+ set -e
++set -x
+ 
+ # Fail on unset var usage
+ set -o nounset
+@@ -165,7 +166,7 @@ function mn_deps {
          $install gcc make socat psmisc xterm openssh-clients iperf \
              iproute telnet python-setuptools libcgroup-tools \
              ethtool help2man net-tools
@@ -11,7 +19,22 @@ index 04f85b0..2dd7a71 100755
              ${PYPKG}-pexpect
      elif [ "$DIST" = "SUSE LINUX"  ]; then
  		$install gcc make socat psmisc xterm openssh iperf \
-@@ -303,7 +303,7 @@ function install_wireshark {
+@@ -187,9 +188,13 @@ function mn_deps {
+                 pf=pyflakes3
+                 pep8=python3-pep8
+         fi
++        pylint=pylint
++        if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '<=' 20.04` = "1" ]; then
++                pylint=pylint3
++        fi
+ 
+         $install gcc make socat psmisc xterm ssh iperf telnet \
+-                 ethtool help2man $pf pylint $pep8 \
++                 ethtool help2man $pf $pylint $pep8 \
+                  net-tools ${PYPKG}-tk
+ 
+         # Install pip
+@@ -303,7 +308,7 @@ function install_wireshark {
      if ! which wireshark; then
          echo "Installing Wireshark"
          if [ "$DIST" = "Fedora" -o "$DIST" = "RedHatEnterpriseServer" ]; then
