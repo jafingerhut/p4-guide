@@ -278,7 +278,7 @@ echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2022-Apr-02"
 echo "+ Python packages: protobuf 3.18.1, grpcio 1.43.2"
-echo "+ Python packages: scapy, ipaddr, psutil, crcmod"
+echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
 echo "its precise contents from one run of this script to another."
@@ -775,16 +775,6 @@ fi
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
 sudo pip3 install scapy ply
-# Earlier versions of this script installed the Ubuntu package
-# python-ipaddr.  However, that no longer exists in Ubuntu 20.04.  PIP
-# for Python3 can install the ipaddr module, which is good enough to
-# enable two of p4c's many tests to pass, tests that failed if the
-# ipaddr Python3 module is not installed, in my testing on
-# 2020-Oct-17.  From the Python stack trace that appears when running
-# those failing tests, the code that requires this module is in
-# behavioral-model's runtime_CLI.py source file, in a function named
-# ipv6Addr_to_bytes.
-sudo pip3 install ipaddr
 pip3 list
 
 # Clone p4c and its submodules:
