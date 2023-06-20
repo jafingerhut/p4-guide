@@ -2,9 +2,15 @@
 
 Pick one of these alternatives that best fits your situation:
 
-(a) I have a new Ubuntu 20.04 or 22.04 Linux system, and I
-    want to install the open source P4 development tools on it.  (This
-    might be a new VM created for this purpose.)
+(a) I have a freshly installed Linux system with one of the supported
+    distributions and versions listed below, and I want to install the
+    open source P4 development tools on it.  (This might be a new VM
+    created for this purpose.)
+
+  + Ubuntu 20.04 or 22.04
+  + Fedora 35 (see [fedoraproject.org
+    releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
+    for obtaining older Fedora releases)
 
 (b) I am comfortable downloading and running a virtual machine image
     with the P4 open source tools already compiled and installed,
@@ -124,7 +130,8 @@ Then run the commands below in a terminal.  Note:
   that install files in system-wide directories such as
   `/usr/local/bin`.
 ```bash
-$ sudo apt install git
+$ sudo apt install git     # For Ubuntu
+$ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v6.sh |& tee log.txt
 ```
