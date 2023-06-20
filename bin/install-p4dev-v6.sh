@@ -820,10 +820,11 @@ date
 # Pin to a particular version, so that I know the patch below will
 # continue to apply.  Will likely want to update this to newer
 # versions once or twice a year.
-MININET_COMMIT="aa0176fce6fb718a03474f8719261b07b670d30d"  # 2022-Apr-02
+MININET_COMMIT="5b1b376336e1c6330308e64ba41baac6976b6874"  # 2023-May-28
 git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
+exit 0
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
 cd ..
