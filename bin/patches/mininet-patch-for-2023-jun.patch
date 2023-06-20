@@ -1,0 +1,22 @@
+diff --git a/util/install.sh b/util/install.sh
+index 04f85b0..2dd7a71 100755
+--- a/util/install.sh
++++ b/util/install.sh
+@@ -165,7 +165,7 @@ function mn_deps {
+         $install gcc make socat psmisc xterm openssh-clients iperf \
+             iproute telnet python-setuptools libcgroup-tools \
+             ethtool help2man net-tools
+-        $install ${PYPKG}-pyflakes pylint ${PYPKG}-pep8-naming
++        $install ${PYPKG}-pyflakes pylint ${PYPKG}-pep8-naming \
+             ${PYPKG}-pexpect
+     elif [ "$DIST" = "SUSE LINUX"  ]; then
+ 		$install gcc make socat psmisc xterm openssh iperf \
+@@ -303,7 +303,7 @@ function install_wireshark {
+     if ! which wireshark; then
+         echo "Installing Wireshark"
+         if [ "$DIST" = "Fedora" -o "$DIST" = "RedHatEnterpriseServer" ]; then
+-            $install wireshark wireshark-gnome
++            $install wireshark
+ 		elif [ "$DIST" = "SUSE LINUX"  ]; then
+ 			$install wireshark
+         else
