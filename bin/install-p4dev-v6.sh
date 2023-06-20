@@ -824,9 +824,8 @@ MININET_COMMIT="5b1b376336e1c6330308e64ba41baac6976b6874"  # 2023-May-28
 git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
-exit 0
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun.patch"
 cd ..
 sudo ./mininet/util/install.sh -nw
 
