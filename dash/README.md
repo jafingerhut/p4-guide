@@ -72,8 +72,6 @@ based on what I know now.
 
 # Gaps in current P4 software switches
 
-No software switches 
-
 
 ## Summary
 
