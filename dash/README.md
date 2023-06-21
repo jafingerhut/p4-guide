@@ -136,7 +136,7 @@ end code.  Bugs have been filed here:
 + https://github.com/p4lang/p4c/issues/3966
 
 The engineers at Intel who have developed P4-DPDK have been notified
-of these issues, but as of 2021-Jun-21 these issues are not a high
+of these issues, but as of 2023-Jun-21 these issues are not a high
 priority item for them to fix.
 
 Reminder: Re-read the "General reminder about open source projects"
