@@ -12,6 +12,16 @@ fi
 source /etc/os-release
 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
 
+PIP_INSTALL_OPTS=""
+if [ "${ID}" = "ubuntu" ]
+then
+    case "${VERSION_ID}" in
+        23.04)
+            PIP_INSTALL_OPTS="--break-system-packages"
+            ;;
+    esac
+fi
+
 set -x
 set -e
 if [ "${ID}" = "ubuntu" ]
@@ -28,4 +38,4 @@ PTF_COMMIT="771a45249de2f287377b4690cd13adc18f989638"   # 2023-Jun-19
 git clone https://github.com/p4lang/ptf
 cd ptf
 git checkout "${PTF_COMMIT}"
-sudo pip install .
+sudo pip install ${PIP_INSTALL_OPTS} .
