@@ -22,8 +22,6 @@ then
     esac
 fi
 
-set -x
-set -e
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install git python3-pip
@@ -31,11 +29,16 @@ elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install git python3-pip
 fi
+
+set -x
+set -e
 python3 --version
 pip3 --version
 
 PTF_COMMIT="771a45249de2f287377b4690cd13adc18f989638"   # 2023-Jun-19
-git clone https://github.com/p4lang/ptf
+#git clone https://github.com/p4lang/ptf
+git clone https://github.com/jafingerhut/ptf
 cd ptf
-git checkout "${PTF_COMMIT}"
+#git checkout "${PTF_COMMIT}"
+git checkout try-setup-cfg-tweak
 sudo pip install ${PIP_INSTALL_OPTS} .
