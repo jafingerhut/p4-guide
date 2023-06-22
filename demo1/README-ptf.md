@@ -51,177 +51,35 @@ Adding interface veth8 as port 4
 Adding interface veth10 as port 5
 Adding interface veth12 as port 6
 Adding interface veth14 as port 7
-/usr/local/lib/python3.8/dist-packages/ptf-0.9.3-py3.8.egg/EGG-INFO/scripts/ptf:19: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
-  import imp
-2023-01-09 21:56:37,569 - root - INFO - Importing platform: eth
-2023-01-09 21:56:37,569 - root - INFO - port map: {(0, 0): 'veth1', (0, 1): 'veth3', (0, 2): 'veth5', (0, 3): 'veth7', (0, 4): 'veth9', (0, 5): 'veth11', (0, 6): 'veth13', (0, 7): 'veth15'}
-2023-01-09 21:56:37,569 - root - INFO - Autogen random seed: 41683488
-2023-01-09 21:56:37,570 - root - INFO - *** TEST RUN START: Mon Jan  9 21:56:37 2023
+2023-06-22 13:33:12,281 - root - INFO - Importing platform: eth
+2023-06-22 13:33:12,282 - root - INFO - port map: {(0, 0): 'veth1', (0, 1): 'veth3', (0, 2): 'veth5', (0, 3): 'veth7', (0, 4): 'veth9', (0, 5): 'veth11', (0, 6): 'veth13', (0, 7): 'veth15'}
+2023-06-22 13:33:12,282 - root - INFO - Autogen random seed: 19569263
+2023-06-22 13:33:12,286 - root - INFO - *** TEST RUN START: Thu Jun 22 13:33:12 2023
 demo1.FwdTest ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.954s
+Ran 1 test in 0.949s
 
 OK
 demo1.PrefixLen0Test ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 2.484s
+Ran 1 test in 2.516s
 
 OK
 demo1.DupEntryTest ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.030s
+Ran 1 test in 0.040s
 
 OK
 Using packet manipulation module: ptf.packet_scapy
-field_id: 1
-lpm {
-  value: "\n\001\000\001"
-  prefix_len: 32
-}
-
-param_id: 1
-value: ":"
-
-field_id: 1
-exact {
-  value: ":"
-}
-
-param_id: 1
-value: "\t"
-
-param_id: 2
-value: "\002\023W\253\315\357"
-
-param_id: 3
-value: "\002"
-
-field_id: 1
-exact {
-  value: "\t"
-}
-
-param_id: 1
-value: "\021\"3DU"
-
-field_id: 1
-lpm {
-  value: "\n\001\000\001"
-  prefix_len: 32
-}
-
-param_id: 1
-value: ":"
-
-field_id: 1
-exact {
-  value: ":"
-}
-
-param_id: 1
-value: "\t"
-
-param_id: 2
-value: "\002\023W\253\315\357"
-
-param_id: 3
-value: "\002"
-
-field_id: 1
-exact {
-  value: "\t"
-}
-
-param_id: 1
-value: "\021\"3DU"
-
-field_id: 1
-lpm {
-  value: "\n\001\000\000"
-  prefix_len: 16
-}
-
-param_id: 1
-value: ";"
-
-field_id: 1
-exact {
-  value: ";"
-}
-
-param_id: 1
-value: "\n"
-
-param_id: 2
-value: "\002\023W\253\315\360"
-
-param_id: 3
-value: "\003"
-
-field_id: 1
-exact {
-  value: "\n"
-}
-
-param_id: 1
-value: "\021\"3DV"
-
-param_id: 1
-value: "<"
-
-field_id: 1
-exact {
-  value: "<"
-}
-
-param_id: 1
-value: "\013"
-
-param_id: 2
-value: "\002\023W\253\315\361"
-
-param_id: 3
-value: "\004"
-
-field_id: 1
-exact {
-  value: "\013"
-}
-
-param_id: 1
-value: "\021\"3DW"
-
-field_id: 1
-lpm {
-  value: "\n\000\000\001"
-  prefix_len: 32
-}
-
-param_id: 1
-value: ":"
-
-field_id: 1
-lpm {
-  value: "\n\000\000\001"
-  prefix_len: 32
-}
-
-param_id: 1
-value: ":"
-
-Exception ignored in: <function EventDescriptor.__del__ at 0x7f061b71c790>
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.8/dist-packages/ptf-0.9.3-py3.8.egg/ptf/ptfutils.py", line 56, in __del__
-AttributeError: 'NoneType' object has no attribute 'close'
 
 PTF test finished.  Waiting 2 seconds before killing simple_switch_grpc ...
 
 Verifying that there are no simple_switch_grpc processes running any longer in 4 seconds ...
-./runptf.sh: line 69: 35459 Killed                  sudo simple_switch_grpc --log-file ss-log --log-flush --dump-packet-data 10000 -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4
-andy       35517  0.0  0.0  17672   648 pts/3    S+   21:56   0:00 grep simple_switch
+./runptf.sh: line 69:  2441 Killed                  sudo simple_switch_grpc --log-file ss-log --log-flush --dump-packet-data 10000 -i 0@veth0 -i 1@veth2 -i 2@veth4 -i 3@veth6 -i 4@veth8 -i 5@veth10 -i 6@veth12 -i 7@veth14 --no-p4
+andy        2499  0.0  0.0  17672   648 pts/0    S+   13:33   0:00 grep simple_switch
 ```
 
 The line `demo1.FwdTest ... ok` indicates that a test named `FwdTest`
