@@ -783,8 +783,17 @@ cd p4c
 git log -n 1
 mkdir build
 cd build
-# Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+
+if [ "${ID}" = "ubuntu" ]
+then
+    # Configure for a debug build and build p4testgen
+    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+elif [ "${ID}" = "fedora" ]
+then
+    # Do not enable build of p4testgen on Fedora until compilation
+    # issues are fixed.
+    cmake .. -DCMAKE_BUILD_TYPE=DEBUG
+fi
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
