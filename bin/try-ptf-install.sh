@@ -40,5 +40,5 @@ PTF_COMMIT="771a45249de2f287377b4690cd13adc18f989638"   # 2023-Jun-19
 git clone https://github.com/jafingerhut/ptf
 cd ptf
 #git checkout "${PTF_COMMIT}"
-git checkout try-setup-cfg-tweak
+git checkout fix-issue-194
 sudo pip install ${PIP_INSTALL_OPTS} .
