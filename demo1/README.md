@@ -3,7 +3,8 @@
 See [README-using-bmv2.md](../README-using-bmv2.md) for some things
 that are common across different P4 programs executed using bmv2.
 
-This article describes how to:
+There are several README files in this directory.  This article
+describes how to:
 
 + compile a simple demo P4 program using the `p4c` P4 compiler
 + execute the compiled program using the `simple_switch` software
@@ -13,9 +14,21 @@ This article describes how to:
 + send packets to the running P4 program using `scapy`.
 
 `simple_switch_CLI` uses a control message protocol that is not the
-P4Runtime API.  If you are interested in adding table entries to the
+P4Runtime API, but instead one that was custom created for
+`simple_switch`.  If you are interested in adding table entries to the
 running P4 program using the P4Runtime API instead, see See
 [README-p4runtime.md](README-p4runtime.md).
+
++ [`README-p4runtime.md`](README-p4runtime.md) is similar to this
+  article, but demonstrates how to add table entries using the
+  P4Runtime API control protocol, from an interactive controller
+  program run from the Python interactive shell.
++ [`README-ptf.md`](README-ptf.md) demonstrates how to run an automated
+  test of this P4 program.  The automated test is written as a Python
+  program that uses the PTF and p4runtime-shell packages.
++ [`README-p4testgen.md`](README-p4testgen.md) describes how to run a
+  tool called `p4testgen` that analyzes a P4 program, and
+  automatically generates test cases to exercise it.
 
 
 # Compiling
