@@ -218,16 +218,7 @@ find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
 
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
-# Earlier versions of this script installed the Ubuntu package
-# python-ipaddr.  However, that no longer exists in Ubuntu 20.04.  PIP
-# for Python3 can install the ipaddr module, which is good enough to
-# enable two of p4c's many tests to pass, tests that failed if the
-# ipaddr Python3 module is not installed, in my testing on
-# 2020-Oct-17.  From the Python stack trace that appears when running
-# those failing tests, the code that requires this module is in
-# behavioral-model's runtime_CLI.py source file, in a function named
-# ipv6Addr_to_bytes.
-sudo pip3 install -U scapy ipaddr ptf psutil grpcio
+sudo pip3 install -U scapy ptf psutil grpcio
 
 # Attempting to install the p4runtime-shell package using the command
 # below gives no errors during installation, but results in a system
@@ -253,6 +244,7 @@ sudo pip3 install -U scapy ipaddr ptf psutil grpcio
 
 #sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 
+set +x
 echo "------------------------------------------------------------"
 
 echo "Installing Mininet - not necessary to run P4 programs, but useful if"
@@ -265,12 +257,12 @@ date
 # Pin to a particular version, so that I know the patch below will
 # continue to apply.  Will likely want to update this to newer
 # versions once or twice a year.
-MININET_COMMIT="aa0176fce6fb718a03474f8719261b07b670d30d"  # 2022-Apr-02
+MININET_COMMIT="5b1b376336e1c6330308e64ba41baac6976b6874"  # 2023-May-28
 git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-dont-install-python2-2022-apr.patch" || echo "Errors while attempting to patch mininet, but continuing anyway ..."
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun.patch"
 cd ..
 sudo ./mininet/util/install.sh -nw
 
