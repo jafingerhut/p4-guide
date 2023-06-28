@@ -32,6 +32,8 @@ p4testgen -DTARGET_DPDK_PNA --target dpdk --arch pna --max-tests 10 --out-dir ou
 ## Using Pre-built Docker image
 An alternative to building `p4c` locally is to use pre-built Docker images available on Dockerhub under the `p4lang` registry [here](https://hub.docker.com/u/p4lang). Below are the commands to build for bmv2 or p4dpdk, respectively. (Use the aforementioned instructions for cloning the DASH project).
 
+First, ensure you have [Docker installed on your system](https://docs.docker.com/desktop/)
+
 ```
 docker run -it --rm -v $PWD:/proj p4lang/p4c:latest p4testgen -DTARGET_BMV2_V1MODEL --target bmv2 --arch v1model --max-tests 10 --out-dir /proj/out-p4testgen --test-backend ptf /proj/dash_pipeline.p4
 ```
