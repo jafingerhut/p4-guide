@@ -328,6 +328,7 @@ published as often as commits are made to the repositories above.
 
 | Date published | Operating system | p4c version | behavioral-model version |
 | -------------- | ---------------- | ----------- | ------------------------ |
+| 2023-Jul-01 | Ubuntu 20.04 | SHA: 71a06fe 2023-Jun-02 | SHA: 7a8843ff 2023-May-17 |
 | 2022-Nov-01 | Ubuntu 20.04 | SHA: 1576090 2022-Aug-02 | SHA: f745e1db 2022-Feb-10 |
 | 2022-Mar-01 | Ubuntu 20.04 | SHA: a9aa5ff 2022-Feb-08 | SHA: c76a03c3 2022-Feb-08 |
 | 2022-Feb-03 | Ubuntu 20.04 | SHA: b28fbbb 2021-Nov-23 | SHA: 2de095c7 This is not the SHA of any behavioral-model commit SHA in the main branch of its source repository |
