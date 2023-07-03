@@ -155,7 +155,7 @@ else
 	1>&2 echo "experience in fixing such matters, your help is"
 	1>&2 echo "appreciated."
     fi
-    exit 1
+    #exit 1
 fi
 
 # Minimum required system memory is 2 GBytes, minus a few MBytes
@@ -458,13 +458,23 @@ if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install \
 	 autoconf automake libtool curl make g++ unzip \
-	 pkg-config python3-pip
+	 pkg-config python3-pip python3-venv
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install \
 	 autoconf automake libtool curl make g++ unzip \
 	 pkg-config python3-pip
 fi
+
+# Create a new Python virtual environment using venv.  Later we will
+# attempt to ensure that all new Python packages installed are
+# installed into this virtual environment, not into system-wide
+# directories like /usr/local/bin
+PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
+python3 -m venv "${PYTHON_VENV}"
+export PATH="${PYTHON_VENV}/bin:${PATH}"
+ls -R "${PYTHON_VENV}"
+PIP_SUDO=""
 
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
@@ -478,7 +488,7 @@ pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-1-before-protobuf.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-1-before-protobuf.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -528,10 +538,10 @@ if [ "${ID}" = "ubuntu" ]
 then
     echo "Uninstalling Ubuntu python3-protobuf if present"
     sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-    sudo pip3 install protobuf==3.18.1
+    ${PIP_SUDO} pip3 install protobuf==3.18.1
 elif [ "${ID}" = "fedora" ]
 then
-    sudo pip3 install protobuf==3.18.1
+    ${PIP_SUDO} pip3 install protobuf==3.18.1
 fi
 
 cd "${INSTALL_DIR}"
@@ -553,7 +563,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-2-after-protobuf.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-2-after-protobuf.txt
 
 # Install cmake v3.16.3 or later.  On Ubuntu 20.04 and later systems,
 # this is easily done via apt-get on the cmake Ubuntu package.  On
@@ -627,11 +637,11 @@ sudo make install
 # I believe the following 2 commands, adapted from similar commands in
 # src/python/grpcio/README.rst, should install the Python3 module
 # grpc.
-find /usr/lib /usr/local $HOME/.local | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
-sudo pip3 install -rrequirements.txt
-GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install .
+${PIP_SUDO} pip3 install -rrequirements.txt
+GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
 sudo ldconfig
 # Save some storage by cleaning up grpc build
 # TODO: Is this command useful with latest cmake build infra?
@@ -643,7 +653,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-3-after-grpc.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-3-after-grpc.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -691,7 +701,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-4-after-PI.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-4-after-PI.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -747,7 +757,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-5-after-behavioral-model.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-5-after-behavioral-model.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -774,7 +784,7 @@ fi
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
-sudo pip3 install scapy ply
+${PIP_SUDO} pip3 install scapy ply
 pip3 list
 
 # Clone p4c and its submodules:
@@ -804,7 +814,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-6-after-p4c.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-6-after-p4c.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -834,7 +844,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-7-after-mininet-install.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-7-after-mininet-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -853,7 +863,7 @@ date
 git clone https://github.com/p4lang/ptf
 cd ptf
 #sudo python3 setup.py install
-sudo pip install .
+${PIP_SUDO} pip install .
 
 set +x
 echo "end install ptf:"
@@ -861,7 +871,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-8-after-ptf-install.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-8-after-ptf-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -878,9 +888,9 @@ elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install gflags-devel net-tools
 fi
-sudo pip3 install psutil crcmod
+${PIP_SUDO} pip3 install psutil crcmod
 # p4runtime-shell package, installed from latest source version
-sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 pip3 list
 
 set +x
@@ -889,7 +899,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local | sort > usr-local-9-after-miscellaneous-install.txt
+find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-9-after-miscellaneous-install.txt
 
 pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
