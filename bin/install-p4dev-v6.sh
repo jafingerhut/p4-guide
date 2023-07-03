@@ -734,6 +734,7 @@ git pull
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
+patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
