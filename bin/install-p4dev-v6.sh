@@ -472,7 +472,11 @@ fi
 # directories like /usr/local/bin
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 python3 -m venv "${PYTHON_VENV}"
-export PATH="${PYTHON_VENV}/bin:${PATH}"
+if [ ! -r "${PYTHON_VENV}/bin/activate" ]
+then
+	1>&2 echo "No file ${PYTHON_VENV}/bin/activate.  Why not?"
+	exit 1
+fi
 ls -R "${PYTHON_VENV}"
 PIP_SUDO=""
 
