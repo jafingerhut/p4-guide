@@ -477,6 +477,7 @@ then
 	1>&2 echo "No file ${PYTHON_VENV}/bin/activate.  Why not?"
 	exit 1
 fi
+source "${PYTHON_VENV}/bin/activate"
 ls -R "${PYTHON_VENV}"
 PIP_SUDO=""
 
