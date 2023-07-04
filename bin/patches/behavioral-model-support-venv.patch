@@ -12,7 +12,7 @@ index 0336a66..f31fb29 100644
 +pip3 install .
  cd ..
 diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
-index c3f7a2e..7b271e9 100644
+index c3f7a2e..917954d 100644
 --- a/ci/install-thrift.sh
 +++ b/ci/install-thrift.sh
 @@ -15,5 +15,5 @@ cd thrift-0.13.0
@@ -20,5 +20,5 @@ index c3f7a2e..7b271e9 100644
  make -j2 && sudo make install
  cd lib/py
 -sudo python3 setup.py install
-+python3 setup.py install
++pip install .
  cd ../../..
