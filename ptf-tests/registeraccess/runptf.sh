@@ -14,6 +14,7 @@ fi
 #ptf --pypath "$P" --test-dir . --list
 #exit 0
 
+set -x
 p4c --target bmv2 \
     --arch v1model \
     --p4runtime-files registeraccess.p4info.txt \
@@ -54,7 +55,7 @@ sleep 2
 # of getting this mapping other than by telling it on its command
 # line.
 
-sudo ptf \
+sudo `which ptf` \
     --pypath "$P" \
     -i 0@veth1 \
     -i 1@veth3 \
