@@ -741,11 +741,6 @@ git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
 patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
-
-# Stop here for now, so I can debug some failing early steps in
-# behavioral-model installation on Ubuntu 23.04
-exit 0
-
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
