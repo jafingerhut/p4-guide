@@ -687,7 +687,7 @@ git log -n 1
 # Python virtual environment, if one is in use.
 if [ ! -z ${VIRTUAL_ENV} ]
 then
-    configure_python_prefix="--with-python_prefix=${VIRTUL_ENV}"
+    configure_python_prefix="--with-python_prefix=${VIRTUAL_ENV}"
 fi
 if [ "${ID}" = "ubuntu" ]
 then
