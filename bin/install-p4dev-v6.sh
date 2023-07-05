@@ -750,10 +750,10 @@ patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
 # Remove 'CXXFLAGS ...' part to disable debug
 if [ "${ID}" = "ubuntu" ]
 then
-    ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
+    ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
 elif [ "${ID}" = "fedora" ]
 then
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
 fi
 make
 sudo make install-strip
