@@ -851,7 +851,7 @@ git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun-enable-venv.patch"
 cd ..
 PYTHON=python3 ./mininet/util/install.sh -nw
 
