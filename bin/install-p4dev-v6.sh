@@ -683,12 +683,18 @@ cd PI
 git submodule update --init --recursive
 git log -n 1
 ./autogen.sh
+# Cause 'sudo make install' to install Python packages for PI in a
+# Python virtual environment, if one is in use.
+if [ ! -z ${VIRTUAL_ENV} ]
+then
+    configure_python_prefix="--with-python_prefix=${VIRTUL_ENV}"
+fi
 if [ "${ID}" = "ubuntu" ]
 then
-    ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
+    ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
 elif [ "${ID}" = "fedora" ]
 then
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
 fi
 make
 sudo make install
@@ -847,7 +853,7 @@ git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun.patch"
 cd ..
-sudo ./mininet/util/install.sh -nw
+PYTHON=python3 ./mininet/util/install.sh -nw
 
 set +x
 echo "end install mininet:"
