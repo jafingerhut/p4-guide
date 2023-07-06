@@ -399,17 +399,12 @@ then
 	 pkg-config python3-pip
 fi
 
-if [ "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" ]
+if [ \( "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" \) -o \( "${ID}" = "fedora" -a "${VERSION_ID}" = "35" \) ]
 then
     # Install more recent versions of autoconf and automake than those
     # that are installed by the Ubuntu 20.04 packages.  That helps
     # cause Python packages to be installed in the venv while building
     # grpc and behavioral-model below.
-
-    # Apparently, building automake from source requires an older
-    # version of autoconf and/or automake
-    sudo apt-get install -y automake
-
     wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
     tar xkzf automake-1.16.5.tar.gz
     cd automake-1.16.5
@@ -426,8 +421,15 @@ then
     sudo make install
     cd ..
 
-    sudo apt purge -y autoconf automake
-    sudo apt install -y libtool-bin
+    if [ "${ID}" = "ubuntu" ]
+    then
+	sudo apt-get purge -y autoconf automake
+	sudo apt-get install --yes libtool-bin
+    elif [ "${ID}" = "fedora" ]
+    then
+	sudo dnf remove -y autoconf automake
+	sudo dnf install -y libtool-bin
+    fi
     # I learned about the fix-up commands below in an answer here:
     # https://superuser.com/questions/565988/autoconf-libtool-and-an-undefined-ac-prog-libtool
     for file in /usr/share/aclocal/*.m4
@@ -467,13 +469,7 @@ echo "start install protobuf:"
 set -x
 date
 
-if [ "${ID}" = "ubuntu" ]
-then
-    ${PIP_SUDO} pip3 install protobuf==3.18.1
-elif [ "${ID}" = "fedora" ]
-then
-    ${PIP_SUDO} pip3 install protobuf==3.18.1
-fi
+${PIP_SUDO} pip3 install protobuf==3.18.1
 
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
