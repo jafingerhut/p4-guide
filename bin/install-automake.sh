@@ -41,7 +41,7 @@ then
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf remove -y autoconf automake
-    sudo dnf install -y libtool-bin
+    sudo dnf install -y libtool
 fi
 # I learned about the fix-up commands below in an answer here:
 # https://superuser.com/questions/565988/autoconf-libtool-and-an-undefined-ac-prog-libtool
