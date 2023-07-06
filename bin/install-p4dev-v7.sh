@@ -19,8 +19,18 @@
 
 # * Installs all Python3 packages into a virtual environment created
 #   via `python3 -m venv <venv-name>`, instead of in system-wide
-#   directories like /usr/local/lib
+#   directories like /usr/local/lib   See [Note 1] below.
 # * Install more recent Thrift (0.16)
+
+# [Note 1]
+# One motivation for this change is that Ubuntu 23.04 now by default
+# gives an error when you try to use 'sudo pip3 install ...' to
+# install a Python package in a system-wide directory.  Thus it seems
+# likely that something in this script needs to change to support
+# Ubuntu 23.04 and probably later versions of Ubuntu.  Another reason
+# is that it avoids some of the hacky code I have in
+# install-p4dev-v6.sh to move installed Python packages from the
+# site-packages directory to the dist-packages directory.
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
