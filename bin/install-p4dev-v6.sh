@@ -502,6 +502,7 @@ then
     sudo make install
     cd ..
     sudo apt purge -y autoconf automake
+    sudo apt install -y libtool-bin
 fi
 
 # Create a new Python virtual environment using venv.  Later we will
