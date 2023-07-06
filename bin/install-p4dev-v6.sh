@@ -397,7 +397,7 @@ change_owner_and_group_of_venv_lib_python3_files() {
     venv="$1"
     user_name=`id --user --name`
     group_name=`id --group --name`
-    sudo chown -R ${user_name}:{$group_name} ${venv}/lib/python*/site-packages
+    sudo chown -R ${user_name}:${group_name} ${venv}/lib/python*/site-packages
 }
 
 
@@ -503,6 +503,13 @@ then
     cd ..
     sudo apt purge -y autoconf automake
     sudo apt install -y libtool-bin
+    # I learned about the fix-up commands below in an answer here:
+    # https://superuser.com/questions/565988/autoconf-libtool-and-an-undefined-ac-prog-libtool
+    for file in /usr/share/aclocal/*.m4
+    do
+	b=`basename $file .m4`
+	sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4
+    done
 fi
 
 # Create a new Python virtual environment using venv.  Later we will

@@ -21,3 +21,9 @@ sudo make install
 cd ..
 
 sudo apt purge -y autoconf automake
+sudo apt install -y libtool-bin
+for file in /usr/share/aclocal/*.m4
+do
+    b=`basename $file .m4`
+    sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4
+done
