@@ -389,6 +389,17 @@ move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
     ls -lrt ${DST_DIR}
 }
 
+change_owner_and_group_of_venv_lib_python3_files() {
+    local venv
+    local user_name
+    local group_name
+
+    venv="$1"
+    user_name=`id --user --name`
+    group_name=`id --group --name`
+    sudo chown -R ${user_name}:{$group_name} ${venv}/lib/python*/site-packages
+}
+
 
 echo "------------------------------------------------------------"
 echo "Time and disk space used before installation begins:"
@@ -464,6 +475,33 @@ then
     sudo dnf -y install \
 	 autoconf automake libtool curl make g++ unzip \
 	 pkg-config python3-pip
+fi
+
+if [ "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" ]
+then
+    # Install more recent versions of autoconf and automake than those
+    # that are installed by the Ubuntu packages, to see if that helps
+    # install Python packages in the venv while building grpc and
+    # behavioral-model below.
+
+    # Apparently, building automake from source requires an older
+    # version of autoconf and/or automake
+    sudo apt-get install -y automake
+    wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
+    tar xkzf automake-1.16.5.tar.gz
+    cd automake-1.16.5
+    ./configure
+    make
+    sudo make install
+    cd ..
+    wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz
+    tar xkzf autoconf-2.71.tar.gz
+    cd autoconf-2.71
+    ./configure
+    make
+    sudo make install
+    cd ..
+    sudo apt purge -y autoconf automake
 fi
 
 # Create a new Python virtual environment using venv.  Later we will
@@ -704,6 +742,7 @@ make clean
 if [ "${ID}" = "ubuntu" ]
 then
     move_usr_local_lib_python3_from_site_packages_to_dist_packages
+    change_owner_and_group_of_venv_lib_python3_files ${VIRTUAL_ENV}
 fi
 
 set +x
