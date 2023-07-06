@@ -47,6 +47,7 @@ get_package_info gcc
 get_package_info g++
 get_package_info make
 get_package_info cmake
+get_package_info m4
 get_package_info autoconf
 get_package_info automake
 get_package_info as

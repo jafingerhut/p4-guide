@@ -49,7 +49,7 @@ sleep 2
 # of getting this mapping other than by telling it on its command
 # line.
 
-sudo ptf \
+sudo `which ptf` \
     --pypath "$P" \
     -i 0@veth1 \
     -i 1@veth3 \
