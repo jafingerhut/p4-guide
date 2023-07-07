@@ -72,11 +72,14 @@ Version combinations I have used above for testing VM images:
 
 Start with:
 
-+ an _unmodified_ _fresh_ installation of Ubuntu Linux 20.04
-  or 22.04, with ...
++ an _unmodified_ _fresh_ installation of one of these supported
+  operating systems:
+  + Ubuntu 20.04, 22.04, or 23.04
+  + Fedora 35
++ The system must have:
   + at least 2 GB of RAM (4 GB recommended)
-  + at least 20 GB of free disk space (not 20 GB of disk space total
-    for the VM, but 20 GB free disk space after the OS has been
+  + at least 25 GB of free disk space (not 25 GB of disk space total
+    for the VM, but 25 GB free disk space after the OS has been
     installed), and
   + a reliable Internet connection that is up for the entire duration
     of running the install script -- it will download approximately 1
@@ -111,15 +114,17 @@ Then run the commands below in a terminal.  Note:
   while the script runs.  The only commands run as superuser are those
   that install files in system-wide directories such as
   `/usr/local/bin`.
+
 ```bash
 $ sudo apt install git     # For Ubuntu
 $ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v6.sh |& tee log.txt
 ```
-Replace `install-p4dev-v6.sh` with `install-p4dev-v5.sh` if you prefer
-it instead.  More details on the differences between them are in the
-next section.
+
+Replace `install-p4dev-v6.sh` with `install-p4dev-v5.sh` or
+`install-p4dev-v7.sh` if you prefer it instead.  More details on the
+differences between them are in the next section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
@@ -178,10 +183,11 @@ through 2023.  They all include the following:
 + [p4runtime-shell](https://github.com/p4lang/p4runtime-shell)
 + Uses Python3 only, no Python2 installed
 
-| Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
-| ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
-| install-p4dev-v6.sh | 22.04, 20.04 | 20 GB | 160 mins |   2 GB | v3.18.1 | v1.43.2 |
-| install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? |
+| Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc | Where are Python3 packages installed? |
+| ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- | ------------------------------------- |
+| install-p4dev-v7.sh | 22.04, 20.04 | 25 GB | 250 mins |   2 GB | v3.18.1 | v1.43.2 | ~/p4dev-python-env virtual environment |
+| install-p4dev-v6.sh | 22.04, 20.04 | 20 GB | 160 mins |   2 GB | v3.18.1 | v1.43.2 | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
+| install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 
 
 The scripts in the next table below are no longer tested by me.  They
