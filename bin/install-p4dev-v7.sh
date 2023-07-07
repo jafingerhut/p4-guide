@@ -435,7 +435,7 @@ then
     for file in /usr/share/aclocal/*.m4
     do
 	b=`basename $file .m4`
-	sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4
+	sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4 || echo "Creating symbolic link /usr/local/share/aclocal/$b.m4 failed, probably because the file already exists"
     done
 fi
 
