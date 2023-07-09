@@ -139,8 +139,7 @@ then
 	    supported_distribution=1
 	    ;;
 	37)
-	    supported_distribution=0
-	    tried_but_got_build_errors=1
+	    supported_distribution=1
 	    ;;
     esac
 fi
