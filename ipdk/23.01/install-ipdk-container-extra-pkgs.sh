@@ -8,26 +8,16 @@
 chmod 777 /tmp
 
 apt-get update
-apt-get install --yes git tcpdump tcpreplay
-pip3 install git+https://github.com/p4lang/p4runtime-shell.git
-pip3 install scapy
+apt-get install --yes git tcpdump tcpreplay python3-venv
 
-######################################################################
-# I have not gotten PTF working after installing it 'globally' inside
-# the IPDK container.  I get some Python exception when trying to run
-# a PTF test when it is installed that way.  I have successfully run
-# PTF tests from inside of a Python virtual environment before, so
-# install PTF inside of one.
+# Install all Python packages into a venv virtual environment
+PYTHON_VENV="${HOME}/my-venv"
+python3 -m venv --system-site-packages "${PYTHON_VENV}"
+source "${PYTHON_VENV}/bin/activate"
 
-apt-get install --yes python3-virtualenv
-
-cd $HOME
-virtualenv my-venv --python=python3
-source my-venv/bin/activate
 pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 pip3 install scapy
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-pip3 install -r requirements.txt
-python3 setup.py install
+pip3 install .

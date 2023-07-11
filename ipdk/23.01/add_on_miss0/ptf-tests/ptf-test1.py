@@ -83,7 +83,8 @@ class IdleTimeoutTest(BaseTest):
         sh.setup(device_id=1,
                  grpc_addr=grpc_addr,
                  election_id=(0, 1),
-                 ssl_options=ssl_opts)
+                 ssl_options=ssl_opts,
+                 verbose=False)
 
     def tearDown(self):
         logging.info("IdleTimeoutTest.tearDown()")
