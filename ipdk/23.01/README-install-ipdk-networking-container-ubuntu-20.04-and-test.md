@@ -1072,12 +1072,12 @@ with most recently:
 ```
 $ cd $HOME/ipdk
 $ git log -n 1
-commit 7978695ecfa84ebe9720b95d1eae8142d521d1ee (HEAD -> main, origin/main, origin/HEAD)
-Merge: ab099be db1b3cb
+commit 8d49940dde4b8d59539006797146371a11a2009f
+Merge: 0cad162 301a883
 Author: Filip Szufnarowski <filip.szufnarowski@intel.com>
-Date:   Mon Mar 6 12:42:50 2023 +0100
+Date:   Wed Jun 28 14:35:54 2023 +0200
 
-    Merge pull request #380 from intelfisz/fix-build-failures
+    Merge pull request #382 from intelfisz/update_recipe_environmentsetup
     
-    Fix storage vm failures
+    adding kernel-headers and update
 ```
