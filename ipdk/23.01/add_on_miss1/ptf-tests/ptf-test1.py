@@ -27,6 +27,7 @@ from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
 import p4runtime_sh.utils as shutils
 import p4runtime_sh.p4runtime as p4rt
+import p4runtime_shell_extras as she
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -83,7 +84,8 @@ class IdleTimeoutTest(BaseTest):
         sh.setup(device_id=1,
                  grpc_addr=grpc_addr,
                  election_id=(0, 1),
-                 ssl_options=ssl_opts)
+                 ssl_options=ssl_opts,
+                 verbose=False)
 
     def tearDown(self):
         logging.info("IdleTimeoutTest.tearDown()")
@@ -93,27 +95,6 @@ class IdleTimeoutTest(BaseTest):
 # Define a few small helper functions that help construct
 # parameters for the table_add() method.
 #############################################################
-
-def entry_count(table_name):
-    te = sh.TableEntry(table_name)
-    n = 0
-    for x in te.read():
-        n = n + 1
-    return n
-
-def init_key_from_read_tableentry(read_te):
-    new_te = sh.TableEntry(read_te.name)
-    # This is only written to work for tables where all key fields are
-    # match_kind exact.
-    for f in read_te.match._fields:
-        new_te.match[f] = '%d' % (int.from_bytes(read_te.match[f].exact.value, 'big'))
-    return new_te
-
-def delete_all_entries(tname):
-    te = sh.TableEntry(tname)
-    for e in te.read():
-        d = init_key_from_read_tableentry(e)
-        d.delete()
 
 def add_ipv4_host_entry_action_send(ipv4_addr_str, port_int):
     te = sh.TableEntry('ipv4_host')(action='send')
@@ -139,23 +120,23 @@ def add_set_ct_options_entry_action_tcp_fin_or_rst_packet(flags_value_int,
 
 def init_table_ipv4_host(ig_port, ip_src_addr, eg_port, ip_dst_addr):
     logging.info("Attempting to delete all entries in ipv4_host")
-    delete_all_entries('ipv4_host')
+    she.delete_all_entries('ipv4_host')
     logging.info("Attempting to add entries to ipv4_host")
     add_ipv4_host_entry_action_send(ip_src_addr, ig_port)
     add_ipv4_host_entry_action_send(ip_dst_addr, eg_port)
     logging.info("Now ipv4_host contains %d entries"
-                 "" % (entry_count('ipv4_host')))
+                 "" % (she.entry_count('ipv4_host')))
 
-TCP_URG_MASK = 0x20;
-TCP_ACK_MASK = 0x10;
-TCP_PSH_MASK = 0x08;
-TCP_RST_MASK = 0x04;
-TCP_SYN_MASK = 0x02;
-TCP_FIN_MASK = 0x01;
+TCP_URG_MASK = 0x20
+TCP_ACK_MASK = 0x10
+TCP_PSH_MASK = 0x08
+TCP_RST_MASK = 0x04
+TCP_SYN_MASK = 0x02
+TCP_FIN_MASK = 0x01
 
 def init_table_set_ct_options():
     tname = 'set_ct_options'
-    num_entries = entry_count(tname)
+    num_entries = she.entry_count(tname)
     logging.info("Now %s contains %d entries" % (tname, num_entries))
     if num_entries == 0:
         logging.info("Attempting to add entries to set_ct_options")
@@ -165,7 +146,7 @@ def init_table_set_ct_options():
             TCP_FIN_MASK, TCP_FIN_MASK, 20)
         add_set_ct_options_entry_action_tcp_fin_or_rst_packet(
             TCP_RST_MASK, TCP_RST_MASK, 10)
-    num_entries = entry_count(tname)
+    num_entries = she.entry_count(tname)
     logging.info("Now %s contains %d entries" % (tname, num_entries))
     if num_entries != 3:
         logging.error("%s should have 3 entries, but found %d instead."

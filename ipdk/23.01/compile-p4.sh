@@ -9,7 +9,7 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "compile_p4_prog.sh: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile"
+    echo "$0: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile"
     echo ""
     echo "  -h|--help: Displays help"
     echo "  -v|--verbose: Enable verbose/debug output"
@@ -127,8 +127,8 @@ echo "Compiling P4 program ${P4_SRC_FNAME}"
 if [ ${VERBOSE} -ge 2 ]
 then
     echo ""
-    echo "Files in ${P4_DIR} just before p4c:"
-    ls -lrta "${P4_DIR}"
+    echo "Files in ${P4_DIR}/out just before p4c:"
+    ls -lrta "${P4_DIR}/out"
     echo "----------------------------------------"
 fi
 
@@ -138,44 +138,38 @@ fi
 # But also as of that version, the command 'p4c-dpdk' does support
 # both '--arch psa' and '--arch pna' as command line options.
 
-mkdir -p "${P4_DIR}/pipe"
-p4c-dpdk --arch "${P4_ARCH}" \
-    --p4runtime-files "${P4_DIR}"/p4Info.txt \
-    --bf-rt-schema "${P4_DIR}"/bf-rt.json \
-    --context "${P4_DIR}"/pipe/context.json \
-    -o "${P4_DIR}/pipe/${BASE_FNAME}.spec" \
-    "${P4_DIR}/${P4_SRC_FNAME}"
+set -ex
+mkdir -p "${P4_DIR}/out"
+p4c-dpdk \
+    --arch "${P4_ARCH}" \
+    --p4runtime-files "${P4_DIR}/out/${BASE_FNAME}.p4Info.txt" \
+    --context "${P4_DIR}/out/${BASE_FNAME}.context.json" \
+    --bf-rt-schema "${P4_DIR}/out/${BASE_FNAME}.bf-rt.json" \
+    -o "${P4_DIR}/out/${BASE_FNAME}.spec" \
+    "${P4_DIR}/${BASE_FNAME}.p4"
 
-# Try omitting generation of context.json file.
-# When I tried this, the command tdi_pipeline_builder below failed
-# with this error message:
-# E20230316 18:12:51.956828  3194 utils.cc:112] StratumErrorSpace::ERR_FILE_NOT_FOUND: pipe/context.json not found.
-# E20230316 18:12:51.957978  3194 tdi_pipeline_builder.cc:126] Return Error: ReadFileToString(pipeline["context"], &context_content) failed with StratumErrorSpace::ERR_FILE_NOT_FOUND: pipe/context.json not found.
-
-#p4c-dpdk --arch "${P4_ARCH}" \
-#    --p4runtime-files "${P4_DIR}"/p4Info.txt \
-#    --bf-rt-schema "${P4_DIR}"/bf-rt.json \
-#    -o "${P4_DIR}/pipe/${BASE_FNAME}.spec" \
-#    "${P4_DIR}/${P4_SRC_FNAME}"
-
+set +ex
 if [ ${VERBOSE} -ge 2 ]
 then
     echo ""
-    echo "Files in ${P4_DIR} just after p4c:"
-    ls -lrta "${P4_DIR}"
+    echo "Files in ${P4_DIR}/out just after p4c:"
+    ls -lrta "${P4_DIR}/out"
     echo "----------------------------------------"
 fi
 
 echo "Running pipeline builder"
 pushd "${P4_DIR}" > /dev/null || exit
-tdi_pipeline_builder --p4c_conf_file=${BASE_FNAME}.conf \
-    --bf_pipeline_config_binary_file=${BASE_FNAME}.pb.bin
+set -ex
+tdi_pipeline_builder \
+    --p4c_conf_file=${BASE_FNAME}.conf \
+    --bf_pipeline_config_binary_file=out/${BASE_FNAME}.pb.bin
+set +ex
 popd > /dev/null || exit
 
 if [ ${VERBOSE} -ge 1 ]
 then
     echo ""
-    echo "Files in ${P4_DIR} just after tdi_pipeline_builder:"
-    ls -lrta "${P4_DIR}"
+    echo "Files in ${P4_DIR}/out just after tdi_pipeline_builder:"
+    ls -lrta "${P4_DIR}/out"
     echo "----------------------------------------"
 fi

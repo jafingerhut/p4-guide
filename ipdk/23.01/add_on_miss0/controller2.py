@@ -4,6 +4,7 @@ import sys
 
 import p4runtime_sh.shell as sh
 import p4runtime_sh.p4runtime as p4rt
+import p4runtime_shell_extras as she
 
 
 if len(sys.argv) == 1:
@@ -23,28 +24,8 @@ ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
 sh.setup(device_id=my_dev1_id,
          grpc_addr=my_dev1_addr,
          election_id=(0, 1),
-         ssl_options=ssl_opts)
-
-def entry_count(table_name):
-    te = sh.TableEntry(table_name)
-    n = 0
-    for x in te.read():
-        n = n + 1
-    return n
-
-def init_key_from_read_tableentry(read_te):
-    new_te = sh.TableEntry(read_te.name)
-    # This is only written to work for tables where all key fields are
-    # match_kind exact.
-    for f in read_te.match._fields:
-        new_te.match[f] = '%d' % (int.from_bytes(read_te.match[f].exact.value, 'big'))
-    return new_te
-
-def delete_all_entries(tname):
-    te = sh.TableEntry(tname)
-    for e in te.read():
-        d = init_key_from_read_tableentry(e)
-        d.delete()
+         ssl_options=ssl_opts,
+         verbose=False)
 
 def add_ipv4_host_entry_action_send(ipv4_addr_str, port_int):
     te = sh.TableEntry('ipv4_host')(action='send')
@@ -56,9 +37,9 @@ def add_ipv4_host_entry_action_send(ipv4_addr_str, port_int):
 #add_ipv4_host_entry_action_send('2.2.2.2', 1)
 
 tname = 'ipv4_host'
-print('Table %s contains %d entries' % (tname, entry_count(tname)))
+print('Table %s contains %d entries' % (tname, she.entry_count(tname)))
 print('Attempt to delete all entries in table %s' % (tname))
-delete_all_entries(tname)
-print("After trying to delete all entries from %s, it contains %d entries" % (tname, entry_count(tname)))
+she.delete_all_entries(tname)
+print("After trying to delete all entries from %s, it contains %d entries" % (tname, she.entry_count(tname)))
 
 sh.teardown()

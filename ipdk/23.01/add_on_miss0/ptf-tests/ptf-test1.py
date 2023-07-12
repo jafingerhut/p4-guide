@@ -27,6 +27,7 @@ from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
 import p4runtime_sh.utils as shutils
 import p4runtime_sh.p4runtime as p4rt
+import p4runtime_shell_extras as she
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -70,7 +71,7 @@ class IdleTimeoutTest(BaseTest):
         self.dataplane = ptf.dataplane_instance
         self.dataplane.flush()
 
-        logging.info("IdleTimeoutTest.setUp()")
+        logging.info("IdleTimeoutTest.setUp() for %s" % (self))
         grpc_addr = tu.test_param_get("grpcaddr")
         if grpc_addr is None:
             grpc_addr = 'localhost:9559'
@@ -87,34 +88,13 @@ class IdleTimeoutTest(BaseTest):
                  verbose=False)
 
     def tearDown(self):
-        logging.info("IdleTimeoutTest.tearDown()")
+        logging.info("IdleTimeoutTest.tearDown() for %s" % (self))
         sh.teardown()
 
 #############################################################
 # Define a few small helper functions that help construct
 # parameters for the table_add() method.
 #############################################################
-
-def entry_count(table_name):
-    te = sh.TableEntry(table_name)
-    n = 0
-    for x in te.read():
-        n = n + 1
-    return n
-
-def init_key_from_read_tableentry(read_te):
-    new_te = sh.TableEntry(read_te.name)
-    # This is only written to work for tables where all key fields are
-    # match_kind exact.
-    for f in read_te.match._fields:
-        new_te.match[f] = '%d' % (int.from_bytes(read_te.match[f].exact.value, 'big'))
-    return new_te
-
-def delete_all_entries(tname):
-    te = sh.TableEntry(tname)
-    for e in te.read():
-        d = init_key_from_read_tableentry(e)
-        d.delete()
 
 def add_ipv4_host_entry_action_send(ipv4_addr_str, port_int):
     te = sh.TableEntry('ipv4_host')(action='send')
@@ -136,12 +116,12 @@ class OneEntryTest(IdleTimeoutTest):
         dport = 7503
 
         logging.info("Attempting to delete all entries in ipv4_host")
-        delete_all_entries('ipv4_host')
+        she.delete_all_entries('ipv4_host')
         logging.info("Attempting to add entries to ipv4_host")
         add_ipv4_host_entry_action_send(ip_src_addr, ig_port)
         add_ipv4_host_entry_action_send(ip_dst_addr, eg_port)
         logging.info("Now ipv4_host contains %d entries"
-                     "" % (entry_count('ipv4_host')))
+                     "" % (she.entry_count('ipv4_host')))
 
         pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
                                       ip_src=ip_src_addr, ip_dst=ip_dst_addr,

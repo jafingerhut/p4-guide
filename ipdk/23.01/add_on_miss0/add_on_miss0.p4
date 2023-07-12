@@ -235,7 +235,6 @@ control MainControlImpl(
         actions = {
             send;
             drop;
-            @defaultonly NoAction;
         }
         const default_action = drop();
         size = IPV4_HOST_SIZE;

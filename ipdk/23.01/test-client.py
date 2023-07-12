@@ -30,7 +30,8 @@ ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
 sh.setup(device_id=my_dev1_id,
          grpc_addr=my_dev1_addr,
          election_id=(0, 1),
-         ssl_options=ssl_opts)
+         ssl_options=ssl_opts,
+         verbose=False)
 
 # TODO: Is there a more recommended way in a Python program using the
 # p4runtime_sh module to access context than the following?

@@ -130,6 +130,23 @@ You will likely find it convenient to have at least two command shell
 windows open at the same time, one at a prompt in the base OS, and the
 other at a prompt in the container.
 
+Note: Every time you run `ipdk connect`, a script run in the container
+creates new cryptographic authentication keys for the infrap4d server
+in /var/stratum/certs.  You want this to happen once per container
+that you start.  One way to achieve this is to only do `ipdk connect`
+exactly once each time you run `ipdk start`.  If you then want
+additional terminals to be at a shell prompt within that same
+container process, you can use the following command instead:
+
+```bash
+docker exec -it -w /root 8e0d6ad594af /bin/bash
+```
+
+where you should replace `8e0d6ad594af` with the value in the
+`CONTAINER ID` column in the output of `docker ps`, for the container
+with IMAGE name like
+`ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:<something>`.
+
 
 # Sharing files between the base OS and container
 
@@ -177,6 +194,7 @@ container.
 In the base OS:
 ```bash
 cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
+cp -pr ~/p4-guide/pylib ~/.ipdk/volume/
 ```
 
 In the container:
@@ -463,6 +481,7 @@ with this command:
 
 In the container:
 ```bash
+export PYTHON_PATH="/tmp/pylib"
 ~/test-client.py
 ```
 
@@ -498,7 +517,7 @@ that can also be found in the `rundemo_TAP_IO.sh` script):
 
 In the container:
 ```bash
-p4rt-ctl set-pipe br0 /root/examples/simple_l3/simple_l3.pb.bin /root/examples/simple_l3/p4Info.txt
+p4rt-ctl set-pipe br0 /root/examples/simple_l3/out/simple_l3.pb.bin /root/examples/simple_l3/out/simple_l3.p4Info.txt
 ```
 
 
@@ -596,7 +615,7 @@ these functions:
 + `setup_2tapports.sh` - Starts up an `infrap4d` process, creates a
   network namespace, and connects that namespace via two TAP
   interfaces to the `infrap4d` process.
-+ `compile_p4_prog.sh` - Compiles the source code of a P4 program to
++ `compile-p4.sh` - Compiles the source code of a P4 program to
   produce a P4Info file and a DPDK binary file.
 + `load_p4_prog.sh` - Loads a P4Info file and compiled DPDK binary
   file into into the running `infrap4d` process.
@@ -609,31 +628,37 @@ they want to perform these steps.
 
 Example command lines for these commands are described below.
 
+In the base OS:
+```bash
+cp ~/p4-guide/ipdk/23.01/simple_l3.conf ~/.ipdk/volume
+```
+
 In the container:
 ```bash
 /tmp/setup_2tapports.sh
 ```
 
-For `compile_p4_prog.sh`, `-p` specifies the directory where the
-source file specified by `-s` can be found, and is also the directory
-where the compiled output files are written if compilation succeeds.
-The `-a` option specifies whether to compile the program with the
-`pna` or `psa` architecture, defaulting to `pna` if not specified.
+For `compile-p4.sh`, `-p` specifies the directory where the source
+file specified by `-s` can be found, and is also the directory where
+the compiled output files are written if compilation succeeds.  The
+`-a` option specifies whether to compile the program with the `pna` or
+`psa` architecture, defaulting to `pna` if not specified.
 
 In the container:
 ```bash
-/tmp/compile_p4_prog.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
+cp /tmp/simple_l3.conf /root/examples/simple_l3/
+/tmp/compile-p4.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
 ```
 
 For `load_p4_prog.sh`, `-p` specifies the compiled binary file to load
 into the `infrap4d` process, which has a suffix of `.pb.bin` in place
-of the `.p4` when created by the `compile_p4_prog.sh` script.  The
+of the `.p4` when created by the `compile-p4.sh` script.  The
 option `-i` specifies the P4Info file, which when created by
-`compile_p4_prog.sh` always has the name `p4Info.txt`.
+`compile-p4.sh` always has the name `p4Info.txt`.
 
 In the container:
 ```bash
-/tmp/load_p4_prog.sh -p /root/examples/simple_l3/simple_l3.pb.bin -i /root/examples/simple_l3/p4Info.txt
+/tmp/load_p4_prog.sh -p /root/examples/simple_l3/out/simple_l3.pb.bin -i /root/examples/simple_l3/out/simple_l3.p4Info.txt
 ```
 
 Troubleshooting: In my testing, attempting to load a P4 program into
@@ -669,14 +694,17 @@ pcap file that can be used for sending packets.  See the program
 
 In the container:
 ```bash
+source $HOME/my-venv/bin/activate
 cp -pr /tmp/simple_l3_modecr/ /root/examples/
-/tmp/compile_p4_prog.sh -p /root/examples/simple_l3_modecr -s simple_l3_modecr.p4 -a psa
+pushd /root/examples/simple_l3_modecr
+
+/tmp/compile-p4.sh -p . -s simple_l3_modecr.p4 -a psa
 /tmp/setup_2tapports.sh
-/tmp/load_p4_prog.sh -p /root/examples/simple_l3_modecr/simple_l3_modecr.pb.bin -i /root/examples/simple_l3_modecr/p4Info.txt
+/tmp/load_p4_prog.sh -p out/simple_l3_modecr.pb.bin -i out/simple_l3_modecr.p4Info.txt
 
 # Run tiny controller program that adds a couple of table entries via
 # P4Runtime API
-/root/examples/simple_l3_modecr/controller.py
+PYTHON_PATH="/tmp/pylib" /root/examples/simple_l3_modecr/controller.py
 
 # Check if table entries have been added
 p4rt-ctl dump-entries br0
@@ -753,11 +781,13 @@ cp -pr ~/p4-guide/ipdk/23.01/add_on_miss0/ ~/.ipdk/volume/
 
 In the container:
 ```bash
+source $HOME/my-venv/bin/activate
+export PYTHON_PATH="/tmp/pylib"
 cp -pr /tmp/add_on_miss0/ /root/examples/
 
-/tmp/compile_p4_prog.sh -p /root/examples/add_on_miss0 -s add_on_miss0.p4 -a pna
+/tmp/compile-p4.sh -p /root/examples/add_on_miss0 -s add_on_miss0.p4 -a pna
 /tmp/setup_2tapports.sh
-/tmp/load_p4_prog.sh -p /root/examples/add_on_miss0/add_on_miss0.pb.bin -i /root/examples/add_on_miss0/p4Info.txt
+/tmp/load_p4_prog.sh -p /root/examples/add_on_miss0/out/add_on_miss0.pb.bin -i /root/examples/add_on_miss0/out/add_on_miss0.p4Info.txt
 
 # Run tiny controller program that adds a couple of table entries via
 # P4Runtime API
@@ -931,14 +961,14 @@ cp -pr ~/p4-guide/ipdk/23.01/add_on_miss0/ ~/.ipdk/volume/
 
 In the container:
 ```bash
-cd $HOME
-source my-venv/bin/activate
+source $HOME/my-venv/bin/activate
 cp -pr /tmp/add_on_miss0/ /root/examples/
-pushd /root/examples/add_on_miss0/ptf-tests
+pushd /root/examples/add_on_miss0
 
-/tmp/compile_p4_prog.sh -p /root/examples/add_on_miss0 -s add_on_miss0.p4 -a pna
-/tmp/setup_2tapports_in_default_ns.sh
-/tmp/load_p4_prog.sh -p /root/examples/add_on_miss0/add_on_miss0.pb.bin -i /root/examples/add_on_miss0/p4Info.txt
+/tmp/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
+/tmp/setup_21tapports_in_default_ns.sh
+/tmp/load_p4_prog.sh -p out/add_on_miss0.pb.bin -i out/add_on_miss0.p4Info.txt
+cd ptf-tests
 ./runptf.sh
 ```
 
@@ -965,14 +995,14 @@ cp -pr ~/p4-guide/ipdk/23.01/add_on_miss1/ ~/.ipdk/volume/
 
 In the container:
 ```bash
-cd $HOME
-source my-venv/bin/activate
+source $HOME/my-venv/bin/activate
 cp -pr /tmp/add_on_miss1/ /root/examples/
-pushd /root/examples/add_on_miss1/ptf-tests
+pushd /root/examples/add_on_miss1
 
-/tmp/compile_p4_prog.sh -p /root/examples/add_on_miss1 -s add_on_miss1.p4 -a pna
-/tmp/setup_2tapports_in_default_ns.sh
-/tmp/load_p4_prog.sh -p /root/examples/add_on_miss1/add_on_miss1.pb.bin -i /root/examples/add_on_miss1/p4Info.txt
+/tmp/compile-p4.sh -p . -s add_on_miss1.p4 -a pna
+/tmp/setup_21tapports_in_default_ns.sh
+/tmp/load_p4_prog.sh -p out/add_on_miss1.pb.bin -i out/add_on_miss1.p4Info.txt
+cd ptf-tests
 ./runptf.sh
 ```
 
@@ -1020,7 +1050,7 @@ program into it:
 
 ```bash
 /tmp/setup_2tapports_in_default_ns.sh
-/tmp/load_p4_prog.sh -p /root/examples/dash/dash_pipeline.pb.bin -i /root/examples/dash/p4Info.txt
+/tmp/load_p4_prog.sh -p /root/examples/dash/out/dash_pipeline.pb.bin -i /root/examples/dash/out/dash.p4Info.txt
 ```
 
 As of 2023-Mar-23, every time I try to load this DPDK binary in this
