@@ -9,17 +9,18 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "setup_2tapports.sh: -v|--verbose -w|--workdir -h|--help"
+    echo "$0: -v|--verbose -w|--workdir -n|--numports -h|--help"
     echo ""
     echo "  -h|--help: Displays help"
     echo "  -v|--verbose: Enable verbose/debug output"
     echo "  -w|--workdir: Working directory"
+    echo "  -n|--numports: Number of TAP ports to create, named TAP0 up to TAP<n-1>"
     echo ""
 }
 
 # Parse command-line options.
-SHORTOPTS=:hv,w:
-LONGOPTS=help,verbose,workdir:
+SHORTOPTS=:hv,w:n:
+LONGOPTS=help,verbose,workdir:numports:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
@@ -27,6 +28,7 @@ eval set -- "${GETOPTS}"
 # Set defaults.
 VERBOSE=0
 WORKING_DIR=/root
+NUMPORTS=2
 
 # Process command-line options.
 while true ; do
@@ -39,6 +41,9 @@ while true ; do
         shift 1 ;;
     -w|--workdir)
         WORKING_DIR="${2}"
+        shift 2 ;;
+    -n|--numports)
+        NUMPORTS="${2}"
         shift 2 ;;
     --)
         shift
@@ -69,6 +74,24 @@ then
 fi
 
 killall infrap4d
+tries=0
+while true
+do
+    tries=$(($tries + 1))
+    if [ $tries -eq 5 ]
+    then
+	1>&2 echo "infrap4d process still running after 5 sec.  Aborting."
+	exit 1
+    fi
+    ps -C infrap4d | grep infrap4d
+    exit_status=$?
+    if [ ${exit_status} -ne 0 ]
+    then
+	break
+    fi
+    echo "infrap4d process still running.  Sleeping 1 sec."
+    sleep 1
+done
 
 echo "Setting hugepages up and starting networking-recipe processes"
 
@@ -94,11 +117,35 @@ pushd "${WORKING_DIR}" > /dev/null || exit
 . "${SCRIPTS_DIR}"/run_infrap4d.sh --nr-install-dir="${NR_INSTALL_DIR}" > /dev/null
 popd > /dev/null || exit
 
-echo "Creating TAP ports"
+#echo "TAP ports that existed before:"
+#ifconfig | grep TAP
+
+set +e
+echo "Creating ${NUMPORTS} TAP ports"
 
 pushd "${WORKING_DIR}" > /dev/null || exit
-# Wait for networking-recipe processes to start gRPC server and open ports for clients to connect.
+
+# Wait for networking-recipe processes to start gRPC server and open
+# ports for clients to connect.
 sleep 1
+tries=0
+while true
+do
+    tries=$(($tries + 1))
+    if [ $tries -eq 5 ]
+    then
+	1>&2 echo "NO infrap4d process after 5 sec.  Aborting."
+	exit 1
+    fi
+    ps -C infrap4d | grep -v '<defunct>' | grep infrap4d
+    exit_status=$?
+    if [ ${exit_status} -eq 0 ]
+    then
+	break
+    fi
+    echo "No infrap4d process running yet.  Sleeping 1 sec."
+    sleep 1
+done
 
 # It appears that for the gnmi-ctl command, or the gNMI server in
 # infrap4d perhaps, TAP interfaces can only have names of the form
@@ -111,16 +158,20 @@ sleep 1
 # 19, 20, you must create all of them from 0 up to 20.  At least, I do
 # not know a way to specify the desired DPDK data plane port number in
 # the command below.
-for i in `seq 0 20`
+NUMPORTS_MINUS_1=$((${NUMPORTS}-1))
+for i in `seq 0 ${NUMPORTS_MINUS_1}`
 do
     gnmi-ctl set "device:virtual-device,name:TAP${i},pipeline-name:pipe,\
         mempool-name:MEMPOOL0,mtu:1500,port-type:TAP"
 done
 popd > /dev/null || exit
 
-echo "Bring up the TAP ports"
+echo "Bring up the ${NUMPORTS} TAP ports"
 
-for i in `seq 0 20`
+for i in `seq 0 ${NUMPORTS_MINUS_1}`
 do
     ip link set dev TAP${i} up
 done
+
+echo "TAP ports that existed after:"
+ifconfig | grep TAP

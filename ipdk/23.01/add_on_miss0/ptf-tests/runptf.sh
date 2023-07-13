@@ -15,10 +15,10 @@ ptf \
     -i 1@TAP1 \
     -i 2@TAP2 \
     -i 3@TAP3 \
-    -i 17@TAP17 \
-    -i 18@TAP18 \
-    -i 19@TAP19 \
-    -i 20@TAP20 \
+    -i 17@TAP4 \
+    -i 18@TAP5 \
+    -i 19@TAP6 \
+    -i 20@TAP7 \
     --test-params="grpcaddr='localhost:9559'" \
     --test-dir .
 set +x

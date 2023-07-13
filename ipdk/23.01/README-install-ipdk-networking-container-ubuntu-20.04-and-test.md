@@ -115,11 +115,11 @@ software switch inside of it.
 Every time the instructions say to run a command "in the base OS",
 that means you should have some command shell that is running in the
 base Ubuntu 20.04 operating system.  You should _not_ have run `ipdk
-connect` in this shell.
+connect` or `docker exec it ...` in this shell.
 
 Every time the instructions say to run a command "in the container",
 that means you should have some shell at a prompt reached by running
-the `ipdk connect` command.
+the `ipdk connect` or `docker exec it ...` command below.
 
 The file system contents (and thus which software packages are
 available for use), the Linux networking namespaces, and probably many
@@ -131,20 +131,20 @@ windows open at the same time, one at a prompt in the base OS, and the
 other at a prompt in the container.
 
 Note: Every time you run `ipdk connect`, a script run in the container
-creates new cryptographic authentication keys for the infrap4d server
-in /var/stratum/certs.  You want this to happen once per container
-that you start.  One way to achieve this is to only do `ipdk connect`
-exactly once each time you run `ipdk start`.  If you then want
-additional terminals to be at a shell prompt within that same
-container process, you can use the following command instead:
+creates new cryptographic authentication keys for the `infrap4d`
+server in the directory `/var/stratum/certs`.  You want this to happen
+once per container process that you start.  One way to achieve this is
+to only do `ipdk connect` exactly once each time you run `ipdk start`.
+If you then want additional terminals to be at a shell prompt within
+that same container process, you can use the following command instead
+of `ipdk connect`:
 
 ```bash
 docker exec -it -w /root 8e0d6ad594af /bin/bash
 ```
 
-where you should replace `8e0d6ad594af` with the value in the
-`CONTAINER ID` column in the output of `docker ps`, for the container
-with IMAGE name like
+Replace `8e0d6ad594af` with the value in the `CONTAINER ID` column in
+the output of `docker ps`, for the container with IMAGE name like
 `ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64:<something>`.
 
 
@@ -170,9 +170,12 @@ the base OS.
 
 In the base OS:
 ```bash
-sudo apt-get install --yes tshark wireshark
-sudo pip3 install scapy
-python3
+sudo apt-get install --yes tshark wireshark python3-venv
+PYTHON_VENV="${HOME}/my-venv"
+python3 -m venv --system-site-packages "${PYTHON_VENV}"
+source "${PYTHON_VENV}/bin/activate"
+pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+pip3 install scapy
 ```
 
 
@@ -193,8 +196,7 @@ container.
 
 In the base OS:
 ```bash
-cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
-cp -pr ~/p4-guide/pylib ~/.ipdk/volume/
+cp -pr ~/p4-guide/ipdk/23.01/*.sh ~/p4-guide/pylib ~/.ipdk/volume/
 ```
 
 In the container:
@@ -362,6 +364,7 @@ is started, but before the packets start flowing.
 Even better, you should create your own script based upon the contents
 of `rundemo_TAP_IO.sh` that sets things up like running infrap4d and
 creating namespaces and interfaces, but doesn't send any packets.
+Several such scripts below have been written for you that do this.
 
 
 # A note on debugging P4 programs on the DPDK software switch
@@ -420,7 +423,7 @@ commands.
 
 In the base OS:
 ```bash
-cd <path-to-your-clone-of-ipdk-repository>
+cd $HOME/ipdk
 ipdk start -d
 ipdk connect
 ```
@@ -444,7 +447,9 @@ interfaces.
 The second way shows how to run such a Python test client program in
 the base OS.  I do not know of any straightforward way to enable such
 a program running in the OS to send packets to or receive packets from
-the DPDK software switch.
+the DPDK software switch.  I consider this way mostly a curiosity at
+this point, not a way to do much useful work, so the description of
+this is near the end of this article.
 
 Note: These instructions use the `p4runtime-shell` Python package,
 which is only one of many ways to make a P4Runtime API connection from
@@ -481,6 +486,7 @@ with this command:
 
 In the container:
 ```bash
+source ~/my-venv/bin/activate
 export PYTHON_PATH="/tmp/pylib"
 ~/test-client.py
 ```
@@ -549,57 +555,6 @@ I get a similar error if, in the base OS, I try to run
 `test-client.py` when it is stored in the directory `~/.ipdk/volume`.
 Again, the workaround is to run that program with a copy of the file
 in a directory that is not `~/.ipdk/volume`.
-
-
-## Installing `p4runtime-shell` in the base OS
-
-Note: You can ignore this section if you prefer to run P4Runtime API
-client programs in the container.
-
-In the base OS:
-```bash
-sudo apt-get install --yes python3-pip
-sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
-```
-
-
-## Making a P4Runtime API connection from Python program running in the base OS, to infrap4d
-
-Note: You can ignore this section if you prefer to run P4Runtime API
-client programs in the container.
-
-First copy the current cryptographic key/certificate files required
-for a client to authenticate itself to the server.  This step only
-needs to be done once each time these files change.  One event that
-causes these files to change is running `ipdk connect` from the base
-OS.
-
-When the container is started, it is done in a way such that the
-directory `/tmp` in the container is equivalent to the directory
-`$HOME/.ipdk/volume` in the base OS.  That is, any changes made to the
-directory on one side is immediately reflected on the other side.
-
-In the container:
-```bash
-cp /usr/share/stratum/certs/{ca.crt,client.key,client.crt} /tmp/
-```
-
-In the base OS:
-```bash
-mkdir ~/my-certs
-sudo cp ~/.ipdk/volume/{ca.crt,client.crt,client.key} ~/my-certs
-sudo chown ${USER}.${USER} ~/my-certs/*
-```
-
-After this setup, you should be able to run the test client program
-with this command.  The `test-client.py` program takes an optional
-parameter that is the name of a directory where it should find the
-files `ca.crt`, `client.crt`, and `client.key` that were copied above.
-
-In the base OS:
-```bash
-~/p4-guide/ipdk/23.01/test-client.py ~/my-certs/
-```
 
 
 # Compiling a P4 program, loading it into infrap4d, sending packets in, and capturing packets out
@@ -948,7 +903,7 @@ If someone finds a way to successfully run a PTF test without creating
 a virtual environment, I would not mind knowing how.
 
 Also note that these instructions use the script
-`setup_2tapports_in_default_ns.sh`, not `setup_2tapports.sh` as
+`setup_tapports_in_default_ns.sh`, not `setup_2tapports.sh` as
 previous examples above have done.  This makes it easier for the PTF
 test to send packets on the TAP ports and check output packets on the
 TAP ports, because those TAP interfaces are in the same network
@@ -966,11 +921,16 @@ cp -pr /tmp/add_on_miss0/ /root/examples/
 pushd /root/examples/add_on_miss0
 
 /tmp/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
-/tmp/setup_21tapports_in_default_ns.sh
+/tmp/setup_tapports_in_default_ns.sh -n 8
 /tmp/load_p4_prog.sh -p out/add_on_miss0.pb.bin -i out/add_on_miss0.p4Info.txt
 cd ptf-tests
 ./runptf.sh
 ```
+
+Note: I have not tracked down the root cause yet, but when I try to
+create more than 16 ports using `setup_tapports_in_default_ns.sh`, the
+following use of `load_p4_prog.sh` fails to load the P4 program.  The
+workaround for now is simply to use at most 16 ports.
 
 
 # Running P4 program `add_on_miss1.p4` and testing it from a PTF test
@@ -1000,7 +960,7 @@ cp -pr /tmp/add_on_miss1/ /root/examples/
 pushd /root/examples/add_on_miss1
 
 /tmp/compile-p4.sh -p . -s add_on_miss1.p4 -a pna
-/tmp/setup_21tapports_in_default_ns.sh
+/tmp/setup_tapports_in_default_ns.sh -n 8
 /tmp/load_p4_prog.sh -p out/add_on_miss1.pb.bin -i out/add_on_miss1.p4Info.txt
 cd ptf-tests
 ./runptf.sh
@@ -1049,7 +1009,7 @@ Now start the DPDK software switch and load the compiled DASH P4
 program into it:
 
 ```bash
-/tmp/setup_2tapports_in_default_ns.sh
+/tmp/setup_tapports_in_default_ns.sh -n 2
 /tmp/load_p4_prog.sh -p /root/examples/dash/out/dash_pipeline.pb.bin -i /root/examples/dash/out/dash.p4Info.txt
 ```
 
@@ -1062,6 +1022,48 @@ Error: P4Runtime RPC error (INTERNAL): 'bf_pal_device_add(dev_id, &device_profil
 
 I am checking with DPDK developers to see why this occurs, and if
 there is a way to prevent it.
+
+
+# Making a P4Runtime API connection from Python program running in the base OS, to infrap4d running in the container
+
+Note: You can ignore this section if you prefer to run P4Runtime API
+client programs in the container.
+
+First copy the current cryptographic key/certificate files required
+for a client to authenticate itself to the server.  This step only
+needs to be done once each time these files change.  One event that
+causes these files to change is running `ipdk connect` from the base
+OS.
+
+When the container is started, it is done in a way such that the
+directory `/tmp` in the container is equivalent to the directory
+`$HOME/.ipdk/volume` in the base OS.  That is, any changes made to the
+directory on one side is immediately reflected on the other side.
+
+In the container:
+```bash
+cp /usr/share/stratum/certs/{ca.crt,client.key,client.crt} /tmp/
+```
+
+In the base OS:
+```bash
+mkdir ~/my-certs
+sudo cp ~/.ipdk/volume/{ca.crt,client.crt,client.key} ~/my-certs
+sudo chown `id --user --name`:`id --group --name` ~/my-certs/*
+```
+
+After this setup, you should be able to run the test client program
+with this command.  The `test-client.py` program takes an optional
+parameter that is the name of a directory where it should find the
+files `ca.crt`, `client.crt`, and `client.key` that were copied above.
+
+In the base OS:
+```bash
+source ~/my-venv/bin/activate
+~/p4-guide/ipdk/23.01/test-client.py ~/my-certs/
+```
+
+
 
 
 # Latest tested version of IPDK
