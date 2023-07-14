@@ -54,6 +54,28 @@ while true ; do
     esac
 done
 
+numports_is_power_of_2=0
+case ${NUMPORTS} in
+    2|4|8|16|32)
+	numports_is_power_of_2=1
+	;;
+    *)
+	numports_is_power_of_2=0
+	;;
+esac
+if [ ${numports_is_power_of_2} -eq 0 ]
+then
+    1>&2 echo "NUMPORTS=${NUMPORTS} should be a power of 2, or else loading P4"
+    1>&2 echo "programs into P4-DPDK will fail."
+    1>&2 echo ""
+    1>&2 echo "If you want more than 32 ports, you will need to modify the file"
+    1>&2 echo ""
+    1>&2 echo "    /usr/share/stratum/dpdk/dpdk_port_config.pb.txt"
+    1>&2 echo ""
+    1>&2 echo "and this script."
+    exit 1
+fi
+
 SCRIPTS_DIR="${WORKING_DIR}"/scripts
 DEPS_INSTALL_DIR="${WORKING_DIR}"/networking-recipe/deps_install
 P4C_INSTALL_DIR="${WORKING_DIR}"/p4c/install
