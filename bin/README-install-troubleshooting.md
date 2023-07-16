@@ -8,7 +8,7 @@ Pick one of these alternatives that best fits your situation:
     created for this purpose.)
 
   + Ubuntu 20.04 or 22.04
-  + Fedora 35 (see [fedoraproject.org
+  + Fedora 35, 36, or 37 (see [fedoraproject.org
     releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
     for obtaining older Fedora releases)
 
