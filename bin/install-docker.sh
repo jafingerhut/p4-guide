@@ -44,6 +44,9 @@ then
 elif [ "${ID}" = "fedora" ]
 then
     case "${VERSION_ID}" in
+	36)
+	    supported_distribution=1
+	    ;;
 	37)
 	    supported_distribution=1
 	    ;;
@@ -74,6 +77,14 @@ fi
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker $USER
+
+# Enable docker service to start automatically when the system is booted:
+# https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd
+if [ "${ID}" = "fedora" ]
+then
+    sudo systemctl enable docker.service
+    sudo systemctl enable containerd.service
+fi
 set +x
 
 echo "Disk space after installing docker"
