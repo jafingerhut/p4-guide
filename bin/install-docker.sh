@@ -37,6 +37,9 @@ then
 	22.04)
 	    supported_distribution=1
 	    ;;
+	23.04)
+	    supported_distribution=1
+	    ;;
     esac
 elif [ "${ID}" = "fedora" ]
 then
