@@ -46,7 +46,7 @@ To install docker:
 ```bash
 cd $HOME
 git clone https://github.com/jafingerhut/p4-guide
-~/p4-guide/ipdk/23.01/install-docker-ubuntu-20.04.sh
+~/p4-guide/bin/install-docker.sh
 ```
 
 As recommended in the output, reboot your system.  After that, you
