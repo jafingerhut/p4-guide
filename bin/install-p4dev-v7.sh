@@ -550,6 +550,15 @@ sudo make install
 find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
+
+if [ "${ID}" = "ubuntu" ]
+then
+    dpkg -l | sort > $HOME/installed-pkgs.txt
+elif [ "${ID}" = "fedora" ]
+then
+    dnf list --installed | sort > $HOME/installed-pkgs.txt
+fi
+
 ${PIP_SUDO} pip3 install -rrequirements.txt
 GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
 sudo ldconfig
