@@ -89,8 +89,9 @@ cd ipdk/build
 ./ipdk install
 export PATH=$HOME/ipdk/build:$PATH
 cd ..
-ipdk install ubuntu2004
-ipdk build --no-cache |& tee ipdk-build-out.txt
+ipdk install ubuntu2004    # if base OS is Ubuntu
+ipdk install fedora33      # if base OS is Fedora
+ipdk build --no-cache |& tee $HOME/log-ipdk-build.txt
 ```
 
 At this point, you should see that a new docker image has been created
