@@ -697,9 +697,11 @@ ${PIP_SUDO} pip3 install scapy ply
 pip3 list
 
 # Clone p4c and its submodules:
-git clone --recursive https://github.com/p4lang/p4c.git
+git clone https://github.com/p4lang/p4c.git
 cd p4c
+patch -p1 < "${PATCH_DIR}/p4c-support-gcc-12.patch"
 git log -n 1
+git submodule update --init --recursive
 mkdir build
 cd build
 
