@@ -27,8 +27,8 @@ then
     apt-get install --yes git tcpdump tcpreplay python3-venv
 elif [ "${ID}" = "fedora" ]
 then
-    sudo dnf -y update
-    sudo dnf -y install git tcpdump tcpreplay
+    dnf -y update
+    dnf -y install git tcpdump tcpreplay
 fi
 
 # Install all Python packages into a venv virtual environment
