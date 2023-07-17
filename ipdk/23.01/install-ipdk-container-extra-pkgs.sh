@@ -7,8 +7,15 @@
 # commands will fail.
 chmod 777 /tmp
 
-apt-get update
-apt-get install --yes git tcpdump tcpreplay python3-venv
+if [ "${ID}" = "ubuntu" ]
+then
+    apt-get update
+    apt-get install --yes git tcpdump tcpreplay python3-venv
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y update
+    sudo dnf -y install git tcpdump tcpreplay
+fi
 
 # Install all Python packages into a venv virtual environment
 PYTHON_VENV="${HOME}/my-venv"
