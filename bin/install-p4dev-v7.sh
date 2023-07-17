@@ -709,9 +709,8 @@ then
     cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 elif [ "${ID}" = "fedora" ]
 then
-    # Do not enable build of p4testgen on Fedora until compilation
-    # issues are fixed.
-    cmake .. -DCMAKE_BUILD_TYPE=DEBUG
+    # p4testgen currently fails to compile when I tried it on Fedora 36
+    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 fi
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
