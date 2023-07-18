@@ -630,6 +630,13 @@ sudo make install
 find /usr/lib /usr/local $HOME/.local | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
+# Before some time in 2023-July, the `sudo pip3 install
+# -rrequirements.txt` command below installed the Cython package
+# version 0.29.35.  After that time, it started installing Cython
+# package version 3.0.0, which gives errors on the `sudo pip3 install
+# .` command afterwards.  Fix this by forcing installation of a known
+# working version of Cython.
+sudo pip3 install Cython==0.29.35
 sudo pip3 install -rrequirements.txt
 GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install .
 sudo ldconfig
