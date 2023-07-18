@@ -268,8 +268,8 @@ echo "took about 4 hours."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ protobuf: github.com/google/protobuf v3.18.1"
-echo "+ gRPC: github.com/google/grpc.git v1.43.2"
+echo "+ protobuf: github.com/google/protobuf v3.20.3"
+echo "+ gRPC: github.com/google/grpc.git v1.54.2"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2022-Feb-10, also installs these things:"
@@ -279,7 +279,7 @@ echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as 
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2023-May-28"
-echo "+ Python packages: protobuf 3.18.1, grpcio 1.43.2"
+echo "+ Python packages: protobuf 3.20.3, grpcio 1.54.2"
 echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -376,7 +376,7 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
-# Install Ubuntu packages needed by protobuf v3.18.1, from its src/README.md
+# Install Ubuntu packages needed by protobuf v3.20.3, from its src/README.md
 
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
@@ -467,12 +467,12 @@ echo "start install protobuf:"
 set -x
 date
 
-${PIP_SUDO} pip3 install protobuf==3.18.1
+${PIP_SUDO} pip3 install protobuf==3.20.3
 
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
 cd protobuf
-git checkout v3.18.1
+git checkout v3.20.3
 git submodule update --init --recursive
 ./autogen.sh
 ./configure
@@ -535,7 +535,7 @@ fi
 
 get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
-git checkout tags/v1.43.2
+git checkout v1.54.2
 # These commands are recommended in grpc's BUILDING.md file for Unix:
 git submodule update --init --recursive
 
