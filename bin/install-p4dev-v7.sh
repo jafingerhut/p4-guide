@@ -603,7 +603,7 @@ git log -n 1
 ./autogen.sh
 # Cause 'sudo make install' to install Python packages for PI in a
 # Python virtual environment, if one is in use.
-configure_python_prefix="--with-python_prefix=${VIRTUAL_ENV}"
+configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
 if [ "${ID}" = "ubuntu" ]
 then
     ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
@@ -616,9 +616,9 @@ sudo make install
 
 # Save about 0.25G of storage by cleaning up PI build
 make clean
-# 'sudo make install' installs several files in ${VIRTUAL_ENV} with
+# 'sudo make install' installs several files in ${PYTHON_VENV} with
 # root owner.  Change them to be owned by the regular user id.
-change_owner_and_group_of_venv_lib_python3_files ${VIRTUAL_ENV}
+change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 
 set +x
 echo "end install PI:"
@@ -672,9 +672,9 @@ fi
 make
 sudo make install-strip
 sudo ldconfig
-# 'sudo make install-strip' installs several files in ${VIRTUAL_ENV}
+# 'sudo make install-strip' installs several files in ${PYTHON_VENV}
 # with root owner.  Change them to be owned by the regular user id.
-change_owner_and_group_of_venv_lib_python3_files ${VIRTUAL_ENV}
+change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 
 set +x
 echo "end install behavioral-model:"
