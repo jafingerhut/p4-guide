@@ -466,6 +466,8 @@ then
 	 pkg-config python3-pip
 fi
 
+PIP_SUDO="sudo"
+
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
 pip3 -V || echo "No such command in PATH: pip3"
@@ -528,10 +530,10 @@ if [ "${ID}" = "ubuntu" ]
 then
     echo "Uninstalling Ubuntu python3-protobuf if present"
     sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-    sudo pip3 install protobuf==3.18.1
+    ${PIP_SUDO} pip3 install protobuf==3.18.1
 elif [ "${ID}" = "fedora" ]
 then
-    sudo pip3 install protobuf==3.18.1
+    ${PIP_SUDO} pip3 install protobuf==3.18.1
 fi
 
 cd "${INSTALL_DIR}"
@@ -615,7 +617,7 @@ fi
 
 get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 cd grpc
-git checkout tags/v1.43.2
+git checkout v1.43.2
 # These commands are recommended in grpc's BUILDING.md file for Unix:
 git submodule update --init --recursive
 
@@ -624,9 +626,9 @@ cd cmake/build
 cmake ../..
 make
 sudo make install
-# I believe the following 2 commands, adapted from similar commands in
-# src/python/grpcio/README.rst, should install the Python3 module
-# grpc.
+# I believe the following 2 'pip3 install ...' commands, adapted from
+# similar commands in src/python/grpcio/README.rst, should install the
+# Python3 module grpc.
 find /usr/lib /usr/local $HOME/.local | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
@@ -636,13 +638,10 @@ cd ../..
 # package version 3.0.0, which gives errors on the `sudo pip3 install
 # .` command afterwards.  Fix this by forcing installation of a known
 # working version of Cython.
-sudo pip3 install Cython==0.29.35
-sudo pip3 install -rrequirements.txt
-GRPC_PYTHON_BUILD_WITH_CYTHON=1 sudo pip3 install .
+${PIP_SUDO} pip3 install Cython==0.29.35
+${PIP_SUDO} pip3 install -rrequirements.txt
+GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
 sudo ldconfig
-# Save some storage by cleaning up grpc build
-# TODO: Is this command useful with latest cmake build infra?
-#make clean
 
 set +x
 echo "end install grpc:"
@@ -781,13 +780,14 @@ fi
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
-sudo pip3 install scapy ply
+${PIP_SUDO} pip3 install scapy ply
 pip3 list
 
 # Clone p4c and its submodules:
-git clone --recursive https://github.com/p4lang/p4c.git
+git clone https://github.com/p4lang/p4c.git
 cd p4c
 git log -n 1
+git submodule update --init --recursive
 mkdir build
 cd build
 
@@ -859,8 +859,7 @@ date
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-#sudo python3 setup.py install
-sudo pip install .
+${PIP_SUDO} pip install .
 
 set +x
 echo "end install ptf:"
@@ -885,9 +884,9 @@ elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install gflags-devel net-tools
 fi
-sudo pip3 install psutil crcmod
+${PIP_SUDO} pip3 install psutil crcmod
 # p4runtime-shell package, installed from latest source version
-sudo pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 pip3 list
 
 set +x
