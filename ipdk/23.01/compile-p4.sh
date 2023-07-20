@@ -9,7 +9,7 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "$0: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile"
+    echo "$0: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile -a|--arch -t|--tdi_pipeline_builder_only"
     echo ""
     echo "  -h|--help: Displays help"
     echo "  -v|--verbose: Enable verbose/debug output"
@@ -17,12 +17,13 @@ usage() {
     echo "  -p|--p4dir: Directory containing P4 source file, and in which to write output files"
     echo "  -s|--srcfile: Base file name containing P4 source code, which must be in the P4 directory"
     echo "  -a|--arch: P4 architecture to use.  Supported values: psa, pna (default: pna)"
+    echo "  -t|--tdi_pipeline_builder_only: Only run tdi_pipeline_builder, assuming that P4 compiler has already generated its output"
     echo ""
 }
 
 # Parse command-line options.
-SHORTOPTS=hvw:p:s:a:
-LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:,arch:
+SHORTOPTS=hvw:p:s:a:t
+LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:,arch:,tdi_pipeline_builder_only
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
@@ -33,6 +34,7 @@ WORKING_DIR=/root
 P4_DIR=""
 P4_SRC_FNAME=""
 P4_ARCH="pna"
+do_compile=1
 
 # Process command-line options.
 while true ; do
@@ -55,6 +57,9 @@ while true ; do
     -a|--arch)
         P4_ARCH="${2}"
         shift 2 ;;
+    -t|--tdi_pipeline_builder_only)
+        do_compile=0
+        shift 1 ;;
     --)
         shift
         break ;;
@@ -138,23 +143,25 @@ fi
 # But also as of that version, the command 'p4c-dpdk' does support
 # both '--arch psa' and '--arch pna' as command line options.
 
-set -ex
-mkdir -p "${P4_DIR}/out"
-p4c-dpdk \
-    --arch "${P4_ARCH}" \
-    --p4runtime-files "${P4_DIR}/out/${BASE_FNAME}.p4Info.txt" \
-    --context "${P4_DIR}/out/${BASE_FNAME}.context.json" \
-    --bf-rt-schema "${P4_DIR}/out/${BASE_FNAME}.bf-rt.json" \
-    -o "${P4_DIR}/out/${BASE_FNAME}.spec" \
-    "${P4_DIR}/${BASE_FNAME}.p4"
-
-set +ex
-if [ ${VERBOSE} -ge 2 ]
+if [ ${do_compile} -eq 1 ]
 then
-    echo ""
-    echo "Files in ${P4_DIR}/out just after p4c:"
-    ls -lrta "${P4_DIR}/out"
-    echo "----------------------------------------"
+    set -ex
+    mkdir -p "${P4_DIR}/out"
+    p4c-dpdk \
+        --arch "${P4_ARCH}" \
+        --p4runtime-files "${P4_DIR}/out/${BASE_FNAME}.p4Info.txt" \
+        --context "${P4_DIR}/out/${BASE_FNAME}.context.json" \
+        --bf-rt-schema "${P4_DIR}/out/${BASE_FNAME}.bf-rt.json" \
+        -o "${P4_DIR}/out/${BASE_FNAME}.spec" \
+        "${P4_DIR}/${BASE_FNAME}.p4"
+    set +ex
+    if [ ${VERBOSE} -ge 2 ]
+    then
+        echo ""
+        echo "Files in ${P4_DIR}/out just after p4c:"
+        ls -lrta "${P4_DIR}/out"
+        echo "----------------------------------------"
+    fi
 fi
 
 echo "Running pipeline builder"
