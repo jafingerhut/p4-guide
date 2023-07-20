@@ -544,9 +544,9 @@ cd cmake/build
 cmake ../..
 make
 sudo make install
-# I believe the following 2 pip3 commands, adapted from similar
-# commands in src/python/grpcio/README.rst, should install the Python3
-# module grpc.
+# I believe the following 2 'pip3 install ...' commands, adapted from
+# similar commands in src/python/grpcio/README.rst, should install the
+# Python3 module grpc.
 find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
@@ -769,7 +769,6 @@ date
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-#sudo python3 setup.py install
 ${PIP_SUDO} pip install .
 
 set +x
