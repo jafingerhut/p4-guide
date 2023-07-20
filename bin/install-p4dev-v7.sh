@@ -104,6 +104,20 @@ python_version_warning() {
     1>&2 echo "you figure out yourself how to make it work."
 }
 
+# Change this to a lower value if you do not like all this extra debug
+# output.  It is occasionally useful to debug why Python package
+# install files, or other files installed system-wide, are not going
+# to the places where one might hope.
+DEBUG_INSTALL=2
+
+debug_dump_many_install_files() {
+    local OUT_FNAME="$1"
+    if [ ${DEBUG_INSTALL} -ge 2 ]
+    then
+	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+    fi
+}
+
 abort_script=0
 
 if [ ! -r /etc/os-release ]
@@ -458,7 +472,7 @@ pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-1-before-protobuf.txt
+debug_dump_many_install_files usr-local-1-before-protobuf.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -488,7 +502,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-2-after-protobuf.txt
+debug_dump_many_install_files usr-local-2-after-protobuf.txt
 
 if [ "${ID}" = "ubuntu" ]
 then
@@ -547,7 +561,7 @@ sudo make install
 # I believe the following 2 'pip3 install ...' commands, adapted from
 # similar commands in src/python/grpcio/README.rst, should install the
 # Python3 module grpc.
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
+debug_dump_many_install_files $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
 # Before some time in 2023-July, the `pip3 install -rrequirements.txt`
@@ -566,7 +580,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-3-after-grpc.txt
+debug_dump_many_install_files usr-local-3-after-grpc.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -616,7 +630,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-4-after-PI.txt
+debug_dump_many_install_files usr-local-4-after-PI.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -672,7 +686,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-5-after-behavioral-model.txt
+debug_dump_many_install_files usr-local-5-after-behavioral-model.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -721,7 +735,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-6-after-p4c.txt
+debug_dump_many_install_files usr-local-6-after-p4c.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -751,7 +765,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-7-after-mininet-install.txt
+debug_dump_many_install_files usr-local-7-after-mininet-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -777,7 +791,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-8-after-ptf-install.txt
+debug_dump_many_install_files usr-local-8-after-ptf-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -805,7 +819,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > usr-local-9-after-miscellaneous-install.txt
+debug_dump_many_install_files usr-local-9-after-miscellaneous-install.txt
 
 pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
