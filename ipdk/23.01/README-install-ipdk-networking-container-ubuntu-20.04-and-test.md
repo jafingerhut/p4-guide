@@ -918,8 +918,7 @@ cp -pr ~/p4-guide/ipdk/23.01/add_on_miss0/ ~/.ipdk/volume/
 In the container:
 ```bash
 source $HOME/my-venv/bin/activate
-cp -pr /tmp/add_on_miss0/ /root/examples/
-pushd /root/examples/add_on_miss0
+pushd /tmp/add_on_miss0
 
 /tmp/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
 /tmp/setup_tapports_in_default_ns.sh -n 8
@@ -928,10 +927,11 @@ cd ptf-tests
 ./runptf.sh
 ```
 
-Note: I have not tracked down the root cause yet, but when I try to
-create more than 16 ports using `setup_tapports_in_default_ns.sh`, the
-following use of `load_p4_prog.sh` fails to load the P4 program.  The
-workaround for now is simply to use at most 16 ports.
+Note: The DPDK software switch will fail to load a P4 program unless
+it currently has a number of ports that is a power of 2.  The
+`setup_tapports_in_default_ns.sh` script should check this restriction
+and give an explanatory error message if you try to violate this
+restriction.
 
 
 # Running P4 program `add_on_miss1.p4` and testing it from a PTF test
