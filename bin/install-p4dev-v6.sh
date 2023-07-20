@@ -42,8 +42,8 @@ linux_version_warning() {
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
-    1>&2 echo "work, or consider getting VirtualBox and creating an"
-    1>&2 echo "Ubuntu virtual machine with one of the tested versions."
+    1>&2 echo "work, or consider getting VirtualBox and creating a"
+    1>&2 echo "virtual machine with one of the tested versions."
 }
 
 check_for_python2_installed() {
