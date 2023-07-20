@@ -550,6 +550,12 @@ sudo make install
 find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
+# Before some time in 2023-July, the `pip3 install -rrequirements.txt`
+# command below installed the Cython package version 0.29.35.  After
+# that time, it started installing Cython package version 3.0.0, which
+# gives errors on the `pip3 install .` command afterwards.  Fix this
+# by forcing installation of a known working version of Cython.
+${PIP_SUDO} pip3 install Cython==0.29.35
 ${PIP_SUDO} pip3 install -rrequirements.txt
 GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
 sudo ldconfig
@@ -697,22 +703,14 @@ ${PIP_SUDO} pip3 install scapy ply
 pip3 list
 
 # Clone p4c and its submodules:
-git clone --recursive https://github.com/p4lang/p4c.git
+git clone https://github.com/p4lang/p4c.git
 cd p4c
 git log -n 1
+git submodule update --init --recursive
 mkdir build
 cd build
-
-if [ "${ID}" = "ubuntu" ]
-then
-    # Configure for a debug build and build p4testgen
-    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
-elif [ "${ID}" = "fedora" ]
-then
-    # Do not enable build of p4testgen on Fedora until compilation
-    # issues are fixed.
-    cmake .. -DCMAKE_BUILD_TYPE=DEBUG
-fi
+# Configure for a debug build and build p4testgen
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
