@@ -957,8 +957,7 @@ cp -pr ~/p4-guide/ipdk/23.01/add_on_miss1/ ~/.ipdk/volume/
 In the container:
 ```bash
 source $HOME/my-venv/bin/activate
-cp -pr /tmp/add_on_miss1/ /root/examples/
-pushd /root/examples/add_on_miss1
+pushd /tmp/add_on_miss1
 
 /tmp/compile-p4.sh -p . -s add_on_miss1.p4 -a pna
 /tmp/setup_tapports_in_default_ns.sh -n 8
@@ -977,9 +976,7 @@ cp -pr ~/p4-guide/ipdk/23.01/dash/ ~/.ipdk/volume/
 
 In the container:
 ```bash
-cp -pr /tmp/dash /root/examples
-
-cd /root/examples/dash
+cd /tmp/dash
 ./compile-alternate.sh
 ```
 
@@ -1002,8 +999,8 @@ output files in my p4-guide git repo, including the
 `dash_pipeline.pb.bin` file, which I created with this command:
 
 ```bash
-pushd /root/examples/dash
-/tmp/tdi_pipeline_builder.sh -p /root/examples/dash -s dash_pipeline.p4
+pushd /tmp/dash
+/tmp/tdi_pipeline_builder.sh -p /tmp/dash -s dash_pipeline.p4
 ```
 
 Now start the DPDK software switch and load the compiled DASH P4
@@ -1011,7 +1008,7 @@ program into it:
 
 ```bash
 /tmp/setup_tapports_in_default_ns.sh -n 2
-/tmp/load_p4_prog.sh -p /root/examples/dash/out/dash_pipeline.pb.bin -i /root/examples/dash/out/dash.p4Info.txt
+/tmp/load_p4_prog.sh -p /tmp/dash/out/dash_pipeline.pb.bin -i /tmp/dash/out/dash.p4Info.txt
 ```
 
 As of 2023-Mar-23, every time I try to load this DPDK binary in this
