@@ -155,6 +155,15 @@ then
 	37)
 	    supported_distribution=1
 	    ;;
+	38)
+	    supported_distribution=0
+	    # I got build errors while trying to compile gRPC v1.43.2
+	    # from source code on Fedora 38 on 2023-Jul-20 attempt.  I
+	    # suspect that updating to a later version of gRPC might
+	    # help here, but I have not experimented with later
+	    # versions much yet.
+	    tried_but_got_build_errors=1
+	    ;;
     esac
 fi
 
