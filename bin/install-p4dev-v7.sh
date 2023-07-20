@@ -705,21 +705,12 @@ pip3 list
 # Clone p4c and its submodules:
 git clone https://github.com/p4lang/p4c.git
 cd p4c
-patch -p1 < "${PATCH_DIR}/p4c-support-gcc-12.patch"
 git log -n 1
 git submodule update --init --recursive
 mkdir build
 cd build
-
-if [ "${ID}" = "ubuntu" ]
-then
-    # Configure for a debug build and build p4testgen
-    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
-elif [ "${ID}" = "fedora" ]
-then
-    # p4testgen currently fails to compile when I tried it on Fedora 36
-    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
-fi
+# Configure for a debug build and build p4testgen
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
