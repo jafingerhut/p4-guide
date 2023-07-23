@@ -93,10 +93,10 @@ cmake .. -DCMAKE_BUILD_TYPE=DEBUG
 # p4c-graphs
 # p4c-ubpf
 # p4test
-#make -j${MAX_PARALLEL_JOBS}
+make -j${MAX_PARALLEL_JOBS}
 
 # Make only the explicitly listed back ends:
-make -j${MAX_PARALLEL_JOBS} p4c-dpdk p4test p4c-bm2-ss
+#make -j${MAX_PARALLEL_JOBS} p4c-dpdk p4test p4c-bm2-ss
 
 set +x
 echo ""
