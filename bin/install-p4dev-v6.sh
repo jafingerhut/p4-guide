@@ -634,7 +634,6 @@ cd grpc
 git checkout v1.43.2
 # These commands are recommended in grpc's BUILDING.md file for Unix:
 git submodule update --init --recursive
-
 mkdir -p cmake/build
 cd cmake/build
 cmake ../..
