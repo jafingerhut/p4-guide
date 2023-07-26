@@ -12,6 +12,7 @@ linux_version_warning() {
     1>&2 echo "This script has only been tested on these combinations:"
     1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 23.04"
     1>&2 echo "    ID fedora, VERSION_ID in 36 37 38"
+    1>&2 echo "    ID rocky, VERSION_ID in 9.2"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -58,6 +59,13 @@ then
 	    supported_distribution=1
 	    ;;
     esac
+elif [ "${ID}" = "rocky" ]
+then
+    case "${VERSION_ID}" in
+	9.2)
+	    supported_distribution=1
+	    ;;
+    esac
 fi
 
 if [ ${supported_distribution} -eq 1 ]
@@ -81,13 +89,24 @@ then
     sudo dnf -y install curl
 fi
 
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $USER
+if [ "${ID}" == "ubuntu" -o "${ID}" == "fedora" ]
+then
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    sudo usermod -aG docker $USER
+elif [ "${ID}" == "rocky" ]
+then
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    # Linux post-install steps
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+fi
 
 # Enable docker service to start automatically when the system is booted:
 # https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd
-if [ "${ID}" = "fedora" ]
+if [ "${ID}" = "fedora" -o "${ID}" = "rocky" ]
 then
     sudo systemctl enable docker.service
     sudo systemctl enable containerd.service
