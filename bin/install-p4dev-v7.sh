@@ -44,6 +44,7 @@ linux_version_warning() {
     1>&2 echo "This script only supports these:"
     1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04"
     1>&2 echo "    ID fedora, VERSION_ID in 35 36 37"
+    1>&2 echo "    ID rocky, VERSION_ID in 9.2"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -132,6 +133,7 @@ supported_distribution=0
 tried_but_got_build_errors=0
 if [ "${ID}" = "ubuntu" ]
 then
+    ID_FAMILY="debian_family"
     case "${VERSION_ID}" in
 	20.04)
 	    supported_distribution=1
@@ -145,6 +147,7 @@ then
     esac
 elif [ "${ID}" = "fedora" ]
 then
+    ID_FAMILY="rhel_family"
     case "${VERSION_ID}" in
 	35)
 	    supported_distribution=1
@@ -163,6 +166,14 @@ then
 	    # help here, but I have not experimented with later
 	    # versions much yet.
 	    tried_but_got_build_errors=1
+	    ;;
+    esac
+elif [ "${ID}" = "rocky" ]
+then
+    ID_FAMILY="rhel_family"
+    case "${VERSION_ID}" in
+	9.2)
+	    supported_distribution=1
 	    ;;
     esac
 fi
@@ -364,11 +375,11 @@ pip3 -V || echo "No such command in PATH: pip3"
 
 # Install a few packages (vim is not strictly necessary -- installed for
 # my own convenience):
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     sudo apt-get --yes update
     sudo apt-get --yes install git vim
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     sudo dnf -y update
     sudo dnf -y install git vim
@@ -408,24 +419,24 @@ trap clean_up SIGHUP SIGINT SIGTERM
 # requires that pip3 has been installed first.  Without this, there is
 # an error during building Thrift 0.16.0 where a Python 3 program
 # cannot import from the setuptools package.
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     sudo apt-get --yes install \
 	 autoconf automake libtool curl make g++ unzip \
 	 pkg-config python3-pip python3-venv
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     sudo dnf -y install \
 	 autoconf automake libtool curl make g++ unzip \
 	 pkg-config python3-pip
 fi
 
-if [ \( "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" \) -o \( "${ID}" = "fedora" -a "${VERSION_ID}" = "35" \) ]
+if [ \( "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" \) -o \( "${ID}" = "fedora" -a "${VERSION_ID}" = "35" \) -o \( "${ID}" = "rocky" -a "${VERSION_ID}" = "9.2" \) ]
 then
     # Install more recent versions of autoconf and automake than those
-    # that are installed by the Ubuntu 20.04 packages.  That helps
-    # cause Python packages to be installed in the venv while building
-    # grpc and behavioral-model below.
+    # that are installed by the precompiled packages on some Linux
+    # distributions.  That helps cause Python packages to be installed
+    # in the venv while building grpc and behavioral-model below.
     wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
     tar xkzf automake-1.16.5.tar.gz
     cd automake-1.16.5
@@ -442,11 +453,11 @@ then
     sudo make install
     cd ..
 
-    if [ "${ID}" = "ubuntu" ]
+    if [ "${ID_FAMILY}" = "debian_family" ]
     then
 	sudo apt-get purge -y autoconf automake
 	sudo apt-get install --yes libtool-bin
-    elif [ "${ID}" = "fedora" ]
+    elif [ "${ID_FAMILY}" = "rhel_family" ]
     then
 	sudo dnf remove -y autoconf automake
 	sudo dnf install -y libtool
@@ -513,10 +524,10 @@ date
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files usr-local-2-after-protobuf.txt
 
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     sudo apt-get --yes install cmake
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     sudo dnf -y install cmake
 fi
@@ -532,7 +543,7 @@ set -x
 date
 
 # From BUILDING.md of grpc source repository
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     sudo apt-get --yes install build-essential autoconf libtool pkg-config
     # TODO: This package is not mentioned in grpc BUILDING.md
@@ -540,7 +551,7 @@ then
     # building of grpc failed with not being able to find an OpenSSL
     # library.
     sudo apt-get --yes install libssl-dev
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     # I am not sure that the 'Development Tools' group on Fedora is
     # identical to installing the build-essential package on Ubuntu,
@@ -599,10 +610,10 @@ set -x
 date
 
 # Deps needed to build PI:
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     # Any other libraries output from 'dnf search libtool' that need
     # to be installed?
@@ -617,10 +628,10 @@ git log -n 1
 # Cause 'sudo make install' to install Python packages for PI in a
 # Python virtual environment, if one is in use.
 configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
 fi
@@ -675,10 +686,10 @@ patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
 # code first, using these commands:
 ./autogen.sh
 # Remove 'CXXFLAGS ...' part to disable debug
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
 fi
@@ -704,7 +715,7 @@ echo "start install p4c:"
 set -x
 date
 
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     # Install Ubuntu dependencies needed by p4c, from its README.md
     # Matches latest p4c README.md instructions as of 2019-Oct-09
@@ -712,7 +723,7 @@ then
          bison flex libfl-dev libgmp-dev \
          libboost-dev libboost-iostreams-dev libboost-graph-dev \
          llvm pkg-config python3-pip tcpdump
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     sudo dnf -y install g++ git automake libtool gc-devel \
          bison flex libfl-devel gmp-devel \
@@ -810,10 +821,10 @@ set -x
 date
 
 # Things needed for `cd tutorials/exercises/basic ; make run` to work:
-if [ "${ID}" = "ubuntu" ]
+if [ "${ID_FAMILY}" = "debian_family" ]
 then
     sudo apt-get --yes install libgflags-dev net-tools
-elif [ "${ID}" = "fedora" ]
+elif [ "${ID_FAMILY}" = "rhel_family" ]
 then
     sudo dnf -y install gflags-devel net-tools
 fi
