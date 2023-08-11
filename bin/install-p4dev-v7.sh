@@ -118,6 +118,47 @@ debug_dump_many_install_files() {
     fi
 }
 
+# max_parallel_jobs calculates a number of parallel jobs N to run for
+# a command like `make -j<N>`
+
+# Often this does not actually help finish the command earlier if N is
+# larger than the number of CPU cores on the system, so calculate a
+# value of N no more than that number.
+
+# Also, if N is so large that the processes started in parallel exceed
+# the available memory on the system, it can cause the system to copy
+# memory to and from swap space, which dramatically reduces
+# performance.  Alternately, it can cause the kernel to kill
+# processes, to reduce system memory usage, which causes the overall
+# job to fail.  Thus we would like to calculate a value of N that is
+# no more than:
+
+# (currently free mem / expected mem used per parallel job)
+
+# The caller must provide a value for "expected mem used per parallel
+# job", because this code has no way to estimate that.
+
+max_parallel_jobs() {
+    local expected_mem_per_job_MBytes=$1
+    local memtotal_KBytes=`head -n 1 /proc/meminfo | awk '{print $2;}'`
+    local memtotal_MBytes=`expr ${memtotal_KBytes} / 1024`
+    local max_jobs_for_mem=`expr ${memtotal_MBytes} / ${expected_mem_per_job_MBytes}`
+    local max_jobs_for_processors=`grep -c '^processor' /proc/cpuinfo`
+    1>&2 echo "Available memory (MBytes): ${memtotal_MBytes}"
+    1>&2 echo "Expected memory used per job (MBytes): ${expected_mem_per_job_MBytes}"
+    1>&2 echo "Max number of parallel jobs for available mem: ${max_jobs_for_mem}"
+    1>&2 echo "Max number of parallel jobs for processors: ${max_jobs_for_processors}"
+    if [ ${max_jobs_for_processors} -lt ${max_jobs_for_mem} ]
+    then
+	echo ${max_jobs_for_processors}
+    elif [ ${max_jobs_for_mem} -ge 1 ]
+    then
+	echo ${max_jobs_for_mem}
+    else
+	echo 1
+    fi
+}
+
 abort_script=0
 
 if [ ! -r /etc/os-release ]
@@ -263,11 +304,6 @@ echo "Passed all sanity checks"
 
 set -e
 set -x
-
-# The maximum number of gcc/g++ jobs to run in parallel.  1 is the
-# safest number that enables compiling p4c even on machines with only
-# 2 GB of RAM.
-MAX_PARALLEL_JOBS=1
 
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
@@ -734,6 +770,7 @@ mkdir build
 cd build
 # Configure for a debug build and build p4testgen
 cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
 sudo ldconfig
