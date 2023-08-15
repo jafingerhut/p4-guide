@@ -813,12 +813,13 @@ date
 
 if [ "${ID}" = "ubuntu" ]
 then
-    # Install Ubuntu dependencies needed by p4c, from its README.md
-    # Matches latest p4c README.md instructions as of 2019-Oct-09
+    # Install Ubuntu dependencies needed by p4c, from its README.md.
+    # It may not match the latest p4c README.md suggested list of
+    # packages as of today, but it is tested every month.
     sudo apt-get --yes install g++ git automake libtool libgc-dev \
          bison flex libfl-dev libgmp-dev \
          libboost-dev libboost-iostreams-dev libboost-graph-dev \
-         llvm pkg-config python3-pip tcpdump
+         llvm pkg-config python3-pip tcpdump libelf-dev
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install g++ git automake libtool gc-devel \
