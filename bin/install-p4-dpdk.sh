@@ -30,21 +30,21 @@
 cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/p4-dpdk-target p4sde
 cd p4sde
-git log -n 1
+git log -n 1 | cat
 git submodule update --init --recursive
 
 # + Checkout ipdk-recipe
 cd "${INSTALL_DIR}"
 git clone https://github.com/ipdk-io/networking-recipe ipdk.recipe
 cd ipdk.recipe
-git log -n 1
+git log -n 1 | cat
 git submodule update --init --recursive
 
 # + checkout P4C
 cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/p4c
 cd p4c
-git log -n 1
+git log -n 1 | cat
 git submodule update --init --recursive
 
 # TODO: Review these env variable settings to see if they work properly
@@ -57,17 +57,28 @@ export DEPEND_INSTALL="/usr/local"
 # + Install DPDK dependencies
 cd "${INSTALL_DIR}"
 cd p4sde/tools/setup
-sudo apt update -y
-# TODO: Does this need sudo?  Does it install Python packages in system-wide directories or a venv?
+sudo apt-get update -y
+
+sudo apt-get install -y python3-pip python3-venv
+PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
+python3 -m venv "${PYTHON_VENV}"
+source "${PYTHON_VENV}/bin/activate"
+
+# Python packages needed for install_dep.py to work
+pip3 install distro wheel
 python3 install_dep.py
+
+# Python packages needed for compiling p4sde dpdk target to work
+pip3 install elftools
 
 # + Compile p4sde dpdk target
 cd "${INSTALL_DIR}"
-# TODO: What should value of GITHUB_WORKSPACE be?
-mkdir ${GITHUB_WORKSPACE}/install
+cd p4sde
+#mkdir ${GITHUB_WORKSPACE}/install
+mkdir "${SDE_INSTALL}"
 ./autogen.sh
 ./configure "--prefix=${SDE_INSTALL}"
-make 
+make
 make install
 
 # + Build infrap4d dependencies
