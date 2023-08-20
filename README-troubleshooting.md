@@ -18,12 +18,12 @@ If the interface that failed was a virtual Ethernet one like veth0,
 the most likely fix is to run this command to create those interfaces:
 
 ```
-$ sudo $BMV2/tools/veth_setup.sh
+$ sudo $HOME/behavioral-model/tools/veth_setup.sh
 ```
 
-or if you do not have the shell variable BMV2 set to the path of your
-copy of the p4lang/behavioral-model repository, you can replace $BMV2
-with that directory.
+or if you do not have the directory `behavioral-model` in your
+directory `$HOME`, replace that with the path to your copy of that
+repository.
 
 
 # Trying to run simple_switch but get error "Nanomsg returned a exception ..."
