@@ -26,6 +26,12 @@
 # - Complete job
 ######################################################################
 
+# Remember the current directory when the script was started:
+INSTALL_DIR="${PWD}"
+
+set -x
+set -e
+
 # + Checkout DPDK-target
 cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/p4-dpdk-target p4sde
@@ -80,6 +86,8 @@ mkdir "${SDE_INSTALL}"
 ./configure "--prefix=${SDE_INSTALL}"
 make
 make install
+
+exit 0
 
 # + Build infrap4d dependencies
 cd "${INSTALL_DIR}"
