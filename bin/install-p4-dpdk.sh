@@ -72,10 +72,19 @@ source "${PYTHON_VENV}/bin/activate"
 
 # Python packages needed for install_dep.py to work
 pip3 install distro wheel
+
+# TODO: The way install_dep.py is currently written, it tries to
+# install tshark using apt-get with command line options that cause it
+# to prompt for a yes or no answer and wait for it, without showing
+# that prompt on the console.  Figure out a way to get it to
+# auto-answer "no", that I do not want to allow non-root users to
+# capture packets using tshark.
 python3 install_dep.py
 
 # Python packages needed for compiling p4sde dpdk target to work
-pip3 install elftools
+# Error: No package named 'elftools'
+#pip3 install elftools
+pip3 install pyelftools
 
 # + Compile p4sde dpdk target
 cd "${INSTALL_DIR}"
@@ -93,7 +102,7 @@ exit 0
 cd "${INSTALL_DIR}"
 cd ipdk.recipe
 echo "Install infrap4d dependencies"
-sudo apt-get install -y libatomic1 libnl-route-3-dev openssl
+sudo apt-get install -y libatomic1 libnl-route-3-dev openssl libssl-dev
 pip3 install -r requirements.txt
 cd "${IPDK_RECIPE}/setup"
 echo "Build infrap4d dependencies"
