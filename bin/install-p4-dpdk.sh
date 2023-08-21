@@ -73,6 +73,10 @@ source "${PYTHON_VENV}/bin/activate"
 # Python packages needed for install_dep.py to work
 pip3 install distro wheel
 
+# Install wireshark and tshark in a way that avoids an interactive
+# response being required.
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install wireshark tshark
+
 # TODO: The way install_dep.py is currently written, it tries to
 # install tshark using apt-get with command line options that cause it
 # to prompt for a yes or no answer and wait for it, without showing
