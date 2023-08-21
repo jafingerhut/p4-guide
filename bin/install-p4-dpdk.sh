@@ -57,7 +57,7 @@ git clone https://github.com/p4lang/p4-dpdk-target p4sde
 cd p4sde
 if [ ${PYTHON_USE_VENV} -eq 0 ]
 then
-    patch -p1 < "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}/patches/p4-dpdk-target-use-sudo-for-pip.patch"
+    patch -p1 < "${THIS_SCRIPT_DIR_ABSOLUTE}/patches/p4-dpdk-target-use-sudo-for-pip.patch"
 fi
 git log -n 1 | cat
 git submodule update --init --recursive
@@ -104,11 +104,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install wireshark tshark
 # auto-answer "no", that I do not want to allow non-root users to
 # capture packets using tshark.
 python3 install_dep.py
-
-pip3 list
-
-# Python packages needed for compiling p4sde dpdk target to work
-#pip3 install pyelftools
+pip3 list > "${INSTALL_DIR}/pip-list-1-after-install_dep.py.txt"
 
 # + Compile p4sde dpdk target
 cd "${INSTALL_DIR}"
@@ -120,20 +116,19 @@ mkdir "${SDE_INSTALL}"
 make
 make install
 
-exit 0
-
 # + Build infrap4d dependencies
-cd "${INSTALL_DIR}"
-cd ipdk.recipe
+cd "${IPDK_RECIPE}"
 echo "Install infrap4d dependencies"
 sudo apt-get install -y libatomic1 libnl-route-3-dev openssl libssl-dev
 ${PIP_SUDO} pip3 install -r requirements.txt
+pip3 list > "${INSTALL_DIR}/pip-list-2-after-ipdk-recipe-requirements.txt"
 cd "${IPDK_RECIPE}/setup"
 echo "Build infrap4d dependencies"
 cmake -B build -DCMAKE_INSTALL_PREFIX="$DEPEND_INSTALL" -DUSE_SUDO=ON
-cmake --build build 
+cmake --build build
 
 # + Build infrap4d
+cd "${IPDK_RECIPE}"
 sudo ./make-all.sh --target=dpdk --no-krnlmon --no-ovs -S "${SDE_INSTALL}" -D "${DEPEND_INSTALL}"
 
 # + Build p4c with only the DPDK backend
@@ -199,9 +194,10 @@ echo ""
 
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends  ${P4C_DEPS}
-pip3 install --upgrade pip
-pip3 install -r ${P4C_DIR}/requirements.txt
-pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+${PIP_SUDO} pip3 install --upgrade pip
+${PIP_SUDO} pip3 install -r ${P4C_DIR}/requirements.txt
+${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+pip3 list > "${INSTALL_DIR}/pip-list-3-after-p4c-requirements.txt"
 
 # Build P4C
 CMAKE_FLAGS="-DCMAKE_UNITY_BUILD=ON"
