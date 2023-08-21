@@ -29,13 +29,36 @@
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
 
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
+THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+
 set -x
 set -e
+
+PYTHON_USE_VENV=0
+
+if [ ${PYTHON_USE_VENV} -eq 1 ]
+then
+    # Try installing Python packages globally on the system, not in a
+    # venv, to see if later parts of this script operate without
+    # error.
+    PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
+    python3 -m venv "${PYTHON_VENV}"
+    source "${PYTHON_VENV}/bin/activate"
+    PIP_SUDO=""
+else
+    PIP_SUDO="sudo"
+fi
 
 # + Checkout DPDK-target
 cd "${INSTALL_DIR}"
 git clone https://github.com/p4lang/p4-dpdk-target p4sde
 cd p4sde
+if [ ${PYTHON_USE_VENV} -eq 0 ]
+then
+    patch -p1 < "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}/patches/p4-dpdk-target-use-sudo-for-pip.patch"
+fi
 git log -n 1 | cat
 git submodule update --init --recursive
 
@@ -66,12 +89,9 @@ cd p4sde/tools/setup
 sudo apt-get update -y
 
 sudo apt-get install -y python3-pip python3-venv
-PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
-python3 -m venv "${PYTHON_VENV}"
-source "${PYTHON_VENV}/bin/activate"
 
 # Python packages needed for install_dep.py to work
-pip3 install distro wheel
+${PIP_SUDO} pip3 install distro wheel
 
 # Install wireshark and tshark in a way that avoids an interactive
 # response being required.
@@ -85,10 +105,10 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install wireshark tshark
 # capture packets using tshark.
 python3 install_dep.py
 
+pip3 list
+
 # Python packages needed for compiling p4sde dpdk target to work
-# Error: No package named 'elftools'
-#pip3 install elftools
-pip3 install pyelftools
+#pip3 install pyelftools
 
 # + Compile p4sde dpdk target
 cd "${INSTALL_DIR}"
@@ -107,7 +127,7 @@ cd "${INSTALL_DIR}"
 cd ipdk.recipe
 echo "Install infrap4d dependencies"
 sudo apt-get install -y libatomic1 libnl-route-3-dev openssl libssl-dev
-pip3 install -r requirements.txt
+${PIP_SUDO} pip3 install -r requirements.txt
 cd "${IPDK_RECIPE}/setup"
 echo "Build infrap4d dependencies"
 cmake -B build -DCMAKE_INSTALL_PREFIX="$DEPEND_INSTALL" -DUSE_SUDO=ON
