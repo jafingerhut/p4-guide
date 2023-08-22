@@ -29,8 +29,12 @@
 
 # NUS School of Computing
 # CS5229 Advanced Computer Networks
-# This script is adapted to support both AMD64 and ARM64 architectures.
-# Additional steps: Install VSCode and P4 LSP extension.
+# This install-p4dev-arm64.sh script is adapted to support both AMD64 and ARM64 architectures.
+
+# Notes: 
+# It builds upon the install-p4dev-v6.sh script.
+# It specific commits of p4c, bmv2 and etc, which are in sync with the 
+# p4lang tutorials Vagrant script under "vm-ubuntu-20.04".
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
