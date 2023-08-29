@@ -981,9 +981,9 @@ echo "----------------------------------------------------------------------"
 echo ""
 
 cd "${INSTALL_DIR}"
-echo "export PATH=\"$P4GUIDE_BIN:$P4_INSTALL/behavioral-model/tools:/usr/local/bin:\$PATH\"" > p4setup.bash
+echo "export PATH=\"${P4GUIDE_BIN}:${INSTALL_DIR}/behavioral-model/tools:/usr/local/bin:\$PATH\"" > p4setup.bash
 
-echo "set path = ( $P4GUIDE_BIN $P4_INSTALL/behavioral-model/tools /usr/local/bin \$path )" > p4setup.csh
+echo "set path = ( ${P4GUIDE_BIN} ${INSTALL_DIR}/behavioral-model/tools /usr/local/bin \$path )" > p4setup.csh
 
 echo ""
 echo "Created files: p4setup.bash p4setup.csh"
