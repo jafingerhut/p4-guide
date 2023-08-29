@@ -911,7 +911,7 @@ echo ""
 
 cd "${INSTALL_DIR}"
 cp /dev/null p4setup.bash
-echo "source ${INSTALL_DIR}/p4dev-python-venv/bin/activate.csh" >> p4setup.bash
+echo "source ${INSTALL_DIR}/p4dev-python-venv/bin/activate" >> p4setup.bash
 echo "export PATH=\"${P4GUIDE_BIN}:${INSTALL_DIR}/behavioral-model/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
 
 cp /dev/null p4setup.csh
