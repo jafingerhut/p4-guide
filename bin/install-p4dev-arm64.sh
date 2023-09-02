@@ -15,22 +15,26 @@
 # limitations under the License.
 
 
-# This script differs from install-p4dev-v6.sh as follows:
+# This script differs from install-p4dev-v4.sh as follows:
 
-# * Installs all Python3 packages into a virtual environment created
-#   via `python3 -m venv <venv-name>`, instead of in system-wide
-#   directories like /usr/local/lib   See [Note 1] below.
-# * Install more recent Thrift (0.16)
+# It installs later versions of protobuf and grpc libraries.
+# Attempt to follow what p4lang repos use for CI testing, as changed
+# by this commit in 2022-Feb:
+# https://github.com/p4lang/third-party/commit/f9d1bd9b63f7bdfe497f69b0ee1335b7b939e095
+#
+# * Update Protobuf to 3.18.1
+# * Update gRPC to 1.43.2
+# * Install more recent Thrift (0.13)
+# * Use python-is-python3 to set up python symlink
 
-# [Note 1]
-# One motivation for this change is that Ubuntu 23.04 now by default
-# gives an error when you try to use 'sudo pip3 install ...' to
-# install a Python package in a system-wide directory.  Thus it seems
-# likely that something in this script needs to change to support
-# Ubuntu 23.04 and probably later versions of Ubuntu.  Another reason
-# is that it avoids some of the hacky code I have in
-# install-p4dev-v6.sh to move installed Python packages from the
-# site-packages directory to the dist-packages directory.
+# NUS School of Computing
+# CS5229 Advanced Computer Networks
+# This install-p4dev-arm64.sh script is adapted to support both AMD64 and ARM64 architectures.
+
+# Notes: 
+# It builds upon the install-p4dev-v6.sh script.
+# It specific commits of p4c, bmv2 and etc, which are in sync with the 
+# p4lang tutorials Vagrant script under "vm-ubuntu-20.04".
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
@@ -42,8 +46,8 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04"
-    1>&2 echo "    ID fedora, VERSION_ID in 35 36 37"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 18.04 20.04 22.04"
+    1>&2 echo "    ID fedora, VERSION_ID in 35"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -114,7 +118,7 @@ debug_dump_many_install_files() {
     local OUT_FNAME="$1"
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
-	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+	find /usr/lib /usr/local $HOME/.local | sort > "${OUT_FNAME}"
     fi
 }
 
@@ -174,13 +178,13 @@ tried_but_got_build_errors=0
 if [ "${ID}" = "ubuntu" ]
 then
     case "${VERSION_ID}" in
+	18.04)
+	    supported_distribution=1
+	    ;;
 	20.04)
 	    supported_distribution=1
 	    ;;
 	22.04)
-	    supported_distribution=1
-	    ;;
-	23.04)
 	    supported_distribution=1
 	    ;;
     esac
@@ -191,18 +195,11 @@ then
 	    supported_distribution=1
 	    ;;
 	36)
-	    supported_distribution=1
+	    supported_distribution=0
+	    tried_but_got_build_errors=1
 	    ;;
 	37)
-	    supported_distribution=1
-	    ;;
-	38)
 	    supported_distribution=0
-	    # I got build errors while trying to compile gRPC v1.43.2
-	    # from source code on Fedora 38 on 2023-Jul-20 attempt.  I
-	    # suspect that updating to a later version of gRPC might
-	    # help here, but I have not experimented with later
-	    # versions much yet.
 	    tried_but_got_build_errors=1
 	    ;;
     esac
@@ -311,6 +308,7 @@ echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It is regularly tested on freshly installed versions of these systems:"
+echo "    Ubuntu 18.04"
 echo "    Ubuntu 20.04"
 echo "    Ubuntu 22.04"
 echo "with all Ubuntu software updates as of the date of testing.  See"
@@ -332,7 +330,7 @@ echo "+ gRPC: github.com/google/grpc.git v1.43.2"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2022-Feb-10, also installs these things:"
-echo "  + thrift version 0.16.0"
+echo "  + thrift version 0.13.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065 (latest as of 2015-Apr-22"
 echo "+ p4c: github.com/p4lang/p4c latest version"
@@ -368,15 +366,86 @@ get_from_nearest() {
     fi
 }
 
-change_owner_and_group_of_venv_lib_python3_files() {
-    local venv
-    local user_name
-    local group_name
 
-    venv="$1"
-    user_name=`id --user --name`
-    group_name=`id --group --name`
-    sudo chown -R ${user_name}:${group_name} ${venv}/lib/python*/site-packages
+# The install steps for p4lang/PI and p4lang/behavioral-model end
+# up installing Python module code in the site-packages directory
+# mentioned below in this function.  That is were GNU autoconf's
+# 'configure' script seems to find as the place to put them.
+
+# On Ubuntu systems when you run the versions of Python that are
+# installed via Debian/Ubuntu packages, they only look in a
+# sibling dist-packages directory, never the site-packages one.
+
+# If I could find a way to change the part of the install script
+# so that p4lang/PI and p4lang/behavioral-model install their
+# Python modules in the dist-packages directory, that sounds
+# useful, but I have not found a way.
+
+# As a workaround, after finishing the part of the install script
+# for those packages, I will invoke this function to move them all
+# into the dist-packages directory.
+
+# Some articles with questions and answers related to this.
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=765022
+# https://bugs.launchpad.net/ubuntu/+source/automake/+bug/1250877
+# https://unix.stackexchange.com/questions/351394/makefile-installing-python-module-out-of-of-pythonpath
+
+if [ "${ID}" = "ubuntu" ]
+then
+    PY3LOCALPATH=`${THIS_SCRIPT_DIR_ABSOLUTE}/py3localpath.py`
+fi
+
+move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
+    local SRC_DIR
+    local DST_DIR
+    local j
+    local k
+
+    SRC_DIR="${PY3LOCALPATH}/site-packages"
+    DST_DIR="${PY3LOCALPATH}/dist-packages"
+
+    # When I tested this script on Ubunt 16.04, there was no
+    # site-packages directory.  Return without doing anything else if
+    # this is the case.
+    if [ ! -d ${SRC_DIR} ]
+    then
+	return 0
+    fi
+
+    # Do not move any __pycache__ directory that might be present.
+    sudo rm -fr ${SRC_DIR}/__pycache__
+
+    echo "Source dir contents before moving: ${SRC_DIR}"
+    ls -lrt ${SRC_DIR}
+    echo "Dest dir contents before moving: ${DST_DIR}"
+    ls -lrt ${DST_DIR}
+    for j in ${SRC_DIR}/*
+    do
+	echo $j
+	k=`basename $j`
+	# At least sometimes (perhaps always?) there is a directory
+	# 'p4' or 'google' in both the surce and dest directory.  I
+	# think I want to merge their contents.  List them both so I
+	# can see in the log what was in both at the time:
+        if [ -d ${SRC_DIR}/$k -a -d ${DST_DIR}/$k ]
+   	then
+	    echo "Both source and dest dir contain a directory: $k"
+	    echo "Source dir $k directory contents:"
+	    ls -l ${SRC_DIR}/$k
+	    echo "Dest dir $k directory contents:"
+	    ls -l ${DST_DIR}/$k
+            sudo mv ${SRC_DIR}/$k/* ${DST_DIR}/$k/
+	    sudo rmdir ${SRC_DIR}/$k
+	else
+	    echo "Not a conflicting directory: $k"
+            sudo mv ${SRC_DIR}/$k ${DST_DIR}/$k
+	fi
+    done
+
+    echo "Source dir contents after moving: ${SRC_DIR}"
+    ls -lrt ${SRC_DIR}
+    echo "Dest dir contents after moving: ${DST_DIR}"
+    ls -lrt ${DST_DIR}
 }
 
 
@@ -440,15 +509,15 @@ trap clean_up SIGHUP SIGINT SIGTERM
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
 
-# It appears that some part of the build process for Thrift 0.16.0
+# It appears that some part of the build process for Thrift 0.12.0
 # requires that pip3 has been installed first.  Without this, there is
-# an error during building Thrift 0.16.0 where a Python 3 program
+# an error during building Thrift 0.12.0 where a Python 3 program
 # cannot import from the setuptools package.
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install \
 	 autoconf automake libtool curl make g++ unzip \
-	 pkg-config python3-pip python3-venv
+	 pkg-config python3-pip
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install \
@@ -456,54 +525,7 @@ then
 	 pkg-config python3-pip
 fi
 
-if [ \( "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" \) -o \( "${ID}" = "fedora" -a "${VERSION_ID}" = "35" \) ]
-then
-    # Install more recent versions of autoconf and automake than those
-    # that are installed by the Ubuntu 20.04 packages.  That helps
-    # cause Python packages to be installed in the venv while building
-    # grpc and behavioral-model below.
-    wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
-    tar xkzf automake-1.16.5.tar.gz
-    cd automake-1.16.5
-    ./configure
-    make
-    sudo make install
-    cd ..
-
-    wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz
-    tar xkzf autoconf-2.71.tar.gz
-    cd autoconf-2.71
-    ./configure
-    make
-    sudo make install
-    cd ..
-
-    if [ "${ID}" = "ubuntu" ]
-    then
-	sudo apt-get purge -y autoconf automake
-	sudo apt-get install --yes libtool-bin
-    elif [ "${ID}" = "fedora" ]
-    then
-	sudo dnf remove -y autoconf automake
-	sudo dnf install -y libtool
-    fi
-    # I learned about the fix-up commands below in an answer here:
-    # https://superuser.com/questions/565988/autoconf-libtool-and-an-undefined-ac-prog-libtool
-    for file in /usr/share/aclocal/*.m4
-    do
-	b=`basename $file .m4`
-	sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4 || echo "Creating symbolic link /usr/local/share/aclocal/$b.m4 failed, probably because the file already exists"
-    done
-fi
-
-# Create a new Python virtual environment using venv.  Later we will
-# attempt to ensure that all new Python packages installed are
-# installed into this virtual environment, not into system-wide
-# directories like /usr/local/bin
-PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
-python3 -m venv "${PYTHON_VENV}"
-source "${PYTHON_VENV}/bin/activate"
-PIP_SUDO=""
+PIP_SUDO="sudo"
 
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
@@ -526,7 +548,52 @@ echo "start install protobuf:"
 set -x
 date
 
-${PIP_SUDO} pip3 install protobuf==3.18.1
+# On a freshly installed Ubuntu 18.04, 20.04, or 22.04 system, desktop
+# amd64 minimal installation, the Debian package python3-protobuf is
+# installed.  This is depended upon by another package called
+# python3-macaroonbakery, which in turn is is depended upon by a
+# package called gnome-online accounts.  I suspect this might have
+# something to do with Ubuntu's desire to make it easy to connect with
+# on-line accounts like Google accounts.
+
+# This python3-protobuf package enables one to have a session like
+# this with no error, on a freshly installed system:
+
+# $ python3
+# >>> import google.protobuf
+
+# However, something about this script doing its work causes a
+# conflict between the Python3 protobuf module installed by this
+# script, and the one installed by the package python3-protobuf, such
+# that the import statement above gives an error.  The package
+# google.protobuf.internal is used by the p4lang/tutorials Python
+# code, and the only way I know to make this work right now is to
+# remove the Debian python3-protobuf package, and then install Python3
+# protobuf support using pip3 as done below.
+
+# Experiment starting from a freshly installed Ubuntu 20.04.1 Linux
+# desktop amd64 system, minimal install:
+# Initially, python3-protobuf package was installed.
+# Doing python3 followed 'import' of any of these gave no error:
+# + google
+# + google.protobuf
+# + google.protobuf.internal
+# Then did 'sudo apt-get purge python3-protobuf'
+# At that point, attempting to import any of the 3 modules above gave an error.
+# Then did 'sudo apt-get install python3-pip'
+# At that point, attempting to import any of the 3 modules above gave an error.
+# Then did 'sudo pip3 install protobuf==3.6.1'
+# At that point, attempting to import any of the 3 modules above gave NO error.
+
+if [ "${ID}" = "ubuntu" ]
+then
+    echo "Uninstalling Ubuntu python3-protobuf if present"
+    sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
+    ${PIP_SUDO} pip3 install protobuf==3.18.1
+elif [ "${ID}" = "fedora" ]
+then
+    ${PIP_SUDO} pip3 install protobuf==3.18.1
+fi
 
 cd "${INSTALL_DIR}"
 get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
@@ -549,9 +616,24 @@ date
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files usr-local-2-after-protobuf.txt
 
+# Install cmake v3.16.3 or later.  On Ubuntu 20.04 and later systems,
+# this is easily done via apt-get on the cmake Ubuntu package.  On
+# Ubuntu 18.04, that package is v3.10.2, one that fails to install
+# grpc fully, so download and build cmake v3.16.3 from source code.
 if [ "${ID}" = "ubuntu" ]
 then
-    sudo apt-get --yes install cmake
+    if [ "${VERSION_ID}" = "18.04" ]
+    then
+	sudo apt install --yes make g++ libssl-dev
+	git clone https://gitlab.kitware.com/cmake/cmake.git
+	cd cmake
+	git checkout v3.16.3
+	./bootstrap
+	make
+	sudo make install
+    else
+	sudo apt-get --yes install cmake
+    fi
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install cmake
@@ -597,7 +679,6 @@ cd grpc
 git checkout v1.43.2
 # These commands are recommended in grpc's BUILDING.md file for Unix:
 git submodule update --init --recursive
-
 mkdir -p cmake/build
 cd cmake/build
 cmake ../..
@@ -609,11 +690,12 @@ sudo make install
 debug_dump_many_install_files $HOME/usr-local-2b-before-grpc-pip3.txt
 pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
 cd ../..
-# Before some time in 2023-July, the `pip3 install -rrequirements.txt`
-# command below installed the Cython package version 0.29.35.  After
-# that time, it started installing Cython package version 3.0.0, which
-# gives errors on the `pip3 install .` command afterwards.  Fix this
-# by forcing installation of a known working version of Cython.
+# Before some time in 2023-July, the `sudo pip3 install
+# -rrequirements.txt` command below installed the Cython package
+# version 0.29.35.  After that time, it started installing Cython
+# package version 3.0.0, which gives errors on the `sudo pip3 install
+# .` command afterwards.  Fix this by forcing installation of a known
+# working version of Cython.
 ${PIP_SUDO} pip3 install Cython==0.29.35
 ${PIP_SUDO} pip3 install -rrequirements.txt
 GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
@@ -647,27 +729,26 @@ fi
 
 git clone https://github.com/p4lang/PI
 cd PI
+git checkout f043e6f5f4271076ad7e58aa9889c82dbfc8c3ca
 git submodule update --init --recursive
 git log -n 1
 ./autogen.sh
-# Cause 'sudo make install' to install Python packages for PI in a
-# Python virtual environment, if one is in use.
-configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
 if [ "${ID}" = "ubuntu" ]
 then
-    ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
+    ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 elif [ "${ID}" = "fedora" ]
 then
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2
 fi
 make
 sudo make install
 
 # Save about 0.25G of storage by cleaning up PI build
 make clean
-# 'sudo make install' installs several files in ${PYTHON_VENV} with
-# root owner.  Change them to be owned by the regular user id.
-change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+if [ "${ID}" = "ubuntu" ]
+then
+    move_usr_local_lib_python3_from_site_packages_to_dist_packages
+fi
 
 set +x
 echo "end install PI:"
@@ -700,10 +781,10 @@ get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model
 cd behavioral-model
 # Get latest updates that are not in the repo cache version
 git pull
+git checkout 6ee70b5eff7f510b32c074aaa4f00358f594fecb
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
-patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
 # This command installs Thrift, which I want to include in my build of
 # simple_switch_grpc
 ./install_deps.sh
@@ -713,17 +794,18 @@ patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
 # Remove 'CXXFLAGS ...' part to disable debug
 if [ "${ID}" = "ubuntu" ]
 then
-    ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
+    ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 elif [ "${ID}" = "fedora" ]
 then
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
 fi
 make
 sudo make install-strip
 sudo ldconfig
-# 'sudo make install-strip' installs several files in ${PYTHON_VENV}
-# with root owner.  Change them to be owned by the regular user id.
-change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+if [ "${ID}" = "ubuntu" ]
+then
+    move_usr_local_lib_python3_from_site_packages_to_dist_packages
+fi
 
 set +x
 echo "end install behavioral-model:"
@@ -765,12 +847,13 @@ pip3 list
 # Clone p4c and its submodules:
 git clone https://github.com/p4lang/p4c.git
 cd p4c
+git checkout c7a503d5b6f5711cf61e7e2878eaa670fd90c71d
 git log -n 1
 git submodule update --init --recursive
 mkdir build
 cd build
 # Configure for a debug build and build p4testgen
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+cmake .. -DENABLE_TEST_TOOLS=OFF -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4TC=OFF 
 MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
 make -j${MAX_PARALLEL_JOBS}
 sudo make install
@@ -802,9 +885,9 @@ git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun-enable-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun.patch"
 cd ..
-PYTHON=python3 ./mininet/util/install.sh -nw
+sudo ./mininet/util/install.sh -nw
 
 set +x
 echo "end install mininet:"
@@ -830,6 +913,7 @@ date
 
 git clone https://github.com/p4lang/ptf
 cd ptf
+git checkout d2e2d8ad005a451ad11f9d21af50079a0552921a
 ${PIP_SUDO} pip install .
 
 set +x
@@ -910,13 +994,15 @@ echo "----------------------------------------------------------------------"
 echo ""
 
 cd "${INSTALL_DIR}"
-cp /dev/null p4setup.bash
-echo "source ${INSTALL_DIR}/p4dev-python-venv/bin/activate" >> p4setup.bash
-echo "export PATH=\"${P4GUIDE_BIN}:${INSTALL_DIR}/behavioral-model/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
+echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
+echo "BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.bash
+echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.bash
+echo "export PATH=\"\$P4GUIDE_BIN:\$BMV2/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
 
-cp /dev/null p4setup.csh
-echo "source ${INSTALL_DIR}/p4dev-python-venv/bin/activate.csh" >> p4setup.csh
-echo "set path = ( ${P4GUIDE_BIN} ${INSTALL_DIR}/behavioral-model/tools /usr/local/bin \$path )" >> p4setup.csh
+echo "set P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.csh
+echo "set BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.csh
+echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.csh
+echo "set path = ( \$P4GUIDE_BIN \$BMV2/tools /usr/local/bin \$path )" >> p4setup.csh
 
 echo ""
 echo "Created files: p4setup.bash p4setup.csh"

@@ -813,12 +813,13 @@ date
 
 if [ "${ID}" = "ubuntu" ]
 then
-    # Install Ubuntu dependencies needed by p4c, from its README.md
-    # Matches latest p4c README.md instructions as of 2019-Oct-09
+    # Install Ubuntu dependencies needed by p4c, from its README.md.
+    # It may not match the latest p4c README.md suggested list of
+    # packages as of today, but it is tested every month.
     sudo apt-get --yes install g++ git automake libtool libgc-dev \
          bison flex libfl-dev libgmp-dev \
          libboost-dev libboost-iostreams-dev libboost-graph-dev \
-         llvm pkg-config python3-pip tcpdump
+         llvm pkg-config python3-pip tcpdump libelf-dev
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install g++ git automake libtool gc-devel \
@@ -980,15 +981,11 @@ echo "----------------------------------------------------------------------"
 echo ""
 
 cd "${INSTALL_DIR}"
-echo "P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.bash
-echo "BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.bash
-echo "P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.bash
-echo "export PATH=\"\$P4GUIDE_BIN:\$BMV2/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
+cp /dev/null p4setup.bash
+echo "export PATH=\"${P4GUIDE_BIN}:${INSTALL_DIR}/behavioral-model/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
 
-echo "set P4_INSTALL=\"${INSTALL_DIR}\"" > p4setup.csh
-echo "set BMV2=\"\$P4_INSTALL/behavioral-model\"" >> p4setup.csh
-echo "set P4GUIDE_BIN=\"${P4GUIDE_BIN}\"" >> p4setup.csh
-echo "set path = ( \$P4GUIDE_BIN \$BMV2/tools /usr/local/bin \$path )" >> p4setup.csh
+cp /dev/null p4setup.csh
+echo "set path = ( ${P4GUIDE_BIN} ${INSTALL_DIR}/behavioral-model/tools /usr/local/bin \$path )" >> p4setup.csh
 
 echo ""
 echo "Created files: p4setup.bash p4setup.csh"
