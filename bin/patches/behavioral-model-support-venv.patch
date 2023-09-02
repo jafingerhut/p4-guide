@@ -1,16 +1,18 @@
 diff --git a/ci/install-nnpy.sh b/ci/install-nnpy.sh
-index 0336a66..f31fb29 100644
+index 0336a66..b7d0d76 100644
 --- a/ci/install-nnpy.sh
 +++ b/ci/install-nnpy.sh
-@@ -4,6 +4,6 @@ git clone https://github.com/nanomsg/nnpy.git
- # top of tree won't install
- cd nnpy
- git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065
+@@ -1,9 +1,3 @@
+ #!/bin/sh
+ set -e
+-git clone https://github.com/nanomsg/nnpy.git
+-# top of tree won't install
+-cd nnpy
+-git checkout c7e718a5173447c85182dc45f99e2abcf9cd4065
 -sudo pip3 install cffi
 -sudo pip3 install .
-+pip3 install cffi
-+pip3 install .
- cd ..
+-cd ..
++pip3 install nnpy cffi
 diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
 index c3f7a2e..1805da3 100644
 --- a/ci/install-thrift.sh
