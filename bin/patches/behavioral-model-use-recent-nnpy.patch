@@ -12,4 +12,4 @@ index 0336a66..b7d0d76 100644
 -sudo pip3 install cffi
 -sudo pip3 install .
 -cd ..
-+pip3 install nnpy cffi
++sudo pip3 install nnpy cffi
