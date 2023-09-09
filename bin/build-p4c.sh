@@ -115,8 +115,8 @@ fi
 echo "Building p4c from scratch"
 mkdir build
 cd build
-# Configure for a debug build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG
+# Configure for a debug build, with build of testgen enabled
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
 # Copied from p4c/Dockerfile
 #cmake .. '-DCMAKE_CXX_FLAGS:STRING=-O3'
 
