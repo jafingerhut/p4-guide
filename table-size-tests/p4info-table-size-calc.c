@@ -1,0 +1,72 @@
+// Suggested p4c behavior for calculating size of a table output to
+// a P4Info file.
+
+bool keyless = false;
+bool has_const_entries = false;
+bool has_entries = false;
+int N;
+int p4info_size;
+
+if ('key' property not specified, or 'key' specified as empty list { }) {
+    keyless = true;
+}
+if ('const entries' property specified) {
+    has_const_entries = true;
+    N = (# of entries specified in source code as value of 'const entries');
+} else if ('entries' property specified) {
+    has_entries = true;
+    N = (# of entries specified in source code as value of 'entries');
+} else {
+    N = 0;
+}
+if (keyless && (has_const_entries || has_entries) && (N > 0)) {
+    error "no entries can be specified for keyless table $tablename";
+    return;
+}
+if (has_const_entries) {
+    // p4info_size is always N, regardless of what the developer specified
+    p4info_size = N;
+    if ('size' property specified) {
+        if (size != N) {
+            warn "Using size $N for table $tablename with $N entries in 'const entries', instead of specified value $size";
+        }
+    } else {
+        warn "Using size $N for table $tablename with $N entries in 'const entries' (no size was specified)";
+    }
+} else if (has_entries) {
+    // p4info_size is always at least N, regardless of what the
+    // developer specified.
+    if ('size' property specified) {
+        if (size < N) {
+            warn "Using size $N for table $tablename with $N entries in 'entries', instead of specified value $size";
+            p4info_size = N;
+        } else {
+            p4info_size = size;
+        }
+    } else {
+        warn "Using size $N for table $tablename with $N entries in 'entries' (no size was specified)";
+        p4info_size = N;
+    }
+} else {    // no 'const entries', nor 'entries'
+    if (keyless) {
+        // Similar to has_const_entries with an empty list of entries,
+        // but different warning messages.
+        p4info_size = 0;
+        if ('size' property specified) {
+            if (size != 0) {
+                warn "using size 0 instead of specified value $size for keyless table $tablename";
+            }
+        } else {
+            warn "using size 0 for keyless table $tablename (no size was specified)";
+        }
+    } else {
+        // "Normal" table with one or more key fields, and neither
+        // 'const entries' nor 'entries' specified.
+        if ('size' property specified) {
+            p4info_size = size;
+        } else {
+            p4info_size = default_normal_table_size_if_not_specified;
+            warn "using default size $p4info_size for table $tablename (no size was specified)";
+        }
+    }
+}
