@@ -1,6 +1,9 @@
 // Suggested p4c behavior for calculating size of a table output to
 // a P4Info file.
 
+// See this Google Sheet for current p4c behavior as of 2023-Sep-12:
+// https://docs.google.com/spreadsheets/d/1-jme-7eVRXm-LrkjafQHXpava1O0s8VcAYyb9OZgtuU
+
 bool keyless = false;
 bool has_const_entries = false;
 bool has_entries = false;
