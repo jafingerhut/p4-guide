@@ -220,8 +220,15 @@ cd build
 cmake .. ${CMAKE_FLAGS}
 make -j${MAX_PARALLEL_JOBS}
 
+# net-tools includes ifconfig command, required for ctest command below to pass
+sudo apt-get install -y net-tools
+
 # + Run DPDK PTF tests
 # These steps are needed to run the tests, but not for installing the software.
 #sudo "${IPDK_RECIPE}/install/sbin/copy_config_files.sh" "${IPDK_RECIPE}/install" "${SDE_INSTALL}"
 #sudo "${IPDK_RECIPE}/install/sbin/set_hugepages.sh"
+
+# I do not know why, but `sudo -E` seems sometimes NOT to pass on the values
+# of environment variables like LD_LIBRARY_PATH
 #sudo -E ctest --output-on-failure --schedule-random -R dpdk-ptf*
+#sudo LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ctest --output-on-failure --schedule-random -R dpdk-ptf*
