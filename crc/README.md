@@ -36,7 +36,11 @@ integer.
 
 Example:
 
-+ `0x327   11 0010 0111`   same as next line, but without explicit +1 bit at end
-+ `0x64f  110 0100 1111`
-+ `0x3c9   11 1100 1001`   same as next line, but without explicit +1 bit at end
-+ `0x793  111 1001 0011`   same as second line except bits in reverse order
++ `a = 0x327 =  11 0010 0111` same as next line, but without explicit +1 bit at end
++ `b = 0x64f = 110 0100 1111`
+  + polynomial x^10 + x^9 + x^7 + x^3 + x^2 + x^1 + 1
++ `c = 0x3c9 =  11 1100 1001` same as next line, but without explicit +1 bit at end
++ `d = 0x793 = 111 1001 0011` same as `b` except bits in reverse order
+  + polynomial x^10 + x^9 + x^8 + x^7 + x^4 + x^1 + 1
+
+Note that `b == ((a << 1) + 1)` and `d == ((c << 1) + 1)`.
