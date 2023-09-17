@@ -1,10 +1,40 @@
 # Introduction
 
-A few notes on CRC calculation.
+A few notes on CRC calculation.  See also the References section near
+the end.
+
+
+## An interesting property about some CRC functions when used as hash functions for a hash table
 
 The main reason I added this directory is to point out a potentially
 interesting property that some CRC polynomials have when used as a
 hash function for hash tables.
+
+I believe that _perhaps_ the interesting property about "prime" CRC
+polynomials (TODO: is that correct terminology?) is the following:
+
+Let P be a CRC polynomial with degree D, i.e. when given a data input,
+the CRC calculation produces a result with D bits.
+
+For any integer K > D, and any two K-bit strings S1 and S2, if CRC(S1,
+P) = CRC(S2, P) and S1 != S2, then S1[K-1:D] != S2[K-1:D], where the
+last expression uses the P4_16 syntax for bit slices.
+
+That is, if two different K-bit strings have the same CRC, then they
+must differ in their most significant (K-D) bits.
+
+This means that if this CRC is used as a hash function in a hash table
+with 2^D buckets, where CRC(S1,P) is used as the hash function, we
+only need to store the most significant (K-D) bits of the string for a
+final "exact match" check.  If the most significant stored (K-D) bits
+match the search key, it is guaranteed that the search key is equal to
+the original value.
+
+I believe it is also true that if the keys S are less than D bits in
+size, then CRC(S, P) is equal to S, and thus there can be no
+collisions for small keys in a hash table with 2^D entries using
+CRC(K,P) as the bucket address.  Thus no key needs to be stored at
+all.
 
 
 

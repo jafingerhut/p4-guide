@@ -91,11 +91,11 @@ def calc_crc(data, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos,
     data_bit_check_mask = 1 << (data_msb_1_bitpos + crc_poly_msb_1_bitpos)
     divisor = crc_poly << data_msb_1_bitpos
 
-    tmp1 = find_most_significant_1_bitpos(padded_data)
-    tmp2 = find_most_significant_1_bitpos(divisor)
-    if tmp1 != tmp2:
-        print("tmp1 = %d != %d = tmp2" % (tmp1, tmp2))
-        sys.exit(1)
+#    tmp1 = find_most_significant_1_bitpos(padded_data)
+#    tmp2 = find_most_significant_1_bitpos(divisor)
+#    if tmp1 != tmp2:
+#        print("tmp1 = %d != %d = tmp2" % (tmp1, tmp2))
+#        sys.exit(1)
 
     if print_computation:
         padded_data_bits = data_msb_1_bitpos + 1 + crc_poly_msb_1_bitpos
@@ -103,7 +103,7 @@ def calc_crc(data, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos,
         print(data_format_str % (bin(padded_data)[2:]))
 
     for j in range(data_msb_1_bitpos + crc_poly_msb_1_bitpos,
-                   crc_poly_msb_1_bitpos, -1):
+                   crc_poly_msb_1_bitpos - 1, -1):
         if (padded_data & data_bit_check_mask) != 0:
             padded_data ^= divisor
             if print_computation:
@@ -160,6 +160,18 @@ if debug >= 2:
 
 crc = calc_crc(data, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos,
                print_computation=False)
-
 print("%d-bit crc:" % (crc_poly_msb_1_bitpos))
-print("%s" % (bin(crc)[2:]))
+crc_str = bin(crc)[2:]
+crc_str = ('0' * (crc_poly_msb_1_bitpos - len(crc_str))) + crc_str
+print(crc_str)
+
+sys.exit(0)
+
+for data in range(0, (1 << (data_msb_1_bitpos + 1)) - 1):
+    crc = calc_crc(data, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos,
+                   print_computation=False)
+    data_str = bin(data)[2:]
+    data_str = ('0' * (data_msb_1_bitpos + 1 - len(data_str))) + data_str
+    crc_str = bin(crc)[2:]
+    crc_str = ('0' * (crc_poly_msb_1_bitpos - len(crc_str))) + crc_str
+    print("%s %s" % (data_str, crc_str))
