@@ -165,6 +165,52 @@ crc_str = bin(crc)[2:]
 crc_str = ('0' * (crc_poly_msb_1_bitpos - len(crc_str))) + crc_str
 print(crc_str)
 
+# Determine formulas that can calculate each bit of the output CRC as
+# the XOR of a subset of the input bits.
+
+data_bitpos_to_xor = []
+for j in range(0, crc_poly_msb_1_bitpos):
+    data_bitpos_to_xor.append([])
+
+for data_bitpos in range(data_msb_1_bitpos, -1, -1):
+    val = 1 << data_bitpos
+    crc = calc_crc(val, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos)
+    for j in range(0, crc_poly_msb_1_bitpos):
+        mask = 1 << j
+        if (crc & mask) != 0:
+            data_bitpos_to_xor[j].append(data_bitpos)
+
+print("// Formulas to calculate CRC-%d with the following polynomial"
+      "" % (crc_poly_msb_1_bitpos))
+print("// from a %d-bit data input, with most significant data bit"
+      "" % (data_msb_1_bitpos + 1))
+print("// fed into the long division first.")
+print("//")
+print("// CRC polynomial as hex value: 0x%x" % (crc_poly))
+print("// polynomial:")
+print("// ", end='')
+first = True
+for j in range(crc_poly_msb_1_bitpos, -1, -1):
+    mask = 1 << j
+    if (crc_poly & mask) != 0:
+        if first:
+            first = False
+        else:
+            print(" + ", end='')
+        print("x^%d" % (j), end='')
+print("")
+
+for j in range(crc_poly_msb_1_bitpos-1, -1, -1):
+    print("crc[%d] = (" % (j), end='')
+    first = True
+    for k in data_bitpos_to_xor[j]:
+        if first:
+            first = False
+        else:
+            print(" ^ ", end='')
+        print("data[%d]" % (k), end='')
+    print(");")
+
 sys.exit(0)
 
 for data in range(0, (1 << (data_msb_1_bitpos + 1)) - 1):
