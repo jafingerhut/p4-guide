@@ -13,6 +13,15 @@ import sys
 # translate into other languages using similar bit-wise integer
 # operations.
 
+# This program uses the convention of "feeding the bits of data" in
+# from the most significant bit first to the least significant bit
+# last.
+
+# Also the convention that the CRC polynomial integer has bit position
+# 0 for x^0 coefficient, bit position 1 for x^1 coefficient, and so
+# on.  Thus I believe perhaps its least significant bit must be 1.
+# TODO: Is that an actual requirement for CRC polynomials?
+
 debug = 0
 
 # Find the bit position of the most significant 1 bit in i, if any.
@@ -37,22 +46,22 @@ def find_most_significant_1_bitpos(i):
             mask = 1 << bitpos
         # if prev_mask = (1 << prev_bitpos), now we know that
         # prev_mask <= i < mask.
-        
+
         # Because mask > i, masks's msb 1 is in a strictly larger
         # bit position than i's msb 1.
-    
+
         # Because prev_mask <= i, prev_mask's msb 1 is either in
         # the same bit position as i's msb 1, or in a less
         # significant bit position.
-        
+
         # Now do a binary search between bitpos and prev_bitpos to
         # find i's msb 1 position.
         bitpos_hi = bitpos
         mask_hi = mask
-    
+
         bitpos_lo = prev_bitpos
         mask_lo = 1 << bitpos_lo
-    
+
         # Maintain invariants:
         # (1 << bitpos_lo) <= i < (1 << bitpos_hi)
         # which implies that bitpos_lo < bitpos_hi
@@ -70,11 +79,41 @@ def find_most_significant_1_bitpos(i):
         # Now we know bitpos_hi = (bitpos_lo + 1)
         # and invariant is still true.
         # So (1 << bitpos_lo) <= i < (1 << (bitpos_lo + 1))
-    
+
         # Thus bitpos_lo is the bit position of i's most
         # significant 1 bit.
         ret = bitpos_lo
     return ret
+
+def calc_crc(data, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos,
+             print_computation=False):
+    padded_data = data << crc_poly_msb_1_bitpos
+    data_bit_check_mask = 1 << (data_msb_1_bitpos + crc_poly_msb_1_bitpos)
+    divisor = crc_poly << data_msb_1_bitpos
+
+    tmp1 = find_most_significant_1_bitpos(padded_data)
+    tmp2 = find_most_significant_1_bitpos(divisor)
+    if tmp1 != tmp2:
+        print("tmp1 = %d != %d = tmp2" % (tmp1, tmp2))
+        sys.exit(1)
+
+    if print_computation:
+        padded_data_bits = data_msb_1_bitpos + 1 + crc_poly_msb_1_bitpos
+        data_format_str = '%%%ds' % (padded_data_bits)
+        print(data_format_str % (bin(padded_data)[2:]))
+
+    for j in range(data_msb_1_bitpos + crc_poly_msb_1_bitpos,
+                   crc_poly_msb_1_bitpos, -1):
+        if (padded_data & data_bit_check_mask) != 0:
+            padded_data ^= divisor
+            if print_computation:
+                leading_spaces = ' ' * (data_msb_1_bitpos + crc_poly_msb_1_bitpos - j)
+                print("%s%s" % (leading_spaces, bin(crc_poly)[2:]))
+                print("%s%s" % (leading_spaces, '-' * (crc_poly_msb_1_bitpos + 1)))
+                print(data_format_str % (bin(padded_data)[2:]))
+        data_bit_check_mask >>= 1
+        divisor >>= 1
+    return padded_data
 
 def usage():
     print("usage: %s <data> <crc_poly>", file=sys.stderr)
@@ -86,7 +125,7 @@ def usage():
     print("", file=sys.stderr)
     print("    By default all integer input values are specified in decimal, unless you", file=sys.stderr)
     print("    prefix them with 0x for hex, 0b for binary, or 0o for octal.", file=sys.stderr)
-    
+
 if len(sys.argv) != 3:
     usage()
     sys.exit(1)
@@ -118,3 +157,9 @@ if debug >= 2:
     print("crc_poly_msb_1_bitpos=%d" % (crc_poly_msb_1_bitpos))
     print("crc_poly (binary): %s" % (bin(crc_poly)))
     print("mask     (binary): %s" % (bin(1 << crc_poly_msb_1_bitpos)))
+
+crc = calc_crc(data, data_msb_1_bitpos, crc_poly, crc_poly_msb_1_bitpos,
+               print_computation=False)
+
+print("%d-bit crc:" % (crc_poly_msb_1_bitpos))
+print("%s" % (bin(crc)[2:]))
