@@ -740,6 +740,8 @@ echo "start install p4c:"
 set -x
 date
 
+# Installing clang is not needed for building p4c, but it does enable
+# ebpf tests run by `make check` in the p4c/build directory to pass.
 if [ "${ID}" = "ubuntu" ]
 then
     # Install Ubuntu dependencies needed by p4c, from its README.md.
@@ -748,13 +750,13 @@ then
     sudo apt-get --yes install g++ git automake libtool libgc-dev \
          bison flex libfl-dev libgmp-dev \
          libboost-dev libboost-iostreams-dev libboost-graph-dev \
-         llvm pkg-config python3-pip tcpdump libelf-dev
+         llvm pkg-config python3-pip tcpdump libelf-dev clang
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install g++ git automake libtool gc-devel \
          bison flex libfl-devel gmp-devel \
          boost-devel boost-iostreams boost-graph \
-         llvm pkgconf python3-pip tcpdump
+         llvm pkgconf python3-pip tcpdump clang
 fi
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
@@ -767,6 +769,10 @@ git clone https://github.com/p4lang/p4c.git
 cd p4c
 git log -n 1
 git submodule update --init --recursive
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+# This patch enables bmv2-ptf tests to pass that read P4Info files
+# with new fields added in 2023-Aug like `has_initial_fields`.
+patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
 mkdir build
 cd build
 # Configure for a debug build and build p4testgen
