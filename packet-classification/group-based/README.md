@@ -60,12 +60,14 @@ the field for range.
 
 Rules:
 
-+ priority 100, SA 10.1.1.0/24, DA 192.168.1.0/24, proto 6, SP *, DP 80
-+ priority 90, SA 10.1.1.0/24, DA 192.168.1.0/24, proto 6, SP *, DP 443
-+ priority 80, SA 10.0.0.0/8, DA 192.168.0.0/16, proto 1, SP *, DP *
-+ priority 70, SA *, DA *, proto 6, SP *, DP 53
-+ priority 60, SA *, DA *, proto 17, SP *, DP 53
-+ priority 50, SA 10.1.1.0/24, DA 192.168.1.0/24, proto 6, SP *, DP 80
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 80 |
+|  90 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 443 |
+|  80 | 10.0.0.0/8 | 192.168.0.0/16 | 1 | * | * |
+|  70 | * | * | 6 | * | 53 |
+|  60 | * | * | 17 | * | 53 |
+|  50 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 80 |
 
 
 ## Group-based packet classification problem
@@ -80,21 +82,25 @@ matches _any_ of the match criteria.
 As very small example, the group-based rules below are based on the
 same set of fields and match kinds as given in the previous example.
 
-+ priority 100, SA {10.1.1.0/24, 10.2.0.0/16}, DA {192.168.1.0/24, 192.168.2.38/32}, proto {6}, SP {*}, DP {80}
-+ priority 90, SA {10.1.1.0/24}, DA {10.3.0.0/16, 192.168.0.0/16}, proto 17, SP *, DP {53, 90-99}
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {*} | {80} |
+| 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | 17 | * | {53, 90-99} |
 
 The group-based rules above are equivalent in matching behavior to the
 following normal rules.  We have simply performed a "cross product"
 among the sets for each individual field.
 
-+ priority 100, SA 10.1.1.0/24, DA 192.168.1.0/24, proto 6, SP *, DP 80
-+ priority 100, SA 10.1.1.0/24, DA 192.168.2.38/32, proto 6, SP *, DP 80
-+ priority 100, SA 10.2.0.0/16, DA 192.168.1.0/24, proto 6, SP *, DP 80
-+ priority 100, SA 10.2.0.0/16, DA 192.168.2.38/32, proto 6, SP *, DP 80
-+ priority 90, SA 10.1.1.0/24, DA 10.3.0.0/16, proto 17, SP *, DP 53
-+ priority 90, SA 10.1.1.0/24, DA 10.3.0.0/16, proto 17, SP *, DP 90-99
-+ priority 90, SA 10.1.1.0/24, DA 192.168.0.0/16, proto 17, SP *, DP 53
-+ priority 90, SA 10.1.1.0/24, DA 192.168.0.0/16, proto 17, SP *, DP 90-99
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 80 |
+| 100 | 10.1.1.0/24 | 192.168.2.38/32 | 6 | * | 80 |
+| 100 | 10.2.0.0/16 | 192.168.1.0/24 | 6 | * | 80 |
+| 100 | 10.2.0.0/16 | 192.168.2.38/32 | 6 | * | 80 |
+| 90 | 10.1.1.0/24 | 10.3.0.0/16 | 17 | * | 53 |
+| 90 | 10.1.1.0/24 | 10.3.0.0/16 | 17 | * | 90-99 |
+| 90 | 10.1.1.0/24 | 192.168.0.0/16 | 17 | * | 53 |
+| 90 | 10.1.1.0/24 | 192.168.0.0/16 | 17 | * | 90-99 |
 
 This example shows one correct way to implement a group-based packet
 classification problem: translate it to a normal packet classification
