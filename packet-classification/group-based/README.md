@@ -95,7 +95,7 @@ same set of fields and match kinds as given in the previous example.
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
 | 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {*} | {80} |
-| 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | 17 | * | {53, 90-99} |
+| 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | {17} | {*} | {53, 90-99} |
 
 The group-based rules above are equivalent in matching behavior to the
 following normal rules.  We have simply performed a "cross product"
