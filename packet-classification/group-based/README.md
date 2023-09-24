@@ -29,7 +29,7 @@ Each match kind is one of:
   where the field value must be the same as the corresponding bit
   position of V.
 + range - the match criteria is a minimum value MIN and a maximum
-  value MAX.  A field value f matches if (MIN <= f) && (f <= MAX).
+  value MAX.  A field value f matches if `(MIN <= f) && (f <= MAX)`.
 + prefix - the match criteria is a value V and a prefix length P in
   the range [0,W], where the field is W bits.  A field matches the
   same as a ternary field with the same value V and a mask
@@ -126,5 +126,7 @@ problem after performing the cross product of each individual rule.
 
 The disadvantage of this solution is that each rule with N1 SAs, N2
 DAs, N3 protos, N4 SPs, and N5 DPs will become `N1*N2*N3*N4*N5` rules
-in a normal packet classification problem.  We would prefer a more
+in a normal packet classification problem.  For example, a group-based
+rule with 100 SA prefixes, 80 DA prefixes, and 7 DP ranges would
+become 100*80*7 = 56,000 normal rules.  We would prefer a more
 efficient solution than that.
