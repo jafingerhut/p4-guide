@@ -16,23 +16,31 @@ deployed VMs/containers, vs. which should be dropped.
 An instance of a "normal" packet classification problem consists of:
 
 + a set of packet _fields_ F, where field f can be represented as a
-  W_f-bit unsigned integer.
+  `W_f`-bit unsigned integer.
 + a match kind for each field, and
 + a set of _rules_ R for matching the fields against.
 
 Each match kind is one of:
 
-+ ternary - the match criteria is a value V and a mask M.  A
-  field value f matches if (f & M) == V.
-+ range - the match criteria is a minimum value N and a maximum value
-  X.  A field value f matches if (N <= f) && (f <= X).
++ ternary - the match criteria is a value V and a mask M.  A field
+  value f matches if `(f & M) == V`.  The bit positions of M that are
+  0 are don't care bit positions where the field value can be any bit,
+  and the bit positions of M that are 1 are exact match bit positions
+  where the field value must be the same as the corresponding bit
+  position of V.
++ range - the match criteria is a minimum value MIN and a maximum
+  value MAX.  A field value f matches if (MIN <= f) && (f <= MAX).
 + prefix - the match criteria is a value V and a prefix length P in
-  the range [0,W], where the field is W bits.  A field matches as if
-  the match kind were ternary with the same value V and a mask M=(((1
-  << W) - 1) >> (W-P)) << (W-P).  This is a "prefix mask", such that
-  the value must equal the field in the most significant P bits.
+  the range [0,W], where the field is W bits.  A field matches the
+  same as a ternary field with the same value V and a mask
+  `M=(((1 << W) - 1) >> (W-P)) << (W-P)`.
+  This is a "prefix mask", such that the value must equal the field in
+  the most significant P bits.
+  + Example: a 32-bit field's prefix match criteria could be value
+    V=0x0a010100 with prefix length P=24, which matches the the same
+    as a ternary field with the same value V and a mask M=0xffffff00.
 + optional - like ternary, except the mask is restricted to be either
-  0 for completely don't care value, or ((1 << W) - 1) for exact
+  0 for a completely don't care value, or `((1 << W) - 1)` for exact
   value.
 
 Each rule consists of:
@@ -41,7 +49,7 @@ Each rule consists of:
 + For every field f, a match criteria appropriate for the match kind
   of the field.
 
-A set of fields f matches a rule r iff for every field f, the value of
+A set of fields F matches a rule r iff for every field f, the value of
 field f matches the match criteria given in the rule R.
 
 The packet classification problem is: Given a set of rules R and a set
