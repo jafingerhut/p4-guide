@@ -128,5 +128,5 @@ The disadvantage of this solution is that each rule with N1 SAs, N2
 DAs, N3 protos, N4 SPs, and N5 DPs will become `N1*N2*N3*N4*N5` rules
 in a normal packet classification problem.  For example, a group-based
 rule with 100 SA prefixes, 80 DA prefixes, and 7 DP ranges would
-become 100*80*7 = 56,000 normal rules.  We would prefer a more
+become `100*80*7 = 56,000` normal rules.  We would prefer a more
 efficient solution than that.
