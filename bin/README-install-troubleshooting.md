@@ -219,30 +219,16 @@ Starting from the directory where you ran the install script, enter
 these commands in a terminal.  No superuser privileges are required.
 ```bash
 $ cd p4c/build
-$ make -j2 check |& tee make-check-out.txt
+$ make -j2 check |& tee out.txt
 ```
 
-With the current install script, it is normal for about 50 of these
-tests to fail.  The only ones that are expected to fail are for the
-EBPF and UBPF targets.  If someone is interested in using `p4c` for
-those targets, they will need to learn how to do so (suggested
-modifications to enable this for my scripts are welcome, but I am not
-interested in investigating this myself).
-
-If you have saved the output of the `make` command in a file as
-suggested above, the output of the last `wc -l` command in the command
-pipeline below should print 0, indicating that the only failures were
-in the EBPF and UBPF tests.
+With the current install script, it is normal for about 520 of these
+tests to fail.  Many of those will pass if you re-run them as the user
+`root` with a command like this:
 
 ```bash
-$ grep '(Failed)' make-check-out.txt | grep -v ' ebpf/' | grep -v ' ubpf/' | grep -v ' ebpf-bcc/' | wc -l
-0
+$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} make -j2 check |& tee out2.txt
 ```
-
-These tests exercise many corner cases of the `p4c` compiler.  The
-tests with `bmv2/` at the beginning of their names run the
-`simple_switch` process, adding table entries using the Thrift API
-(not P4Runtime).
 
 
 ### Send ping packets in the solution to `basic` exercise of `p4lang/tutorials` repository
