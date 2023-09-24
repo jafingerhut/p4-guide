@@ -1,5 +1,15 @@
 # Introduction
 
+The gorup-based packet classification problem arises in many
+operational network scenarios.
+
+It is used to perform security for several cloud-based VM/container
+deployment services, such as Kubernetes, and there are several cloud
+service providers such as AWS, Microsoft Azure, and Google Cloud
+Platform that allow their tenants to create group-based security rules
+for which packets to allow to be forarded between the tenant's
+deployed VMs/containers, vs. which should be dropped.
+
 
 ## Normal packet classification problem
 
