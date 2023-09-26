@@ -126,7 +126,7 @@ among the sets for each individual field.
 
 This example shows one correct way to implement a group-based packet
 classification problem: translate it to a normal packet classification
-problem after performing the cross product of each individual rule.
+problem by calculating the cross product of each individual rule.
 
 The disadvantage of this solution is that each rule with N1 SAs, N2
 DAs, N3 protos, N4 SPs, and N5 DPs will become `N1*N2*N3*N4*N5` rules
@@ -219,38 +219,50 @@ optional.
 A hardware TCAM stores the value/mask for all fields of a rule in a
 "row" or "entry" of the TCAM.  The "search key" containing the value
 of all fields to match against the rules is broadcast to all TCAM
-rows, which evaluate all field match criteria in parallel.
+rows, which evaluate all field match criteria for that search key in
+parallel.
 
 Each TCAM entry in parallel calculates the logical AND of the
-individual field match criteria within, producing a final 0/1
-indicating whether all fields of the entry match.
+individual field match criteria within, producing a final 0/1 "entry
+match bit" indicating whether all fields of the entry match.
 
-The result is a bit vector containing 1 bit per entry.  A "priority
-encoder" hardware block finds the first 1 in O(log N) logic gate
-delays.  Because it finds the first 1 set, the rules must be placed
-into TCAM entries in the same relative order that the find-first-1
-logic works, so that the first 1 found corresponds to the highest
-matching rule.  The output of the priority encoder is the index of the
-first row where all fields match, or a special "miss" signal indicates
-if there were no matching entries.
+The result is a bit vector containing 1 bit per entry.  A [priority
+encoder](https://en.wikipedia.org/wiki/Priority_encoder) hardware
+block finds the first 1 in O(log N) logic gate delays.
 
-This parallel evaluation is why TCAMs can use so much power relative
+A common hardware design is to number the TCAM hardware entries from 0
+up to `size-1`, and for the priority encoder logic to treat the entry
+match bit for entry 0 as the first bit in the priority encoder, and
+the entry match bit for entry `size-1` as the last bit.  In such a
+hardware design, the TCAM should be initialized to have the higher
+priority rules in hardware entries with smaller indexes than lower
+priority rules.
+
+The output of the priority encoder is the index of the first entry
+where all fields match, or a special "miss" signal indicates if there
+was no matching entry.
+
+This parallel evaluation is why TCAMs often use so much power relative
 to non-TCAM hardware such as SRAM or DRAM, because so many of the
 wires between logic gates can change from 0 to 1 or 1 to 0 during this
-evaluation process.
+parallel evaluation process.
 
 
 ### Field-wise evaluation
 
 In this evaluation order, we devise a method where given a single
 lookup field of the packet, we calculate one column of the match
-results in the table, with the result being an N-bit vector (see below
-for examples of this).
+results in the table above, with the result being an N-bit vector (see
+below for examples of such methods).
 
 After the N-bit vector for each column has been calculated, perform a
-bitwise AND of all of them, resulting in the same N-bit vector that a
-hardware TCAM calculates.  Then find the first 1 bit, and output its
-bit position, or a miss result if the N-bit vector is all 0.
+bitwise AND of all of them, resulting in the same N-bit vector of
+entry match bits that a hardware TCAM calculates.
+
+Then find the first 1 bit, and output its bit position, or a miss
+result if the N-bit vector is all 0.  This is the same function that a
+TCAM's priority encoder hardware calculates, but of course it can also
+be implemented in software.
 
 The main disadvantage of this approach is that for large N, the
 intermediate N-bit vectors are large.  This can be mitigated somewhat
