@@ -6,6 +6,7 @@ Pick one of these alternatives that best fits your situation:
     distributions and versions, and I want to install the open source
     P4 development tools on it.  (This might be a new VM created for
     this purpose.)
+
 (b) I am comfortable downloading and running a virtual machine image
     with the P4 open source tools already compiled and installed,
     e.g. using a virtual machine application like VirtualBox, VMware
