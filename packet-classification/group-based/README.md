@@ -257,6 +257,30 @@ Each prefix is associated with an N-bit vector that is the correct
 result for the N-bit vector, precalculated by control plane software
 and stored as the result of the longest-prefix match lookup.
 
+For the example set of rules:
+
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 80 |
+|  90 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 443 |
+|  80 | 10.0.0.0/8 | 192.168.0.0/16 | 1 | * | * |
+|  70 | * | * | 6 | * | 53 |
+|  60 | * | * | 17 | * | 53 |
+|  50 | 10.1.0.0/16 | * | 6 | * | * |
+|  40 | * | * | * | * | * |
+
+The longest-prefix match table for field SA would contain these
+prefixes and associated 7-bit vectors, where the bits in the bit
+vector have the bit for rule with priority 100 first, and the bit for
+the rule with priority 40 last.
+
+| prefix | 7-bit vector |
+| ------ | ------------ |
+| *           | 0001101 |
+| 10.0.0.0/8  | 0011101 |
+| 10.1.0.0/16 | 0011111 |
+| 10.1.1.0/24 | 1111111 |
+
 
 #### Field has match kind optional
 
