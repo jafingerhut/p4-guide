@@ -85,7 +85,8 @@ Rules:
 |  80 | 10.0.0.0/8 | 192.168.0.0/16 | 1 | * | * |
 |  70 | * | * | 6 | * | 53 |
 |  60 | * | * | 17 | * | 53 |
-|  50 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 80 |
+|  50 | 10.1.0.0/16 | * | 6 | * | * |
+|  40 | * | * | * | * | * |
 
 
 ## Group-based packet classification problem
@@ -96,6 +97,9 @@ The fields and match kinds are the same as before.
 The difference is that in a rule, each field can have a set of one or
 more match criteria.  A field matches the set of match criteria if it
 matches _any_ of the match criteria.
+
+
+### Example of the group-based packet classification problem
 
 As very small example, the group-based rules below are based on the
 same set of fields and match kinds as given in the previous example.
@@ -130,3 +134,178 @@ in a normal packet classification problem.  For example, a group-based
 rule with 100 SA prefixes, 80 DA prefixes, and 7 DP ranges would
 become `100*80*7 = 56,000` normal rules.  We would prefer a more
 efficient solution than that.
+
+
+# Algorithms for the packet classification problem
+
+There are many algorithms in the published literature for the normal
+packet classification problem.  See the references section.
+
+
+## Evaluating a subset of field match criteria
+
+If we take the first example of the normal packet classification
+problem above, with the following rules:
+
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 80 |
+|  90 | 10.1.1.0/24 | 192.168.1.0/24 | 6 | * | 443 |
+|  80 | 10.0.0.0/8 | 192.168.0.0/16 | 1 | * | * |
+|  70 | * | * | 6 | * | 53 |
+|  60 | * | * | 17 | * | 53 |
+|  50 | 10.1.0.0/16 | * | 6 | * | * |
+|  40 | * | * | * | * | * |
+
+and we consider the following set of packet fields:
+
++ SA=10.1.1.3
++ DA=192.168.1.0
++ proto=6
++ SP=5987
++ DP=443
+
+then a general approach to solving the classification problem is to
+evaluate an appropriate subset of the field match criteria, and then
+use those results to find the highest priority matching rule.
+
+The results of the field match criteria are shown in the table below,
+where if a field value matches the criteria, the table entry contains
+a 1, otherwise a 0.
+
+| priority | SA | DA | proto | SP | DP | all field criteria match? |
+| -------- | -- | -- | ----- | -- | -- | ------------------------- |
+| 100 | 1 | 1 | 1 | 1 | 0 | no  |
+|  90 | 1 | 1 | 1 | 1 | 1 | yes |
+|  80 | 1 | 1 | 0 | 1 | 1 | no  |
+|  70 | 1 | 1 | 1 | 1 | 0 | no  |
+|  60 | 1 | 1 | 0 | 1 | 0 | no  |
+|  50 | 1 | 1 | 1 | 1 | 1 | yes |
+|  40 | 1 | 1 | 1 | 1 | 1 | yes |
+
+Among the rules where all field criteria are a match, the highest
+priority matching rule is the one with priority 90.
+
+In the explanations below, N is the number of rules.
+
+
+### Sequential evaluation
+
+This algorithm is a straightforward one often implemented in software
+on a general purpose CPU, sometimes used for production purposes where
+a more sophisticated algorithm is too much complexity or effort, or
+also for comparing the result against the result of a fancier
+algorithm that one is testing.
+
+Simply evaluate the 0/1 field match criteria result in the table above
+in each row, in order from the highest priority matching rule to the
+lowest.
+
+If a rule is evaluated where all fields match, then you can stop, as
+it does not matter if any rules with lower priority match.
+
+
+### Parallel evaluation
+
+This is also a straightforward algorithm, and is what hardware TCAM
+implementation use, at least for the case where all match kinds can be
+represented as a value/mask, which includes ternary, prefix, and
+optional.
+
+A hardware TCAM stores the value/mask for all fields of a rule in a
+"row" or "entry" of the TCAM.  The "search key" containing the value
+of all fields to match against the rules is broadcast to all TCAM
+rows, which evaluate all field match criteria in parallel.
+
+Each TCAM entry in parallel calculates the logical AND of the
+individual field match criteria within, producing a final 0/1
+indicating whether all fields of the entry match.
+
+The result is a bit vector containing 1 bit per entry.  A "priority
+encoder" hardware block finds the first 1 in O(log N) logic gate
+delays.  Because it finds the first 1 set, the rules must be placed
+into TCAM entries in the same relative order that the find-first-1
+logic works, so that the first 1 found corresponds to the highest
+matching rule.  The output of the priority encoder is the index of the
+first row where all fields match, or a special "miss" signal indicates
+if there were no matching entries.
+
+This parallel evaluation is why TCAMs can use so much power relative
+to non-TCAM hardware such as SRAM or DRAM, because so many of the
+wires between logic gates can change from 0 to 1 or 1 to 0 during this
+evaluation process.
+
+
+### Field-wise evaluation
+
+In this evaluation order, we devise a method where given a single
+lookup field of the packet, we calculate one column of the match
+results in the table, with the result being an N-bit vector (see below
+for examples of this).
+
+After the N-bit vector for each column has been calculated, perform a
+bitwise AND of all of them, resulting in the same N-bit vector that a
+hardware TCAM calculates.  Then find the first 1 bit, and output its
+bit position, or a miss result if the N-bit vector is all 0.
+
+
+#### Field has match kind prefix
+
+For a field with match kind prefix, we can construct a longest-prefix
+match tree containing all prefixes for the field, across all rules.
+Each prefix is associated with an N-bit vector that is the correct
+result for the N-bit vector, precalculated by control plane software
+and stored as the result of the longest-prefix match lookup.
+
+
+#### Field has match kind optional
+
+For every value that is exact match in the set of rules, add them to a
+hash table.  The N-bit vector that is the result of the entry with key
+X has the value 1 for bit positions corresponding to all rules that
+match value X, or that have a completely don't-care value because its
+mask is 0.
+
+
+#### Field has match kind range
+
+For fields with a small number of bits W, the technique for match kind
+ternary of course works here.
+
+For arbitrary size fields, it is possible to construct a binary or
+multi-way search tree that compares the lookup field value against
+values stored in the tree, and each leaf corresponds to a range of
+values.
+
+TODO: Give a small example of this.
+
+
+#### Field has match kind ternary
+
+There is actually no simple general way to calculate the value of the
+N-bit column vector for a ternary match field, when the masks can be
+arbitrary.  This is just as difficult as the normal packet
+classification problem, albeit for only one field.
+
+If the field is very small, e.g. W=4 bits, you can create a lookup
+table for all possible field values in the range [0, 2^W-1] where each
+contains the N-bit vector, but this is likely to be prohibitively
+expensive for larger values of W.
+
+For wide fields, e.g. 128 bits, one could break it up into smaller
+sub-fields, e.g. each k=8 bits wide, and create a 2^k-entry lookup
+table for each sub-field.  Then bitwise AND the N-bit results with
+each other.  This is significantly less memory than a 2^128 entry
+table!
+
+
+# References
+
+
+TODO: Add many of the references from the EffiCuts paper to the list
+below, too.
+
++ Balajee Vamanan, Gwendolyn Voskuilen, T. N. Vijaykumar, "EffiCuts:
+  optimizing packet classification for memory and throughput", ACM
+  SIGCOMM Computer Communication Review, Volume 40, Issue 4, October
+  2010, pp 207–218, https://doi.org/10.1145/1851275.1851208
