@@ -73,7 +73,7 @@ Start with:
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
   + Ubuntu 20.04, 22.04, or 23.04
-  + Fedora 35 (see [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
+  + Fedora 35 (see [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases) )
 + The system must have:
   + at least 2 GB of RAM (4 GB recommended)
   + at least 25 GB of free disk space (not 25 GB of disk space total
