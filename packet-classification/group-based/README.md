@@ -37,8 +37,8 @@ Each match kind is one of:
   This is a "prefix mask", such that the value must equal the field in
   the most significant P bits.
   + Example: a 32-bit field's prefix match criteria could be value
-    V=0x0a010100 with prefix length P=24, which matches the the same
-    as a ternary field with the same value V and a mask M=0xffffff00.
+    V=0x0a010100 with prefix length P=24, which matches the same as a
+    ternary field with the same value V and a mask M=0xffffff00.
 + optional - like ternary, except the mask is restricted to be either
   0 for a completely don't care value, or `((1 << W) - 1)` for exact
   value.
