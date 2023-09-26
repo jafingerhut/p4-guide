@@ -74,7 +74,6 @@ Start with:
   operating systems:
   + Ubuntu 20.04, 22.04, or 23.04
   + Fedora 35 (see [fedoraproject.org
-
     releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
 + The system must have:
   + at least 2 GB of RAM (4 GB recommended)
