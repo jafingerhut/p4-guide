@@ -292,17 +292,17 @@ For the example set of rules:
 |  50 | 10.1.0.0/16 | * | 6 | * | * |
 |  40 | * | * | * | * | * |
 
-The longest-prefix match table for field SA would contain these
-prefixes and associated 7-bit vectors, where the bits in the bit
-vector have the bit for rule with priority 100 first, and the bit for
-the rule with priority 40 last.
+The longest-prefix match table for field SA would contain the prefixes
+and associated 7-bit vectors shown in the table below, where the bits
+in the bit vector have the bit for rule with priority 100 first, and
+the bit for the rule with priority 40 last.
 
 | prefix | 7-bit vector |
 | ------ | ------------ |
-| *           | 0001101 |
-| 10.0.0.0/8  | 0011101 |
-| 10.1.0.0/16 | 0011111 |
-| 10.1.1.0/24 | 1111111 |
+| *           | `0001101` |
+| 10.0.0.0/8  | `0011101` |
+| 10.1.0.0/16 | `0011111` |
+| 10.1.1.0/24 | `1111111` |
 
 Note that while this example is for a normal packet classification
 problem, this technique for constructing a longest-prefix match tree
@@ -312,20 +312,20 @@ classification problem, too.
 
 #### Field has match kind optional
 
-For every value that is exact match in the set of rules, add them to a
-hash table.  The N-bit vector that is the result of the entry with key
-X has the value 1 for bit positions corresponding to all rules that
-match value X, or that have a completely don't-care value because its
-mask is 0.
+For every match criteria that is exact match in a rule, add the value
+to a hash table.  The N-bit vector that is the result of the entry
+with key X has the value 1 for bit positions corresponding to all
+rules that match value X, or that have a completely don't-care value
+because its mask is 0.
 
-This approach for optional match kind fields work equally well for the
-normal and group-based classification problems.
+This approach for optional match kind fields works equally well for
+both the normal and group-based classification problems.
 
 
 #### Field has match kind range
 
 For fields with a small number of bits W, the technique for match kind
-ternary of course works here.
+ternary (described below) also course works here.
 
 For arbitrary size fields, it is possible to construct a binary or
 multi-way search tree that compares the lookup field value against
@@ -340,12 +340,12 @@ TODO: Give a small example of this.
 There is actually no simple general way to calculate the value of the
 N-bit column vector for a ternary match field, when the masks can be
 arbitrary.  This is just as difficult as the normal packet
-classification problem, albeit for only one field.
+classification problem, even though it is for only one field.
 
 If the field is very small, e.g. W=4 bits, you can create a lookup
-table for all possible field values in the range [0, 2^W-1] where each
-contains the N-bit vector, but this is likely to be prohibitively
-expensive for larger values of W.
+table for all possible field values in the range [0, 2^W-1] where the
+result contains the N-bit vector.  This is prohibitively expensive for
+large values of W.
 
 For wide fields, e.g. 128 bits, one could break it up into smaller
 sub-fields, e.g. each k=8 bits wide, and create a 2^k-entry lookup
