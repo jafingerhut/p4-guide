@@ -271,6 +271,12 @@ bit-wise ANDing those.  If the result is entirely 0, then read the
 next M bits of each N-bit vector and repeat.  The number of fetches is
 then linear in (N/M) times the number of fields.
 
+An advantage of this algorithm is that for the match kinds where it is
+applicable, it generalizes fairly easily from the normal to the
+group-based classification problem, _without_ incurring any cost for a
+"cross product" as the algorithm described in [an earlier
+section](#example-of-the-group-based-packet-classification-problem).
+
 
 #### Field has match kind prefix
 
