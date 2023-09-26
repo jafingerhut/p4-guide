@@ -10,37 +10,10 @@ Platform that allow their tenants to create group-based security rules
 for which packets to allow to be forwarded between the tenant's
 deployed VMs/containers, vs. which should be dropped.
 
-+ A _Cisco ACI contract_ is described [here](https://www.cisco.com/c/en/us/solutions/collateral/data-center-virtualization/application-centric-infrastructure/white-paper-c11-743951.html)
-  + A contract is at least similar to the group-based classification
-    problem.  I am not certain, but it may be the case that an ACI
-    contract imposes an additional constraint on a set of rules: that
-    every value of a source or destination address field must be in at
-    most one endpoint group (EPG in ACI terminology), which
-    corresponds in the group-based classification problem defined
-    below to a set of IP prefixes.
-+ [Kubernetes Network
-  Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
-  documentation
-  + Note: I do not know enough of Kubernetes network policy to say
-    whether such a policy can be transformed into a group-based
-    classification problem as defined below.  I would welcome any
-    examples that can be, or cannot be.
-+ [SONiC DASH project](https://github.com/sonic-net/DASH/)
-  + In particular, see [this table
-    definition](https://github.com/sonic-net/DASH/blob/main/dash-pipeline/bmv2/dash_acl.p4#L37-L55)
-    within the P4 program proposed as a reference model for how a DASH
-    device should process packets.
-  + The `LIST_MATCH` match kind mentioned there is a C preprocessor
-    macro for one of several possible definitions, one of which is
-    `list`, which is a custom type not defined by the P4 language
-    specification, intended to represent a list of prefixes.  Here
-    `list` is effectively the same as a set, because nothing about the
-    order of elements within such a list has any effect upon the
-    packet classification behavior.
-  + The `RANGE_LIST_MATCH` match kind mentioned there is a C
-    preprocessor macro for one of several possible definitions, one of
-    which is `range_list`, which is a custom type not defined by the
-    P4 language specification, intended to represent a list of ranges.
+See [this
+section](#systems-that-use-something-similar-to-group-based-classification)
+for systems that use something that is at least similar to the
+group-based classification problem.
 
 
 ## Normal classification problem
@@ -390,6 +363,71 @@ sub-fields, e.g. each k=8 bits wide, and create a 2^k-entry lookup
 table for each sub-field.  Then bitwise AND the N-bit results with
 each other.  This is significantly less memory than a 2^128 entry
 table!
+
+
+# Systems that use something similar to group-based classification
+
+
+## Cisco object groups
+
+One source of documentation for [Cisco object
+groups](https://www.cisco.com/en/US/docs/ios-xml/ios/sec_data_acl/configuration/15-2mt/sec-object-group-acl.html).
+
+These are a generalization of Cisco extended access lists, where
+instead of a single value/mask for a source or destination IP address,
+you can give an object group name, which is configured as a set of IP
+address prefixes.  Similarly, you can specify either a single source
+or destination port, or an object group name configured as a set of L4
+port values.
+
+
+## Cisco ACI contracts
+
+Documentation of a [Cisco ACI
+contract](https://www.cisco.com/c/en/us/solutions/collateral/data-center-virtualization/application-centric-infrastructure/white-paper-c11-743951.html)
+
+An ACI contract is at least similar to the group-based classification
+problem described here.
+
+I am not certain, but it may be the case that an ACI contract imposes
+an additional constraint on a set of rules: that every value of a
+source or destination address field must be in at most one endpoint
+group (EPG in ACI terminology), which corresponds in the group-based
+classification problem defined below to a set of IP prefixes.
+
+
+## Kubernetes Network Policy
+
+Documentation for [Kubernetes Network
+Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/).
+
+Note: I do not know enough of Kubernetes network policy to say whether
+such a policy can be transformed into a group-based classification
+problem as defined below.  I would welcome any examples that can be,
+or cannot be.
+
+
+## SONiC DASH project ACL
+
+Documentation and code related to the [SONiC DASH
+project](https://github.com/sonic-net/DASH/).
+
+In particular, see [this table
+definition](https://github.com/sonic-net/DASH/blob/main/dash-pipeline/bmv2/dash_acl.p4#L37-L55)
+within the P4 program proposed as a reference model for how a DASH
+device should process packets.
+
+The `LIST_MATCH` match kind mentioned there is a C preprocessor macro
+for one of several possible definitions, one of which is `list`, which
+is a custom type not defined by the P4 language specification,
+intended to represent a list of prefixes.  Here `list` is effectively
+the same as a set, because nothing about the order of elements within
+such a list has any effect upon the packet classification behavior.
+
+The `RANGE_LIST_MATCH` match kind mentioned there is a C preprocessor
+macro for one of several possible definitions, one of which is
+`range_list`, which is a custom type not defined by the P4 language
+specification, intended to represent a list of ranges.
 
 
 # References
