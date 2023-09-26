@@ -252,6 +252,13 @@ bitwise AND of all of them, resulting in the same N-bit vector that a
 hardware TCAM calculates.  Then find the first 1 bit, and output its
 bit position, or a miss result if the N-bit vector is all 0.
 
+The main disadvantage of this approach is that for large N, the
+intermediate N-bit vectors are large.  This can be mitigated somewhat
+by first finding the first M < N bits of each N-bit vector, and
+bit-wise ANDing those.  If the result is entirely 0, then read the
+next M bits of each N-bit vector and repeat.  The number of fetches is
+then linear in (N/M) times the number of fields.
+
 
 #### Field has match kind prefix
 
