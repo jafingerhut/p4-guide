@@ -3,15 +3,9 @@
 Pick one of these alternatives that best fits your situation:
 
 (a) I have a freshly installed Linux system with one of the supported
-    distributions and versions listed below, and I want to install the
-    open source P4 development tools on it.  (This might be a new VM
-    created for this purpose.)
-
-  + Ubuntu 20.04 or 22.04
-  + Fedora 35, 36, or 37 (see [fedoraproject.org
-    releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
-    for obtaining older Fedora releases)
-
+    distributions and versions, and I want to install the open source
+    P4 development tools on it.  (This might be a new VM created for
+    this purpose.)
 (b) I am comfortable downloading and running a virtual machine image
     with the P4 open source tools already compiled and installed,
     e.g. using a virtual machine application like VirtualBox, VMware
@@ -78,7 +72,9 @@ Start with:
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
   + Ubuntu 20.04, 22.04, or 23.04
-  + Fedora 35
+  + Fedora 35 (see [fedoraproject.org
+
+    releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
 + The system must have:
   + at least 2 GB of RAM (4 GB recommended)
   + at least 25 GB of free disk space (not 25 GB of disk space total
