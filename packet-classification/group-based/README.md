@@ -204,6 +204,10 @@ lowest.
 If a rule is evaluated where all fields match, then you can stop, as
 it does not matter if any rules with lower priority match.
 
+This simple algorithm works for both the normal and group-based packet
+classification problems.  Its main disadvantage is that its worst-case
+running time is slow.
+
 
 ### Parallel evaluation
 
@@ -281,6 +285,11 @@ the rule with priority 40 last.
 | 10.1.0.0/16 | 0011111 |
 | 10.1.1.0/24 | 1111111 |
 
+Note that while this example is for a normal packet classification
+problem, this technique for constructing a longest-prefix match tree
+for a single field also works for the group-based packet
+classification problem, too.
+
 
 #### Field has match kind optional
 
@@ -289,6 +298,9 @@ hash table.  The N-bit vector that is the result of the entry with key
 X has the value 1 for bit positions corresponding to all rules that
 match value X, or that have a completely don't-care value because its
 mask is 0.
+
+This approach for optional match kind fields work equally well for the
+normal and group-based classification problems.
 
 
 #### Field has match kind range
