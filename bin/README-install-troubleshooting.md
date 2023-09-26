@@ -123,6 +123,11 @@ $ sudo apt install git     # For Ubuntu
 $ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v6.sh |& tee log.txt
+
+# If you used install-p4dev-v7.sh above, you should execute the
+# following command in every shell that you wish to run the P4
+# development tools.  See Note 1.
+$ source p4setup.bash
 ```
 
 Replace `install-p4dev-v6.sh` with `install-p4dev-v5.sh` or
@@ -134,6 +139,10 @@ install to work.  It causes the output of the script to be saved to
 the file `log.txt`, as well as appear in the terminal window.  The
 output is about 10,000 lines long on a good run, so saving it to a
 file is good if you want to see what it did.
+
+Note 1: If you use bash as your command shell, you can add the `source
+p4setup.bash` line to your `$HOME/.bashrc` file, so that it will
+automatically be run for you in any new bash shell you create.
 
 Historical notes:
 
