@@ -10,13 +10,45 @@ Platform that allow their tenants to create group-based security rules
 for which packets to allow to be forwarded between the tenant's
 deployed VMs/containers, vs. which should be dropped.
 
++ A _Cisco ACI contract_ is described [here](https://www.cisco.com/c/en/us/solutions/collateral/data-center-virtualization/application-centric-infrastructure/white-paper-c11-743951.html)
+  + A contract is at least similar to the group-based classification
+    problem.  I am not certain, but it may be the case that an ACI
+    contract imposes an additional constraint on a set of rules: that
+    every value of a source or destination address field must be in at
+    most one endpoint group (EPG in ACI terminology), which
+    corresponds in the group-based classification problem defined
+    below to a set of IP prefixes.
++ [Kubernetes Network
+  Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+  documentation
+  + Note: I do not know enough of Kubernetes network policy to say
+    whether such a policy can be transformed into a group-based
+    classification problem as defined below.  I would welcome any
+    examples that can be, or cannot be.
++ [SONiC DASH project](https://github.com/sonic-net/DASH/)
+  + In particular, see [this table
+    definition](https://github.com/sonic-net/DASH/blob/main/dash-pipeline/bmv2/dash_acl.p4#L37-L55)
+    within the P4 program proposed as a reference model for how a DASH
+    device should process packets.
+  + The `LIST_MATCH` match kind mentioned there is a C preprocessor
+    macro for one of several possible definitions, one of which is
+    `list`, which is a custom type not defined by the P4 language
+    specification, intended to represent a list of prefixes.  Here
+    `list` is effectively the same as a set, because nothing about the
+    order of elements within such a list has any effect upon the
+    packet classification behavior.
+  + The `RANGE_LIST_MATCH` match kind mentioned there is a C
+    preprocessor macro for one of several possible definitions, one of
+    which is `range_list`, which is a custom type not defined by the
+    P4 language specification, intended to represent a list of ranges.
 
-## Normal packet classification problem
 
-An instance of a "normal" packet classification problem consists of:
+## Normal classification problem
 
-+ a set of packet _fields_ F, where field f can be represented as a
-  `W_f`-bit unsigned integer.
+An instance of a "normal" classification problem consists of:
+
++ a set of _fields_ F, where field f can be represented as a `W_f`-bit
+  unsigned integer.
 + a match kind for each field, and
 + a set of _rules_ R for matching the fields against.
 
@@ -52,12 +84,12 @@ Each rule consists of:
 A set of fields F matches a rule r iff for every field f, the value of
 field f matches the match criteria given in the rule R.
 
-The packet classification problem is: Given a set of rules R and a set
-of fields f, among all rules r in R such that f matches r, find one
-that has the maximum priority.  If no rules in R match, return "none".
+The classification problem is: Given a set of rules R and a set of
+fields f, among all rules r in R such that f matches r, find one that
+has the maximum priority.  If no rules in R match, return "none".
 
 
-### Example of the normal packet classification problem
+### Example of the normal classification problem
 
 Fields and their match kinds:
 
@@ -67,7 +99,7 @@ Fields and their match kinds:
 + L4 source port (abbreviated SP), range
 + L4 destination port (abbreviated DP), range
 
-The L4 source and destination port come from the packet if the packet
+The L4 source and destination port come from a packet if the packet
 has the appropriate protocol value, or they are 0 for packets with
 other protocol values.
 
@@ -89,17 +121,17 @@ Rules:
 |  40 | * | * | * | * | * |
 
 
-## Group-based packet classification problem
+## Group-based classification problem
 
-This is a generalization of the normal packet classification problem.
-The fields and match kinds are the same as before.
+This is a generalization of the normal classification problem.  The
+fields and match kinds are the same as before.
 
 The difference is that in a rule, each field can have a set of one or
 more match criteria.  A field matches the set of match criteria if it
 matches _any_ of the match criteria.
 
 
-### Example of the group-based packet classification problem
+### Example of the group-based classification problem
 
 As very small example, the group-based rules below are based on the
 same set of fields and match kinds as given in the previous example.
@@ -124,28 +156,28 @@ among the sets for each individual field.
 | 90 | 10.1.1.0/24 | 192.168.0.0/16 | 17 | * | 53 |
 | 90 | 10.1.1.0/24 | 192.168.0.0/16 | 17 | * | 90-99 |
 
-This example shows one correct way to implement a group-based packet
-classification problem: translate it to a normal packet classification
+This example shows one correct way to implement a group-based
+classification problem: translate it to a normal classification
 problem by calculating the cross product of each individual rule.
 
 The disadvantage of this solution is that each rule with N1 SAs, N2
 DAs, N3 protos, N4 SPs, and N5 DPs will become `N1*N2*N3*N4*N5` rules
-in a normal packet classification problem.  For example, a group-based
-rule with 100 SA prefixes, 80 DA prefixes, and 7 DP ranges would
-become `100*80*7 = 56,000` normal rules.  We would prefer a more
-efficient solution than that.
+in a normal classification problem.  For example, a group-based rule
+with 100 SA prefixes, 80 DA prefixes, and 7 DP ranges would become
+`100*80*7 = 56,000` normal rules.  We would prefer a more efficient
+solution than that.
 
 
-# Algorithms for the packet classification problem
+# Algorithms for the classification problem
 
 There are many algorithms in the published literature for the normal
-packet classification problem.  See the references section.
+classification problem.  See the references section.
 
 
 ## Evaluating a subset of field match criteria
 
-If we take the first example of the normal packet classification
-problem above, with the following rules:
+If we take the first example of the normal classification problem
+above, with the following rules:
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
@@ -157,7 +189,7 @@ problem above, with the following rules:
 |  50 | 10.1.0.0/16 | * | 6 | * | * |
 |  40 | * | * | * | * | * |
 
-and we consider the following set of packet fields:
+and we consider the following set of fields:
 
 + SA=10.1.1.3
 + DA=192.168.1.0
@@ -204,7 +236,7 @@ lowest.
 If a rule is evaluated where all fields match, then you can stop, as
 it does not matter if any rules with lower priority match.
 
-This simple algorithm works for both the normal and group-based packet
+This simple algorithm works for both the normal and group-based
 classification problems.  Its main disadvantage is that its worst-case
 running time is slow.
 
@@ -275,7 +307,7 @@ An advantage of this algorithm is that for the match kinds where it is
 applicable, it generalizes fairly easily from the normal to the
 group-based classification problem, _without_ incurring any cost for a
 "cross product" as the algorithm described in [an earlier
-section](#example-of-the-group-based-packet-classification-problem).
+section](#example-of-the-group-based-classification-problem).
 
 
 #### Field has match kind prefix
@@ -310,10 +342,10 @@ the bit for the rule with priority 40 last.
 | 10.1.0.0/16 | `0011111` |
 | 10.1.1.0/24 | `1111111` |
 
-Note that while this example is for a normal packet classification
-problem, this technique for constructing a longest-prefix match tree
-for a single field also works for the group-based packet
-classification problem, too.
+Note that while this example is for a normal classification problem,
+this technique for constructing a longest-prefix match tree for a
+single field also works for the group-based classification problem,
+too.
 
 
 #### Field has match kind optional
@@ -345,8 +377,8 @@ TODO: Give a small example of this.
 
 There is actually no simple general way to calculate the value of the
 N-bit column vector for a ternary match field, when the masks can be
-arbitrary.  This is just as difficult as the normal packet
-classification problem, even though it is for only one field.
+arbitrary.  This is just as difficult as the normal classification
+problem, even though it is for only one field.
 
 If the field is very small, e.g. W=4 bits, you can create a lookup
 table for all possible field values in the range [0, 2^W-1] where the
