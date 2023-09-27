@@ -38,7 +38,7 @@ linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
     1>&2 echo "    ID ubuntu, VERSION_ID in 18.04 20.04 22.04"
-    1>&2 echo "    ID fedora, VERSION_ID in 35"
+    1>&2 echo "    ID fedora, VERSION_ID in 35 37"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -190,6 +190,9 @@ then
 	    tried_but_got_build_errors=1
 	    ;;
 	37)
+	    supported_distribution=1
+	    ;;
+	38)
 	    supported_distribution=0
 	    tried_but_got_build_errors=1
 	    ;;

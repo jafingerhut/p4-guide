@@ -73,7 +73,7 @@ Start with:
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
   + Ubuntu 20.04, 22.04, or 23.04
-  + Fedora 35 - for older releases, see one of these places:
+  + Fedora 35, 37 - for older releases, see one of these places:
     + [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
 	+ [dl.fedoraproject.org releases](https://dl.fedoraproject.org/pub/fedora/linux/releases/)
 + The system must have:
