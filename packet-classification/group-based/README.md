@@ -365,6 +365,40 @@ each other.  This is significantly less memory than a 2^128 entry
 table!
 
 
+# Specializing rules when implemented in a distributed way
+
+In some data center environments, instead of performing packet
+classification in switches or routers, it can instead be done in the
+hosts in a distributed manner, with every host classifying packets
+before transmitting them to the network.  For example, the host could
+classify the packets in a layer of host CPU software beneath all
+VMs/containers, such as a hypervisor, or it could be performed in the
+host's NIC.
+
+Suppose you wish to classify packets based on a sequence of normal or
+group-based rules that is "globally configured across the network" by
+the network owner.  Each rule contains both source and destination IP
+addresses and/or prefixes, plus any other fields of interest
+(typically at least IP protocol and L4 source and destination port
+values, but perhaps other fields, too).
+
+A host might have many VMs or containers running on it.  Consider a
+single VM or container, H.  Starting with the full sequence of
+classification rules R, create a sequence of rules R(H) that is
+specialized for packets sent by H, by assuming that the source IP
+address of every packet is equal to H's IP address A.  In practice,
+many of the rules will never match for packets with source address A,
+and they can be eliminated from R(H).  For all remaining rules that
+might match when the packet's source address is A, we can eliminate
+the source IP address field from every rule.
+
+When a packet is sent by H, the hypervisor or NIC implementing
+classification can begin the classification by looking up the packet's
+source address A in a small hash table, with the result pointing at
+the set of rules R(H).  The smaller R(H) will typically be
+significantly easier to classify than R.
+
+
 # Systems that use something similar to group-based classification
 
 
@@ -418,16 +452,16 @@ within the P4 program proposed as a reference model for how a DASH
 device should process packets.
 
 The `LIST_MATCH` match kind mentioned there is a C preprocessor macro
-for one of several possible definitions, one of which is `list`, which
-is a custom type not defined by the P4 language specification,
-intended to represent a list of prefixes.  Here `list` is effectively
-the same as a set, because nothing about the order of elements within
-such a list has any effect upon the packet classification behavior.
+for one of several possible definitions, one of which is `list`.
+Match kind `list` is a custom type used in the DASH P4 code, but not
+defined by the P4 language specification.  It is intended to represent
+a set of prefixes.  The order of the prefixes in such a "list" has no
+effect on the classification result.
 
 The `RANGE_LIST_MATCH` match kind mentioned there is a C preprocessor
 macro for one of several possible definitions, one of which is
-`range_list`, which is a custom type not defined by the P4 language
-specification, intended to represent a list of ranges.
+`range_list`.  Again, this is a custom type created for the purpose of
+the DASH project.  It represents a set of ranges.
 
 
 # References
