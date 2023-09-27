@@ -484,8 +484,9 @@ below, too.
     https://github.com/lucansky/classbench-ng
   + Technical report version,
     https://openscholarship.wustl.edu/cse_research/1001/
-
-
++ T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based Packet
+  Forwarding Using Efficient Multi-dimensional Range Matching", 1998,
+  https://dl.acm.org/doi/10.1145/285237.285283
 
 Patented technology related to packet classification problem:
 
