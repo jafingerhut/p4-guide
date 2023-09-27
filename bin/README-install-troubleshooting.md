@@ -229,12 +229,12 @@ $ cd p4c/build
 $ make -j2 check |& tee out.txt
 ```
 
-With the current install script, it is normal for about 520 of these
+With the current install script, it is normal for about 500 of these
 tests to fail.  Many of those will pass if you re-run them as the user
 `root` with a command like this:
 
 ```bash
-$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} make -j2 check |& tee out2.txt
+$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} make -j2 recheck |& tee out2.txt
 ```
 
 
