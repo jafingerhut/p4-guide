@@ -2,7 +2,7 @@ Found distributor 'Ubuntu' release '20.04'.  Continuing with installation.
 Minimum recommended memory to run this script: 1920 MBytes
 Memory on this system from /proc/meminfo:      7937 MBytes -> enough
 Minimum free disk space to run this script:    2560 MBytes
-Free disk space on this system from df output: 47642 MBytes -> enough
+Free disk space on this system from df output: 47559 MBytes -> enough
 Found directory containing patches: /home/andy/p4-guide/bin/patches
 Passed all sanity checks
 + set +x
@@ -29,13 +29,13 @@ took about 3 minutes.
 ------------------------------------------------------------
 Time and disk space used before installation begins:
 + date
-Mon 24 Jul 2023 06:25:26 PM EDT
+Tue 26 Sep 2023 10:39:02 PM EDT
 + df -h .
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda5        59G  8.8G   47G  16% /
+/dev/sda5        59G  8.9G   47G  16% /
 + df -BM .
 Filesystem     1M-blocks  Used Available Use% Mounted on
-/dev/sda5         59661M 8957M    47642M  16% /
+/dev/sda5         59661M 9041M    47559M  16% /
 + lsb_release -a
 No LSB modules are available.
 Distributor ID:	Ubuntu
@@ -77,7 +77,7 @@ OK
 + sudo apt-get update -qq
 + sudo apt-get install -qq -y --no-install-recommends --fix-missing iproute2 net-tools python3 python3-pip tcpdump unzip vim xterm p4lang-p4c p4lang-bmv2 p4lang-pi
 Selecting previously unselected package libsigsegv2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 135310 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 135341 files and directories currently installed.)
 Preparing to unpack .../000-libsigsegv2_2.12-2_amd64.deb ...
 Unpacking libsigsegv2:amd64 (2.12-2) ...
 Selecting previously unselected package m4.
@@ -108,20 +108,20 @@ Selecting previously unselected package libgc1c2:amd64.
 Preparing to unpack .../009-libgc1c2_1%3a7.6.4-0.4ubuntu1_amd64.deb ...
 Unpacking libgc1c2:amd64 (1:7.6.4-0.4ubuntu1) ...
 Selecting previously unselected package libobjc4:amd64.
-Preparing to unpack .../010-libobjc4_10.3.0-1ubuntu1~20.04_amd64.deb ...
-Unpacking libobjc4:amd64 (10.3.0-1ubuntu1~20.04) ...
+Preparing to unpack .../010-libobjc4_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking libobjc4:amd64 (10.5.0-1ubuntu1~20.04) ...
 Selecting previously unselected package libobjc-9-dev:amd64.
-Preparing to unpack .../011-libobjc-9-dev_9.4.0-1ubuntu1~20.04.1_amd64.deb ...
-Unpacking libobjc-9-dev:amd64 (9.4.0-1ubuntu1~20.04.1) ...
+Preparing to unpack .../011-libobjc-9-dev_9.4.0-1ubuntu1~20.04.2_amd64.deb ...
+Unpacking libobjc-9-dev:amd64 (9.4.0-1ubuntu1~20.04.2) ...
 Selecting previously unselected package libc6-i386.
 Preparing to unpack .../012-libc6-i386_2.31-0ubuntu9.9_amd64.deb ...
 Unpacking libc6-i386 (2.31-0ubuntu9.9) ...
 Selecting previously unselected package lib32gcc-s1.
-Preparing to unpack .../013-lib32gcc-s1_10.3.0-1ubuntu1~20.04_amd64.deb ...
-Unpacking lib32gcc-s1 (10.3.0-1ubuntu1~20.04) ...
+Preparing to unpack .../013-lib32gcc-s1_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking lib32gcc-s1 (10.5.0-1ubuntu1~20.04) ...
 Selecting previously unselected package lib32stdc++6.
-Preparing to unpack .../014-lib32stdc++6_10.3.0-1ubuntu1~20.04_amd64.deb ...
-Unpacking lib32stdc++6 (10.3.0-1ubuntu1~20.04) ...
+Preparing to unpack .../014-lib32stdc++6_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking lib32stdc++6 (10.5.0-1ubuntu1~20.04) ...
 Selecting previously unselected package libclang-common-10-dev.
 Preparing to unpack .../015-libclang-common-10-dev_1%3a10.0.0-4ubuntu1_amd64.deb ...
 Unpacking libclang-common-10-dev (1:10.0.0-4ubuntu1) ...
@@ -150,8 +150,8 @@ Selecting previously unselected package gcc-8.
 Preparing to unpack .../023-gcc-8_8.4.0-3ubuntu2_amd64.deb ...
 Unpacking gcc-8 (8.4.0-3ubuntu2) ...
 Selecting previously unselected package libgfortran5:amd64.
-Preparing to unpack .../024-libgfortran5_10.3.0-1ubuntu1~20.04_amd64.deb ...
-Unpacking libgfortran5:amd64 (10.3.0-1ubuntu1~20.04) ...
+Preparing to unpack .../024-libgfortran5_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking libgfortran5:amd64 (10.5.0-1ubuntu1~20.04) ...
 Selecting previously unselected package libgfortran-8-dev:amd64.
 Preparing to unpack .../025-libgfortran-8-dev_8.4.0-3ubuntu2_amd64.deb ...
 Unpacking libgfortran-8-dev:amd64 (8.4.0-3ubuntu2) ...
@@ -558,8 +558,8 @@ Selecting previously unselected package libbpf0:amd64.
 Preparing to unpack .../159-libbpf0_1%3a0.5.0-1_amd64.deb ...
 Unpacking libbpf0:amd64 (1:0.5.0-1) ...
 Selecting previously unselected package libelf-dev:amd64.
-Preparing to unpack .../160-libelf-dev_0.176-1.1build1_amd64.deb ...
-Unpacking libelf-dev:amd64 (0.176-1.1build1) ...
+Preparing to unpack .../160-libelf-dev_0.176-1.1ubuntu0.1_amd64.deb ...
+Unpacking libelf-dev:amd64 (0.176-1.1ubuntu0.1) ...
 Selecting previously unselected package libbpf-dev:amd64.
 Preparing to unpack .../161-libbpf-dev_1%3a0.5.0-1_amd64.deb ...
 Unpacking libbpf-dev:amd64 (1:0.5.0-1) ...
@@ -582,8 +582,8 @@ Selecting previously unselected package libgmp-dev:amd64.
 Preparing to unpack .../167-libgmp-dev_2%3a6.2.0+dfsg-4ubuntu0.1_amd64.deb ...
 Unpacking libgmp-dev:amd64 (2:6.2.0+dfsg-4ubuntu0.1) ...
 Selecting previously unselected package libc-ares2:amd64.
-Preparing to unpack .../168-libc-ares2_1.15.0-1ubuntu0.3_amd64.deb ...
-Unpacking libc-ares2:amd64 (1.15.0-1ubuntu0.3) ...
+Preparing to unpack .../168-libc-ares2_1.15.0-1ubuntu0.4_amd64.deb ...
+Unpacking libc-ares2:amd64 (1.15.0-1ubuntu0.4) ...
 Selecting previously unselected package libgrpc6:amd64.
 Preparing to unpack .../169-libgrpc6_1.16.1-1ubuntu5_amd64.deb ...
 Unpacking libgrpc6:amd64 (1.16.1-1ubuntu5) ...
@@ -672,8 +672,8 @@ Selecting previously unselected package python3-grpcio.
 Preparing to unpack .../197-python3-grpcio_1.16.1-1ubuntu5_amd64.deb ...
 Unpacking python3-grpcio (1.16.1-1ubuntu5) ...
 Selecting previously unselected package p4lang-pi.
-Preparing to unpack .../198-p4lang-pi_0.1.0-13_amd64.deb ...
-Unpacking p4lang-pi (0.1.0-13) ...
+Preparing to unpack .../198-p4lang-pi_0.1.0-15_amd64.deb ...
+Unpacking p4lang-pi (0.1.0-15) ...
 Selecting previously unselected package libnanomsg-dev.
 Preparing to unpack .../199-libnanomsg-dev_1.1.5+dfsg-1_amd64.deb ...
 Unpacking libnanomsg-dev (1.1.5+dfsg-1) ...
@@ -684,8 +684,8 @@ Selecting previously unselected package thrift-compiler.
 Preparing to unpack .../201-thrift-compiler_0.13.0-2build2_amd64.deb ...
 Unpacking thrift-compiler (0.13.0-2build2) ...
 Selecting previously unselected package p4lang-bmv2.
-Preparing to unpack .../202-p4lang-bmv2_1.15.0-4_amd64.deb ...
-Unpacking p4lang-bmv2 (1.15.0-4) ...
+Preparing to unpack .../202-p4lang-bmv2_1.15.0-7_amd64.deb ...
+Unpacking p4lang-bmv2 (1.15.0-7) ...
 Selecting previously unselected package python3-pyroute2.
 Preparing to unpack .../203-python3-pyroute2_0.5.9-0ubuntu2_all.deb ...
 Unpacking python3-pyroute2 (0.5.9-0ubuntu2) ...
@@ -699,8 +699,8 @@ Selecting previously unselected package python3-setuptools.
 Preparing to unpack .../206-python3-setuptools_45.2.0-1ubuntu0.1_all.deb ...
 Unpacking python3-setuptools (45.2.0-1ubuntu0.1) ...
 Selecting previously unselected package p4lang-p4c.
-Preparing to unpack .../207-p4lang-p4c_1.2.4.0-1_amd64.deb ...
-Unpacking p4lang-p4c (1.2.4.0-1) ...
+Preparing to unpack .../207-p4lang-p4c_1.2.4.2-2_amd64.deb ...
+Unpacking p4lang-p4c (1.2.4.2-2) ...
 Selecting previously unselected package python-pip-whl.
 Preparing to unpack .../208-python-pip-whl_20.0.2-5ubuntu1.9_all.deb ...
 Unpacking python-pip-whl (20.0.2-5ubuntu1.9) ...
@@ -734,8 +734,8 @@ Setting up libboost1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-chrono1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-container1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-tools-dev (1.71.0.0ubuntu2) ...
-Setting up libobjc4:amd64 (10.3.0-1ubuntu1~20.04) ...
-Setting up libc-ares2:amd64 (1.15.0-1ubuntu0.3) ...
+Setting up libobjc4:amd64 (10.5.0-1ubuntu1~20.04) ...
+Setting up libc-ares2:amd64 (1.15.0-1ubuntu0.4) ...
 Setting up libboost-filesystem1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up python3-thrift (0.13.0-2build2) ...
 Setting up libboost-iostreams1.71.0:amd64 (1.71.0-6ubuntu6) ...
@@ -774,8 +774,8 @@ Setting up libfl2:amd64 (2.6.4-6.2) ...
 Setting up thrift-compiler (0.13.0-2build2) ...
 Setting up libboost-math1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
-Setting up libobjc-9-dev:amd64 (9.4.0-1ubuntu1~20.04.1) ...
-Setting up libgfortran5:amd64 (10.3.0-1ubuntu1~20.04) ...
+Setting up libobjc-9-dev:amd64 (9.4.0-1ubuntu1~20.04.2) ...
+Setting up libgfortran5:amd64 (10.5.0-1ubuntu1~20.04) ...
 Setting up libmpx2:amd64 (8.4.0-3ubuntu2) ...
 Setting up libutempter0:amd64 (1.1.6-4) ...
 Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu1.5) ...
@@ -843,13 +843,13 @@ Setting up libboost-coroutine1.71.0:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-timer1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-test1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-program-options-dev:amd64 (1.71.0.0ubuntu2) ...
-Setting up lib32gcc-s1 (10.3.0-1ubuntu1~20.04) ...
-Setting up lib32stdc++6 (10.3.0-1ubuntu1~20.04) ...
+Setting up lib32gcc-s1 (10.5.0-1ubuntu1~20.04) ...
+Setting up lib32stdc++6 (10.5.0-1ubuntu1~20.04) ...
 Setting up libboost-filesystem1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up llvm-runtime (1:10.0-50~exp1) ...
 Setting up libboost-numpy-dev (1.71.0.0ubuntu2) ...
 Setting up libevent-dev (2.1.11-stable-1) ...
-Setting up libelf-dev:amd64 (0.176-1.1build1) ...
+Setting up libelf-dev:amd64 (0.176-1.1ubuntu0.1) ...
 Setting up libboost-regex1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-serialization1.71-dev:amd64 (1.71.0-6ubuntu6) ...
 Setting up libboost-serialization-dev:amd64 (1.71.0.0ubuntu2) ...
@@ -918,13 +918,13 @@ Setting up mpi-default-bin (1.13) ...
 Setting up libboost-locale-dev:amd64 (1.71.0.0ubuntu2) ...
 Setting up libboost-python-dev (1.71.0.0ubuntu2) ...
 Setting up libboost-type-erasure-dev:amd64 (1.71.0.0ubuntu2) ...
-Setting up p4lang-pi (0.1.0-13) ...
+Setting up p4lang-pi (0.1.0-15) ...
 Setting up clang (1:10.0-50~exp1) ...
 Setting up libboost-graph-parallel1.71-dev (1.71.0-6ubuntu6) ...
 Setting up libopenmpi-dev:amd64 (4.0.3-0ubuntu1) ...
 update-alternatives: using /usr/lib/x86_64-linux-gnu/openmpi/include to provide /usr/include/x86_64-linux-gnu/mpi (mpi-x86_64-linux-gnu) in auto mode
 Setting up libboost-mpi-python1.71.0 (1.71.0-6ubuntu6) ...
-Setting up p4lang-bmv2 (1.15.0-4) ...
+Setting up p4lang-bmv2 (1.15.0-7) ...
 Setting up libboost-graph-parallel-dev (1.71.0.0ubuntu2) ...
 Setting up mpi-default-dev (1.13) ...
 Setting up libboost-mpi1.71-dev (1.71.0-6ubuntu6) ...
@@ -932,7 +932,7 @@ Setting up libboost-mpi-python1.71-dev (1.71.0-6ubuntu6) ...
 Setting up libboost-mpi-python-dev (1.71.0.0ubuntu2) ...
 Setting up libboost-mpi-dev (1.71.0.0ubuntu2) ...
 Setting up libboost-all-dev (1.71.0.0ubuntu2) ...
-Setting up p4lang-p4c (1.2.4.0-1) ...
+Setting up p4lang-p4c (1.2.4.2-2) ...
 Processing triggers for mime-support (3.64ubuntu1) ...
 Processing triggers for hicolor-icon-theme (0.17-2) ...
 Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
@@ -965,7 +965,7 @@ cupshelpers            1.0
 dbus-python            1.2.16              
 defer                  1.0.6               
 distro                 1.4.0               
-distro-info            0.23ubuntu1         
+distro-info            0.23+ubuntu1.1      
 entrypoints            0.3                 
 grpcio                 1.16.1              
 httplib2               0.14.0              
@@ -1033,7 +1033,7 @@ cupshelpers            1.0
 dbus-python            1.2.16              
 defer                  1.0.6               
 distro                 1.4.0               
-distro-info            0.23ubuntu1         
+distro-info            0.23+ubuntu1.1      
 entrypoints            0.3                 
 grpcio                 1.16.1              
 httplib2               0.14.0              
@@ -1096,11 +1096,11 @@ Collecting ptf
 Collecting psutil
   Downloading psutil-5.9.5-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (282 kB)
 Collecting grpcio
-  Downloading grpcio-1.56.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.2 MB)
+  Downloading grpcio-1.58.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.3 MB)
 Building wheels for collected packages: scapy
   Building wheel for scapy (setup.py): started
   Building wheel for scapy (setup.py): finished with status 'done'
-  Created wheel for scapy: filename=scapy-2.5.0-py2.py3-none-any.whl size=1444336 sha256=8ba8a8a865ea5468758e1c45ee357a316e6bd95c0d21c360fadb428636d0f80d
+  Created wheel for scapy: filename=scapy-2.5.0-py2.py3-none-any.whl size=1444336 sha256=ef5aea6940efe8795127dd816a118716949d1f94ec056a073a35d7d26cf1704f
   Stored in directory: /root/.cache/pip/wheels/98/ea/08/164e840ab2c83b892bf8b193ce9d92d029dc3e5f2b75319953
 Successfully built scapy
 Installing collected packages: scapy, ptf, psutil, grpcio
@@ -1112,7 +1112,7 @@ Installing collected packages: scapy, ptf, psutil, grpcio
     Found existing installation: grpcio 1.16.1
     Not uninstalling grpcio at /usr/lib/python3/dist-packages, outside environment /usr
     Can't uninstall 'grpcio'. No files were found to uninstall.
-Successfully installed grpcio-1.56.2 psutil-5.9.5 ptf-0.10.0 scapy-2.5.0
+Successfully installed grpcio-1.58.0 psutil-5.9.5 ptf-0.10.0 scapy-2.5.0
 + set +x
 ------------------------------------------------------------
 Installing Mininet - not necessary to run P4 programs, but useful if
@@ -1120,7 +1120,7 @@ you want to run tutorials from https://github.com/p4lang/tutorials
 repository.
 start install mininet:
 + date
-Mon 24 Jul 2023 06:27:16 PM EDT
+Tue 26 Sep 2023 10:42:02 PM EDT
 + MININET_COMMIT=5b1b376336e1c6330308e64ba41baac6976b6874
 + git clone https://github.com/mininet/mininet mininet
 Cloning into 'mininet'...
@@ -1192,12 +1192,12 @@ patching file util/install.sh
 + echo 'Detected Linux distribution: Ubuntu 20.04 focal amd64'
 Detected Linux distribution: Ubuntu 20.04 focal amd64
 ++ uname -r
-+ KERNEL_NAME=5.15.0-76-generic
-+ KERNEL_HEADERS=kernel-headers-5.15.0-76-generic
++ KERNEL_NAME=5.15.0-84-generic
++ KERNEL_HEADERS=kernel-headers-5.15.0-84-generic
 + '[' Ubuntu = Raspbian ']'
 + DISTS='Ubuntu|Debian|Fedora|RedHatEnterpriseServer|SUSE LINUX'
-+ echo Ubuntu
 + egrep 'Ubuntu|Debian|Fedora|RedHatEnterpriseServer|SUSE LINUX'
++ echo Ubuntu
 ++ echo Ubuntu
 ++ tr '[A-Z]' '[a-z]'
 + DIST_LC=ubuntu
@@ -1228,7 +1228,7 @@ sys.version_info(major=3, minor=8, micro=10, releaselevel='final', serial=0)
 + echo 'Detected Python (python3) version 3'
 Detected Python (python3) version 3
 + KERNEL_IMAGE_OLD=linux-image-2.6.26-33-generic
-+ DRIVERS_DIR=/lib/modules/5.15.0-76-generic/kernel/drivers/net
++ DRIVERS_DIR=/lib/modules/5.15.0-84-generic/kernel/drivers/net
 + OVS_RELEASE=1.4.0
 + OVS_PACKAGE_LOC=https://github.com/downloads/mininet/mininet
 + OVS_BUILDSUFFIX=-ignore
@@ -1272,111 +1272,118 @@ telnet is already the newest version (0.17-41.2build1).
 telnet set to manually installed.
 xterm is already the newest version (353-1ubuntu1.20.04.2).
 The following additional packages will be installed:
-  blt libtcl8.6 libtk8.6 ncurses-term openssh-client openssh-server
-  openssh-sftp-server python3-astroid python3-isort python3-lazy-object-proxy
+  blt libtcl8.6 libtk8.6 ncurses-term openssh-server openssh-sftp-server
+  python3-astroid python3-isort python3-lazy-object-proxy
   python3-logilab-common python3-mccabe python3-wrapt ssh-import-id
   tk8.6-blt2.5
 Suggested packages:
-  blt-demo tcl8.6 tk8.6 keychain libpam-ssh monkeysphere ssh-askpass
-  molly-guard pylint-doc tix python3-tk-dbg
+  blt-demo tcl8.6 tk8.6 molly-guard monkeysphere ssh-askpass pylint-doc tix
+  python3-tk-dbg
 The following NEW packages will be installed:
   blt help2man iperf libtcl8.6 libtk8.6 ncurses-term openssh-server
   openssh-sftp-server pylint python3-astroid python3-isort
   python3-lazy-object-proxy python3-logilab-common python3-mccabe python3-tk
   python3-wrapt socat ssh ssh-import-id tk8.6-blt2.5
-The following packages will be upgraded:
-  openssh-client
-1 upgraded, 20 newly installed, 0 to remove and 4 not upgraded.
-Need to get 4,784 kB of archives.
+0 upgraded, 20 newly installed, 0 to remove and 0 not upgraded.
+Need to get 4,115 kB of archives.
 After this operation, 21.0 MB of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-client amd64 1:8.2p1-4ubuntu0.8 [670 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-sftp-server amd64 1:8.2p1-4ubuntu0.8 [51.7 kB]
-Get:3 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-server amd64 1:8.2p1-4ubuntu0.8 [377 kB]
-Get:4 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 ssh all 1:8.2p1-4ubuntu0.8 [5,080 B]
-Get:5 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtcl8.6 amd64 8.6.10+dfsg-1 [902 kB]
-Get:6 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtk8.6 amd64 8.6.10-1 [714 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu focal/main amd64 tk8.6-blt2.5 amd64 2.5.3+dfsg-4 [572 kB]
-Get:8 http://us.archive.ubuntu.com/ubuntu focal/main amd64 blt amd64 2.5.3+dfsg-4 [4,944 B]
-Get:9 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 help2man amd64 1.47.13 [173 kB]
-Get:10 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 iperf amd64 2.0.13+dfsg1-1build1 [76.5 kB]
-Get:11 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 ncurses-term all 6.2-0ubuntu2.1 [249 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-lazy-object-proxy amd64 1.4.3-1build1 [17.9 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-wrapt amd64 1.11.2-2build1 [30.6 kB]
-Get:14 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-astroid all 2.3.3-1 [127 kB]
-Get:15 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python3-isort all 4.3.4+ds1-2 [30.7 kB]
-Get:16 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-logilab-common all 1.4.3-2 [119 kB]
-Get:17 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python3-mccabe all 0.6.1-3 [8,488 B]
-Get:18 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 pylint all 2.4.4-2 [218 kB]
-Get:19 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-tk amd64 3.8.10-0ubuntu1~20.04 [104 kB]
-Get:20 http://us.archive.ubuntu.com/ubuntu focal/main amd64 socat amd64 1.7.3.3-2 [323 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu focal/main amd64 ssh-import-id all 5.10-0ubuntu1 [10.0 kB]
+Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-sftp-server amd64 1:8.2p1-4ubuntu0.9 [51.7 kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 openssh-server amd64 1:8.2p1-4ubuntu0.9 [377 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 ssh all 1:8.2p1-4ubuntu0.9 [5,084 B]
+Get:4 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtcl8.6 amd64 8.6.10+dfsg-1 [902 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libtk8.6 amd64 8.6.10-1 [714 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu focal/main amd64 tk8.6-blt2.5 amd64 2.5.3+dfsg-4 [572 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu focal/main amd64 blt amd64 2.5.3+dfsg-4 [4,944 B]
+Get:8 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 help2man amd64 1.47.13 [173 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 iperf amd64 2.0.13+dfsg1-1build1 [76.5 kB]
+Get:10 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 ncurses-term all 6.2-0ubuntu2.1 [249 kB]
+Get:11 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-lazy-object-proxy amd64 1.4.3-1build1 [17.9 kB]
+Get:12 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-wrapt amd64 1.11.2-2build1 [30.6 kB]
+Get:13 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-astroid all 2.3.3-1 [127 kB]
+Get:14 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python3-isort all 4.3.4+ds1-2 [30.7 kB]
+Get:15 http://us.archive.ubuntu.com/ubuntu focal/main amd64 python3-logilab-common all 1.4.3-2 [119 kB]
+Get:16 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python3-mccabe all 0.6.1-3 [8,488 B]
+Get:17 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 pylint all 2.4.4-2 [218 kB]
+Get:18 http://us.archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-tk amd64 3.8.10-0ubuntu1~20.04 [104 kB]
+Get:19 http://us.archive.ubuntu.com/ubuntu focal/main amd64 socat amd64 1.7.3.3-2 [323 kB]
+Get:20 http://us.archive.ubuntu.com/ubuntu focal/main amd64 ssh-import-id all 5.10-0ubuntu1 [10.0 kB]
 Preconfiguring packages ...
-Fetched 4,784 kB in 1s (6,607 kB/s)
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 158324 files and directories currently installed.)
-Preparing to unpack .../00-openssh-client_1%3a8.2p1-4ubuntu0.8_amd64.deb ...
-Unpacking openssh-client (1:8.2p1-4ubuntu0.8) over (1:8.2p1-4ubuntu0.7) ...
+Fetched 4,115 kB in 1s (5,075 kB/s)
 Selecting previously unselected package openssh-sftp-server.
-Preparing to unpack .../01-openssh-sftp-server_1%3a8.2p1-4ubuntu0.8_amd64.deb ...
-Unpacking openssh-sftp-server (1:8.2p1-4ubuntu0.8) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 158359 files and directories currently installed.)
+Preparing to unpack .../00-openssh-sftp-server_1%3a8.2p1-4ubuntu0.9_amd64.deb ...
+Unpacking openssh-sftp-server (1:8.2p1-4ubuntu0.9) ...
 Selecting previously unselected package openssh-server.
-Preparing to unpack .../02-openssh-server_1%3a8.2p1-4ubuntu0.8_amd64.deb ...
-Unpacking openssh-server (1:8.2p1-4ubuntu0.8) ...
+Preparing to unpack .../01-openssh-server_1%3a8.2p1-4ubuntu0.9_amd64.deb ...
+Unpacking openssh-server (1:8.2p1-4ubuntu0.9) ...
 Selecting previously unselected package ssh.
-Preparing to unpack .../03-ssh_1%3a8.2p1-4ubuntu0.8_all.deb ...
-Unpacking ssh (1:8.2p1-4ubuntu0.8) ...
+Preparing to unpack .../02-ssh_1%3a8.2p1-4ubuntu0.9_all.deb ...
+Unpacking ssh (1:8.2p1-4ubuntu0.9) ...
 Selecting previously unselected package libtcl8.6:amd64.
-Preparing to unpack .../04-libtcl8.6_8.6.10+dfsg-1_amd64.deb ...
+Preparing to unpack .../03-libtcl8.6_8.6.10+dfsg-1_amd64.deb ...
 Unpacking libtcl8.6:amd64 (8.6.10+dfsg-1) ...
 Selecting previously unselected package libtk8.6:amd64.
-Preparing to unpack .../05-libtk8.6_8.6.10-1_amd64.deb ...
+Preparing to unpack .../04-libtk8.6_8.6.10-1_amd64.deb ...
 Unpacking libtk8.6:amd64 (8.6.10-1) ...
 Selecting previously unselected package tk8.6-blt2.5.
-Preparing to unpack .../06-tk8.6-blt2.5_2.5.3+dfsg-4_amd64.deb ...
+Preparing to unpack .../05-tk8.6-blt2.5_2.5.3+dfsg-4_amd64.deb ...
 Unpacking tk8.6-blt2.5 (2.5.3+dfsg-4) ...
 Selecting previously unselected package blt.
-Preparing to unpack .../07-blt_2.5.3+dfsg-4_amd64.deb ...
+Preparing to unpack .../06-blt_2.5.3+dfsg-4_amd64.deb ...
 Unpacking blt (2.5.3+dfsg-4) ...
 Selecting previously unselected package help2man.
-Preparing to unpack .../08-help2man_1.47.13_amd64.deb ...
+Preparing to unpack .../07-help2man_1.47.13_amd64.deb ...
 Unpacking help2man (1.47.13) ...
 Selecting previously unselected package iperf.
-Preparing to unpack .../09-iperf_2.0.13+dfsg1-1build1_amd64.deb ...
+Preparing to unpack .../08-iperf_2.0.13+dfsg1-1build1_amd64.deb ...
 Unpacking iperf (2.0.13+dfsg1-1build1) ...
 Selecting previously unselected package ncurses-term.
-Preparing to unpack .../10-ncurses-term_6.2-0ubuntu2.1_all.deb ...
+Preparing to unpack .../09-ncurses-term_6.2-0ubuntu2.1_all.deb ...
 Unpacking ncurses-term (6.2-0ubuntu2.1) ...
 Selecting previously unselected package python3-lazy-object-proxy.
-Preparing to unpack .../11-python3-lazy-object-proxy_1.4.3-1build1_amd64.deb ...
+Preparing to unpack .../10-python3-lazy-object-proxy_1.4.3-1build1_amd64.deb ...
 Unpacking python3-lazy-object-proxy (1.4.3-1build1) ...
 Selecting previously unselected package python3-wrapt.
-Preparing to unpack .../12-python3-wrapt_1.11.2-2build1_amd64.deb ...
+Preparing to unpack .../11-python3-wrapt_1.11.2-2build1_amd64.deb ...
 Unpacking python3-wrapt (1.11.2-2build1) ...
 Selecting previously unselected package python3-astroid.
-Preparing to unpack .../13-python3-astroid_2.3.3-1_all.deb ...
+Preparing to unpack .../12-python3-astroid_2.3.3-1_all.deb ...
 Unpacking python3-astroid (2.3.3-1) ...
 Selecting previously unselected package python3-isort.
-Preparing to unpack .../14-python3-isort_4.3.4+ds1-2_all.deb ...
+Preparing to unpack .../13-python3-isort_4.3.4+ds1-2_all.deb ...
 Unpacking python3-isort (4.3.4+ds1-2) ...
 Selecting previously unselected package python3-logilab-common.
-Preparing to unpack .../15-python3-logilab-common_1.4.3-2_all.deb ...
+Preparing to unpack .../14-python3-logilab-common_1.4.3-2_all.deb ...
 Unpacking python3-logilab-common (1.4.3-2) ...
 Selecting previously unselected package python3-mccabe.
-Preparing to unpack .../16-python3-mccabe_0.6.1-3_all.deb ...
+Preparing to unpack .../15-python3-mccabe_0.6.1-3_all.deb ...
 Unpacking python3-mccabe (0.6.1-3) ...
 Selecting previously unselected package pylint.
-Preparing to unpack .../17-pylint_2.4.4-2_all.deb ...
+Preparing to unpack .../16-pylint_2.4.4-2_all.deb ...
 Unpacking pylint (2.4.4-2) ...
 Selecting previously unselected package python3-tk:amd64.
-Preparing to unpack .../18-python3-tk_3.8.10-0ubuntu1~20.04_amd64.deb ...
+Preparing to unpack .../17-python3-tk_3.8.10-0ubuntu1~20.04_amd64.deb ...
 Unpacking python3-tk:amd64 (3.8.10-0ubuntu1~20.04) ...
 Selecting previously unselected package socat.
-Preparing to unpack .../19-socat_1.7.3.3-2_amd64.deb ...
+Preparing to unpack .../18-socat_1.7.3.3-2_amd64.deb ...
 Unpacking socat (1.7.3.3-2) ...
 Selecting previously unselected package ssh-import-id.
-Preparing to unpack .../20-ssh-import-id_5.10-0ubuntu1_all.deb ...
+Preparing to unpack .../19-ssh-import-id_5.10-0ubuntu1_all.deb ...
 Unpacking ssh-import-id (5.10-0ubuntu1) ...
+Setting up openssh-sftp-server (1:8.2p1-4ubuntu0.9) ...
+Setting up openssh-server (1:8.2p1-4ubuntu0.9) ...
+
+Creating config file /etc/ssh/sshd_config with new version
+Creating SSH2 RSA key; this may take some time ...
+3072 SHA256:94TAC8wfjYqsETANKjmqImEH2QR01QTyHMYWofMct6o root@andyvm (RSA)
+Creating SSH2 ECDSA key; this may take some time ...
+256 SHA256:hsZYe9TpTjhGksq8ur3W8J5o5JBz5KU+gMbECnhDKus root@andyvm (ECDSA)
+Creating SSH2 ED25519 key; this may take some time ...
+256 SHA256:L0O8M9ZXv4KKYJlW14/0sK6MRdO+ahglYi3yapiMJTE root@andyvm (ED25519)
+Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
+rescue-ssh.target is a disabled or a static unit, not starting it.
 Setting up python3-logilab-common (1.4.3-2) ...
-Setting up openssh-client (1:8.2p1-4ubuntu0.8) ...
 Setting up ssh-import-id (5.10-0ubuntu1) ...
 Attempting to convert /etc/ssh/ssh_import_id
 Setting up help2man (1.47.13) ...
@@ -1388,33 +1395,20 @@ Setting up python3-isort (4.3.4+ds1-2) ...
 Setting up python3-mccabe (0.6.1-3) ...
 Setting up python3-lazy-object-proxy (1.4.3-1build1) ...
 Setting up ncurses-term (6.2-0ubuntu2.1) ...
-Setting up openssh-sftp-server (1:8.2p1-4ubuntu0.8) ...
-Setting up openssh-server (1:8.2p1-4ubuntu0.8) ...
-
-Creating config file /etc/ssh/sshd_config with new version
-Creating SSH2 RSA key; this may take some time ...
-3072 SHA256:GeQPir8iyuCuxgb72tB2yv71QCBgxPey5GlWWkd486E root@andyvm (RSA)
-Creating SSH2 ECDSA key; this may take some time ...
-256 SHA256:cQ1r0slliOn4+TtxiRX04uwtqYBAHMLQICNdneE43ag root@andyvm (ECDSA)
-Creating SSH2 ED25519 key; this may take some time ...
-256 SHA256:G/rQVzyM89y4r+OXBuAy28sRdaFjI9sNs6wUHl6xmbw root@andyvm (ED25519)
-Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
-Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
-rescue-ssh.target is a disabled or a static unit, not starting it.
+Setting up ssh (1:8.2p1-4ubuntu0.9) ...
 Setting up libtk8.6:amd64 (8.6.10-1) ...
 Setting up python3-astroid (2.3.3-1) ...
 Setting up pylint (2.4.4-2) ...
 Install pylint for emacs
 Install pylint for emacs
 Setting up tk8.6-blt2.5 (2.5.3+dfsg-4) ...
-Setting up ssh (1:8.2p1-4ubuntu0.8) ...
 Setting up blt (2.5.3+dfsg-4) ...
 Setting up python3-tk:amd64 (3.8.10-0ubuntu1~20.04) ...
 Processing triggers for systemd (245.4-4ubuntu3.22) ...
 Processing triggers for man-db (2.9.1-1) ...
 Processing triggers for install-info (6.7.0.dfsg.2-5) ...
 Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
-Processing triggers for ufw (0.36-6ubuntu1) ...
+Processing triggers for ufw (0.36-6ubuntu1.1) ...
 + sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install --no-install-recommends pyflakes3 pep8
 Reading package lists...
 Building dependency tree...
@@ -1425,7 +1419,7 @@ Recommended packages:
   pyflakes
 The following NEW packages will be installed:
   pep8 pycodestyle pyflakes3 python3-pycodestyle python3-pyflakes
-0 upgraded, 5 newly installed, 0 to remove and 4 not upgraded.
+0 upgraded, 5 newly installed, 0 to remove and 0 not upgraded.
 Need to get 99.4 kB of archives.
 After this operation, 522 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 python3-pycodestyle all 2.5.0-2 [36.7 kB]
@@ -1433,9 +1427,9 @@ Get:2 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 pycodestyle all 2
 Get:3 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 pep8 all 1.7.1-9ubuntu1 [5,568 B]
 Get:4 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 python3-pyflakes all 2.1.1-2ubuntu1 [48.7 kB]
 Get:5 http://us.archive.ubuntu.com/ubuntu focal-updates/universe amd64 pyflakes3 all 2.1.1-2ubuntu1 [3,336 B]
-Fetched 99.4 kB in 0s (484 kB/s)
+Fetched 99.4 kB in 0s (410 kB/s)
 Selecting previously unselected package python3-pycodestyle.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162048 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162083 files and directories currently installed.)
 Preparing to unpack .../python3-pycodestyle_2.5.0-2_all.deb ...
 Unpacking python3-pycodestyle (2.5.0-2) ...
 Selecting previously unselected package pycodestyle.
@@ -1461,7 +1455,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 python3-pip is already the newest version (20.0.2-5ubuntu1.9).
-0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 + python3 -m pip -V
 pip 20.0.2 from /usr/lib/python3/dist-packages/pip (python 3.8)
 + python3 -m pip install pexpect
@@ -1471,7 +1465,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 iproute2 is already the newest version (5.5.0-1ubuntu1).
-0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 + sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install cgroup-tools
 Reading package lists...
 Building dependency tree...
@@ -1480,14 +1474,14 @@ The following additional packages will be installed:
   libcgroup1
 The following NEW packages will be installed:
   cgroup-tools libcgroup1
-0 upgraded, 2 newly installed, 0 to remove and 4 not upgraded.
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
 Need to get 109 kB of archives.
 After this operation, 472 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 libcgroup1 amd64 0.41-10 [42.9 kB]
 Get:2 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 cgroup-tools amd64 0.41-10 [66.2 kB]
-Fetched 109 kB in 0s (526 kB/s)
+Fetched 109 kB in 0s (433 kB/s)
 Selecting previously unselected package libcgroup1:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162109 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162144 files and directories currently installed.)
 Preparing to unpack .../libcgroup1_0.41-10_amd64.deb ...
 Unpacking libcgroup1:amd64 (0.41-10) ...
 Selecting previously unselected package cgroup-tools.
@@ -1503,13 +1497,13 @@ Building dependency tree...
 Reading state information...
 The following NEW packages will be installed:
   cgroupfs-mount
-0 upgraded, 1 newly installed, 0 to remove and 4 not upgraded.
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
 Need to get 6,320 B of archives.
 After this operation, 32.8 kB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 cgroupfs-mount all 1.4 [6,320 B]
-Fetched 6,320 B in 0s (64.2 kB/s)
+Fetched 6,320 B in 0s (69.1 kB/s)
 Selecting previously unselected package cgroupfs-mount.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162158 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162193 files and directories currently installed.)
 Preparing to unpack .../cgroupfs-mount_1.4_all.deb ...
 Unpacking cgroupfs-mount (1.4) ...
 Setting up cgroupfs-mount (1.4) ...
@@ -1536,8 +1530,8 @@ Requirement already satisfied: setuptools in /usr/lib/python3/dist-packages (fro
 Building wheels for collected packages: mininet
   Building wheel for mininet (setup.py): started
   Building wheel for mininet (setup.py): finished with status 'done'
-  Created wheel for mininet: filename=mininet-2.3.1b4-py3-none-any.whl size=160951 sha256=c5799808d980b341771266fb74ee8189ffa28441194f8de05869cd4b65c2875b
-  Stored in directory: /tmp/pip-ephem-wheel-cache-p5a_kae9/wheels/0e/1e/35/ac8f03a4b3ac332b28a82d01ce0bd3f9313ac7b9dd3a92b186
+  Created wheel for mininet: filename=mininet-2.3.1b4-py3-none-any.whl size=160951 sha256=03a5b7fd2904bc90458b313b9843c6b7aad3addaed1fee0146041cfeee00199c
+  Stored in directory: /tmp/pip-ephem-wheel-cache-xr22vvue/wheels/0e/1e/35/ac8f03a4b3ac332b28a82d01ce0bd3f9313ac7b9dd3a92b186
 Successfully built mininet
 Installing collected packages: mininet
 Successfully installed mininet-2.3.1b4
@@ -1573,7 +1567,7 @@ The following NEW packages will be installed:
   libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark13 libwiretap10
   libwsutil11 libxcb-xinerama0 libxcb-xinput0 qt5-gtk-platformtheme tshark
   wireshark wireshark-common wireshark-qt
-0 upgraded, 25 newly installed, 0 to remove and 4 not upgraded.
+0 upgraded, 25 newly installed, 0 to remove and 0 not upgraded.
 Need to get 28.4 MB of archives.
 After this operation, 141 MB of additional disk space will be used.
 Get:1 http://us.archive.ubuntu.com/ubuntu focal/main amd64 libxcb-xinerama0 amd64 1.14-2 [5,260 B]
@@ -1602,9 +1596,9 @@ Get:23 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 tshark amd64 3.2
 Get:24 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 wireshark-qt amd64 3.2.3-1 [3,774 kB]
 Get:25 http://us.archive.ubuntu.com/ubuntu focal/universe amd64 wireshark amd64 3.2.3-1 [5,088 B]
 Preconfiguring packages ...
-Fetched 28.4 MB in 2s (14.8 MB/s)
+Fetched 28.4 MB in 2s (16.3 MB/s)
 Selecting previously unselected package libxcb-xinerama0:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162168 files and directories currently installed.)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 162203 files and directories currently installed.)
 Preparing to unpack .../00-libxcb-xinerama0_1.14-2_amd64.deb ...
 Unpacking libxcb-xinerama0:amd64 (1.14-2) ...
 Selecting previously unselected package libxcb-xinput0:amd64.
@@ -1735,10 +1729,10 @@ Wireshark version 3.2.3 >= 1.12 - returning
 + set +x
 end install mininet:
 + date
-Mon 24 Jul 2023 06:28:14 PM EDT
+Tue 26 Sep 2023 10:43:31 PM EDT
 + cd /home/andy
-+ find /usr/lib /usr/local /home/andy/.local
 + sort
++ find /usr/lib /usr/local /home/andy/.local
 + lsb_release -a
 No LSB modules are available.
 Distributor ID:	Ubuntu
@@ -1780,9 +1774,9 @@ cupshelpers            1.0
 dbus-python            1.2.16              
 defer                  1.0.6               
 distro                 1.4.0               
-distro-info            0.23ubuntu1         
+distro-info            0.23+ubuntu1.1      
 entrypoints            0.3                 
-grpcio                 1.56.2              
+grpcio                 1.58.0              
 httplib2               0.14.0              
 idna                   2.8                 
 isort                  4.3.4               
@@ -1861,9 +1855,9 @@ cupshelpers            1.0
 dbus-python            1.2.16              
 defer                  1.0.6               
 distro                 1.4.0               
-distro-info            0.23ubuntu1         
+distro-info            0.23+ubuntu1.1      
 entrypoints            0.3                 
-grpcio                 1.56.2              
+grpcio                 1.58.0              
 httplib2               0.14.0              
 idna                   2.8                 
 isort                  4.3.4               
@@ -1929,13 +1923,13 @@ xkit                   0.0.0
 ------------------------------------------------------------
 Time and disk space used when installation was complete:
 + date
-Mon 24 Jul 2023 06:28:19 PM EDT
+Tue 26 Sep 2023 10:43:38 PM EDT
 + df -h .
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda5        59G   11G   45G  20% /
+/dev/sda5        59G   12G   44G  21% /
 + df -BM .
 Filesystem     1M-blocks   Used Available Use% Mounted on
-/dev/sda5         59661M 10803M    45797M  20% /
+/dev/sda5         59661M 11616M    44984M  21% /
 + echo ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 + echo 'Output of script p4-environment-info.sh'
@@ -1946,7 +1940,7 @@ Output of script p4-environment-info.sh
 p4-environment-info version 1
 
 $ uname -a
-Linux andyvm 5.15.0-76-generic #83~20.04.1-Ubuntu SMP Wed Jun 21 20:23:31 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+Linux andyvm 5.15.0-84-generic #93~20.04.1-Ubuntu SMP Wed Sep 6 16:15:40 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
 
 ID=ubuntu
 VERSION_ID=20.04
@@ -1954,7 +1948,7 @@ VERSION_ID=20.04
 $ which gcc
 /usr/bin/gcc
 $ gcc --version
-gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
 Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -1963,7 +1957,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 $ which g++
 /usr/bin/g++
 $ g++ --version
-g++ (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
 Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -2064,9 +2058,9 @@ cupshelpers            1.0
 dbus-python            1.2.16              
 defer                  1.0.6               
 distro                 1.4.0               
-distro-info            0.23ubuntu1         
+distro-info            0.23+ubuntu1.1      
 entrypoints            0.3                 
-grpcio                 1.56.2              
+grpcio                 1.58.0              
 httplib2               0.14.0              
 idna                   2.8                 
 isort                  4.3.4               
@@ -2155,9 +2149,9 @@ cupshelpers            1.0
 dbus-python            1.2.16              
 defer                  1.0.6               
 distro                 1.4.0               
-distro-info            0.23ubuntu1         
+distro-info            0.23+ubuntu1.1      
 entrypoints            0.3                 
-grpcio                 1.56.2              
+grpcio                 1.58.0              
 httplib2               0.14.0              
 idna                   2.8                 
 isort                  4.3.4               
@@ -2246,12 +2240,12 @@ Thrift version 0.13.0
 $ which simple_switch
 /usr/bin/simple_switch
 $ simple_switch --version
-1.15.0-7a8843ff
+1.15.0-6ee70b5e
 
 $ which simple_switch_grpc
 /usr/bin/simple_switch_grpc
 $ simple_switch_grpc --version
-1.15.0-7a8843ff
+1.15.0-6ee70b5e
 
 $ which simple_switch_CLI
 /usr/bin/simple_switch_CLI
@@ -2259,163 +2253,165 @@ $ which simple_switch_CLI
 $ which p4c
 /usr/bin/p4c
 $ p4c --version
-p4c 1.2.4.0 (SHA: 71a06fe BUILD: RELEASE)
+p4c 1.2.4.2 (SHA: 624c6be80 BUILD: RELEASE)
 
 $ find /usr | grep p4runtime | sort | xargs ls -ld
--rw-r--r-- 1 root root  50835 Jun 19 13:27 /usr/include/p4/v1/p4runtime.grpc.pb.h
--rw-r--r-- 1 root root 657579 Jun 19 13:27 /usr/include/p4/v1/p4runtime.pb.h
--rw-r--r-- 1 root root   6447 Jun 19 13:27 /usr/lib/python3/dist-packages/p4/v1/p4runtime_pb2_grpc.py
--rw-r--r-- 1 root root 151332 Jun 19 13:27 /usr/lib/python3/dist-packages/p4/v1/p4runtime_pb2.py
--rw-r--r-- 1 root root  52084 Jul 24 18:26 /usr/lib/python3/dist-packages/p4/v1/__pycache__/p4runtime_pb2.cpython-38.pyc
--rw-r--r-- 1 root root   4403 Jul 24 18:26 /usr/lib/python3/dist-packages/p4/v1/__pycache__/p4runtime_pb2_grpc.cpython-38.pyc
+-rw-r--r-- 1 root root  50835 Aug 15 13:41 /usr/include/p4/v1/p4runtime.grpc.pb.h
+-rw-r--r-- 1 root root 703138 Aug 15 13:41 /usr/include/p4/v1/p4runtime.pb.h
+-rw-r--r-- 1 root root   6447 Aug 15 13:41 /usr/lib/python3/dist-packages/p4/v1/p4runtime_pb2_grpc.py
+-rw-r--r-- 1 root root 158512 Aug 15 13:41 /usr/lib/python3/dist-packages/p4/v1/p4runtime_pb2.py
+-rw-r--r-- 1 root root  54475 Sep 26 22:41 /usr/lib/python3/dist-packages/p4/v1/__pycache__/p4runtime_pb2.cpython-38.pyc
+-rw-r--r-- 1 root root   4403 Sep 26 22:41 /usr/lib/python3/dist-packages/p4/v1/__pycache__/p4runtime_pb2_grpc.cpython-38.pyc
 
 $ find /usr/local/lib | grep grpc | sort | xargs ls -ld
-drwxr-sr-x 8 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio
--rw-r--r-- 1 root staff     7340 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_call.py
--rw-r--r-- 1 root staff    13130 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_channel.py
--rw-r--r-- 1 root staff    12120 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_server.py
--rw-r--r-- 1 root staff    24515 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_call.py
--rw-r--r-- 1 root staff    20247 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_channel.py
--rw-r--r-- 1 root staff     3160 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__init__.py
--rw-r--r-- 1 root staff    40119 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_interceptor.py
--rw-r--r-- 1 root staff     4570 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_metadata.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__
--rw-r--r-- 1 root staff     7894 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_call.cpython-38.pyc
--rw-r--r-- 1 root staff    13204 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_channel.cpython-38.pyc
--rw-r--r-- 1 root staff    13945 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_server.cpython-38.pyc
--rw-r--r-- 1 root staff    20468 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_call.cpython-38.pyc
--rw-r--r-- 1 root staff    13087 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_channel.cpython-38.pyc
--rw-r--r-- 1 root staff     2066 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff    32787 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_interceptor.cpython-38.pyc
--rw-r--r-- 1 root staff     4713 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_metadata.cpython-38.pyc
--rw-r--r-- 1 root staff     8023 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_server.cpython-38.pyc
--rw-r--r-- 1 root staff      899 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_typing.cpython-38.pyc
--rw-r--r-- 1 root staff      446 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_utils.cpython-38.pyc
--rw-r--r-- 1 root staff     8659 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_server.py
--rw-r--r-- 1 root staff     1363 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_typing.py
--rw-r--r-- 1 root staff      821 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/aio/_utils.py
--rw-r--r-- 1 root staff     2625 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_auth.py
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta
--rw-r--r-- 1 root staff    27512 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/_client_adaptations.py
--rw-r--r-- 1 root staff    11822 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/implementations.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__init__.py
--rw-r--r-- 1 root staff     5872 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/interfaces.py
--rw-r--r-- 1 root staff     1606 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/_metadata.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__
--rw-r--r-- 1 root staff    17885 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_client_adaptations.cpython-38.pyc
--rw-r--r-- 1 root staff    10059 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/implementations.cpython-38.pyc
--rw-r--r-- 1 root staff      145 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff     6216 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/interfaces.cpython-38.pyc
--rw-r--r-- 1 root staff     1357 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_metadata.cpython-38.pyc
--rw-r--r-- 1 root staff    12090 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_server_adaptations.cpython-38.pyc
--rw-r--r-- 1 root staff     4440 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/utilities.cpython-38.pyc
--rw-r--r-- 1 root staff    13817 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/_server_adaptations.py
--rw-r--r-- 1 root staff     4933 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/beta/utilities.py
--rw-r--r-- 1 root staff    73511 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_channel.py
--rw-r--r-- 1 root staff     6892 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_common.py
--rw-r--r-- 1 root staff     1963 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_compression.py
-drwxr-sr-x 5 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_credentials
--rw-r--r-- 1 root staff   264440 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_credentials/roots.pem
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc
--rwxr-xr-x 1 root staff 11699664 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/cygrpc.cpython-38-x86_64-linux-gnu.so
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__pycache__
--rw-r--r-- 1 root staff      156 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__pycache__
--rw-r--r-- 1 root staff      148 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__pycache__/__init__.cpython-38.pyc
-drwxr-sr-x 4 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio
--rw-r--r-- 1 root staff      660 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__pycache__
--rw-r--r-- 1 root staff      248 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff      973 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/gevent.py
--rw-r--r-- 1 root staff     4058 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__
--rw-r--r-- 1 root staff      641 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/gevent.cpython-38.pyc
--rw-r--r-- 1 root staff     3401 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff     1488 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/session_cache.cpython-38.pyc
--rw-r--r-- 1 root staff     1533 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/experimental/session_cache.py
-drwxr-sr-x 6 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common
--rw-r--r-- 1 root staff      988 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/cardinality.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__
--rw-r--r-- 1 root staff      722 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/cardinality.cpython-38.pyc
--rw-r--r-- 1 root staff      157 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff      552 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/style.cpython-38.pyc
--rw-r--r-- 1 root staff      824 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/style.py
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation
--rw-r--r-- 1 root staff      872 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/abandonment.py
--rw-r--r-- 1 root staff     3120 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/callable_util.py
--rw-r--r-- 1 root staff     8055 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/future.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__init__.py
--rw-r--r-- 1 root staff     2276 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/logging_pool.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__
--rw-r--r-- 1 root staff      603 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/abandonment.cpython-38.pyc
--rw-r--r-- 1 root staff     3109 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/callable_util.cpython-38.pyc
--rw-r--r-- 1 root staff     7052 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/future.cpython-38.pyc
--rw-r--r-- 1 root staff      161 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff     2478 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/logging_pool.cpython-38.pyc
--rw-r--r-- 1 root staff     1234 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/stream.cpython-38.pyc
--rw-r--r-- 1 root staff     4518 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/stream_util.cpython-38.pyc
--rw-r--r-- 1 root staff     1353 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/stream.py
--rw-r--r-- 1 root staff     4772 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/stream_util.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/__init__.py
-drwxr-sr-x 5 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base
--rw-r--r-- 1 root staff    11866 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/base.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__
--rw-r--r-- 1 root staff    12972 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/base.cpython-38.pyc
--rw-r--r-- 1 root staff      166 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff     1898 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/utilities.cpython-38.pyc
--rw-r--r-- 1 root staff     2455 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/utilities.py
-drwxr-sr-x 3 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face
--rw-r--r-- 1 root staff    39339 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/face.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__
--rw-r--r-- 1 root staff    38597 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/face.cpython-38.pyc
--rw-r--r-- 1 root staff      166 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff     5414 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/utilities.cpython-38.pyc
--rw-r--r-- 1 root staff     6711 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/utilities.py
--rw-r--r-- 1 root staff      577 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__init__.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__pycache__
--rw-r--r-- 1 root staff      161 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__pycache__/__init__.cpython-38.pyc
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/__pycache__
--rw-r--r-- 1 root staff      150 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/framework/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff       26 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_grpcio_metadata.py
--rw-r--r-- 1 root staff    81405 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__init__.py
--rw-r--r-- 1 root staff    25562 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_interceptor.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info
--rw-r--r-- 1 root staff        4 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info/INSTALLER
--rw-r--r-- 1 root staff    29687 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info/LICENSE
--rw-r--r-- 1 root staff     3996 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info/METADATA
--rw-r--r-- 1 root staff     8427 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info/RECORD
--rw-r--r-- 1 root staff        5 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info/top_level.txt
--rw-r--r-- 1 root staff      148 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpcio-1.56.2.dist-info/WHEEL
--rw-r--r-- 1 root staff     4309 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_plugin_wrapping.py
-drwxr-sr-x 2 root staff     4096 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__
--rw-r--r-- 1 root staff     2216 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_auth.cpython-38.pyc
--rw-r--r-- 1 root staff    51648 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_channel.cpython-38.pyc
--rw-r--r-- 1 root staff     5798 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_common.cpython-38.pyc
--rw-r--r-- 1 root staff     1469 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_compression.cpython-38.pyc
--rw-r--r-- 1 root staff      170 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_grpcio_metadata.cpython-38.pyc
--rw-r--r-- 1 root staff    80457 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/__init__.cpython-38.pyc
--rw-r--r-- 1 root staff    20047 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_interceptor.cpython-38.pyc
--rw-r--r-- 1 root staff     3501 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_plugin_wrapping.cpython-38.pyc
--rw-r--r-- 1 root staff     5155 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_runtime_protos.cpython-38.pyc
--rw-r--r-- 1 root staff    33010 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_server.cpython-38.pyc
--rw-r--r-- 1 root staff    17936 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_simple_stubs.cpython-38.pyc
--rw-r--r-- 1 root staff     1479 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_typing.cpython-38.pyc
--rw-r--r-- 1 root staff     5856 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_utilities.cpython-38.pyc
--rw-r--r-- 1 root staff     5792 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_runtime_protos.py
--rw-r--r-- 1 root staff    45053 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_server.py
--rw-r--r-- 1 root staff    23408 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_simple_stubs.py
--rw-r--r-- 1 root staff     2667 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_typing.py
--rw-r--r-- 1 root staff     5992 Jul 24 18:27 /usr/local/lib/python3.8/dist-packages/grpc/_utilities.py
+drwxr-sr-x 8 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio
+-rw-r--r-- 1 root staff     7185 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_call.py
+-rw-r--r-- 1 root staff    13134 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_channel.py
+-rw-r--r-- 1 root staff    12062 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_server.py
+-rw-r--r-- 1 root staff    24929 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_call.py
+-rw-r--r-- 1 root staff    20679 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_channel.py
+-rw-r--r-- 1 root staff     3160 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__init__.py
+-rw-r--r-- 1 root staff    40789 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_interceptor.py
+-rw-r--r-- 1 root staff     4570 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_metadata.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__
+-rw-r--r-- 1 root staff     7902 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_call.cpython-38.pyc
+-rw-r--r-- 1 root staff    13204 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_channel.cpython-38.pyc
+-rw-r--r-- 1 root staff    13945 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_server.cpython-38.pyc
+-rw-r--r-- 1 root staff    20710 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_call.cpython-38.pyc
+-rw-r--r-- 1 root staff    13083 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_channel.cpython-38.pyc
+-rw-r--r-- 1 root staff     2066 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff    32909 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_interceptor.cpython-38.pyc
+-rw-r--r-- 1 root staff     4713 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_metadata.cpython-38.pyc
+-rw-r--r-- 1 root staff     8031 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_server.cpython-38.pyc
+-rw-r--r-- 1 root staff      899 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_typing.cpython-38.pyc
+-rw-r--r-- 1 root staff      446 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_utils.cpython-38.pyc
+-rw-r--r-- 1 root staff     8630 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_server.py
+-rw-r--r-- 1 root staff     1378 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_typing.py
+-rw-r--r-- 1 root staff      821 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/aio/_utils.py
+-rw-r--r-- 1 root staff     2635 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_auth.py
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta
+-rw-r--r-- 1 root staff    27023 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/_client_adaptations.py
+-rw-r--r-- 1 root staff    12058 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/implementations.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__init__.py
+-rw-r--r-- 1 root staff     6082 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/interfaces.py
+-rw-r--r-- 1 root staff     1638 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/_metadata.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__
+-rw-r--r-- 1 root staff    18077 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_client_adaptations.cpython-38.pyc
+-rw-r--r-- 1 root staff    10309 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/implementations.cpython-38.pyc
+-rw-r--r-- 1 root staff      145 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     6426 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/interfaces.cpython-38.pyc
+-rw-r--r-- 1 root staff     1363 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_metadata.cpython-38.pyc
+-rw-r--r-- 1 root staff    12122 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_server_adaptations.cpython-38.pyc
+-rw-r--r-- 1 root staff     4462 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff    14611 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/_server_adaptations.py
+-rw-r--r-- 1 root staff     5005 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/beta/utilities.py
+-rw-r--r-- 1 root staff    76304 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_channel.py
+-rw-r--r-- 1 root staff     6784 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_common.py
+-rw-r--r-- 1 root staff     1983 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_compression.py
+drwxr-sr-x 5 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_credentials
+-rw-r--r-- 1 root staff   264440 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_credentials/roots.pem
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc
+-rwxr-xr-x 1 root staff 11971464 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/cygrpc.cpython-38-x86_64-linux-gnu.so
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__pycache__
+-rw-r--r-- 1 root staff      156 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__pycache__
+-rw-r--r-- 1 root staff      148 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__pycache__/__init__.cpython-38.pyc
+drwxr-sr-x 4 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio
+-rw-r--r-- 1 root staff      660 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__pycache__
+-rw-r--r-- 1 root staff      248 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff      973 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/gevent.py
+-rw-r--r-- 1 root staff     4103 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__
+-rw-r--r-- 1 root staff      641 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/gevent.cpython-38.pyc
+-rw-r--r-- 1 root staff     3400 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     1488 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/session_cache.cpython-38.pyc
+-rw-r--r-- 1 root staff     1533 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/experimental/session_cache.py
+drwxr-sr-x 6 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common
+-rw-r--r-- 1 root staff      988 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/cardinality.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__
+-rw-r--r-- 1 root staff      722 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/cardinality.cpython-38.pyc
+-rw-r--r-- 1 root staff      157 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff      552 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/style.cpython-38.pyc
+-rw-r--r-- 1 root staff      824 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/style.py
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation
+-rw-r--r-- 1 root staff      878 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/abandonment.py
+-rw-r--r-- 1 root staff     3151 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/callable_util.py
+-rw-r--r-- 1 root staff     8373 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/future.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__init__.py
+-rw-r--r-- 1 root staff     2248 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/logging_pool.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__
+-rw-r--r-- 1 root staff      609 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/abandonment.cpython-38.pyc
+-rw-r--r-- 1 root staff     3167 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/callable_util.cpython-38.pyc
+-rw-r--r-- 1 root staff     7370 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/future.cpython-38.pyc
+-rw-r--r-- 1 root staff      161 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     2494 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/logging_pool.cpython-38.pyc
+-rw-r--r-- 1 root staff     1258 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/stream.cpython-38.pyc
+-rw-r--r-- 1 root staff     4518 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/stream_util.cpython-38.pyc
+-rw-r--r-- 1 root staff     1377 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/stream.py
+-rw-r--r-- 1 root staff     4772 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/stream_util.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/__init__.py
+drwxr-sr-x 5 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base
+-rw-r--r-- 1 root staff    12233 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/base.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__
+-rw-r--r-- 1 root staff    13406 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/base.cpython-38.pyc
+-rw-r--r-- 1 root staff      166 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     1956 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff     2361 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/utilities.py
+drwxr-sr-x 3 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face
+-rw-r--r-- 1 root staff    39700 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/face.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__
+-rw-r--r-- 1 root staff    40334 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/face.cpython-38.pyc
+-rw-r--r-- 1 root staff      166 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     5552 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff     6781 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/utilities.py
+-rw-r--r-- 1 root staff      577 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__init__.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__pycache__
+-rw-r--r-- 1 root staff      161 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__pycache__/__init__.cpython-38.pyc
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/__pycache__
+-rw-r--r-- 1 root staff      150 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/framework/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff       26 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_grpcio_metadata.py
+-rw-r--r-- 1 root staff    80646 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__init__.py
+-rw-r--r-- 1 root staff    24938 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_interceptor.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info
+-rw-r--r-- 1 root staff        4 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info/INSTALLER
+-rw-r--r-- 1 root staff    29687 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info/LICENSE
+-rw-r--r-- 1 root staff     3994 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info/METADATA
+-rw-r--r-- 1 root staff     8558 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info/RECORD
+-rw-r--r-- 1 root staff        5 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info/top_level.txt
+-rw-r--r-- 1 root staff      148 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpcio-1.58.0.dist-info/WHEEL
+-rw-r--r-- 1 root staff    10058 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_observability.py
+-rw-r--r-- 1 root staff     4382 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_plugin_wrapping.py
+drwxr-sr-x 2 root staff     4096 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__
+-rw-r--r-- 1 root staff     2218 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_auth.cpython-38.pyc
+-rw-r--r-- 1 root staff    52532 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_channel.cpython-38.pyc
+-rw-r--r-- 1 root staff     5804 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_common.cpython-38.pyc
+-rw-r--r-- 1 root staff     1457 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_compression.cpython-38.pyc
+-rw-r--r-- 1 root staff      170 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_grpcio_metadata.cpython-38.pyc
+-rw-r--r-- 1 root staff    80495 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff    20175 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_interceptor.cpython-38.pyc
+-rw-r--r-- 1 root staff    10281 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_observability.cpython-38.pyc
+-rw-r--r-- 1 root staff     3519 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_plugin_wrapping.cpython-38.pyc
+-rw-r--r-- 1 root staff     5159 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_runtime_protos.cpython-38.pyc
+-rw-r--r-- 1 root staff    33313 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_server.cpython-38.pyc
+-rw-r--r-- 1 root staff    18006 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_simple_stubs.cpython-38.pyc
+-rw-r--r-- 1 root staff     1481 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_typing.cpython-38.pyc
+-rw-r--r-- 1 root staff     5868 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff     5810 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_runtime_protos.py
+-rw-r--r-- 1 root staff    45844 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_server.py
+-rw-r--r-- 1 root staff    22865 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_simple_stubs.py
+-rw-r--r-- 1 root staff     2758 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_typing.py
+-rw-r--r-- 1 root staff     6063 Sep 26 22:42 /usr/local/lib/python3.8/dist-packages/grpc/_utilities.py
 + echo ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 + cd /home/andy
