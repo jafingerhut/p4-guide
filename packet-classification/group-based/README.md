@@ -261,6 +261,14 @@ parallel evaluation process.
 
 ### Field-wise evaluation
 
+Note: The algorithm described here appears to be identical to the one
+in Section 4.1 of [LS1998].  As far as I can tell, their algorithm
+covers all match kinds that can be represented as [min,max] ranges,
+which includes prefix, range, and optional, but not ternary.  Section
+4.2 of that paper has some ideas on reducing the storage and perhaps
+also memory accesses required to create the N-bit bitmap for a single
+field, which are not described in this article.
+
 In this evaluation order, we devise a method where given a single
 lookup field of the packet, we calculate one column of the match
 results in the table above, with the result being an N-bit vector (see
@@ -504,11 +512,12 @@ of TCAM bits used.
 TODO: Add many of the references from the EffiCuts paper to the list
 below, too.
 
-+ Balajee Vamanan, Gwendolyn Voskuilen, T. N. Vijaykumar, "EffiCuts:
-  optimizing packet classification for memory and throughput", ACM
-  SIGCOMM Computer Communication Review, Volume 40, Issue 4, October
-  2010, pp 207–218, https://doi.org/10.1145/1851275.1851208
-+ David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
++ [VVV2010] Balajee Vamanan, Gwendolyn Voskuilen, T. N. Vijaykumar,
+  "EffiCuts: optimizing packet classification for memory and
+  throughput", ACM SIGCOMM Computer Communication Review, Volume 40,
+  Issue 4, October 2010, pp 207–218,
+  https://doi.org/10.1145/1851275.1851208
++ [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
   Classification Benchmark", 2005,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
   + Original ClassBench code released from Washington University, last
@@ -518,9 +527,9 @@ below, too.
     https://github.com/lucansky/classbench-ng
   + Technical report version,
     https://openscholarship.wustl.edu/cse_research/1001/
-+ T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based Packet
-  Forwarding Using Efficient Multi-dimensional Range Matching", 1998,
-  https://dl.acm.org/doi/10.1145/285237.285283
++ [LS1998] T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based
+  Packet Forwarding Using Efficient Multi-dimensional Range Matching",
+  1998, https://dl.acm.org/doi/10.1145/285237.285283
 
 Patented technology related to packet classification problem:
 
