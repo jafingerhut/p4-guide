@@ -440,3 +440,24 @@ below, too.
   optimizing packet classification for memory and throughput", ACM
   SIGCOMM Computer Communication Review, Volume 40, Issue 4, October
   2010, pp 207–218, https://doi.org/10.1145/1851275.1851208
++ David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
+  Classification Benchmark", 2005,
+  https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
+  + Original ClassBench code released from Washington University, last
+    updated in 2004, https://www.arl.wustl.edu/classbench/
+  + classbench-ng, based upon Taylor and Turner's original project
+    that is no longer maintained,
+    https://github.com/lucansky/classbench-ng
+  + Technical report version,
+    https://openscholarship.wustl.edu/cse_research/1001/
+
+
+
+Patented technology related to packet classification problem:
+
++ Two patents filed by Madian Somasundaram as part of startup company
+  Spanslogic:
+  + filed 2004, granted 2007,
+    https://patents.google.com/patent/US7162572B2/en?q=(spanslogic)&inventor=somasundaram&oq=spanslogic+somasundaram
+  + filed 2006,
+    https://patents.google.com/patent/US7321952B2/en?inventor=Madian+Somasundaram
