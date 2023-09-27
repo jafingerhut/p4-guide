@@ -475,6 +475,15 @@ the DASH project.  It represents a set of ranges.
 Some of these questions only make sense with just the right context.
 My apologies if they do not make sense.
 
+Note: Section 5.2, Table 3 of EffiCuts paper is a nice way of
+evaluating a hardware implementation of their algorithm against
+HyperCuts and TCAM, for a hardware implementation, and seems to me to
+take into account the most crucial factors that a hardware designer
+would consider when comparing solutions.  Might want to consider
+something like that for a model similar to CRAM model, but focused on
+designing new hardware, rather than taking advantage of existing RMT
+or dRMT chip.
+
 Can the techniques of the HEXA paper be used to reduce the pointer
 space required for an algorithm like HiCuts, HyperCuts, and/or
 EffiCuts?  It seems like yes.  If yes, how much?  From the memory
