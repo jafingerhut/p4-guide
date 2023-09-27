@@ -61,6 +61,12 @@ The classification problem is: Given a set of rules R and a set of
 fields f, among all rules r in R such that f matches r, find one that
 has the maximum priority.  If no rules in R match, return "none".
 
+Detail: In this definition of the problem, we will explicitly allow
+sequences of rules where more than one are allowed to have the same
+priority value.  In such a case, an algorithm can find _any_ matching
+rule that has the maximum priority, if there is more than one such
+rule with the same maximum priority value.
+
 
 ### Example of the normal classification problem
 
@@ -462,6 +468,25 @@ The `RANGE_LIST_MATCH` match kind mentioned there is a C preprocessor
 macro for one of several possible definitions, one of which is
 `range_list`.  Again, this is a custom type created for the purpose of
 the DASH project.  It represents a set of ranges.
+
+
+# Open questions
+
+Some of these questions only make sense with just the right context.
+My apologies if they do not make sense.
+
+Can the techniques of the HEXA paper be used to reduce the pointer
+space required for an algorithm like HiCuts, HyperCuts, and/or
+EffiCuts?  It seems like yes.  If yes, how much?  From the memory
+savings of EffiCuts vs. HyperCuts described in the EffiCuts paper, I
+suspect the savings for anything except EffiCuts would not be nearly
+as big as the savings provided by using EffiCuts, but perhaps it might
+be noticeable savings for EffiCuts?
+
+Can using TCAM for multi-way branching decisions in a search tree for
+EffiCuts help improve the algorithm at all?  The trick would be to use
+a small amount of TCAM to reduce the SRAM by more than 3X that number
+of TCAM bits used.
 
 
 # References
