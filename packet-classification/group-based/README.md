@@ -512,11 +512,40 @@ of TCAM bits used.
 TODO: Add many of the references from the EffiCuts paper to the list
 below, too.
 
++ DONT_HAVE_COPY [AFR2020] Mahdi Abbasi, Saeideh Vesaghati Fazel, Milad Rafiee,
+  "MBitCuts: optimal bit-level cutting in geometric space packet
+  classification" The Journal of Supercomputing volume 76, pages
+  3105–3128 (2020)
+  https://link.springer.com/article/10.1007/s11227-019-03090-3
++ DONT_HAVE_COPY [LSZGL2017] Zhi Liu, Shijie Sun, Hang Zhu, Jiaqi Gao, Jun Li,
+  "BitCuts: A fast packet classification algorithm using bit-level
+  cutting", 2017, https://doi.org/10.1016/j.comcom.2017.05.001
+  + Short public paper that might be a subset or earlier version of
+    the full paper above: SIGCOMM 2015,
+    https://conferences.sigcomm.org/sigcomm/2015/pdf/papers/p339.pdf
++ DONT_HAVE_COPY [YFJXL2014] B. Yang, J. Fong, W. Jiang, Y. Xue, J. Li, "Practical
+  Multituple Packet Classification Using Dynamic Discrete Bit
+  Selection," in IEEE Transactions on Computers, vol. 63, no. 2,
+  pp. 424-434, Feb. 2014, https://doi.org/10.1109/TC.2012.191
++ [KNRCE2014] Kirill Kogan, Sergey Nikolenko, Ori Rottenstreich,
+  William Culhane, Patrick Eugster, "SAX-PAC (Scalable And eXpressive
+  PAcket Classification)", SIGCOMM 2014,
+  http://dx.doi.org/10.1145/2619239.2626294
++ DONT_HAVE_COPY [LL2013] Wenjun Li, Xianfeng Li, "HybridCuts: A Scheme Combining
+  Decomposition and Cutting for Packet Classification", 2013,
+  https://doi.org/10.1109/HOTI.2013.12
 + [VVV2010] Balajee Vamanan, Gwendolyn Voskuilen, T. N. Vijaykumar,
   "EffiCuts: optimizing packet classification for memory and
   throughput", ACM SIGCOMM Computer Communication Review, Volume 40,
   Issue 4, October 2010, pp 207–218,
   https://doi.org/10.1145/1851275.1851208
+  + This claims to be an implementation of EffiCuts written by the
+    paper's authors, and modified by another person after that:
+    https://github.com/kun2012/compressedcut
++ DONT_HAVE_COPY [QXYXL2009] Y. Qi, L. Xu, B. Yang, Y. Xue, J. Li, "Packet
+  Classification Algorithms: From Theory to Practice," IEEE INFOCOM
+  2009, Rio de Janeiro, Brazil, 2009, pp. 648-656,
+  https://doi.org/10.1109/INFCOM.2009.5061972
 + [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
   Classification Benchmark", 2005,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
@@ -527,6 +556,9 @@ below, too.
     https://github.com/lucansky/classbench-ng
   + Technical report version,
     https://openscholarship.wustl.edu/cse_research/1001/
++ [SBVW2003] Sumeet Singh, Florin Baboescu, George Varghese, Jia Wang,
+  "Packet classification using multidimensional cutting", SIGCOMM
+  2003, https://doi.org/10.1145/863955.863980
 + [LS1998] T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based
   Packet Forwarding Using Efficient Multi-dimensional Range Matching",
   1998, https://dl.acm.org/doi/10.1145/285237.285283
