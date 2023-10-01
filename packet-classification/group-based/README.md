@@ -508,10 +508,19 @@ of TCAM bits used.
 
 # References
 
+I am keeping these at least close to the order of most recent
+publications first.  This is not in any way implying that the most
+recent ones are the most important.
 
-TODO: Add many of the references from the EffiCuts paper to the list
-below, too.
-
++ [LXLSRXLW2022] Yuxi Liu, Yao Xin, Wenjun Li, Haoyu Song, Ori
+  Rottenstreich, Gaogang Xie, Weichao Li, Yi Wang, "HybridTSS: A
+  Recursive Scheme Combining Coarse- and Fine-Grained Tuples for
+  Packet Classification", 2022, http://wenjunli.com/HybridTSS/
++ [XLJLXLTZ2021] Yao Xin, Wenjun Li, Chengjun Jia, Xianfeng Li, Yang
+  Xu, Bin Liu, Zhihong Tian, Weizhe Zhang, "Extended Journal Paper:
+  Recursive Multi-Tree Construction with Efficient Rule Sifting for
+  Packet Classification on FPGA (Under Review)", 2021,
+  http://www.wenjunli.com/KickTree/
 + [AFR2020] Mahdi Abbasi, Saeideh Vesaghati Fazel, Milad Rafiee,
   "MBitCuts: optimal bit-level cutting in geometric space packet
   classification" The Journal of Supercomputing volume 76, pages
@@ -539,9 +548,8 @@ below, too.
   throughput", ACM SIGCOMM Computer Communication Review, Volume 40,
   Issue 4, October 2010, pp 207–218,
   https://doi.org/10.1145/1851275.1851208
-  + This claims to be an implementation of EffiCuts written by the
-    paper's authors, and modified by another person after that:
-    https://github.com/kun2012/compressedcut
+  + See the compressedcut Github repository mentioned below for a
+    possible EffiCuts implementation.
 + [QXYXL2009] Y. Qi, L. Xu, B. Yang, Y. Xue, J. Li, "Packet
   Classification Algorithms: From Theory to Practice," IEEE INFOCOM
   2009, Rio de Janeiro, Brazil, 2009, pp. 648-656,
@@ -549,19 +557,32 @@ below, too.
 + [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
   Classification Benchmark", 2005,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
-  + Original ClassBench code released from Washington University, last
-    updated in 2004, https://www.arl.wustl.edu/classbench/
-  + classbench-ng, based upon Taylor and Turner's original project
-    that is no longer maintained,
-    https://github.com/lucansky/classbench-ng
   + Technical report version,
     https://openscholarship.wustl.edu/cse_research/1001/
+  + See also mentions of classbench under "Implementations" heading.
 + [SBVW2003] Sumeet Singh, Florin Baboescu, George Varghese, Jia Wang,
   "Packet classification using multidimensional cutting", SIGCOMM
   2003, https://doi.org/10.1145/863955.863980
 + [LS1998] T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based
   Packet Forwarding Using Efficient Multi-dimensional Range Matching",
   1998, https://dl.acm.org/doi/10.1145/285237.285283
+
+
+## Implementations
+
++ https://github.com/wenjunpaper has several projects that appear to
+  have implementations of several kinds of cutting tree packet
+  classification algorithms.
++ This claims to be an implementation of EffiCuts written by the
+  paper's authors, and modified by another person after that:
+  https://github.com/kun2012/compressedcut
++ Original ClassBench code released from Washington University, last
+  updated in 2004, https://www.arl.wustl.edu/classbench/
++ classbench-ng, based upon Taylor and Turner's original project that
+  is no longer maintained, https://github.com/lucansky/classbench-ng
+
+
+## Patents
 
 Patented technology related to packet classification problem:
 
