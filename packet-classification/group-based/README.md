@@ -94,6 +94,14 @@ complex algorithms when a new set of rules R is given, which create
 data structures that can be very efficiently used to classify many
 sets of fields against the same set of rules.
 
+This is not true of all solutions or deployments, though.  Some
+published papers have mentioned that for some deployments, updates to
+the sets of rules can come far more often, and often consist of small
+updates of the form:
+
++ add one new rule r to the existing set of rules R
++ delete one existing rule r from the current set of rules R
+
 
 ### Example of the normal classification problem
 
