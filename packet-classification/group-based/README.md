@@ -21,7 +21,7 @@ group-based classification problem.
 An instance of a "normal" classification problem consists of:
 
 + a set of _fields_ F, where field f can be represented as an unsigned
-  integer with `W(f) bits.
+  integer with W(f) bits.
 + a match kind for each field (see below), and
 + a set of _rules_ R for matching the fields against.
 
