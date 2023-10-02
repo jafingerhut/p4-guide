@@ -476,7 +476,7 @@ I am not certain, but it may be the case that an ACI contract imposes
 an additional constraint on a set of rules: that every value of a
 source or destination address field must be in at most one endpoint
 group (EPG in ACI terminology), which corresponds in the group-based
-classification problem defined below to a set of IP prefixes.
+classification problem to a set of IP prefixes.
 
 
 ## Kubernetes Network Policy
@@ -486,8 +486,7 @@ Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies
 
 Note: I do not know enough of Kubernetes network policy to say whether
 such a policy can be transformed into a group-based classification
-problem as defined below.  I would welcome any examples that can be,
-or cannot be.
+problem.  I would welcome any examples that can be, or cannot be.
 
 
 ## SONiC DASH project ACL
