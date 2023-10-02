@@ -20,9 +20,9 @@ group-based classification problem.
 
 An instance of a "normal" classification problem consists of:
 
-+ a set of _fields_ F, where field f can be represented as a `W_f`-bit
-  unsigned integer.
-+ a match kind for each field, and
++ a set of _fields_ F, where field f can be represented as an unsigned
+  integer with `W(f) bits.
++ a match kind for each field (see below), and
 + a set of _rules_ R for matching the fields against.
 
 Each match kind is one of:
@@ -48,24 +48,51 @@ Each match kind is one of:
   0 for a completely don't care value, or `((1 << W) - 1)` for exact
   value.
 
+Aside: `optional` is a restriction on `prefix`, which in turn is a
+restriction on `ternary`.  `prefix` is also a restriction on `range`.
+Neither of `range` and `ternary` is a restriction of the other.  A
+single exact value can be represented using any of these, e.g. a
+ternary, prefix, or optional field with a mask of `M=(1 << W) - 1` for
+a W-bit field, or a range with MIN and MAX both equal to the one exact
+value to be matched.
+
 Each rule consists of:
 
 + a priority, which is a positive integer
 + For every field f, a match criteria appropriate for the match kind
   of the field.
 
-A set of fields F matches a rule r iff for every field f, the value of
-field f matches the match criteria given in the rule R.
+A set of fields F matches a rule r if and only if for every field f,
+the value of field f matches the match criteria given in the rule R.
 
-The classification problem is: Given a set of rules R and a set of
-fields f, among all rules r in R such that f matches r, find one that
-has the maximum priority.  If no rules in R match, return "none".
+The classification problem has these inputs:
+
++ a set of rules R
++ a set of field values f
+
+and this output:
+
++ Among all rules r in R such that f matches r, find one that has the
+  maximum priority.  If no rules in R match, return "none".
 
 Detail: In this definition of the problem, we will explicitly allow
-sequences of rules where more than one are allowed to have the same
+sets of rules where more than one are allowed to have the same
 priority value.  In such a case, an algorithm can find _any_ matching
 rule that has the maximum priority, if there is more than one such
 rule with the same maximum priority value.
+
+Note that typically, the set of rules R will change only rarely,
+compared to how often we receive a new set of field values f.
+
+For example, a network device may process hundreds of millions of
+packets per second, each with their own independent field values to be
+classified, whereas the set of rules R might change on average once
+per hour, or once every 10 minutes.
+
+Thus there are many solutions to this problem that execute fairly
+complex algorithms when a new set of rules R is given, which create
+data structures that can be very efficiently used to classify many
+sets of fields against the same set of rules.
 
 
 ### Example of the normal classification problem
@@ -389,7 +416,7 @@ classify the packets in a layer of host CPU software beneath all
 VMs/containers, such as a hypervisor, or it could be performed in the
 host's NIC.
 
-Suppose you wish to classify packets based on a sequence of normal or
+Suppose you wish to classify packets based on a set of normal or
 group-based rules that is "globally configured across the network" by
 the network owner.  Each rule contains both source and destination IP
 addresses and/or prefixes, plus any other fields of interest
@@ -397,14 +424,14 @@ addresses and/or prefixes, plus any other fields of interest
 values, but perhaps other fields, too).
 
 A host might have many VMs or containers running on it.  Consider a
-single VM or container, H.  Starting with the full sequence of
-classification rules R, create a sequence of rules R(H) that is
-specialized for packets sent by H, by assuming that the source IP
-address of every packet is equal to H's IP address A.  In practice,
-many of the rules will never match for packets with source address A,
-and they can be eliminated from R(H).  For all remaining rules that
-might match when the packet's source address is A, we can eliminate
-the source IP address field from every rule.
+single VM or container, H.  Starting with the full set of
+classification rules R, create a set of rules R(H) that is specialized
+for packets sent by H, by assuming that the source IP address of every
+packet is equal to H's IP address A.  In practice, many of the rules
+will never match for packets with source address A, and they can be
+eliminated from R(H).  For all remaining rules that might match when
+the packet's source address is A, we can eliminate the source IP
+address field from every rule.
 
 When a packet is sent by H, the hypervisor or NIC implementing
 classification can begin the classification by looking up the packet's
