@@ -574,6 +574,9 @@ recent ones are the most important.
   William Culhane, Patrick Eugster, "SAX-PAC (Scalable And eXpressive
   PAcket Classification)", SIGCOMM 2014,
   http://dx.doi.org/10.1145/2619239.2626294
++ DONT_HAVE_COPY Hyesook Lim, Nara Lee, Geumdan Jin, Jungwon Lee,
+  Youngju Choi, Changhoon Yim, "Boundary Cutting for Packet
+  Classification", 2014, https://doi.org/10.1109/TNET.2013.2254124
 + [LL2013] Wenjun Li, Xianfeng Li, "HybridCuts: A Scheme Combining
   Decomposition and Cutting for Packet Classification", 2013,
   https://doi.org/10.1109/HOTI.2013.12
