@@ -385,7 +385,7 @@ both the normal and group-based classification problems.
 #### Field has match kind range
 
 For fields with a small number of bits W, the technique for match kind
-ternary (described below) also course works here.
+ternary (described below) also works here.
 
 For arbitrary size fields, it is possible to construct a binary or
 multi-way search tree that compares the lookup field value against
