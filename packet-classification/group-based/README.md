@@ -546,15 +546,16 @@ I am keeping these at least close to the order of most recent
 publications first.  This is not in any way implying that the most
 recent ones are the most important.
 
-+ [LXLSRXLW2022] Yuxi Liu, Yao Xin, Wenjun Li, Haoyu Song, Ori
++ [LXLS+2022] Yuxi Liu, Yao Xin, Wenjun Li, Haoyu Song, Ori
   Rottenstreich, Gaogang Xie, Weichao Li, Yi Wang, "HybridTSS: A
   Recursive Scheme Combining Coarse- and Fine-Grained Tuples for
   Packet Classification", 2022, http://wenjunli.com/HybridTSS/
-+ [XLJLXLTZ2021] Yao Xin, Wenjun Li, Chengjun Jia, Xianfeng Li, Yang
-  Xu, Bin Liu, Zhihong Tian, Weizhe Zhang, "Extended Journal Paper:
++ [XLJL+2021] Yao Xin, Wenjun Li, Chengjun Jia, Xianfeng Li, Yang Xu,
+  Bin Liu, Zhihong Tian, Weizhe Zhang, "Extended Journal Paper:
   Recursive Multi-Tree Construction with Efficient Rule Sifting for
   Packet Classification on FPGA (Under Review)", 2021,
   http://www.wenjunli.com/KickTree/
+  + My [comments on KickTree](kicktree.md)
 + [AFR2020] Mahdi Abbasi, Saeideh Vesaghati Fazel, Milad Rafiee,
   "MBitCuts: optimal bit-level cutting in geometric space packet
   classification" The Journal of Supercomputing volume 76, pages
