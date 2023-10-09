@@ -459,25 +459,36 @@ fi
 
 if [ \( "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" \) -o \( "${ID}" = "fedora" -a "${VERSION_ID}" = "35" \) ]
 then
-    # Install more recent versions of autoconf and automake than those
-    # that are installed by the Ubuntu 20.04 packages.  That helps
-    # cause Python packages to be installed in the venv while building
-    # grpc and behavioral-model below.
-    wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
-    tar xkzf automake-1.16.5.tar.gz
-    cd automake-1.16.5
-    ./configure
-    make
-    sudo make install
-    cd ..
+    if [ -d automake-1.16.5 ]
+    then
+	echo "Found directory ${INSTALL_DIR}/automake-1.16.5.  Assuming desired version of automake-1.16.5 is already installed."
+    else
 
-    wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz
-    tar xkzf autoconf-2.71.tar.gz
-    cd autoconf-2.71
-    ./configure
-    make
-    sudo make install
-    cd ..
+	# Install more recent versions of autoconf and automake than those
+	# that are installed by the Ubuntu 20.04 packages.  That helps
+	# cause Python packages to be installed in the venv while building
+	# grpc and behavioral-model below.
+	wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
+	tar xkzf automake-1.16.5.tar.gz
+	cd automake-1.16.5
+	./configure
+	make
+	sudo make install
+	cd ..
+    fi
+
+    if [ -d autoconf-2.71 ]
+    then
+	echo "Found directory ${INSTALL_DIR}/autoconf-2.71.  Assuming desired version of autoconf-2.71 is already installed."
+    else
+	wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz
+	tar xkzf autoconf-2.71.tar.gz
+	cd autoconf-2.71
+	./configure
+	make
+	sudo make install
+	cd ..
+    fi
 
     if [ "${ID}" = "ubuntu" ]
     then
@@ -530,17 +541,22 @@ date
 ${PIP_SUDO} pip3 install protobuf==3.18.1
 
 cd "${INSTALL_DIR}"
-get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
-cd protobuf
-git checkout v3.18.1
-git submodule update --init --recursive
-./autogen.sh
-./configure
-make
-sudo make install
-sudo ldconfig
-# Save about 0.5G of storage by cleaning up protobuf build
-make clean
+if [ -d protobuf ]
+then
+    echo "Found directory ${INSTALL_DIR}/protobuf.  Assuming desired version of protobuf is already installed."
+else
+    get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
+    cd protobuf
+    git checkout v3.18.1
+    git submodule update --init --recursive
+    ./autogen.sh
+    ./configure
+    make
+    sudo make install
+    sudo ldconfig
+    # Save about 0.5G of storage by cleaning up protobuf build
+    make clean
+fi
 
 set +x
 echo "end install protobuf:"
@@ -593,31 +609,36 @@ then
     # below went through with no errors.
 fi
 
-get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-cd grpc
-git checkout v1.43.2
-# These commands are recommended in grpc's BUILDING.md file for Unix:
-git submodule update --init --recursive
-mkdir -p cmake/build
-cd cmake/build
-cmake ../..
-make
-sudo make install
-# I believe the following 2 'pip3 install ...' commands, adapted from
-# similar commands in src/python/grpcio/README.rst, should install the
-# Python3 module grpc.
-debug_dump_many_install_files $HOME/usr-local-2b-before-grpc-pip3.txt
-pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
-cd ../..
-# Before some time in 2023-July, the `pip3 install -rrequirements.txt`
-# command below installed the Cython package version 0.29.35.  After
-# that time, it started installing Cython package version 3.0.0, which
-# gives errors on the `pip3 install .` command afterwards.  Fix this
-# by forcing installation of a known working version of Cython.
-${PIP_SUDO} pip3 install Cython==0.29.35
-${PIP_SUDO} pip3 install -rrequirements.txt
-GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
-sudo ldconfig
+if [ -d grpc ]
+then
+    echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
+else
+    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+    cd grpc
+    git checkout v1.43.2
+    # These commands are recommended in grpc's BUILDING.md file for Unix:
+    git submodule update --init --recursive
+    mkdir -p cmake/build
+    cd cmake/build
+    cmake ../..
+    make
+    sudo make install
+    # I believe the following 2 'pip3 install ...' commands, adapted from
+    # similar commands in src/python/grpcio/README.rst, should install the
+    # Python3 module grpc.
+    debug_dump_many_install_files $HOME/usr-local-2b-before-grpc-pip3.txt
+    pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
+    cd ../..
+    # Before some time in 2023-July, the `pip3 install -rrequirements.txt`
+    # command below installed the Cython package version 0.29.35.  After
+    # that time, it started installing Cython package version 3.0.0, which
+    # gives errors on the `pip3 install .` command afterwards.  Fix this
+    # by forcing installation of a known working version of Cython.
+    ${PIP_SUDO} pip3 install Cython==0.29.35
+    ${PIP_SUDO} pip3 install -rrequirements.txt
+    GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
+    sudo ldconfig
+fi
 
 set +x
 echo "end install grpc:"
@@ -645,29 +666,34 @@ then
     sudo dnf -y install readline-devel valgrind libtool boost-devel boost-system boost-thread
 fi
 
-git clone https://github.com/p4lang/PI
-cd PI
-git submodule update --init --recursive
-git log -n 1
-./autogen.sh
-# Cause 'sudo make install' to install Python packages for PI in a
-# Python virtual environment, if one is in use.
-configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
-if [ "${ID}" = "ubuntu" ]
+if [ -d PI ]
 then
-    ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
-elif [ "${ID}" = "fedora" ]
-then
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
-fi
-make
-sudo make install
+    echo "Found directory ${INSTALL_DIR}/PI.  Assuming desired version of PI is already installed."
+else
+    git clone https://github.com/p4lang/PI
+    cd PI
+    git submodule update --init --recursive
+    git log -n 1
+    ./autogen.sh
+    # Cause 'sudo make install' to install Python packages for PI in a
+    # Python virtual environment, if one is in use.
+    configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
+    if [ "${ID}" = "ubuntu" ]
+    then
+	./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
+    elif [ "${ID}" = "fedora" ]
+    then
+	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
+    fi
+    make
+    sudo make install
 
-# Save about 0.25G of storage by cleaning up PI build
-make clean
-# 'sudo make install' installs several files in ${PYTHON_VENV} with
-# root owner.  Change them to be owned by the regular user id.
-change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+    # Save about 0.25G of storage by cleaning up PI build
+    make clean
+    # 'sudo make install' installs several files in ${PYTHON_VENV} with
+    # root owner.  Change them to be owned by the regular user id.
+    change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+fi
 
 set +x
 echo "end install PI:"
@@ -696,34 +722,39 @@ date
 # needed for experimental gNMI support.  That should all have been
 # done by this time, by the script above.
 
-get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
-cd behavioral-model
-# Get latest updates that are not in the repo cache version
-git pull
-git log -n 1
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
-patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
-# This command installs Thrift, which I want to include in my build of
-# simple_switch_grpc
-./install_deps.sh
-# simple_switch_grpc README.md says to configure and build the bmv2
-# code first, using these commands:
-./autogen.sh
-# Remove 'CXXFLAGS ...' part to disable debug
-if [ "${ID}" = "ubuntu" ]
+if [ -d behavioral-model ]
 then
-    ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
-elif [ "${ID}" = "fedora" ]
-then
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
+    echo "Found directory ${INSTALL_DIR}/behavioral-model.  Assuming desired version of behavioral-model is already installed."
+else
+    get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
+    cd behavioral-model
+    # Get latest updates that are not in the repo cache version
+    git pull
+    git log -n 1
+    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+    patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
+    patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
+    # This command installs Thrift, which I want to include in my build of
+    # simple_switch_grpc
+    ./install_deps.sh
+    # simple_switch_grpc README.md says to configure and build the bmv2
+    # code first, using these commands:
+    ./autogen.sh
+    # Remove 'CXXFLAGS ...' part to disable debug
+    if [ "${ID}" = "ubuntu" ]
+    then
+	./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
+    elif [ "${ID}" = "fedora" ]
+    then
+	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
+    fi
+    make
+    sudo make install-strip
+    sudo ldconfig
+    # 'sudo make install-strip' installs several files in ${PYTHON_VENV}
+    # with root owner.  Change them to be owned by the regular user id.
+    change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 fi
-make
-sudo make install-strip
-sudo ldconfig
-# 'sudo make install-strip' installs several files in ${PYTHON_VENV}
-# with root owner.  Change them to be owned by the regular user id.
-change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 
 set +x
 echo "end install behavioral-model:"
@@ -764,23 +795,28 @@ fi
 ${PIP_SUDO} pip3 install scapy ply
 pip3 list
 
-# Clone p4c and its submodules:
-git clone https://github.com/p4lang/p4c.git
-cd p4c
-git log -n 1
-git submodule update --init --recursive
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-# This patch enables bmv2-ptf tests to pass that read P4Info files
-# with new fields added in 2023-Aug like `has_initial_fields`.
-patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
-mkdir build
-cd build
-# Configure for a debug build and build p4testgen
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
-MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
-make -j${MAX_PARALLEL_JOBS}
-sudo make install
-sudo ldconfig
+if [ -d p4c ]
+then
+    echo "Found directory ${INSTALL_DIR}/p4c.  Assuming desired version of p4c is already installed."
+else
+    # Clone p4c and its submodules:
+    git clone https://github.com/p4lang/p4c.git
+    cd p4c
+    git log -n 1
+    git submodule update --init --recursive
+    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+    # This patch enables bmv2-ptf tests to pass that read P4Info files
+    # with new fields added in 2023-Aug like `has_initial_fields`.
+    patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
+    mkdir build
+    cd build
+    # Configure for a debug build and build p4testgen
+    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+    MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
+    make -j${MAX_PARALLEL_JOBS}
+    sudo make install
+    sudo ldconfig
+fi
 
 set +x
 echo "end install p4c:"
