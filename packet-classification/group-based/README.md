@@ -152,8 +152,8 @@ same set of fields and match kinds as given in the previous example.
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
-| 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {*} | {80} |
-| 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | {17} | {*} | {53, 90-99} |
+| 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {\*} | {80} |
+| 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | {17} | {\*} | {53, 90-99} |
 
 The group-based rules above are equivalent in matching behavior to the
 following normal rules.  We have simply performed a "cross product"
@@ -180,6 +180,101 @@ in a normal classification problem.  For example, a group-based rule
 with 100 SA prefixes, 80 DA prefixes, and 7 DP ranges would become
 `100*80*7 = 56,000` normal rules.  We would prefer a more efficient
 solution than that.
+
+
+### Restricted or specialized versions of the group-based classification problem
+
+
+#### Disjoint groups
+
+This is a restriction on instances of the group-based classification
+problem that is required by some implementations, at least these that
+I know of (see [this
+section](#systems-that-use-something-similar-to-group-based-classification)
+):
+
++ Cisco ACI contracts - at least the initial versions required that
+  the source and destination IP groups were disjoint.  They may have
+  generalized this since I last looked.
++ Cisco Role Based Access Control Lists (RBACL) and SGACL
+
+Definition: A group-based classification problem instance R is
+disjoint on field f if the following is true.
+
+Consider S(R,f), the set of all different match criteria for field f
+in the set of rules R.  S'(R,f) is the same as S(R,f), except if {\*}
+is an element of S(R,f), it is not included in S'(R,f).
+
+Consider all possible values X for field f.  If for every value X, X
+is matched by at most one of the match criteria in S'(R,f), then the
+rule set R is disjoint on field f.
+
+A group-based classification problem instance R is disjoint for a set
+of fields F if it is disjoint for all fields f in F.
+
+Example 2:
+
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {\*} | {80} |
+| 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | {17} | {\*} | {53, 90-99} |
+
+Example 2 is _not_ disjoint on the field SA, because for the field SA
+the set S'(R,SA) contains the match criteria {10.1.1.0/24,
+10.2.0.0/16} and {10.1.1.0/24}.  There ia at least one IP address that
+is matched by both of them, e.g. 10.1.1.1.
+
+Example 3:
+
+| priority | SA | DA | proto | SP | DP |
+| -------- | -- | -- | ----- | -- | -- |
+| 100 | {10.1.2.0/24, 10.2.0.0/16} | {192.169.0.0/16, 192.170.2.38/32} | {6} | {\*} | {80} |
+| 90 | {10.1.1.0/24} | {10.2.0.0/16, 192.168.0.0/16} | {17} | {\*} | {53, 90-99} |
+| 80 | {10.1.1.0/24} | {192.169.0.0/16, 192.170.2.38/32} | {17} | {\*} | {53, 90-99} |
+
+Example 3 is disjoint on the fields SA and DA.  In fact, it is
+disjoint on all fields.  We will consider the fields one at a time
+below.
+
+SA:
+
+S'(R,SA) contains the two match critera {10.1.2.0/24, 10.2.0.0/16} and
+{10.1.1.0/24}.  {10.1.1.0/24} is in two different rules, but that is
+the same match criteria, so is only included in the set S'(R,SA) once.
+There is no single IP address that is matched by both of them.
+
+DA:
+
+S'(R,DA) contains the two match criteria {192.169.0.0/16,
+192.170.2.38/32} and {10.2.0.0/16, 192.168.0.0/16}.  Again, one of the
+match criteria occurs in two different rules, but S'(R,DA) is a set,
+and each element occurs at most once.  There is no single IP address
+that is matched by both of them.
+
+proto:
+
+S'(R,proto) contains the two match criteria {6} and {17}.  There is no
+single protocol value that is matched by both of them.
+
+SP:
+
+S'(R,SP) is empty.  There is no single SP value that is matched by
+more than one match criteria in the set, because there are no match
+criteria in the set.
+
+DP:
+
+S'(R,DP) contains the two match criteria {80} and {53, 90-99}.  There
+is no single SP value that is matched by more than one match criteria.
+
+
+#### Most groups appear multiple times
+
+This is not truly a _restriction_ on problem instances.  Instead, it
+is a property that I believe is be common in many group-based
+classification problem instances, in many use cases.  If so, I believe
+that an algorithm designer might take advantage of this property to
+find a better solution.
 
 
 # Algorithms for the classification problem
@@ -477,6 +572,28 @@ an additional constraint on a set of rules: that every value of a
 source or destination address field must be in at most one endpoint
 group (EPG in ACI terminology), which corresponds in the group-based
 classification problem to a set of IP prefixes.
+
+
+## Cisco Role Based Access Control List (RBAC or RBACL)
+
+I believe this is a synonym for Cisco Security Group Access Control
+List (SGACL), but there may be differences between RBACL and SGACL
+that I am not aware of.  Corrections welcome.
+
+There may be more authoritative sources for configuring these features
+than the ones below.  Internet searches tend to find public Cisco
+documentation fairly eaily.
+
++ SGACL:
+  https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_cts/configuration/xe-16/sec-usr-cts-xe-16-book/sec-cts-sgacl.html
++ RBACL is part of a group of features called TrustSec:
+  https://www.cisco.com/c/en/us/td/docs/switches/lan/trustsec/configuration/guide/trustsec/command_sum.html
+
+I believe that all implementations of RBACL and SGACL on Cisco
+products impose the restriction that the source host groups and
+destination host groups must be disjoint from each other,
+corresponding to the "Groups are disjoint" restricted problem
+described earlier in this article.
 
 
 ## Kubernetes Network Policy
