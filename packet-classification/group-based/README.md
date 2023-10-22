@@ -122,7 +122,7 @@ This corresponds to a mask of 0 for ternary or optional, a prefix
 length of 0 for prefix, or a range including all possible values of
 the field for range.
 
-Rules:
+Example 1 Rules:
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
@@ -150,6 +150,8 @@ matches _any_ of the match criteria.
 As very small example, the group-based rules below are based on the
 same set of fields and match kinds as given in the previous example.
 
+Example 2 rules:
+
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
 | 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {\*} | {80} |
@@ -158,6 +160,8 @@ same set of fields and match kinds as given in the previous example.
 The group-based rules above are equivalent in matching behavior to the
 following normal rules.  We have simply performed a "cross product"
 among the sets for each individual field.
+
+Example 3 rules:
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
@@ -214,14 +218,14 @@ rule set R is disjoint on field f.
 A group-based classification problem instance R is disjoint for a set
 of fields F if it is disjoint for all fields f in F.
 
-Example 2:
+Example 4:
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
 | 100 | {10.1.1.0/24, 10.2.0.0/16} | {192.168.1.0/24, 192.168.2.38/32} | {6} | {\*} | {80} |
 | 90 | {10.1.1.0/24} | {10.3.0.0/16, 192.168.0.0/16} | {17} | {\*} | {53, 90-99} |
 
-Example 2 is _not_ disjoint on the field SA, because for the field SA
+Example 4 is _not_ disjoint on the field SA, because for the field SA
 the set S'(R,SA) contains the match criteria {10.1.1.0/24,
 10.2.0.0/16} and {10.1.1.0/24}.  There is at least one IP address that
 is matched by both of them, e.g. 10.1.1.1.
@@ -231,7 +235,7 @@ contains the match criteria {192.168.1.0/24, 192.168.2.38/32} and
 {10.3.0.0/16, 192.168.0.0/16}.  There is at least one IP address that
 is matched by both of them, e.g. 192.168.1.5.
 
-Example 3:
+Example 5:
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
@@ -239,7 +243,7 @@ Example 3:
 | 90 | {10.1.1.0/24} | {10.2.0.0/16, 192.168.0.0/16} | {17} | {\*} | {53, 90-99} |
 | 80 | {10.1.1.0/24} | {192.169.0.0/16, 192.170.2.38/32} | {17} | {\*} | {53, 90-99} |
 
-Example 3 is disjoint on the fields SA and DA.  In fact, it is
+Example 5 is disjoint on the fields SA and DA.  In fact, it is
 disjoint on all fields.  We will consider the fields one at a time
 below.
 
@@ -298,6 +302,8 @@ classification problem.  See the references section.
 
 If we take the first example of the normal classification problem
 above, with the following rules:
+
+Example 1 Rules:
 
 | priority | SA | DA | proto | SP | DP |
 | -------- | -- | -- | ----- | -- | -- |
