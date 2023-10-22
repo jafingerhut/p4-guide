@@ -194,9 +194,11 @@ section](#systems-that-use-something-similar-to-group-based-classification)
 ):
 
 + Cisco ACI contracts - at least the initial versions required that
-  the source and destination IP groups were disjoint.  They may have
-  generalized this since I last looked.
-+ Cisco Role Based Access Control Lists (RBACL) and SGACL
+  the source and destination IP address fields to have disjoint
+  groups.  They may have generalized this since I last looked (around
+  2020).
++ Cisco Role Based Access Control Lists (RBACL) and SGACL required
+  source and destination IP fields to have disjoint groups.
 
 Definition: A group-based classification problem instance R is
 disjoint on field f if the following is true.
@@ -221,8 +223,13 @@ Example 2:
 
 Example 2 is _not_ disjoint on the field SA, because for the field SA
 the set S'(R,SA) contains the match criteria {10.1.1.0/24,
-10.2.0.0/16} and {10.1.1.0/24}.  There ia at least one IP address that
+10.2.0.0/16} and {10.1.1.0/24}.  There is at least one IP address that
 is matched by both of them, e.g. 10.1.1.1.
+
+Similarly, it is _not_ disjoint on the field DA, because S'(R,DA)
+contains the match criteria {192.168.1.0/24, 192.168.2.38/32} and
+{10.3.0.0/16, 192.168.0.0/16}.  There is at least one IP address that
+is matched by both of them, e.g. 192.168.1.5.
 
 Example 3:
 
@@ -275,6 +282,10 @@ is a property that I believe is be common in many group-based
 classification problem instances, in many use cases.  If so, I believe
 that an algorithm designer might take advantage of this property to
 find a better solution.
+
+TODO: Write an example of this.  It should be one that is _not_
+disjoint on the SA or DA fields, to make explicit that this property
+is not the same as the disjoint groups property.
 
 
 # Algorithms for the classification problem
