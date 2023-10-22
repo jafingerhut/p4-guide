@@ -1,8 +1,8 @@
-diff --git a/backends/bmv2/base_test.py b/backends/bmv2/base_test.py
-index 75c88ddc1..01a78e41b 100644
---- a/backends/bmv2/base_test.py
-+++ b/backends/bmv2/base_test.py
-@@ -219,7 +219,7 @@ class P4RuntimeTest(BaseTest):
+diff --git a/tools/ptf/base_test.py b/tools/ptf/base_test.py
+index dbeb553e5..046c5a42b 100644
+--- a/tools/ptf/base_test.py
++++ b/tools/ptf/base_test.py
+@@ -225,7 +225,7 @@ class P4RuntimeTest(BaseTest):
          testutils.log.info(f"Reading p4info from {proto_txt_path}")
          self.p4info = p4info_pb2.P4Info()
          with open(proto_txt_path, "rb") as fin:
@@ -11,7 +11,7 @@ index 75c88ddc1..01a78e41b 100644
  
          self.import_p4info_names()
  
-@@ -247,7 +247,7 @@ class P4RuntimeTest(BaseTest):
+@@ -256,7 +256,7 @@ class P4RuntimeTest(BaseTest):
          # config.p4info = self.p4info
          proto_txt_path = ptfutils.test_param_get("p4info")
          with open(proto_txt_path, "r", encoding="utf-8") as fin:
@@ -20,7 +20,7 @@ index 75c88ddc1..01a78e41b 100644
          config_path = ptfutils.test_param_get("config")
          testutils.log.info(f"Reading config (compiled P4 program) from {config_path}")
          with open(config_path, "rb") as config_f:
-@@ -1119,7 +1119,7 @@ def update_config(config_path, p4info_path, grpc_addr, device_id):
+@@ -1132,7 +1132,7 @@ def update_config(config_path, p4info_path, grpc_addr, device_id):
      request.device_id = device_id
      config = request.config
      with open(p4info_path, "r", encoding="utf-8") as p4info_f:
