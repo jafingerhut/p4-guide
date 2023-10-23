@@ -641,6 +641,10 @@ else
     ${PIP_SUDO} pip3 install -rrequirements.txt
     GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
     sudo ldconfig
+    # Without the following command, later the command 'pkg-config
+    # --cflags grpc' fails, at least on Ubuntu 23.10 after building
+    # grpc v1.54.2
+    sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
 fi
 
 set +x
