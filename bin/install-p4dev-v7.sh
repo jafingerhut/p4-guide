@@ -635,7 +635,13 @@ else
     git submodule update --init --recursive
     mkdir -p cmake/build
     cd cmake/build
-    cmake ../..
+    # I learned about the cmake option -DgRPC_SSL_PROVIDER=package
+    # from the pages linked below, after experiencing link-time errors
+    # when trying to build behavioral-model with gRPC v1.54.2 and
+    # getting errors that it could not find symbols like OPENSSL_free,
+    # and many others.
+    # https://github.com/grpc/grpc/issues/30524
+    cmake ../.. -DgRPC_SSL_PROVIDER=package
     make
     sudo make install
     # I believe the following 2 'pip3 install ...' commands, adapted from
