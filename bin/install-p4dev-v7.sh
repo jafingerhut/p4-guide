@@ -316,6 +316,7 @@ set -x
 # d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow
 
 PROTOBUF_VERSION="3.21.12"
+PROTOBUF_VERSION_FOR_PIP="4.21.12"
 GRPC_VERSION="1.54.2"
 
 set +x
@@ -352,7 +353,7 @@ echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2023-May-28"
-echo "+ Python packages: protobuf ${PROTOBUF_VERSION}, grpcio ${GRPC_VERSION}"
+echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio ${GRPC_VERSION}"
 echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -552,7 +553,7 @@ echo "start install protobuf:"
 set -x
 date
 
-${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION}
+${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
 
 cd "${INSTALL_DIR}"
 if [ -d protobuf ]
