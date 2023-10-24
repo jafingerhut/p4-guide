@@ -308,6 +308,16 @@ echo "Passed all sanity checks"
 set -e
 set -x
 
+# id protobuf grpc    result
+# -- -------- ------- ------
+# a  3.18.1   1.43.2  protobuf built on 23.10, but grpc build failed
+# b  3.20.3   1.54.2  each built successfully on 23.10, but PI build failed
+# c  3.19.6   1.51.1  each built successfully on 23.10, but PI build failed
+# d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow
+
+PROTOBUF_VERSION="3.21.12"
+GRPC_VERSION="1.54.2"
+
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
@@ -330,8 +340,8 @@ echo "took about 4 hours."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ protobuf: github.com/google/protobuf v3.20.3"
-echo "+ gRPC: github.com/google/grpc.git v1.54.2"
+echo "+ protobuf: github.com/google/protobuf v${PROTOBUF_VERSION}"
+echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2023-Sep-22, also installs these things:"
@@ -342,7 +352,7 @@ echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2023-May-28"
-echo "+ Python packages: protobuf 3.20.3, grpcio 1.54.2"
+echo "+ Python packages: protobuf ${PROTOBUF_VERSION}, grpcio ${GRPC_VERSION}"
 echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -439,7 +449,8 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
-# Install Ubuntu packages needed by protobuf v3.20.3, from its src/README.md
+# Install Ubuntu packages needed by protobuf v${PROTOBUF_VERSION},
+# from its src/README.md
 
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
@@ -541,7 +552,7 @@ echo "start install protobuf:"
 set -x
 date
 
-${PIP_SUDO} pip3 install protobuf==3.20.3
+${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION}
 
 cd "${INSTALL_DIR}"
 if [ -d protobuf ]
@@ -550,7 +561,7 @@ then
 else
     get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
     cd protobuf
-    git checkout v3.20.3
+    git checkout v${PROTOBUF_VERSION}
     git submodule update --init --recursive
     ./autogen.sh
     ./configure
@@ -618,7 +629,7 @@ then
 else
     get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
     cd grpc
-    git checkout v1.54.2
+    git checkout v${GRPC_VERSION}
     # These commands are recommended in grpc's BUILDING.md file for Unix:
     git submodule update --init --recursive
     mkdir -p cmake/build
