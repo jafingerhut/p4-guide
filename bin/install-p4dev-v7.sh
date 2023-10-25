@@ -313,7 +313,7 @@ set -x
 # a  3.18.1   1.43.2  protobuf built on 23.10, but grpc build failed
 # b  3.20.3   1.54.2  each built successfully on 23.10, but PI build failed
 # c  3.19.6   1.51.1  each built successfully on 23.10, but PI build failed
-# d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow
+# d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow.  This attempt also gave linking errors while building behavioral-model, not for OPENSSL_free but for things in ares/cares library, which is installed, but not mentioned on linker command line for some reason.
 
 PROTOBUF_VERSION="3.21.12"
 PROTOBUF_VERSION_FOR_PIP="4.21.12"
