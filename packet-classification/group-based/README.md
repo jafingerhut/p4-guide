@@ -731,6 +731,9 @@ recent ones are the most important.
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
   + Technical report version,
     https://openscholarship.wustl.edu/cse_research/1001/
+  + This is the same as tech report version above, minus 3 title pages
+    at beginning:
+    https://www.arl.wustl.edu/~jon.turner/pubs/2004/wucse-2004-28.pdf
   + See also mentions of classbench under "Implementations" heading.
 + [T2005] David E. Taylor, "Survey and taxonomy of packet
   classification techniques", 2005,
