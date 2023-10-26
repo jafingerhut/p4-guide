@@ -314,12 +314,12 @@ set -x
 # b  3.20.3   1.54.2  each built successfully on 23.10, but PI build failed
 # c  3.19.6   1.51.1  each built successfully on 23.10, but PI build failed
 # d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow.  This attempt also gave linking errors while building behavioral-model, not for OPENSSL_free but for things in ares/cares library, which is installed, but not mentioned on linker command line for some reason.
-# 3  --       1.52.2  error message building behavioral-model related to linker not finding ares/cares library
+# e  --       1.52.2  error message building behavioral-model related to linker not finding ares/cares library
+# f  --       1.51.3  BMv2 built successfully with this version on Ubuntu 23.10, and installed 'protoc --version' with output of 3.21.6
 
-#PROTOBUF_VERSION="3.21.12"
-#PROTOBUF_VERSION_FOR_PIP="4.21.12"
-PROTOBUF_VERSION_FOR_PIP=""
-GRPC_VERSION="1.52.2"
+PROTOBUF_VERSION="3.21.6"
+PROTOBUF_VERSION_FOR_PIP="4.21.6"
+GRPC_VERSION="1.51.3"
 
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
