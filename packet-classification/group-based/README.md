@@ -701,6 +701,12 @@ recent ones are the most important.
   + Short public paper that might be a subset or earlier version of
     the full paper above: SIGCOMM 2015,
     https://conferences.sigcomm.org/sigcomm/2015/pdf/papers/p339.pdf
++ [MALMK2017] Jiří Matoušek, Gianni Antichi, Adam Lučanský, Andrew
+  W. Moore, Jan Kořenek, "ClassBench-ng: Recasting ClassBench After a
+  Decade of Network Evolution", 2017,
+  https://dl.acm.org/doi/10.1109/ANCS.2017.33
+  + Web page for Classbench-ng software:
+    https://classbench-ng.github.io
 + [YFJXL2014] B. Yang, J. Fong, W. Jiang, Y. Xue, J. Li, "Practical
   Multituple Packet Classification Using Dynamic Discrete Bit
   Selection," in IEEE Transactions on Computers, vol. 63, no. 2,
@@ -729,6 +735,7 @@ recent ones are the most important.
 + [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
   Classification Benchmark", 2005,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
+  + See also ClassBench-ng above
   + Technical report version,
     https://openscholarship.wustl.edu/cse_research/1001/
   + This is the same as tech report version above, minus 3 title pages
