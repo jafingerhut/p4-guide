@@ -317,7 +317,6 @@ set -x
 # e  --       1.52.2  error message building behavioral-model related to linker not finding ares/cares library
 # f  --       1.51.3  BMv2 built successfully with this version on Ubuntu 23.10, and installed 'protoc --version' with output of 3.21.6
 
-PROTOBUF_VERSION="3.21.6"
 PROTOBUF_VERSION_FOR_PIP="4.21.6"
 GRPC_VERSION="1.51.3"
 
@@ -343,7 +342,6 @@ echo "took about 4 hours."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ protobuf: github.com/google/protobuf v${PROTOBUF_VERSION}"
 echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
@@ -452,9 +450,6 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
-# Install Ubuntu packages needed by protobuf v${PROTOBUF_VERSION},
-# from its src/README.md
-
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
 
@@ -548,43 +543,15 @@ pip3 list || echo "Some error occurred attempting to run command: pip3"
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files usr-local-1-before-protobuf.txt
 
-set +x
-echo "------------------------------------------------------------"
-echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
-echo "start install protobuf:"
-set -x
-date
+# Do not bother installing protobuf package from source code, as
+# whatever parts of protobuf we need is installed as a result of
+# installing grpc from source code, and/or installing the Python
+# protobuf package using pip.
 
 if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
 then
     ${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
 fi
-
-cd "${INSTALL_DIR}"
-if [ -d protobuf ]
-then
-    echo "Found directory ${INSTALL_DIR}/protobuf.  Assuming desired version of protobuf is already installed."
-else
-    get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
-    cd protobuf
-    git checkout v${PROTOBUF_VERSION}
-    git submodule update --init --recursive
-    ./autogen.sh
-    ./configure
-    make
-    sudo make install
-    sudo ldconfig
-    # Save about 0.5G of storage by cleaning up protobuf build
-    make clean
-fi
-
-set +x
-echo "end install protobuf:"
-set -x
-date
-
-cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-2-after-protobuf.txt
 
 if [ "${ID}" = "ubuntu" ]
 then
