@@ -682,6 +682,13 @@ else
     then
 	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
     fi
+    # Check what version of protoc is installed before the 'make'
+    # command below uses protoc on P4Runtime protobuf definition
+    # files.
+    which protoc
+    type -a protoc
+    protoc --version
+    /usr/local/bin/protoc --version
     make
     sudo make install
 
