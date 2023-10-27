@@ -114,7 +114,7 @@ PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 
 debug_dump_many_install_files() {
     local OUT_FNAME="$1"
-    local DIRNAME=`basename $1 .txt`
+    local DIRNAME="${INSTALL_DIR}/`basename $1 .txt`"
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
@@ -906,8 +906,13 @@ then
     sudo dnf -y install gflags-devel net-tools
 fi
 ${PIP_SUDO} pip3 install psutil crcmod
+# Skip installing p4runtime-shell, at least for now while testing, to
+# verify with a test that installing this package _also_ installs
+# files in the lib/python*/site-packages/p4 directory and
+# sub-directories.  If it does, I want to see how I can prevent it
+# from doing so, or at least control it better.
 # p4runtime-shell package, installed from latest source version
-${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+#${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
 pip3 list
 
 set +x
