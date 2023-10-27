@@ -945,15 +945,6 @@ cd "${INSTALL_DIR}"
 DETS="install-details"
 mkdir -p "${DETS}"
 mv usr-local-*.txt pip3-list-2b-before-grpc-pip3.txt "${DETS}"
-cd "${DETS}"
-diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
-diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
-diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-changes-PI.txt
-diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
-diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
-diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
-diff usr-local-7-after-mininet-install.txt usr-local-8-after-ptf-install.txt > usr-local-file-changes-ptf-install.txt
-diff usr-local-8-after-ptf-install.txt usr-local-9-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
