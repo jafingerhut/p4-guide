@@ -110,11 +110,15 @@ python_version_warning() {
 # to the places where one might hope.
 DEBUG_INSTALL=2
 
+PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
+
 debug_dump_many_install_files() {
     local OUT_FNAME="$1"
+    local DIRNAME=`basename $1 .txt`
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+	/bin/cp -pr ${PYTHON_VENV}/lib/python*/site-packages ${DIRNAME}
     fi
 }
 
@@ -524,7 +528,6 @@ fi
 # attempt to ensure that all new Python packages installed are
 # installed into this virtual environment, not into system-wide
 # directories like /usr/local/bin
-PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 python3 -m venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
 PIP_SUDO=""
@@ -541,7 +544,7 @@ pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-1-before-protobuf.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 
 # Do not bother installing protobuf package from source code, as
 # whatever parts of protobuf we need is installed as a result of
@@ -619,7 +622,7 @@ else
     # I believe the following 2 'pip3 install ...' commands, adapted from
     # similar commands in src/python/grpcio/README.rst, should install the
     # Python3 module grpc.
-    debug_dump_many_install_files $HOME/usr-local-2b-before-grpc-req-pip3.txt
+    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2b-before-grpc-req-pip3.txt
     pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
     cd ../..
     # Before some time in 2023-July, the `pip3 install -rrequirements.txt`
@@ -629,7 +632,7 @@ else
     # by forcing installation of a known working version of Cython.
     ${PIP_SUDO} pip3 install Cython==0.29.35
     ${PIP_SUDO} pip3 install -rrequirements.txt
-    debug_dump_many_install_files $HOME/usr-local-2c-before-grpc-pip3.txt
+    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2c-before-grpc-pip3.txt
     GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
     sudo ldconfig
     # Without the following command, later the command 'pkg-config
@@ -644,7 +647,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-3-after-grpc.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-3-after-grpc.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -706,7 +709,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-4-after-PI.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-4-after-PI.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -767,7 +770,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-5-after-behavioral-model.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -829,7 +832,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-6-after-p4c.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-6-after-p4c.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -859,7 +862,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-7-after-mininet-install.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-7-after-mininet-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -885,7 +888,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-8-after-ptf-install.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-8-after-ptf-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -933,7 +936,7 @@ date
 
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-9-after-miscellaneous-install.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-9-after-miscellaneous-install.txt
 
 pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
