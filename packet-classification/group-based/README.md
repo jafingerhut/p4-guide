@@ -749,6 +749,13 @@ recent ones are the most important.
 + [SBVW2003] Sumeet Singh, Florin Baboescu, George Varghese, Jia Wang,
   "Packet classification using multidimensional cutting", SIGCOMM
   2003, https://doi.org/10.1145/863955.863980
++ [WSV2001] P. Warkhede, S. Suri, G. Varghese, “Fast Packet
+  Classification for Two-Dimensional Conflict-Free Filters,” in IEEE
+  Infocom, 2001,
+  https://cseweb.ucsd.edu/~varghese/PAPERS/infocompriyank.pdf
++ [HSP2000] A. Hari, S. Suri, G. Parulkar, “Detecting and Resolving
+  Packet Filter Conflicts,” in Proceedings of IEEE Infocom, 2000,
+  https://www.researchgate.net/publication/3842432_Detecting_and_resolving_packet_filter_conflicts
 + [LS1998] T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based
   Packet Forwarding Using Efficient Multi-dimensional Range Matching",
   1998, https://dl.acm.org/doi/10.1145/285237.285283
