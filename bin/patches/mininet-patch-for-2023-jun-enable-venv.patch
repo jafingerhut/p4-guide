@@ -1,5 +1,5 @@
 diff --git a/util/install.sh b/util/install.sh
-index 04f85b0..d4364f3 100755
+index 04f85b0..c74b31d 100755
 --- a/util/install.sh
 +++ b/util/install.sh
 @@ -5,6 +5,7 @@
@@ -27,10 +27,13 @@ index 04f85b0..d4364f3 100755
          # Starting around 20.04, installing pyflakes instead of pyflakes3
          # causes Python 2 to be installed, which is exactly NOT what we want.
          if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '>=' 20.04` = "1" ]; then
-@@ -187,10 +189,14 @@ function mn_deps {
+@@ -187,10 +189,17 @@ function mn_deps {
                  pf=pyflakes3
                  pep8=python3-pep8
          fi
++        if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '>=' 23.10` = "1" ]; then
++                pep8=pycodestyle
++        fi
 +        if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '<=' 20.04` = "1" ]; then
 +                pylint=pylint3
 +        fi
@@ -43,7 +46,7 @@ index 04f85b0..d4364f3 100755
  
          # Install pip
          $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
-@@ -211,7 +217,10 @@ function mn_deps {
+@@ -211,7 +220,10 @@ function mn_deps {
  
      echo "Installing Mininet core"
      pushd $MININET_DIR/mininet
@@ -55,7 +58,7 @@ index 04f85b0..d4364f3 100755
      popd
  }
  
-@@ -303,7 +312,7 @@ function install_wireshark {
+@@ -303,7 +315,7 @@ function install_wireshark {
      if ! which wireshark; then
          echo "Installing Wireshark"
          if [ "$DIST" = "Fedora" -o "$DIST" = "RedHatEnterpriseServer" ]; then

@@ -110,11 +110,18 @@ python_version_warning() {
 # to the places where one might hope.
 DEBUG_INSTALL=2
 
+PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
+
 debug_dump_many_install_files() {
     local OUT_FNAME="$1"
+    local DIRNAME="${INSTALL_DIR}/`basename $1 .txt`"
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+    fi
+    if [ ${DEBUG_INSTALL} -ge 3 ]
+    then
+	/bin/cp -pr ${PYTHON_VENV}/lib/python*/site-packages ${DIRNAME}
     fi
 }
 
@@ -181,6 +188,9 @@ then
 	    supported_distribution=1
 	    ;;
 	23.04)
+	    supported_distribution=1
+	    ;;
+	23.10)
 	    supported_distribution=1
 	    ;;
     esac
@@ -305,6 +315,27 @@ echo "Passed all sanity checks"
 set -e
 set -x
 
+# Brief notes on some experiments I did late in 2023-Oct with
+# different combinations of versions of protobuf and grpc:
+#
+# id protobuf grpc    result
+# -- -------- ------- ------
+# a  3.18.1   1.43.2  protobuf built on 23.10, but grpc build failed
+# b  3.20.3   1.54.2  each built successfully on 23.10, but PI build failed
+# c  3.19.6   1.51.1  each built successfully on 23.10, but PI build failed
+# d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow.  This attempt also gave linking errors while building behavioral-model, not for OPENSSL_free but for things in ares/cares library, which is installed, but not mentioned on linker command line for some reason.
+# e  --       1.52.2  error message building behavioral-model related to linker not finding ares/cares library
+# f  --       1.51.3  BMv2 built successfully with this version on Ubuntu 23.10, and installed 'protoc --version' with output of 3.21.6
+
+# Note that starting with version 3.22.x, the protobuf Github
+# repository also tags versions with 4.22.x as well.  However, the
+# Python pip package system started using 4.x.y with what the protobuf
+# source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
+# as 3.21.6 from the protobuf source repo.
+
+PROTOBUF_VERSION_FOR_PIP="4.21.6"
+GRPC_VERSION="1.51.3"
+
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
@@ -327,8 +358,7 @@ echo "took about 4 hours."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ protobuf: github.com/google/protobuf v3.18.1"
-echo "+ gRPC: github.com/google/grpc.git v1.43.2"
+echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2023-Sep-22, also installs these things:"
@@ -339,7 +369,7 @@ echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2023-May-28"
-echo "+ Python packages: protobuf 3.18.1, grpcio 1.43.2"
+echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio ${GRPC_VERSION}"
 echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -436,8 +466,6 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
-# Install Ubuntu packages needed by protobuf v3.18.1, from its src/README.md
-
 # Install pkg-config here, as it is required for p4lang/PI
 # installation to succeed.
 
@@ -512,7 +540,6 @@ fi
 # attempt to ensure that all new Python packages installed are
 # installed into this virtual environment, not into system-wide
 # directories like /usr/local/bin
-PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 python3 -m venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
 PIP_SUDO=""
@@ -529,42 +556,20 @@ pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-1-before-protobuf.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 
-set +x
-echo "------------------------------------------------------------"
-echo "Installing Google protobuf, needed for p4lang/p4c and for p4lang/behavioral-model simple_switch_grpc"
-echo "start install protobuf:"
-set -x
-date
+# Do not bother installing protobuf package from source code, as
+# whatever parts of protobuf we need is installed as a result of
+# installing grpc from source code, and/or installing the Python
+# protobuf package using pip.
 
-${PIP_SUDO} pip3 install protobuf==3.18.1
-
-cd "${INSTALL_DIR}"
-if [ -d protobuf ]
+if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
 then
-    echo "Found directory ${INSTALL_DIR}/protobuf.  Assuming desired version of protobuf is already installed."
-else
-    get_from_nearest https://github.com/protocolbuffers/protobuf protobuf.tar.gz
-    cd protobuf
-    git checkout v3.18.1
-    git submodule update --init --recursive
-    ./autogen.sh
-    ./configure
-    make
-    sudo make install
-    sudo ldconfig
-    # Save about 0.5G of storage by cleaning up protobuf build
-    make clean
+    ${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
 fi
 
-set +x
-echo "end install protobuf:"
-set -x
-date
-
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-2-after-protobuf.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
 
 if [ "${ID}" = "ubuntu" ]
 then
@@ -615,18 +620,24 @@ then
 else
     get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
     cd grpc
-    git checkout v1.43.2
+    git checkout v${GRPC_VERSION}
     # These commands are recommended in grpc's BUILDING.md file for Unix:
     git submodule update --init --recursive
     mkdir -p cmake/build
     cd cmake/build
-    cmake ../..
+    # I learned about the cmake option -DgRPC_SSL_PROVIDER=package
+    # from the pages linked below, after experiencing link-time errors
+    # when trying to build behavioral-model with gRPC v1.54.2 and
+    # getting errors that it could not find symbols like OPENSSL_free,
+    # and many others.
+    # https://github.com/grpc/grpc/issues/30524
+    cmake ../.. -DgRPC_SSL_PROVIDER=package
     make
     sudo make install
     # I believe the following 2 'pip3 install ...' commands, adapted from
     # similar commands in src/python/grpcio/README.rst, should install the
     # Python3 module grpc.
-    debug_dump_many_install_files $HOME/usr-local-2b-before-grpc-pip3.txt
+    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2b-before-grpc-req-pip3.txt
     pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
     cd ../..
     # Before some time in 2023-July, the `pip3 install -rrequirements.txt`
@@ -636,8 +647,13 @@ else
     # by forcing installation of a known working version of Cython.
     ${PIP_SUDO} pip3 install Cython==0.29.35
     ${PIP_SUDO} pip3 install -rrequirements.txt
+    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2c-before-grpc-pip3.txt
     GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
     sudo ldconfig
+    # Without the following command, later the command 'pkg-config
+    # --cflags grpc' fails, at least on Ubuntu 23.10 after building
+    # grpc v1.54.2
+    sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
 fi
 
 set +x
@@ -646,7 +662,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-3-after-grpc.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-3-after-grpc.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -685,6 +701,13 @@ else
     then
 	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
     fi
+    # Check what version of protoc is installed before the 'make'
+    # command below uses protoc on P4Runtime protobuf definition
+    # files.
+    which protoc
+    type -a protoc
+    protoc --version
+    /usr/local/bin/protoc --version
     make
     sudo make install
 
@@ -701,7 +724,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-4-after-PI.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-4-after-PI.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -762,7 +785,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-5-after-behavioral-model.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -824,7 +847,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-6-after-p4c.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-6-after-p4c.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -854,7 +877,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-7-after-mininet-install.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-7-after-mininet-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -880,7 +903,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-8-after-ptf-install.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-8-after-ptf-install.txt
 
 set +x
 echo "------------------------------------------------------------"
@@ -898,8 +921,20 @@ then
     sudo dnf -y install gflags-devel net-tools
 fi
 ${PIP_SUDO} pip3 install psutil crcmod
-# p4runtime-shell package, installed from latest source version
-${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+
+# Install p4runtime-shell from source repo, with a slightly modified
+# setup.cfg file so that it allows us to keep the version of the
+# protobuf package already installed earlier above, without changing
+# it, and so that it does _not_ install the p4runtime Python package,
+# which would replace the current Python files in
+# ${PYTHON_VENV}/lib/python*/site-packages/p4 with ones generated
+# using an older version of protobuf.
+git clone https://github.com/p4lang/p4runtime-shell
+cd p4runtime-shell
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+patch -p1 < "${PATCH_DIR}/p4runtime-shell-2023-changes.patch"
+pip3 install .
+
 pip3 list
 
 set +x
@@ -928,7 +963,7 @@ date
 
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files usr-local-9-after-miscellaneous-install.txt
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-9-after-miscellaneous-install.txt
 
 pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list
@@ -947,15 +982,6 @@ cd "${INSTALL_DIR}"
 DETS="install-details"
 mkdir -p "${DETS}"
 mv usr-local-*.txt pip3-list-2b-before-grpc-pip3.txt "${DETS}"
-cd "${DETS}"
-diff usr-local-1-before-protobuf.txt usr-local-2-after-protobuf.txt > usr-local-file-changes-protobuf.txt
-diff usr-local-2-after-protobuf.txt usr-local-3-after-grpc.txt > usr-local-file-changes-grpc.txt
-diff usr-local-3-after-grpc.txt usr-local-4-after-PI.txt > usr-local-file-changes-PI.txt
-diff usr-local-4-after-PI.txt usr-local-5-after-behavioral-model.txt > usr-local-file-changes-behavioral-model.txt
-diff usr-local-5-after-behavioral-model.txt usr-local-6-after-p4c.txt > usr-local-file-changes-p4c.txt
-diff usr-local-6-after-p4c.txt usr-local-7-after-mininet-install.txt > usr-local-file-changes-mininet-install.txt
-diff usr-local-7-after-mininet-install.txt usr-local-8-after-ptf-install.txt > usr-local-file-changes-ptf-install.txt
-diff usr-local-8-after-ptf-install.txt usr-local-9-after-miscellaneous-install.txt > usr-local-file-changes-miscellaneous-install.txt
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
