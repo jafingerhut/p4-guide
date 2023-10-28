@@ -906,13 +906,20 @@ then
     sudo dnf -y install gflags-devel net-tools
 fi
 ${PIP_SUDO} pip3 install psutil crcmod
-# Skip installing p4runtime-shell, at least for now while testing, to
-# verify with a test that installing this package _also_ installs
-# files in the lib/python*/site-packages/p4 directory and
-# sub-directories.  If it does, I want to see how I can prevent it
-# from doing so, or at least control it better.
-# p4runtime-shell package, installed from latest source version
-#${PIP_SUDO} pip3 install git+https://github.com/p4lang/p4runtime-shell.git
+
+# Install p4runtime-shell from source repo, with a slightly modified
+# setup.cfg file so that it allows us to keep the version of the
+# protobuf package already installed earlier above, without changing
+# it, and so that it does _not_ install the p4runtime Python package,
+# which would replace the current Python files in
+# ${PYTHON_VENV}/lib/python*/site-packages/p4 with ones generated
+# using an older version of protobuf.
+git clone https://github.com/p4lang/p4runtime-shell
+cd p4runtime-shell
+PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+patch -p1 < "${PATCH_DIR}/p4runtime-shell-2023-changes.patch"
+pip3 install .
+
 pip3 list
 
 set +x
