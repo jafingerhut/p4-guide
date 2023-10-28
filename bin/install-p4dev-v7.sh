@@ -118,6 +118,9 @@ debug_dump_many_install_files() {
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+    fi
+    if [ ${DEBUG_INSTALL} -ge 3 ]
+    then
 	/bin/cp -pr ${PYTHON_VENV}/lib/python*/site-packages ${DIRNAME}
     fi
 }
@@ -312,6 +315,9 @@ echo "Passed all sanity checks"
 set -e
 set -x
 
+# Brief notes on some experiments I did late in 2023-Oct with
+# different combinations of versions of protobuf and grpc:
+#
 # id protobuf grpc    result
 # -- -------- ------- ------
 # a  3.18.1   1.43.2  protobuf built on 23.10, but grpc build failed
@@ -320,6 +326,12 @@ set -x
 # d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow.  This attempt also gave linking errors while building behavioral-model, not for OPENSSL_free but for things in ares/cares library, which is installed, but not mentioned on linker command line for some reason.
 # e  --       1.52.2  error message building behavioral-model related to linker not finding ares/cares library
 # f  --       1.51.3  BMv2 built successfully with this version on Ubuntu 23.10, and installed 'protoc --version' with output of 3.21.6
+
+# Note that starting with version 3.22.x, the protobuf Github
+# repository also tags versions with 4.22.x as well.  However, the
+# Python pip package system started using 4.x.y with what the protobuf
+# source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
+# as 3.21.6 from the protobuf source repo.
 
 PROTOBUF_VERSION_FOR_PIP="4.21.6"
 GRPC_VERSION="1.51.3"
@@ -555,6 +567,9 @@ if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
 then
     ${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
 fi
+
+cd "${INSTALL_DIR}"
+debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
 
 if [ "${ID}" = "ubuntu" ]
 then
