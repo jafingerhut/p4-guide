@@ -198,7 +198,12 @@ elif [ "${ID}" = "fedora" ]
 then
     case "${VERSION_ID}" in
 	36)
-	    supported_distribution=1
+	    # In my last test of this script on Fedora 36, it failed
+	    # during the build of p4c, for reasons I do not fully
+	    # understand, but probably because the C++ source code is
+	    # not compatible with the version of the GNU C++ compiler
+	    # installed on Fedora 36.
+	    supported_distribution=0
 	    ;;
 	37)
 	    supported_distribution=1
