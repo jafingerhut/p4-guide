@@ -73,10 +73,15 @@ Start with:
 
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
-  + Ubuntu 20.04, 22.04, or 23.04
-  + Fedora 35, 37 - for older releases, see one of these places:
-    + [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
-	+ [dl.fedoraproject.org releases](https://dl.fedoraproject.org/pub/fedora/linux/releases/)
+  + Ubuntu 20.04, 22.0, 23.10
+    + 23.10 is only supported if you use install-p4dev-v7.sh
+  + Fedora 35, 36, 37, 38
+    + Only some Fedora releases are supported by each script.  When
+      you run one of them, it will quickly do an OS version check to
+      see if the script supports it.
+    + For older Fedora releases, see one of these places:
+      + [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
+	  + [dl.fedoraproject.org releases](https://dl.fedoraproject.org/pub/fedora/linux/releases/)
 + The system must have:
   + at least 2 GB of RAM (4 GB recommended)
   + at least 25 GB of free disk space (not 25 GB of disk space total
