@@ -188,7 +188,12 @@ then
 	    supported_distribution=1
 	    ;;
 	23.04)
-	    supported_distribution=1
+	    # This script did work on 23.04 at one point in time, but
+	    # when I tried again later on 2023-Nov-03 it failed with
+	    # an internal compiler error while trying to build Thrift.
+	    # Since 23.04's support ends early in 2024, I am not going
+	    # to spend any effort trying to get this working again.
+	    supported_distribution=0
 	    ;;
 	23.10)
 	    supported_distribution=1
