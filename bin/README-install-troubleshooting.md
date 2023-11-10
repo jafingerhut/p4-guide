@@ -128,8 +128,7 @@ $ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v6.sh |& tee log.txt
 
-# If you used install-p4dev-v7.sh above, see Note 1 below.
-$ source p4setup.bash
+# If you used install-p4dev-v7.sh, see Note 1 below.
 ```
 
 Replace `install-p4dev-v6.sh` with `install-p4dev-v5.sh` or
