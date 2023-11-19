@@ -381,7 +381,7 @@ logging, e.g. via the `--log-console` or `--log-file` command line
 options, and/or by adding `log_msg` extern function calls in the P4
 program.
 
-As of 2023-Mar-19, there is nothing like this available for debugging
+As of 2023-Nov-05, there is nothing like this available for debugging
 of P4 programs running on the DPDK software switch.
 
 As of this time, the best option available is to modify your P4
