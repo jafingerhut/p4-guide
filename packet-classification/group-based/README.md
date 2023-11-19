@@ -753,12 +753,19 @@ recent ones are the most important.
   Classification for Two-Dimensional Conflict-Free Filters,” in IEEE
   Infocom, 2001,
   https://cseweb.ucsd.edu/~varghese/PAPERS/infocompriyank.pdf
-+ [HSP2000] A. Hari, S. Suri, G. Parulkar, “Detecting and Resolving
-  Packet Filter Conflicts,” in Proceedings of IEEE Infocom, 2000,
++ [ASP2000] H. Adiseshu, S. Suri, G. Parulkar, “Detecting and
+  Resolving Packet Filter Conflicts,” in Proceedings of IEEE Infocom,
+  2000,
   https://www.researchgate.net/publication/3842432_Detecting_and_resolving_packet_filter_conflicts
 + [LS1998] T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based
   Packet Forwarding Using Efficient Multi-dimensional Range Matching",
   1998, https://dl.acm.org/doi/10.1145/285237.285283
++ [SVSW1998] V. Srinivasan, G. Varghese, S. Suri, M. Waldvogel, "Fast
+  and scalable layer four switching", 1998,
+  https://dl.acm.org/doi/10.1145/285243.285282
++ [E1983] Herbert Edelsbrunner, "A New Approach to Rectangle
+  Intersections", 1983,
+  https://pub.ista.ac.at/~edels/Papers/1983-04-RectangleIntersectionsPartI.pdf
 
 
 ## Implementations
