@@ -817,7 +817,7 @@ then
     sudo dnf -y install g++ git automake libtool gc-devel \
          bison flex libfl-devel gmp-devel \
          boost-devel boost-iostreams boost-graph \
-         llvm pkgconf python3-pip tcpdump clang
+         llvm llvm-devel pkgconf python3-pip tcpdump clang
 fi
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
