@@ -216,6 +216,12 @@ then
 	38)
 	    supported_distribution=1
 	    ;;
+	39)
+	    # In my last test (on 2023-Nov-20) of this script on
+	    # Fedora 39, it failed during the build of Python packages
+	    # for grpc, for reasons I do not fully understand.
+	    supported_distribution=0
+	    ;;
     esac
 fi
 
