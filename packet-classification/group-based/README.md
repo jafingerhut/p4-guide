@@ -757,15 +757,48 @@ recent ones are the most important.
   Resolving Packet Filter Conflicts,” in Proceedings of IEEE Infocom,
   2000,
   https://www.researchgate.net/publication/3842432_Detecting_and_resolving_packet_filter_conflicts
+  + I think this is the expanded tech report version of the paper
+    above:
+    https://www.researchgate.net/publication/2447037_Packet_Filter_Management_for_Layer_4_Switching
+    mentioned as reference [1], with additional proofs, complexity
+    analysis, and experimental results.
++ [GM1999] Pankaj Gupta, Nick McKeown, "Packet classification on
+  multiple fields", SIGCOMM 1999,
+  https://dl.acm.org/doi/pdf/10.1145/316188.316217
++ [SSV1999] V. Srinivasan, S. Suri, G. Varghese, "Packet
+  Classification using Tuple Space Search", 1999,
+  https://dl.acm.org/doi/10.1145/316194.316216
 + [LS1998] T. V. Lakshman and D. Stiliadis, "High-Speed Policy-based
   Packet Forwarding Using Efficient Multi-dimensional Range Matching",
   1998, https://dl.acm.org/doi/10.1145/285237.285283
 + [SVSW1998] V. Srinivasan, G. Varghese, S. Suri, M. Waldvogel, "Fast
   and scalable layer four switching", 1998,
   https://dl.acm.org/doi/10.1145/285243.285282
+
+Related papers in computational geometry:
+
++ [DN2010] Frank Devai, Laszlo Neumann, "A Rectangle-Intersection
+  Algorithm with Limited Resource Requirements", 2010,
+  https://ieeexplore.ieee.org/document/5578313
++ [OS1996] Mark H. Overmars, A. Frank van der Stappen, "Range
+  Searching and Point Location among Fat Objects", 1996,
+  https://www.sciencedirect.com/science/article/abs/pii/S0196677496900632
++ [M1994] Jiri Matousek, "Geometric Range Searching", 1994,
+  https://dl.acm.org/doi/10.1145/197405.197408
++ [GS1987] Ralf Harmut Guting, Werner Schilling, "A practical divide
+  and conquer algorithm for the rectangle intersection problem", 1987,
+  https://www.sciencedirect.com/science/article/abs/pii/0020025587900181
+  https://dl.acm.org/doi/10.1016/0020-0255%2887%2990018-1
 + [E1983] Herbert Edelsbrunner, "A New Approach to Rectangle
-  Intersections", 1983,
+  Intersections, Part I", 1983,
   https://pub.ista.ac.at/~edels/Papers/1983-04-RectangleIntersectionsPartI.pdf
+  https://www.tandfonline.com/doi/abs/10.1080/00207168308803364
++ [E1983] Herbert Edelsbrunner, "A New Approach to Rectangle
+  Intersections, Part II", 1983,
+  https://pub.ista.ac.at/~edels/Papers/1983-05-RectangleIntersectionsPartII.pdf
+  https://www.tandfonline.com/doi/abs/10.1080/00207168308803365
++ [SW1980] H.-W. Six, D. Wood, "The Rectangle Intersection Problem
+  Revisited", 1980, https://link.springer.com/article/10.1007/BF01933636
 
 
 ## Implementations
