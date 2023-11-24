@@ -721,6 +721,9 @@ recent ones are the most important.
 + [LL2013] Wenjun Li, Xianfeng Li, "HybridCuts: A Scheme Combining
   Decomposition and Cutting for Packet Classification", 2013,
   https://doi.org/10.1109/HOTI.2013.12
++ [GWC2010] Xiang-Yang Gong, Wen-Dong Wang, Shi-Duan Cheng, "ERFC: An
+  Enhanced Recursive Flow Classification Algorithm", 2010,
+  https://link.springer.com/article/10.1007/s11390-010-9380-7
 + [VVV2010] Balajee Vamanan, Gwendolyn Voskuilen, T. N. Vijaykumar,
   "EffiCuts: optimizing packet classification for memory and
   throughput", ACM SIGCOMM Computer Communication Review, Volume 40,
@@ -732,6 +735,15 @@ recent ones are the most important.
   Classification Algorithms: From Theory to Practice," IEEE INFOCOM
   2009, Rio de Janeiro, Brazil, 2009, pp. 648-656,
   https://doi.org/10.1109/INFCOM.2009.5061972
++ [BV2005] F. Baboescu, G. Varghese, "Scalable packet classification",
+  2005, https://ieeexplore.ieee.org/document/1402467
+  + 2001 conference version:
+    https://dl.acm.org/doi/10.1145/964723.383075
+    https://cseweb.ucsd.edu/~varghese/PAPERS/sigcom01.pdf
+  + Describes some enhancements to the BV (bit vector) algorithm
+    described in [LS1998], but they appear to be heuristics that
+    improve things not in the worst case, but for typical rule sets
+    they studied (which could still be quite useful).
 + [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
   Classification Benchmark", 2005,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
@@ -749,6 +761,11 @@ recent ones are the most important.
 + [SBVW2003] Sumeet Singh, Florin Baboescu, George Varghese, Jia Wang,
   "Packet classification using multidimensional cutting", SIGCOMM
   2003, https://doi.org/10.1145/863955.863980
++ [LLS2002] Ji Li, Haiyang Liu, Karen Sollins, "AFBF: A Scalable
+  Packet Classification Algorithm", 2002,
+  https://dl.acm.org/doi/10.1145/571697.571713
+  + The version of this paper I found is only 1 page long, and briefly
+    describes a minor tweak on ABV algorithm described in [BV2005].
 + [WSV2001] P. Warkhede, S. Suri, G. Varghese, “Fast Packet
   Classification for Two-Dimensional Conflict-Free Filters,” in IEEE
   Infocom, 2001,
@@ -774,6 +791,9 @@ recent ones are the most important.
 + [SVSW1998] V. Srinivasan, G. Varghese, S. Suri, M. Waldvogel, "Fast
   and scalable layer four switching", 1998,
   https://dl.acm.org/doi/10.1145/285243.285282
++ [WVTP1997] M. Waldvogel, G. Varghese, J. Turner, B. Plattner,
+  "Scalable high speed IP routing lookups", 1997,
+  https://dl.acm.org/doi/10.1145/263109.263136
 
 Related papers in computational geometry:
 
