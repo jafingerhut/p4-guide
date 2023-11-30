@@ -735,6 +735,9 @@ recent ones are the most important.
   Classification Algorithms: From Theory to Practice," IEEE INFOCOM
   2009, Rio de Janeiro, Brazil, 2009, pp. 648-656,
   https://doi.org/10.1109/INFCOM.2009.5061972
++ [W2009] Pi-Chung Wang, "Scalable packet classification with
+  controlled cross-producting", 2009,
+  https://www.sciencedirect.com/science/article/abs/pii/S1389128608004015
 + [BV2005] F. Baboescu, G. Varghese, "Scalable packet classification",
   2005, https://ieeexplore.ieee.org/document/1402467
   + 2001 conference version:
@@ -761,6 +764,9 @@ recent ones are the most important.
 + [SBVW2003] Sumeet Singh, Florin Baboescu, George Varghese, Jia Wang,
   "Packet classification using multidimensional cutting", SIGCOMM
   2003, https://doi.org/10.1145/863955.863980
++ [LLS2003] Ji Li, Haiyang Liu, Karen Sollins, "Scalable Packet
+  Classification Using Bit Vector Aggregating and Folding", 2003,
+  http://publications.csail.mit.edu/lcs/pubs/pdf/MIT-LCS-TM-637.pdf
 + [LLS2002] Ji Li, Haiyang Liu, Karen Sollins, "AFBF: A Scalable
   Packet Classification Algorithm", 2002,
   https://dl.acm.org/doi/10.1145/571697.571713
