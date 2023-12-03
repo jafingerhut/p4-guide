@@ -738,6 +738,13 @@ recent ones are the most important.
 + [W2009] Pi-Chung Wang, "Scalable packet classification with
   controlled cross-producting", 2009,
   https://www.sciencedirect.com/science/article/abs/pii/S1389128608004015
++ [LS2007] Haibin Lu, Sartaj Sahni, "O(log W) Multidimensional Packet
+  Classification", 2007,
+  https://dl.acm.org/doi/10.1109/TNET.2007.892845
+  https://www.researchgate.net/publication/229026523_O_log_W_Multidimensional_Packet_Classification
++ [S2006] Haoyu Song, "Design and evaluation of packet classification
+  systems", Doctoral Dissertation, 2006,
+  https://www.arl.wustl.edu/~jon.turner/studentTheses/hSong-2006.pdf
 + [BV2005] F. Baboescu, G. Varghese, "Scalable packet classification",
   2005, https://ieeexplore.ieee.org/document/1402467
   + 2001 conference version:
@@ -747,6 +754,13 @@ recent ones are the most important.
     described in [LS1998], but they appear to be heuristics that
     improve things not in the worst case, but for typical rule sets
     they studied (which could still be quite useful).
++ [TT2005] D. Taylor, J. Turner, "Scalable packet classification using
+  distributed crossproducting of field labels", 2005,
+  https://ieeexplore.ieee.org/document/1497898
+  + Technical report version:
+  + [TT2004] D. Taylor, J. Turner, "Scalable packet classification
+    using distributed crossproducting of field labels", 2004,
+    https://www.arl.wustl.edu/~jon.turner/pubs/2004/wucse-2004-38.pdf
 + [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
   Classification Benchmark", 2005,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
@@ -839,6 +853,14 @@ Related papers in computational geometry:
   updated in 2004, https://www.arl.wustl.edu/classbench/
 + classbench-ng, based upon Taylor and Turner's original project that
   is no longer maintained, https://github.com/lucansky/classbench-ng
++ 2015 version snapshot from Internet Archive of a web site created by
+  Haoyu Song, related to his dissertation work on packet
+  classification:
+  https://web.archive.org/web/20150627051657/https://www.arl.wustl.edu/~hs1/PClassEval.html
++ 2007 version snapshot from Internet Archive of the Packet
+  Classification Repository, published by the Internet Algorithmics
+  Lab at University of California San Diego:
+  https://web.archive.org/web/20070220003645/http://www.ial.ucsd.edu/classification/
 
 
 ## Patents
