@@ -689,12 +689,26 @@ recent ones are the most important.
   Recursive Multi-Tree Construction with Efficient Rule Sifting for
   Packet Classification on FPGA (Under Review)", 2021,
   http://www.wenjunli.com/KickTree/
+  + 2022 journal paper https://dl.acm.org/doi/10.1145/3493425.3502752
   + My [comments on KickTree](kicktree.md)
 + [AFR2020] Mahdi Abbasi, Saeideh Vesaghati Fazel, Milad Rafiee,
   "MBitCuts: optimal bit-level cutting in geometric space packet
   classification" The Journal of Supercomputing volume 76, pages
   3105–3128 (2020)
   https://link.springer.com/article/10.1007/s11227-019-03090-3
++ [DBLP+2019] James Daly, Valerio Bruschi, Leonardo Linguaglossa,
+  Salvatore Pontarelli, Dario Rossi, Jerome Tollet, Eric Torng, Andrew
+  Yourtchenko, "TupleMerge: Fast Software Packet Processing for Online
+  Packet Classification", 2019,
+  https://doi.org/10.1109/TNET.2019.2920718
+  https://nonsns.github.io/paper/rossi19ton.pdf
++ [LZJS2019] Eric Liang, Hang Zhu, Xin Jin, Ion Stoica, "Neural Packet
+  Classification", 2019,
+  https://dl.acm.org/doi/pdf/10.1145/3341302.3342221
++ [LLLX2018] Wenjun Li, Xianfeng Li, Hui Li, Gaogang Xie, "CutSplit: A
+  Decision-Tree Combining Cutting and Splitting for Scalable Packet
+  Classification", 2018, https://doi.org/10.1109/INFOCOM.2018.8485947
+  https://www.wenjunli.com/CutSplit/
 + [LSZGL2017] Zhi Liu, Shijie Sun, Hang Zhu, Jiaqi Gao, Jun Li,
   "BitCuts: A fast packet classification algorithm using bit-level
   cutting", 2017, https://doi.org/10.1016/j.comcom.2017.05.001
@@ -715,9 +729,9 @@ recent ones are the most important.
   William Culhane, Patrick Eugster, "SAX-PAC (Scalable And eXpressive
   PAcket Classification)", SIGCOMM 2014,
   http://dx.doi.org/10.1145/2619239.2626294
-+ Hyesook Lim, Nara Lee, Geumdan Jin, Jungwon Lee, Youngju Choi,
-  Changhoon Yim, "Boundary Cutting for Packet Classification", 2014,
-  https://doi.org/10.1109/TNET.2013.2254124
++ [LLJL+2014] Hyesook Lim, Nara Lee, Geumdan Jin, Jungwon Lee, Youngju
+  Choi, Changhoon Yim, "Boundary Cutting for Packet Classification",
+  2014, https://doi.org/10.1109/TNET.2013.2254124
 + [LL2013] Wenjun Li, Xianfeng Li, "HybridCuts: A Scheme Combining
   Decomposition and Cutting for Packet Classification", 2013,
   https://doi.org/10.1109/HOTI.2013.12
@@ -742,6 +756,11 @@ recent ones are the most important.
   Classification", 2007,
   https://dl.acm.org/doi/10.1109/TNET.2007.892845
   https://www.researchgate.net/publication/229026523_O_log_W_Multidimensional_Packet_Classification
++ [KTCM2007] Sailesh Kumar, Jonathan Turner, Patrick Crowley, Michael
+  Mitzenmacher, "HEXA: Compact Data Structures for Faster Packet
+  Processing", 2007, https://ieeexplore.ieee.org/document/4375855
+  + Technical report version:
+    https://openscholarship.wustl.edu/cgi/viewcontent.cgi?article=1129&context=cse_research
 + [S2006] Haoyu Song, "Design and evaluation of packet classification
   systems", Doctoral Dissertation, 2006,
   https://www.arl.wustl.edu/~jon.turner/studentTheses/hSong-2006.pdf
@@ -761,8 +780,8 @@ recent ones are the most important.
   + [TT2004] D. Taylor, J. Turner, "Scalable packet classification
     using distributed crossproducting of field labels", 2004,
     https://www.arl.wustl.edu/~jon.turner/pubs/2004/wucse-2004-38.pdf
-+ [TT2005] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
-  Classification Benchmark", 2005,
++ [TT2007] David E. Taylor, Jonathan S. Turner, "ClassBench: A Packet
+  Classification Benchmark", 2007,
   https://www.arl.wustl.edu/~jon.turner/pubs/2005/infocom05classBench.pdf
   + See also ClassBench-ng above
   + Technical report version,
@@ -815,6 +834,10 @@ recent ones are the most important.
   "Scalable high speed IP routing lookups", 1997,
   https://dl.acm.org/doi/10.1145/263109.263136
 
+Other papers not yet included above linked from James Daly's personal
+page: https://www.cse.msu.edu/~dalyjame/
+
+
 Related papers in computational geometry:
 
 + [DN2010] Frank Devai, Laszlo Neumann, "A Rectangle-Intersection
@@ -829,11 +852,14 @@ Related papers in computational geometry:
   and conquer algorithm for the rectangle intersection problem", 1987,
   https://www.sciencedirect.com/science/article/abs/pii/0020025587900181
   https://dl.acm.org/doi/10.1016/0020-0255%2887%2990018-1
-+ [E1983] Herbert Edelsbrunner, "A New Approach to Rectangle
++ [PS1985] Franco P. Preparata, Michael Ian Shamos, "Computational
+  Geometry", 1985, Springer, Monographs in Computer Science,
+  https://link.springer.com/book/10.1007/978-1-4612-1098-6
++ [E1983a] Herbert Edelsbrunner, "A New Approach to Rectangle
   Intersections, Part I", 1983,
   https://pub.ista.ac.at/~edels/Papers/1983-04-RectangleIntersectionsPartI.pdf
   https://www.tandfonline.com/doi/abs/10.1080/00207168308803364
-+ [E1983] Herbert Edelsbrunner, "A New Approach to Rectangle
++ [E1983b] Herbert Edelsbrunner, "A New Approach to Rectangle
   Intersections, Part II", 1983,
   https://pub.ista.ac.at/~edels/Papers/1983-05-RectangleIntersectionsPartII.pdf
   https://www.tandfonline.com/doi/abs/10.1080/00207168308803365
@@ -843,6 +869,9 @@ Related papers in computational geometry:
 
 ## Implementations
 
++ CutSplit https://www.wenjunli.com/CutSplit/
++ TupleMerge, PartitionSort, Tuple Space Search
+  https://github.com/drjdaly/tuplemerge
 + https://github.com/wenjunpaper has several projects that appear to
   have implementations of several kinds of cutting tree packet
   classification algorithms.
