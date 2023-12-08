@@ -123,19 +123,17 @@ today, see [6].
 I have attempted to compile a version of the DASH P4 reference code
 using `p4c-dpdk` and load it into the DPDK software switch.
 
-There were no compile-time errors, but according to developers of
-P4-DPDK, the compiler output fails to load into the DPDK software
-switch because the compiler output is incorrect.  The most likely
-explanation is that there are one or more bugs in the `p4c-dpdk` back
-end code.  Bugs have been filed here:
+Here is a link to the Github p4lang/p4c repository issue tracker, that
+shows all issues that have a label `dash-blocker`.  Unless these
+issues are fixed, there are likely to be functional bugs where the
+DPDK software switch will process packets incorrectly, i.e. in a
+different way than the DASH P4 program says it should.
 
-+ https://github.com/p4lang/p4c/issues/3965
-
-+ https://github.com/p4lang/p4c/issues/3966
++ https://github.com/p4lang/p4c/issues?q=is%3Aissue+is%3Aopen+label%3Adash-blocker
 
 The engineers at Intel who have developed P4-DPDK have been notified
-of these issues, but as of 2023-Jun-21 these issues are not a high
-priority item for them to fix.
+of these issues, but as of 2023-Dec-05 these issues are not high
+priority items for them to spend their time on.
 
 Reminder: Re-read the "General reminder about open source projects"
 section.
