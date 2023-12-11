@@ -1,5 +1,8 @@
 Date: 2023-Nov-27
 
+Future plan: Have another meeting on this topic some time in the last
+half of Jan 2024.
+
 The purpose of this meeting is to share the results of the survey on
 loops in P4 (see below), and to discuss next steps.
 
