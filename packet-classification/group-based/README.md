@@ -680,6 +680,12 @@ I am keeping these at least close to the order of most recent
 publications first.  This is not in any way implying that the most
 recent ones are the most important.
 
++ [LPW2023] Hsin-Tsung Lin, Wei-Han Pan, Pi-Chung Wang, "Packet
+  Classification Using TCAM of Narrow Entries", 2023,
+  https://doi.org/10.3390/technologies11050147
++ [CXS2023] Yuzhu Cheng, Yihang Xu, Qiuying Shi, "PcmSU-A Packet
+  Classification Method Supporting High-Speed Search and Fast Update",
+  2023, https://ieeexplore.ieee.org/document/10141601
 + [LXLS+2022] Yuxi Liu, Yao Xin, Wenjun Li, Haoyu Song, Ori
   Rottenstreich, Gaogang Xie, Weichao Li, Yi Wang, "HybridTSS: A
   Recursive Scheme Combining Coarse- and Fine-Grained Tuples for
@@ -696,6 +702,10 @@ recent ones are the most important.
   classification" The Journal of Supercomputing volume 76, pages
   3105–3128 (2020)
   https://link.springer.com/article/10.1007/s11227-019-03090-3
++ [RRS2020] Alon Rashelbach, Ori Rottenstreich, Mark Silberstein, "A
+  Computational Approach to Packet Classification", 2020,
+  https://dl.acm.org/doi/abs/10.1145/3387514.3405886
+  https://arxiv.org/pdf/2002.07584.pdf
 + [DBLP+2019] James Daly, Valerio Bruschi, Leonardo Linguaglossa,
   Salvatore Pontarelli, Dario Rossi, Jerome Tollet, Eric Torng, Andrew
   Yourtchenko, "TupleMerge: Fast Software Packet Processing for Online
