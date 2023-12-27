@@ -844,8 +844,11 @@ recent ones are the most important.
   "Scalable high speed IP routing lookups", 1997,
   https://dl.acm.org/doi/10.1145/263109.263136
 
-Other papers not yet included above linked from James Daly's personal
-page: https://www.cse.msu.edu/~dalyjame/
+Other papers not yet included above linked from people's web pages:
+
++ James Daly: https://www.cse.msu.edu/~dalyjame/
++ Nick McKeown: http://yuba.stanford.edu/~nickm/papers.html
++ Jonathan Turner: https://www.arl.wustl.edu/~jon.turner/
 
 
 Related papers in computational geometry:
@@ -900,6 +903,61 @@ Related papers in computational geometry:
   Classification Repository, published by the Internet Algorithmics
   Lab at University of California San Diego:
   https://web.archive.org/web/20070220003645/http://www.ial.ucsd.edu/classification/
+
++ https://github.com/AmitBhalerao/Packet-Classification-RFC-Algorithm
++ https://github.com/ChengjunJia/PCG
++ https://github.com/FighterNan
+  + https://github.com/FighterNan/Rulesets-Generator
+  + https://github.com/FighterNan/Trace-Generator
++ https://github.com/JiaChangGit/network-packet-classification
++ https://github.com/KevinWang96/Network_Packet_Classification_on_FPGA
++ https://github.com/LinaMaudlej/NeuroCuts_packet_classification
++ https://github.com/Nic30/pclass-vectorized
++ https://github.com/SZU-AdvTech-2022/293-Neural-Packet-Classification
++ https://github.com/ZhongMengxuan/Evaluating-Partitions-in-Packet-Classification
++ https://github.com/acsl-technion/nuevomatch
++ https://github.com/alonrs
+  + https://github.com/alonrs/classbench-mapper
+  + https://github.com/alonrs/pcap-file-analyzer
++ https://github.com/byted/HiTables
++ https://github.com/derekzwy/an-optimal-tcam-encoding-algorithm-for-packet-classification
++ https://github.com/huangting53
+  + https://github.com/huangting53/BitTSS
+  + https://github.com/huangting53/CutTSS
++ https://github.com/kikikio/FROD
++ https://github.com/licheebrick/pc_plat
++ https://github.com/liona24/rvh
++ https://github.com/lwj4333765
+  + https://github.com/lwj4333765/CutTSS
+  + https://github.com/lwj4333765/HybridCuts
+  + https://github.com/lwj4333765/TabTree
++ https://github.com/melosun-lab/Packet-Classification-with-HyperCut
++ https://github.com/neurocuts/neurocuts
++ https://github.com/nox-410/packet_classification
++ https://github.com/shiwanghua/PacketClassification
++ https://github.com/sorrachai/PartitonSort
++ https://github.com/susobhang70/trie_packet_classfication
++ https://github.com/tanjing09/MBitTree
++ https://github.com/wenjunpaper
+  + https://github.com/wenjunpaper/CutSplit
+  + https://github.com/wenjunpaper/CutTSS
+  + https://github.com/wenjunpaper/HybridCuts
+  + https://github.com/wenjunpaper/HybridTSS
+  + https://github.com/wenjunpaper/KickTree
+  + https://github.com/wenjunpaper/TabTree
++ https://github.com/xnhp0320
+  + https://github.com/xnhp0320/SmartSplit
+  + https://github.com/xnhp0320/choose-cut
++ https://github.com/xqgex/Packet-Classification-Repository
++ https://github.com/yigechen1/efficuts
++ https://github.com/zcy-ict/MultilayerTuple
+
+
+Maybe not related to packet classification problem:
+
++ https://github.com/ict-net/PacRep
++ https://github.com/M0hammadL/DeepPacket
++ https://github.com/Hashehri/Network-Traffic-Classification-UNSW-NB15
 
 
 ## Patents
