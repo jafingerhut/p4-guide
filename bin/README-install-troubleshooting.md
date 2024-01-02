@@ -33,6 +33,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
+| 2024-Jan-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1RAXXx-J9DJSyCq1JogEaVLrBW8zut0C0/view?usp=drive_link) | [2.2 GBytes VM image](https://drive.google.com/file/d/1N7n9O6dX2H5gdFUb4EDrbk2C13fGmWwp/view?usp=drive_link) | [README](https://drive.google.com/file/d/1R1gp0dcmquE9QVgH2hlXkqbtqIbQU4-1/view?usp=drive_link) | Combo21 | no |
 | 2023-Dec-02 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1r7llMdjO1XVdFTvTsdKwSL7zpHqzW_SA/view?usp=drive_link) | [2.1 GBytes VM image](https://drive.google.com/file/d/1-DuA2TBa2NgJEv6xTTUq_oAUoCs2RGjT/view?usp=drive_link) | [README](https://drive.google.com/file/d/187Uc48Pr2bgoxdRSAvoUDL2Rk610dC9h/view?usp=drive_link) | Combo20 | Combo19 |
 | 2023-Nov-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1tNt6s7whRNkJNr3J_w3LKPCtFSKB9X7m/view?usp=drive_link) | [2.1 GBytes VM image](https://drive.google.com/file/d/1U_xnUmx3Dn80lYl6YtFhojyHQ2ikWn5b/view?usp=drive_link) | [README](https://drive.google.com/file/d/16L1p3VKrX_Dp_wFGJABRTJ214kMDGTYE/view?usp=sharing) | Combo20 | Combo19 |
 | 2023-Oct-02 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1wNtLw4T_95nKaa8hB_7gf1d2HZZUxJ2f/view?usp=sharing) | [2.0 GBytes VM image](https://drive.google.com/file/d/1XflvJOvFyM2y8jJYXrkXHEWSdBOFyYma/view?usp=sharing) | [README](https://drive.google.com/file/d/1cnMd0VrAVPjXotEE9m4D5E37gVpm1pRB/view?usp=sharing) | Combo20 | Combo19 |
@@ -66,6 +67,7 @@ Version combinations I have used above for testing VM images:
 | Combo18 | macOS 12.6.x | VirtualBox 7.0.8 |
 | Combo19 | Windows 11 Enterprise | VirtualBox 7.0.8 |
 | Combo20 | macOS 12.6.x | VirtualBox 7.0.10 |
+| Combo21 | macOS 12.7.x | VirtualBox 7.0.12 |
 
 
 
