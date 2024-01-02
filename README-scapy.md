@@ -1,43 +1,25 @@
 # Introduction
 
 Some notes on using the Scapy library for generating and decoding
-packet contents.  It covers both Python2 and Python3, and versions of
-Scapy 2.2 up to 2.4.
+packet contents.  It covers only Python3, and Scapy version 2.5.0.
+
+Historical note: The document named `README-scapy.md` that was here
+until 2024-Jan-01 has been renamed
+[`README-scapy-old.md`](README-scapy-old.md).  You are welcome to read
+it if you are interested in older historical information related to
+different versions of Scapy that were around in 2018-2021 time frame,
+and some differences between Python2 and Python3 uses of the Scapy
+library.
 
 
-## Versions of Scapy
-
-One issue with Python3 and Scapy is that there are (at least) two
-versions of Scapy for Python3.  A description of the current situation
-as of 2019-Mar-19 is shown below, copied from https://scapy.net on
-that date:
-
-    An independent fork of Scapy was created from v2.2.0 in 2015,
-    aimed at supporting only Python3
-    ([scapy3k](https://github.com/phaethon/kamene)).  The fork
-    diverged, did not follow evolutions and fixes, and has had its own
-    life without contributions back to Scapy.  Unfortunately, it has
-    been packaged as python3-scapy in some distributions, and as
-    scapy-python3 on PyPI leading to confusion amongst users.  It
-    should not be the case anymore soon.  Scapy supports Python3 in
-    addition to Python2 since 2.4.0.  Scapy v2.4.0 should be favored
-    as the official Scapy code base.  The fork has been renamed as
-    kamene.
-
-As of 2019-Mar-19, the Ubuntu 18.04 Linux package `python3-scapy` is
-the kamene version described above.  I am personally going to avoid
-using kamene, since it likely has some differences in its
-implementation, and since the original Scapy is now supported on
-Python3, I do not see much reason to use it over Scapy.
-
-In summary, to use the original Scapy, updated as of March 2018 to
-work with Python3, and to avoid using kamene:
+## Notes on installing Scapy
 
 + DO use `pip` or `pip3` to install the `scapy` package (instructions below)
 + DO NOT install the Ubuntu package `python3-scapy`
 + DO NOT use `pip` or `pip3` to install the `scapy-python3` package
 
-On an Ubuntu 16.04 or 18.04 Linux system:
+On an Ubuntu Linux system (tested with versions 22.04, 20.04, 18.04,
+and 16.04):
 
 ```bash
 $ sudo apt-get install python3-pip
@@ -45,8 +27,7 @@ $ pip3 install scapy
 ```
 
 With the commands above, it will install the Scapy package within your
-`$HOME/.local` directory.  Replace `pip3` with `pip` and it will
-install Scapy for Python2.
+`$HOME/.local` directory.
 
 The official Scapy web site contains instructions for installing any
 Scapy verson from source code.  I found the command below for
@@ -56,11 +37,6 @@ on the edge:
 ```
 $ pip3 install --upgrade git+git://github.com/secdev/scapy
 ```
-
-TBD: In the future, it might be nice to have steps to uninstall
-alternate versions of Scapy, and to have a tiny test script that can
-be used to tell whether the version you are currently running is
-kamene or Scapy, and which version number.
 
 
 ## Prerequisites
@@ -72,20 +48,10 @@ For all of the Python interactive sessions shown below, this Python
 from scapy.all import *
 ```
 
-If you have not used earlier versions of Scapy or have no interest in
-Python2 and Python3 differences, you can ignore the later sections
-titled "Some differences between Scapy 2.4 vs. earlier Scapy versions"
-and "Python type `bytes` vs. `str`".  Consider reading them if you
-have used Python2 and are switching to Python3, or you have used
-versions of Scapy earlier than 2.4, and would like to learn of a few
-differences (only a few, relevant to Scapy).
-
 
 ## Version combinations tested
 
-+ Python2 with Scapy 2.2.0
-+ Python2 with Scapy 2.4.2
-+ Python3 with Scapy 2.4.2
++ Python3 with Scapy 2.5.0
 
 
 ## Create Scapy packet with IPv4 options, brief version
@@ -98,8 +64,8 @@ IP options here: http://allievi.sssup.it/techblog/archives/631
 >>> pkt_with_opts.show2()
 ###[ Ethernet ]### 
   dst       = 00:00:00:00:00:05
-  src       = 08:00:27:56:85:a4
-  type      = 0x800
+  src       = 08:00:27:25:3b:69
+  type      = IPv4
 ###[ IP ]### 
      version   = 4
      ihl       = 6
@@ -136,13 +102,8 @@ IP options here: http://allievi.sssup.it/techblog/archives/631
         window    = 8192
         chksum    = 0x62e2
         urgptr    = 0
-        options   = []
+        options   = ''
 ```
-
-The `show2()` sample output above is for Python3 + Scapy 2.4.2.  The
-output for the other two versions differs slightly in formatting, and
-in the Ethernet source address (details in the next section if you are
-curious).
 
 
 ## Create Scapy packet with IPv4 options, many details
@@ -154,27 +115,13 @@ This version works with all three versions I tested, and requires the
 >>> pkt_with_opts=Ether(dst='00:00:00:00:00:05') / IP(dst='10.1.0.1', options=IPOption(b'\x83\x03\x10')) / TCP(sport=5792, dport=80)
 
 >>> bytes(pkt_with_opts)
-"\x00\x00\x00\x00\x00\x05\x08\x00'(+c\x08\x00F\x00\x00,\x00\x01\x00\x00@\x06\xd0\xb7\n\x00\x02\x0f\n\x01\x00\x01\x83\x03\x10\x00\x16\xa0\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe2\x00\x00"
+b"\x00\x00\x00\x00\x00\x05\x08\x00'%;i\x08\x00F\x00\x00,\x00\x01\x00\x00@\x06\xd0\xb7\n\x00\x02\x0f\n\x01\x00\x01\x83\x03\x10\x00\x16\xa0\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe2\x00\x00"
 >>> len(bytes(pkt_with_opts))
 58
 
-# Python2 + Scapy 2.2.0
-# also Python2 + Scapy 2.4.2
 >>> list(bytes(pkt_with_opts))
-['\x00', '\x00', '\x00', '\x00', '\x00', '\x05', '\x08', '\x00', "'", '(', '+', 'c', '\x08', '\x00', 'F', '\x00', '\x00', ',', '\x00', '\x01', '\x00', '\x00', '@', '\x06', '\xd0', '\xb7', '\n', '\x00', '\x02', '\x0f', '\n', '\x01', '\x00', '\x01', '\x83', '\x03', '\x10', '\x00', '\x16', '\xa0', '\x00', 'P', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', 'P', '\x02', ' ', '\x00', 'b', '\xe2', '\x00', '\x00']
->>> list(map(lambda x: ord(x), bytes(pkt_with_opts)))
-[0, 0, 0, 0, 0, 5, 8, 0, 39, 40, 43, 99, 8, 0, 70, 0, 0, 44, 0, 1, 0, 0, 64, 6, 208, 183, 10, 0, 2, 15, 10, 1, 0, 1, 131, 3, 16, 0, 22, 160, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 80, 2, 32, 0, 98, 226, 0, 0]
-
-# Python3 + Scapy 2.4.2
->>> list(bytes(pkt_with_opts))
-[0, 0, 0, 0, 0, 5, 8, 0, 39, 86, 133, 164, 8, 0, 70, 0, 0, 44, 0, 1, 0, 0, 64, 6, 208, 183, 10, 0, 2, 15, 10, 1, 0, 1, 131, 3, 16, 0, 22, 160, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 80, 2, 32, 0, 98, 226, 0, 0]
+[0, 0, 0, 0, 0, 5, 8, 0, 39, 37, 59, 105, 8, 0, 70, 0, 0, 44, 0, 1, 0, 0, 64, 6, 208, 183, 10, 0, 2, 15, 10, 1, 0, 1, 131, 3, 16, 0, 22, 160, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 80, 2, 32, 0, 98, 226, 0, 0]
 ```
-
-The Ethernet source address selected by Scapy is different on Python3
-than Python2, but other than that the packets created are identical.
-We did not specify an Ethernet source address to use, so it seems
-reasonable to me that different versions of Python and/or Scapy might
-have different values it selects there.
 
 
 ## Convert Scapy packets to/from Python type `bytes`
@@ -188,18 +135,14 @@ have different values it selects there.
 >>> len(pkt1)
 54
 
-# Use bytes() constructor to convert it to type bytes with Python3 (or
-# to type str with Python2)
+# Use bytes() constructor to convert it to type bytes
 
 >>> pkt1b=bytes(pkt1)
 >>> type(pkt1b)
 <class 'bytes'>
-# The above is for Python2 + Scapy 2.4.2.  Other two versions show str
 
 >>> pkt1b
-b'\x00\x00\x00\x00\x00\x05\x00\x11"3DU\x08\x00E\x00\x00(\x00\x01\x00\x00@\x06d\xbf\n\x00\x02\x0f\n\x01\x00\x01\x16\xa1\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00\x00'
-# The above is for Python2 + Scapy 2.4.2.  Other two versions do not
-# have 'b' at the beginning.
+b"\x00\x00\x00\x00\x00\x05\x08\x00'%;i\x08\x00E\x00\x00(\x00\x01\x00\x00@\x06d\xbf\n\x00\x02\x0f\n\x01\x00\x01\x16\xa1\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00\x00"
 
 >>> len(pkt1b)
 54
@@ -226,9 +169,9 @@ True
 # The time attribute is different for them, which might explain why
 # they are not equal.
 >>> pkt1.time
-1504418046.720192
+1704172233.7114353
 >>> pkt1x.time
-1504419231.279649
+1704172297.6892235
 ```
 
 
@@ -243,14 +186,7 @@ compiler.
 ```python
 >>> pkt1=Ether(src='00:11:22:33:44:55', dst='00:00:00:00:00:05') / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
 
-# Function bytes_to_hex() could probably be named better, since it can
-# also take an argument of type str.  The if statement can be removed
-# if you only need Python3 support.  The if is there to also work on
-# Python2.
-
 >>> def bytes_to_hex(b):
-...     if isinstance(b, str):
-...         return ''.join(['%02x' % (ord(x)) for x in b])
 ...     return ''.join(['%02x' % (x) for x in b])
 ... 
 
@@ -282,8 +218,6 @@ here into an interactive Python session.
 
 ```python
 def bytes_to_hex(b):
-    if isinstance(b, str):
-        return ''.join(['%02x' % (ord(x)) for x in b])
     return ''.join(['%02x' % (x) for x in b])
 
 import re
@@ -307,7 +241,7 @@ def hex_to_bytes(hex_s):
 >>> pktlst
 <some-pkts.pcap: TCP:3 UDP:0 ICMP:0 Other:0>
 >>> pktlst[0]
-<Ether  dst=00:00:00:00:00:05 src=00:11:22:33:44:55 type=0x800 |<IP  version=4 ihl=5 tos=0x0 len=40 id=1 flags= frag=0 ttl=64 proto=tcp chksum=0x64c0 src=10.0.2.15 dst=10.0.0.1 |<TCP  sport=tcpmux dport=8 seq=0 ack=0 dataofs=5 reserved=0 flags=S window=8192 chksum=0x79ca urgptr=0 |>>>
+<Ether  dst=00:00:00:00:00:05 src=00:11:22:33:44:55 type=IPv4 |<IP  version=4 ihl=5 tos=0x0 len=40 id=1 flags= frag=0 ttl=64 proto=tcp chksum=0x64c0 src=10.0.2.15 dst=10.0.0.1 |<TCP  sport=tcpmux dport=8 seq=0 ack=0 dataofs=5 reserved=0 flags=S window=8192 chksum=0x79ca urgptr=0 |>>>
 >>> bytes(pkt0)==bytes(pktlst[0])
 True
 >>> bytes(pkt1)==bytes(pktlst[1])
@@ -315,9 +249,6 @@ True
 >>> bytes(pkt2)==bytes(pktlst[2])
 True
 ```
-
-I have tested that the above is common behavior across the three
-version combos.
 
 
 ## Truncate a packet
@@ -331,7 +262,7 @@ previous section.
 ###[ Ethernet ]### 
   dst       = 00:00:00:00:00:05
   src       = 00:11:22:33:44:55
-  type      = 0x800
+  type      = IPv4
 ###[ IP ]### 
      version   = 4
      ihl       = 5
@@ -357,13 +288,7 @@ previous section.
         window    = 8192
         chksum    = 0x62e1
         urgptr    = 0
-        options   = []
-
-# The output above is for Scapy 2.4.2.  Python2 plus Scapy 2.2.0 had
-# nearly identical output, but had 'L' suffix after some integer
-# values indicating they were Python 'long' values, and the last value
-# 'options' printed as {} instead of [], probably indicating a dict
-# rather than a list.
+        options   = ''
 
 >>> len(pkt1)
 54
@@ -377,7 +302,7 @@ previous section.
 ###[ Ethernet ]### 
   dst       = 00:00:00:00:00:05
   src       = 00:11:22:33:44:55
-  type      = 0x800
+  type      = IPv4
 ###[ IP ]### 
      version   = 4
      ihl       = 5
@@ -393,11 +318,7 @@ previous section.
      dst       = 10.1.0.1
      \options   \
 ###[ Raw ]### 
-        load      = '\x16\xa1\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\xe1\x00'
-
-# Again, the output above is for Scapy 2.4.2.  Python2 plus Scapy
-# 2.2.0 had nearly identical output, but had 'L' suffix after some
-# integer values.
+        load      = '\x16\\xa1\x00P\x00\x00\x00\x00\x00\x00\x00\x00P\x02 \x00b\\xe1\x00'
 
 >>> bytes(pkt1) == bytes(pkt2)
 False
@@ -420,17 +341,17 @@ True
 <class 'scapy.layers.inet.TCP'>
 
 >>> pkt1.fields_desc
-[<Field (Ether).dst>, <Field (Ether).src>, <Field (Ether).type>]
+[<DestMACField (Ether).dst>, <SourceMACField (Ether).src>, <XShortEnumField (Ether).type>]
 >>> pkt1[Ether].fields_desc
-[<Field (Ether).dst>, <Field (Ether).src>, <Field (Ether).type>]
+[<DestMACField (Ether).dst>, <SourceMACField (Ether).src>, <XShortEnumField (Ether).type>]
 >>> pkt1[IP].fields_desc
-[<Field (IP,IPerror,_IPv46).version>, <Field (IP,IPerror,_IPv46).ihl>, <Field (IP,IPerror,_IPv46).tos>, <Field (IP,IPerror,_IPv46).len>, <Field (IP,IPerror,_IPv46).id>, <Field (IP,IPerror,_IPv46).flags>, <Field (IP,IPerror,_IPv46).frag>, <Field (IP,IPerror,_IPv46).ttl>, <Field (IP,IPerror,_IPv46).proto>, <Field (IP,IPerror,_IPv46).chksum>, <scapy.fields.Emph object at 0x7fe60e98b0a8>, <scapy.fields.Emph object at 0x7fe60e98b108>, <Field (IP,IPerror,_IPv46).options>]
+[<BitField (IP,IPerror,IPv46).version>, <BitField (IP,IPerror,IPv46).ihl>, <XByteField (IP,IPerror,IPv46).tos>, <ShortField (IP,IPerror,IPv46).len>, <ShortField (IP,IPerror,IPv46).id>, <FlagsField (IP,IPerror,IPv46).flags>, <BitField (IP,IPerror,IPv46).frag>, <ByteField (IP,IPerror,IPv46).ttl>, <ByteEnumField (IP,IPerror,IPv46).proto>, <XShortField (IP,IPerror,IPv46).chksum>, <scapy.fields.Emph object at 0x7fd08978c0c0>, <scapy.fields.Emph object at 0x7fd08978c1c0>, <PacketListField (IP,IPerror,IPv46).options>]
 >>> pkt1[TCP].fields_desc
-[<Field (TCP,TCPerror).sport>, <Field (TCP,TCPerror).dport>, <Field (TCP,TCPerror).seq>, <Field (TCP,TCPerror).ack>, <Field (TCP,TCPerror).dataofs>, <Field (TCP,TCPerror).reserved>, <Field (TCP,TCPerror).flags>, <Field (TCP,TCPerror).window>, <Field (TCP,TCPerror).chksum>, <Field (TCP,TCPerror).urgptr>, <Field (TCP,TCPerror).options>]
+[<ShortEnumField (TCP,TCPerror).sport>, <ShortEnumField (TCP,TCPerror).dport>, <IntField (TCP,TCPerror).seq>, <IntField (TCP,TCPerror).ack>, <BitField (TCP,TCPerror).dataofs>, <BitField (TCP,TCPerror).reserved>, <FlagsField (TCP,TCPerror).flags>, <ShortField (TCP,TCPerror).window>, <XShortField (TCP,TCPerror).chksum>, <ShortField (TCP,TCPerror).urgptr>, <TCPOptionsField (TCP,TCPerror).options>]
 
 # Get values of fields in Ether header
 >>> pkt1[Ether].fields_desc
-[<Field (Ether).dst>, <Field (Ether).src>, <Field (Ether).type>]
+[<DestMACField (Ether).dst>, <SourceMACField (Ether).src>, <XShortEnumField (Ether).type>]
 >>> pkt1[Ether].dst
 '00:00:00:00:00:05'
 >>> pkt1[Ether].src
@@ -443,10 +364,6 @@ True
 <class 'int'>
 ```
 
-The output above (and later below in this section) is for Python3 and
-Scapy 2.4.2.  There were only minor differences with the other two
-versions.
-
 Get values of fields in IP header.  Note that the packet is only
 'partially built', meaning that some of the field values are `None`
 (fields `ihl`, `len`, and `chksum` in this example).  The idea with
@@ -458,7 +375,7 @@ See below for one way to get the calculated value of those fields.
 
 ```python
 >>> pkt1[IP].fields_desc
-[<Field (IP,IPerror,_IPv46).version>, <Field (IP,IPerror,_IPv46).ihl>, <Field (IP,IPerror,_IPv46).tos>, <Field (IP,IPerror,_IPv46).len>, <Field (IP,IPerror,_IPv46).id>, <Field (IP,IPerror,_IPv46).flags>, <Field (IP,IPerror,_IPv46).frag>, <Field (IP,IPerror,_IPv46).ttl>, <Field (IP,IPerror,_IPv46).proto>, <Field (IP,IPerror,_IPv46).chksum>, <scapy.fields.Emph object at 0x7fe60e98b0a8>, <scapy.fields.Emph object at 0x7fe60e98b108>, <Field (IP,IPerror,_IPv46).options>]
+[<BitField (IP,IPerror,IPv46).version>, <BitField (IP,IPerror,IPv46).ihl>, <XByteField (IP,IPerror,IPv46).tos>, <ShortField (IP,IPerror,IPv46).len>, <ShortField (IP,IPerror,IPv46).id>, <FlagsField (IP,IPerror,IPv46).flags>, <BitField (IP,IPerror,IPv46).frag>, <ByteField (IP,IPerror,IPv46).ttl>, <ByteEnumField (IP,IPerror,IPv46).proto>, <XShortField (IP,IPerror,IPv46).chksum>, <scapy.fields.Emph object at 0x7fd08978c0c0>, <scapy.fields.Emph object at 0x7fd08978c1c0>, <PacketListField (IP,IPerror,IPv46).options>]
 
 >>> pkt1[IP].version
 4
@@ -532,9 +449,6 @@ value to construct another similar packet.
 False
 ```
 
-I have tested that the above is common behavior across the three
-version combos.
-
 
 ## Creating packets that are only slightly different than other packets
 
@@ -571,47 +485,13 @@ True
 26047
 ```
 
-I have tested that the above is common behavior across the three
-version combos.
-
 
 ## Some differences between Scapy 2.4 vs. earlier Scapy versions
-
-Before writing this, I had most often used Scapy 2.2 or earlier with
-Python2.
 
 Scapy 2.4 added a new function `raw()` which the Scapy developers
 suggest using to convert packets to type `bytes`, rather than using
 `str()` or `bytes()`, although it seems that perhaps `bytes()` still
-works and returns the same value.  `raw()` does not exist in Scapy
-2.2.
-
-While it seems that perhaps `raw(pkt) == bytes(pkt)` is `True` for
-both Python2 or Python3 with Scapy 2.4.x, `raw(pkt)` and `str(pkt)`
-are _different_ for Python3.  It might be true in general that
-`raw(pkt) == str(pkt)` still for Python2 with Scapy 2.4.x, but it
-seems like a good idea to use `raw()` consistently if you plan to rely
-on Scapy 2.4.x and later, or `bytes()` consistently if you want to
-continue to write Python2 code that will run with older versions of
-Scapy like 2.2.x.
-
-Python3 plus Scapy 2.4.2 session demonstrating difference of return
-value between `raw` and `str`:
-
-```python
->>> pkt=Ether() 
->>> raw(pkt)
-b"\xff\xff\xff\xff\xff\xff\x08\x00'V\x85\xa4\x90\x00"
->>> len(raw(pkt))
-14
->>> str(pkt)
-'b"\\xff\\xff\\xff\\xff\\xff\\xff\\x08\\x00\'V\\x85\\xa4\\x90\\x00"'
->>> len(str(pkt))
-53
-```
-
-Python3 `raw(pkt)` and `bytes(pkt)` return type `bytes`, whereas with
-Python2 they return type `str`.
+works and returns the same value as `raw()`.
 
 There are some Scapy packets that when you "build" them, i.e. take the
 data structure representing the partially specified packet, and
@@ -634,29 +514,15 @@ from exception being raised, and then I think internally caught inside
 of Scapy itself, that is new in Scapy 2.4.x vs. at least some earlier
 versions of Scapy that I have used.
 
-Python3:
-
-```python
->>> pkt=Ether() / IP(dst='10.1.0.1')
->>> raw(pkt)
-Exception ignored in: <bound method SuperSocket.__del__ of <scapy.arch.linux.L2Socket object at 0x7f279ea89518>>
-Traceback (most recent call last):
-  File "/home/jafinger/.local/lib/python3.6/site-packages/scapy/supersocket.py", line 123, in __del__
-    self.close()
-  File "/home/jafinger/.local/lib/python3.6/site-packages/scapy/arch/linux.py", line 481, in close
-    set_promisc(self.ins, self.iface, 0)
-AttributeError: 'L2Socket' object has no attribute 'ins'
-b"\xff\xff\xff\xff\xff\xff\x08\x00'V\x85\xa4\x08\x00E\x00\x00\x14\x00\x01\x00\x00@\x00d\xd9\n\x00\x02\x0f\n\x01\x00\x01"
-```
-
-Python2:
+Python3 with Scapy 2.5.0:
 
 ```python
 >>> from scapy.all import *
 >>> pkt=Ether() / IP(dst='10.1.0.1')
 >>> raw(pkt)
-Exception AttributeError: "'L2Socket' object has no attribute 'ins'" in <bound method L2Socket.__del__ of <scapy.arch.linux.L2Socket object at 0x7fee528d94d0>> ignored
-"\xff\xff\xff\xff\xff\xff\x08\x00'(+c\x08\x00E\x00\x00\x14\x00\x01\x00\x00@\x00d\xd9\n\x00\x02\x0f\n\x01\x00\x01"
+WARNING: getmacbyip failed on [Errno 1] Operation not permitted
+WARNING: Mac address to reach destination not found. Using broadcast.
+b"\xff\xff\xff\xff\xff\xff\x08\x00'%;i\x08\x00E\x00\x00\x14\x00\x01\x00\x00@\x00d\xd9\n\x00\x02\x0f\n\x01\x00\x01"
 ```
 
 Note that this does not occur for _all_ Ether plus IP packets.  If you
@@ -730,150 +596,3 @@ b'\x03\x10'
 TBD: There must be built-in methods for converting between type `str`
 and `bytes`, I would guess.  There might even be more than one,
 depending upon character set encoding, perhaps?
-
-
-## Scapy version notes
-
-This section has details recorded while trying to track down
-differences in Scapy behavior between different versions I had
-installed on different virtual machines, especially in regards to how
-UDP header checksums were calculated.
-
-The brief summary of that particular issue is that there is a corner
-case bug in Scapy calculating UDP header checksums for IPv6/UDP
-packets that was fixed in Scapy v2.3.2.
-
-A similar bug exists for calculating the UDP header checksum for
-IPv4/UDP packets up to and including Scapy v2.3.3.  There doesn't
-appear to be a more recently "released" version of Scapy that fixes
-that bug, but the latest Scapy version published on Github does have a
-fix for it.
-
-
-
-Latest version of Scapy seen using Synaptic package manager on these
-versions of Ubuntu desktop Linux, as of 2017-Oct-19:
-
-+ 14.04.5 LTS - python-scapy 2.2.0-1
-
-  + On my VM named "Ubuntu 14.04" in VirtualBox, /usr/local/bin/scapy
-    exists, but python-scapy package is not installed, so I probably
-    installed it as part of some open source P4 tools some time ago (I
-    don't recall exactly which install did this).  Starting it shows
-    version 2.2.0-dev
-  
-+ 16.04.3 LTS - python-scapy 2.2.0-1
-
-  + On my well-used VM named "Ubuntu 16.04" in VirtualBox, which is
-    _not_ a fresh install, there is /usr/bin/scapy,
-    /usr/local/bin/scapy, and even /home/jafinger/.local/bin/scapy (I
-    don't know why that exists).  Both /usr/bin/scapy and
-    /usr/local/bin/scapy claim they are version 2.3.3.  I do not know
-    whether /usr/bin/scapy mmight have been overwritten after the
-    python-scapy package was installed, and I do not know which
-    install step I did that created /usr/local/bin/scapy.
-
-  + On my little-used VM named "Ubuntu 16.04.3 try3" in VirtualBox,
-    package python-scapy is installed, and the only scapy executable
-    in my path is /usr/bin/scapy.  It reports as version 2.2.0.
-
-+ 17.10       - python-scapy 2.3.3-1 (also python3-scapy 0.21-1)
-  + After 'sudo apt-get install python-scapy', then running command
-    /usr/bin/scapy, it says '(unknown.version)'.
-
-
-Using scapy 2.2.0 on my VM named "Ubuntu 16.04.03 try3"
-
-```Python
-pkt1=Ether()/IP()/UDP()
-pkt2=Ether()/IP()/UDP(dport=53+0x172)
-pkt3=Ether()/IPv6()/UDP()
-pkt4=Ether()/IPv6()/UDP(dport=53+0xff72)
-wrpcap("udp-pkts.pcap", [pkt1, pkt2, pkt3, pkt4])
-```
-
-The value 0x172 was what I saw in the UDP checksum field of pkt1 after
-being written out to the pcap file, according to wireshark.
-
-By making pkt2 have a single 16-bit field that was larger by that much
-than pkt1, the 16-bit 1's complement sum for the UDP fields should
-have been 0xffff, and complementing that gives 0x0000.
-
-Similarly the 0xff72 value was what I saw in the UDP checksum field of
-pkt3, and pkt4 thus has a UDP one's complement sum of 0xffff, and
-complementing that gives 0x0000.
-
-0x0000 is what scapy put into the UDP checksum field for pkt2, which I
-believe is incorrect.  RFC 768 has a special case that I think is only
-applicable to UDP checksums, not to IPv4 header nor TCP header
-checksums, which is that if the calculated value that would normally
-be transmitted in the packet is 0, it should be replaced with 0xffff.
-The protocol designers I believe wanted to reserve 0 as a special
-value for UDP that means "the sender did not calculate a UDP checksum,
-and the receiver should not check the value".  This is for efficiency
-of encapsulating other packets within UDP payloads, I believe, which
-is especially useful for implementing tunneling protocols that add new
-UDP headers in high-speed routers.
-
-
-VM name: "Ubuntu 16.04" /usr/bin/scapy says version 2.3.3
-pkt2 IPv4/UDP checksum 0x0000 (looks wrong)
-pkt4 IPv6/UDP checksum 0xffff (looks correct)
-
-VM name: "Ubuntu 16.04.3 try3" /usr/bin/scapy says version 2.2.0
-pkt2 IPv4/UDP checksum 0x0000 (looks wrong, wireshark 2.2.6 says missing)
-pkt4 IPv6/UDP checksum 0x0000 (looks wrong, wireshark 2.2.6 says illegal)
-
-VM name: "Ubuntu 14.04" /usr/local/bin/scapy says version 2.2.0-dev
-pkt2 IPv4/UDP checksum 0x0000 (looks wrong, wireshark 1.12.1 says missing)
-pkt4 IPv6/UDP checksum 0x0000 (looks wrong, wireshark 1.12.1 says illegal)
-
-VM name: "Ubuntu 17.10" /usr/bin/scapy says version "unknown.version"
-pkt2 IPv4/UDP checksum 0x0000 (looks wrong)
-pkt4 IPv6/UDP checksum 0xffff (looks correct)
-
-On my Ubuntu VM named "Ubuntu 16.04" I did these commands:
-
-```bash
-git clone https://github.com/secdev/scapy
-cd scapy
-git checkout ca0543ef581f2556c9933c073bdfd84f0b2ff895
-./run_scapy
-```
-
-That reported itself on startup as version 2.3.3.dev793.  The pkt2
-created and written to the pcap file this time had a UDP header
-checksum of 0xffff, which I believe is correct.
-
-
-Here is the secdev/scapy Github project commit that appears to have
-fixed this corner case bug of UDP checksum calculation, for IPv4/UDP
-packets:
-
-```
-commit 3a51db106625814de8d56bedf842b2b2454f0fce
-Author: Guillaume Valadon <guillaume.valadon@ssi.gouv.fr>
-Date:   Fri Nov 25 17:41:02 2016 +0100
-
-    UDP checksum computation fixed
-```
-
-Using gitk, the commit above says it is on the master branch, and it
-"Follows: v2.3.3".
-
-And here is the commit that appears to have fixed this for IPv6/UDP
-packets:
-
-```
-commit 12d9d9434bfbd375c518d5b1f0397905d900d5d4
-Author: Guillaume Valadon <guillaume@valadon.net>
-Date:   Mon May 11 16:00:37 2015 +0200
-
-    IPv6 - when the UDP checksum is 0, set it to 0xffff
-    
-    --HG--
-    branch : Issue #5116 - IPv6 & UDP.chksum == 0
-```
-
-Using gitk, the commit above is on the master branch, it "Follows:
-v2.3.1" and "Precedes: v2.3.2".
