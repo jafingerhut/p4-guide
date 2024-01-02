@@ -5,11 +5,11 @@ packet contents.  It covers only Python3, and Scapy version 2.5.0.
 
 Historical note: The document named `README-scapy.md` that was here
 until 2024-Jan-01 has been renamed
-[`README-scapy-old.md`](README-scapy-old.md).  You are welcome to read
-it if you are interested in older historical information related to
-different versions of Scapy that were around in 2018-2021 time frame,
-and some differences between Python2 and Python3 uses of the Scapy
-library.
+[`README-scapy-older.md`](README-scapy-older.md).  You are welcome to
+read it if you are interested in older historical information related
+to different versions of Scapy that were around in 2018-2021 time
+frame, and some differences between Python2 and Python3 uses of the
+Scapy library.
 
 
 ## Notes on installing Scapy
