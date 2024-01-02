@@ -73,6 +73,8 @@ insensitive), with their descriptions:
 * [`p4-spec`](https://github.com/p4lang/p4-spec) - The P4_16 and P4_14
   language speciications, and also the specification for the Portable
   Switch Architecture.
+* [`p4analyzer`](https://github.com/p4lang/p4analyzer) - A Language
+  Server Protocol (LSP) compliant analyzer for the P4 language
 * [`p4app`](https://github.com/p4lang/p4app) - p4app is a tool that
   can build, run, debug, and test P4 programs.  The philosophy behind
   p4app is "easy things should be easy" - p4app is designed to make
@@ -121,8 +123,8 @@ insensitive), with their descriptions:
   clone, with support for additional packet headers
 * [`switch`](https://github.com/p4lang/switch) - Consolidated switch
   repo (API, SAI and Netlink)
-* [`target-syslib`](https://github.com/p4lang/target-syslib) - The
-  target-syslib package contains sources to build system abstraction
+* [`target-syslibs`](https://github.com/p4lang/target-syslibs) - The
+  target-syslibs package contains sources to build system abstraction
   functions needed by TDI or any device drivers.
 * [`target-utils`](https://github.com/p4lang/target-utils) - The
   package contains sources for common utilities and data structures to
@@ -230,8 +232,8 @@ code:
   Interface) is a Target Abstraction Interface.  It is a set of APIs
   that enable configuration and management of P4 programmable and
   fixed functions of a backend device in a uniform and dynamic way.
-* [`target-syslib`](https://github.com/p4lang/target-syslib) - The
-  target-syslib package contains sources to build system abstraction
+* [`target-syslibs`](https://github.com/p4lang/target-syslibs) - The
+  target-syslibs package contains sources to build system abstraction
   functions needed by TDI or any device drivers.
 * [`target-utils`](https://github.com/p4lang/target-utils) - The
   package contains sources for common utilities and data structures to
@@ -265,6 +267,8 @@ To be categorized:
   Constraints on P4 objects enforced at runtime
 * [`p4-dpdk-target`](https://github.com/p4lang/p4-dpdk-target) - P4
   driver software for P4 DPDK target.
+* [`p4analyzer`](https://github.com/p4lang/p4analyzer) - A Language
+  Server Protocol (LSP) compliant analyzer for the P4 language
 * [`p4app`](https://github.com/p4lang/p4app) - p4app is a tool that
   can build, run, debug, and test P4 programs.  The philosophy behind
   p4app is "easy things should be easy" - p4app is designed to make
