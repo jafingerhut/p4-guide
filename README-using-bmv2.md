@@ -2,7 +2,7 @@
 
 Normally when you have a switch in a production setting, you would
 have a physical switch device, often consisting of a switch ASIC plus
-a nearby general purpose CPU (e.g. Intel, PowerPC, etc.) running
+a nearby general purpose CPU (e.g. x86_64, ARM, etc.) running
 control plane software that manages the contents of the tables in the
 switch ASIC.  The switch ASIC would be connected to physical Ethernet
 ports, and those in turn would be connected to ports on other
@@ -20,11 +20,11 @@ similar program `simple_switch_grpc`, but we will often simply say
 
 Instead of loading the compiled P4 program into a switch ASIC, you
 will start up the `simple_switch` process as a normal process running
-on a Linux machine (or virtual machine).
+on a Linux system (or virtual machine).
 
 Instead of physically connecting multiple devices to each other via
 Ethernet cables, we will create 'virtual' Ethernet ports on your Linux
-machine, and tell `simple_switch` to treat every packet sent to one of
+system, and tell `simple_switch` to treat every packet sent to one of
 those virtual Ethernet ports as one that arrived at the software
 emulated switch, and it will process the packet via the P4 program.
 Any packets sent out by the emulated switch will be transmitted to one
