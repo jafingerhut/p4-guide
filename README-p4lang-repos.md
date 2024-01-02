@@ -4,7 +4,7 @@ This document aims to be a guide to the public p4lang repositories,
 and some other selected public sources of information about P4,
 related tools, and published research papers.
 
-Caveat emptor: This document was last updated 2023-Jan.  Corrections
+Caveat emptor: This document was last updated 2024-Jan.  Corrections
 and comments are welcome.
 
 
