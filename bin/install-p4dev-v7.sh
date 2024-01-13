@@ -110,6 +110,20 @@ python_version_warning() {
 # to the places where one might hope.
 DEBUG_INSTALL=2
 
+# By default, save storage space by cleaning up various builds as we
+# go.  This is not always what you want when things are failing, so it
+# may be useful to disable this when making experimental changes to
+# the script.  At least when things are working, most people won't
+# want the extra build files.
+CLEAN_UP_AS_WE_GO=1
+
+# As an exception to the above, I very commonly want to keep around
+# the contents of the p4c/build directory, even though it is large,
+# because it is needed for running p4c tests.  If you change this to
+# 0, then the p4c/build directory will also be cleaned up (if
+# CLEAN_UP_AS_WE_GO=1).
+KEEP_P4C_BUILD_FOR_TESTING=1
+
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 
 debug_dump_many_install_files() {
@@ -662,6 +676,15 @@ else
     # --cflags grpc' fails, at least on Ubuntu 23.10 after building
     # grpc v1.54.2
     sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
+    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+    then
+	cd "${INSTALL_DIR}"
+	/bin/rm -fr grpc
+	# Make an empty directory with the name grpc, so that if a
+	# later step fails, and someone re-runs this script, it will
+	# not build grpc again.
+	mkdir grpc
+    fi
 fi
 
 set +x
@@ -719,8 +742,11 @@ else
     make
     sudo make install
 
-    # Save about 0.25G of storage by cleaning up PI build
-    make clean
+    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+    then
+	# Save about 0.25G of storage by cleaning up PI build
+	make clean
+    fi
     # 'sudo make install' installs several files in ${PYTHON_VENV} with
     # root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
@@ -785,6 +811,12 @@ else
     # 'sudo make install-strip' installs several files in ${PYTHON_VENV}
     # with root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+    then
+	cd "${INSTALL_DIR}"
+	cd behavioral-model
+	make clean
+    fi
 fi
 
 set +x
@@ -824,6 +856,12 @@ else
 	echo "the version of the Z3 header and compiled library files"
 	echo "that we have just installed from source code."
 	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
+    fi
+    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+    then
+	cd "${INSTALL_DIR}"
+	cd z3
+	/bin/rm -fr build
     fi
 
     set +x
@@ -896,6 +934,12 @@ else
     make -j${MAX_PARALLEL_JOBS}
     sudo make install
     sudo ldconfig
+    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
+    then
+	cd "${INSTALL_DIR}"
+	cd p4c
+	/bin/rm -fr build
+    fi
 fi
 
 set +x
