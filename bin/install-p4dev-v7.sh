@@ -838,10 +838,19 @@ else
     # This patch enables bmv2-ptf tests to pass that read P4Info files
     # with new fields added in 2023-Aug like `has_initial_fields`.
     patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
+    PROCESSOR=`uname --processor`
+    if [ ${PROCESSOR} = "x86_64" ]
+    then
+	# If you have not already installed Z3 before now, using this
+	# option will fetch an x86_64-specific pre-built binary.
+	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
+    else
+	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=OFF"
+    fi
     mkdir build
     cd build
     # Configure for a debug build and build p4testgen
-    cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+    cmake .. -DCMAKE_BUILD_TYPE=DEBUG ${P4C_CMAKE_OPTS}
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
     sudo make install
