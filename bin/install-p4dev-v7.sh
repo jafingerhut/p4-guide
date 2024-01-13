@@ -175,6 +175,7 @@ then
     exit 1
 fi
 source /etc/os-release
+PROCESSOR=`uname --processor`
 
 supported_distribution=0
 tried_but_got_build_errors=0
@@ -794,6 +795,45 @@ date
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
+if [ ${PROCESSOR} = "x86_64" ]
+then
+    echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
+else
+    set +x
+    echo "------------------------------------------------------------"
+    echo "Installing Z3Prover/z3"
+    echo "start install z3:"
+    set -x
+
+    if [ -d z3 ]
+    then
+	echo "Found directory ${INSTALL_DIR}/z3.  Assuming desired version of z3 is already installed."
+    else
+	git clone https://github.com/Z3Prover/z3
+	cd z3
+	git checkout z3-4.11.2
+	python3 scripts/mk_make.py
+	cd build
+	make
+	sudo make install
+    fi
+    if [ "${ID}" = "ubuntu" ]
+    then
+	echo "Installing 'dummy' packages named libz3-4 libz3-dev"
+	echo "so that later package installations will not overwrite"
+	echo "the version of the Z3 header and compiled library files"
+	echo "that we have just installed from source code."
+	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
+    fi
+
+    set +x
+    echo "end install z3:"
+    set -x
+    date
+fi
+
+cd "${INSTALL_DIR}"
+
 set +x
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
@@ -838,14 +878,15 @@ else
     # This patch enables bmv2-ptf tests to pass that read P4Info files
     # with new fields added in 2023-Aug like `has_initial_fields`.
     patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
-    PROCESSOR=`uname --processor`
     if [ ${PROCESSOR} = "x86_64" ]
     then
 	# If you have not already installed Z3 before now, using this
 	# option will fetch an x86_64-specific pre-built binary.
 	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
     else
-	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=OFF"
+	# We have installed the Z3 library by compiling from source
+	# code already above.
+	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DTOOLS_USE_PREINSTALLED_Z3=ON"
     fi
     mkdir build
     cd build
