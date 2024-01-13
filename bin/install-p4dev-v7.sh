@@ -439,6 +439,7 @@ set -x
 date
 df -h .
 df -BM .
+TIME_START=$(date +%s)
 
 # Check to see which versions of Python-related programs this system
 # already has installed, before the script starts installing things.
@@ -636,6 +637,7 @@ then
     # below went through with no errors.
 fi
 
+TIME_GRPC_START=$(date +%s)
 if [ -d grpc ]
 then
     echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
@@ -686,6 +688,7 @@ else
 	mkdir grpc
     fi
 fi
+TIME_GRPC_END=$(date +%s)
 
 set +x
 echo "end install grpc:"
@@ -702,6 +705,7 @@ echo "start install PI:"
 set -x
 date
 
+TIME_PI_START=$(date +%s)
 # Deps needed to build PI:
 if [ "${ID}" = "ubuntu" ]
 then
@@ -751,6 +755,7 @@ else
     # root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 fi
+TIME_PI_END=$(date +%s)
 
 set +x
 echo "end install PI:"
@@ -767,6 +772,7 @@ echo "start install behavioral-model:"
 set -x
 date
 
+TIME_BEHAVIORAL_MODEL_START=$(date +%s)
 # Following instructions in the file
 # targets/simple_switch_grpc/README.md in the p4lang/behavioral-model
 # repository with git commit 66cefc5e901eafcebb0e1a8f681a05795463215a.
@@ -818,6 +824,7 @@ else
 	make clean
     fi
 fi
+TIME_BEHAVIORAL_MODEL_END=$(date +%s)
 
 set +x
 echo "end install behavioral-model:"
@@ -827,6 +834,7 @@ date
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
+TIME_Z3_START=$(date +%s)
 if [ ${PROCESSOR} = "x86_64" ]
 then
     echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
@@ -869,6 +877,7 @@ else
     set -x
     date
 fi
+TIME_Z3_END=$(date +%s)
 
 cd "${INSTALL_DIR}"
 
@@ -879,6 +888,7 @@ echo "start install p4c:"
 set -x
 date
 
+TIME_P4C_START=$(date +%s)
 # Installing clang is not needed for building p4c, but it does enable
 # ebpf tests run by `make check` in the p4c/build directory to pass.
 if [ "${ID}" = "ubuntu" ]
@@ -941,6 +951,7 @@ else
 	/bin/rm -fr build
     fi
 fi
+TIME_P4C_END=$(date +%s)
 
 set +x
 echo "end install p4c:"
@@ -960,6 +971,7 @@ echo "start install mininet:"
 set -x
 date
 
+TIME_MININET_START=$(date +%s)
 # Pin to a particular version, so that I know the patch below will
 # continue to apply.  Will likely want to update this to newer
 # versions once or twice a year.
@@ -971,6 +983,7 @@ PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun-enable-venv.patch"
 cd ..
 PYTHON=python3 ./mininet/util/install.sh -nw
+TIME_MININET_END=$(date +%s)
 
 set +x
 echo "end install mininet:"
@@ -988,6 +1001,7 @@ echo "start install ptf:"
 set -x
 date
 
+TIME_PTF_START=$(date +%s)
 # Attempting this command was causing errors on Ubuntu 22.04 systems.
 # The ptf README says it is optional, so leave it out for now,
 # until/unless someone discovers a way to install it correctly on
@@ -997,6 +1011,7 @@ date
 git clone https://github.com/p4lang/ptf
 cd ptf
 ${PIP_SUDO} pip install .
+TIME_PTF_END=$(date +%s)
 
 set +x
 echo "end install ptf:"
@@ -1078,6 +1093,17 @@ set -x
 date
 df -h .
 df -BM .
+TIME_END=$(date +%s)
+echo ""
+echo "Elapsed time for various install steps:"
+echo "grpc                   : $(($TIME_GRPC_END-$TIME_GRPC_START)) sec"
+echo "p4lang/PI              : $(($TIME_PI_END-$TIME_PI_START)) sec"
+echo "p4lang/behavioral-model: $(($TIME_BEHAVIORAL_MODEL_END-$TIME_BEHAVIORAL_MODEL_START)) sec"
+echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
+echo "p4lang/p4c             : $(($TIME_P4C_END-$TIME_P4C_START)) sec"
+echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
+echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
+echo "Total time             : $(($TIME_END-$TIME_START)) sec"
 
 cd "${INSTALL_DIR}"
 DETS="install-details"
