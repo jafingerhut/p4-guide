@@ -139,6 +139,19 @@ debug_dump_many_install_files() {
     fi
 }
 
+debug_dump_installed_z3_files() {
+    local OUT_FNAME="$1"
+    local SAVE_PWD="$PWD"
+    if [ ${DEBUG_INSTALL} -ge 2 ]
+    then
+	mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
+	find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
+	cd ${INSTALL_DIR}/${OUT_FNAME}
+	tar xf snap.tar
+	cd ${SAVE_PWD}
+    fi
+}
+
 # max_parallel_jobs calculates a number of parallel jobs N to run for
 # a command like `make -j<N>`
 
@@ -597,6 +610,7 @@ else
 	make
 	sudo make install
 	find /usr -name '*z3*' -ls
+	debug_dump_installed_z3_files snap1
     fi
     if [ "${ID}" = "ubuntu" ]
     then
@@ -606,6 +620,7 @@ else
 	echo "that we have just installed from source code."
 	sudo apt-get --yes install equivs
 	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
+	debug_dump_installed_z3_files snap2
     fi
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
@@ -934,6 +949,7 @@ then
          boost-devel boost-iostreams boost-graph \
          llvm llvm-devel pkgconf python3-pip tcpdump clang
 fi
+debug_dump_installed_z3_files snap3
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
@@ -967,8 +983,10 @@ else
     cd build
     # Configure for a debug build and build p4testgen
     cmake .. -DCMAKE_BUILD_TYPE=DEBUG ${P4C_CMAKE_OPTS}
+    debug_dump_installed_z3_files snap4
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
+    debug_dump_installed_z3_files snap5
     sudo make install
     sudo ldconfig
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
