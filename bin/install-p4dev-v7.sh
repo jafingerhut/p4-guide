@@ -496,6 +496,7 @@ trap clean_up SIGHUP SIGINT SIGTERM
 # requires that pip3 has been installed first.  Without this, there is
 # an error during building Thrift 0.16.0 where a Python 3 program
 # cannot import from the setuptools package.
+TIME_AUTOTOOLS_START=$(date +%s)
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install \
@@ -558,6 +559,70 @@ then
 	sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4 || echo "Creating symbolic link /usr/local/share/aclocal/$b.m4 failed, probably because the file already exists"
     done
 fi
+TIME_AUTOTOOLS_END=$(date +%s)
+echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
+
+cd "${INSTALL_DIR}"
+
+# I have found that if I follow the steps for isntalling Z3 _after_
+# creating the Python venv, the step `sudo make install` installs Z3
+# files not into system-wide directories like /usr/include and
+# /usr/lib, but instead inside of the Python venv.  If that happens,
+# then the build of p4c cannot find the Z3 files there.  I am sure
+# there is some way to modify the Z3 install commands to install them
+# it in /usr system-wide directories even after the Python venv has
+# been created, but there should be no harm in just installing Z3
+# before the venv is created.
+
+TIME_Z3_START=$(date +%s)
+if [ ${PROCESSOR} = "x86_64" ]
+then
+    echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
+else
+    set +x
+    echo "------------------------------------------------------------"
+    echo "Installing Z3Prover/z3"
+    echo "start install z3:"
+    set -x
+
+    if [ -d z3 ]
+    then
+	echo "Found directory ${INSTALL_DIR}/z3.  Assuming desired version of z3 is already installed."
+    else
+	git clone https://github.com/Z3Prover/z3
+	cd z3
+	git checkout z3-4.11.2
+	python3 scripts/mk_make.py
+	cd build
+	make
+	sudo make install
+	find /usr -name '*z3*' -ls
+    fi
+    if [ "${ID}" = "ubuntu" ]
+    then
+	echo "Installing 'dummy' packages named libz3-4 libz3-dev"
+	echo "so that later package installations will not overwrite"
+	echo "the version of the Z3 header and compiled library files"
+	echo "that we have just installed from source code."
+	sudo apt-get install equivs
+	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
+    fi
+    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+    then
+	echo "Disk space used just before cleaning up z3:"
+	df -BM .
+	cd "${INSTALL_DIR}"
+	cd z3
+	/bin/rm -fr build
+    fi
+
+    set +x
+    echo "end install z3:"
+    set -x
+    date
+fi
+TIME_Z3_END=$(date +%s)
+echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
 
 # Create a new Python virtual environment using venv.  Later we will
 # attempt to ensure that all new Python packages installed are
@@ -843,58 +908,6 @@ date
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
-TIME_Z3_START=$(date +%s)
-if [ ${PROCESSOR} = "x86_64" ]
-then
-    echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
-else
-    set +x
-    echo "------------------------------------------------------------"
-    echo "Installing Z3Prover/z3"
-    echo "start install z3:"
-    set -x
-
-    if [ -d z3 ]
-    then
-	echo "Found directory ${INSTALL_DIR}/z3.  Assuming desired version of z3 is already installed."
-    else
-	git clone https://github.com/Z3Prover/z3
-	cd z3
-	git checkout z3-4.11.2
-	python3 scripts/mk_make.py
-	cd build
-	make
-	sudo make install
-	find /usr -name '*z3*' -ls
-    fi
-    if [ "${ID}" = "ubuntu" ]
-    then
-	echo "Installing 'dummy' packages named libz3-4 libz3-dev"
-	echo "so that later package installations will not overwrite"
-	echo "the version of the Z3 header and compiled library files"
-	echo "that we have just installed from source code."
-	sudo apt-get install equivs
-	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
-    fi
-    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
-    then
-	echo "Disk space used just before cleaning up z3:"
-	df -BM .
-	cd "${INSTALL_DIR}"
-	cd z3
-	/bin/rm -fr build
-    fi
-
-    set +x
-    echo "end install z3:"
-    set -x
-    date
-fi
-TIME_Z3_END=$(date +%s)
-echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
-
-cd "${INSTALL_DIR}"
-
 set +x
 echo "------------------------------------------------------------"
 echo "Installing p4lang/p4c"
@@ -1115,10 +1128,11 @@ df -BM .
 TIME_END=$(date +%s)
 echo ""
 echo "Elapsed time for various install steps:"
+echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
+echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
 echo "grpc                   : $(($TIME_GRPC_END-$TIME_GRPC_START)) sec"
 echo "p4lang/PI              : $(($TIME_PI_END-$TIME_PI_START)) sec"
 echo "p4lang/behavioral-model: $(($TIME_BEHAVIORAL_MODEL_END-$TIME_BEHAVIORAL_MODEL_START)) sec"
-echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
 echo "p4lang/p4c             : $(($TIME_P4C_END-$TIME_P4C_START)) sec"
 echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
