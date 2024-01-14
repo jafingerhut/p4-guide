@@ -604,7 +604,7 @@ else
 	echo "so that later package installations will not overwrite"
 	echo "the version of the Z3 header and compiled library files"
 	echo "that we have just installed from source code."
-	sudo apt-get install equivs
+	sudo apt-get --yes install equivs
 	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
     fi
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
