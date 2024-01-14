@@ -77,8 +77,12 @@ Start with:
 
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
-  + Ubuntu 20.04, 22.0, 23.10
+  + Ubuntu 20.04, 22.04, 23.10
     + 23.10 is only supported if you use install-p4dev-v7.sh
+    + Ubuntu 22.04 has now been tested working in a VM created inside
+      the [UTM virtualization software](https://mac.getutm.app),
+      running on an Apple Silicon Mac (aarch64 processor architecture,
+      aka arm64)
   + Fedora 35, 36, 37, 38
     + Only some Fedora releases are supported by each script.  When
       you run one of them, it will quickly do an OS version check to
@@ -92,8 +96,8 @@ Start with:
     for the VM, but 25 GB free disk space after the OS has been
     installed), and
   + a reliable Internet connection that is up for the entire duration
-    of running the install script -- it will download approximately 1
-    to 2 GByte of data.
+    of running the install script -- it will download approximately 2
+    to 3 GByte of data.
 
 If you use the latest `install-p4dev-v5.sh` script (supported only for
 Ubuntu 20.04), you need only 3 GB of free disk space, and about 250
