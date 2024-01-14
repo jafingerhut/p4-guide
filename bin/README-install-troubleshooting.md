@@ -79,10 +79,10 @@ Start with:
   operating systems:
   + Ubuntu 20.04, 22.04, 23.10
     + 23.10 is only supported if you use install-p4dev-v7.sh
-    + Ubuntu 22.04 has now been tested working in a VM created inside
-      the [UTM virtualization software](https://mac.getutm.app),
-      running on an Apple Silicon Mac (aarch64 processor architecture,
-      aka arm64)
+    + Ubuntu 22.04 has now been tested working with
+      install-p4dev-v7.sh in a VM created inside the [UTM
+      virtualization software](https://mac.getutm.app), running on an
+      Apple Silicon Mac (aarch64 processor architecture, aka arm64)
   + Fedora 35, 36, 37, 38
     + Only some Fedora releases are supported by each script.  When
       you run one of them, it will quickly do an OS version check to
