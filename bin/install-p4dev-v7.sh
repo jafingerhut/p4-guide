@@ -587,7 +587,10 @@ cd "${INSTALL_DIR}"
 # been created, but there should be no harm in just installing Z3
 # before the venv is created.
 
-TIME_Z3_START=$(date +%s)
+# Make clone time 0 if we don't clone Z3
+TIME_Z3_CLONE_START=$(date +%s)
+TIME_Z3_CLONE_END=$(date +%s)
+TIME_Z3_INSTALL_START=$(date +%s)
 if [ ${PROCESSOR} = "x86_64" ]
 then
     echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
@@ -602,12 +605,25 @@ else
     then
 	echo "Found directory ${INSTALL_DIR}/z3.  Assuming desired version of z3 is already installed."
     else
-	git clone https://github.com/Z3Prover/z3
-	cd z3
-	git checkout z3-4.11.2
-	python3 scripts/mk_make.py
-	cd build
-	make
+	TMP="${REPO_CACHE_DIR}/z3-4.11.2-made-for-aarch64-ubuntu-22.04.tar.gz"
+	if [ -r ${TMP} ]
+	then
+	    TIME_Z3_CLONE_START=$(date +%s)
+	    tar xzf ${TMP}
+	    TIME_Z3_CLONE_END=$(date +%s)
+	    TIME_Z3_INSTALL_START=$(date +%s)
+	    cd z3/build
+	else
+	    TIME_Z3_CLONE_START=$(date +%s)
+	    git clone https://github.com/Z3Prover/z3
+	    TIME_Z3_CLONE_END=$(date +%s)
+	    cd z3
+	    git checkout z3-4.11.2
+	    TIME_Z3_INSTALL_START=$(date +%s)
+	    python3 scripts/mk_make.py
+	    cd build
+	    make
+	fi
 	sudo make install
 	find /usr -name '*z3*' -ls
 	debug_dump_installed_z3_files snap1
@@ -636,8 +652,9 @@ else
     set -x
     date
 fi
-TIME_Z3_END=$(date +%s)
-echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
+TIME_Z3_INSTALL_END=$(date +%s)
+echo "Z3Prover/z3 clone      : $(($TIME_Z3_CLONE_END-$TIME_Z3_CLONE_START)) sec"
+echo "Z3Prover/z3 install    : $(($TIME_Z3_INSTALL_END-$TIME_Z3_INSTALL_START)) sec"
 
 # Create a new Python virtual environment using venv.  Later we will
 # attempt to ensure that all new Python packages installed are
@@ -717,16 +734,21 @@ then
     # below went through with no errors.
 fi
 
-TIME_GRPC_START=$(date +%s)
+TIME_GRPC_CLONE_START=$(date +%s)
+TIME_GRPC_CLONE_END=$(date +%s)
+TIME_GRPC_INSTALL_START=$(date +%s)
 if [ -d grpc ]
 then
     echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
 else
+    TIME_GRPC_CLONE_START=$(date +%s)
     get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
     cd grpc
     git checkout v${GRPC_VERSION}
     # These commands are recommended in grpc's BUILDING.md file for Unix:
     git submodule update --init --recursive
+    TIME_GRPC_CLONE_END=$(date +%s)
+    TIME_GRPC_INSTALL_START=$(date +%s)
     mkdir -p cmake/build
     cd cmake/build
     # I learned about the cmake option -DgRPC_SSL_PROVIDER=package
@@ -770,8 +792,9 @@ else
 	mkdir grpc
     fi
 fi
-TIME_GRPC_END=$(date +%s)
-echo "grpc                   : $(($TIME_GRPC_END-$TIME_GRPC_START)) sec"
+TIME_GRPC_INSTALL_END=$(date +%s)
+echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
+echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
 
 set +x
 echo "end install grpc:"
@@ -788,7 +811,9 @@ echo "start install PI:"
 set -x
 date
 
-TIME_PI_START=$(date +%s)
+TIME_PI_CLONE_START=$(date +%s)
+TIME_PI_CLONE_END=$(date +%s)
+TIME_PI_INSTALL_START=$(date +%s)
 # Deps needed to build PI:
 if [ "${ID}" = "ubuntu" ]
 then
@@ -804,10 +829,13 @@ if [ -d PI ]
 then
     echo "Found directory ${INSTALL_DIR}/PI.  Assuming desired version of PI is already installed."
 else
+    TIME_PI_CLONE_START=$(date +%s)
     git clone https://github.com/p4lang/PI
     cd PI
     git submodule update --init --recursive
+    TIME_PI_CLONE_END=$(date +%s)
     git log -n 1
+    TIME_PI_INSTALL_START=$(date +%s)
     ./autogen.sh
     # Cause 'sudo make install' to install Python packages for PI in a
     # Python virtual environment, if one is in use.
@@ -840,8 +868,9 @@ else
     # root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 fi
-TIME_PI_END=$(date +%s)
-echo "p4lang/PI              : $(($TIME_PI_END-$TIME_PI_START)) sec"
+TIME_PI_INSTALL_END=$(date +%s)
+echo "p4lang/PI clone        : $(($TIME_PI_CLONE_END-$TIME_PI_CLONE_START)) sec"
+echo "p4lang/PI install      : $(($TIME_PI_INSTALL_END-$TIME_PI_INSTALL_START)) sec"
 
 set +x
 echo "end install PI:"
@@ -858,7 +887,9 @@ echo "start install behavioral-model:"
 set -x
 date
 
-TIME_BEHAVIORAL_MODEL_START=$(date +%s)
+TIME_BEHAVIORAL_MODEL_CLONE_START=$(date +%s)
+TIME_BEHAVIORAL_MODEL_CLONE_END=$(date +%s)
+TIME_BEHAVIORAL_MODEL_INSTALL_START=$(date +%s)
 # Following instructions in the file
 # targets/simple_switch_grpc/README.md in the p4lang/behavioral-model
 # repository with git commit 66cefc5e901eafcebb0e1a8f681a05795463215a.
@@ -875,11 +906,14 @@ if [ -d behavioral-model ]
 then
     echo "Found directory ${INSTALL_DIR}/behavioral-model.  Assuming desired version of behavioral-model is already installed."
 else
+    TIME_BEHAVIORAL_MODEL_CLONE_START=$(date +%s)
     get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
     cd behavioral-model
     # Get latest updates that are not in the repo cache version
     git pull
+    TIME_BEHAVIORAL_MODEL_CLONE_END=$(date +%s)
     git log -n 1
+    TIME_BEHAVIORAL_MODEL_INSTALL_START=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv.patch"
@@ -912,8 +946,9 @@ else
 	make clean
     fi
 fi
-TIME_BEHAVIORAL_MODEL_END=$(date +%s)
-echo "p4lang/behavioral-model: $(($TIME_BEHAVIORAL_MODEL_END-$TIME_BEHAVIORAL_MODEL_START)) sec"
+TIME_BEHAVIORAL_MODEL_INSTALL_END=$(date +%s)
+echo "p4lang/behavioral-model clone  : $(($TIME_BEHAVIORAL_MODEL_CLONE_END-$TIME_BEHAVIORAL_MODEL_CLONE_START)) sec"
+echo "p4lang/behavioral-model install: $(($TIME_BEHAVIORAL_MODEL_INSTALL_END-$TIME_BEHAVIORAL_MODEL_INSTALL_START)) sec"
 
 set +x
 echo "end install behavioral-model:"
@@ -930,7 +965,9 @@ echo "start install p4c:"
 set -x
 date
 
-TIME_P4C_START=$(date +%s)
+TIME_P4C_CLONE_START=$(date +%s)
+TIME_P4C_CLONE_END=$(date +%s)
+TIME_P4C_INSTALL_START=$(date +%s)
 # Installing clang is not needed for building p4c, but it does enable
 # ebpf tests run by `make check` in the p4c/build directory to pass.
 if [ "${ID}" = "ubuntu" ]
@@ -960,14 +997,17 @@ if [ -d p4c ]
 then
     echo "Found directory ${INSTALL_DIR}/p4c.  Assuming desired version of p4c is already installed."
 else
+    TIME_P4C_CLONE_START=$(date +%s)
     # Clone p4c and its submodules:
     git clone https://github.com/p4lang/p4c.git
     cd p4c
     git log -n 1
     git submodule update --init --recursive
+    TIME_P4C_CLONE_END=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     # This patch enables bmv2-ptf tests to pass that read P4Info files
     # with new fields added in 2023-Aug like `has_initial_fields`.
+    TIME_P4C_INSTALL_START=$(date +%s)
     patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
     if [ ${PROCESSOR} = "x86_64" ]
     then
@@ -998,8 +1038,9 @@ else
 	/bin/rm -fr build
     fi
 fi
-TIME_P4C_END=$(date +%s)
-echo "p4lang/p4c             : $(($TIME_P4C_END-$TIME_P4C_START)) sec"
+TIME_P4C_INSTALL_END=$(date +%s)
+echo "p4lang/p4c clone       : $(($TIME_P4C_CLONE_END-$TIME_P4C_CLONE_START)) sec"
+echo "p4lang/p4c install     : $(($TIME_P4C_INSTALL_END-$TIME_P4C_INSTALL_START)) sec"
 
 set +x
 echo "end install p4c:"
@@ -1147,11 +1188,16 @@ TIME_END=$(date +%s)
 echo ""
 echo "Elapsed time for various install steps:"
 echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
-echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
-echo "grpc                   : $(($TIME_GRPC_END-$TIME_GRPC_START)) sec"
-echo "p4lang/PI              : $(($TIME_PI_END-$TIME_PI_START)) sec"
-echo "p4lang/behavioral-model: $(($TIME_BEHAVIORAL_MODEL_END-$TIME_BEHAVIORAL_MODEL_START)) sec"
-echo "p4lang/p4c             : $(($TIME_P4C_END-$TIME_P4C_START)) sec"
+echo "Z3Prover/z3 clone      : $(($TIME_Z3_CLONE_END-$TIME_Z3_CLONE_START)) sec"
+echo "Z3Prover/z3 install    : $(($TIME_Z3_INSTALL_END-$TIME_Z3_INSTALL_START)) sec"
+echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
+echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
+echo "p4lang/PI clone        : $(($TIME_PI_CLONE_END-$TIME_PI_CLONE_START)) sec"
+echo "p4lang/PI install      : $(($TIME_PI_INSTALL_END-$TIME_PI_INSTALL_START)) sec"
+echo "p4lang/behavioral-model clone  : $(($TIME_BEHAVIORAL_MODEL_CLONE_END-$TIME_BEHAVIORAL_MODEL_CLONE_START)) sec"
+echo "p4lang/behavioral-model install: $(($TIME_BEHAVIORAL_MODEL_INSTALL_END-$TIME_BEHAVIORAL_MODEL_INSTALL_START)) sec"
+echo "p4lang/p4c clone       : $(($TIME_P4C_CLONE_END-$TIME_P4C_CLONE_START)) sec"
+echo "p4lang/p4c install     : $(($TIME_P4C_INSTALL_END-$TIME_P4C_INSTALL_START)) sec"
 echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 echo "Total time             : $(($TIME_END-$TIME_START)) sec"
