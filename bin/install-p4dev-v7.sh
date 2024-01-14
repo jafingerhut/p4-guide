@@ -680,6 +680,8 @@ else
     sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
+	echo "Disk space used just before cleaning up grpc:"
+	df -BM .
 	cd "${INSTALL_DIR}"
 	/bin/rm -fr grpc
 	# Make an empty directory with the name grpc, so that if a
@@ -748,6 +750,8 @@ else
 
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
+	echo "Disk space used just before cleaning up PI:"
+	df -BM .
 	# Save about 0.25G of storage by cleaning up PI build
 	make clean
     fi
@@ -819,6 +823,8 @@ else
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
+	echo "Disk space used just before cleaning up behavioral-model:"
+	df -BM .
 	cd "${INSTALL_DIR}"
 	cd behavioral-model
 	make clean
@@ -867,6 +873,8 @@ else
     fi
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
+	echo "Disk space used just before cleaning up z3:"
+	df -BM .
 	cd "${INSTALL_DIR}"
 	cd z3
 	/bin/rm -fr build
@@ -946,6 +954,8 @@ else
     sudo ldconfig
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
     then
+	echo "Disk space used just before cleaning up p4c:"
+	df -BM .
 	cd "${INSTALL_DIR}"
 	cd p4c
 	/bin/rm -fr build
