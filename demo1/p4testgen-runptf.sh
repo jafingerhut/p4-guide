@@ -1,6 +1,6 @@
 #! /bin/bash
 
-T="`realpath $HOME/p4c/backends/bmv2`"
+T="`realpath $HOME/p4c/tools/ptf`"
 if [ x"${PYTHONPATH}" == "x" ]
 then
     P="${T}"
