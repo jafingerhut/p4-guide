@@ -691,6 +691,7 @@ else
     fi
 fi
 TIME_GRPC_END=$(date +%s)
+echo "grpc                   : $(($TIME_GRPC_END-$TIME_GRPC_START)) sec"
 
 set +x
 echo "end install grpc:"
@@ -760,6 +761,7 @@ else
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
 fi
 TIME_PI_END=$(date +%s)
+echo "p4lang/PI              : $(($TIME_PI_END-$TIME_PI_START)) sec"
 
 set +x
 echo "end install PI:"
@@ -831,6 +833,7 @@ else
     fi
 fi
 TIME_BEHAVIORAL_MODEL_END=$(date +%s)
+echo "p4lang/behavioral-model: $(($TIME_BEHAVIORAL_MODEL_END-$TIME_BEHAVIORAL_MODEL_START)) sec"
 
 set +x
 echo "end install behavioral-model:"
@@ -862,6 +865,7 @@ else
 	cd build
 	make
 	sudo make install
+	find /usr -name '*z3*' -ls
     fi
     if [ "${ID}" = "ubuntu" ]
     then
@@ -869,6 +873,7 @@ else
 	echo "so that later package installations will not overwrite"
 	echo "the version of the Z3 header and compiled library files"
 	echo "that we have just installed from source code."
+	sudo apt-get install equivs
 	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
     fi
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
@@ -886,6 +891,7 @@ else
     date
 fi
 TIME_Z3_END=$(date +%s)
+echo "Z3Prover/z3            : $(($TIME_Z3_END-$TIME_Z3_START)) sec"
 
 cd "${INSTALL_DIR}"
 
@@ -962,6 +968,7 @@ else
     fi
 fi
 TIME_P4C_END=$(date +%s)
+echo "p4lang/p4c             : $(($TIME_P4C_END-$TIME_P4C_START)) sec"
 
 set +x
 echo "end install p4c:"
@@ -994,6 +1001,7 @@ patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun-enable-venv.patch"
 cd ..
 PYTHON=python3 ./mininet/util/install.sh -nw
 TIME_MININET_END=$(date +%s)
+echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
 
 set +x
 echo "end install mininet:"
@@ -1022,6 +1030,7 @@ git clone https://github.com/p4lang/ptf
 cd ptf
 ${PIP_SUDO} pip install .
 TIME_PTF_END=$(date +%s)
+echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 
 set +x
 echo "end install ptf:"
