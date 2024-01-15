@@ -35,6 +35,11 @@ cores, the build scripts may try to run more compilations in parallel,
 and thus may require more than 8 GB of RAM to succeed, failing if you
 do not have enough RAM to run all of those processes simultaneously.
 
+I did try once on 2024-Jan-15 to follow these steps on an Ubuntu 20.04
+system running on an aarch64 (aka arm64) CPU, but it failed.  I
+believe the root cause is that some executable programs are downloaded
+at some step, and they were not aarch64 executables, probably x86_64.
+
 It was running in a VM created using VirtualBox on a macOS host
 system, but hopefully that part should be irrelevant for others
 following these steps.
