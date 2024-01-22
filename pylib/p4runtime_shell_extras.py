@@ -82,6 +82,18 @@ def delete_all_entries(tname, print_entries=False):
         n += 1
     return n
 
+def read_table_default_entry(table_name_str):
+    te = sh.TableEntry(table_name_str)
+    te.is_default = True
+    n = 0
+    for x in te.read():
+        default_entry = x
+        n += 1
+        if n > 1:
+            logging.error("read_table_default_entry() found more than one default entry for table '%s'"
+                          "" % (table_name_str))
+    return default_entry
+
 def as_list_of_dicts(exc):
     """Take an exception object that has been thrown by a method such
     as p4runtime_sh.shell.TableEntry.insert(), and create a list of
