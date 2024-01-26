@@ -202,7 +202,7 @@ then
     exit 1
 fi
 source /etc/os-release
-PROCESSOR=`uname --processor`
+PROCESSOR=`uname --machine`
 
 supported_distribution=0
 tried_but_got_build_errors=0
