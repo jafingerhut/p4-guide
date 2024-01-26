@@ -145,7 +145,11 @@ debug_dump_installed_z3_files() {
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
+	# On some systems the following find command returns non-0
+	# exit status.
+	set +e
 	find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
+	set -e
 	cd ${INSTALL_DIR}/${OUT_FNAME}
 	tar xf snap.tar
 	cd ${SAVE_PWD}
@@ -625,7 +629,11 @@ else
 	    make
 	fi
 	sudo make install
+	# On some systems the following find command returns non-0
+	# exit status.
+	set +e
 	find /usr -name '*z3*' -ls
+	set -e
 	debug_dump_installed_z3_files snap1
     fi
     if [ "${ID}" = "ubuntu" ]
