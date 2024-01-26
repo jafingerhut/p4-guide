@@ -869,9 +869,6 @@ else
     git log -n 1
     git submodule update --init --recursive
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-    # This patch enables bmv2-ptf tests to pass that read P4Info files
-    # with new fields added in 2023-Aug like `has_initial_fields`.
-    patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
     PROCESSOR=`uname --processor`
     if [ ${PROCESSOR} = "x86_64" ]
     then
