@@ -1005,10 +1005,7 @@ else
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-    # This patch enables bmv2-ptf tests to pass that read P4Info files
-    # with new fields added in 2023-Aug like `has_initial_fields`.
     TIME_P4C_INSTALL_START=$(date +%s)
-    patch -p1 < "${PATCH_DIR}/p4c-allow-unknown-p4runtime-fields.patch"
     if [ ${PROCESSOR} = "x86_64" ]
     then
 	# If you have not already installed Z3 before now, using this
