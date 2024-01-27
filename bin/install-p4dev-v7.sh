@@ -142,16 +142,23 @@ debug_dump_many_install_files() {
 debug_dump_installed_z3_files() {
     local OUT_FNAME="$1"
     local SAVE_PWD="$PWD"
+    local NUMFILES=""
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
 	# On some systems the following find command returns non-0
 	# exit status.
 	set +e
-	find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
-	set -e
-	cd ${INSTALL_DIR}/${OUT_FNAME}
-	tar xf snap.tar
+        NUMFILES=`find /usr -name '*z3*' -a \! -type d | wc -l`
+        if [ ${NUMFILES} -eq 0 ]
+        then
+            touch ${INSTALL_DIR}/${OUT_FNAME}/no-z3-files-in-usr-dirs
+        else
+            find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
+            set -e
+            cd ${INSTALL_DIR}/${OUT_FNAME}
+	    tar xf snap.tar
+        fi
 	cd ${SAVE_PWD}
     fi
 }
