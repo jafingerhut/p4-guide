@@ -79,7 +79,7 @@ Start with:
   operating systems:
   + Ubuntu 20.04, 22.04, 23.10
     + 23.10 is only supported if you use install-p4dev-v7.sh
-    + Ubuntu 22.04 has now been tested working with
+    + Ubuntu 20.04 and 22.04 have now been tested working with
       install-p4dev-v7.sh in a VM created inside the [UTM
       virtualization software](https://mac.getutm.app), running on an
       Apple Silicon Mac (aarch64 processor architecture, aka arm64)
@@ -87,7 +87,7 @@ Start with:
     + Only some Fedora releases are supported by each script.  When
       you run one of them, it will quickly do an OS version check to
       see if the script supports it.
-    + For older Fedora releases, see one of these places:
+    + To get a copy of older Fedora releases, see one of these places:
       + [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
 	  + [dl.fedoraproject.org releases](https://dl.fedoraproject.org/pub/fedora/linux/releases/)
 + The system must have:
@@ -99,10 +99,10 @@ Start with:
     of running the install script -- it will download approximately 2
     to 3 GByte of data.
 
-If you use the latest `install-p4dev-v5.sh` script (supported only for
-Ubuntu 20.04), you need only 3 GB of free disk space, and about 250
-MByte of data will be downloaded from the Internet.  See the table
-below for more details.
+If you use the `install-p4dev-v5.sh` script (supported only for Ubuntu
+20.04 on x86_64 systems), you need only 3 GB of free disk space, and
+about 250 MByte of data will be downloaded from the Internet.  See the
+table below for more details.
 
 Note: These scripts have been reported NOT WORKING on WSL (Windows
 Subsystem for Linux).  I have had success running supported versions
@@ -118,7 +118,7 @@ Then run the commands below in a terminal.  Note:
 + You may run the commands from any directory you wish -- I typically
   run it from the home directory of my account.  Whichever directory
   is your current directory when you start the script, is where new
-  directories with names like `p4c`, `behavioral-model`, `protobuf`,
+  directories with names like `p4c`, `behavioral-model`, `mininet`,
   `grpc`, etc. will be created.
 + I have only tried these install scripts when running as a normal
   user, i.e. not as the superuser `root`.  There are several `sudo`
@@ -175,7 +175,10 @@ I would recommend using `install-p4dev-v5.sh` if you are able to use
 Ubuntu 20.04.  It requires the least disk space, installs quickly, and
 it installs pre-compiled P4 development tools from Debian packages
 that can be updated later to more recent versions as they are
-published, if you wish.
+published, if you wish.  Note: The source code for behavioral-model
+and p4c that this installs tends to be up to 2-3 months older than the
+date when you install them.  If you really need the latest version of
+these programs, use a different install script.
 
 Minor note: As of 2023-Jan when I updated the PTF tests in this
 p4-guide repository to use p4runtime-shell as the Python API for table
@@ -190,15 +193,15 @@ packages are installed.  This can probably be worked around by using
 Python virtual environments, but I have not tested this.  A system
 installed using `install-p4dev-v6.sh` does not have this issue.
 
-If you wish to run the examples in the
-[tutorials](https://github.com/p4lang/tutorials) repository as of
-2021, you need P4Runtime API support and Mininet.  All of the current
-install scripts listed in the table below include these.
+All of the current install scripts install everything required to
+enable you to run the examples in the
+[tutorials](https://github.com/p4lang/tutorials) repository, since
+2021.
 
 See the tables below if you want to make a more informed decision.
 
 The scripts in the next table below have all been tested monthly
-through 2023.  They all include the following:
+through 2024.  They all include the following:
 
 + [P4Runtime API support](https://github.com/p4lang/p4runtime)
 + [Mininet](http://mininet.org)
@@ -226,6 +229,10 @@ are listed here only for possible historical interest.
 
 
 ## Testing your installation
+
+Note: Running any of the steps later in this section is completely
+optional.  I run them in my monthly test of the install scripts, for
+additional assurance that they are doing their jobs correctly.
 
 
 ### Run tests included with `p4c`
