@@ -16,13 +16,12 @@ usage() {
     echo "  -w|--workdir: Working directory"
     echo "  -p|--p4dir: Directory containing P4 source file, and in which to write output files"
     echo "  -s|--srcfile: Base file name containing P4 source code, which must be in the P4 directory"
-    echo "  -a|--arch: P4 architecture to use.  Supported values: psa, pna (default: pna)"
     echo ""
 }
 
 # Parse command-line options.
-SHORTOPTS=hvw:p:s:a:
-LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:,arch:
+SHORTOPTS=hvw:p:s:
+LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
@@ -32,7 +31,6 @@ VERBOSE=0
 WORKING_DIR=/root
 P4_DIR=""
 P4_SRC_FNAME=""
-P4_ARCH="pna"
 
 # Process command-line options.
 while true ; do
@@ -51,9 +49,6 @@ while true ; do
         shift 2 ;;
     -s|--srcfile)
         P4_SRC_FNAME="${2}"
-        shift 2 ;;
-    -a|--arch)
-        P4_ARCH="${2}"
         shift 2 ;;
     --)
         shift
@@ -78,14 +73,14 @@ then
     exit 1
 fi
 
-if [ ! -r "${P4_DIR}/${P4_SRC_FNAME}" ]
+BASE_FNAME=`basename ${P4_SRC_FNAME} .p4`
+
+if [ ! -r "${P4_DIR}/${BASE_FNAME}.conf" ]
 then
-    echo "P4 source file not found, or not readable: ${P4_DIR}/${P4_SRC_FNAME}"
+    echo "conf file for P4 program not found, or not readable: ${P4_DIR}/${BASE_FNAME}.conf"
     usage
     exit 1
 fi
-
-BASE_FNAME=`basename ${P4_SRC_FNAME} .p4`
 
 
 SCRIPTS_DIR="${WORKING_DIR}"/scripts
