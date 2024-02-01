@@ -1039,7 +1039,7 @@ else
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
     debug_dump_installed_z3_files snap5
-    sudo make install
+    sudo make install/strip
     sudo ldconfig
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
     then

@@ -884,7 +884,7 @@ else
     cmake .. -DCMAKE_BUILD_TYPE=DEBUG ${P4C_CMAKE_OPTS}
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
-    sudo make install
+    sudo make install/strip
     sudo ldconfig
 fi
 
