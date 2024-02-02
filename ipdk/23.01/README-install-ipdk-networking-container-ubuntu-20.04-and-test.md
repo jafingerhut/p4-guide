@@ -9,8 +9,8 @@ The IPDK instructions and build scripts come from this repository:
 The `infrap4d` program compiled and installed using the steps below is
 a combination of at least the following parts:
 
-+ The DPDK data plane, which you may compile P4 programs and load the
-  binaries into it to execute them.
++ The DPDK data plane, or software switch.  You may compile P4
+  programs and load the binaries into it to execute them.
 + A P4Runtime API server, by default listening on TCP port 9559 for
   incoming connection requests from P4Runtime API clients
   (i.e. controller programs).
@@ -19,7 +19,7 @@ a combination of at least the following parts:
 Source: The figure on this page shows the above parts, and also some
 other software components included within the `infrap4d` process:
 
-+ https://github.com/ipdk-io/networking-recipe#infrap4d
++ https://ipdk.io/p4cp-userguide/overview/overview.html#infrap4d
 
 
 # Installing IPDK using the networking docker build steps
@@ -30,19 +30,20 @@ GBytes of free disk space.  It had 4 virtual CPU cores, and at its
 most consumed a little bit under 9 GBytes of disk space out of
 whatever free space existed when starting.
 
+Aside: I did try once on 2024-Jan-15 to follow these steps on an
+Ubuntu 20.04 system running on an aarch64 (aka arm64) CPU, but it
+failed.  I believe the root cause is that some executable programs are
+downloaded at some step, and they were not aarch64 executables,
+probably x86_64.
+
 Note: If you try to build on a system with more than 4 virtual CPU
 cores, the build scripts may try to run more compilations in parallel,
 and thus may require more than 8 GB of RAM to succeed, failing if you
 do not have enough RAM to run all of those processes simultaneously.
 
-I did try once on 2024-Jan-15 to follow these steps on an Ubuntu 20.04
-system running on an aarch64 (aka arm64) CPU, but it failed.  I
-believe the root cause is that some executable programs are downloaded
-at some step, and they were not aarch64 executables, probably x86_64.
-
-It was running in a VM created using VirtualBox on a macOS host
-system, but hopefully that part should be irrelevant for others
-following these steps.
+My success occurred while running in a VM created using VirtualBox on
+an x86_64 macOS host system, but hopefully that part should be
+irrelevant for others following these steps.
 
 Start logged in as a non-root user `$USER`.
 
@@ -138,12 +139,13 @@ other at a prompt in the container.
 
 Note: Every time you run `ipdk connect`, a script run in the container
 creates new cryptographic authentication keys for the `infrap4d`
-server in the directory `/var/stratum/certs`.  You want this to happen
-once per container process that you start.  One way to achieve this is
-to only do `ipdk connect` exactly once each time you run `ipdk start`.
-If you then want additional terminals to be at a shell prompt within
-that same container process, you can use the following command instead
-of `ipdk connect`:
+server in the directory `/usr/share/stratum/certs` (or perhaps
+`/var/stratum/certs` in older versions of IPDK).  You want this to
+happen once per container process that you start.  One way to achieve
+this is to only do `ipdk connect` exactly once each time you run `ipdk
+start`.  If you then want additional terminals to be at a shell prompt
+within that same container process, you can use the following command
+instead of `ipdk connect`:
 
 ```bash
 docker exec -it -w /root 8e0d6ad594af /bin/bash
@@ -169,19 +171,11 @@ container, and vice versa.
 
 # Useful extra software to install in the base OS
 
-Several of the instructions below use the Python Scapy package to
-create simple test packets to send into the DPDK software switch, and
-`tshark` or `wireshark` to view the packets output by the switch, in
-the base OS.
+If you like using Wireshark, or the tshark variant of that program, in the base OS for viewing the contents of pcap files that contain packets recorded during a test run, you can install it as follows.
 
 In the base OS:
 ```bash
-sudo apt-get install --yes tshark wireshark python3-venv
-PYTHON_VENV="${HOME}/my-venv"
-python3 -m venv --system-site-packages "${PYTHON_VENV}"
-source "${PYTHON_VENV}/bin/activate"
-pip3 install git+https://github.com/p4lang/p4runtime-shell.git
-pip3 install scapy
+sudo apt-get install --yes tshark wireshark
 ```
 
 
@@ -274,7 +268,7 @@ $ cd $HOME/ipdk
 $ ipdk start -d
 Loaded /home/andy/ipdk/build/scripts/ipdk_default.env
 Loaded /home/andy/.ipdk/ipdk.env
-Can't find update-binfmts.
+Missing QEMU.
 Using docker run!
 c75e8bbdcbac8e33c231a6f3348069089854d7f77ec6bf2f91373a98ea3ef42a
 ```
@@ -386,7 +380,8 @@ is started, but before the packets start flowing.
 Even better, you should create your own script based upon the contents
 of `rundemo_TAP_IO.sh` that sets things up like running infrap4d and
 creating namespaces and interfaces, but doesn't send any packets.
-Several such scripts below have been written for you that do this.
+Several such script have already been written that you can use for
+this, descrbied below.
 
 
 # A note on debugging P4 programs on the DPDK software switch
@@ -402,7 +397,7 @@ logging, e.g. via the `--log-console` or `--log-file` command line
 options, and/or by adding `log_msg` extern function calls in the P4
 program.
 
-As of 2023-Nov-05, there is nothing like this available for debugging
+As of 2024-Feb-02, there is nothing like this available for debugging
 of P4 programs running on the DPDK software switch.
 
 As of this time, the best option available is to modify your P4
@@ -455,23 +450,22 @@ execution of the `ipdk connect` command.  These files are copied into
 the directory `/usr/share/stratum/certs/` in the container's file
 system.
 
-Below are two ways to successfully set things up so that a small
-Python program can connect to TCP port 9559 of the `infrap4d` process
-in the container, as a P4Runtime client, and send P4Runtime API read
-and write request messages to `infrap4d`.
+Below is one way to successfully set things up so that a small Python
+program can connect to TCP port 9559 of the `infrap4d` process in the
+container, as a P4Runtime client, and send P4Runtime API read and
+write request messages to `infrap4d`.
 
-The first way shows how to run such a Python test client program in
-the container.  One advantage of doing it this way is that you can
-also easily send packets to TAP interfaces from the same test client
+It shows how to run such a Python P4Runtime client program in the
+container.  One advantage of doing it this way is that you can also
+easily send packets to TAP interfaces from the same test client
 program, and/or read packets output by the DPDK software switch on TAP
 interfaces.
 
-The second way shows how to run such a Python test client program in
+It is also possible to run such a Python P4Runtime client program in
 the base OS.  I do not know of any straightforward way to enable such
 a program running in the OS to send packets to or receive packets from
 the DPDK software switch.  I consider this way mostly a curiosity at
-this point, not a way to do much useful work, so the description of
-this is near the end of this article.
+this point, not a way to do much useful work, so that technique is not documented here.
 
 Note: These instructions use the `p4runtime-shell` Python package,
 which is only one of many ways to make a P4Runtime API connection from
@@ -1138,48 +1132,6 @@ Error: P4Runtime RPC error (INTERNAL): 'bf_pal_device_add(dev_id, &device_profil
 
 I am checking with DPDK developers to see why this occurs, and if
 there is a way to prevent it.
-
-
-# Making a P4Runtime API connection from Python program running in the base OS, to infrap4d running in the container
-
-Note: You can ignore this section if you prefer to run P4Runtime API
-client programs in the container.
-
-First copy the current cryptographic key/certificate files required
-for a client to authenticate itself to the server.  This step only
-needs to be done once each time these files change.  One event that
-causes these files to change is running `ipdk connect` from the base
-OS.
-
-When the container is started, it is done in a way such that the
-directory `/tmp` in the container is equivalent to the directory
-`$HOME/.ipdk/volume` in the base OS.  That is, any changes made to the
-directory on one side is immediately reflected on the other side.
-
-In the container:
-```bash
-cp /usr/share/stratum/certs/{ca.crt,client.key,client.crt} /tmp/
-```
-
-In the base OS:
-```bash
-mkdir ~/my-certs
-sudo cp ~/.ipdk/volume/{ca.crt,client.crt,client.key} ~/my-certs
-sudo chown `id --user --name`:`id --group --name` ~/my-certs/*
-```
-
-After this setup, you should be able to run the test client program
-with this command.  The `test-client.py` program takes an optional
-parameter that is the name of a directory where it should find the
-files `ca.crt`, `client.crt`, and `client.key` that were copied above.
-
-In the base OS:
-```bash
-source ~/my-venv/bin/activate
-~/p4-guide/ipdk/23.01/test-client.py ~/my-certs/
-```
-
-
 
 
 # Latest tested version of IPDK
