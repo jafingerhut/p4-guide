@@ -6,4 +6,4 @@ p4c-dpdk --arch psa \
     --bf-rt-schema bf-rt.json \
     --context pipe/context.json \
     -o pipe/testprog1.spec \
-    ${P4_SRC_FNAME}
+    testprog1.p4
