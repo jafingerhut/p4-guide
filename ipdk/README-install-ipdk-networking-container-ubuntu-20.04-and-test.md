@@ -287,8 +287,15 @@ these functions:
 + `setup_2tapports.sh` - Starts up an `infrap4d` process, creates a
   network namespace, and connects that namespace via two TAP
   interfaces to the `infrap4d` process.
-+ `compile-p4.sh` - Compiles the source code of a P4 program to
++ `compile-in-cont.sh` - Compiles the source code of a P4 program to
   produce a P4Info file and a DPDK binary file.
+  + The `-in-cont` part of its name means that this shell script is
+    only intended for using within the container, not in the base OS.
+    That is true of most of the scripts with `*.sh` names described
+    here, but there is also a `compile-base-os.sh` script described
+    later that performs a similar task, but is only intended for using
+    in the base OS (if you have installed the `p4c-dpdk` compiler in
+    the base OS).
 + `load_p4_prog.sh` - Loads a P4Info file and compiled DPDK binary
   file into into the running `infrap4d` process.
 
@@ -310,23 +317,23 @@ In the container:
 /tmp/setup_2tapports.sh
 ```
 
-For `compile-p4.sh`, `-p` specifies the directory where the source
-file specified by `-s` can be found, and is also the directory where
-the compiled output files are written if compilation succeeds.  The
-`-a` option specifies whether to compile the program with the `pna` or
-`psa` architecture, defaulting to `pna` if not specified.
+For `compile-in-cont.sh`, `-p` specifies the directory where the
+source file specified by `-s` can be found, and is also the directory
+where the compiled output files are written if compilation succeeds.
+The `-a` option specifies whether to compile the program with the
+`pna` or `psa` architecture, defaulting to `pna` if not specified.
 
 In the container:
 ```bash
 cp /tmp/simple_l3.conf /root/examples/simple_l3/
-/tmp/compile-p4.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
+/tmp/compile-in-cont.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
 ```
 
 For `load_p4_prog.sh`, `-p` specifies the compiled binary file to load
 into the `infrap4d` process, which has a suffix of `.pb.bin` in place
-of the `.p4` when created by the `compile-p4.sh` script.  The
+of the `.p4` when created by the `compile-in-cont.sh` script.  The
 option `-i` specifies the P4Info file, which when created by
-`compile-p4.sh` always has the name `p4Info.txt`.
+`compile-in-cont.sh` always has the suffix `.p4Info.txt`.
 
 In the container:
 ```bash
@@ -370,7 +377,7 @@ source $HOME/my-venv/bin/activate
 cp -pr /tmp/simple_l3_modecr/ /root/examples/
 pushd /root/examples/simple_l3_modecr
 
-/tmp/compile-p4.sh -p . -s simple_l3_modecr.p4 -a psa
+/tmp/compile-in-cont.sh -p . -s simple_l3_modecr.p4 -a psa
 /tmp/setup_2tapports.sh
 /tmp/load_p4_prog.sh -p out/simple_l3_modecr.pb.bin -i out/simple_l3_modecr.p4Info.txt
 
@@ -464,7 +471,7 @@ In the container:
 cp -pr /tmp/add_on_miss0/ /root/examples/
 cd /root/examples/add_on_miss0
 
-/tmp/bin/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
+/tmp/bin/compile-in-cont.sh -p . -s add_on_miss0.p4 -a pna
 cd /tmp/add_on_miss0/out
 /tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
 /tmp/bin/setup_2tapports.sh
@@ -651,7 +658,7 @@ source $HOME/my-venv/bin/activate
 In the container:
 ```bash
 pushd /tmp/add_on_miss0
-/tmp/bin/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
+/tmp/bin/compile-in-cont.sh -p . -s add_on_miss0.p4 -a pna
 cd /tmp/add_on_miss0/out
 /tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
 /tmp/bin/setup_tapports_in_default_ns.sh -n 8
@@ -697,7 +704,7 @@ source $HOME/my-venv/bin/activate
 In the container:
 ```bash
 pushd /tmp/add_on_miss1
-/tmp/bin/compile-p4.sh -p . -s add_on_miss1.p4 -a pna
+/tmp/bin/compile-in-cont.sh -p . -s add_on_miss1.p4 -a pna
 cd /tmp/add_on_miss1/out
 /tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss1.p4
 /tmp/bin/setup_tapports_in_default_ns.sh -n 8
@@ -748,7 +755,7 @@ In base OS:
 BASENAME="sample"
 DIR="sample"
 cd ${DIR}
-../bin/compile.sh -a pna -s ${BASENAME}.p4
+../bin/compile-base-os.sh -a pna -s ${BASENAME}.p4
 ```
 
 
