@@ -149,9 +149,9 @@ section.
 
 [4] https://github.com/p4lang/p4-dpdk-target
 
-[5] https://github.com/jafingerhut/p4-guide/blob/master/ipdk/23.01/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md
+[5] https://github.com/jafingerhut/p4-guide/blob/master/ipdk/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md
 
-[6] https://github.com/jafingerhut/p4-guide/blob/master/ipdk/23.01/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md#testing-a-p4-program-for-the-pna-architecture-using-add-on-miss
+[6] https://github.com/jafingerhut/p4-guide/blob/master/ipdk/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md#testing-a-p4-program-for-the-pna-architecture-using-add-on-miss
 
 [7] https://p4.org/p4-spec/docs/PNA-v0.7.html#sec-add-on-miss
 

@@ -17,10 +17,10 @@ See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
 
 There are also some [newer instructions
-here](ipdk/23.01/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md),
-perhaps a little less beginner-friendly, for installing IPDK 23.01 on
-an Ubuntu 20.04 Linux system, and using the DPDK software switch to
-load and run P4 programs.
+here](ipdk/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md),
+perhaps a little less beginner-friendly, for installing IPDK on an
+Ubuntu 20.04 Linux system, and using the DPDK software switch to load
+and run P4 programs.
 
 
 ## Articles on various P4 topics
