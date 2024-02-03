@@ -34,5 +34,5 @@ files `ca.crt`, `client.crt`, and `client.key` that were copied above.
 In the base OS:
 ```bash
 source ~/my-venv/bin/activate
-~/p4-guide/ipdk/23.01/test-client.py ~/my-certs/
+~/p4-guide/ipdk/test-client.py ~/my-certs/
 ```

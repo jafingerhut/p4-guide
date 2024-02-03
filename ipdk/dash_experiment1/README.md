@@ -27,8 +27,8 @@ starting the container:
 
 In the base OS:
 ```bash
-/bin/cp ~/p4-guide/ipdk/23.01/*.sh ~/.ipdk/volume/
-/bin/cp -pr ~/p4-guide/ipdk/23.01/dash_experiment1/ ~/.ipdk/volume/
+/bin/cp ~/p4-guide/ipdk/*.sh ~/.ipdk/volume/
+/bin/cp -pr ~/p4-guide/ipdk/dash_experiment1/ ~/.ipdk/volume/
 ```
 
 In the container:
