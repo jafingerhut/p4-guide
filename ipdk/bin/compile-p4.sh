@@ -9,7 +9,7 @@ stty -echoctl # hide ctrl-c
 usage() {
     echo ""
     echo "Usage:"
-    echo "$0: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile -a|--arch -t|--tdi_pipeline_builder_only"
+    echo "$0: -v|--verbose -w|--workdir -h|--help -p|--p4dir -s|--srcfile -a|--arch"
     echo ""
     echo "  -h|--help: Displays help"
     echo "  -v|--verbose: Enable verbose/debug output"
@@ -17,13 +17,12 @@ usage() {
     echo "  -p|--p4dir: Directory containing P4 source file, and in which to write output files"
     echo "  -s|--srcfile: Base file name containing P4 source code, which must be in the P4 directory"
     echo "  -a|--arch: P4 architecture to use.  Supported values: psa, pna (default: pna)"
-    echo "  -t|--tdi_pipeline_builder_only: Only run tdi_pipeline_builder, assuming that P4 compiler has already generated its output"
     echo ""
 }
 
 # Parse command-line options.
-SHORTOPTS=hvw:p:s:a:t
-LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:,arch:,tdi_pipeline_builder_only
+SHORTOPTS=hvw:p:s:a:
+LONGOPTS=help,verbose,workdir:,p4dir:,srcfile:,arch:
 
 GETOPTS=$(getopt -o ${SHORTOPTS} --long ${LONGOPTS} -- "$@")
 eval set -- "${GETOPTS}"
@@ -57,9 +56,6 @@ while true ; do
     -a|--arch)
         P4_ARCH="${2}"
         shift 2 ;;
-    -t|--tdi_pipeline_builder_only)
-        do_compile=0
-        shift 1 ;;
     --)
         shift
         break ;;
@@ -155,28 +151,12 @@ then
         -o "${P4_DIR}/out/${BASE_FNAME}.spec" \
         "${P4_DIR}/${BASE_FNAME}.p4"
     set +ex
-    if [ ${VERBOSE} -ge 2 ]
-    then
-        echo ""
-        echo "Files in ${P4_DIR}/out just after p4c:"
-        ls -lrta "${P4_DIR}/out"
-        echo "----------------------------------------"
-    fi
 fi
-
-echo "Running pipeline builder"
-pushd "${P4_DIR}" > /dev/null || exit
-set -ex
-tdi_pipeline_builder \
-    --p4c_conf_file=${BASE_FNAME}.conf \
-    --bf_pipeline_config_binary_file=out/${BASE_FNAME}.pb.bin
-set +ex
-popd > /dev/null || exit
 
 if [ ${VERBOSE} -ge 1 ]
 then
     echo ""
-    echo "Files in ${P4_DIR}/out just after tdi_pipeline_builder:"
+    echo "Files in ${P4_DIR}/out just after p4c:"
     ls -lrta "${P4_DIR}/out"
     echo "----------------------------------------"
 fi

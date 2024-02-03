@@ -93,9 +93,6 @@ p4c-dpdk \
     -o "./out/${BASE_FNAME}.spec" \
     "${BASE_FNAME}.p4"
 
-# Create conf file to be used as input to tdi_pipeline_builder
-sed "s/{P4_PROG_BASE_NAME}/${BASE_FNAME}/" ${THIS_SCRIPT_DIR_ABSOLUTE}/templates/template-conf-file.conf > "./out/${BASE_FNAME}.conf"
-
 set +ex
 if [ ${VERBOSE} -ge 1 ]
 then

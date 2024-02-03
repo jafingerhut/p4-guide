@@ -4,6 +4,10 @@
 
 # Copied and modified from the script rundemo_TAP_IO.sh
 
+THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
+THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
+THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+
 stty -echoctl # hide ctrl-c
 
 usage() {
@@ -77,9 +81,8 @@ BASE_FNAME=`basename ${P4_SRC_FNAME} .p4`
 
 if [ ! -r "${P4_DIR}/${BASE_FNAME}.conf" ]
 then
-    echo "conf file for P4 program not found, or not readable: ${P4_DIR}/${BASE_FNAME}.conf"
-    usage
-    exit 1
+    echo "Creating .conf file from template"
+    sed "s/{P4_PROG_BASE_NAME}/${BASE_FNAME}/" ${THIS_SCRIPT_DIR_ABSOLUTE}/templates/template-conf-file.conf > "${BASE_FNAME}.conf"
 fi
 
 

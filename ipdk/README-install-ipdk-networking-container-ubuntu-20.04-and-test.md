@@ -180,7 +180,7 @@ any other ways to make a P4Runtime API connection.
 
 Follow the steps described in the section [Useful extra software to
 install in the
-container](#useful-extra-software-to-install-in-the-container).
+container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 
 
 ## Making a P4Runtime API connection from Python program running in the container, to infrap4d
@@ -278,7 +278,7 @@ in a directory that is not `~/.ipdk/volume`.
 
 Prerequisites: You have started the container, and followed the steps
 described in the section [Useful extra software to install in the
-container](#useful-extra-software-to-install-in-the-container).
+container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 
 The scripts below were adapted with minor variations from
 `rundemo_TAP_IO.sh`, which is included with IPDK.  The scripts perform
@@ -350,7 +350,7 @@ program into the new `infrap4d` process.
 
 Prerequisites: You have started the container, and followed the steps
 described in the section [Useful extra software to install in the
-container](#useful-extra-software-to-install-in-the-container).
+container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 
 Copy a modified version of the `simple_l3.p4` P4 program that we have
 been using up to this point.
@@ -435,6 +435,8 @@ wireshark ~/.ipdk/volume/TAP1-try1.pcap
 
 # Testing a P4 program for the PNA architecture using add-on-miss
 
+(Verified this section is updated and working on 2024-Feb-03)
+
 I was especially interested in DPDK's implementation of this new
 feature in the P4 Portable NIC Architecture
 (https://github.com/p4lang/pna), where you can do an apply on a P4
@@ -444,26 +446,34 @@ so.
 
 Prerequisites: You have started the container, and followed the steps
 described in the section [Useful extra software to install in the
-container](#useful-extra-software-to-install-in-the-container).
+container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 
 In the base OS:
 ```bash
 cp -pr ~/p4-guide/ipdk/add_on_miss0/ ~/.ipdk/volume/
 ```
 
-In the container:
+This only needs to be run in the container once:
 ```bash
 source $HOME/my-venv/bin/activate
 export PYTHON_PATH="/tmp/pylib"
-cp -pr /tmp/add_on_miss0/ /root/examples/
+```
 
-/tmp/compile-p4.sh -p /root/examples/add_on_miss0 -s add_on_miss0.p4 -a pna
-/tmp/setup_2tapports.sh
-/tmp/load_p4_prog.sh -p /root/examples/add_on_miss0/out/add_on_miss0.pb.bin -i /root/examples/add_on_miss0/out/add_on_miss0.p4Info.txt
+In the container:
+```bash
+cp -pr /tmp/add_on_miss0/ /root/examples/
+cd /root/examples/add_on_miss0
+
+/tmp/bin/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
+cd /tmp/add_on_miss0/out
+/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
+/tmp/bin/setup_2tapports.sh
+/tmp/bin/load_p4_prog.sh -p add_on_miss0.pb.bin -i add_on_miss0.p4Info.txt
 
 # Run tiny controller program that adds a couple of table entries via
 # P4Runtime API
-/root/examples/add_on_miss0/controller.py
+cd /root/examples/add_on_miss0
+./controller.py
 
 # Check if table entries have been added
 p4rt-ctl dump-entries br0
@@ -607,9 +617,11 @@ will always be 30 seconds for program `add_on_miss0.p4`.
 
 # Running P4 program `add_on_miss0.p4` and testing it from a PTF test
 
+(Verified this section is updated and working on 2024-Feb-03)
+
 Prerequisites: You have started the container, and followed the steps
 described in the section [Useful extra software to install in the
-container](#useful-extra-software-to-install-in-the-container).
+container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 
 Here we give steps for running a PTF test with program
 `add_on_miss0.p4` loaded.
@@ -631,15 +643,20 @@ In base OS:
 cp -pr ~/p4-guide/ipdk/add_on_miss0/ ~/.ipdk/volume/
 ```
 
-In the container:
+This only needs to be run in the container once:
 ```bash
 source $HOME/my-venv/bin/activate
-pushd /tmp/add_on_miss0
+```
 
-/tmp/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
-/tmp/setup_tapports_in_default_ns.sh -n 8
-/tmp/load_p4_prog.sh -p out/add_on_miss0.pb.bin -i out/add_on_miss0.p4Info.txt
-cd ptf-tests
+In the container:
+```bash
+pushd /tmp/add_on_miss0
+/tmp/bin/compile-p4.sh -p . -s add_on_miss0.p4 -a pna
+cd /tmp/add_on_miss0/out
+/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
+/tmp/bin/setup_tapports_in_default_ns.sh -n 8
+/tmp/bin/load_p4_prog.sh -p add_on_miss0.pb.bin -i add_on_miss0.p4Info.txt
+cd /tmp/add_on_miss0/ptf-tests
 ./runptf.sh
 ```
 
@@ -652,9 +669,11 @@ restriction.
 
 # Running P4 program `add_on_miss1.p4` and testing it from a PTF test
 
+(Verified this section is updated and working on 2024-Feb-03)
+
 Prerequisites: You have started the container, and followed the steps
 described in the section [Useful extra software to install in the
-container](#useful-extra-software-to-install-in-the-container).
+container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 
 P4 program `add_on_miss1.p4` has different logic for deciding whether
 to add an entry to table `ct_tcp_table`.  It also uses the extern
@@ -670,26 +689,33 @@ In the base OS:
 cp -pr ~/p4-guide/ipdk/add_on_miss1/ ~/.ipdk/volume/
 ```
 
-In the container:
+This only needs to be run in the container once:
 ```bash
 source $HOME/my-venv/bin/activate
-pushd /tmp/add_on_miss1
+```
 
-/tmp/compile-p4.sh -p . -s add_on_miss1.p4 -a pna
-/tmp/setup_tapports_in_default_ns.sh -n 8
-/tmp/load_p4_prog.sh -p out/add_on_miss1.pb.bin -i out/add_on_miss1.p4Info.txt
-cd ptf-tests
+In the container:
+```bash
+pushd /tmp/add_on_miss1
+/tmp/bin/compile-p4.sh -p . -s add_on_miss1.p4 -a pna
+cd /tmp/add_on_miss1/out
+/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss1.p4
+/tmp/bin/setup_tapports_in_default_ns.sh -n 8
+/tmp/bin/load_p4_prog.sh -p add_on_miss1.pb.bin -i add_on_miss1.p4Info.txt
+cd /tmp/add_on_miss1/ptf-tests
 ./runptf.sh
 ```
 
 
 # Running a P4 program and testing it using a PTF test
 
+(Verified this section is updated and working on 2024-Feb-03)
+
 Prerequisites:
 
 + You have started the container, and followed the steps described in
   the section [Useful extra software to install in the
-  container](#useful-extra-software-to-install-in-the-container).
+  container](general-ipdk-notes.mdgeneral-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 + You have a P4 source program that compiles successfully following
   the steps below.
   + If you want to test these steps on your system with a known-good
@@ -706,10 +732,13 @@ the P4 source code is spread over many files, but it is assumed here
 file.
 
 These instructions use `p4c-dpdk` installed in the base OS for
-compiling your P4 program.  This can make it easier to update it to
-the latest version, or any version you wish.  Only the output files
-from the compiler will be copied into the container where the P4 DPDK
-data plane will execute it.
+compiling your P4 program.  I know how to update the `p4c-dpdk`
+version in the base OS to the latest version, compiled from source
+code, but I do not know how to do so for the version of `p4c-dpdk`
+that is installed in the container.  This makes it easier to update to
+a later version of `p4c-dpdk`, e.g. when issues in it are fixed.  Only
+the output files from the compiler will be copied into the container
+where the P4 DPDK data plane will execute it.
 
 
 ## Compiling the P4 program
@@ -717,9 +746,9 @@ data plane will execute it.
 In base OS:
 ```bash
 BASENAME="sample"
-DIR="<directory-with-P4-source-file>"
+DIR="sample"
 cd ${DIR}
-compile.sh -a pna -s ${BASENAME}.p4
+../bin/compile.sh -a pna -s ${BASENAME}.p4
 ```
 
 
@@ -728,20 +757,28 @@ compile.sh -a pna -s ${BASENAME}.p4
 In base OS:
 ```bash
 mkdir -p ~/.ipdk/volume/${BASENAME}
-cp -pr ${DIR}/out/* /path/to/{ptf-test1.py,runptf.sh} ~/.ipdk/volume/${BASENAME}
+cp -pr ${DIR}/* ~/.ipdk/volume/${BASENAME}
 ```
+
+If `runptf.sh` and the Python PTF source code files are not in
+directory `${DIR}`, copy them into `~/ipdk/volume/${BASENAME}`, too.
 
 
 ## Running the P4 program with the PTF test
 
+This only needs to be run in the container once:
+```bash
+source $HOME/my-venv/bin/activate
+```
+
 In container:
 ```bash
 BASENAME="sample"
-source $HOME/my-venv/bin/activate
-pushd /tmp/${BASENAME}
-/tmp/tdi_pipeline_builder.sh -p . -s ${BASENAME}.p4
-/tmp/setup_tapports_in_default_ns.sh -n 8
-/tmp/load_p4_prog.sh -p ${BASENAME}.pb.bin -i ${BASENAME}.p4Info.txt
+pushd /tmp/${BASENAME}/out
+/tmp/bin/tdi_pipeline_builder.sh -p . -s ${BASENAME}.p4
+/tmp/bin/setup_tapports_in_default_ns.sh -n 8
+/tmp/bin/load_p4_prog.sh -p ${BASENAME}.pb.bin -i ${BASENAME}.p4Info.txt
+cd ..
 ./runptf.sh
 ```
 

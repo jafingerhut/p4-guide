@@ -77,12 +77,12 @@ container.
 
 In the base OS:
 ```bash
-cp -pr ~/p4-guide/ipdk/*.sh ~/p4-guide/pylib ~/.ipdk/volume/
+cp -pr ~/p4-guide/ipdk/bin ~/p4-guide/pylib ~/.ipdk/volume/
 ```
 
 In the container:
 ```bash
-/tmp/install-ipdk-container-extra-pkgs.sh
+/tmp/bin/install-ipdk-container-extra-pkgs.sh
 ```
 
 
