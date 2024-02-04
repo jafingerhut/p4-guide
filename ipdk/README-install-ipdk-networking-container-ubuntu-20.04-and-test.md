@@ -1,7 +1,7 @@
 # Introduction
 
-These instructions are one specific, tested way to install IPDK using
-its networking container instructions on an Ubuntu 20.04 Linux system.
+These instructions are one tested way to install IPDK using its
+networking container instructions on an Ubuntu 20.04 Linux system.
 The IPDK instructions and build scripts come from this repository:
 
 + https://github.com/ipdk-io/ipdk
@@ -34,16 +34,18 @@ Aside: I did try once on 2024-Jan-15 to follow these steps on an
 Ubuntu 20.04 system running on an aarch64 (aka arm64) CPU, but it
 failed.  I believe the root cause is that some executable programs are
 downloaded at some step, and they were not aarch64 executables,
-probably x86_64.
+probably x86_64.  I do not know how to change the IPDK installation
+scripts to avoid this problem (please let me know if you find out
+how).
 
 Note: If you try to build on a system with more than 4 virtual CPU
 cores, the build scripts may try to run more compilations in parallel,
 and thus may require more than 8 GB of RAM to succeed, failing if you
 do not have enough RAM to run all of those processes simultaneously.
 
-My success occurred while running in a VM created using VirtualBox on
-an x86_64 macOS host system, but hopefully that part should be
-irrelevant for others following these steps.
+I successfully followed these steps using a VM created using
+VirtualBox on an x86_64 macOS host system, but any Ubuntu 20.04
+system, whether VM or running on the bare hardware, should also work.
 
 Start logged in as a non-root user `$USER`.
 
@@ -78,9 +80,9 @@ ensure that the command `export PATH=$HOME/ipdk/build:$PATH` is
 executed every time you start a new shell where you wish to run the
 `ipdk` command in the future.
 
-I was not behind a proxy, so I did not attempt to do any of the proxy
-configuration steps described in the IPDK repo instructions.  See
-there if you are behind a proxy.
+I was not behind a web proxy, so I did not attempt to do any of the
+proxy configuration steps described in the IPDK repo instructions.
+See there if you are behind a proxy.
 
 All of the commands immediately below except the one beginning `ipdk
 build` should complete very quickly.  The `ipdk build` command took 33
@@ -119,16 +121,9 @@ software switch inside of it.
 
 # What to try next?
 
-If you have never installed IPDK before, and want to try out a fully
-bash-scripted sequence of steps, go to [A quick test of the IPDK
-installation](#a-quick-test-of-the-ipdk-installation).
-
-To try compiling a P4 program using `p4c-dpdk` installed in the base
-OS (not the one inside the container), and copy the fewest number of
-files between the base OS and container while iteratively modifying
-and testing your P4 program and PTF test, go to [Running a P4 program
-and testing it using a PTF
-test](#running-a-p4-program-and-testing-it-using-a-ptf-test).
+See this [outline of other articles](README.md) for other tasks that
+have step-by-step instructions you can try out after IPDK has been
+installed on your system.
 
 
 # Running a P4Runtime client program and connecting to DPDK software switch
@@ -274,282 +269,6 @@ Again, the workaround is to run that program with a copy of the file
 in a directory that is not `~/.ipdk/volume`.
 
 
-# Compiling a P4 program, loading it into infrap4d, sending packets in, and capturing packets out
-
-Prerequisites: You have started the container, and followed the steps
-described in the section [Useful extra software to install in the
-container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
-
-The scripts below were adapted with minor variations from
-`rundemo_TAP_IO.sh`, which is included with IPDK.  The scripts perform
-these functions:
-
-+ `setup_2tapports.sh` - Starts up an `infrap4d` process, creates a
-  network namespace, and connects that namespace via two TAP
-  interfaces to the `infrap4d` process.
-+ `compile-in-cont.sh` - Compiles the source code of a P4 program to
-  produce a P4Info file and a DPDK binary file.
-  + The `-in-cont` part of its name means that this shell script is
-    only intended for using within the container, not in the base OS.
-    That is true of most of the scripts with `*.sh` names described
-    here, but there is also a `compile-base-os.sh` script described
-    later that performs a similar task, but is only intended for using
-    in the base OS (if you have installed the `p4c-dpdk` compiler in
-    the base OS).
-+ `load_p4_prog.sh` - Loads a P4Info file and compiled DPDK binary
-  file into into the running `infrap4d` process.
-
-`rundemo_TAP_IO.sh` does very similar steps as all of the above
-combined, one after the other, followed by running a couple of `ping`
-commands to test packet forwarding through `infrap4d`.  These separate
-scripts give a user a little bit more fine-grained control over when
-they want to perform these steps.
-
-Example command lines for these commands are described below.
-
-In the base OS:
-```bash
-cp ~/p4-guide/ipdk/simple_l3.conf ~/.ipdk/volume
-```
-
-In the container:
-```bash
-/tmp/setup_2tapports.sh
-```
-
-For `compile-in-cont.sh`, `-p` specifies the directory where the
-source file specified by `-s` can be found, and is also the directory
-where the compiled output files are written if compilation succeeds.
-The `-a` option specifies whether to compile the program with the
-`pna` or `psa` architecture, defaulting to `pna` if not specified.
-
-In the container:
-```bash
-cp /tmp/simple_l3.conf /root/examples/simple_l3/
-/tmp/compile-in-cont.sh -p /root/examples/simple_l3 -s simple_l3.p4 -a psa
-```
-
-For `load_p4_prog.sh`, `-p` specifies the compiled binary file to load
-into the `infrap4d` process, which has a suffix of `.pb.bin` in place
-of the `.p4` when created by the `compile-in-cont.sh` script.  The
-option `-i` specifies the P4Info file, which when created by
-`compile-in-cont.sh` always has the suffix `.p4Info.txt`.
-
-In the container:
-```bash
-/tmp/load_p4_prog.sh -p /root/examples/simple_l3/out/simple_l3.pb.bin -i /root/examples/simple_l3/out/simple_l3.p4Info.txt
-```
-
-Troubleshooting: In my testing, attempting to load a P4 program into
-the same `infrap4d` process more than once fails after the first time
-with an error message like this:
-
-```
-Error: P4Runtime RPC error (FAILED_PRECONDITION): Only a single forwarding pipeline can be pushed for any node so far.
-```
-
-This might be a restriction imposed by `infrap4d`.  A workaround is to
-kill the `infrap4d` process, start a new one, and load the desired P4
-program into the new `infrap4d` process.
-
-
-## An exercise in using those scripts
-
-Prerequisites: You have started the container, and followed the steps
-described in the section [Useful extra software to install in the
-container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
-
-Copy a modified version of the `simple_l3.p4` P4 program that we have
-been using up to this point.
-
-In the base OS:
-```bash
-cp -pr ~/p4-guide/ipdk/simple_l3_modecr/ ~/.ipdk/volume/
-```
-
-The directory `/root/examples/simple_l3_modecr` already contains a
-pcap file that can be used for sending packets.  See the program
-`gen-pcaps.py` in that directory for how it was created.
-
-In the container:
-```bash
-source $HOME/my-venv/bin/activate
-cp -pr /tmp/simple_l3_modecr/ /root/examples/
-pushd /root/examples/simple_l3_modecr
-
-/tmp/compile-in-cont.sh -p . -s simple_l3_modecr.p4 -a psa
-/tmp/setup_2tapports.sh
-/tmp/load_p4_prog.sh -p out/simple_l3_modecr.pb.bin -i out/simple_l3_modecr.p4Info.txt
-
-# Run tiny controller program that adds a couple of table entries via
-# P4Runtime API
-PYTHON_PATH="/tmp/pylib" /root/examples/simple_l3_modecr/controller.py
-
-# Check if table entries have been added
-p4rt-ctl dump-entries br0
-```
-
-The output from the `p4rt-ctl dump-entries br0` command above should
-look very similar to this if everything went well:
-
-```bash
-Table entries for bridge br0:
-  table=ingress.ipv4_host hdr.ipv4.dst_addr=0x01010101 actions=ingress.send(port=0x00000000)
-  table=ingress.ipv4_host hdr.ipv4.dst_addr=0x02020202 actions=ingress.send(port=0x00000001)
-```
-
-Set up `tcpdump` to capture packets coming out of the switch to the TAP1
-interface:
-
-In the container:
-```bash
-ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
-```
-
-Use `tcpreplay` to send packets into the switch on TAP0 interface:
-
-In the container:
-```bash
-ip netns exec VM0 tcpreplay -i TAP0 /root/examples/simple_l3_modecr/pkt1.pcap
-```
-
-Kill the `tcpdump` process so it completes writing packets to the file
-and stops appending more data to the file.
-
-In the container:
-```bash
-killall tcpdump
-```
-
-You can copy the file `TAP1-try1.pcap` to the base OS and use
-`tshark`, `wireshark`, or any program you like to examine it.
-
-In the container:
-```bash
-cp TAP1-try1.pcap /tmp
-```
-
-Now use commands like one of those below.  There are many command line
-options that cause `tshark` to generate different output formats
-describing packets.
-
-In the base OS:
-```bash
-tshark -V -r ~/.ipdk/volume/TAP1-try1.pcap
-wireshark ~/.ipdk/volume/TAP1-try1.pcap
-```
-
-
-# Testing a P4 program for the PNA architecture using add-on-miss
-
-(Verified this section is updated and working on 2024-Feb-03)
-
-I was especially interested in DPDK's implementation of this new
-feature in the P4 Portable NIC Architecture
-(https://github.com/p4lang/pna), where you can do an apply on a P4
-table, and if it gets a miss, the miss action can optionally cause an
-entry to be added to the table, without the control plane having to do
-so.
-
-Prerequisites: You have started the container, and followed the steps
-described in the section [Useful extra software to install in the
-container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
-
-In the base OS:
-```bash
-cp -pr ~/p4-guide/ipdk/add_on_miss0/ ~/.ipdk/volume/
-```
-
-This only needs to be run in the container once:
-```bash
-source $HOME/my-venv/bin/activate
-export PYTHON_PATH="/tmp/pylib"
-```
-
-In the container:
-```bash
-cp -pr /tmp/add_on_miss0/ /root/examples/
-cd /root/examples/add_on_miss0
-
-/tmp/bin/compile-in-cont.sh -p . -s add_on_miss0.p4 -a pna
-cd /tmp/add_on_miss0/out
-/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
-/tmp/bin/setup_2tapports.sh
-/tmp/bin/load_p4_prog.sh -p add_on_miss0.pb.bin -i add_on_miss0.p4Info.txt
-
-# Run tiny controller program that adds a couple of table entries via
-# P4Runtime API
-cd /root/examples/add_on_miss0
-./controller.py
-
-# Check if table entries have been added
-p4rt-ctl dump-entries br0
-```
-
-The directory `/root/examples/add_on_miss0` already contains several
-pcap files that can be used for sending packets.  See the program
-`gen-pcaps.py` for how they were created.
-
-Set up `tcpdump` to capture packets coming out of the switch to the
-TAP1 interface.
-
-In the container:
-```bash
-ip netns exec VM0 tcpdump -i TAP1 -w TAP1-try1.pcap &
-```
-
-Send TCP SYN packet on TAP0 interface, which should cause new entry to
-be added to table `ct_tcp_entry`, and also be forwarded out the TAP1
-port.  Immediately check the table entries.
-
-In the container:
-```bash
-ip netns exec VM0 tcpreplay -i TAP0 /root/examples/add_on_miss0/tcp-syn1.pcap
-p4rt-ctl dump-entries br0 ct_tcp_table
-```
-
-Note: I have asked the DPDK data plane developers, and confirmed that
-for p4c-dpdk add-on-miss tables as of 2023-Mar-15, there is currently
-no way to read the current set of entries from the control plane.  If
-you try, you get back no entries.  That matches the behavior I have
-seen.  I have confirmed using `add_on_miss0.p4`, which modifies output
-packets differently depending upon whether a `ct_tcp_table` hit or
-miss occurred, that I sometimes see misses, then hits for later
-packets that are sent before the original table entry ages out.  I
-have never seen any entries when trying to read `ct_tcp_table` from
-the control plane.
-
-Kill the `tcpdump` process so it completes writing packets to the file
-and stops appending more data to the file.
-
-In the container:
-```bash
-killall tcpdump
-```
-
-Attempting to add an entry to the add-on-miss table `ct_tcp_table`
-from the control plane returns an error, as shown below:
-
-In the container:
-```bash
-root@48ac7ef995ac:~/scripts# /root/examples/add_on_miss0/write-ct-tcp-table.py
-
-[ ... some lines of output omitted here for brevity ... ]
-
-Traceback (most recent call last):
-  File "/root/examples/add_on_miss0/write-ct-tcp-table.py", line 41, in <module>
-    add_ct_tcp_table_entry_action_ct_tcp_table_hit("1.1.1.1", "2.2.2.2",
-  File "/root/examples/add_on_miss0/write-ct-tcp-table.py", line 39, in add_ct_tcp_table_entry_action_ct_tcp_table_hit
-    te.insert()
-  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/shell.py", line 694, in insert
-    self._write(p4runtime_pb2.Update.INSERT)
-  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/shell.py", line 688, in _write
-    client.write_update(update)
-  File "/usr/local/lib/python3.8/dist-packages/p4runtime_sh/p4runtime.py", line 124, in handle
-    raise P4RuntimeWriteException(e) from None
-p4runtime_sh.p4runtime.P4RuntimeWriteException: Error(s) during Write:
-	* At index 0: INTERNAL, 'Error adding table entry with table_name: pipe.MainControlImpl.ct_tcp_table, table_id: 35731637, table_type: 2048, tdi_table_key { hdr.ipv4.src_addr { field_id: 1 key_type: 0 field_size: 32 value: 0x01010101 } hdr.ipv4.dst_addr { field_id: 2 key_type: 0 field_size: 32 value: 0x02020202 } hdr.ipv4.protocol { field_id: 3 key_type: 0 field_size: 8 value: 0x06 } hdr.tcp.src_port { field_id: 4 key_type: 0 field_size: 16 value: 0x0014 } hdr.tcp.dst_port { field_id: 5 key_type: 0 field_size: 16 value: 0x0050 } }, tdi_table_data { action_id: 17749373 }'
-```
 
 
 ## A note on timeout durations in P4-DPDK
@@ -620,205 +339,3 @@ The program `add_on_miss0.p4` always provides a value of 1 to
 id of table entries it adds, and then it never modifies them after
 that.  Thus the expire time for all entries created in `ct_tcp_table`
 will always be 30 seconds for program `add_on_miss0.p4`.
-
-
-# Running P4 program `add_on_miss0.p4` and testing it from a PTF test
-
-(Verified this section is updated and working on 2024-Feb-03)
-
-Prerequisites: You have started the container, and followed the steps
-described in the section [Useful extra software to install in the
-container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
-
-Here we give steps for running a PTF test with program
-`add_on_miss0.p4` loaded.
-
-Note: The only way I have successfully installed and run the PTF
-package in the container so far is in a Python virtual environment.
-If someone finds a way to successfully run a PTF test without creating
-a virtual environment, I would not mind knowing how.
-
-Also note that these instructions use the script
-`setup_tapports_in_default_ns.sh`, not `setup_2tapports.sh` as
-previous examples above have done.  This makes it easier for the PTF
-test to send packets on the TAP ports and check output packets on the
-TAP ports, because those TAP interfaces are in the same network
-namespace where the PTF process is running.
-
-In base OS:
-```bash
-cp -pr ~/p4-guide/ipdk/add_on_miss0/ ~/.ipdk/volume/
-```
-
-This only needs to be run in the container once:
-```bash
-source $HOME/my-venv/bin/activate
-```
-
-In the container:
-```bash
-pushd /tmp/add_on_miss0
-/tmp/bin/compile-in-cont.sh -p . -s add_on_miss0.p4 -a pna
-cd /tmp/add_on_miss0/out
-/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
-/tmp/bin/setup_tapports_in_default_ns.sh -n 8
-/tmp/bin/load_p4_prog.sh -p add_on_miss0.pb.bin -i add_on_miss0.p4Info.txt
-cd /tmp/add_on_miss0/ptf-tests
-./runptf.sh
-```
-
-Note: The DPDK software switch will fail to load a P4 program unless
-it currently has a number of ports that is a power of 2.  The
-`setup_tapports_in_default_ns.sh` script should check this restriction
-and give an explanatory error message if you try to violate this
-restriction.
-
-
-# Running P4 program `add_on_miss1.p4` and testing it from a PTF test
-
-(Verified this section is updated and working on 2024-Feb-03)
-
-Prerequisites: You have started the container, and followed the steps
-described in the section [Useful extra software to install in the
-container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
-
-P4 program `add_on_miss1.p4` has different logic for deciding whether
-to add an entry to table `ct_tcp_table`.  It also uses the extern
-function `set_entry_expire_time` in the hit action for `ct_tcp_table`
-to set the expire time of an entry when a packet matches an existing
-entry, depending upon the TCP flags of the packet, which has the
-additional side effect of restarting the expire timer of the entry.
-Thus data packets continuing to match the entry will keep it from
-being deleted, unlike `add_on_miss0.p4`.
-
-In the base OS:
-```bash
-cp -pr ~/p4-guide/ipdk/add_on_miss1/ ~/.ipdk/volume/
-```
-
-This only needs to be run in the container once:
-```bash
-source $HOME/my-venv/bin/activate
-```
-
-In the container:
-```bash
-pushd /tmp/add_on_miss1
-/tmp/bin/compile-in-cont.sh -p . -s add_on_miss1.p4 -a pna
-cd /tmp/add_on_miss1/out
-/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss1.p4
-/tmp/bin/setup_tapports_in_default_ns.sh -n 8
-/tmp/bin/load_p4_prog.sh -p add_on_miss1.pb.bin -i add_on_miss1.p4Info.txt
-cd /tmp/add_on_miss1/ptf-tests
-./runptf.sh
-```
-
-
-# Running a P4 program and testing it using a PTF test
-
-(Verified this section is updated and working on 2024-Feb-03)
-
-Prerequisites:
-
-+ You have started the container, and followed the steps described in
-  the section [Useful extra software to install in the
-  container](general-ipdk-notes.mdgeneral-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
-+ You have a P4 source program that compiles successfully following
-  the steps below.
-  + If you want to test these steps on your system with a known-good
-    example P4 program and PTF test, use the files in the directory
-    `sample`.
-+ You have written a PTF test in Python that you want to test it with.
-  + TODO: Some time write details of how such a test should be
-    written, e.g. what ports exist?
-
-I will use example file names `sample.p4` for the P4 program, and
-`ptf-test1.py` for the Python PTF test.  These steps will work even if
-the P4 source code is spread over many files, but it is assumed here
-(so far) that the Python source code for the PTF test is in a single
-file.
-
-These instructions use `p4c-dpdk` installed in the base OS for
-compiling your P4 program.  I know how to update the `p4c-dpdk`
-version in the base OS to the latest version, compiled from source
-code, but I do not know how to do so for the version of `p4c-dpdk`
-that is installed in the container.  This makes it easier to update to
-a later version of `p4c-dpdk`, e.g. when issues in it are fixed.  Only
-the output files from the compiler will be copied into the container
-where the P4 DPDK data plane will execute it.
-
-
-## Compiling the P4 program
-
-In base OS:
-```bash
-BASENAME="sample"
-DIR="sample"
-cd ${DIR}
-../bin/compile-base-os.sh -a pna -s ${BASENAME}.p4
-```
-
-
-## Copying the necessary files into the container
-
-In base OS:
-```bash
-mkdir -p ~/.ipdk/volume/${BASENAME}
-cp -pr ${DIR}/* ~/.ipdk/volume/${BASENAME}
-```
-
-If `runptf.sh` and the Python PTF source code files are not in
-directory `${DIR}`, copy them into `~/ipdk/volume/${BASENAME}`, too.
-
-
-## Running the P4 program with the PTF test
-
-This only needs to be run in the container once:
-```bash
-source $HOME/my-venv/bin/activate
-```
-
-In container:
-```bash
-BASENAME="sample"
-pushd /tmp/${BASENAME}/out
-/tmp/bin/tdi_pipeline_builder.sh -p . -s ${BASENAME}.p4
-/tmp/bin/setup_tapports_in_default_ns.sh -n 8
-/tmp/bin/load_p4_prog.sh -p ${BASENAME}.pb.bin -i ${BASENAME}.p4Info.txt
-cd ..
-./runptf.sh
-```
-
-
-## Copying output files recorded during the PTF test run back to the base OS
-
-See these files in the directory `~/.ipdk/volume/${BASENAME}`:
-
-+ `ptf.pcap`
-+ `ptf.log`
-
-The file `ptf.pcap` should contain a mix of all packets on all ports,
-in time order.  Each should have a "PPI" header, which contains fields
-like the ones shown below.  You can see the port number that the
-packet was sent or received on in the first "Interface ID" field.  I
-do not know why there are two "Aggregation Extension" and two
-"Interface ID" fields, but from my experience it seems that the first
-one is the one you should pay attention to.
-
-```
-PPI version 0, 24 bytes
-    Version: 0
-    Flags: 0x00
-        .... ...0 = Alignment: Not aligned
-        0000 000. = Reserved: 0x00
-    Header length: 24
-    DLT: 1
-    Aggregation Extension
-        Field type: Aggregation Extension (8)
-        Field length: 4
-        Interface ID: 1
-    Aggregation Extension
-        Field type: Aggregation Extension (8)
-        Field length: 4
-        Interface ID: 0
-```

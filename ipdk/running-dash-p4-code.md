@@ -40,7 +40,7 @@ output files in my p4-guide git repo, including the
 `dash_pipeline.pb.bin` file, which I created with this command:
 
 ```bash
-pushd /tmp/dash
+cd /tmp/dash
 /tmp/tdi_pipeline_builder.sh -p /tmp/dash -s dash_pipeline.p4
 ```
 
