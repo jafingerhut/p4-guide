@@ -14,8 +14,8 @@ sending packets to it for processing.
 + [Running a P4 program with multiple Linux network namespaces, sending packets to it using tcpreplay, capturing packets out with tcpdump](run-p4-prog-with-multiple-network-namespaces.md)
 + [Running P4 program `add_on_miss0.p4` and testing it using a Python controller program (without PTF), tcpreplay, and tcpdump](testing-add-on-miss0-with-python-controller-tcpreplay-tcpdump.md)
 + [Running a P4 program and testing it using a PTF test](running-p4-program-and-ptf-test.md)
-  + [Running P4 program `add_on_miss0.p4` and testing it using a PTF test](testing-add-on-miss0.md]
-  + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](testing-add-on-miss1.md]
+  + [Running P4 program `add_on_miss0.p4` and testing it using a PTF test](testing-add-on-miss0.md)
+  + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](testing-add-on-miss1.md)
 + [Running DASH P4 code on DPDK software switch](running-dash-p4-code.md)
 
 
