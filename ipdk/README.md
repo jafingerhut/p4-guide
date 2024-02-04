@@ -16,7 +16,7 @@ sending packets to it for processing.
 + [Running a P4 program and testing it using a PTF test](running-p4-program-and-ptf-test.md)
   + [Running P4 program `add_on_miss0.p4` and testing it using a PTF test](testing-add-on-miss0.md)
   + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](testing-add-on-miss1.md)
-  + [A note on tiout durations in P4-DPDK](note-on-timeout-durations-in-p4-dpdk.md)
+  + [A note on timeout durations in P4-DPDK](note-on-timeout-durations-in-p4-dpdk.md)
 + [Running DASH P4 code on DPDK software switch](running-dash-p4-code.md)
 
 
