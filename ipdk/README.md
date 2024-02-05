@@ -21,10 +21,10 @@ a combination of at least the following parts:
   (i.e. controller programs).
 + A gNMI server
 
-Source: The figure on this page shows the above parts, and also some
-other software components included within the `infrap4d` process:
-
-+ https://ipdk.io/p4cp-userguide/overview/overview.html#infrap4d
+Source: The figure on [this
+page](https://ipdk.io/p4cp-userguide/overview/overview.html#infrap4d)
+shows the above parts, and also some other software components
+included within the `infrap4d` process.
 
 + [Installing IPDK](README-install-ipdk-networking-container-ubuntu-20.04-and-test.md)
 + [Useful notes on using IPDK](general-ipdk-notes.md)
