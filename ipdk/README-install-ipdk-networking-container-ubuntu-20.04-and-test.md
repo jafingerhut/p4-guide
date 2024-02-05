@@ -1,27 +1,3 @@
-# Introduction
-
-These instructions are one tested way to install IPDK using its
-networking container instructions on an Ubuntu 20.04 Linux system.
-The IPDK instructions and build scripts come from this repository:
-
-+ https://github.com/ipdk-io/ipdk
-
-The `infrap4d` program compiled and installed using the steps below is
-a combination of at least the following parts:
-
-+ The DPDK data plane, or software switch.  You may compile P4
-  programs and load the binaries into it to execute them.
-+ A P4Runtime API server, by default listening on TCP port 9559 for
-  incoming connection requests from P4Runtime API clients
-  (i.e. controller programs).
-+ A gNMI server
-
-Source: The figure on this page shows the above parts, and also some
-other software components included within the `infrap4d` process:
-
-+ https://ipdk.io/p4cp-userguide/overview/overview.html#infrap4d
-
-
 # Installing IPDK using the networking docker build steps
 
 The Ubuntu 20.04 Linux system that I have tried these steps with was

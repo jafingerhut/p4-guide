@@ -7,6 +7,25 @@ There are also step-by-step instructions for compiling P4 programs for
 the DPDK software switch, loading the compiled programs into it, and
 sending packets to it for processing.
 
+The IPDK instructions and build scripts come from this repository:
+
++ https://github.com/ipdk-io/ipdk
+
+The `infrap4d` program compiled and installed using the steps below is
+a combination of at least the following parts:
+
++ The DPDK data plane, or software switch.  You may compile P4
+  programs and load the binaries into it to execute them.
++ A P4Runtime API server, by default listening on TCP port 9559 for
+  incoming connection requests from P4Runtime API clients
+  (i.e. controller programs).
++ A gNMI server
+
+Source: The figure on this page shows the above parts, and also some
+other software components included within the `infrap4d` process:
+
++ https://ipdk.io/p4cp-userguide/overview/overview.html#infrap4d
+
 + [Installing IPDK](README-install-ipdk-networking-container-ubuntu-20.04-and-test.md)
 + [Useful notes on using IPDK](general-ipdk-notes.md)
 + [Quick test of your IPDK installation](quick-test.md)
@@ -18,6 +37,23 @@ sending packets to it for processing.
   + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](testing-add-on-miss1.md)
   + [A note on timeout durations in P4-DPDK](note-on-timeout-durations-in-p4-dpdk.md)
 + [Running DASH P4 code on DPDK software switch](running-dash-p4-code.md)
+
+
+# Other places to go for information about P4 DPDK
+
+Talks given by developers of P4 DPDK:
+
++ "Running P4 programs as DPDK applications", Cristian Dumitrescu and
+  Han Wang, Intel, DPDK Summit, July 12-13, 2021
+  + https://www.youtube.com/watch?v=xJR-5DcqhlY
++ "Develop Your CPU Network Stack in P4", Cristian Dumitrescu, P4
+  Workshop, May 24-26, 2022
+  + https://www.youtube.com/watch?v=NySJfUIUzww
+  + slides: https://opennetworking.org/wp-content/uploads/2022/05/Cristian-Dumitrescu-Final-Slide-Deck.pdf
++ "Do not develop from scratch, simply write P4 and get DPDK",
+  Cristian Dumitrescu, Intel, DPDK Userspace Summit, September 6-8,
+  2022
+  + https://www.youtube.com/watch?v=dPvH_joaScA
 
 
 # Latest tested version of IPDK
