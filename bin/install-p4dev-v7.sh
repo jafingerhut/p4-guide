@@ -162,9 +162,11 @@ debug_dump_installed_z3_files() {
 	if [ "${ID}" = "ubuntu" ]
 	then
             cd ${INSTALL_DIR}/${OUT_FNAME}
+	    set +e
 	    apt list --installed | grep -i z3 > z3-in-output-of-apt-list--installed.txt
 	    dpkg -L libz3-dev > out-dpkg-L-libz3-dev.txt
 	    dpkg -L libz3-4 > out-dpkg-L-libz3-4.txt
+	    set -e
 	fi
 	cd ${SAVE_PWD}
     fi
