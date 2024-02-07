@@ -139,6 +139,10 @@ debug_dump_many_install_files() {
     fi
 }
 
+# Environment variables read by debug_dump_installed_z3_files:
+# DEBUG_INSTALL
+# INSTALL_DIR
+# ID
 debug_dump_installed_z3_files() {
     local OUT_FNAME="$1"
     local SAVE_PWD="$PWD"
@@ -146,9 +150,9 @@ debug_dump_installed_z3_files() {
     if [ ${DEBUG_INSTALL} -ge 2 ]
     then
 	mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
-	# On some systems the following find command returns non-0
-	# exit status.
-	set +e
+        # On some systems the following find command returns non-0
+        # exit status.
+        set +e
         NUMFILES=`find /usr -name '*z3*' -a \! -type d | wc -l`
         if [ ${NUMFILES} -eq 0 ]
         then
@@ -157,18 +161,18 @@ debug_dump_installed_z3_files() {
             find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
             set -e
             cd ${INSTALL_DIR}/${OUT_FNAME}
-	    tar xf snap.tar
+            tar xf snap.tar
         fi
-	if [ "${ID}" = "ubuntu" ]
-	then
+        if [ "${ID}" = "ubuntu" ]
+        then
             cd ${INSTALL_DIR}/${OUT_FNAME}
-	    set +e
-	    apt list --installed | grep -i z3 > z3-in-output-of-apt-list--installed.txt
-	    dpkg -L libz3-dev > out-dpkg-L-libz3-dev.txt
-	    dpkg -L libz3-4 > out-dpkg-L-libz3-4.txt
-	    set -e
-	fi
-	cd ${SAVE_PWD}
+            set +e
+            apt list --installed | grep -i z3 > z3-in-output-of-apt-list--installed.txt
+            dpkg -L libz3-dev > out-dpkg-L-libz3-dev.txt
+            dpkg -L libz3-4 > out-dpkg-L-libz3-4.txt
+            set -e
+        fi
+        cd ${SAVE_PWD}
     fi
 }
 

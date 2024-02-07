@@ -2,7 +2,7 @@ diff --git a/install_deps.sh b/install_deps.sh
 index 4c5a45d..81a175b 100755
 --- a/install_deps.sh
 +++ b/install_deps.sh
-@@ -1,28 +1,57 @@
+@@ -1,28 +1,93 @@
  #!/bin/bash
  set -e
 -ubuntu_release=`lsb_release -s -r`
@@ -34,6 +34,42 @@ index 4c5a45d..81a175b 100755
 +    exit 1
 +fi
 +source /etc/os-release
++
++DEBUG_INSTALL=2
++INSTALL_DIR=$HOME
++debug_dump_installed_z3_files() {
++    local OUT_FNAME="$1"
++    local SAVE_PWD="$PWD"
++    local NUMFILES=""
++    if [ ${DEBUG_INSTALL} -ge 2 ]
++    then
++        mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
++        # On some systems the following find command returns non-0
++        # exit status.
++        set +e
++        NUMFILES=`find /usr -name '*z3*' -a \! -type d | wc -l`
++        if [ ${NUMFILES} -eq 0 ]
++        then
++            touch ${INSTALL_DIR}/${OUT_FNAME}/no-z3-files-in-usr-dirs
++        else
++            find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
++            set -e
++            cd ${INSTALL_DIR}/${OUT_FNAME}
++           tar xf snap.tar
++        fi
++        if [ "${ID}" = "ubuntu" ]
++        then
++            cd ${INSTALL_DIR}/${OUT_FNAME}
++            set +e
++            apt list --installed | grep -i z3 > z3-in-output-of-apt-list--installed.txt
++            dpkg -L libz3-dev > out-dpkg-L-libz3-dev.txt
++            dpkg -L libz3-4 > out-dpkg-L-libz3-4.txt
++            set -e
++        fi
++        cd ${SAVE_PWD}
++    fi
++}
++
 +if [ "${ID}" = "ubuntu" ]
 +then
 +    sudo apt-get install -y \
