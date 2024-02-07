@@ -163,6 +163,17 @@ then
     exit 1
 fi
 source /etc/os-release
+PROCESSOR=`uname --machine`
+
+if [ ${PROCESSOR} != "x86_64" ]
+then
+    1>&2 echo "Processor architecture found: ${PROCESSOR}"
+    1>&2 echo "This script only supports x86_64."
+    1>&2 echo "You are of course welcome to disable this check in this"
+    1>&2 echo "script and try it out.  Please let me know if you learn"
+    1>&2 echo "how to make it work."
+    1>&2 echo "    -- Andy Fingerhut (andy.fingerhut@gmail.com)"
+fi
 
 supported_distribution=0
 tried_but_got_build_errors=0
