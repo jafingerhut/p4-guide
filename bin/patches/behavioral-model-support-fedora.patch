@@ -2,7 +2,7 @@ diff --git a/install_deps.sh b/install_deps.sh
 index 4c5a45d..81a175b 100755
 --- a/install_deps.sh
 +++ b/install_deps.sh
-@@ -1,28 +1,56 @@
+@@ -1,28 +1,57 @@
  #!/bin/bash
  set -e
 -ubuntu_release=`lsb_release -s -r`
@@ -58,6 +58,7 @@ index 4c5a45d..81a175b 100755
 +         python3-dev \
 +         python3-pip \
 +         wget
++    debug_dump_installed_z3_files snap5
 +elif [ "${ID}" = "fedora" ]
 +then
 +    sudo dnf install -y \
