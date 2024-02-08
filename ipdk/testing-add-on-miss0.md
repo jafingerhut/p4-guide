@@ -15,11 +15,11 @@ If someone finds a way to successfully run a PTF test without creating
 a virtual environment, I would not mind knowing how.
 
 Also note that these instructions use the script
-`setup_tapports_in_default_ns.sh`, not `setup_2tapports.sh` as
-previous examples above have done.  This makes it easier for the PTF
-test to send packets on the TAP ports and check output packets on the
-TAP ports, because those TAP interfaces are in the same network
-namespace where the PTF process is running.
+`setup_tapports_in_default_ns.sh`, not `setup_2tapports.sh` as some
+other examples have done.  This makes it easier for the PTF test to
+send packets on the TAP ports and check output packets on the TAP
+ports, because those TAP interfaces are in the same network namespace
+where the PTF process is running.
 
 In base OS:
 ```bash

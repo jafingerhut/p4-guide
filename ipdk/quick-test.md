@@ -121,9 +121,8 @@ to do things like run `tcpdump` to capture packets into and/or out of
 `infrap4d`, you need to run those `tcpdump` commands after the script
 is started, but before the packets start flowing.
 
-Even better, you can create your own script based upon the contents of
-`rundemo_TAP_IO.sh` that sets things up like running infrap4d and
-creating namespaces and interfaces, but doesn't send any packets.
+Even better, you can create your own scripts based upon the contents
+of `rundemo_TAP_IO.sh` that set things up like running `infrap4d` and
+creating namespaces and interfaces, but do not send any packets.
 Several such script have already been written that you can use for
 this, described in other articles in this collection.
-
