@@ -60,11 +60,7 @@ I was not behind a web proxy, so I did not attempt to do any of the
 proxy configuration steps described in the IPDK repo instructions.
 See there if you are behind a proxy.
 
-All of the commands immediately below except the one beginning `ipdk
-build` should complete very quickly.  The `ipdk build` command took 33
-mins on a 2019-era MacBook Pro with a 1 Gbps Internet connection, but
-almost 80 minutes on the same laptop with a download speed ranging
-between 1.5 to 2 MBytes per second.
+All of the commands immediately below should complete very quickly:
 
 ```bash
 cd $HOME
@@ -75,12 +71,46 @@ export PATH=$HOME/ipdk/build:$PATH
 cd ..
 ipdk install ubuntu2004    # if base OS is Ubuntu
 ipdk install fedora33      # if base OS is Fedora
-ipdk build --no-cache |& tee $HOME/log-ipdk-build.txt
 ```
 
-At this point, you should see that a new docker image has been created
-with the name `ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64`, as shown in
-the sample command output below:
+You now have two choices:
+
++ source: Install the container by building it from source code on
+  your own system.  On a 2019-era MacBook Pro with a 1 Gbps Internet
+  connection, this took 33 minutes for me, but 80 minutes on the same
+  system with a download speed ranging between 1.5 to 2 MBytes per
+  second.
++ pre-built container: Install the container by downloading one that I
+  have built from source code from Docker Hub.  This image is about
+  1.8 GBytes in size.
+
+If you choose "source", execute this command:
+```bash
+ipdk build --no-cache |& tee $HOME/log-ipdk-build.txt
+```
+See below for a command to verify that you now have a docker image on
+your system with the name `ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64`.
+
+If you choose "pre-built container", execute this command:
+```bash
+docker pull jafingerhut/ipdk-net:ipdk_v23.07
+```
+then edit the file `$HOME/.ipdk/ipdk.env` to replace this line:
+```
+IMAGE_NAME=ghcr.io/ipdk-io/ipdk-ubuntu2004-x86_64
+```
+with these lines:
+```
+IMAGE_NAME=jafingerhut/ipdk-net
+TAG="ipdk_v23.07"
+```
+See next for a command to verify that you now have a docker iamge on
+your system with the name `jafingerhut/ipdk-net`.
+
+At this point, you should see that you have a docker image with the
+name mentioned above -- the precise name depends upon whether you
+chose "source" or "pre-built container".  The sample output below
+shows something similar to what you should see if you chose "source":
 
 ```bash
 $ docker images -a
