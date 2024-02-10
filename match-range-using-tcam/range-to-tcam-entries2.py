@@ -540,7 +540,8 @@ def validate_tcam_entries_are_range(W, min_val, max_val, entries):
 #entries = range_to_prefix_tcam_entries(args.W, args.min, args.max)
 entries = range_to_tcam_entries_SGZ(args.W, args.min, args.max)
 
-for entry in entries:
+ents = [convert_value_mask_to_vmstr(x, args.W) for x in entries]
+for entry in sorted(ents):
     print(entry)
 ret = validate_tcam_entries_are_range(args.W, args.min, args.max, entries)
 if ret["error"]:
@@ -581,7 +582,8 @@ def print_header_line(W, max_savings):
 
 if args.compare:
     counts = collections.defaultdict(dict)
-    examples = {}
+    savings_examples = {}
+    num_entries_examples = {}
     n = 0
     for min_val in range(1 << args.W):
         for max_val in range(min_val, 1 << args.W):
@@ -594,8 +596,12 @@ if args.compare:
             else:
                 counts[n1][n2] = 1
             savings = n1 - n2
-            if savings not in examples:
-                examples[savings] = {"min_val": min_val, "max_val": max_val}
+            if savings not in savings_examples:
+                savings_examples[savings] = {"min_val": min_val,
+                                             "max_val": max_val}
+            if n2 not in num_entries_examples:
+                num_entries_examples[n2] = {"min_val": min_val,
+                                            "max_val": max_val}
             n += 1
             if (n % 50000) == 0:
                 print("... checked %d ranges so far" % (n))
@@ -641,12 +647,29 @@ if args.compare:
     print("average savings = %d / %d = %.3f"
           "" % (savings_sum, n, savings_sum / n))
 
-    for savings in sorted(examples.keys()):
-        min_val = examples[savings]["min_val"]
-        max_val = examples[savings]["max_val"]
+    for savings in sorted(savings_examples.keys()):
+        min_val = savings_examples[savings]["min_val"]
+        max_val = savings_examples[savings]["max_val"]
         print("--------------------")
         print("Example of interval with savings=%d: [%d,%d]"
               "" % (savings, min_val, max_val))
+        entries1 = range_to_prefix_tcam_entries(args.W, min_val, max_val)
+        entries2 = range_to_tcam_entries_SGZ(args.W, min_val, max_val)
+        e1 = [convert_value_mask_to_vmstr(x, args.W) for x in entries1]
+        e2 = [convert_value_mask_to_vmstr(x, args.W) for x in entries2]
+        print("Entries restricted to prefix value/masks:")
+        for e in sorted(e1):
+            print(e)
+        print("Entries using SGZ algorithm:")
+        for e in sorted(e2):
+            print(e)
+
+    for n2 in sorted(num_entries_examples.keys()):
+        min_val = num_entries_examples[n2]["min_val"]
+        max_val = num_entries_examples[n2]["max_val"]
+        print("--------------------")
+        print("Example of interval with %d as the optimal number of TCAM entries: [%d,%d]"
+              "" % (n2, min_val, max_val))
         entries1 = range_to_prefix_tcam_entries(args.W, min_val, max_val)
         entries2 = range_to_tcam_entries_SGZ(args.W, min_val, max_val)
         e1 = [convert_value_mask_to_vmstr(x, args.W) for x in entries1]
