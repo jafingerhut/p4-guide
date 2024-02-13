@@ -11,9 +11,11 @@ The earliest mention I know of this in published work is:
   Waldvogel, "Fast and Scalable Layer Four Switching", SIGCOMM 1998,
   https://doi.org/10.1145/285237.285282
 
-but there may be something earlier, too.  The following paper gives
-algorithms and proofs of optimality for constructing minimum sets of
-TCAM entries that cover a range of values:
+but there may be something earlier, too.
+
+The following paper gives algorithms and proofs of optimality for
+constructing minimum sets of TCAM entries that cover a range of
+values, which are never more than 2W-4 entries for a W-bit wide field:
 
 + Baruch Schieber, Daniel Geist, and Ayal Zaks, "Computing the minimum
   DNF representation of Boolean functions defined by intervals",
