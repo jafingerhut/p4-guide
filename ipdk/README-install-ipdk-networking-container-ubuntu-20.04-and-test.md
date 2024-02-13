@@ -132,6 +132,37 @@ have step-by-step instructions you can try out after IPDK has been
 installed on your system.
 
 
+# Publishing an IPDK Docker image for others to use
+
+These steps are _not_ necessary for anyone to follow in order to
+install or use IPDK.  I am recording these steps for my own future
+reference if and when I want to publish future versions of the IPDK
+networking container to Docker Hub.
+
+First, build the IPDK networking container from source code, following
+the instructions for building from source above.
+
+Let `IMAGE_ID` be a shell variable whose value is the hexadecimal
+string appearing in the "IMAGE ID" column of the image that is built
+from source code, as seen in the output of the command `docker images
+-a`, as shown in the example earlier.
+
+My account name is `jafingerhut` on Docker Hub, but I will generalize
+the instructions slightly in case others really do want to use these
+steps.
+
+```
+IMAGE_ID="e4d502f4a4ee"
+DOCKER_HUB_USER_ID="jafingerhut"
+
+docker login
+# Enter your Docker hub user id and password, if asked for it.
+
+docker tag ${IMAGE_ID} ${DOCKER_HUB_USER_ID}/ipdk-net:ipdk_v23.07
+docker push ${DOCKER_HUB_USER_ID}/ipdk-net:ipdk_v23.07
+```
+
+
 # Running a P4Runtime client program and connecting to DPDK software switch
 
 All of the steps below were tested on an Ubuntu 20.04 system, after
