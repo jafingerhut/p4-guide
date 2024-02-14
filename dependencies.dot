@@ -1,0 +1,95 @@
+digraph p4_dependencies {
+
+    node [shape = box];
+
+    // My hack for providing a kind of 'legend' for the drawing.
+    // There is likely a better way than this.
+    legend [label="Legend:\nSolid arcs are dependencies according to install instructions.\nDashed arcs represent git submodules, where the 'to' project is auto-installed\nif you run 'git clone --recursive' on the 'from' project.\nRed boxes indicate deprecated repositories.\nNo dependencies shown for deprecated repositories.\nDotted arcs represent CMake FetchContent relationships,\nwhere the 'from' project fetches the code of the 'to' project during cmake builds." style=bold];
+
+    // All nodes, with labels, for p4lang repositories
+    behavioral_model [label="behavioral-model\n(aka bmv2)"];
+    mininet [label="mininet"];
+    ntf [label="ntf\n(needs root\nprivileges)"];
+    p4_build [label="p4-build" color="red"];
+    p4_hlir [label="p4-hlir" color="red"];
+    p4app [label="p4app" color="red"];
+    p4c [label="p4c"];
+    p4c_behavioral [label="p4c-behavioral" color="red"];
+    p4c_bm [label="p4c-bm" color="red"];
+    p4factory [label="p4factory" color="red"];
+    p4ofagent [label="p4ofagent" color="red"];
+    papers [label="papers"];
+    PI [label="PI"];
+    p4runtime [label="p4runtime"];
+    openconfig_gnmi [label="https://github.com/\nopenconfig/gnmi"];
+    openconfig_public [label="https://github.com/\nopenconfig/public"];
+    ptf [label="ptf\n(needs root\nprivileges)"];
+    SAI [label="SAI" color="red"];
+    scapy_vxlan [label="scapy-vxlan\n(recommended\nfor additional\nheaders like\nVXLAN, ERSPAN,\nGENEVE, MPLS, NVGRE)"];
+    switch [label="switch" color="red"];
+    uthash [label="https://github.com/\ntroydhanson/uthash"];
+    third_party [label="third-party"];
+    thrift [label="thrift"];
+    tutorials [label="tutorials"];
+
+    // All nodes, with labels, for non-p4lang repositories
+    grpc [label="github.com/\ngrpc/grpc"];
+    nanomsg [label="github.com/\nnanomsg/nanomsg"];
+    nnpy [label="github.com/\nnanomsg/nnpy"];
+    protobuf [label="github.com/\ngoogle/protobuf"];
+    googlemock [label="github.com/\ngoogle/googlemock"];
+    googletest [label="github.com/\ngoogle/googletest"];
+    Z3 [label="https://github.com/\nZ3Prover/z3"];
+    inja [label="https://github.com/\npantor/inja.git"];
+
+
+    ////////////////////////////////////////////////////////////////
+    // Dependencies
+    ////////////////////////////////////////////////////////////////
+
+    behavioral_model -> thrift;
+    behavioral_model -> nanomsg;
+    behavioral_model -> nnpy [label="needed if\nyou use\nthe CLI" decorate=true];
+    behavioral_model -> PI [label="needed if\nyou use\nP4Runtime API" decorate=true];
+
+    ntf -> mininet;
+
+    p4c -> p4runtime [style=dotted];
+    p4c -> googletest [style=dotted];
+    p4c -> Z3 [label="needed if\nyou build\np4testgen" decorate=true style=dotted];
+    p4c -> inja [label="needed if\nyou build\np4testgen" decorate=true style=dotted];
+
+    PI -> googletest [style=dashed];
+    PI -> openconfig_gnmi [style=dashed];
+    PI -> openconfig_public [style=dashed];
+    PI -> p4runtime [style=dashed];
+    PI -> uthash [style=dashed];
+    PI -> grpc [label="when built with\n--with-proto option" decorate=true];
+
+    ptf -> scapy_vxlan;
+
+    third_party -> grpc [style=dashed];
+    third_party -> nanomsg [style=dashed];
+    third_party -> nnpy [style=dashed];
+    third_party -> protobuf [style=dashed];
+    third_party -> googlemock [style=dashed];
+    third_party -> googletest [style=dashed];
+    third_party -> thrift [style=dashed];
+
+    tutorials -> behavioral_model;
+    tutorials -> p4c;
+    tutorials -> p4runtime;
+    tutorials -> mininet;
+    tutorials -> ptf;
+
+    // Invisible arcs between deprecated repositories, so that they
+    // take up less horizontal space in the figure.
+    p4_build -> p4_hlir [style="invis"];
+    p4_hlir -> p4app [style="invis"];
+    p4app -> p4c_behavioral [style="invis"];
+    //p4c_behavioral -> p4c_bm [style="invis"];
+    p4c_bm -> p4factory [style="invis"];
+    p4factory -> p4ofagent [style="invis"];
+    p4ofagent -> SAI [style="invis"];
+    SAI -> switch [style="invis"];
+}

@@ -31,8 +31,7 @@ this repository.
 * An overview of the [p4lang organization Github
   repositories](README-p4lang-repos.md)
 * A figure with the [dependencies](dependencies.pdf) between these
-  repositories (last updated June 2017 so may be slightly out of
-  date).
+  repositories (last updated February 2024).
 
 
 ## Small demo P4 programs
