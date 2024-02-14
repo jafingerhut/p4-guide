@@ -69,7 +69,7 @@ insensitive), with their descriptions:
 * [`p4-dpdk-target`](https://github.com/p4lang/p4-dpdk-target) - P4
   driver software for P4 DPDK target.
 * [`p4-hlir`](https://github.com/p4lang/p4-hlir) - An older P4
-  compiler that only supports P4_14.  Superceded by `p4c`.
+  compiler that only supports P4_14.  Superseded by `p4c`.
 * [`p4-spec`](https://github.com/p4lang/p4-spec) - The P4_16 and P4_14
   language speciications, and also the specification for the Portable
   Switch Architecture.
@@ -198,13 +198,13 @@ one or more P4 targets:
   (also compiles P4_14 programs)
 * [`p4c-bm`](https://github.com/p4lang/p4c-bm) - Generates the JSON
   configuration for the behavioral-model (bmv2), as well as the C/C++
-  PD code.  Superceded by `p4c`.
+  PD code.  Superseded by `p4c`.
 * [`p4-hlir`](https://github.com/p4lang/p4-hlir) - P4_14 compiler,
   written in Python, which stops at generating an intermediate
   representation, from which one can start in writing a back end
-  compiler.  Superceded by `p4c`.
+  compiler.  Superseded by `p4c`.
 * [`p4c-behavioral`](https://github.com/p4lang/p4c-behavioral) - P4
-  compiler for the behavioral model.  Deprecated.  Superceded by
+  compiler for the behavioral model.  Deprecated.  Superseded by
   `p4c`.
 
 P4 behavioral models, for running P4 programs on general purpose
