@@ -2,7 +2,7 @@ digraph p4_16_allowed_construct_nesting {
 
     node [shape=box];
     rankdir=LR;
-    
+
     toplevel [label="top level"];
     legend_bold_orange_box [label="Things inside dashed lines\nare either only allowed in,\nor most useful within,\narchitecture model files." style=dashed color=orange];
 
@@ -44,13 +44,16 @@ digraph p4_16_allowed_construct_nesting {
     parserState -> constantOrVariableDeclaration3;
     constantOrVariableDeclaration3 [label="const, variable decl"];
     parserState -> assignmentActionMethodCallStatement3;
-    assignmentActionMethodCallStatement3 [label="assignment\nfunction call\nNO: action call, if, switch\nextern object method call"];
+    assignmentActionMethodCallStatement3 [label="assignment\nfunction call\nNO: action call, switch\nextern object method call"];
     parserState -> parserApplyCallStatement3;
     parserApplyCallStatement3 [label="<subparser>.apply()"];
     parserState -> blockStatement3;
     blockStatement3 [label="block statement\n{ ... }"];
     blockStatement3 -> blockStatementInParserState;
     blockStatementInParserState [label="anything allowed\ndirectly inside state\nexcept transition,\nwhich must be last"];
+    parserState -> conditionalStatement8;
+    conditionalStatement8 [label="if"];
+    conditionalStatement8 -> blockStatementInParserState;
     parserState -> transitionStatement1;
     parserState -> transitionStatement2;
     transitionStatement1 [label="transition <statename>"];
@@ -131,6 +134,12 @@ digraph p4_16_allowed_construct_nesting {
     containerStructOrTuple [shape=oval label="struct or tuple"];
     //containerStruct [shape=oval label="struct"];
     //containerTuple [shape=oval label="tuple"];
+    containerHeaderStack [shape=oval label="header stack"];
+    containerList [shape=oval label="list"];
+    }
+
+    {
+    rank=same;
     containerHeaderUnion [shape=oval label="header_union"];
     }
 
@@ -146,13 +155,26 @@ digraph p4_16_allowed_construct_nesting {
     elementVarbitW [shape=oval label="varbit<W>"];
     elementError [shape=oval label="error"];
     elementBool [shape=oval label="bool"];
-    elementEnum [shape=oval label="enum"];
-    elementHeaderStack [shape=oval label="header stack"];
+    elementSerializableEnum [shape=oval label="enum (serializable)"];
+    elementNonSerializableEnum [shape=oval label="enum (not serializable)"];
     }
+
+    elementInt [shape=oval label="int"];
+    elementString [shape=oval label="string"];
+    elementMatchKind [shape=oval label="match_kind"];
+    elementAnythingAllowedInStructOrTuple [shape=oval label="anything allowed\nin struct\nor tuple"];
+
+    containerHeaderStack -> containerHeader;
+    containerHeaderStack -> containerHeaderUnion;
 
     containerHeader -> elementBitW;
     containerHeader -> elementIntW;
     containerHeader -> elementVarbitW;
+    containerHeader -> elementBool;
+    containerHeader -> elementSerializableEnum;
+    containerHeader -> elementStruct;
+
+    elementStruct [shape=oval label="struct\n(When inside header,\nits 'leaf types' must\nbe only those allowed\nwithin a header.)"];
 
     containerHeaderUnion -> containerHeader;
 
@@ -161,9 +183,16 @@ digraph p4_16_allowed_construct_nesting {
     containerStructOrTuple -> elementVarbitW;
     containerStructOrTuple -> elementError;
     containerStructOrTuple -> elementBool;
-    containerStructOrTuple -> elementEnum;
+    containerStructOrTuple -> elementSerializableEnum;
+    containerStructOrTuple -> elementNonSerializableEnum;
     containerStructOrTuple -> containerHeader;
     containerStructOrTuple -> containerHeaderUnion;
-    containerStructOrTuple -> elementHeaderStack;
+    containerStructOrTuple -> containerHeaderStack;
     containerStructOrTuple -> containerStructOrTuple;
+
+    containerList -> elementInt;
+    containerList -> elementString;
+    containerList -> elementMatchKind;
+    containerList -> containerList;
+    containerList -> elementAnythingAllowedInStructOrTuple
 }
