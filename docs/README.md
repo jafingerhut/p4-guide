@@ -59,3 +59,6 @@ program.
 TCAM](../match-range-using-tcam/README.md) - This article is of
 interest to anyone wanting to implement the `range` match kind using a
 normal TCAM (ternary CAM).
+
+[Support for if statements in open source P4
+targets](if-statements.md).
