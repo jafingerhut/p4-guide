@@ -31,9 +31,10 @@ top level
     instantiation of package (there must be one named 'main')
     function definition
         const, variable decl, assignment, function call, return <expression>
+        extern call (object method, or function)
         if
             anything allowed directly inside function
-        NO: action call
+        NO: action call, exit
     action - see 'action' below
     NO: instantiation of control block, parser
     NO: variable decl
@@ -44,8 +45,8 @@ top level
         NO: instantiation of control block
         state
             const, variable decl, assignment, function call
-            NO: action call
-            extern object method call (p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
+            NO: action call, exit
+            extern call (object method, or function.  p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
             <subparser>.apply()
             block statement { }
                 anything allowed directly inside state
@@ -63,7 +64,7 @@ top level
         NO: instantiation of parser, parser value set
         action
             const, variable decl, assignment, function call, action call
-            extern object method call
+            extern call (object method, or function)
             return, exit
             if - Note that P4_16 language spec warns that implementations need not support 'if' inside of actions.
                 anything allowed directly inside action
@@ -78,7 +79,7 @@ top level
             default_action = <action_spec>;
         apply { } (body of control block)
             const, variable decl, assignment, function call, action call
-            extern object method call
+            extern call (object method, or function)
             <table>.apply()
             <control_name>.apply()
             switch (<table>.apply().action_run) { ... }

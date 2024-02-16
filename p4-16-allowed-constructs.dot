@@ -44,7 +44,7 @@ digraph p4_16_allowed_construct_nesting {
     parserState -> constantOrVariableDeclaration3;
     constantOrVariableDeclaration3 [label="const, variable decl"];
     parserState -> assignmentActionMethodCallStatement3;
-    assignmentActionMethodCallStatement3 [label="assignment\nfunction call\nNO: action call, switch\nextern object method call"];
+    assignmentActionMethodCallStatement3 [label="assignment\nfunction call\nextern call\nNO: action call, switch, exit"];
     parserState -> parserApplyCallStatement3;
     parserApplyCallStatement3 [label="<subparser>.apply()"];
     parserState -> blockStatement3;
@@ -81,7 +81,7 @@ digraph p4_16_allowed_construct_nesting {
     functionDefinition -> constantOrVariableDeclaration7;
     constantOrVariableDeclaration7 [label="const, variable decl"];
     functionDefinition -> assignmentFunctionCallStatement1;
-    assignmentFunctionCallStatement1 [label="assignment\nfunction call\nreturn <expression>"];
+    assignmentFunctionCallStatement1 [label="assignment\nfunction call\nextern call\nreturn <expr>\nNO: action call\nNO: exit"];
     functionDefinition -> conditionalStatement7;
     conditionalStatement7 [label="if"];
     conditionalStatement7 -> blockStatementInFunctionDefinition;
@@ -90,7 +90,7 @@ digraph p4_16_allowed_construct_nesting {
     actionDeclaration -> constantOrVariableDeclaration5;
     constantOrVariableDeclaration5 [label="const, variable decl"];
     actionDeclaration -> assignmentActionMethodCallStatement5;
-    assignmentActionMethodCallStatement5 [label="assignment\nfunction call\naction call\nextern object method call"];
+    assignmentActionMethodCallStatement5 [label="assignment\nfunction call\naction call\nextern call"];
     actionDeclaration -> returnOrExitStatement5;
     returnOrExitStatement5 [label="return, exit"];
     actionDeclaration -> conditionalStatement5;
@@ -108,7 +108,7 @@ digraph p4_16_allowed_construct_nesting {
     controlBody -> constantOrVariableDeclaration6;
     constantOrVariableDeclaration6 [label="const, variable decl"];
     controlBody -> assignmentActionMethodCallStatement6;
-    assignmentActionMethodCallStatement6 [label="assignment\nfunction call\naction call\nextern object method call"];
+    assignmentActionMethodCallStatement6 [label="assignment\nfunction call\naction call\nextern call"];
     controlBody -> tableApplyCall6;
     tableApplyCall6 [label="<table>.apply()"];
     controlBody -> controlCallStatement6;
