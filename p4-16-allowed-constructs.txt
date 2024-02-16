@@ -1,10 +1,10 @@
 The contents of this document have been compared against Appendix F
 "Restrictions on compile time and run time calls" of the P4_16
-v1.1.0-rc as of this git commit on 2018-Aug-11, and they appear to
-match each other:
+language specification v1.2.4 as of this git commit on 2023-May-15,
+and they appear to match each other:
 
 $ git clone https://github.com/p4lang/p4-spec
-$ git checkout 015f9225ea022a337d986a9d2905f81bc6741217
+$ git checkout 6536ac4475226d79a4783a1511de63447cbac165
 
 
 TBD to add:
@@ -49,11 +49,13 @@ top level
             <subparser>.apply()
             block statement { }
                 anything allowed directly inside state
+            if statement
+                anything allowed directly inside state
             transition <statename> (must be last in state definition)
             transition select .... (must be last in state definition)
                 call to a parser value set, as a key set expression
             NO: type definitions
-            NO: if, switch, return, exit
+            NO: switch, return, exit
             NO: parser, state, action, table, control
     control
         const, variable decl
@@ -98,32 +100,9 @@ infinite-precision integer, without a width specified.
 The two-argument extract method on packets only supports a single
 varbit field in a header.
 
-This table has been reviewed and approved by the P4 language design
-work group, but the latest p4c compiler as of 2017-Apr-11 does not
-accept some of the types marked as 'allowed' inside of structs.  The
-bmv2 behavioral model also does not yet support nested structs.
-
-+--------------+--------------------------------+
-|              |        Container type          |
-|              |                                |
-|              |           | header_ | struct   |
-| Element type | header    | union   | or tuple |
-+--------------+-----------+---------+----------+
-| bit<W>       | allowed   | error   | allowed  |
-| int<W>       | allowed   | error   | allowed  |
-| varbit<W>    | allowed   | error   | allowed  |
-| int          | error     | error   | error    |
-| void         | error     | error   | error    |
-| error        | error     | error   | allowed  |
-| match_kind   | error     | error   | error    |
-| bool         | error     | error   | allowed  |
-| enum         | error     | error   | allowed  |
-| header       | error     | allowed | allowed  |
-| header stack | error     | error   | allowed  |
-| header_union | error     | error   | allowed  |
-| struct       | error     | error   | allowed  |
-| tuple        | error     | error   | allowed  |
-+--------------+-----------+---------+----------+
+See the table in the P4_16 language specification Section 7.2.8 "Type
+nesting rules" for which types can be declared as parts of other
+types.
 
 
 ----------------------------------------------------------------------

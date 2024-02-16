@@ -4,26 +4,30 @@ digraph p4_dependencies {
 
     // My hack for providing a kind of 'legend' for the drawing.
     // There is likely a better way than this.
-    legen [label="Legend:\nSolid arcs are dependencies according to install instructions.\nDashed arcs represent git submodules, where the 'to' project is auto-installed\nif you run 'git clone --recursive' on the 'from' project.\nDashed boxes indicate deprecated repositories.\nDashed arcs from p4factory not shown in this chart to make the other dependencies clearer." style=bold];
+    legend [label="Legend:\nSolid arcs are dependencies according to install instructions.\nDashed arcs represent git submodules, where the 'to' project is auto-installed\nif you run 'git clone --recursive' on the 'from' project.\nRed boxes indicate deprecated repositories.\nNo dependencies shown for deprecated repositories.\nDotted arcs represent CMake FetchContent relationships,\nwhere the 'from' project fetches the code of the 'to' project during cmake builds." style=bold];
 
     // All nodes, with labels, for p4lang repositories
     behavioral_model [label="behavioral-model\n(aka bmv2)"];
     mininet [label="mininet"];
     ntf [label="ntf\n(needs root\nprivileges)"];
-    p4_build [label="p4-build"];
-    p4_hlir [label="p4-hlir"];
-    p4app [label="p4app"];
+    p4_build [label="p4-build" color="red"];
+    p4_hlir [label="p4-hlir" color="red"];
+    p4app [label="p4app" color="red"];
     p4c [label="p4c"];
-    p4c_behavioral [label="p4c-behavioral" style=dashed];
-    p4c_bm [label="p4c-bm"];
-    p4factory [label="p4factory" style=dashed];
-    p4ofagent [label="p4ofagent"];
+    p4c_behavioral [label="p4c-behavioral" color="red"];
+    p4c_bm [label="p4c-bm" color="red"];
+    p4factory [label="p4factory" color="red"];
+    p4ofagent [label="p4ofagent" color="red"];
     papers [label="papers"];
     PI [label="PI"];
+    p4runtime [label="p4runtime"];
+    openconfig_gnmi [label="https://github.com/\nopenconfig/gnmi"];
+    openconfig_public [label="https://github.com/\nopenconfig/public"];
     ptf [label="ptf\n(needs root\nprivileges)"];
-    SAI [label="SAI"];
+    SAI [label="SAI" color="red"];
     scapy_vxlan [label="scapy-vxlan\n(recommended\nfor additional\nheaders like\nVXLAN, ERSPAN,\nGENEVE, MPLS, NVGRE)"];
-    switch [label="switch"];
+    switch [label="switch" color="red"];
+    uthash [label="https://github.com/\ntroydhanson/uthash"];
     third_party [label="third-party"];
     thrift [label="thrift"];
     tutorials [label="tutorials"];
@@ -33,16 +37,10 @@ digraph p4_dependencies {
     nanomsg [label="github.com/\nnanomsg/nanomsg"];
     nnpy [label="github.com/\nnanomsg/nnpy"];
     protobuf [label="github.com/\ngoogle/protobuf"];
-    googlemock_for_protobuf [label="github.com/\ngoogle/googlemock"];
-    googletest_for_protobuf [label="github.com/\ngoogle/googletest"];
-    floodlight_oftest [label="github.com/\nfloodlight/oftest"];
-    floodlight_indigo [label="github.com/\nfloodlight/indigo"];
-    floodlight_bigcode [label="github.com/\nfloodlight/bigcode"];
-    floodlight_infra [label="github.com/\nfloodlight/infra"];
-    floodlight_loxigen_artifacts [label="github.com/\nfloodlight/loxigen-artifacts"];
-    googleapis [label="github.com/\ngoogleapis/googleapis"];
-    googleapis [label="github.com/\ngoogle/googletest"];
-    davidjamesca_ctypesgen [label="github.com/\ndavidjamesca/ctypesgen"];
+    googlemock [label="github.com/\ngoogle/googlemock"];
+    googletest [label="github.com/\ngoogle/googletest"];
+    Z3 [label="https://github.com/\nZ3Prover/z3"];
+    inja [label="https://github.com/\npantor/inja.git"];
 
 
     ////////////////////////////////////////////////////////////////
@@ -52,55 +50,46 @@ digraph p4_dependencies {
     behavioral_model -> thrift;
     behavioral_model -> nanomsg;
     behavioral_model -> nnpy [label="needed if\nyou use\nthe CLI" decorate=true];
+    behavioral_model -> PI [label="needed if\nyou use\nP4Runtime API" decorate=true];
 
     ntf -> mininet;
 
-    p4_build -> behavioral_model;
-    p4_build -> p4c_bm;
+    p4c -> p4runtime [style=dotted];
+    p4c -> googletest [style=dotted];
+    p4c -> Z3 [label="needed if\nyou build\np4testgen" decorate=true style=dotted];
+    p4c -> inja [label="needed if\nyou build\np4testgen" decorate=true style=dotted];
 
-    p4c -> PI [label="control-plane/\nPI" decorate=true style=dashed];
-
-    PI -> googleapis [label="proto/\ngoogleapis" decorate=true style=dashed];
-    PI -> googletest [label="third_party/\ngoogletest" decorate=true style=dashed];
-
-    p4c_behavioral -> p4_hlir;
-
-    p4c_bm -> p4_hlir [label="installs p4-hlir\nas Python\npip module" decorate=true];
-
-//    p4factory -> behavioral_model [label="submodules/\nbm" decorate=true style=dashed];
-//    p4factory -> floodlight_oftest [label="submodules/\noftest" decorate=true style=dashed];
-//    p4factory -> p4_build [label="submodules/\np4-build" decorate=true style=dashed];
-//    p4factory -> p4c_behavioral [label="submodules/\np4c-behavioral" decorate=true style=dashed];
-//    p4factory -> p4c_bm [label="submodules/\np4c-bm" decorate=true style=dashed];
-//    p4factory -> p4ofagent [label="submodules/\np4ofagent" decorate=true style=dashed];
-//    p4factory -> ptf [label="submodules/\nptf" decorate=true style=dashed];
-//    p4factory -> switch [label="submodules/\nswitch" decorate=true style=dashed];
-
-    p4ofagent -> p4c_behavioral [label="depends on\nPD API\ngenerated by" decorate=true];
-    p4ofagent -> floodlight_indigo [label="submodules/\nindigo" decorate=true style=dashed];
-
-    floodlight_indigo -> floodlight_bigcode [label="submodules/\nbigcode" decorate=true style=dashed];
-    floodlight_indigo -> floodlight_infra [label="submodules/\ninfra" decorate=true style=dashed];
-    floodlight_indigo -> floodlight_loxigen_artifacts [label="submodules/\nloxigen-artifacts" decorate=true style=dashed];
-    
-    floodlight_bigcode -> floodlight_infra [label="submodules/\ninfra" decorate=true style=dashed];
+    PI -> googletest [style=dashed];
+    PI -> openconfig_gnmi [style=dashed];
+    PI -> openconfig_public [style=dashed];
+    PI -> p4runtime [style=dashed];
+    PI -> uthash [style=dashed];
+    PI -> grpc [label="when built with\n--with-proto option" decorate=true];
 
     ptf -> scapy_vxlan;
 
-    SAI -> ptf [label="test/\nptf" decorate=true style=dashed];
-    SAI -> davidjamesca_ctypesgen [label="test/saithrift/\nctypesgen" decorate=true style=dashed];
-
-    switch -> p4_build [label="p4-build" decorate=true style=dashed];
-    switch -> SAI [label="switchsai/\nsubmodules/SAI" decorate=true style=dashed];
-
-    third_party -> grpc [label="grpc" decorate=true style=dashed];
-    third_party -> nanomsg [label="nanomsg" decorate=true style=dashed];
-    third_party -> nnpy [label="nnpy" decorate=true style=dashed];
-    third_party -> protobuf [label="protobuf" decorate=true style=dashed];
-    third_party -> googlemock_for_protobuf [label="protobuf-deps/\ngooglemock" decorate=true style=dashed];
-    third_party -> googletest_for_protobuf [label="protobuf-deps/\ngoogletest" decorate=true style=dashed];
-    third_party -> thrift [label="thrift" decorate=true style=dashed];
+    third_party -> grpc [style=dashed];
+    third_party -> nanomsg [style=dashed];
+    third_party -> nnpy [style=dashed];
+    third_party -> protobuf [style=dashed];
+    third_party -> googlemock [style=dashed];
+    third_party -> googletest [style=dashed];
+    third_party -> thrift [style=dashed];
 
     tutorials -> behavioral_model;
-    tutorials -> p4c_bm;
+    tutorials -> p4c;
+    tutorials -> p4runtime;
+    tutorials -> mininet;
+    tutorials -> ptf;
+
+    // Invisible arcs between deprecated repositories, so that they
+    // take up less horizontal space in the figure.
+    p4_build -> p4_hlir [style="invis"];
+    p4_hlir -> p4app [style="invis"];
+    p4app -> p4c_behavioral [style="invis"];
+    //p4c_behavioral -> p4c_bm [style="invis"];
+    p4c_bm -> p4factory [style="invis"];
+    p4factory -> p4ofagent [style="invis"];
+    p4ofagent -> SAI [style="invis"];
+    SAI -> switch [style="invis"];
 }

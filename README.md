@@ -7,19 +7,17 @@ language](http://p4.org).
 
 ## Installing open source P4 development tools
 
-There are install scripts in this repository that can assist you
-in building and installing the `p4c` and `behavioral-model` projects
-and their dependencies on Ubuntu Linux systems with these versions:
-
-+ 20.04 or 22.04
+There are install scripts in this repository that can assist you in
+building and installing the `p4c` and `behavioral-model` projects and
+their dependencies on some recent versions of Ubuntu or Fedora Linux
+systems.
 
 See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
 
-There are also some [newer instructions here](ipdk/README.md), perhaps
-a little less beginner-friendly, for installing IPDK on an Ubuntu
-20.04 Linux system, and using the DPDK software switch to load and run
-P4 programs.
+There are also some [newer instructions here](ipdk/README.md) for
+installing [IPDK](https://ipdk.io) on an Ubuntu 20.04 Linux system,
+and using the DPDK software switch to load and run P4 programs.
 
 
 ## Articles on various P4 topics
@@ -33,8 +31,7 @@ this repository.
 * An overview of the [p4lang organization Github
   repositories](README-p4lang-repos.md)
 * A figure with the [dependencies](dependencies.pdf) between these
-  repositories (last updated June 2017 so may be slightly out of
-  date).
+  repositories (last updated February 2024).
 
 
 ## Small demo P4 programs

@@ -15,28 +15,45 @@ this.
 
 ## Versions
 
-The P4_16 language specification quoted here is version 1.1.0,
-published November, 2018.
+This article was updated on 2024-Feb-10 for the first time since
+2019-Jan-19.  Fortunately for those relying on what this article
+explains, not much has changed in the specifications or
+implementations regarding table matching behavior.
 
-The P4Runtime Specification version is 1.0.0-rc4, dated 2018-Nov-30.
+One new thing added to the P4_16 language specification in that time
+that is not yet explicitly described (only mentioned here) is the new
+`entries` table property, without `const`, sometimes called "initial
+entries".  See Section 14.2.1.4 "Entries" of the P4_16 language
+specification for details.
+
+The P4_16 language specification quoted here is version 1.2.4,
+published May, 2023.
+
+The P4Runtime Specification version is 1.3.0, published December,
+2020.
 
 The versions of the open source tools are the latest ones published to
-Github as of 2019-Jan-09, which are these commits:
+Github as of 2024-Feb-07, which are these commits:
 
 + Version of https://github.com/p4lang/p4c
 
 ```
-commit cfcdd7288c1a95f73eb1cdd9699b31681269465f
-Author: Hemant Singh <32817427+hesingh@users.noreply.github.com>
-Date:   Wed Jan 9 18:03:42 2019 -0500
+commit 6cec6b45997e22ef55753dbc7ee2dcab587d46bb (HEAD -> main, origin/main, origin/HEAD)
+Author: vbnogueira <105989644+vbnogueira@users.noreply.github.com>
+Date:   Wed Feb 7 04:31:58 2024 -0300
+
+    Rename eBPF section names for tc backend (#4361)
+    
+    Rename parser C file's eBPF section to "p4tc/parse" and control blocks C
+    file's eBPF section to "p4tc/main".
 ```
 
 + Version of https://github.com/p4lang/behavioral-model
 
 ```
-commit 20d37301040e6e1b2f6f50f4f66671448946b898
-Author: Antonin Bas <antonin@barefootnetworks.com>
-Date:   Tue Dec 18 11:47:36 2018 -0800
+commit 5f1c590c7bdb32ababb6d6fe18977cf13ae3b043 (HEAD -> main, origin/main, origin/HEAD)
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Tue Jan 2 10:11:12 2024 -0800
 ```
 
 
@@ -65,8 +82,8 @@ As a brief reminder of the behavior of a P4 table when it is applied,
 it is roughly as follows.  For simplicity, we restrict our attention
 here to "direct tables", i.e. ones that do not have an action profile
 or action selector implementation.  For more authoritative details,
-see the P4_16 language specification, Section 13.2.2 "Match-action
-unit invocation" and Section 13.2.3 "Match-action unit execution
+see the P4_16 language specification, Section 14.2.2 "Match-action
+unit invocation" and Section 14.2.3 "Match-action unit execution
 semantics".
 
 First, determine the set of table entries that match:
@@ -173,7 +190,7 @@ modifications are possible:
             a1;
             a2;
         }
-	size = 16;
+        size = 16;
         default_action = a2();
     }
 ```
@@ -198,7 +215,7 @@ will call this a "const default action table".
             a1;
             a2;
         }
-	size = 16;
+        size = 16;
         const default_action = a2();
     }
 ```
@@ -279,7 +296,7 @@ e.g. action `a1`.
             a1;
             a2;
         }
-	size = 16;
+        size = 16;
         default_action = a2();
     }
 ```
@@ -288,10 +305,11 @@ For table `t2`, the source code does not explicitly specify what the
 initial default action should be.  For such tables, the P4_16 language
 specification says:
 
-    If a table does not specify the `default_action` property and no
-    entry matches a given packet, then the table does not affect the
-    packet and processing continues according to the imperative
-    control flow of the program. [Section 13.2.1.3 "Default action"]
+    The compiler must set the `default_action` to `NoAction` (and also
+    insert it into the list of actions) for tables that do not define
+    the `default_action` property.  Hence, all tables can be thought
+    of as having a `default_action` property, either implicitly or
+    explicitly.
 
 The mechanism by which the `p4c` compiler implements this behavior is
 as follows:
@@ -317,7 +335,7 @@ default action of the table later (to any action in the user-specified
         actions = {
             a1;
         }
-	size = 16;
+        size = 16;
     }
 ```
 
@@ -486,7 +504,7 @@ For tables that do have const entries, replace (a) with:
     entry, and _not_ matching any higher priority entries.  Note that
     for tables with const entries, they are always listed in the
     source code from highest matching priority first, to lowest
-    priority matching last (see Section 13.2.1.4 "Entries" of the
+    priority matching last (see Section 14.2.1.4 "Entries" of the
     P4_16 language specification).
 
 For (b), every table miss case must be qualified with the condition

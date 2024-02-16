@@ -5,15 +5,17 @@ classification for ACLs (Access Control Lists), that one can match an
 arbitrary [min, max] range of a W-bit wide field using at most 2W-2
 TCAM entries, for a single field.
 
-The earliest mention I know of this in publicly published work is:
+The earliest mention I know of this in published work is:
 
 + Venkatachary Srinivasan, George Varghese, Subhash Suri, and Marcel
   Waldvogel, "Fast and Scalable Layer Four Switching", SIGCOMM 1998,
   https://doi.org/10.1145/285237.285282
 
-but there may be something earlier, too.  The following paper gives
-algorithms and proofs of optimality for constructing minimum sets of
-TCAM entries that cover a range of values:
+but there may be something earlier, too.
+
+The following paper gives algorithms and proofs of optimality for
+constructing minimum sets of TCAM entries that cover a range of
+values, which are never more than 2W-4 entries for a W-bit wide field:
 
 + Baruch Schieber, Daniel Geist, and Ayal Zaks, "Computing the minimum
   DNF representation of Boolean functions defined by intervals",
@@ -21,7 +23,8 @@ TCAM entries that cover a range of values:
   2005, https://doi.org/10.1016/j.dam.2004.08.009
 
 The rest of this article describes the first (non-optimal) method
-only.
+only.  The program `range-to-tcam-entries2.py` implements the optimal
+algorithm, which I call SGZ after the initials of the paper's authors.
 
 The basic idea is to partition the set of values in the range [min,
 max] into one or more disjoint ranges whose union contains exactly the

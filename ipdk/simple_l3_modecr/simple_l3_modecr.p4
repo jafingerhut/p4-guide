@@ -22,8 +22,8 @@ const bit<16> ETHERTYPE_IPV4 = 0x0800;
 
 /* Standard ethernet header */
 header ethernet_h {
-  ethernet_addr_t  dst_addr;
-  ethernet_addr_t  src_addr;
+    ethernet_addr_t  dst_addr;
+    ethernet_addr_t  src_addr;
     bit<16>   ether_type;
 }
 

@@ -54,3 +54,8 @@ only of interest to people designing or writing detailed verification
 tests for a P4 device.  It explains what I believe are all possible
 behaviors of a P4 table, depending upon how it is defined in the P4
 program.
+
+[Implementing range matching using multiple ternary entries in a
+TCAM](../match-range-using-tcam/README.md) - This article is of
+interest to anyone wanting to implement the `range` match kind using a
+normal TCAM (ternary CAM).
