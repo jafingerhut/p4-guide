@@ -28,7 +28,7 @@ included within the `infrap4d` process.
 
 + [Installing IPDK](docs/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md)
 + [Useful notes on using IPDK](docs/general-ipdk-notes.md)
-+ [Quick test of your IPDK installation](quick-test.md)
++ [Quick test of your IPDK installation](docs/quick-test.md)
 + [Notes on debugging P4 programs run on the DPDK software switch](docs/debugging-p4-dpdk-programs.md)
 + [Running a P4 program with multiple Linux network namespaces, sending packets to it using tcpreplay, capturing packets out with tcpdump](docs/run-p4-prog-with-multiple-network-namespaces.md)
 + [Running P4 program `add_on_miss0.p4` and testing it using a Python controller program (without PTF), tcpreplay, and tcpdump](docs/testing-add-on-miss0-with-python-controller-tcpreplay-tcpdump.md)
