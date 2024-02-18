@@ -127,7 +127,7 @@ software switch inside of it.
 
 # What to try next?
 
-See this [outline of other articles](README.md) for other tasks that
+See this [outline of other articles](../README.md) for other tasks that
 have step-by-step instructions you can try out after IPDK has been
 installed on your system.
 
