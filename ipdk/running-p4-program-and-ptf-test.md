@@ -39,7 +39,7 @@ In base OS:
 BASENAME="sample"
 DIR="$HOME/p4-guide/ipdk/sample"
 cd ${DIR}
-../bin/compile-base-os.sh -a pna -s ${BASENAME}.p4
+$HOME/p4-guide/ipdk/bin/compile-base-os.sh -a pna -s ${BASENAME}.p4
 ```
 
 
