@@ -3,9 +3,27 @@
 import logging
 
 from google.rpc import code_pb2
-import p4runtime_sh.shell as sh
 import p4runtime_sh.p4runtime as p4rt
+import p4runtime_sh.shell as sh
 
+
+def as_list_of_dicts(exc):
+    """Take an exception object that has been thrown by a method such
+    as p4runtime_sh.shell.TableEntry.insert(), and create a list of
+    Python dicts that can be used to access various fields within this
+    exception."""
+    lst = []
+    for idx, p4_error in exc.errors:
+        code_name = code_pb2._CODE.values_by_number[
+            p4_error.canonical_code].name
+        lst.append({'index': idx,
+                    'code': p4_error.code,
+                    'canonical_code': p4_error.canonical_code,
+                    'code_name': code_name,
+                    'details': p4_error.details,
+                    'message': p4_error.message,
+                    'space': p4_error.space})
+    return lst
 
 def ssl_opts_for_certs_directory(certs_dir):
     """Create and return an object with class
@@ -93,21 +111,3 @@ def read_table_default_entry(table_name_str):
             logging.error("read_table_default_entry() found more than one default entry for table '%s'"
                           "" % (table_name_str))
     return default_entry
-
-def as_list_of_dicts(exc):
-    """Take an exception object that has been thrown by a method such
-    as p4runtime_sh.shell.TableEntry.insert(), and create a list of
-    Python dicts that can be used to access various fields within this
-    exception."""
-    lst = []
-    for idx, p4_error in exc.errors:
-        code_name = code_pb2._CODE.values_by_number[
-            p4_error.canonical_code].name
-        lst.append({'index': idx,
-                    'code': p4_error.code,
-                    'canonical_code': p4_error.canonical_code,
-                    'code_name': code_name,
-                    'details': p4_error.details,
-                    'message': p4_error.message,
-                    'space': p4_error.space})
-    return lst
