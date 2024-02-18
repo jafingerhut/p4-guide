@@ -26,17 +26,17 @@ page](https://ipdk.io/p4cp-userguide/overview/overview.html#infrap4d)
 shows the above parts, and also some other software components
 included within the `infrap4d` process.
 
-+ [Installing IPDK](README-install-ipdk-networking-container-ubuntu-20.04-and-test.md)
-+ [Useful notes on using IPDK](general-ipdk-notes.md)
++ [Installing IPDK](docs/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md)
++ [Useful notes on using IPDK](docs/general-ipdk-notes.md)
 + [Quick test of your IPDK installation](quick-test.md)
-+ [Notes on debugging P4 programs run on the DPDK software switch](debugging-p4-dpdk-programs.md)
-+ [Running a P4 program with multiple Linux network namespaces, sending packets to it using tcpreplay, capturing packets out with tcpdump](run-p4-prog-with-multiple-network-namespaces.md)
-+ [Running P4 program `add_on_miss0.p4` and testing it using a Python controller program (without PTF), tcpreplay, and tcpdump](testing-add-on-miss0-with-python-controller-tcpreplay-tcpdump.md)
-+ [Running a P4 program and testing it using a PTF test](running-p4-program-and-ptf-test.md)
-  + [Running P4 program `add_on_miss0.p4` and testing it using a PTF test](testing-add-on-miss0.md)
-  + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](testing-add-on-miss1.md)
-  + [A note on timeout durations in P4-DPDK](note-on-timeout-durations-in-p4-dpdk.md)
-+ [Running DASH P4 code on DPDK software switch](running-dash-p4-code.md)
++ [Notes on debugging P4 programs run on the DPDK software switch](docs/debugging-p4-dpdk-programs.md)
++ [Running a P4 program with multiple Linux network namespaces, sending packets to it using tcpreplay, capturing packets out with tcpdump](docs/run-p4-prog-with-multiple-network-namespaces.md)
++ [Running P4 program `add_on_miss0.p4` and testing it using a Python controller program (without PTF), tcpreplay, and tcpdump](docs/testing-add-on-miss0-with-python-controller-tcpreplay-tcpdump.md)
++ [Running a P4 program and testing it using a PTF test](docs/running-p4-program-and-ptf-test.md)
+  + [Running P4 program `add_on_miss0.p4` and testing it using a PTF test](docs/testing-add-on-miss0.md)
+  + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](docs/testing-add-on-miss1.md)
+  + [A note on timeout durations in P4-DPDK](docs/note-on-timeout-durations-in-p4-dpdk.md)
++ [Running DASH P4 code on DPDK software switch](docs/running-dash-p4-code.md)
 
 
 # Other places to go for information about P4 DPDK
