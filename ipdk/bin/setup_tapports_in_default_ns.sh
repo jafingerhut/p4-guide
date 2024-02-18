@@ -142,13 +142,9 @@ popd > /dev/null || exit
 #echo "TAP ports that existed before:"
 #ifconfig | grep TAP
 
-set +e
-echo "Creating ${NUMPORTS} TAP ports"
-
-pushd "${WORKING_DIR}" > /dev/null || exit
-
 # Wait for networking-recipe processes to start gRPC server and open
 # ports for clients to connect.
+echo "Wait for infrap4d process to exist ..."
 sleep 1
 tries=0
 while true
@@ -168,6 +164,17 @@ do
     echo "No infrap4d process running yet.  Sleeping 1 sec."
     sleep 1
 done
+echo "infrap4d process now exists according to output of this command:"
+set -x
+ps -C infrap4d | grep -v '<defunct>' | grep infrap4d
+set +x
+echo "Waiting 5 more seconds ..."
+sleep 5
+
+set +e
+echo "Creating ${NUMPORTS} TAP ports"
+
+pushd "${WORKING_DIR}" > /dev/null || exit
 
 # It appears that for the gnmi-ctl command, or the gNMI server in
 # infrap4d perhaps, TAP interfaces can only have names of the form
