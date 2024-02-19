@@ -4,6 +4,7 @@
 # https://github.com/p4lang/PI/blob/ec6865edc770b42f22fea15e6da17ca58a83d3a6/proto/ptf/base_test.py.
 
 import logging
+import os
 import queue
 import re
 import sys
@@ -191,6 +192,39 @@ class _AssertP4RuntimeErrorContext:
         return True
 
 
+def ssl_creds_for_certs_directory(certs_dir):
+    """Create and return an object with class grpc.ChannelCredentials.
+    Such an object must be passed as the value of the second parameter
+    of the method grpc.secure_channel when establishing a gRPC
+    connection to a P4Runtime API server that is configured to require
+    clients to authenticate themselves.
+    """
+    rootca_fname = certs_dir + '/ca.crt'
+    clientkey_fname = certs_dir + '/client.key'
+    clientcrt_fname = certs_dir + '/client.crt'
+    rootca_exists = os.path.isfile(rootca_fname)
+    clientkey_exists = os.path.isfile(clientkey_fname)
+    clientcrt_exists = os.path.isfile(clientcrt_fname)
+    creds = None
+    if rootca_exists and clientkey_exists and clientcrt_exists:
+        with open(rootca_fname, 'rb') as rootca:
+            with open(clientkey_fname, 'rb') as clientkey:
+                with open(clientcrt_fname, 'rb') as clientcrt:
+                    creds = grpc.ssl_channel_credentials(rootca.read(),
+                                                         clientkey.read(),
+                                                         clientcrt.read())
+    return creds
+
+
+def make_grpc_channel(grpc_addr):
+    creds = ssl_creds_for_certs_directory('/usr/share/stratum/certs')
+    if creds is not None:
+        channel = grpc.secure_channel(grpc_addr, creds)
+    else:
+        channel = grpc.insecure_channel(grpc_addr)
+    return channel
+
+
 # This code is common to all tests. setUp() is invoked at the beginning of the
 # test and tearDown is called at the end, no matter whether the test passed /
 # failed / errored.
@@ -219,7 +253,7 @@ class P4RuntimeTest(BaseTest):
             grpc_addr = "0.0.0.0:9559"
 
         #print("dbg #1 grpc_addr='%s' device_id='%s'" % (grpc_addr, device_id))
-        self.channel = grpc.insecure_channel(grpc_addr)
+        self.channel = make_grpc_channel(grpc_addr)
         self.stub = p4runtime_pb2_grpc.P4RuntimeStub(self.channel)
 
         proto_txt_path = ptfutils.test_param_get("p4info")
@@ -1129,7 +1163,7 @@ def update_config(config_path, p4info_path, grpc_addr, device_id):
     Performs a SetForwardingPipelineConfig on the device with provided
     P4Info and binary device config
     """
-    channel = grpc.insecure_channel(grpc_addr)
+    channel = make_grpc_channel(grpc_addr)
     stub = p4runtime_pb2_grpc.P4RuntimeStub(channel)
     testutils.log.info("Sending P4 config from file %s with P4info %s", config_path, p4info_path)
     request = p4runtime_pb2.SetForwardingPipelineConfigRequest()

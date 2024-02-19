@@ -87,6 +87,10 @@ cp ${P4C_ROOT}/tools/ptf/base_test.py ${P4GUIDE_ROOT}/testlib/backends/dpdk
 cp ${P4C_ROOT}/tools/testutils.py ${P4GUIDE_ROOT}/testlib/backends/dpdk
 ```
 
+I then edited the copy of `base_test.py` to enable it to use
+cryptographic credentials when making a gRPC connection to the
+P4Runtime API server.
+
 
 # Versions of the file base_test.py
 
