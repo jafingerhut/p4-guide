@@ -94,6 +94,14 @@ P4Runtime API server.
 
 # Versions of the file base_test.py
 
+Note: This section is for historical interest only at this point.  As
+of 2024-Feb I have removed all versions of `base_test.py` that were in
+the p4-guide repository, except for the one recently added in the
+directory `testlib/backends/dpdk`.  You can still look at the ones
+removed by checking out an older version of this repository from
+2024-Jan, if you wish, but I believe this repository was not using
+them for any reason for over a year before I removed them.
+
 There are several different open source versions of a Python file
 called `base_test.py` that have been published.  I believe they all
 originated with this version:
