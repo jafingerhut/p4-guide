@@ -11,7 +11,7 @@ import ptf
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 ```
 
 The `ptf` package by itself contains NO dependency on P4Runtime APIs.

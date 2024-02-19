@@ -4,7 +4,7 @@ import sys
 
 import p4runtime_sh.shell as sh
 import p4runtime_sh.p4runtime as p4rt
-import p4runtime_shell_extras as she
+import p4runtime_shell_utils as shu
 
 
 if len(sys.argv) == 1:
@@ -37,9 +37,9 @@ def add_ipv4_host_entry_action_send(ipv4_addr_str, port_int):
 #add_ipv4_host_entry_action_send('2.2.2.2', 1)
 
 tname = 'ipv4_host'
-print('Table %s contains %d entries' % (tname, she.entry_count(tname)))
+print('Table %s contains %d entries' % (tname, shu.entry_count(tname)))
 print('Attempt to delete all entries in table %s' % (tname))
-she.delete_all_entries(tname)
-print("After trying to delete all entries from %s, it contains %d entries" % (tname, she.entry_count(tname)))
+shu.delete_all_entries(tname)
+print("After trying to delete all entries from %s, it contains %d entries" % (tname, shu.entry_count(tname)))
 
 sh.teardown()

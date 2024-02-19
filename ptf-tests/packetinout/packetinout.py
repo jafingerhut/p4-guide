@@ -22,7 +22,7 @@ import ptf
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -77,27 +77,27 @@ class PacketInOutTest(BaseTest):
                  election_id=(0, 1), # (high_32bits, lo_32bits)
                  config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
                  verbose=False)
-        p4rtutil.dump_table("ipv4_da_lpm")
+        shu.dump_table("ipv4_da_lpm")
 
         # Create Python dicts from name to integer values, and integer
         # values to names, for the P4_16 serializable enum types
         # PuntReason_t and ControllerOpcode_t once here during setup.
         logging.info("Reading p4info from {}".format(p4info_txt_fname))
-        p4info_data = p4rtutil.read_p4info_txt_file(p4info_txt_fname)
+        p4info_data = shu.read_p4info_txt_file(p4info_txt_fname)
 
         self.punt_reason_name2int, self.punt_reason_int2name = \
-            p4rtutil.serializable_enum_dict(p4info_data, 'PuntReason_t')
+            shu.serializable_enum_dict(p4info_data, 'PuntReason_t')
         self.opcode_name2int, self.opcode_int2name = \
-            p4rtutil.serializable_enum_dict(p4info_data, 'ControllerOpcode_t')
+            shu.serializable_enum_dict(p4info_data, 'ControllerOpcode_t')
         logging.debug("punt_reason_name2int=%s" % (self.punt_reason_name2int))
         logging.debug("punt_reason_int2name=%s" % (self.punt_reason_int2name))
         logging.debug("opcode_name2int=%s" % (self.opcode_name2int))
         logging.debug("opcode_int2name=%s" % (self.opcode_int2name))
 
-        self.p4info_obj_map = p4rtutil.make_p4info_obj_map(p4info_data)
+        self.p4info_obj_map = shu.make_p4info_obj_map(p4info_data)
         self.cpm_packetin_id2data = \
-            p4rtutil.controller_packet_metadata_dict_key_id(self.p4info_obj_map,
-                                                            "packet_in")
+            shu.controller_packet_metadata_dict_key_id(self.p4info_obj_map,
+                                                       "packet_in")
         logging.debug("cpm_packetin_id2data=%s" % (self.cpm_packetin_id2data))
 
         self.pktin = sh.PacketIn()
@@ -185,7 +185,7 @@ class FwdTest(PacketInOutTest):
                 # PacketIn message.
                 pktlist = get_exp_num_packetins(self.pktin, 1, 2)
                 pkt_pb = pktlist[0]
-                pktinfo = p4rtutil.decode_packet_in_metadata(
+                pktinfo = shu.decode_packet_in_metadata(
                     self.cpm_packetin_id2data, pkt_pb.packet)
                 exp_pktinfo = \
                     {'metadata':
@@ -194,7 +194,7 @@ class FwdTest(PacketInOutTest):
                       'opcode': 0, 'operand0': 0, 'operand1': 0,
                       'operand2': 0, 'operand3': 0},
                      'payload': bytes(pkt_in)}
-                p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
+                shu.verify_packet_in(exp_pktinfo, pktinfo)
                 tu.verify_no_other_packets(self)
             else:
                 print("Sending packet expected to cause switch to send packet out port %d" % (eg_port))
@@ -258,7 +258,7 @@ class IPOptionsTest(PacketInOutTest):
                 if send_ip_options:
                     pktlist = get_exp_num_packetins(self.pktin, 1, 2)
                     pkt_pb = pktlist[0]
-                    pktinfo = p4rtutil.decode_packet_in_metadata(
+                    pktinfo = shu.decode_packet_in_metadata(
                         self.cpm_packetin_id2data, pkt_pb.packet)
                     exp_pktinfo = \
                         {'metadata':
@@ -267,7 +267,7 @@ class IPOptionsTest(PacketInOutTest):
                           'opcode': 0, 'operand0': 0, 'operand1': 0,
                           'operand2': 0, 'operand3': 0},
                          'payload': bytes(pkt_in)}
-                    p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
+                    shu.verify_packet_in(exp_pktinfo, pktinfo)
                     tu.verify_no_other_packets(self)
                 else:
                     if eg_port == self.CPU_PORT:
@@ -276,7 +276,7 @@ class IPOptionsTest(PacketInOutTest):
                         # controller as a PacketIn message.
                         pktlist = get_exp_num_packetins(self.pktin, 1, 2)
                         pkt_pb = pktlist[0]
-                        pktinfo = p4rtutil.decode_packet_in_metadata(
+                        pktinfo = shu.decode_packet_in_metadata(
                             self.cpm_packetin_id2data, pkt_pb.packet)
                         exp_pktinfo = \
                             {'metadata':
@@ -285,7 +285,7 @@ class IPOptionsTest(PacketInOutTest):
                               'opcode': 0, 'operand0': 0, 'operand1': 0,
                               'operand2': 0, 'operand3': 0},
                              'payload': bytes(pkt_in)}
-                        p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
+                        shu.verify_packet_in(exp_pktinfo, pktinfo)
                         tu.verify_no_other_packets(self)
                     else:
                         exp_pkt = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,

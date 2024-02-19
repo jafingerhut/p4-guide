@@ -236,7 +236,7 @@ with this command:
 In the container:
 ```bash
 source ~/my-venv/bin/activate
-export PYTHON_PATH="/tmp/pylib"
+export PYTHON_PATH="/tmp/testlib"
 ~/test-client.py
 ```
 

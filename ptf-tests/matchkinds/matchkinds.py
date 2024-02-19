@@ -22,7 +22,7 @@ import ptf
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -75,8 +75,8 @@ class MatchKindsTest(BaseTest):
                  election_id=(0, 1), # (high_32bits, lo_32bits)
                  config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
                  verbose=False)
-        p4rtutil.dump_table("t1")
-        p4rtutil.dump_table("t2")
+        shu.dump_table("t1")
+        shu.dump_table("t2")
 
     def tearDown(self):
         logging.info("MatchKindsTest.tearDown()")
@@ -193,14 +193,14 @@ class IPv4FwdTest(MatchKindsTest):
         for e in entries:
             if e['priority'] is None:
                 logging.info("=== default entry before =========================")
-                de = p4rtutil.read_table_default_entry('t1')
+                de = shu.read_table_default_entry('t1')
                 logging.info("%s" % (de))
                 logging.info("==================================================")
                 logging.info("Attempting to modify t1's default action")
                 modify_t1_default_action_set_dmac(e['out_dmac'])
                 # Try reading the default entry
                 logging.info("=== default entry after ==========================")
-                de = p4rtutil.read_table_default_entry('t1')
+                de = shu.read_table_default_entry('t1')
                 logging.info("%s" % (de))
                 logging.info("==================================================")
             else:

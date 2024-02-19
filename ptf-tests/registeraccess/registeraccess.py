@@ -22,7 +22,7 @@ import ptf
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 import scapy.all as scapy
 
 
@@ -92,21 +92,21 @@ class RegisterAccessTest(BaseTest):
         # values to names, for the P4_16 serializable enum types
         # PuntReason_t and ControllerOpcode_t once here during setup.
         logging.info("Reading p4info from {}".format(p4info_txt_fname))
-        p4info_data = p4rtutil.read_p4info_txt_file(p4info_txt_fname)
+        p4info_data = shu.read_p4info_txt_file(p4info_txt_fname)
 
         self.punt_reason_name2int, self.punt_reason_int2name = \
-            p4rtutil.serializable_enum_dict(p4info_data, 'PuntReason_t')
+            shu.serializable_enum_dict(p4info_data, 'PuntReason_t')
         self.opcode_name2int, self.opcode_int2name = \
-            p4rtutil.serializable_enum_dict(p4info_data, 'ControllerOpcode_t')
+            shu.serializable_enum_dict(p4info_data, 'ControllerOpcode_t')
         logging.debug("punt_reason_name2int=%s" % (self.punt_reason_name2int))
         logging.debug("punt_reason_int2name=%s" % (self.punt_reason_int2name))
         logging.debug("opcode_name2int=%s" % (self.opcode_name2int))
         logging.debug("opcode_int2name=%s" % (self.opcode_int2name))
 
-        self.p4info_obj_map = p4rtutil.make_p4info_obj_map(p4info_data)
+        self.p4info_obj_map = shu.make_p4info_obj_map(p4info_data)
         self.cpm_packetin_id2data = \
-            p4rtutil.controller_packet_metadata_dict_key_id(self.p4info_obj_map,
-                                                            "packet_in")
+            shu.controller_packet_metadata_dict_key_id(self.p4info_obj_map,
+                                                       "packet_in")
         logging.debug("cpm_packetin_id2data=%s" % (self.cpm_packetin_id2data))
 
         self.pktin = sh.PacketIn()
@@ -150,11 +150,11 @@ class RegisterAccessTest(BaseTest):
         tu.verify_no_other_packets(self)
         pktlist = get_exp_num_packetins(self.pktin, 1, 2)
         pkt_pb = pktlist[0]
-        pktinfo = p4rtutil.decode_packet_in_metadata(
-            self.cpm_packetin_id2data, pkt_pb.packet)
+        pktinfo = shu.decode_packet_in_metadata(self.cpm_packetin_id2data,
+                                                pkt_pb.packet)
         if verbose:
             logging.info("write_seqNumReg pktinfo={}".format(pktinfo))
-        p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
+        shu.verify_packet_in(exp_pktinfo, pktinfo)
 
     def read_SeqNumReg(self, idx_int):
         logging.info("read_seqNumReg idx={}".format(idx_int))
@@ -186,8 +186,8 @@ class RegisterAccessTest(BaseTest):
         tu.verify_no_other_packets(self)
         pktlist = get_exp_num_packetins(self.pktin, 1, 2)
         pkt_pb = pktlist[0]
-        pktinfo = p4rtutil.decode_packet_in_metadata(
-            self.cpm_packetin_id2data, pkt_pb.packet)
+        pktinfo = shu.decode_packet_in_metadata(self.cpm_packetin_id2data,
+                                                pkt_pb.packet)
 
         # We want to check the contents of the response packet that
         # comes back from reading, but we want this function to work
@@ -203,7 +203,7 @@ class RegisterAccessTest(BaseTest):
         if verbose:
             logging.info("read_seqNumReg exp_pktinfo={}".format(exp_pktinfo))
             logging.info("read_seqNumReg pktinfo={}".format(pktinfo))
-        p4rtutil.verify_packet_in(exp_pktinfo, pktinfo)
+        shu.verify_packet_in(exp_pktinfo, pktinfo)
         return seqnum_int
 
     def make_pkt(self, idx, pkt_seqnum):

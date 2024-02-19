@@ -114,7 +114,7 @@ cd /root/examples/simple_l3_modecr/out
 
 # Run tiny controller program that adds a couple of table entries via
 # P4Runtime API
-PYTHON_PATH="/tmp/pylib" /root/examples/simple_l3_modecr/controller.py
+PYTHON_PATH="/tmp/testlib" /root/examples/simple_l3_modecr/controller.py
 
 # Check if table entries have been added
 p4rt-ctl dump-entries br0

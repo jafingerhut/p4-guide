@@ -22,7 +22,7 @@ import ptf
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -99,8 +99,8 @@ class Demo7Test(BaseTest):
                  election_id=(0, 1), # (high_32bits, lo_32bits)
                  config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
                  verbose=False)
-        p4rtutil.dump_table("ipv4_mc_route_lookup")
-        p4rtutil.dump_table("send_frame")
+        shu.dump_table("ipv4_mc_route_lookup")
+        shu.dump_table("send_frame")
 
     def tearDown(self):
         logging.info("Demo7Test.tearDown()")
@@ -252,7 +252,7 @@ class FwdTest(Demo7Test):
 
         # See Section 6.4 of RFC 1112 for how the dest MAC address of
         # a forwarded IPv4 multicast packet should be calculated.
-        ip_dst_addr_int = p4rtutil.ipv4_to_int(ip_dst_addr)
+        ip_dst_addr_int = shu.ipv4_to_int(ip_dst_addr)
         mask_23_lsbs = (1 << 23) - 1
         exp_dmac_int = 0x01_00_5e_00_00_00 + (ip_dst_addr_int & mask_23_lsbs)
         exp_dmac = int_to_mac_string(exp_dmac_int)

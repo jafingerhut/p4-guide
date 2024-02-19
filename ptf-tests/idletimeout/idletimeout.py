@@ -27,7 +27,7 @@ from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
 import p4runtime_sh.utils as shutils
 import p4runtime_sh.p4runtime as p4rt
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -178,7 +178,7 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
             #n = len(e.errors)
             #print("len(e.errors)=%s" % (n))
             #print("e.as_list_of_dicts() ----------")
-            lst = p4rtutil.as_list_of_dicts(e)
+            lst = shu.as_list_of_dicts(e)
             #pp.pprint(lst)
             #print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
@@ -227,7 +227,7 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         try:
             modify_mac_da_fwd_default_action_NoAction(1000000)
         except p4rt.P4RuntimeWriteException as e:
-            lst = p4rtutil.as_list_of_dicts(e)
+            lst = shu.as_list_of_dicts(e)
             pp.pprint(lst)
             print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
@@ -259,7 +259,7 @@ class ServerDetectsBadTableEntryOptionsTest(IdleTimeoutTest):
         try:
             modify_mac_da_fwd_default_action_my_drop(1000000)
         except p4rt.P4RuntimeWriteException as e:
-            lst = p4rtutil.as_list_of_dicts(e)
+            lst = shu.as_list_of_dicts(e)
             #pp.pprint(lst)
             #print("e.as_list_of_dicts() ----------")
             assert len(lst) == 1
@@ -310,7 +310,7 @@ class OneEntryTest(IdleTimeoutTest):
 
         # Read back and show the table entries, to see if there are
         # any extra properties related to the idle timeout.
-        entries_read, default_entry_read = p4rtutil.read_all_table_entries('mac_da_fwd')
+        entries_read, default_entry_read = shu.read_all_table_entries('mac_da_fwd')
         logging.info("entries_read:")
         logging.info(entries_read)
 
@@ -356,7 +356,7 @@ class OneEntryTest(IdleTimeoutTest):
         else:
             logging.info("Notification message received while sending packets periodically")
             logging.info(pp.pformat(msginfos))
-        entries_read, default_entry_read = p4rtutil.read_all_table_entries('mac_da_fwd')
+        entries_read, default_entry_read = shu.read_all_table_entries('mac_da_fwd')
         logging.info("entries_read:")
         logging.info(entries_read)
 
@@ -391,6 +391,6 @@ class OneEntryTest(IdleTimeoutTest):
             logging.info(pp.pformat(msginfos))
 
         logging.info("%.2f Reading table entries..." % (time.time() - start))
-        entries_read, default_entry_read = p4rtutil.read_all_table_entries('mac_da_fwd')
+        entries_read, default_entry_read = shu.read_all_table_entries('mac_da_fwd')
         logging.info("entries_read:")
         logging.info(entries_read)

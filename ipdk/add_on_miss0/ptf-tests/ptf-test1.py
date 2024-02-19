@@ -27,7 +27,7 @@ from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
 import p4runtime_sh.utils as shutils
 import p4runtime_sh.p4runtime as p4rt
-import p4runtime_shell_extras as she
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -116,12 +116,12 @@ class OneEntryTest(IdleTimeoutTest):
         dport = 7503
 
         logging.info("Attempting to delete all entries in ipv4_host")
-        she.delete_all_entries('ipv4_host')
+        shu.delete_all_entries('ipv4_host')
         logging.info("Attempting to add entries to ipv4_host")
         add_ipv4_host_entry_action_send(ip_src_addr, ig_port)
         add_ipv4_host_entry_action_send(ip_dst_addr, eg_port)
         logging.info("Now ipv4_host contains %d entries"
-                     "" % (she.entry_count('ipv4_host')))
+                     "" % (shu.entry_count('ipv4_host')))
 
         pkt_in = tu.simple_tcp_packet(eth_src=in_smac, eth_dst=in_dmac,
                                       ip_src=ip_src_addr, ip_dst=ip_dst_addr,

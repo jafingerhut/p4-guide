@@ -1,6 +1,6 @@
 #! /bin/bash
 
-T="`realpath /tmp/pylib`"
+T="`realpath /tmp/testlib`"
 if [ x"${PYTHONPATH}" == "x" ]
 then
     P="${T}"

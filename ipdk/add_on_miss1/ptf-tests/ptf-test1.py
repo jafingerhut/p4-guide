@@ -27,7 +27,7 @@ from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
 import p4runtime_sh.utils as shutils
 import p4runtime_sh.p4runtime as p4rt
-import p4runtime_shell_extras as she
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -120,12 +120,12 @@ def add_set_ct_options_entry_action_tcp_fin_or_rst_packet(flags_value_int,
 
 def init_table_ipv4_host(ig_port, ip_src_addr, eg_port, ip_dst_addr):
     logging.info("Attempting to delete all entries in ipv4_host")
-    she.delete_all_entries('ipv4_host')
+    shu.delete_all_entries('ipv4_host')
     logging.info("Attempting to add entries to ipv4_host")
     add_ipv4_host_entry_action_send(ip_src_addr, ig_port)
     add_ipv4_host_entry_action_send(ip_dst_addr, eg_port)
     logging.info("Now ipv4_host contains %d entries"
-                 "" % (she.entry_count('ipv4_host')))
+                 "" % (shu.entry_count('ipv4_host')))
 
 TCP_URG_MASK = 0x20
 TCP_ACK_MASK = 0x10
@@ -136,7 +136,7 @@ TCP_FIN_MASK = 0x01
 
 def init_table_set_ct_options():
     tname = 'set_ct_options'
-    num_entries = she.entry_count(tname)
+    num_entries = shu.entry_count(tname)
     logging.info("Now %s contains %d entries" % (tname, num_entries))
     if num_entries == 0:
         logging.info("Attempting to add entries to set_ct_options")
@@ -146,7 +146,7 @@ def init_table_set_ct_options():
             TCP_FIN_MASK, TCP_FIN_MASK, 20)
         add_set_ct_options_entry_action_tcp_fin_or_rst_packet(
             TCP_RST_MASK, TCP_RST_MASK, 10)
-    num_entries = she.entry_count(tname)
+    num_entries = shu.entry_count(tname)
     logging.info("Now %s contains %d entries" % (tname, num_entries))
     if num_entries != 3:
         logging.error("%s should have 3 entries, but found %d instead."

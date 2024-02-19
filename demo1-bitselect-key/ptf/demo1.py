@@ -22,7 +22,7 @@ import ptf
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
-import p4runtime_shell_utils as p4rtutil
+import p4runtime_shell_utils as shu
 
 
 # Links to many Python methods useful when writing automated tests:
@@ -85,9 +85,9 @@ class Demo1Test(BaseTest):
                  election_id=(0, 1), # (high_32bits, lo_32bits)
                  config=sh.FwdPipeConfig(p4info_txt_fname, p4prog_binary_fname),
                  verbose=False)
-        p4rtutil.dump_table("ipv4_da_lpm")
-        p4rtutil.dump_table("mac_da")
-        p4rtutil.dump_table("send_frame")
+        shu.dump_table("ipv4_da_lpm")
+        shu.dump_table("mac_da")
+        shu.dump_table("send_frame")
 
     def tearDown(self):
         logging.info("Demo1Test.tearDown()")
@@ -235,5 +235,5 @@ class DupEntryTest(Demo1Test):
             add_ipv4_da_lpm_entry_action_set_l2ptr(ip_dst_addr, 16, l2ptr)
 
         add_entry_once()
-        with p4rtutil.assertP4RuntimeError(self):
+        with shu.assertP4RuntimeError(self):
             add_entry_once()

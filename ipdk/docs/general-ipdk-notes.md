@@ -77,7 +77,7 @@ container.
 
 In the base OS:
 ```bash
-cp -pr ~/p4-guide/ipdk/bin ~/p4-guide/pylib ~/.ipdk/volume/
+cp -pr ~/p4-guide/ipdk/bin ~/p4-guide/testlib ~/.ipdk/volume/
 ```
 
 In the container:

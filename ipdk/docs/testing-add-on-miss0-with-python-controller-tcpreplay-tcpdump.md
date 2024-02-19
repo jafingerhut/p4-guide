@@ -21,7 +21,7 @@ cp -pr ~/p4-guide/ipdk/add_on_miss0/ ~/.ipdk/volume/
 This only needs to be run in the container once:
 ```bash
 source $HOME/my-venv/bin/activate
-export PYTHON_PATH="/tmp/pylib"
+export PYTHON_PATH="/tmp/testlib"
 ```
 
 In the container:
