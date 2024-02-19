@@ -148,8 +148,6 @@ control PreControlImpl(
     }
 }
 
-    /***************** M A T C H - A C T I O N  *********************/
-
 control MainControlImpl(
     inout headers_t  hdr,
     inout metadata_t meta,
@@ -160,25 +158,9 @@ control MainControlImpl(
         drop_packet();
     }
 
-    action send(PortId_t port) {
-        send_to_port(port);
-    }
-
-    table ipv4_host {
-        key = {
-            hdr.ipv4.dst_addr : exact;
-        }
-        actions = {
-            send;
-            drop;
-        }
-        const default_action = drop();
-        size = IPV4_HOST_SIZE;
-    }
-
     apply {
         if (hdr.ipv4.isValid()) {
-            ipv4_host.apply();
+            send_to_port((PortId_t) 1);
 
             // Record details in field of output packet so that
             // branches taken in this code are easily observable in a
@@ -195,8 +177,6 @@ control MainControlImpl(
     }
 }
 
-    /*********************  D E P A R S E R  ************************/
-
 control MainDeparserImpl(
     packet_out pkt,
     in    headers_t hdr,
@@ -207,8 +187,6 @@ control MainDeparserImpl(
         pkt.emit(hdr);
     }
 }
-
-/************ F I N A L   P A C K A G E ******************************/
 
 PNA_NIC(
     MainParserImpl(),
