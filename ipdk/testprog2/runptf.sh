@@ -20,7 +20,7 @@ ptf \
     -i 6@TAP6 \
     -i 7@TAP7 \
     --test-params="grpcaddr='localhost:9559';device_id=1;p4info='out/testprog2.p4Info.txt'" \
-    --test-dir ptf-tests
+    --test-dir ptf-tests-using-base-test
 set +x
 
 echo ""
