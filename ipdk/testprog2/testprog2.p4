@@ -158,9 +158,19 @@ control MainControlImpl(
         drop_packet();
     }
 
+    action send (PortId_t p) {
+        send_to_port(p);
+    }
+
+    table t1 {
+        key = { }
+        actions = { send; }
+        const default_action = send((PortId_t) 1);
+    }
+
     apply {
         if (hdr.ipv4.isValid()) {
-            send_to_port((PortId_t) 1);
+            t1.apply();
 
             // Record details in field of output packet so that
             // branches taken in this code are easily observable in a
