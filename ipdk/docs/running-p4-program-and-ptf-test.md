@@ -6,7 +6,7 @@ Prerequisites:
 
 + You have started the container, and followed the steps described in
   the section [Useful extra software to install in the
-  container](general-ipdk-notes.mdgeneral-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
+  container](general-ipdk-notes.md#useful-extra-software-to-install-in-the-container).
 + You have a P4 source program that compiles successfully following
   the steps below.
   + If you want to test these steps on your system with a known-good
