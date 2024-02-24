@@ -81,7 +81,7 @@ then
     GRPC_SECURITY_OPTS=""
 else
     echo "Not all gRPC certificate files were found.  Starting infrap4d such that it accept insecure gRPC connections."
-    GRPC_SECURITY_OPTS="-grpc_use_insecure_mode"
+    GRPC_SECURITY_OPTS="-grpc_open_insecure_mode"
 fi
 
 # Run infrap4d module
