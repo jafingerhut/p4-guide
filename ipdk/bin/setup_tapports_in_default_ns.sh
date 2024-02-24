@@ -18,6 +18,15 @@ usage() {
     echo ""
 }
 
+ssl_certificates_exist() {
+    local dir="$1"
+    if [ -r "${dir}/ca.crt" -a -r "${dir}/client.key" -a -r "${dir}/client.crt" ]
+    then
+	echo 1
+    fi
+    echo 0
+}
+
 # Parse command-line options.
 SHORTOPTS=:hv,w:n:
 LONGOPTS=help,verbose,workdir:numports:
@@ -176,6 +185,15 @@ echo "Creating ${NUMPORTS} TAP ports"
 
 pushd "${WORKING_DIR}" > /dev/null || exit
 
+if [ `ssl_certificates_exist /usr/share/stratum/certs` == "1" ]
+then
+    echo "Found gRPC certificate files.  Attempting to connect to P4Runtime API server securely."
+    GNMI_CTL_SSL_OPTS=""
+else
+    echo "Not all gRPC certificate files were found.  Attempting to connect to P4Runtime API server insecurely."
+    GNMI_CTL_SSL_OPTS="-grpc_use_insecure_mode"
+fi
+
 # It appears that for the gnmi-ctl command, or the gNMI server in
 # infrap4d perhaps, TAP interfaces can only have names of the form
 # TAP<number>.
@@ -190,7 +208,8 @@ pushd "${WORKING_DIR}" > /dev/null || exit
 NUMPORTS_MINUS_1=$((${NUMPORTS}-1))
 for i in `seq 0 ${NUMPORTS_MINUS_1}`
 do
-    gnmi-ctl set "device:virtual-device,name:TAP${i},pipeline-name:pipe,\
+    gnmi-ctl ${GNMI_CTL_SSL_OPTS} \
+        set "device:virtual-device,name:TAP${i},pipeline-name:pipe,\
         mempool-name:MEMPOOL0,mtu:1500,port-type:TAP"
 done
 popd > /dev/null || exit

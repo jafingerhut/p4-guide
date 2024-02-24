@@ -15,11 +15,7 @@ elif len(sys.argv) == 2:
 my_dev1_addr='localhost:9559'
 my_dev1_id=1
 
-root_certificate = certs_dir + '/ca.crt'
-private_key = certs_dir + '/client.key'
-certificate_chain = certs_dir + '/client.crt'
-ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
-                           private_key)
+ssl_opts = shu.ssl_opts_for_certs_directory(certs_dir)
 
 sh.setup(device_id=my_dev1_id,
          grpc_addr=my_dev1_addr,

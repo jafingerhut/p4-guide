@@ -71,16 +71,14 @@ class IdleTimeoutTest(BaseTest):
         self.dataplane = ptf.dataplane_instance
         self.dataplane.flush()
 
-        logging.info("IdleTimeoutTest.setUp()")
+        logging.info("IdleTimeoutTest.setUp() for %s" % (self))
         grpc_addr = tu.test_param_get("grpcaddr")
         if grpc_addr is None:
             grpc_addr = 'localhost:9559'
-        certs_dir = '/usr/share/stratum/certs'
-        root_certificate = certs_dir + '/ca.crt'
-        private_key = certs_dir + '/client.key'
-        certificate_chain = certs_dir + '/client.crt'
-        ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
-                                   private_key)
+        certs_dir = tu.test_param_get("certificates")
+        if certs_dir is None:
+            certs_dir = '/usr/share/stratum/certs'
+        ssl_opts = shu.ssl_opts_for_certs_directory(certs_dir)
         sh.setup(device_id=1,
                  grpc_addr=grpc_addr,
                  election_id=(0, 1),
@@ -88,7 +86,7 @@ class IdleTimeoutTest(BaseTest):
                  verbose=False)
 
     def tearDown(self):
-        logging.info("IdleTimeoutTest.tearDown()")
+        logging.info("IdleTimeoutTest.tearDown() for %s" % (self))
         sh.teardown()
 
 #############################################################

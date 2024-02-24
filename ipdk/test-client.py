@@ -4,6 +4,7 @@ import sys
 
 import p4runtime_sh.shell as sh
 import p4runtime_sh.p4runtime as p4rt
+import p4runtime_shell_utils as shu
 
 
 if len(sys.argv) == 1:
@@ -15,17 +16,7 @@ my_dev1_addr='localhost:9559'
 # Note: In my attempts, using my_dev1_id=0 failed to connect
 my_dev1_id=1
 
-root_certificate = certs_dir + '/ca.crt'
-private_key = certs_dir + '/client.key'
-certificate_chain = certs_dir + '/client.crt'
-
-#if client_cert_file is None:
-#    ssl_opts = None
-#else:
-#    ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain, private_key)
-
-ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
-                           private_key)
+ssl_opts = shu.ssl_opts_for_certs_directory(certs_dir)
 
 sh.setup(device_id=my_dev1_id,
          grpc_addr=my_dev1_addr,

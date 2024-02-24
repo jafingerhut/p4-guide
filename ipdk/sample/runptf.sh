@@ -16,7 +16,7 @@ fi
 # packets.
 
 set -x
-ptf \
+`which ptf` \
     --pypath "$P" \
     -i 0@TAP0 \
     -i 1@TAP1 \

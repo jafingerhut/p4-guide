@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import os
 from collections import Counter
 
 from p4.config.v1 import p4info_pb2
@@ -47,11 +48,23 @@ def ssl_opts_for_certs_directory(certs_dir):
     p4runtime_sh.shell.setup when establishing a gRPC connection to a
     P4Runtime API server that is configured to require clients to
     authenticate themselves."""
-    root_certificate = certs_dir + '/ca.crt'
-    private_key = certs_dir + '/client.key'
-    certificate_chain = certs_dir + '/client.crt'
-    ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
-                               private_key)
+    root_certificate = os.path.join(certs_dir, 'ca.crt')
+    private_key = os.path.join(certs_dir, 'client.key')
+    certificate_chain = os.path.join(certs_dir, 'client.crt')
+    if (os.path.isfile(root_certificate) and os.path.isfile(private_key) and
+        os.path.isfile(certificate_chain)):
+        logging.info("Found all gRPC certificate files required."
+                     "  Attempting to connect to P4Runtime API server securely"
+                     " using credentials found in directory %s"
+                     "" % (certs_dir))
+        ssl_opts = p4rt.SSLOptions(False, root_certificate, certificate_chain,
+                                   private_key)
+    else:
+        logging.info("At least one of these files not found in directory %s:"
+                     " 'ca.crt', 'client.key', 'client.crt'.  Attempting to"
+                     " connect to P4Runtime API server insecurely"
+                     "" % (certs_dir))
+        ssl_opts = None
     return ssl_opts
 
 def entry_count(table_name, print_entries=False):
