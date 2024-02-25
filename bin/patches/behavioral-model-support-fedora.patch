@@ -1,8 +1,8 @@
 diff --git a/install_deps.sh b/install_deps.sh
-index 4c5a45d..81a175b 100755
+index 4c5a45d..b3fb15d 100755
 --- a/install_deps.sh
 +++ b/install_deps.sh
-@@ -1,28 +1,93 @@
+@@ -1,34 +1,101 @@
  #!/bin/bash
  set -e
 -ubuntu_release=`lsb_release -s -r`
@@ -119,3 +119,11 @@ index 4c5a45d..81a175b 100755
  
  tmpdir=`mktemp -d -p .`
  cd $tmpdir
+ 
+ bash ../ci/install-thrift.sh
++debug_dump_installed_z3_files snap6
+ bash ../ci/install-nanomsg.sh
++debug_dump_installed_z3_files snap7
+ sudo ldconfig
+ bash ../ci/install-nnpy.sh
+ 

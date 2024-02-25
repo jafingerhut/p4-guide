@@ -950,7 +950,7 @@ else
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
     ./install_deps.sh
-    debug_dump_installed_z3_files snap6
+    debug_dump_installed_z3_files snap8
     # simple_switch_grpc README.md says to configure and build the bmv2
     # code first, using these commands:
     ./autogen.sh
@@ -987,7 +987,7 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_installed_z3_files snap7
+debug_dump_installed_z3_files snap9
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
 set +x
@@ -1018,7 +1018,7 @@ then
          boost-devel boost-iostreams boost-graph \
          llvm llvm-devel pkgconf python3-pip tcpdump clang
 fi
-debug_dump_installed_z3_files snap8
+debug_dump_installed_z3_files snap10
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
@@ -1052,10 +1052,10 @@ else
     cd build
     # Configure for a debug build and build p4testgen
     cmake .. -DCMAKE_BUILD_TYPE=DEBUG ${P4C_CMAKE_OPTS}
-    debug_dump_installed_z3_files snap9
+    debug_dump_installed_z3_files snap11
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
-    debug_dump_installed_z3_files snap10
+    debug_dump_installed_z3_files snap12
     sudo make install/strip
     sudo ldconfig
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
