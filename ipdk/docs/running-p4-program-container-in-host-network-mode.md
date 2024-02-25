@@ -86,18 +86,20 @@ first steps below will remove those files.
 This only needs to be run once, in the base OS, for each time an IPDK
 container is started:
 ```bash
+/bin/cp -pr ${P4GUIDE}/ipdk/bin ~/.ipdk/volume
 setup-for-insecure-grpc-connections-base-os.sh
 ```
 
 These are example commands that you can try for compiling, loading,
-and running a PTF test for the P4 program sample.p4 included in this
+and running a PTF test for the P4 program `sample.p4` included in this
 repo:
 
 ```bash
-/bin/cp -pr ${P4GUIDE}/ipdk/sample ~/.ipdk/volume
-cd ~/.ipdk/volume/sample
-compile-base-os.sh -a pna -s sample.p4
-start-infrap4d-and-load-p4-base-os.sh sample sample
+BASENAME="sample"
+/bin/cp -pr ${P4GUIDE}/ipdk/${BASENAME} ~/.ipdk/volume
+cd ~/.ipdk/volume/${BASENAME}
+compile-base-os.sh -a pna -s ${BASENAME}.p4
+start-infrap4d-and-load-p4-base-os.sh ${BASENAME} ${BASENAME}
 ```
 
 To run the PTF test from the base OS:

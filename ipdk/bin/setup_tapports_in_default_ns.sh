@@ -23,8 +23,9 @@ ssl_certificates_exist() {
     if [ -r "${dir}/ca.crt" -a -r "${dir}/client.key" -a -r "${dir}/client.crt" ]
     then
 	echo 1
+    else
+	echo 0
     fi
-    echo 0
 }
 
 # Parse command-line options.
