@@ -147,7 +147,16 @@ debug_dump_installed_z3_files() {
     local OUT_FNAME="$1"
     local SAVE_PWD="$PWD"
     local NUMFILES=""
-    if [ ${DEBUG_INSTALL} -ge 2 ]
+    local DO_SNAP=1
+
+    if [ ${OUT_FNAME} != "snap1" ]
+    then
+	if [ ! -d ${INSTALL_DIR}/snap1 ]
+	then
+	    DO_SNAP=0
+	fi
+    fi
+    if [ ${DEBUG_INSTALL} -ge 2 -a ${DO_SNAP} -eq 1 ]
     then
 	mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
         # On some systems the following find command returns non-0
