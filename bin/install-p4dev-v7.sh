@@ -1031,7 +1031,7 @@ then
 else
     TIME_P4C_CLONE_START=$(date +%s)
     # Clone p4c and its submodules:
-    git clone https://github.com/p4lang/p4c.git
+    get_from_nearest https://github.com/p4lang/p4c.git p4c.tar.gz
     cd p4c
     git log -n 1
     git submodule update --init --recursive
