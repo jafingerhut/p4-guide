@@ -1,6 +1,28 @@
 #! /bin/bash
 
-T="`realpath /tmp/testlib`"
+env_var_error() {
+    1>&2 echo "You must set environment variable PYPKG_TESTLIB"
+    1>&2 echo "to the path of a directory containing the collection"
+    1>&2 echo "Python packages called 'testlib', e.g. the directory"
+    1>&2 echo "'testlib' inside of your copy of the p4-guide repository."
+}
+
+if [ -z $PYPKG_TESTLIB ]
+then
+    env_var_error
+    exit 1
+fi
+
+if [ ! -d ${PYPKG_TESTLIB} ]
+then
+    1>&2 echo "PYPKG_TESTLIB=${PYPKG_TESTLIB}"
+    1>&2 echo "is not the name of a directory."
+    1>&2 echo ""
+    env_var_error
+    exit 1
+fi
+
+T="`realpath ${PYPKG_TESTLIB}`"
 if [ x"${PYTHONPATH}" == "x" ]
 then
     P="${T}"

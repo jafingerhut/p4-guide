@@ -32,10 +32,11 @@ included within the `infrap4d` process.
 + [Notes on debugging P4 programs run on the DPDK software switch](docs/debugging-p4-dpdk-programs.md)
 + [Running a P4 program with multiple Linux network namespaces, sending packets to it using tcpreplay, capturing packets out with tcpdump](docs/run-p4-prog-with-multiple-network-namespaces.md)
 + [Running P4 program `add_on_miss0.p4` and testing it using a Python controller program (without PTF), tcpreplay, and tcpdump](docs/testing-add-on-miss0-with-python-controller-tcpreplay-tcpdump.md)
-+ [Running a P4 program and testing it using a PTF test](docs/running-p4-program-and-ptf-test.md)
++ [Running a P4 program and testing it using a PTF test where PTF test is run inside the container](docs/running-p4-program-and-ptf-test.md)
   + [Running P4 program `add_on_miss0.p4` and testing it using a PTF test](docs/testing-add-on-miss0.md)
   + [Running P4 program `add_on_miss1.p4` and testing it using a PTF test](docs/testing-add-on-miss1.md)
   + [A note on timeout durations in P4-DPDK](docs/note-on-timeout-durations-in-p4-dpdk.md)
++ [Running a P4 program with container in host network mode](docs/running-p4-program-container-in-host-network-mode.md)
 + [Running DASH P4 code on DPDK software switch](docs/running-dash-p4-code.md)
 
 

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} PYPKG_TESTLIB=${PYPKG_TESTLIB} $*

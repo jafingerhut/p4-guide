@@ -29,17 +29,17 @@ cp -pr ~/p4-guide/ipdk/add_on_miss0/ ~/.ipdk/volume/
 This only needs to be run in the container once:
 ```bash
 source $HOME/my-venv/bin/activate
+export PYPKG_TESTLIB="/tmp/testlib"
 ```
 
 In the container:
 ```bash
-cd /tmp/add_on_miss0
-/tmp/bin/compile-in-cont.sh -p . -s add_on_miss0.p4 -a pna
-cd /tmp/add_on_miss0/out
-/tmp/bin/tdi_pipeline_builder.sh -p . -s add_on_miss0.p4
-/tmp/bin/setup_tapports_in_default_ns.sh -n 8
-/tmp/bin/load_p4_prog.sh -p add_on_miss0.pb.bin -i add_on_miss0.p4Info.txt
-cd /tmp/add_on_miss0/ptf-tests
+BASENAME="add_on_miss0"
+cd /tmp/${BASENAME}
+/tmp/bin/compile-in-cont.sh -p . -s ${BASENAME}.p4 -a pna
+cd /tmp/${BASENAME}/out
+/tmp/bin/start-infrap4d-and-load-p4-in-cont.sh ${BASENAME} ${BASENAME}
+cd /tmp/${BASENAME}/ptf-tests
 ./runptf.sh
 ```
 

@@ -59,19 +59,17 @@ directory `${DIR}`, copy them into `~/ipdk/volume/${BASENAME}`, too.
 
 ## Running the P4 program with the PTF test
 
-This only needs to be run in the container once:
+These commands only need to be run in the container once:
 ```bash
 source $HOME/my-venv/bin/activate
+export PYPKG_TESTLIB="/tmp/testlib"
 ```
 
 In container:
 ```bash
 BASENAME="sample"
-cd /tmp/${BASENAME}/out
-/tmp/bin/tdi_pipeline_builder.sh -p . -s ${BASENAME}.p4
-/tmp/bin/setup_tapports_in_default_ns.sh -n 8
-/tmp/bin/load_p4_prog.sh -p ${BASENAME}.pb.bin -i ${BASENAME}.p4Info.txt
-cd ..
+/tmp/bin/start-infrap4d-and-load-p4-in-cont.sh ${BASENAME} ${BASENAME}
+cd /tmp/${BASENAME}
 ./runptf.sh
 ```
 

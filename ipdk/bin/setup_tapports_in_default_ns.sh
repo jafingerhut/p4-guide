@@ -219,6 +219,17 @@ echo "Bring up the ${NUMPORTS} TAP ports"
 for i in `seq 0 ${NUMPORTS_MINUS_1}`
 do
     ip link set dev TAP${i} up
+    # Disable IPv6 on the interfaces, so that the Linux kernel
+    # will not automatically send IPv6 MDNS, Router Solicitation,
+    # and Multicast Listener Report packets on the interface,
+    # which can make P4 program debugging more confusing.
+    #
+    # Testing indicates that we can still send IPv6 packets across
+    # such interfaces, both from scapy to simple_switch, and from
+    # simple_switch out to scapy sniffing.
+    #
+    # https://superuser.com/questions/356286/how-can-i-switch-off-ipv6-nd-ra-transmissions-in-linux
+    sysctl net.ipv6.conf.TAP${i}.disable_ipv6=1
 done
 
 echo "TAP ports that existed after:"
