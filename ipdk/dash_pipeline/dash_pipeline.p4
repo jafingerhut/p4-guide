@@ -449,8 +449,13 @@ control dash_ingress(
             meta.is_overlay_ip_v6 = 1;
         } else if (hdr.customer_ipv4.isValid()) {
             meta.ip_protocol = hdr.customer_ipv4.protocol;
+#ifdef USE_64BIT_FOR_IPV6_ADDRESSES
+            meta.src_ip_addr = (bit<64>) hdr.customer_ipv4.src_addr;
+            meta.dst_ip_addr = (bit<64>) hdr.customer_ipv4.dst_addr;
+#else
             meta.src_ip_addr = (bit<128>)hdr.customer_ipv4.src_addr;
             meta.dst_ip_addr = (bit<128>)hdr.customer_ipv4.dst_addr;
+#endif
         }
 
         if (hdr.customer_tcp.isValid()) {
@@ -482,7 +487,11 @@ control dash_ingress(
         }
 
         /* Underlay routing */
+#ifdef USE_64BIT_FOR_IPV6_ADDRESSES
+        meta.dst_ip_addr = (bit<64>) hdr.u0_ipv4.dst_addr;
+#else
         meta.dst_ip_addr = (bit<128>)hdr.u0_ipv4.dst_addr;
+#endif
         underlay.apply(
               hdr
             , meta

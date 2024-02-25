@@ -164,9 +164,18 @@ control outbound(inout headers_t hdr,
 
         service_tunnel_encode(hdr,
                               overlay_dip,
+#ifdef USE_64BIT_FOR_IPV6_ADDRESSES
+                              0xffffffffffff,
+#else
                               0xffffffffffffffffffffffff,
+#endif
                               (overlay_sip & ~meta.eni_data.pl_sip_mask) | meta.eni_data.pl_sip | (IPv6Address)hdr.u0_ipv4.src_addr,
-                              0xffffffffffffffffffffffff);
+#ifdef USE_64BIT_FOR_IPV6_ADDRESSES
+                              0xffffffffffff
+#else
+                              0xffffffffffffffffffffffff
+#endif
+                              );
 
         set_tunnel(underlay_dip,
                    dash_encapsulation,
