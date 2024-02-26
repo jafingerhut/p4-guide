@@ -36,12 +36,21 @@ choose which version of source code to build `p4c-dpdk` that I wish.
 
 ## Compiling the P4 program
 
+You must do these steps in the base OS in every terminal you create:
+
+```bash
+export P4GUIDE="${HOME}/p4-guide"
+export PYPKG_TESTLIB="${P4GUIDE}/testlib"
+export IPDK_HOME="${HOME}/ipdk"
+export PATH="${P4GUIDE}/ipdk/bin:${PATH}"
+```
+
 In base OS:
 ```bash
 BASENAME="sample"
-DIR="$HOME/p4-guide/ipdk/sample"
+DIR="${P4GUIDE}/ipdk/${BASENAME}"
 cd ${DIR}
-$HOME/p4-guide/ipdk/bin/compile-base-os.sh -a pna -s ${BASENAME}.p4
+compile-base-os.sh -a pna -s ${BASENAME}.p4
 ```
 
 
