@@ -206,7 +206,7 @@ through 2024.  They all include the following:
 
 | Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc | Where are Python3 packages installed? |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- | ------------------------------------- |
-| install-p4dev-v7.sh | 22.04, 20.04 | 25 GB | 200 mins |   2 GB | v3.21.6 | v1.51.3 | ~/p4dev-python-venv virtual environment |
+| install-p4dev-v7.sh | 22.04, 20.04 | 18 GB | 200 mins |   2 GB | v3.21.6 | v1.51.3 | ~/p4dev-python-venv virtual environment |
 | install-p4dev-v6.sh | 22.04, 20.04 | 25 GB | 160 mins |   2 GB | v3.18.1 | v1.43.2 | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 | install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 
