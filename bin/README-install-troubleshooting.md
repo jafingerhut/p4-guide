@@ -58,10 +58,6 @@ Version combinations I have used above for testing VM images:
 | Combo5 | Windows 10 Enterprise | VirtualBox 6.1.30 |
 | Combo12 | macOS 12.6.x | VirtualBox 6.1.40 |
 | Combo13 | Windows 11 Enterprise | VirtualBox 6.1.40 |
-| Combo14 | macOS 12.6.x | VirtualBox 6.1.42 |
-| Combo15 | Windows 11 Enterprise | VirtualBox 6.1.42 |
-| Combo16 | macOS 12.6.x | VirtualBox 7.0.6 |
-| Combo17 | Windows 11 Enterprise | VirtualBox 7.0.6 |
 | Combo18 | macOS 12.6.x | VirtualBox 7.0.8 |
 | Combo19 | Windows 11 Enterprise | VirtualBox 7.0.8 |
 | Combo20 | macOS 12.6.x | VirtualBox 7.0.10 |
