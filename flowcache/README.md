@@ -58,6 +58,11 @@ make runcontroller
 Leave the controller running in the terminal where you started it, and
 use separate terminal windows for the commands below.
 
+The P4 program and controller are up and running now.
+
+All instructions below are completely optional, simply shown as _one
+way_ to exercise the system.
+
 Send a packet from an interactive Python session using the Scapy
 library:
 
