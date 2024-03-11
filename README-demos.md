@@ -77,6 +77,15 @@ commands, and also via the Python API defined by the
 project.
 
 
+### `flowcache`
+
+The program `flowcache.p4` has an associated P4Runtime controller
+program written in Python, and together they demonstrate how to send
+PacketIn messages from the switch to the controller, and have the
+controller react to those messages.  See its
+[`README.md`](../flowcache/README.md) for more details.
+
+
 ### `rewrite-examples`
 
 The program `rewrite-examples.p4` was created as a demo of two
