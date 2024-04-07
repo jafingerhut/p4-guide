@@ -104,7 +104,7 @@ with these lines:
 IMAGE_NAME=jafingerhut/ipdk-net
 TAG="ipdk_v23.07"
 ```
-See next for a command to verify that you now have a docker iamge on
+See next for a command to verify that you now have a docker image on
 your system with the name `jafingerhut/ipdk-net`.
 
 At this point, you should see that you have a docker image with the
