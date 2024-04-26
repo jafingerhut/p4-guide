@@ -737,6 +737,32 @@ fi
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
 
+# From BUILDING.md of grpc source repository
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes install build-essential autoconf libtool pkg-config python3-dev
+    # TODO: This package is not mentioned in grpc BUILDING.md
+    # instructions, but when I tried on Ubuntu 20.04 without it, the
+    # building of grpc failed with not being able to find an OpenSSL
+    # library.
+    sudo apt-get --yes install libssl-dev
+elif [ "${ID}" = "fedora" ]
+then
+    # I am not sure that the 'Development Tools' group on Fedora is
+    # identical to installing the build-essential package on Ubuntu,
+    # but there is at least significant overlap between what they
+    # install.
+    sudo dnf group install -y 'Development Tools'
+    # python3-devel is needed on Fedora systems for the `pip3 install
+    # .` step below
+    sudo dnf -y install autoconf libtool pkg-config python3-devel
+    # TODO: Should I install openssl-devel here on Fedora?  There is
+    # no package named libssl-dev or libssl-devel.  It seems like it
+    # might be unnecessary, as without doing so the build of grpc
+    # below went through with no errors.
+fi
+${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install cmake
@@ -758,7 +784,7 @@ date
 # From BUILDING.md of grpc source repository
 if [ "${ID}" = "ubuntu" ]
 then
-    sudo apt-get --yes install build-essential autoconf libtool pkg-config
+    sudo apt-get --yes install build-essential autoconf libtool pkg-config python3-dev
     # TODO: This package is not mentioned in grpc BUILDING.md
     # instructions, but when I tried on Ubuntu 20.04 without it, the
     # building of grpc failed with not being able to find an OpenSSL
@@ -806,15 +832,6 @@ else
     cmake ../.. -DgRPC_SSL_PROVIDER=package
     make
     sudo make install
-    # I believe the following 2 'pip3 install ...' commands, adapted from
-    # similar commands in src/python/grpcio/README.rst, should install the
-    # Python3 module grpc.
-    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2b-before-grpc-req-pip3.txt
-    pip3 list | tee $HOME/pip3-list-2b-before-grpc-pip3.txt
-    cd ../..
-    ${PIP_SUDO} pip3 install -rrequirements.txt
-    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2c-before-grpc-pip3.txt
-    ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
     sudo ldconfig
     # Without the following command, later the command 'pkg-config
     # --cflags grpc' fails, at least on Ubuntu 23.10 after building
