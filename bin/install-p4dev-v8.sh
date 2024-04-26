@@ -327,7 +327,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 25 \* 1024`
+min_free_disk_MBytes=`expr 18 \* 1024`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -404,10 +404,10 @@ set -x
 # source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
 # as 3.21.6 from the protobuf source repo.
 
-#PROTOBUF_VERSION_FOR_PIP="4.21.6"
-#GRPC_VERSION="1.51.3"  # Failed 'pip3 install .' for grpc on Ubuntu 24.04
-PROTOBUF_VERSION_FOR_PIP="4.25.1"
-GRPC_VERSION="1.62.2"
+PROTOBUF_VERSION_FOR_PIP="4.21.6"
+GRPC_VERSION="1.51.3"
+#PROTOBUF_VERSION_FOR_PIP="4.25.1"
+#GRPC_VERSION="1.62.2"
 
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
