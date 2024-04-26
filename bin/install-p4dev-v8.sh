@@ -404,8 +404,12 @@ set -x
 # source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
 # as 3.21.6 from the protobuf source repo.
 
-PROTOBUF_VERSION_FOR_PIP="4.21.6"
-GRPC_VERSION="1.51.3"
+#PROTOBUF_VERSION_FOR_PIP="4.21.6"
+#GRPC_VERSION="1.51.3"
+
+PROTOBUF_VERSION_FOR_PIP="4.23.1"
+GRPC_VERSION="1.56.4"
+
 #PROTOBUF_VERSION_FOR_PIP="4.25.1"
 #GRPC_VERSION="1.62.2"
 
