@@ -404,14 +404,14 @@ set -x
 # source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
 # as 3.21.6 from the protobuf source repo.
 
-PROTOBUF_VERSION_FOR_PIP="4.21.6"
-GRPC_VERSION="1.51.1"
+#PROTOBUF_VERSION_FOR_PIP="4.21.6"
+#GRPC_VERSION="1.51.1"
 
 #PROTOBUF_VERSION_FOR_PIP="4.23.1"
 #GRPC_VERSION="1.56.2"
 
-#PROTOBUF_VERSION_FOR_PIP="4.25.1"
-#GRPC_VERSION="1.62.2"
+PROTOBUF_VERSION_FOR_PIP="4.25.1"
+GRPC_VERSION="1.62.2"
 
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
@@ -765,19 +765,22 @@ fi
 
 cd "${INSTALL_DIR}"
 
+DO_BUILD_GRPC=0
 if [ -d grpc ]
 then
     echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
 else
+    DO_BUILD_GRPC=1
     TIME_GRPC_CLONE_START=$(date +%s)
     get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
     cd grpc
     git checkout v${GRPC_VERSION}
     TIME_GRPC_CLONE_END=$(date +%s)
     pip3 list
+    ${PIP_SUDO} pip3 install setuptools
     ${PIP_SUDO} pip3 install -rrequirements.txt
     pip3 list
-    ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+    GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
     pip3 list
 fi
 
@@ -802,7 +805,7 @@ date
 TIME_GRPC_CLONE_START=$(date +%s)
 TIME_GRPC_CLONE_END=$(date +%s)
 TIME_GRPC_INSTALL_START=$(date +%s)
-if [ -d grpc ]
+if [ ${DO_BUILD_GRPC} -eq 0 ]
 then
     echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
 else
