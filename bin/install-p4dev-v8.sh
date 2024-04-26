@@ -404,11 +404,11 @@ set -x
 # source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
 # as 3.21.6 from the protobuf source repo.
 
-#PROTOBUF_VERSION_FOR_PIP="4.21.6"
-#GRPC_VERSION="1.51.3"
+PROTOBUF_VERSION_FOR_PIP="4.21.6"
+GRPC_VERSION="1.51.3"
 
-PROTOBUF_VERSION_FOR_PIP="4.23.1"
-GRPC_VERSION="1.56.2"
+#PROTOBUF_VERSION_FOR_PIP="4.23.1"
+#GRPC_VERSION="1.56.2"
 
 #PROTOBUF_VERSION_FOR_PIP="4.25.1"
 #GRPC_VERSION="1.62.2"
@@ -738,6 +738,9 @@ cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
 
 # From BUILDING.md of grpc source repository
+# python3-dev / python3-devel packages are needed to install grpcio
+# Python package.
+
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install build-essential autoconf libtool pkg-config python3-dev
@@ -753,8 +756,6 @@ then
     # but there is at least significant overlap between what they
     # install.
     sudo dnf group install -y 'Development Tools'
-    # python3-devel is needed on Fedora systems for the `pip3 install
-    # .` step below
     sudo dnf -y install autoconf libtool pkg-config python3-devel
     # TODO: Should I install openssl-devel here on Fedora?  There is
     # no package named libssl-dev or libssl-devel.  It seems like it
