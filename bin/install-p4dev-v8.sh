@@ -405,7 +405,7 @@ set -x
 # as 3.21.6 from the protobuf source repo.
 
 PROTOBUF_VERSION_FOR_PIP="4.21.6"
-GRPC_VERSION="1.51.3"
+GRPC_VERSION="1.51.1"
 
 #PROTOBUF_VERSION_FOR_PIP="4.23.1"
 #GRPC_VERSION="1.56.2"
@@ -762,7 +762,24 @@ then
     # might be unnecessary, as without doing so the build of grpc
     # below went through with no errors.
 fi
-${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+
+cd "${INSTALL_DIR}"
+
+if [ -d grpc ]
+then
+    echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
+else
+    TIME_GRPC_CLONE_START=$(date +%s)
+    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+    cd grpc
+    git checkout v${GRPC_VERSION}
+    TIME_GRPC_CLONE_END=$(date +%s)
+    pip3 list
+    ${PIP_SUDO} pip3 install -rrequirements.txt
+    pip3 list
+    ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+    pip3 list
+fi
 
 if [ "${ID}" = "ubuntu" ]
 then
@@ -782,31 +799,6 @@ echo "start install grpc:"
 set -x
 date
 
-# From BUILDING.md of grpc source repository
-if [ "${ID}" = "ubuntu" ]
-then
-    sudo apt-get --yes install build-essential autoconf libtool pkg-config python3-dev
-    # TODO: This package is not mentioned in grpc BUILDING.md
-    # instructions, but when I tried on Ubuntu 20.04 without it, the
-    # building of grpc failed with not being able to find an OpenSSL
-    # library.
-    sudo apt-get --yes install libssl-dev
-elif [ "${ID}" = "fedora" ]
-then
-    # I am not sure that the 'Development Tools' group on Fedora is
-    # identical to installing the build-essential package on Ubuntu,
-    # but there is at least significant overlap between what they
-    # install.
-    sudo dnf group install -y 'Development Tools'
-    # python3-devel is needed on Fedora systems for the `pip3 install
-    # .` step below
-    sudo dnf -y install autoconf libtool pkg-config python3-devel
-    # TODO: Should I install openssl-devel here on Fedora?  There is
-    # no package named libssl-dev or libssl-devel.  It seems like it
-    # might be unnecessary, as without doing so the build of grpc
-    # below went through with no errors.
-fi
-
 TIME_GRPC_CLONE_START=$(date +%s)
 TIME_GRPC_CLONE_END=$(date +%s)
 TIME_GRPC_INSTALL_START=$(date +%s)
@@ -814,13 +806,9 @@ if [ -d grpc ]
 then
     echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
 else
-    TIME_GRPC_CLONE_START=$(date +%s)
-    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
     cd grpc
-    git checkout v${GRPC_VERSION}
     # These commands are recommended in grpc's BUILDING.md file for Unix:
     git submodule update --init --recursive
-    TIME_GRPC_CLONE_END=$(date +%s)
     TIME_GRPC_INSTALL_START=$(date +%s)
     mkdir -p cmake/build
     cd cmake/build
