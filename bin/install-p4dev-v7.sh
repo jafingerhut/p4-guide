@@ -838,6 +838,14 @@ echo "end install grpc:"
 set -x
 date
 
+# Check how many hidden symbols are in libprotobuf.a.  When building
+# behavioral-model succeeds later, there are only 2 unique hidden
+# symbols.  When I see many more unique hidden symbols, building
+# behavioral-model later typically fails with an error while trying to
+# link with libprotobuf.a
+objdump -t /usr/local/lib/libprotobuf.a | grep hidden | sort | uniq -c | wc -l
+objdump -t /usr/local/lib/libprotobuf.a | grep hidden | sort | uniq -c | sort -nr | head -n 20
+
 cd "${INSTALL_DIR}"
 debug_dump_installed_z3_files snap3
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-3-after-grpc.txt
@@ -1042,6 +1050,13 @@ else
     # Clone p4c and its submodules:
     get_from_nearest https://github.com/p4lang/p4c.git p4c.tar.gz
     cd p4c
+    if [ ${PROCESSOR} = "aarch64" ]
+    then
+	# Use a version of p4c source before it broke the build for
+	# Ubuntu 22.04 on aarch64 processors.  See
+	# https://github.com/p4lang/p4c/issues/4639
+	git checkout 6e20abe20702c3f7e20a8c5c642e1d7a4ab01559
+    fi
     git log -n 1
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
