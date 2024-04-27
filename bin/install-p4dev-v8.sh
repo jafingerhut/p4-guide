@@ -407,11 +407,17 @@ set -x
 #PROTOBUF_VERSION_FOR_PIP="4.21.6"
 #GRPC_VERSION="1.51.1"
 
-#PROTOBUF_VERSION_FOR_PIP="4.23.1"
-#GRPC_VERSION="1.56.2"
+PROTOBUF_VERSION_FOR_PIP="4.23.1"
+GRPC_VERSION="1.56.2"
 
-PROTOBUF_VERSION_FOR_PIP="4.25.1"
-GRPC_VERSION="1.62.2"
+#PROTOBUF_VERSION_FOR_PIP="4."
+#GRPC_VERSION="1.59.3"
+
+#PROTOBUF_VERSION_FOR_PIP="4.25.0"
+#GRPC_VERSION="1.60.1"
+
+#PROTOBUF_VERSION_FOR_PIP="4.25.1"
+#GRPC_VERSION="1.62.2"
 
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
@@ -824,6 +830,7 @@ else
     cmake ../.. -DgRPC_SSL_PROVIDER=package
     make
     sudo make install
+    cd ../..
     sudo ldconfig
     # Without the following command, later the command 'pkg-config
     # --cflags grpc' fails, at least on Ubuntu 23.10 after building
