@@ -104,6 +104,28 @@ python_version_warning() {
     1>&2 echo "you figure out yourself how to make it work."
 }
 
+get_used_disk_space_in_mbytes() {
+    echo $(df --output=used --block-size=1M . | tail -n 1)
+}
+
+max_of_list() {
+    local lst=$*
+    local max=""
+    for x in $lst
+    do
+	if [ -z ${max} ]
+	then
+	    max=${x}
+	else
+	    if [ ${x} -gt ${max} ]
+	    then
+		max=${x}
+	    fi
+	fi
+    done
+    echo ${max}
+}
+
 # Change this to a lower value if you do not like all this extra debug
 # output.  It is occasionally useful to debug why Python package
 # install files, or other files installed system-wide, are not going
@@ -380,6 +402,8 @@ fi
 
 echo "Passed all sanity checks"
 
+DISK_USED_START=`get_used_disk_space_in_mbytes`
+
 set -e
 set -x
 
@@ -607,6 +631,7 @@ then
 fi
 TIME_AUTOTOOLS_END=$(date +%s)
 echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
+DISK_USED_AFTER_AUTOTOOLS=`get_used_disk_space_in_mbytes`
 
 cd "${INSTALL_DIR}"
 
@@ -624,6 +649,7 @@ cd "${INSTALL_DIR}"
 TIME_Z3_CLONE_START=$(date +%s)
 TIME_Z3_CLONE_END=$(date +%s)
 TIME_Z3_INSTALL_START=$(date +%s)
+DISK_USED_BEFORE_Z3_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ ${PROCESSOR} = "x86_64" ]
 then
     echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
@@ -675,6 +701,7 @@ else
 	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
 	debug_dump_installed_z3_files snap2
     fi
+    DISK_USED_BEFORE_Z3_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
 	echo "Disk space used just before cleaning up z3:"
@@ -692,6 +719,7 @@ fi
 TIME_Z3_INSTALL_END=$(date +%s)
 echo "Z3Prover/z3 clone      : $(($TIME_Z3_CLONE_END-$TIME_Z3_CLONE_START)) sec"
 echo "Z3Prover/z3 install    : $(($TIME_Z3_INSTALL_END-$TIME_Z3_INSTALL_START)) sec"
+DISK_USED_AFTER_Z3=`get_used_disk_space_in_mbytes`
 
 # Create a new Python virtual environment using venv.  Later we will
 # attempt to ensure that all new Python packages installed are
@@ -774,6 +802,7 @@ fi
 TIME_GRPC_CLONE_START=$(date +%s)
 TIME_GRPC_CLONE_END=$(date +%s)
 TIME_GRPC_INSTALL_START=$(date +%s)
+DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d grpc ]
 then
     echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
@@ -817,6 +846,7 @@ else
     # --cflags grpc' fails, at least on Ubuntu 23.10 after building
     # grpc v1.54.2
     sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
+    DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
 	echo "Disk space used just before cleaning up grpc:"
@@ -832,6 +862,7 @@ fi
 TIME_GRPC_INSTALL_END=$(date +%s)
 echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
 echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
+DISK_USED_AFTER_GRPC=`get_used_disk_space_in_mbytes`
 
 set +x
 echo "end install grpc:"
@@ -871,6 +902,7 @@ then
     sudo dnf -y install readline-devel valgrind libtool boost-devel boost-system boost-thread
 fi
 
+DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d PI ]
 then
     echo "Found directory ${INSTALL_DIR}/PI.  Assuming desired version of PI is already installed."
@@ -903,6 +935,7 @@ else
     make
     sudo make install
 
+    DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
 	echo "Disk space used just before cleaning up PI:"
@@ -917,6 +950,7 @@ fi
 TIME_PI_INSTALL_END=$(date +%s)
 echo "p4lang/PI clone        : $(($TIME_PI_CLONE_END-$TIME_PI_CLONE_START)) sec"
 echo "p4lang/PI install      : $(($TIME_PI_INSTALL_END-$TIME_PI_INSTALL_START)) sec"
+DISK_USED_AFTER_PI=`get_used_disk_space_in_mbytes`
 
 set +x
 echo "end install PI:"
@@ -949,6 +983,7 @@ TIME_BEHAVIORAL_MODEL_INSTALL_START=$(date +%s)
 # needed for experimental gNMI support.  That should all have been
 # done by this time, by the script above.
 
+DISK_USED_BEFORE_BMV2_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d behavioral-model ]
 then
     echo "Found directory ${INSTALL_DIR}/behavioral-model.  Assuming desired version of behavioral-model is already installed."
@@ -985,6 +1020,7 @@ else
     # 'sudo make install-strip' installs several files in ${PYTHON_VENV}
     # with root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+    DISK_USED_BEFORE_BMV2_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
 	echo "Disk space used just before cleaning up behavioral-model:"
@@ -997,6 +1033,7 @@ fi
 TIME_BEHAVIORAL_MODEL_INSTALL_END=$(date +%s)
 echo "p4lang/behavioral-model clone  : $(($TIME_BEHAVIORAL_MODEL_CLONE_END-$TIME_BEHAVIORAL_MODEL_CLONE_START)) sec"
 echo "p4lang/behavioral-model install: $(($TIME_BEHAVIORAL_MODEL_INSTALL_END-$TIME_BEHAVIORAL_MODEL_INSTALL_START)) sec"
+DISK_USED_AFTER_BMV2=`get_used_disk_space_in_mbytes`
 
 set +x
 echo "end install behavioral-model:"
@@ -1042,6 +1079,7 @@ debug_dump_installed_z3_files snap10
 ${PIP_SUDO} pip3 install scapy ply
 pip3 list
 
+DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d p4c ]
 then
     echo "Found directory ${INSTALL_DIR}/p4c.  Assuming desired version of p4c is already installed."
@@ -1082,6 +1120,7 @@ else
     debug_dump_installed_z3_files snap12
     sudo make install/strip
     sudo ldconfig
+    DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
     then
 	echo "Disk space used just before cleaning up p4c:"
@@ -1094,6 +1133,7 @@ fi
 TIME_P4C_INSTALL_END=$(date +%s)
 echo "p4lang/p4c clone       : $(($TIME_P4C_CLONE_END-$TIME_P4C_CLONE_START)) sec"
 echo "p4lang/p4c install     : $(($TIME_P4C_INSTALL_END-$TIME_P4C_INSTALL_START)) sec"
+DISK_USED_AFTER_P4C=`get_used_disk_space_in_mbytes`
 
 set +x
 echo "end install p4c:"
@@ -1127,6 +1167,7 @@ cd ..
 PYTHON=python3 ./mininet/util/install.sh -nw
 TIME_MININET_END=$(date +%s)
 echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
+DISK_USED_AFTER_MININET=`get_used_disk_space_in_mbytes`
 
 set +x
 echo "end install mininet:"
@@ -1254,6 +1295,29 @@ echo "p4lang/p4c install     : $(($TIME_P4C_INSTALL_END-$TIME_P4C_INSTALL_START)
 echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 echo "Total time             : $(($TIME_END-$TIME_START)) sec"
+
+DISK_USED_END=`get_used_disk_space_in_mbytes`
+
+echo "All disk space utilizations below are in MBytes:"
+echo ""
+echo  "DISK_USED_START                ${DISK_USED_START}"
+echo  "DISK_USED_AFTER_AUTOTOOLS      ${DISK_USED_AFTER_AUTOTOOLS}"
+echo  "DISK_USED_BEFORE_Z3_CLEANUP    ${DISK_USED_BEFORE_Z3_CLEANUP}"
+echo  "DISK_USED_AFTER_Z3             ${DISK_USED_AFTER_Z3}"
+echo  "DISK_USED_BEFORE_GRPC_CLEANUP  ${DISK_USED_BEFORE_GRPC_CLEANUP}"
+echo  "DISK_USED_AFTER_GRPC           ${DISK_USED_AFTER_GRPC}"
+echo  "DISK_USED_BEFORE_PI_CLEANUP    ${DISK_USED_BEFORE_PI_CLEANUP}"
+echo  "DISK_USED_AFTER_PI             ${DISK_USED_AFTER_PI}"
+echo  "DISK_USED_BEFORE_BMV2_CLEANUP  ${DISK_USED_BEFORE_BMV2_CLEANUP}"
+echo  "DISK_USED_AFTER_BMV2           ${DISK_USED_AFTER_BMV2}"
+echo  "DISK_USED_BEFORE_P4C_CLEANUP   ${DISK_USED_BEFORE_P4C_CLEANUP}"
+echo  "DISK_USED_AFTER_P4C            ${DISK_USED_AFTER_P4C}"
+echo  "DISK_USED_AFTER_MININET        ${DISK_USED_AFTER_MININET}"
+echo  "DISK_USED_END                  ${DISK_USED_END}"
+
+DISK_USED_MAX=`max_of_list ${DISK_USED_START} ${DISK_USED_AFTER_AUTOTOOLS} ${DISK_USED_BEFORE_Z3_CLEANUP} ${DISK_USED_AFTER_Z3} ${DISK_USED_BEFORE_GRPC_CLEANUP} ${DISK_USED_AFTER_GRPC} ${DISK_USED_BEFORE_PI_CLEANUP} ${DISK_USED_AFTER_PI} ${DISK_USED_BEFORE_BMV2_CLEANUP} ${DISK_USED_AFTER_BMV2} ${DISK_USED_BEFORE_P4C_CLEANUP} ${DISK_USED_AFTER_P4C} ${DISK_USED_AFTER_MININET} ${DISK_USED_END}`
+echo  "DISK_USED_MAX                  ${DISK_USED_MAX}"
+echo  "DISK_USED_MAX - DISK_USED_START : $((${DISK_USED_MAX}-${DISK_USED_START})) MBytes"
 
 cd "${INSTALL_DIR}"
 DETS="install-details"
