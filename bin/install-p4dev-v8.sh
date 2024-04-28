@@ -1298,6 +1298,7 @@ date
 df -h .
 df -BM .
 TIME_END=$(date +%s)
+set +x
 echo ""
 echo "Elapsed time for various install steps:"
 echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
@@ -1314,9 +1315,11 @@ echo "p4lang/p4c install     : $(($TIME_P4C_INSTALL_END-$TIME_P4C_INSTALL_START)
 echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 echo "Total time             : $(($TIME_END-$TIME_START)) sec"
+set -x
 
 DISK_USED_END=`get_used_disk_space_in_mbytes`
 
+set +x
 echo "All disk space utilizations below are in MBytes:"
 echo ""
 echo  "DISK_USED_START                ${DISK_USED_START}"
@@ -1337,6 +1340,7 @@ echo  "DISK_USED_END                  ${DISK_USED_END}"
 DISK_USED_MAX=`max_of_list ${DISK_USED_START} ${DISK_USED_AFTER_AUTOTOOLS} ${DISK_USED_BEFORE_Z3_CLEANUP} ${DISK_USED_AFTER_Z3} ${DISK_USED_BEFORE_GRPC_CLEANUP} ${DISK_USED_AFTER_GRPC} ${DISK_USED_BEFORE_PI_CLEANUP} ${DISK_USED_AFTER_PI} ${DISK_USED_BEFORE_BMV2_CLEANUP} ${DISK_USED_AFTER_BMV2} ${DISK_USED_BEFORE_P4C_CLEANUP} ${DISK_USED_AFTER_P4C} ${DISK_USED_AFTER_MININET} ${DISK_USED_END}`
 echo  "DISK_USED_MAX                  ${DISK_USED_MAX}"
 echo  "DISK_USED_MAX - DISK_USED_START : $((${DISK_USED_MAX}-${DISK_USED_START})) MBytes"
+set -x
 
 cd "${INSTALL_DIR}"
 DETS="install-details"
