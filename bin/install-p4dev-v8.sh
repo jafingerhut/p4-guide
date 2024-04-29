@@ -428,14 +428,15 @@ set -x
 # source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
 # as 3.21.6 from the protobuf source repo.
 
-#PROTOBUF_VERSION_FOR_PIP="4.21.6"
-#GRPC_VERSION="1.51.1"
+INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+PROTOBUF_VERSION_FOR_PIP="4.21.6"
+GRPC_VERSION="1.51.1"
 
 #PROTOBUF_VERSION_FOR_PIP="4.23.1"
 #GRPC_VERSION="1.56.2"
 
-PROTOBUF_VERSION_FOR_PIP="4.23.4"
-GRPC_VERSION="1.58.0"
+#PROTOBUF_VERSION_FOR_PIP="4.23.4"
+#GRPC_VERSION="1.58.0"
 
 #PROTOBUF_VERSION_FOR_PIP="4.24.4"
 #GRPC_VERSION="1.59.3"
@@ -761,6 +762,26 @@ pip3 list || echo "Some error occurred attempting to run command: pip3"
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 
+if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
+then
+    sudo apt-get --yes install libprotobuf-dev libgrpc-dev libgrpc++-dev
+    if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
+    then
+	${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+    fi
+    TIME_GRPC_CLONE_START=$(date +%s)
+    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+    cd grpc
+    git checkout v${GRPC_VERSION}
+    TIME_GRPC_CLONE_END=$(date +%s)
+    pip3 list
+    ${PIP_SUDO} pip3 install setuptools
+    ${PIP_SUDO} pip3 install -rrequirements.txt
+    pip3 list
+    GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+    pip3 list
+else
+
 # Do not bother installing protobuf package from source code, as
 # whatever parts of protobuf we need is installed as a result of
 # installing grpc from source code, and/or installing the Python
@@ -884,6 +905,7 @@ fi
 TIME_GRPC_INSTALL_END=$(date +%s)
 echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
 echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
+fi
 DISK_USED_AFTER_GRPC=`get_used_disk_space_in_mbytes`
 
 set +x
