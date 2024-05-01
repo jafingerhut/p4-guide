@@ -1093,7 +1093,10 @@ else
 	# Use a version of p4c source before it broke the build for
 	# Ubuntu 22.04 on aarch64 processors.  See
 	# https://github.com/p4lang/p4c/issues/4639
-	git checkout 6e20abe20702c3f7e20a8c5c642e1d7a4ab01559
+	#git checkout 6e20abe20702c3f7e20a8c5c642e1d7a4ab01559
+	# Try out a patch from fruffy that might enable aarch64 Linux
+	# builds again.
+	git checkout fruffy/aarch64
     fi
     git log -n 1
     git submodule update --init --recursive
