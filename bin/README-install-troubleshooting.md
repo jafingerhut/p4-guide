@@ -109,7 +109,13 @@ Then run the commands below in a terminal.  Note:
   run it from the home directory of my account.  Whichever directory
   is your current directory when you start the script, is where new
   directories with names like `p4c`, `behavioral-model`, `mininet`,
-  `grpc`, etc. will be created.
+  `grpc`, etc. will be created.  I have heard a report from someone
+  using this that in a VM where they created a shared folder between
+  the guest OS and the host OS, and tried to run one of the install
+  scripts in that directory, it failed.  It worked when they later
+  tried running in a folder that was loal only within the guest OS,
+  which is the only way I have ever tested this script myself, and
+  thus strongly recommend.
 + I have only tried these install scripts when running as a normal
   user, i.e. not as the superuser `root`.  There are several `sudo`
   commands in the install script.  I have tried to write this script
