@@ -786,7 +786,7 @@ debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
 then
-    sudo apt-get --yes install libprotobuf-dev protobuf-compiler libgrpc-dev libgrpc++-dev
+    sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
 	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
