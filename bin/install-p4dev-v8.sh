@@ -1001,10 +1001,12 @@ else
     # Check what version of protoc is installed before the 'make'
     # command below uses protoc on P4Runtime protobuf definition
     # files.
+    set +e
     which protoc
     type -a protoc
     protoc --version
     /usr/local/bin/protoc --version
+    set -e
     make
     sudo make install
 
