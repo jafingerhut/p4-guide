@@ -769,7 +769,6 @@ DISK_USED_AFTER_Z3=`get_used_disk_space_in_mbytes`
 # directories like /usr/local/bin
 python3 -m venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
-PIP_SUDO=""
 
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
@@ -790,11 +789,21 @@ then
     sudo apt-get --yes install libprotobuf-dev libgrpc-dev libgrpc++-dev
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
-	${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
+    TIME_GRPC_CLONE_START=$(date +%s)
+    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+    cd grpc
+    git checkout v${GRPC_VERSION}
+    TIME_GRPC_CLONE_END=$(date +%s)
+    pip3 list
+    pip3 install setuptools
+    pip3 install -rrequirements.txt
+    pip3 list
+    #GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install grpcio==${GRPC_VERSION}
     if [ "${GRPCIO_VERSION_FOR_PIP}" != "" ]
     then
-	${PIP_SUDO} pip3 install grpcio==${GRPCIO_VERSION_FOR_PIP}
+	pip3 install grpcio==${GRPCIO_VERSION_FOR_PIP}
     fi
     pip3 list
 else
@@ -806,7 +815,7 @@ else
 
 if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
 then
-    ${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+    pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
 fi
 
 cd "${INSTALL_DIR}"
@@ -853,10 +862,10 @@ else
     git checkout v${GRPC_VERSION}
     TIME_GRPC_CLONE_END=$(date +%s)
     pip3 list
-    ${PIP_SUDO} pip3 install setuptools
-    ${PIP_SUDO} pip3 install -rrequirements.txt
+    pip3 install setuptools
+    pip3 install -rrequirements.txt
     pip3 list
-    GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+    GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install grpcio==${GRPC_VERSION}
     pip3 list
 fi
 
@@ -1137,7 +1146,7 @@ debug_dump_installed_z3_files snap10
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
-${PIP_SUDO} pip3 install scapy ply
+pip3 install scapy ply
 pip3 list
 
 DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
@@ -1255,7 +1264,7 @@ TIME_PTF_START=$(date +%s)
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-${PIP_SUDO} pip install .
+pip install .
 TIME_PTF_END=$(date +%s)
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 
@@ -1282,7 +1291,7 @@ elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install gflags-devel net-tools
 fi
-${PIP_SUDO} pip3 install psutil crcmod
+pip3 install psutil crcmod
 
 # Install p4runtime-shell from source repo, with a slightly modified
 # setup.cfg file so that it allows us to keep the version of the
