@@ -791,20 +791,23 @@ then
     then
 	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
-    TIME_GRPC_CLONE_START=$(date +%s)
-    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-    cd grpc
-    git checkout v${GRPC_VERSION}
-    TIME_GRPC_CLONE_END=$(date +%s)
-    pip3 list
-    pip3 install setuptools
-    pip3 install -rrequirements.txt
-    pip3 list
-    #GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install grpcio==${GRPC_VERSION}
-    if [ "${GRPCIO_VERSION_FOR_PIP}" != "" ]
-    then
-	pip3 install grpcio==${GRPCIO_VERSION_FOR_PIP}
-    fi
+    # Try NOT installing grpcio Python package, to see if anything
+    # goes wrong later.
+#    pip3 install wheel
+#    TIME_GRPC_CLONE_START=$(date +%s)
+#    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+#    cd grpc
+#    git checkout v${GRPC_VERSION}
+#    TIME_GRPC_CLONE_END=$(date +%s)
+#    pip3 list
+#    pip3 install setuptools
+#    pip3 install -rrequirements.txt
+#    pip3 list
+#    #GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install grpcio==${GRPC_VERSION}
+#    if [ "${GRPCIO_VERSION_FOR_PIP}" != "" ]
+#    then
+#	pip3 install grpcio==${GRPCIO_VERSION_FOR_PIP}
+#    fi
     pip3 list
 else
 
