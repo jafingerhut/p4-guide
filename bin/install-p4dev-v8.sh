@@ -266,9 +266,21 @@ then
     case "${VERSION_ID}" in
 	20.04)
 	    supported_distribution=1
+	    # Versions installed by Ubuntu apt
+	    PROTOBUF_PKG_VERSION="3.6.1.3"
+	    GRPC_PKG_VERSION="1.16.1"
+	    # Closest versions available via "pip3 install" to the above
+	    PROTOBUF_VERSION_FOR_PIP="3.6.1"
+	    GRPCIO_VERSION_FOR_PIP="1.16.1"
 	    ;;
 	22.04)
 	    supported_distribution=1
+	    # Versions installed by Ubuntu apt
+	    PROTOBUF_PKG_VERSION="3.12.4"
+	    GRPC_PKG_VERSION="1.30.2"
+	    # Closest versions available via "pip3 install" to the above
+	    PROTOBUF_VERSION_FOR_PIP="3.12.4"
+	    GRPCIO_VERSION_FOR_PIP="1.30.0"
 	    ;;
 	23.04)
 	    # This script did work on 23.04 at one point in time, but
@@ -283,6 +295,12 @@ then
 	    ;;
 	24.04)
 	    supported_distribution=1
+	    # Versions installed by Ubuntu apt
+	    PROTOBUF_PKG_VERSION="3.21.12"
+	    GRPC_PKG_VERSION="1.51.1"
+	    # Closest versions available via "pip3 install" to the above
+	    PROTOBUF_VERSION_FOR_PIP="4.21.12"
+	    GRPCIO_VERSION_FOR_PIP="1.51.1"
 	    ;;
     esac
 elif [ "${ID}" = "fedora" ]
@@ -428,7 +446,9 @@ set -x
 # source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
 # as 3.21.6 from the protobuf source repo.
 
-INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+GRPC_VERSION=${GRPC_PKG_VERSION}
+
 #PROTOBUF_VERSION_FOR_PIP="3.19.5"
 #GRPC_VERSION="1.48.2"
 
@@ -441,8 +461,8 @@ INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
 #PROTOBUF_VERSION_FOR_PIP="4.23.4"
 #GRPC_VERSION="1.58.0"
 
-PROTOBUF_VERSION_FOR_PIP="4.24.4"
-GRPC_VERSION="1.59.3"
+#PROTOBUF_VERSION_FOR_PIP="4.24.4"
+#GRPC_VERSION="1.59.3"
 
 #PROTOBUF_VERSION_FOR_PIP="4.25.0"
 #GRPC_VERSION="1.60.1"
@@ -772,16 +792,10 @@ then
     then
 	${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
-    TIME_GRPC_CLONE_START=$(date +%s)
-    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-    cd grpc
-    git checkout v${GRPC_VERSION}
-    TIME_GRPC_CLONE_END=$(date +%s)
-    pip3 list
-    ${PIP_SUDO} pip3 install setuptools
-    ${PIP_SUDO} pip3 install -rrequirements.txt
-    pip3 list
-    GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install grpcio==${GRPC_VERSION}
+    if [ "${GRPCIO_VERSION_FOR_PIP}" != "" ]
+    then
+	${PIP_SUDO} pip3 install grpcio==${GRPCIO_VERSION_FOR_PIP}
+    fi
     pip3 list
 else
 
