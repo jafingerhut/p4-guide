@@ -820,7 +820,18 @@ else
 	# Without the following command, later the command 'pkg-config
 	# --cflags grpc' fails, at least on Ubuntu 23.10 after building
 	# grpc v1.54.2
-	sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
+	RE2_PKGCONFIG_FILE=""
+	if [ -e third_party/re2/re2.pc ]
+	then
+	    RE2_PKGCONFIG_FILE="third_party/re2/re2.pc"
+	elif [ -e third_party/bloaty/third_party/re2/re2.pc ]
+	then
+	    RE2_PKGCONFIG_FILE="third_party/bloaty/third_party/re2/re2.pc"
+	fi
+	if [ "${RE2_PKGCONFIG_FILE}" != "" ]
+	then
+	    sudo /usr/bin/install -c -m 644 ${RE2_PKGCONFIG_FILE} /usr/local/lib/pkgconfig
+	fi
 	DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
 	if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
 	then
