@@ -251,7 +251,7 @@ tests to fail.  Many of those will pass if you re-run them as the user
 `root` with a command like this:
 
 ```bash
-$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} make -j2 recheck |& tee out2.txt
+$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python make -j2 recheck |& tee out2.txt
 ```
 
 
