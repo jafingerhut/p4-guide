@@ -410,47 +410,8 @@ DISK_USED_START=`get_used_disk_space_in_mbytes`
 set -e
 set -x
 
-# Brief notes on some experiments I did late in 2023-Oct with
-# different combinations of versions of protobuf and grpc:
-#
-# id protobuf grpc    result
-# -- -------- ------- ------
-# a  3.18.1   1.43.2  protobuf built on 23.10, but grpc build failed
-# b  3.20.3   1.54.2  each built successfully on 23.10, but PI build failed
-# c  3.19.6   1.51.1  each built successfully on 23.10, but PI build failed
-# d  3.21.12  1.54.2  error message from try (b) had protoc 3.12.12 installed in /usr/local/bin, somehow.  This attempt also gave linking errors while building behavioral-model, not for OPENSSL_free but for things in ares/cares library, which is installed, but not mentioned on linker command line for some reason.
-# e  --       1.52.2  error message building behavioral-model related to linker not finding ares/cares library
-# f  --       1.51.3  BMv2 built successfully with this version on Ubuntu 23.10, and installed 'protoc --version' with output of 3.21.6
-
-# Note that starting with version 3.22.x, the protobuf Github
-# repository also tags versions with 4.22.x as well.  However, the
-# Python pip package system started using 4.x.y with what the protobuf
-# source repo calls version 3.21.x.  Thus 4.21.6 for pip is the same
-# as 3.21.6 from the protobuf source repo.
-
 INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
 GRPC_VERSION=${GRPC_PKG_VERSION}
-
-#PROTOBUF_VERSION_FOR_PIP="3.19.5"
-#GRPC_VERSION="1.48.2"
-
-#PROTOBUF_VERSION_FOR_PIP="4.21.6"
-#GRPC_VERSION="1.51.1"
-
-#PROTOBUF_VERSION_FOR_PIP="4.23.1"
-#GRPC_VERSION="1.56.2"
-
-#PROTOBUF_VERSION_FOR_PIP="4.23.4"
-#GRPC_VERSION="1.58.0"
-
-#PROTOBUF_VERSION_FOR_PIP="4.24.4"
-#GRPC_VERSION="1.59.3"
-
-#PROTOBUF_VERSION_FOR_PIP="4.25.0"
-#GRPC_VERSION="1.60.1"
-
-#PROTOBUF_VERSION_FOR_PIP="4.25.1"
-#GRPC_VERSION="1.62.2"
 
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
@@ -773,23 +734,6 @@ then
     then
 	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
-    # Try NOT installing grpcio Python package, to see if anything
-    # goes wrong later.
-#    pip3 install wheel
-#    TIME_GRPC_CLONE_START=$(date +%s)
-#    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-#    cd grpc
-#    git checkout v${GRPC_VERSION}
-#    TIME_GRPC_CLONE_END=$(date +%s)
-#    pip3 list
-#    pip3 install setuptools
-#    pip3 install -rrequirements.txt
-#    pip3 list
-#    #GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install grpcio==${GRPC_VERSION}
-#    if [ "${GRPCIO_VERSION_FOR_PIP}" != "" ]
-#    then
-#	pip3 install grpcio==${GRPCIO_VERSION_FOR_PIP}
-#    fi
     pip3 list
 else
 
