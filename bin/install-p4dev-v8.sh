@@ -265,13 +265,7 @@ if [ "${ID}" = "ubuntu" ]
 then
     case "${VERSION_ID}" in
 	20.04)
-	    # Mark this version unsupported until and unless I make
-	    # changes that enable this script to work on Ubuntu 20.04.
-	    # Right now it fails because the version of protobuf is
-	    # too old for PI and perhaps also behavioral-model.  It
-	    # would probably be best to install from source code the
-	    # same versions as installed for Ubuntu 22.04.
-	    supported_distribution=0
+	    supported_distribution=1
 	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
 	    # Versions installed by Ubuntu apt
 	    PROTOBUF_PKG_VERSION="3.6.1.3"
