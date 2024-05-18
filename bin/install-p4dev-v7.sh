@@ -746,7 +746,6 @@ debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 # whatever parts of protobuf we need is installed as a result of
 # installing grpc from source code, and/or installing the Python
 # protobuf package using pip.
-
 if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
 then
     pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
@@ -762,7 +761,6 @@ elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install cmake
 fi
-
 
 cd "${INSTALL_DIR}"
 

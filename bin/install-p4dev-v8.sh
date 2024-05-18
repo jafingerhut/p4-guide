@@ -272,6 +272,7 @@ then
 	    # would probably be best to install from source code the
 	    # same versions as installed for Ubuntu 22.04.
 	    supported_distribution=0
+	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
 	    # Versions installed by Ubuntu apt
 	    PROTOBUF_PKG_VERSION="3.6.1.3"
 	    GRPC_PKG_VERSION="1.16.1"
@@ -281,6 +282,7 @@ then
 	    ;;
 	22.04)
 	    supported_distribution=1
+	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
 	    # Versions installed by Ubuntu apt
 	    PROTOBUF_PKG_VERSION="3.12.4"
 	    GRPC_PKG_VERSION="1.30.2"
@@ -290,6 +292,7 @@ then
 	    ;;
 	24.04)
 	    supported_distribution=1
+	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
 	    # Versions installed by Ubuntu apt
 	    PROTOBUF_PKG_VERSION="3.21.12"
 	    GRPC_PKG_VERSION="1.51.1"
@@ -410,9 +413,6 @@ DISK_USED_START=`get_used_disk_space_in_mbytes`
 set -e
 set -x
 
-INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
-GRPC_VERSION=${GRPC_PKG_VERSION}
-
 set +x
 echo "This script builds and installs the P4_16 (and also P4_14)"
 echo "compiler, and the behavioral-model software packet forwarding"
@@ -435,7 +435,7 @@ echo "took about 4 hours."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
+echo "+ gRPC: github.com/google/grpc.git v${GRPC_PKG_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2023-Sep-22, also installs these things:"
@@ -446,7 +446,7 @@ echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2023-May-28"
-echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio ${GRPC_VERSION}"
+echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by pip3"
 echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -736,130 +736,109 @@ then
     fi
     pip3 list
 else
-
-# Do not bother installing protobuf package from source code, as
-# whatever parts of protobuf we need is installed as a result of
-# installing grpc from source code, and/or installing the Python
-# protobuf package using pip.
-
-if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
-then
-    pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
-fi
-
-cd "${INSTALL_DIR}"
-debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
-
-# From BUILDING.md of grpc source repository
-# python3-dev / python3-devel packages are needed to install grpcio
-# Python package.
-
-if [ "${ID}" = "ubuntu" ]
-then
-    sudo apt-get --yes install build-essential autoconf libtool pkg-config python3-dev
-    # TODO: This package is not mentioned in grpc BUILDING.md
-    # instructions, but when I tried on Ubuntu 20.04 without it, the
-    # building of grpc failed with not being able to find an OpenSSL
-    # library.
-    sudo apt-get --yes install libssl-dev
-elif [ "${ID}" = "fedora" ]
-then
-    # I am not sure that the 'Development Tools' group on Fedora is
-    # identical to installing the build-essential package on Ubuntu,
-    # but there is at least significant overlap between what they
-    # install.
-    sudo dnf group install -y 'Development Tools'
-    sudo dnf -y install autoconf libtool pkg-config python3-devel
-    # TODO: Should I install openssl-devel here on Fedora?  There is
-    # no package named libssl-dev or libssl-devel.  It seems like it
-    # might be unnecessary, as without doing so the build of grpc
-    # below went through with no errors.
-fi
-
-cd "${INSTALL_DIR}"
-
-DO_BUILD_GRPC=0
-DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
-if [ -d grpc ]
-then
-    echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
-else
-    DO_BUILD_GRPC=1
-    TIME_GRPC_CLONE_START=$(date +%s)
-    get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-    cd grpc
-    git checkout v${GRPC_VERSION}
-    TIME_GRPC_CLONE_END=$(date +%s)
-    pip3 list
-    pip3 install setuptools
-    pip3 install -rrequirements.txt
-    pip3 list
-    GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install grpcio==${GRPC_VERSION}
-    pip3 list
-fi
-
-if [ "${ID}" = "ubuntu" ]
-then
-    sudo apt-get --yes install cmake
-elif [ "${ID}" = "fedora" ]
-then
-    sudo dnf -y install cmake
-fi
-
-
-cd "${INSTALL_DIR}"
-
-set +x
-echo "------------------------------------------------------------"
-echo "Installing grpc, needed for installing p4lang/PI"
-echo "start install grpc:"
-set -x
-date
-
-TIME_GRPC_CLONE_START=$(date +%s)
-TIME_GRPC_CLONE_END=$(date +%s)
-TIME_GRPC_INSTALL_START=$(date +%s)
-if [ ${DO_BUILD_GRPC} -eq 0 ]
-then
-    echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
-else
-    cd grpc
-    # These commands are recommended in grpc's BUILDING.md file for Unix:
-    git submodule update --init --recursive
-    TIME_GRPC_INSTALL_START=$(date +%s)
-    mkdir -p cmake/build
-    cd cmake/build
-    # I learned about the cmake option -DgRPC_SSL_PROVIDER=package
-    # from the pages linked below, after experiencing link-time errors
-    # when trying to build behavioral-model with gRPC v1.54.2 and
-    # getting errors that it could not find symbols like OPENSSL_free,
-    # and many others.
-    # https://github.com/grpc/grpc/issues/30524
-    cmake ../.. -DgRPC_SSL_PROVIDER=package
-    make
-    sudo make install
-    cd ../..
-    sudo ldconfig
-    # Without the following command, later the command 'pkg-config
-    # --cflags grpc' fails, at least on Ubuntu 23.10 after building
-    # grpc v1.54.2
-    sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
-    DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
-    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+    # Do not bother installing protobuf package from source code, as
+    # whatever parts of protobuf we need is installed as a result of
+    # installing grpc from source code, and/or installing the Python
+    # protobuf package using pip.
+    if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
-	echo "Disk space used just before cleaning up grpc:"
-	df -BM .
-	cd "${INSTALL_DIR}"
-	/bin/rm -fr grpc
-	# Make an empty directory with the name grpc, so that if a
-	# later step fails, and someone re-runs this script, it will
-	# not build grpc again.
-	mkdir grpc
+	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
-fi
-TIME_GRPC_INSTALL_END=$(date +%s)
-echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
-echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
+
+    cd "${INSTALL_DIR}"
+    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
+
+    if [ "${ID}" = "ubuntu" ]
+    then
+	sudo apt-get --yes install cmake
+    elif [ "${ID}" = "fedora" ]
+    then
+	sudo dnf -y install cmake
+    fi
+
+    cd "${INSTALL_DIR}"
+
+    set +x
+    echo "------------------------------------------------------------"
+    echo "Installing grpc, needed for installing p4lang/PI"
+    echo "start install grpc:"
+    set -x
+    date
+
+    # From BUILDING.md of grpc source repository
+    if [ "${ID}" = "ubuntu" ]
+    then
+    sudo apt-get --yes install build-essential autoconf libtool pkg-config
+	# TODO: This package is not mentioned in grpc BUILDING.md
+	# instructions, but when I tried on Ubuntu 20.04 without it, the
+	# building of grpc failed with not being able to find an OpenSSL
+	# library.
+	sudo apt-get --yes install libssl-dev
+    elif [ "${ID}" = "fedora" ]
+    then
+	# I am not sure that the 'Development Tools' group on Fedora is
+	# identical to installing the build-essential package on Ubuntu,
+	# but there is at least significant overlap between what they
+	# install.
+	sudo dnf group install -y 'Development Tools'
+	# python3-devel is needed on Fedora systems for the `pip3 install
+	# .` step below
+	sudo dnf -y install autoconf libtool pkg-config python3-devel
+	# TODO: Should I install openssl-devel here on Fedora?  There is
+	# no package named libssl-dev or libssl-devel.  It seems like it
+	# might be unnecessary, as without doing so the build of grpc
+	# below went through with no errors.
+    fi
+
+    TIME_GRPC_CLONE_START=$(date +%s)
+    TIME_GRPC_CLONE_END=$(date +%s)
+    TIME_GRPC_INSTALL_START=$(date +%s)
+    DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
+    if [ -d grpc ]
+    then
+	echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
+    else
+	TIME_GRPC_CLONE_START=$(date +%s)
+	get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+	cd grpc
+	git checkout v${GRPC_PKG_VERSION}
+	# These commands are recommended in grpc's BUILDING.md file for Unix:
+	git submodule update --init --recursive
+	TIME_GRPC_CLONE_END=$(date +%s)
+	TIME_GRPC_INSTALL_START=$(date +%s)
+	mkdir -p cmake/build
+	cd cmake/build
+	# I learned about the cmake option -DgRPC_SSL_PROVIDER=package
+	# from the pages linked below, after experiencing link-time errors
+	# when trying to build behavioral-model with gRPC v1.54.2 and
+	# getting errors that it could not find symbols like OPENSSL_free,
+	# and many others.
+	# https://github.com/grpc/grpc/issues/30524
+	cmake ../.. -DgRPC_SSL_PROVIDER=package
+	make
+	sudo make install
+	cd ../..
+	sudo ldconfig
+	# Without the following command, later the command 'pkg-config
+	# --cflags grpc' fails, at least on Ubuntu 23.10 after building
+	# grpc v1.54.2
+	sudo /usr/bin/install -c -m 644 third_party/re2/re2.pc /usr/local/lib/pkgconfig
+	DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
+	if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+	then
+	    echo "Disk space used just before cleaning up grpc:"
+	    df -BM .
+	    cd "${INSTALL_DIR}"
+	    /bin/rm -fr grpc
+	    # Make an empty directory with the name grpc, so that if a
+	    # later step fails, and someone re-runs this script, it will
+	    # not build grpc again.
+	    mkdir grpc
+	fi
+	TIME_GRPC_INSTALL_END=$(date +%s)
+	echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
+	echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
+    fi
 fi
 DISK_USED_AFTER_GRPC=`get_used_disk_space_in_mbytes`
 
@@ -927,10 +906,10 @@ else
     # Check what version of protoc is installed before the 'make'
     # command below uses protoc on P4Runtime protobuf definition
     # files.
-    set +e
     which protoc
     type -a protoc
     protoc --version
+    set +e
     /usr/local/bin/protoc --version
     set -e
     make
