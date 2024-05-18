@@ -1239,7 +1239,23 @@ git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun-enable-venv.patch"
 cd ..
+RESTORE_SUDOERS_FILE=0
+if [ -e /etc/sudoers.d/sudoers-dotfiles ]
+then
+    # Starting with Ubuntu 24.04, by default it includes a sudo
+    # configuration file that disallows passing environment variables
+    # such as DEBIAN_FRONTEND on a sudo command line for apt-get
+    # commands.  On such systems, temporarily rename this
+    # configuration file while installing Mininet, since Mininet's
+    # install script uses this feature of sudo.
+    sudo mv /etc/sudoers.d/sudoers-dotfiles /etc/sudoers.d/sudoers-dotfiles.orig
+    RESTORE_SUDOERS_FILE=1
+fi
 PYTHON=python3 ./mininet/util/install.sh -nw
+if [ ${RESTORE_SUDOERS_FILE} -eq 1 ]
+then
+    sudo mv /etc/sudoers.d/sudoers-dotfiles.orig /etc/sudoers.d/sudoers-dotfiles
+fi
 TIME_MININET_END=$(date +%s)
 echo "mininet                : $(($TIME_MININET_END-$TIME_MININET_START)) sec"
 DISK_USED_AFTER_MININET=`get_used_disk_space_in_mbytes`
