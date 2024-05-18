@@ -1089,13 +1089,6 @@ else
     # Clone p4c and its submodules:
     get_from_nearest https://github.com/p4lang/p4c.git p4c.tar.gz
     cd p4c
-    if [ ${PROCESSOR} = "aarch64" ]
-    then
-	# Use a version of p4c source before it broke the build for
-	# Ubuntu 22.04 on aarch64 processors.  See
-	# https://github.com/p4lang/p4c/issues/4639
-	git checkout 6e20abe20702c3f7e20a8c5c642e1d7a4ab01559
-    fi
     git log -n 1
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
