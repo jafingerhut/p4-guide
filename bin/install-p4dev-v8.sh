@@ -42,8 +42,8 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 23.10"
-    1>&2 echo "    ID fedora, VERSION_ID in 36 37 38"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04"
+    #1>&2 echo "    ID fedora, VERSION_ID in 36 37 38"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -265,7 +265,13 @@ if [ "${ID}" = "ubuntu" ]
 then
     case "${VERSION_ID}" in
 	20.04)
-	    supported_distribution=1
+	    # Mark this version unsupported until and unless I make
+	    # changes that enable this script to work on Ubuntu 20.04.
+	    # Right now it fails because the version of protobuf is
+	    # too old for PI and perhaps also behavioral-model.  It
+	    # would probably be best to install from source code the
+	    # same versions as installed for Ubuntu 22.04.
+	    supported_distribution=0
 	    # Versions installed by Ubuntu apt
 	    PROTOBUF_PKG_VERSION="3.6.1.3"
 	    GRPC_PKG_VERSION="1.16.1"
@@ -282,17 +288,6 @@ then
 	    PROTOBUF_VERSION_FOR_PIP="3.12.4"
 	    GRPCIO_VERSION_FOR_PIP="1.30.0"
 	    ;;
-	23.04)
-	    # This script did work on 23.04 at one point in time, but
-	    # when I tried again later on 2023-Nov-03 it failed with
-	    # an internal compiler error while trying to build Thrift.
-	    # Since 23.04's support ends early in 2024, I am not going
-	    # to spend any effort trying to get this working again.
-	    supported_distribution=0
-	    ;;
-	23.10)
-	    supported_distribution=1
-	    ;;
 	24.04)
 	    supported_distribution=1
 	    # Versions installed by Ubuntu apt
@@ -305,25 +300,12 @@ then
     esac
 elif [ "${ID}" = "fedora" ]
 then
+    # I have not tested this script with fedora yet.
     case "${VERSION_ID}" in
-	36)
-	    # In my last test of this script on Fedora 36, it failed
-	    # during the build of p4c, for reasons I do not fully
-	    # understand, but probably because the C++ source code is
-	    # not compatible with the version of the GNU C++ compiler
-	    # installed on Fedora 36.
+	38)
 	    supported_distribution=0
 	    ;;
-	37)
-	    supported_distribution=1
-	    ;;
-	38)
-	    supported_distribution=1
-	    ;;
 	39)
-	    # In my last test (on 2023-Nov-20) of this script on
-	    # Fedora 39, it failed during the build of Python packages
-	    # for grpc, for reasons I do not fully understand.
 	    supported_distribution=0
 	    ;;
     esac
