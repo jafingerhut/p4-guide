@@ -276,9 +276,11 @@ then
 	    # Versions installed by Ubuntu apt
 	    PROTOBUF_PKG_VERSION="3.6.1.3"
 	    GRPC_PKG_VERSION="1.16.1"
-	    # Closest versions available via "pip3 install" to the above
-	    PROTOBUF_VERSION_FOR_PIP="3.6.1"
-	    GRPCIO_VERSION_FOR_PIP="1.16.1"
+	    # Versions to install for Ubuntu 20.04 are newer than
+	    # those above, because PI and behavioral-model require
+	    # later versions.
+	    GRPC_SOURCE_VERSION="1.30.2"
+	    PROTOBUF_VERSION_FOR_PIP="3.12.4"
 	    ;;
 	22.04)
 	    supported_distribution=1
@@ -288,7 +290,6 @@ then
 	    GRPC_PKG_VERSION="1.30.2"
 	    # Closest versions available via "pip3 install" to the above
 	    PROTOBUF_VERSION_FOR_PIP="3.12.4"
-	    GRPCIO_VERSION_FOR_PIP="1.30.0"
 	    ;;
 	24.04)
 	    supported_distribution=1
@@ -298,7 +299,6 @@ then
 	    GRPC_PKG_VERSION="1.51.1"
 	    # Closest versions available via "pip3 install" to the above
 	    PROTOBUF_VERSION_FOR_PIP="4.21.12"
-	    GRPCIO_VERSION_FOR_PIP="1.51.1"
 	    ;;
     esac
 elif [ "${ID}" = "fedora" ]
@@ -312,6 +312,13 @@ then
 	    supported_distribution=0
 	    ;;
     esac
+fi
+
+if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
+then
+    GRPC_VERSION=${GRPC_PKG_VERSION}
+else
+    GRPC_VERSION=${GRPC_SOURCE_VERSION}
 fi
 
 if [ ${supported_distribution} -eq 1 ]
@@ -435,7 +442,7 @@ echo "took about 4 hours."
 echo ""
 echo "Versions of software that will be installed by this script:"
 echo ""
-echo "+ gRPC: github.com/google/grpc.git v${GRPC_PKG_VERSION}"
+echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2023-Sep-22, also installs these things:"
@@ -570,7 +577,6 @@ then
     then
 	echo "Found directory ${INSTALL_DIR}/automake-1.16.5.  Assuming desired version of automake-1.16.5 is already installed."
     else
-
 	# Install more recent versions of autoconf and automake than those
 	# that are installed by the Ubuntu 20.04 packages.  That helps
 	# cause Python packages to be installed in the venv while building
@@ -727,6 +733,13 @@ pip3 list || echo "Some error occurred attempting to run command: pip3"
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 
+set +x
+echo "------------------------------------------------------------"
+echo "Installing grpc, needed for installing p4lang/PI"
+echo "start install grpc:"
+set -x
+date
+
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
 then
     sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
@@ -756,19 +769,10 @@ else
 	sudo dnf -y install cmake
     fi
 
-    cd "${INSTALL_DIR}"
-
-    set +x
-    echo "------------------------------------------------------------"
-    echo "Installing grpc, needed for installing p4lang/PI"
-    echo "start install grpc:"
-    set -x
-    date
-
     # From BUILDING.md of grpc source repository
     if [ "${ID}" = "ubuntu" ]
     then
-    sudo apt-get --yes install build-essential autoconf libtool pkg-config
+	sudo apt-get --yes install build-essential autoconf libtool pkg-config
 	# TODO: This package is not mentioned in grpc BUILDING.md
 	# instructions, but when I tried on Ubuntu 20.04 without it, the
 	# building of grpc failed with not being able to find an OpenSSL
@@ -801,7 +805,7 @@ else
 	TIME_GRPC_CLONE_START=$(date +%s)
 	get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
 	cd grpc
-	git checkout v${GRPC_PKG_VERSION}
+	git checkout v${GRPC_SOURCE_VERSION}
 	# These commands are recommended in grpc's BUILDING.md file for Unix:
 	git submodule update --init --recursive
 	TIME_GRPC_CLONE_END=$(date +%s)
