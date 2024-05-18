@@ -727,7 +727,6 @@ DISK_USED_AFTER_Z3=`get_used_disk_space_in_mbytes`
 # directories like /usr/local/bin
 python3 -m venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
-PIP_SUDO=""
 
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
@@ -750,7 +749,7 @@ debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
 
 if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
 then
-    ${PIP_SUDO} pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+    pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
 fi
 
 cd "${INSTALL_DIR}"
@@ -837,10 +836,10 @@ else
     # that time, it started installing Cython package version 3.0.0, which
     # gives errors on the `pip3 install .` command afterwards.  Fix this
     # by forcing installation of a known working version of Cython.
-    ${PIP_SUDO} pip3 install Cython==0.29.35
-    ${PIP_SUDO} pip3 install -rrequirements.txt
+    pip3 install Cython==0.29.35
+    pip3 install -rrequirements.txt
     debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2c-before-grpc-pip3.txt
-    GRPC_PYTHON_BUILD_WITH_CYTHON=1 ${PIP_SUDO} pip3 install .
+    GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip3 install .
     sudo ldconfig
     # Without the following command, later the command 'pkg-config
     # --cflags grpc' fails, at least on Ubuntu 23.10 after building
@@ -1076,7 +1075,7 @@ debug_dump_installed_z3_files snap10
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
-${PIP_SUDO} pip3 install scapy ply
+pip3 install scapy ply
 pip3 list
 
 DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
@@ -1187,7 +1186,7 @@ TIME_PTF_START=$(date +%s)
 
 git clone https://github.com/p4lang/ptf
 cd ptf
-${PIP_SUDO} pip install .
+pip install .
 TIME_PTF_END=$(date +%s)
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 
@@ -1214,7 +1213,7 @@ elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install gflags-devel net-tools
 fi
-${PIP_SUDO} pip3 install psutil crcmod
+pip3 install psutil crcmod
 
 # Install p4runtime-shell from source repo, with a slightly modified
 # setup.cfg file so that it allows us to keep the version of the
