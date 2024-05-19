@@ -1228,6 +1228,13 @@ pip3 install psutil crcmod
 # which would replace the current Python files in
 # ${PYTHON_VENV}/lib/python*/site-packages/p4 with ones generated
 # using an older version of protobuf.
+
+# First install a known working version of the grpcio package, because
+# otherwise installing p4runtime-shell packages will likely pick some
+# very recent version of grpcio that may cause trouble.
+pip3 install wheel
+pip3 install grpcio==1.51.3
+
 git clone https://github.com/p4lang/p4runtime-shell
 cd p4runtime-shell
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
