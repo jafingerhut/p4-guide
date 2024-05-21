@@ -353,7 +353,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 18 \* 1024`
+min_free_disk_MBytes=`expr 20 \* 1024`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -1233,7 +1233,14 @@ pip3 install psutil crcmod
 # otherwise installing p4runtime-shell packages will likely pick some
 # very recent version of grpcio that may cause trouble.
 pip3 install wheel
-pip3 install grpcio==1.51.3
+if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
+then
+    # Version 1.51.3 fails to install on Ubuntu 24.04 as of
+    # 2024-May-20.
+    pip3 install grpcio==1.59.3
+else
+    pip3 install grpcio==1.51.3
+fi
 
 git clone https://github.com/p4lang/p4runtime-shell
 cd p4runtime-shell
