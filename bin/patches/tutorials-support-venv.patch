@@ -7,7 +7,7 @@ index 0f32642..79af46f 100644
  
  run: build
 -	sudo python3 $(RUN_SCRIPT) -t $(TOPO) $(run_args)
-+	sudo PATH=$(PATH) PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python python3 $(RUN_SCRIPT) -t $(TOPO) $(run_args)
++	sudo PATH=$(PATH) ${P4GUIDE_SUDO_OPTS} python3 $(RUN_SCRIPT) -t $(TOPO) $(run_args)
  
  stop:
 -	sudo mn -c
