@@ -68,8 +68,9 @@ Start with:
 
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
-  + Ubuntu 20.04, 22.04
-    + Ubuntu 20.04 and 22.04 have now been tested working with
+  + Ubuntu 20.04, 22.04, 24.04
+    + Installation on Ubuntu 24.04 only works with install-p4dev-v8.sh
+    + All supported Ubuntu versions have now been tested working with
       install-p4dev-v7.sh and install-p4dev-v8.sh in a VM created
       inside the [UTM virtualization
       software](https://mac.getutm.app), running on an Apple Silicon
