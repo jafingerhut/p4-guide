@@ -10,6 +10,6 @@ p4test \
     --dump ${OUTPUT_DIR} \
     --top4 FrontEndDump,FrontEndLast,MidEndLast \
     --testJson --maxErrorCount 100 \
-    --p4runtime-files ${OUTPUT_DIR}/bit0b-bmv2.p4.p4info.txt \
+    --p4runtime-files ${OUTPUT_DIR}/bit0b-bmv2.p4.p4info.txtpb \
     --p4runtime-entries-files ${OUTPUT_DIR}/bit0b-bmv2.p4.entries.txt \
     bit0b-bmv2.p4

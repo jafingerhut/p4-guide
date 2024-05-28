@@ -431,7 +431,7 @@ created by a `p4c` command with options like the following:
 
 
 ```bash
-% p4c --p4runtime-format text --p4runtime-file foo.p4info.txt foo.p4
+% p4c --p4runtime-format text --p4runtime-file foo.p4info.txtpb foo.p4
 ```
 
 or for the JSON format:

@@ -9,7 +9,7 @@ p4c 1.2.2 (SHA: 0170f56a0 BUILD: DEBUG)
 
 Exit status 1 from p4c, with this error message:
 ```bash
-$ p4c --target bmv2 --arch v1model --p4runtime-files actions-1-same-name.p4info.txt actions-1-same-name.p4
+$ p4c --target bmv2 --arch v1model --p4runtime-files actions-1-same-name.p4info.txtpb actions-1-same-name.p4
 actions-1-same-name.p4(8): [--Werror=duplicate] error: foo: Duplicates declaration foo
     action foo (inout bit<8> x) { x = (x >> 3); }
            ^^^
@@ -32,7 +32,7 @@ independent of control plane API generation.
 
 Exit status 1 from p4c, with this error message:
 ```bash
-$ p4c --target bmv2 --arch v1model --p4runtime-files actions-2-same-name.p4info.txt actions-2-same-name.p4
+$ p4c --target bmv2 --arch v1model --p4runtime-files actions-2-same-name.p4info.txtpb actions-2-same-name.p4
 actions-2-same-name.p4(2): [--Werror=duplicate] error: foo duplicates foo.
 action foo (inout bit<8> x) { x = (x >> 3); }
        ^^^
@@ -136,7 +136,7 @@ actions-5-same-name-annot.p4 is correct.
 Exit status 1 from the following command, and an error message as
 shown below:
 ```bash
-$ p4c --target bmv2 --arch v1model --p4runtime-files issue-1949.p4info.txt issue-1949.p4
+$ p4c --target bmv2 --arch v1model --p4runtime-files issue-1949.p4info.txtpb issue-1949.p4
 Attempt to add to json object a value for a label which already exists foo null
 ```
 
@@ -150,7 +150,7 @@ following command gives exit status 0, no error message, and produces
 the same P4Info file as the command above, implying (I believe
 wrongly) that nothing is wrong in the control plane API generation:
 ```bash
-$ p4test --p4runtime-files a.p4info.txt issue-1949.p4
+$ p4test --p4runtime-files a.p4info.txtpb issue-1949.p4
 ```
 
 P4Info file has 2 actions with names: foo, NoAction, whereas the P4

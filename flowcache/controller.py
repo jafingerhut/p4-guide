@@ -51,7 +51,7 @@ global_data['CPU_PORT_CLONE_SESSION_ID'] = 57
 global_data['NUM_PORTS'] = 5
 
 def setUp(grpc_addr='localhost:9559',
-          p4info_txt_fname='flowcache.p4info.txt'):
+          p4info_txt_fname='flowcache.p4info.txtpb'):
     logger.info("setUp()")
     sh.setup(device_id=0,
              grpc_addr=grpc_addr,

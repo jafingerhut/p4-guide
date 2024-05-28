@@ -18,7 +18,7 @@ set -x
 
 p4c --target bmv2 \
     --arch v1model \
-    --p4runtime-files idletimeout.p4info.txt \
+    --p4runtime-files idletimeout.p4info.txtpb \
     idletimeout.p4
 
 # Remove any log file written in an earlier run, otherwise
@@ -59,7 +59,7 @@ sudo ${P4GUIDE_SUDO_OPTS} `which ptf` \
     -i 5@veth11 \
     -i 6@veth13 \
     -i 7@veth15 \
-    --test-params="grpcaddr='localhost:9559';p4info='idletimeout.p4info.txt';config='idletimeout.json'" \
+    --test-params="grpcaddr='localhost:9559';p4info='idletimeout.p4info.txtpb';config='idletimeout.json'" \
     --test-dir .
 
 echo ""

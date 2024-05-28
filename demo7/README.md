@@ -13,7 +13,7 @@ processing is done independently for each packet copy created.
 
 To compile the P4_16 version of the code:
 
-    p4c --target bmv2 --arch v1model --p4runtime-files demo7.p4info.txt demo7.p4
+    p4c --target bmv2 --arch v1model --p4runtime-files demo7.p4info.txtpb demo7.p4
                                                                         ^^^^^^^^ source code
 
 If you see an error message about `mark_to_drop: Passing 1 arguments
@@ -27,7 +27,7 @@ Running that command will create these files:
         source program.
     demo7.json - the JSON file format expected by BMv2 behavioral
         model `simple_switch_grpc`.
-    demo7.p4info.txt - the text format of the file that describes
+    demo7.p4info.txtpb - the text format of the file that describes
         the P4Runtime API of the program.
 
 Only the last two files are needed to run your P4 program.  You can
@@ -105,7 +105,7 @@ Enter these commands at the `>>> ` prompt of the Python session:
 
 my_dev1_addr='localhost:9559'
 my_dev1_id=0
-p4info_txt_fname='demo7.p4info.txt'
+p4info_txt_fname='demo7.p4info.txtpb'
 p4prog_binary_fname='demo7.json'
 import p4runtime_sh.shell as sh
 

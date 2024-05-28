@@ -1,7 +1,7 @@
 compile:
 	p4c --target bmv2 \
 	    --arch v1model \
-	    --p4runtime-files flowcache.p4info.txt \
+	    --p4runtime-files flowcache.p4info.txtpb \
 	    flowcache.p4
 
 runswitch:
@@ -33,5 +33,5 @@ clean:
 	/bin/rm \
 	    flowcache.json \
 	    flowcache.p4i \
-	    flowcache.p4info.txt \
+	    flowcache.p4info.txtpb \
 	    ss-log.txt

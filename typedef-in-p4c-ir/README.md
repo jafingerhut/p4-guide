@@ -9,7 +9,7 @@ are the same as each other in the underlying `bit<48>` type:
   a `@p4runtime_translation` annotation
 
 If you run the p4c command in the script `compile.sh`, it generates
-the P4Info file `typedef-test1.p4info.txt`, as well as the P4_16 code
+the P4Info file `typedef-test1.p4info.txtpb`, as well as the P4_16 code
 at the end of all front-end passes (file name
 `typedef-test1-FrontEnd_54_FrontEndLast.p4i`), and at the end of all
 mid-end passes (file name

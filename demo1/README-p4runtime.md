@@ -21,7 +21,7 @@ If you are interested in an example automated test for the
 
 To compile the P4_16 version of the code, in file `demo1.p4_16.p4`:
 
-    p4c --target bmv2 --arch v1model --p4runtime-files demo1.p4_16.p4info.txt demo1.p4_16.p4
+    p4c --target bmv2 --arch v1model --p4runtime-files demo1.p4_16.p4info.txtpb demo1.p4_16.p4
 
 Running that command will create these files:
 
@@ -29,7 +29,7 @@ Running that command will create these files:
         the P4 source program.
     demo1.p4_16.json - the JSON file format expected by BMv2
         behavioral model `simple_switch_grpc`.
-    demo1.p4_16.p4info.txt - the text format of the file that describes
+    demo1.p4_16.p4info.txtpb - the text format of the file that describes
         the P4Runtime API of the program.
 
 Only the last two files are needed to run your P4 program.  You can
@@ -102,7 +102,7 @@ Enter these commands at the `>>> ` prompt of the Python session:
 
 my_dev1_addr='localhost:9559'
 my_dev1_id=0
-p4info_txt_fname='demo1.p4_16.p4info.txt'
+p4info_txt_fname='demo1.p4_16.p4info.txtpb'
 p4prog_binary_fname='demo1.p4_16.json'
 import p4runtime_sh.shell as sh
 

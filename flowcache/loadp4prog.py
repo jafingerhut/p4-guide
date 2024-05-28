@@ -43,7 +43,7 @@ logger.addHandler(ch)
 global_data = {}
 
 def setUp(grpc_addr='localhost:9559',
-          p4info_txt_fname='flowcache.p4info.txt',
+          p4info_txt_fname='flowcache.p4info.txtpb',
           p4prog_binary_fname='flowcache.json'):
     sh.setup(device_id=0,
              grpc_addr=grpc_addr,

@@ -15,7 +15,7 @@ do
     echo $j
     echo "------------------------------------------------------------"
     set -x
-    #$P4C --target bmv2 --arch v1model --p4runtime-files $k.p4info.txt $j
+    #$P4C --target bmv2 --arch v1model --p4runtime-files $k.p4info.txtpb $j
     $P4C --target bmv2 --arch v1model $DUMP_MANY_PASSES_OPTS $j
     ../bin/p4c-delete-duplicate-passes.sh $j ${DUMP_DIR_NAME} >& /dev/null
     set +x

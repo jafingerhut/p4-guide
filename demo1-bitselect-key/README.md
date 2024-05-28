@@ -24,7 +24,7 @@ sudo ../bin/veth_setup.sh
 ./runptf.sh
 ```
 
-In the compiler-generated file `demo1.p4_16.p4info.txt` checked into
+In the compiler-generated file `demo1.p4_16.p4info.txtpb` checked into
 this directory, you can see that the name of the match field for table
 `ipv4_da_lpm` is `hdr.ipv4.dstAddr[23:8]`, and that name is also used
 in the PTF test `ptf/demo1.py` to find the information about this

@@ -310,5 +310,5 @@ That looks correct to me.
 # Miscellaneous commands
 
 ```
-./p4test --pp ./tmp-foo/psa-example-parser-checksum.p4 --dump ./tmp-foo --top4 MidEndLast,FrontEndLast,FrontEndDump --testJson --maxErrorCount 100 --arch psa --p4runtime-files ./tmp-foo/psa-example-parser-checksum.p4.p4info.txt --p4runtime-entries-files ./tmp-foo/psa-example-parser-checksum.p4.entries.txt /home/andy/p4c/testdata/p4_16_samples/psa-example-parser-checksum.p4
+./p4test --pp ./tmp-foo/psa-example-parser-checksum.p4 --dump ./tmp-foo --top4 MidEndLast,FrontEndLast,FrontEndDump --testJson --maxErrorCount 100 --arch psa --p4runtime-files ./tmp-foo/psa-example-parser-checksum.p4.p4info.txtpb --p4runtime-entries-files ./tmp-foo/psa-example-parser-checksum.p4.entries.txt /home/andy/p4c/testdata/p4_16_samples/psa-example-parser-checksum.p4
 ```
