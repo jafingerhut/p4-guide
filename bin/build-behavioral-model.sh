@@ -69,8 +69,17 @@ fi
 # believe also psa_switch (but the latter is not feature complete and
 # working as of 2023-Mar)
 ./autogen.sh
+if [ -z ${VIRTUAL_ENV} ]
+then
+    # This case is to support P4 installs from install-p4dev-v6.sh script
+    # or earlier, where there was no Python venv used.
+    configure_python_prefix=""
+else
+    PYTHON_VENV="${VIRTUAL_ENV}"
+    configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
+fi
 # With debug enabled in binaries:
-./configure --with-pi --with-thrift 'CXXFLAGS=-O0 -g'
+./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
 # With debug and P4_16 stack operation support enabled in binaries:
 #./configure --enable-WP4-16-stacks 'CXXFLAGS=-O0 -g'
 # Without debug enabled:
