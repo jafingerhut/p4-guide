@@ -33,8 +33,8 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
-| 2024-Jun-01 | Ubuntu 24.04 | Will rebuild and publish another image soon | no such VM created | -- | -- | -- |
-| 2024-Jun-01 | Ubuntu 20.04 | Will rebuild and publish another image soon | Will rebuild and publish another image soon | -- | -- | -- |
+| 2024-Jun-01 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1WOuj7FtkpZ9QiwsWwd0qTDr8c4GOKGWt/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1fnkN1z-xf1prLWcSowtDksbdUHEKgjKR/view?usp=sharing) | Combo23 | no |
+| 2024-Jun-01 | Ubuntu 20.04 | [2.9 GByte VM image](https://drive.google.com/file/d/1NV7VYHSq39Mxdp2n2qn-7Ix-tJqIl6s9/view?usp=sharing) | [2.0 GByte VM image](https://drive.google.com/file/d/1n_QbcLoMr_3DUD3rhxx7IPoXZFO-bjkt/view?usp=sharing) | [README](https://drive.google.com/file/d/1XvwbseGn4WoGHzwEEte8JNrmrug8hAGf/view?usp=sharing) | Combo23 | no |
 | 2024-May-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1XMbnW-xcnInZsZbms5robk3X-OQHk_Pp) | [2.0 GBytes VM image](https://drive.google.com/file/d/11SnZjYuh3lAHqe-pdJrI9bXlBU9Pwszq) | [README](https://drive.google.com/file/d/1wT131SDyJ-0WCAEaH3eRAEV2ILmX_a0M) | Combo22 | no |
 | 2024-Apr-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1bXa1aL9e1mCCI5NQdDCmY54EDs4XuAD5/view?usp=drive_link) | [2.7 GBytes VM image](https://drive.google.com/file/d/1S_Pe1mGv4HPgCYr5Ndw9fWOF8mCVtADo/view?usp=drive_link) | [README](https://drive.google.com/file/d/1Lc756eGIen2ZdH5dost_sgl5bkoAvGO0/view?usp=drive_link) | Combo22 | no |
 | 2024-Mar-01 | Ubuntu 20.04 | [3.1 GByte VM image](https://drive.google.com/file/d/1RqG-UEBW5dTpyx3Y6f_9C_tbWSoAnJbP/view?usp=drive_link) | [2.1 GBytes VM image](https://drive.google.com/file/d/1_pkrQgtilzUjA_NNgw9GiuIs5YrLt55a/view?usp=drive_link) | [README](https://drive.google.com/file/d/1ueUi80uKra3Xu8yyYnKbAN1qOw_q_guj/view?usp=drive_link) | Combo22 | no |
@@ -61,6 +61,7 @@ Version combinations I have used above for testing VM images:
 | Combo19 | Windows 11 Enterprise | VirtualBox 7.0.8 |
 | Combo21 | macOS 12.7.x | VirtualBox 7.0.12 |
 | Combo22 | macOS 12.7.x | VirtualBox 7.0.14 |
+| Combo23 | macOS 12.7.x | VirtualBox 7.0.18 |
 
 
 
