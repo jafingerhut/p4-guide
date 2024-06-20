@@ -72,12 +72,11 @@ Start with:
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
   + Ubuntu 20.04, 22.04, 24.04
-    + Installation on Ubuntu 24.04 only works with install-p4dev-v8.sh
     + All supported Ubuntu versions have now been tested working with
-      install-p4dev-v7.sh and install-p4dev-v8.sh in a VM created
-      inside the [UTM virtualization
-      software](https://mac.getutm.app), running on an Apple Silicon
-      Mac (aarch64 processor architecture, aka arm64)
+      install-p4dev-v8.sh in a VM created inside the [UTM
+      virtualization software](https://mac.getutm.app), running on an
+      Apple Silicon Mac (aarch64 processor architecture, aka arm64)
+
   + Fedora 35, 36, 37, 38
     + Only some Fedora releases are supported by each script.  When
       you run one of them, it will quickly do an OS version check to
@@ -134,14 +133,14 @@ Then run the commands below in a terminal.  Note:
 $ sudo apt install git     # For Ubuntu
 $ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
-$ ./p4-guide/bin/install-p4dev-v6.sh |& tee log.txt
+$ ./p4-guide/bin/install-p4dev-v8.sh |& tee log.txt
 
 # If you used v7 or v8 versions of the install script, see Note 1 below.
 ```
 
-Replace the `v6` in `install-p4dev-v6.sh` with `v5`, `v7`, or `v8` if
-you prefer to use one of those versions.  More details on the
-differences between them are in the next section.
+Replace the `v8` in `install-p4dev-v8.sh` with `v5` if you prefer to
+use that version.  More details on the differences between them are in
+the next section.
 
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
@@ -149,13 +148,12 @@ the file `log.txt`, as well as appear in the terminal window.  The
 output is about 10,000 lines long on a good run, so saving it to a
 file is good if you want to see what it did.
 
-Note 1: If you use `install-p4dev-v7.sh` or `install-p4dev-v8.sh` and
-use `bash` as your command shell (the default on Ubuntu and Fedora
-Linux), you should execute the command `source p4setup.bash` in every
-`bash` shell where you wish to run the P4 development tools.  You can
-add the `source p4setup.bash` line to your `$HOME/.bashrc` file, so
-that it will automatically be run for you in any new `bash` shell you
-create.
+Note 1: If you use `install-p4dev-v8.sh` and use `bash` as your
+command shell (the default on Ubuntu and Fedora Linux), you should
+execute the command `source p4setup.bash` in every `bash` shell where
+you wish to run the P4 development tools.  You can add the `source
+p4setup.bash` line to your `$HOME/.bashrc` file, so that it will
+automatically be run for you in any new `bash` shell you create.
 
 Historical notes:
 
@@ -174,13 +172,13 @@ Historical notes:
 ## Which install script should I use?
 
 I would recommend using `install-p4dev-v5.sh` if you are able to use
-Ubuntu 20.04.  It requires the least disk space, installs quickly, and
-it installs pre-compiled P4 development tools from Debian packages
-that can be updated later to more recent versions as they are
-published, if you wish.  Note: The source code for behavioral-model
-and p4c that this installs tends to be up to 2-3 months older than the
-date when you install them.  If you really need the latest version of
-these programs, use a different install script.
+Ubuntu 20.04 on an x86_64 processor.  It requires the least disk
+space, installs quickly, and it installs pre-compiled P4 development
+tools from Debian packages that can be updated later to more recent
+versions as they are published, if you wish.  Note: The source code
+for behavioral-model and p4c that this installs tends to be up to 2-3
+months older than the date when you install them.  If you really need
+the latest version of these programs, use a different install script.
 
 Minor note: As of 2023-Jan when I updated the PTF tests in this
 p4-guide repository to use p4runtime-shell as the Python API for table
@@ -215,16 +213,16 @@ through 2024.  They all include the following:
 | Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc | Where are Python3 packages installed? |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- | ------------------------------------- |
 | install-p4dev-v8.sh | 24.04, 22.04, 20.04 | 20 GB | 200 mins |   2 GB | binary lib version varies by OS | binary lib varies by OS, Python grpcio package v1.51.3, or v1.59.3 on Ubuntu 24.04 | ~/p4dev-python-venv virtual environment |
-| install-p4dev-v7.sh | 22.04, 20.04 | 20 GB | 200 mins |   2 GB | v3.21.6 | v1.51.3 | ~/p4dev-python-venv virtual environment |
-| install-p4dev-v6.sh | 22.04, 20.04 | 25 GB | 160 mins |   2 GB | v3.18.1 | v1.43.2 | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 | install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 
 
 The scripts in the next table below are no longer tested by me.  They
 are listed here only for possible historical interest.
 
-| Script | Versions of Ubuntu it was formerly tested on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2015 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
+| Script | Versions of Ubuntu it was formerly tested on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
 | ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | -------------- | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
+| install-p4dev-v7.sh | 22.04, 20.04 | 2024-Jun | yes | yes | yes | yes | 25 GB | 200 mins | 2 GB | v3.21.6 | v1.51.3 |
+| install-p4dev-v6.sh | 22.04, 20.04 | 2024-Jun | yes | yes | yes | yes | 25 GB | 160 mins | 2 GB | v3.18.1 | v1.43.2 |
 | install-p4dev-v4.sh | 20.04, 18.04 | 2023-Feb | yes | yes | yes | yes | 12 GB | 100 mins | 2 GB | v3.6.1 | v1.17.2 |
 | install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- | -- | -- | -- |
 | install-p4dev-v2.sh | 18.04, 16.04 | 18.04 in 2022-Mar, 16.04 in 2021-Aug | yes | yes | no, Python2 | no | 11 GB | 100 mins |   2 GB | v3.6.1 | v1.17.2 |
