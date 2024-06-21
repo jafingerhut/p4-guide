@@ -736,11 +736,15 @@ date
 
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
 then
+    TIME_GRPC_CLONE_START=$(date +%s)
+    TIME_GRPC_CLONE_END=$(date +%s)
+    TIME_GRPC_INSTALL_START=$(date +%s)
     sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
 	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
+    TIME_GRPC_INSTALL_END=$(date +%s)
     pip3 list
 else
     # Do not bother installing protobuf package from source code, as
