@@ -21,14 +21,24 @@
 #   via `python3 -m venv <venv-name>`, instead of in system-wide
 #   directories like /usr/local/lib   See [Note 1] below.
 # * Install more recent Thrift (0.16)
+# * Support Ubuntu 24.04 (this is the first version of this install
+#   script that does so).
+# * Installs Protobuf and gRPC from pre-built packages and Python
+#   packages, at least for OS versions where this has been tested to
+#   work.  I could not find a single version of these packages that
+#   would compile and work on all supported OS versions.  This script
+#   will in general install different versions of these packages on
+#   different OS versions, but they are regularly tested to ensure
+#   that they work for the purposes of the open source P4 development
+#   tools.
 
 # [Note 1]
-# One motivation for this change is that Ubuntu 23.04 now by default
-# gives an error when you try to use 'sudo pip3 install ...' to
-# install a Python package in a system-wide directory.  Thus it seems
-# likely that something in this script needs to change to support
-# Ubuntu 23.04 and probably later versions of Ubuntu.  Another reason
-# is that it avoids some of the hacky code I have in
+# One motivation for this change is that Ubuntu 23.04 and Ubuntu 24.04
+# now by default give an error when you try to use 'sudo pip3 install
+# ...' to install a Python package in a system-wide directory.  Thus
+# it seems likely that something in this script needs to change to
+# support Ubuntu 23.04 and probably later versions of Ubuntu.  Another
+# reason is that it avoids some of the hacky code I have in
 # install-p4dev-v6.sh to move installed Python packages from the
 # site-packages directory to the dist-packages directory.
 
@@ -1084,7 +1094,6 @@ else
     git log -n 1
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
-    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     TIME_P4C_INSTALL_START=$(date +%s)
     if [ ${PROCESSOR} = "x86_64" ]
     then

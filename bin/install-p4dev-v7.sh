@@ -585,7 +585,6 @@ then
     then
 	echo "Found directory ${INSTALL_DIR}/automake-1.16.5.  Assuming desired version of automake-1.16.5 is already installed."
     else
-
 	# Install more recent versions of autoconf and automake than those
 	# that are installed by the Ubuntu 20.04 packages.  That helps
 	# cause Python packages to be installed in the venv while building
