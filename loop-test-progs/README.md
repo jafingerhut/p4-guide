@@ -1,0 +1,42 @@
+# Introduction
+
+On 2024-May-17, Chris Dodd added an implementation of for loops to
+p4c.
+
+This directory contains some P4 programs intended to test the
+properties of this implementation.
+
+Here are some short names used in this article for specific versions
+of the p4c source code:
+
++ v1 - p4c git SHA d5df09b77201b87ad9356c45ae2ffdb1c67b35d1 dated 2024-Jun-04
+
+
+## Can loop variables be used as slice indexes?
+
+### v1
+
+No.
+
+```bash
+$ p4c --target bmv2 --arch v1model loop-var-can-be-used-in-slice1.p4 
+loop-var-can-be-used-in-slice1.p4(50): [--Werror=type-error] error: i: slice bit index values must be constants
+            hdr.ethernet.srcAddr[i:i] = i[0:0];
+                                 ^
+```
+
+
+## Is it allowed to modify a loop variable in the loop body?
+
+### v1
+
+Yes.
+
+```bash
+$ mkdir -p tmp
+$ p4test --dump tmp --top4 FrontEndLast,FrontEndDump,MidEndLast loop-var-modifiable-in-body1.p4
+[ no errors or warnings.  See output file tmp/loop-var-modifiable-in-body1-0003-MidEnd_47_MidEndLast.p4 ]
+```
+
+The output files for `FrontEndLast` and `MidEndLast` appear incorrect,
+as they do not update the loop variable `i`.  Bug?
