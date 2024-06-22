@@ -38,5 +38,37 @@ $ p4test --dump tmp --top4 FrontEndLast,FrontEndDump,MidEndLast loop-var-modifia
 [ no errors or warnings.  See output file tmp/loop-var-modifiable-in-body1-0003-MidEnd_47_MidEndLast.p4 ]
 ```
 
-The output files for `FrontEndLast` and `MidEndLast` appear incorrect,
-as they do not update the loop variable `i`.  Bug?
+TODO: The output files for `FrontEndLast` and `MidEndLast` appear
+incorrect, as they do not update the loop variable `i`.  Compiler bug?
+
+
+## Is a loop variable with type declared in initialization clause in scope after loop body?
+
+### v1
+
+No.  Good!
+
+```bash
+$ mkdir -p tmp
+$ p4test --dump tmp --top4 FrontEndLast,FrontEndDump,MidEndLast loop-var-in-scope-outside-of-loop1.p4
+loop-var-in-scope-outside-of-loop1.p4(53): [--Werror=not-found] error: i: declaration not found
+        hdr.ethernet.srcAddr[7:0] = i;
+                                    ^
+```
+
+
+## Is a loop variable declared before loop in scope after loop body?
+
+### v1
+
+Yes.  Good!
+
+```bash
+$ p4test --dump tmp --top4 FrontEndLast,FrontEndDump,MidEndLast loop-var-can-be-declared-before-loop1.p4
+[ no errors or warnings.  See output file tmp/loop-var-can-be-declared-before-loop1-0003-MidEnd_47_MidEndLast.p4 ]
+```
+
+The `MidEndLast` file looks correct to me, but not as optimized as it
+could be, e.g. it contains dead assignments to `n_0` overwritten by
+immediately-following assignments, and lots of constant folding
+undone.
