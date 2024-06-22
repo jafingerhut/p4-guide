@@ -10,16 +10,18 @@ Here are some short names used in this article for specific versions
 of the p4c source code:
 
 + v1 - p4c git SHA d5df09b77201b87ad9356c45ae2ffdb1c67b35d1 dated 2024-Jun-04
++ v2 - p4c git SHA 32e73964a43941ae10ef5ac1e0dbd3a9d7975ed3 dated 2024-Jun-21
 
 
 ## Can loop variables be used as slice indexes?
 
-### v1
+### v1, v2
 
 No.
 
 ```bash
-$ p4c --target bmv2 --arch v1model loop-var-can-be-used-in-slice1.p4 
+$ mkdir -p tmp
+$ p4test --dump tmp --top4 FrontEndLast,FrontEndDump,MidEndLast loop-var-can-be-used-in-slice1.p4 
 loop-var-can-be-used-in-slice1.p4(50): [--Werror=type-error] error: i: slice bit index values must be constants
             hdr.ethernet.srcAddr[i:i] = i[0:0];
                                  ^
@@ -28,7 +30,7 @@ loop-var-can-be-used-in-slice1.p4(50): [--Werror=type-error] error: i: slice bit
 
 ## Is it allowed to modify a loop variable in the loop body?
 
-### v1
+### v1, v2
 
 Yes.
 
@@ -44,7 +46,7 @@ incorrect, as they do not update the loop variable `i`.  Compiler bug?
 
 ## Is a loop variable with type declared in initialization clause in scope after loop body?
 
-### v1
+### v1, v2
 
 No.  Good!
 
@@ -59,7 +61,7 @@ loop-var-in-scope-outside-of-loop1.p4(53): [--Werror=not-found] error: i: declar
 
 ## Is a loop variable declared before loop in scope after loop body?
 
-### v1
+### v1, v2
 
 Yes.  Good!
 
