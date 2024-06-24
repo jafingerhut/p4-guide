@@ -3,7 +3,7 @@
 
 // trypcap exercises a few features of the pcap library from Go
 
-package main
+package trypcap
 
 import (
 	"flag"
