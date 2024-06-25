@@ -78,7 +78,7 @@ func main() {
 	for packet := range packetSource.Packets() {
 		n += 1
 		fmt.Printf("\n%d\n", n)
-		fmt.Println(packet)
+		fmt.Println(packet.Dump())
 
 		//p := gopacket.NewPacket(packet, CiscoS1PuntHeaderType, gopacket.Lazy)
 		//fmt.Println(p)
