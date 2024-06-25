@@ -59,6 +59,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		defer handle.Close()
 		fmt.Printf("Opened interface %s promisc=%v\n", *iface, promisc)
 	}
 	if *fname != "" {
@@ -67,10 +68,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		defer handle.Close()
 		fmt.Printf("Opened file %s\n", *fname)
 	}
 	fmt.Printf("   handle=%v\n", handle)
-	defer handle.Close()
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	n := 0
