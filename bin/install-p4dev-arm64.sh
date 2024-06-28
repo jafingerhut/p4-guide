@@ -213,7 +213,7 @@ else
     if [ ${tried_but_got_build_errors} -eq 1 ]
     then
 	1>&2 echo ""
-	1>&2 echo "This OS has been tried at least onc before, but"
+	1>&2 echo "This OS has been tried at least once before, but"
 	1>&2 echo "there were errors during a compilation or build"
 	1>&2 echo "step that have not yet been fixed.  If you have"
 	1>&2 echo "experience in fixing such matters, your help is"

@@ -17,7 +17,7 @@
 
 # This script differs from install-p4dev-v4.sh as follows:
 
-# It install Ubuntu pre-compiled packages created by scripts and
+# It installs Ubuntu pre-compiled packages created by scripts and
 # published by Radostin Stoyanov, with scripts for creating them here:
 
 # https://github.com/p4lang/p4pi/tree/master/packages
