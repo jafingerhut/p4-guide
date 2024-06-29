@@ -13,7 +13,7 @@ type PktWatcherState struct {
 	handle *pcap.Handle
 }
 
-func start(opts map[string]interface{}) (watcherState *PktWatcherState, err error) {
+func Start(opts map[string]interface{}) (watcherState *PktWatcherState, err error) {
 	var w PktWatcherState
 	debug := false
 	debugVal, ok := opts["debug"]
