@@ -5,6 +5,9 @@
 all-good: \
 	loop-var-can-be-declared-before-loop1.p4i \
 	loop-var-exprs-not-constant1.p4i \
+	loop-var-in-range-defined-after-loop1.p4i \
+	loop-var-in-range-defined-after-loop2.p4i \
+	loop-var-in-range-modifiable-in-body1.p4i \
 	loop-var-modifiable-in-body1.p4i \
 	loop-vars-multiple-in-initializer1.p4i \
 	var-shadowing-test1.p4i \
