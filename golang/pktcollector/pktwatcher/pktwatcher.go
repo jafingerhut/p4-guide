@@ -1,6 +1,7 @@
 package pktwatcher
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -8,36 +9,43 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-type PktwatcherState struct {
+type PktWatcherState struct {
 	handle *pcap.Handle
 }
 
-func init(opts map[string]interface{}) (err error) {
-	var handle *pcap.Handle
+func start(opts map[string]interface{}) (watcherState *PktWatcherState, err error) {
+	var w PktWatcherState
+	debug := false
+	debugVal, ok := opts["debug"]
+	if ok {
+		debug = debugVal.(bool)
+	}
 	if name, ok := opts["interface_name"]; ok {
+		iname := name.(string)
 		snaplen := 10000
 		promisc := true
 		timeout := pcap.BlockForever
-		handle, err = pcap.OpenLive(name, int32(snaplen), promisc, timeout)
+		w.handle, err = pcap.OpenLive(iname, int32(snaplen), promisc, timeout)
 		if err != nil {
-			log.Fatal(err)
-			return err
+			return nil, err
 		}
-		if opts["debug"] {
+		if debug {
 			fmt.Fprintf(os.Stderr, "Opened interface %s promisc=%v\n", name, promisc)
 		}
 	} else if name, ok := opts["file_name"]; ok {
-		handle, err = pcap.OpenOffline(*fname)
+		fname := name.(string)
+		w.handle, err = pcap.OpenOffline(fname)
 		if err != nil {
 			log.Fatal(err)
-			return err
+			return nil, err
 		}
-		if opts["debug"] {
+		if debug {
 			fmt.Fprintf(os.Stderr, "Opened file %s\n", name)
 		}
 	} else {
-		err = error.New("neither of the option keys 'interface_name' nor 'file_name' were present")
+		err = errors.New("neither of the option keys 'interface_name' nor 'file_name' were present")
 		log.Fatal(err)
-		return err
+		return nil, err
 	}
+	return &w, nil
 }
