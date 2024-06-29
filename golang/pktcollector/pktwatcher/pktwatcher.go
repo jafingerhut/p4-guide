@@ -1,4 +1,4 @@
-package github.com/jafingerhut/p4-guide/golang/pktcollector/pktwatcher
+package pktwatcher
 
 import (
 	"errors"
