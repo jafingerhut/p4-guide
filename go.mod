@@ -1,4 +1,4 @@
-module pktcollector
+module github.com/jafingerhut/p4-guide
 
 go 1.22.4
 
