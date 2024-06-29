@@ -15,6 +15,7 @@ import (
 	"github.com/google/gopacket"
 	//"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
+	"github.com/jafingerhut/golang/pktcollector/pktwatcher"
 )
 
 // Things in pcap package:
@@ -38,7 +39,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	var handle *pcap.Handle
 	if *iface != "" {
 		intfs, err := pcap.FindAllDevs()
 		if err != nil {
@@ -50,21 +50,17 @@ func main() {
 			fmt.Printf("%2d 0x%04x %s %s %d addresses: %v\n", idx, intf.Flags, intf.Name, intf.Description, len(intf.Addresses), intf.Addresses)
 		}
 
-		// Opening Device
-		snaplen := 10000
-		promisc := true
-		//timeout := 30 * time.Second
-		timeout := pcap.BlockForever
-		handle, err = pcap.OpenLive(*iface, int32(snaplen), promisc, timeout)
+		err = pktwatcher.init(map[string]interface{}{
+			"interface_name": *iface,
+		})
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer handle.Close()
-		fmt.Printf("Opened interface %s promisc=%v\n", *iface, promisc)
 	}
 	if *fname != "" {
-		var err error
-		handle, err = pcap.OpenOffline(*fname)
+		err = pktwatcher.init(map[string]interface{}{
+			"filerface_name": *fname,
+		})
 		if err != nil {
 			log.Fatal(err)
 		}
