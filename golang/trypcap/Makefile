@@ -4,7 +4,7 @@ format: trypcap.go
 	gofmt -w trypcap.go
 
 vet: trypcap.go format
-	go vet example/trypcap
+	go vet trypcap.go
 
 build: trypcap.go vet
 	go build trypcap.go
