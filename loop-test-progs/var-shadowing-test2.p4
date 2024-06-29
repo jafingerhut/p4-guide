@@ -45,22 +45,26 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
-    bit<8> n = hdr.ethernet.srcAddr[15:8];
+    bit<8> n = hdr.ethernet.srcAddr[15:8];  // line [1]
     bit<8> i;
     apply {
         bit<8> k1 = n + 1;
         bit<8> j1 = n + 8;
         {
-            bit<8> k2 = n + 1;
-            bit<8> n = n + 5;
-            bit<8> j2 = n + 3;
+            bit<8> k2 = n + 1;  // right-hand side n is def'd at [1]
+            bit<8> n = n + 5;  // line [2].  Right-hand side n is def'd at [1]
+            bit<8> j2 = n + 3;  // right-hand side n is def'd at [2]
 
             if (k1 != k2) {
+                // This branch is never taken by p4testgen, because k1
+                // and k2 are always equal.
                 hdr.ethernet.dstAddr[47:47] = 1;
             } else {
                 hdr.ethernet.dstAddr[47:47] = 0;
             }
             if (j1 != j2) {
+                // This branch is never taken by p4testgen, because j1
+                // and j2 are always equal.
                 hdr.ethernet.dstAddr[46:46] = 1;
             } else {
                 hdr.ethernet.dstAddr[46:46] = 0;
@@ -68,6 +72,8 @@ control ingressImpl(inout headers_t hdr,
             if (n != k2) {
                 hdr.ethernet.dstAddr[45:45] = 1;
             } else {
+                // This branch is never taken by p4testgen, because n
+                // and k2 are always different.
                 hdr.ethernet.dstAddr[45:45] = 0;
             }
             hdr.ethernet.srcAddr[23:16] = k2;

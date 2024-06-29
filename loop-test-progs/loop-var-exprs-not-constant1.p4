@@ -45,29 +45,13 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
-    bit<8> n = hdr.ethernet.srcAddr[15:8];  // line [1]
-    bit<8> i;
+    bit<8> n = 0;
     apply {
-        {
-            // Statements in comments below are correct for this p4c version:
-            // $ p4c --version
-            // p4c 1.2.4.12 (SHA: d5df09b77 BUILD: DEBUG)
-            bit<8> k = n + 1;  // right-hand side n is def'd at [1]
-            // Q: Does the language spec say anything relevant about
-            // this situation?
-            // A: I do not know yet.
-            bit<8> n = n + 5;  // line [2].  Right-hand side n is def'd at [1]
-            // Trying to also have the following declaration is a
-            // compile-time error, because it is a duplicate
-            // declaration of `n` in the same scope.
-            //bit<8> n = n + 3;
-            bit<8> j = n + 3;  // right-hande side n is def'd at [2]
-
-            hdr.ethernet.srcAddr[23:16] = k;
-            hdr.ethernet.srcAddr[15:8] = n;
-            hdr.ethernet.srcAddr[7:0] = j;
-            stdmeta.egress_spec = 1;
+        for (bit<8> i = hdr.ethernet.dstAddr[7:0]; i < hdr.ethernet.dstAddr[15:8]; i = i + 1) {
+            n = n + 1;
         }
+        hdr.ethernet.srcAddr[15:8] = n;
+        stdmeta.egress_spec = 1;
     }
 }
 
