@@ -39,6 +39,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	var w *pktwatcher.State
 	if *iface != "" {
 		intfs, err := pcap.FindAllDevs()
 		if err != nil {
@@ -50,7 +51,7 @@ func main() {
 			fmt.Printf("%2d 0x%04x %s %s %d addresses: %v\n", idx, intf.Flags, intf.Name, intf.Description, len(intf.Addresses), intf.Addresses)
 		}
 
-		err = pktwatcher.init(map[string]interface{}{
+		w, err = pktwatcher.Start(map[string]interface{}{
 			"interface_name": *iface,
 		})
 		if err != nil {
@@ -58,16 +59,15 @@ func main() {
 		}
 	}
 	if *fname != "" {
-		err = pktwatcher.init(map[string]interface{}{
+		var err error
+		w, err = pktwatcher.Start(map[string]interface{}{
 			"filerface_name": *fname,
 		})
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer handle.Close()
 		fmt.Printf("Opened file %s\n", *fname)
 	}
-	fmt.Printf("   handle=%v\n", handle)
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	n := 0

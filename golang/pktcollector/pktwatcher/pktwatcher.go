@@ -9,12 +9,12 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-type PktWatcherState struct {
+type State struct {
 	handle *pcap.Handle
 }
 
-func Start(opts map[string]interface{}) (watcherState *PktWatcherState, err error) {
-	var w PktWatcherState
+func Start(opts map[string]interface{}) (watcherState *State, err error) {
+	var w State
 	debug := false
 	debugVal, ok := opts["debug"]
 	if ok {
