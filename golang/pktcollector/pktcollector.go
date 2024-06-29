@@ -15,7 +15,7 @@ import (
 	"github.com/google/gopacket"
 	//"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
-	"github.com/jafingerhut/golang/pktcollector/pktwatcher"
+	"github.com/jafingerhut/p4-guide/golang/pktcollector/pktwatcher"
 )
 
 // Things in pcap package:
