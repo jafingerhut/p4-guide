@@ -19,15 +19,17 @@ func New(capacity int) (b *Buf, err error) {
 	return &x, nil
 }
 
-func (rb *Buf) Append(elem interface{}) {
+func (rb *Buf) Append(elem interface{}) (pktDiscarded bool) {
 	rb.elems[rb.last] = elem
 	rb.last += 1
 	if rb.n < rb.capacity {
 		rb.n += 1
+		return false
 	} else {
 		// n == capacity, so overwrite the element added
 		// longest ago
 		rb.first += 1
+		return true
 	}
 }
 
