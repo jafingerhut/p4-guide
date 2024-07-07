@@ -137,7 +137,7 @@ $ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v8.sh |& tee log.txt
 
-# If you used v7 or v8 versions of the install script, see Note 1 below.
+# If you used v8 version of the install script, see Note 1 below.
 ```
 
 Replace the `v8` in `install-p4dev-v8.sh` with `v5` if you prefer to
@@ -193,7 +193,7 @@ in the p4-guide repository, but then the exercises in p4lang/tutorials
 fail to run, probably because of some conflict in how the Python
 packages are installed.  This can probably be worked around by using
 Python virtual environments, but I have not tested this.  A system
-installed using and other version of the install script does not have
+installed using any other version of the install script does not have
 this issue.
 
 All of the current install scripts install everything required to
