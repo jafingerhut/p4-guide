@@ -85,7 +85,7 @@ to the file "hello.c".
 
 I selected menu item Help -> About to see what version of VScode I was
 using.  It showed version 1.91.0.  I do not know what range of
-versions these isntructions are applicable for.
+versions these instructions are applicable for.
 
 The program is very short, and is just the familiar "Hello, world!" C
 program, except with #ifdef's for showing the message "Hello, world!"
@@ -174,7 +174,7 @@ to display parts of the program that are considered inactive.
 
 Near the bottom left of the window should be an icon that looks like a
 gear shape.  Hovering over it should show the text "Manage".  Click on
-that icon.  A window should appear.  Click on the entry "Settings".
+that icon.  A menu should appear.  Click on the entry "Settings".
 
 There is a text box near the top of the main pane that says "Search
 settings".
