@@ -147,7 +147,7 @@ of `#define` directives in a configuration file, and it uses those
 values to show code that would be removed by the C preprocessor in a
 different color.
 
-See [../vscode-preproc-highlighting/README.md](here) for detailed
+See [here](../vscode-preproc-highlighting/README.md) for detailed
 steps on how to do this for a tiny C program, and then how to do it
 for a set of P4 source files, although by a hacky way that requires
 renaming the source files first.
