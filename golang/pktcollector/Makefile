@@ -4,7 +4,7 @@ format: pktcollector.go
 	gofmt -w pktcollector.go
 
 vet: pktcollector.go format
-	go vet pktcollector
+	go vet pktcollector.go
 
 build: pktcollector.go vet
 	go build pktcollector.go
