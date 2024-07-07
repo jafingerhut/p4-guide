@@ -14,6 +14,10 @@ rename your P4 program source files.  If anyone knows how to configure
 VScode to do this for files with a suffix of `.p4`, please let me
 know.
 
+There is a similar feature in Emacs starting somewhere around version
+22 called `hide-ifdef-mode` that can do something similar.  I have not
+yet written up detailed steps on how to use it.
+
 
 # Steps to follow for a new project on Ubuntu Linux
 
