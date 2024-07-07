@@ -19,6 +19,7 @@ know.
 
 These steps have been tested on these versions of Ubuntu Linux
 
++ 20.04
 + 24.04
 
 
