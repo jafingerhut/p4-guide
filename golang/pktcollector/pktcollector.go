@@ -13,19 +13,18 @@ import (
 	"log"
 	"net"
 	"os"
-	//"time"
 
+	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 
+	"github.com/jafingerhut/p4-guide/golang/pktcollector/pktsource"
 	"github.com/jafingerhut/p4-guide/golang/pktcollector/pktwatcher"
 )
-
-// Things in pcap package:
-// func FindAllDevs() (ifs []Interface, err error)
 
 var iface = flag.String("iface", "", "Select interface where to capture")
 var fname = flag.String("file", "", "pcap file to read packets from")
 var debug = flag.Int("debug", 0, "debug level")
+var capacity = flag.Int("capacity", 0, "ring buffer capacity for capturing packets")
 
 func printUsage(progName string) {
 	fmt.Fprintf(os.Stderr, "usage: %s\n", progName)
@@ -41,7 +40,7 @@ func main() {
 		printUsage(os.Args[0])
 		os.Exit(1)
 	}
-	var watcherOpts map[string]interface{}
+	var sourceOpts map[string]interface{}
 	var successMsg string
 	if *iface != "" {
 		if *debug >= 2 {
@@ -55,28 +54,32 @@ func main() {
 				fmt.Printf("%2d 0x%04x %s %s %d addresses: %v\n", idx, intf.Flags, intf.Name, intf.Description, len(intf.Addresses), intf.Addresses)
 			}
 		}
-		watcherOpts = map[string]interface{}{
+		sourceOpts = map[string]interface{}{
 			"interface_name": *iface,
 		}
 		successMsg = fmt.Sprintf("Opened interface %s for live packet capture", *iface)
 	}
 	if *fname != "" {
-		watcherOpts = map[string]interface{}{
+		sourceOpts = map[string]interface{}{
 			"file_name": *fname,
 		}
 		successMsg = fmt.Sprintf("Opened file %s\n", *fname)
 	}
-	watcherOpts["debug"] = *debug
-	w, err := pktwatcher.Start(watcherOpts)
+	sourceOpts["debug"] = *debug
+	packetChan, _, err := pktsource.Start(sourceOpts)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}
 	fmt.Println(successMsg)
 
-	if *debug >= 1 {
-		fmt.Printf("w=%v\n", w)
+	watcherOpts := map[string]interface{}{}
+	watcherOpts["debug"] = *debug
+	if *capacity != 0 {
+		watcherOpts["capacity"] = *capacity
 	}
+	watcherState, err := pktwatcher.Start(watcherOpts, packetChan)
+
 	// Open socket as server listening for incoming connection
 	// requests.  Incoming connections can contain commands like
 	// "readPkts", "readPktsAndClear", "stopPktCapture"
@@ -87,11 +90,14 @@ func main() {
 			log.Print(err)
 			continue
 		}
-		handleConn(conn)
+		exit := handleConn(conn, watcherState)
+		if exit {
+			break
+		}
 	}
 }
 
-func handleConn(c net.Conn) {
+func handleConn(c net.Conn, w *pktwatcher.State) (quit bool) {
 	defer c.Close()
 	if *debug >= 1 {
 		fmt.Printf("handleConn started parsing input from new connection\n")
@@ -103,15 +109,27 @@ func handleConn(c net.Conn) {
 			fmt.Printf("handleConn read line from client: %s\n", cmd)
 		}
 		switch cmd {
-		case "readPackets":
+		case "readAndClearPackets", "rac":
 			// todo
-		case "readAndClearPackets":
-			// todo
-		case "clearPackets":
-			// todo
+			pkts := w.ReadAndClearPackets()
+			fmt.Fprintf(c, "\n%d packets\n", pkts.Len())
+			for idx, pkt := range pkts.Elements() {
+				p := pkt.(gopacket.Packet)
+				fmt.Fprintf(c, "\n%3d %v\n", idx, p)
+				fmt.Fprintf(c, "\n%s\n", p.Dump())
+			}
+		//case "stopCapture", "stopcap":
+		//case "startCapture", "startcap:
+		case "quit":
+			// Client is disconnecting, but this server
+			// process should remaing running, waiting for
+			// connections from new clients.
 			io.WriteString(c, "OK\n")
-		//case "stopCapture":
-		//case "startCapture":
+			return false
+		case "exit":
+			// Client is ordering server to exit.
+			io.WriteString(c, "OK\n")
+			return true
 		default:
 			io.WriteString(c, "ERR\n")
 		}
@@ -119,11 +137,5 @@ func handleConn(c net.Conn) {
 	if *debug >= 1 {
 		fmt.Printf("handleConn scanner.Scan() returned false\n")
 	}
-	//	for {
-	//		_, err := io.WriteString(c, time.Now().Format("15:04:05\n"))
-	//		if err != nil {
-	//			return // e.g., client disconnected
-	//		}
-	//		time.Sleep(1 * time.Second)
-	//	}
+	return false
 }

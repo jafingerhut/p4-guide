@@ -9,3 +9,5 @@ vet: pktcollector.go format
 build: pktcollector.go vet
 	go build pktcollector.go
 
+clean:
+	/bin/rm -f pktcollector

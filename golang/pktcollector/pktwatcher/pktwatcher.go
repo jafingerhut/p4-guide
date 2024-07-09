@@ -1,14 +1,25 @@
 package pktwatcher
 
+// When this package's Start function is called, a goroutine is
+// started that reads packets (type gopacket.Packet) from the provided
+// channel, and processes each one.
+
+// In this case, processing a packet is pretty trivial: append it to a
+// ring buffer, which causes the packet appended longest ago to be
+// forgotten if the ring buffer is at its capacity.
+
+// The function ReadAndClearPackets can be called at any time.  It
+// returns the current contents of the ring buffer, and creates a new
+// empty ring buffer for recording any packets read from the channel
+// later.
+
 import (
-	"errors"
 	"fmt"
-	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/google/gopacket"
-	"github.com/google/gopacket/pcap"
 
 	"github.com/jafingerhut/p4-guide/golang/pktcollector/ringbuf"
 )
@@ -16,11 +27,13 @@ import (
 const defaultCapacity = 128
 
 type State struct {
-	handle *pcap.Handle
+	capacity int
 	numCapturedPkts int
 	numDiscardedPkts int
 	packetBuf *ringbuf.Buf
 	debug int
+	c <-chan gopacket.Packet
+	mu sync.Mutex  // guards this entire struct
 }
 
 type PktInfo struct {
@@ -29,7 +42,7 @@ type PktInfo struct {
 	PacketData []byte
 }
 
-func Start(opts map[string]interface{}) (watcherState *State, err error) {
+func Start(opts map[string]interface{}, c <-chan gopacket.Packet) (watcherState *State, err error) {
 	var w State
 	w.debug = 0
 	debugVal, ok := opts["debug"]
@@ -37,62 +50,40 @@ func Start(opts map[string]interface{}) (watcherState *State, err error) {
 		w.debug = debugVal.(int)
 		fmt.Fprintf(os.Stderr, "pktwatcher.Start found debug=%d\n", w.debug)
 	}
-	if name, ok := opts["interface_name"]; ok {
-		iname := name.(string)
-		snaplen := 10000
-		promisc := true
-		timeout := pcap.BlockForever
-		w.handle, err = pcap.OpenLive(iname, int32(snaplen), promisc, timeout)
-		if err != nil {
-			return nil, err
-		}
-		if w.debug >= 1 {
-			fmt.Fprintf(os.Stderr, "Opened interface %s promisc=%v\n", name, promisc)
-		}
-	} else if name, ok := opts["file_name"]; ok {
-		fname := name.(string)
-		w.handle, err = pcap.OpenOffline(fname)
-		if err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		if w.debug >= 1 {
-			fmt.Fprintf(os.Stderr, "Opened file %s\n", name)
-		}
-	} else {
-		err = errors.New("neither of the option keys 'interface_name' nor 'file_name' were present")
-		log.Fatal(err)
-		return nil, err
-	}
-	capacity := defaultCapacity
+	w.capacity = defaultCapacity
 	if capacityVal, ok := opts["capacity"]; ok {
-		capacity = capacityVal.(int)
+		w.capacity = capacityVal.(int)
 	}
+	w.numCapturedPkts = 0
 	w.numDiscardedPkts = 0
-	w.packetBuf, err = ringbuf.New(capacity)
-	if err != nil {
-		return nil, err
-	}
+	w.packetBuf = ringbuf.New(w.capacity)
+	w.c = c
+	go capturePackets(&w)
 	return &w, nil
+}
+
+func (w *State) ReadAndClearPackets() (curPackets *ringbuf.Buf) {
+	// Create a new ring buffer to use for later packets
+	rb := ringbuf.New(w.capacity)
+
+	// Get the current ring buffer, and replace it with the new,
+	// empty one.
+	w.mu.Lock()
+	pkts := w.packetBuf
+	w.packetBuf = rb
+	w.mu.Unlock()
+	return pkts
 }
 
 func capturePackets(w *State) {
 	if w.debug >= 1 {
 		fmt.Println("started capturing packets to in-memory ringbuf")
 	}
-	packetSource := gopacket.NewPacketSource(w.handle, w.handle.LinkType())
 	w.numCapturedPkts = 0
 	w.numDiscardedPkts = 0
-	for packet := range packetSource.Packets() {
-		w.numCapturedPkts += 1
-		pktMeta := packet.Metadata()
-		pktTimestamp := pktMeta.Timestamp
-		pktInterfaceIndex := pktMeta.InterfaceIndex
-		pktData := packet.Data()
-		pktDiscarded := w.packetBuf.Append(PktInfo{
-			Timestamp: pktTimestamp,
-			InterfaceIndex: pktInterfaceIndex,
-			PacketData: pktData})
+	for packet := range w.c {
+		w.mu.Lock()
+		pktDiscarded := w.packetBuf.Append(packet)
 		if pktDiscarded {
 			w.numDiscardedPkts += 1
 		} else {
@@ -101,8 +92,7 @@ func capturePackets(w *State) {
 		if w.debug >= 2 {
 			fmt.Printf("\n%d\n", w.numCapturedPkts)
 			fmt.Println(packet.Dump())
-			//p := gopacket.NewPacket(packet, CiscoS1PuntHeaderType, gopacket.Lazy)
-			//fmt.Println(p)
 		}
+		w.mu.Unlock()
 	}
 }
