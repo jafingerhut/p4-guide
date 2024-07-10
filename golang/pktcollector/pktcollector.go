@@ -23,6 +23,8 @@ import (
 
 var iface = flag.String("iface", "", "Select interface where to capture")
 var fname = flag.String("file", "", "pcap file to read packets from")
+var firstPacketWaitTimeSeconds = flag.Float64("delay", 0.0, "when reading packets from pcap file, the duration in seconds to wait before processing the first packet")
+var timeScale = flag.Float64("timescale", 0.0, "when reading packets from pcap file, the value to multiply the inter-packet times read from the pcap file, when processing consecutive packets")
 var debug = flag.Int("debug", 0, "debug level")
 var capacity = flag.Int("capacity", 0, "ring buffer capacity for capturing packets")
 
@@ -54,7 +56,9 @@ func main() {
 	}
 	if *fname != "" {
 		sourceOpts = map[string]interface{}{
-			"file_name": *fname,
+			"file_name":                  *fname,
+			"firstPacketWaitTimeSeconds": *firstPacketWaitTimeSeconds,
+			"timeScale":                  *timeScale,
 		}
 		successMsg = fmt.Sprintf("Opened file %s\n", *fname)
 	}
