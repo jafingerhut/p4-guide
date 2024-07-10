@@ -49,6 +49,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
@@ -62,7 +63,7 @@ type State struct {
 	debug int
 	handle *pcap.Handle
 	packetSource *gopacket.PacketSource
-	c chan gopacket.Packet
+	c <- chan gopacket.Packet
 }
 
 func Start(opts map[string]interface{}) (c <- chan gopacket.Packet, s *State, err error) {
@@ -80,6 +81,7 @@ func Start(opts map[string]interface{}) (c <- chan gopacket.Packet, s *State, er
 		log.Fatal(err)
 		return nil, nil, err
 	}
+	returnDelayedChannel := false
 	if ok1 {
 		iname := intfName.(string)
 		snaplen := 10000
@@ -112,7 +114,7 @@ func Start(opts map[string]interface{}) (c <- chan gopacket.Packet, s *State, er
 		if num, ok := opts["timeScale"]; ok {
 			w.timeScale = num.(float64)
 		}
-		returnDelayedChannel := true
+		returnDelayedChannel = true
 		if w.firstPacketWaitTimeSeconds == 0.0 && w.timeScale == 0.0 {
 			returnDelayedChannel = false
 		}
@@ -128,26 +130,40 @@ func Start(opts map[string]interface{}) (c <- chan gopacket.Packet, s *State, er
 
 func delayedChannel(s *State) (delayedChan <- chan gopacket.Packet) {
 	origChan := s.c
-	delayedChan := make(chan gopacket.Packet)
-	go feedDelayedChannel(s, origChan, delayedChan)
-	return delayedChan
+	c := make(chan gopacket.Packet)
+	go feedDelayedChannel(s, origChan, c)
+	return c
 }
 
-func feedDelayedChannel(s *State, origChan <- chan gopacket.Packet, delayedChan chan gopacket.Packet) {
+func feedDelayedChannel(s *State, origChan <- chan gopacket.Packet, delayedChan chan<- gopacket.Packet) {
+	// Calculate the time that the first packet should be written to
+	// delayedChan.
 	startTime := time.Now()
-	first := true
-	firstPktTime := startTime.Add(s.firstPacketWaitTimeSeconds * time.Second)
+	firstPkt := true
+	delta := time.Duration(s.firstPacketWaitTimeSeconds * float64(time.Second))
+	firstPktSendTime := startTime.Add(delta)
+
+	var firstOrigPktTime time.Time
+	var nextPktSendTime time.Time
 	for pkt := range origChan {
 		pktMeta := pkt.Metadata()
 		pktTimestamp := pktMeta.Timestamp
-		if first {
-			timeDelta := pktTimestamp.sub(firstPktTime)
-			nextPktTime := firstPktTime
+		if firstPkt {
+			firstPkt = false
+			firstOrigPktTime = pktTimestamp
+			nextPktSendTime = firstPktSendTime
 		} else {
-			// todo
-			
+			// origTimeDelta is the Duration after the first packet's
+			// time stamp, until the current packet's time stamp.
+			// Typically we expect this should be a positive duration.
+			origTimeDelta := pktTimestamp.Sub(firstOrigPktTime)
+			// sendTimeDelta is equalto origTimeDelta, scaled by the
+			// parameter s.timeScale, so we can speed up or slow down
+			// the inter-packet times.
+			sendTimeDelta := time.Duration(float64(origTimeDelta) * s.timeScale)
+			nextPktSendTime = firstPktSendTime.Add(sendTimeDelta)
 		}
-		time.Sleep(nextPktTime.sub(time.Now()))
+		time.Sleep(nextPktSendTime.Sub(time.Now()))
 		delayedChan <- pkt
 	}
 }
