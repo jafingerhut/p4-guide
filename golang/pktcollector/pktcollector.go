@@ -74,8 +74,8 @@ func main() {
 	watcherState, err := pktwatcher.Start(watcherOpts, packetChan)
 
 	// Open socket as server listening for incoming connection
-	// requests.  Incoming connections can contain commands like
-	// "readPkts", "readPktsAndClear", "stopPktCapture"
+	// requests.  Incoming connections can issue commands the ones
+	// handled in function handleConn.
 	listener, err := net.Listen("tcp", "localhost:8000")
 	for {
 		conn, err := listener.Accept()
@@ -103,7 +103,6 @@ func handleConn(c net.Conn, w *pktwatcher.State) (quit bool) {
 		}
 		switch cmd {
 		case "readAndClearPackets", "rac":
-			// todo
 			pkts := w.ReadAndClearPackets()
 			fmt.Fprintf(c, "\n%d packets\n", pkts.Len())
 			for idx, pkt := range pkts.Elements() {
