@@ -112,8 +112,42 @@ func Start(opts map[string]interface{}) (c <- chan gopacket.Packet, s *State, er
 		if num, ok := opts["timeScale"]; ok {
 			w.timeScale = num.(float64)
 		}
+		returnDelayedChannel := true
+		if w.firstPacketWaitTimeSeconds == 0.0 && w.timeScale == 0.0 {
+			returnDelayedChannel = false
+		}
 	}
 	w.packetSource = gopacket.NewPacketSource(w.handle, w.handle.LinkType())
 	w.c = w.packetSource.Packets()
+	if returnDelayedChannel {
+		dc := delayedChannel(&w)
+		w.c = dc
+	}
 	return w.c, &w, nil
+}
+
+func delayedChannel(s *State) (delayedChan <- chan gopacket.Packet) {
+	origChan := s.c
+	delayedChan := make(chan gopacket.Packet)
+	go feedDelayedChannel(s, origChan, delayedChan)
+	return delayedChan
+}
+
+func feedDelayedChannel(s *State, origChan <- chan gopacket.Packet, delayedChan chan gopacket.Packet) {
+	startTime := time.Now()
+	first := true
+	firstPktTime := startTime.Add(s.firstPacketWaitTimeSeconds * time.Second)
+	for pkt := range origChan {
+		pktMeta := pkt.Metadata()
+		pktTimestamp := pktMeta.Timestamp
+		if first {
+			timeDelta := pktTimestamp.sub(firstPktTime)
+			nextPktTime := firstPktTime
+		} else {
+			// todo
+			
+		}
+		time.Sleep(nextPktTime.sub(time.Now()))
+		delayedChan <- pkt
+	}
 }
