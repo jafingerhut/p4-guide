@@ -1,5 +1,15 @@
 package ringbuf
 
+// Implement a simple finite-capacity ring buffer of elements, where
+// the Append method overwrites the oldest element if you Append
+// additional elements after the capacity is reached.
+
+// This code is not thread-safe.  That is, it is assumed that if
+// multiple threads can call methods on a single ring buffer instance
+// concurrently, that the calling threads coordinate the access
+// correctly, e.g. by making all calls from a single goroutine that is
+// given requests to make such calls via channels, or via a mutex.
+
 import (
 	"errors"
 )
