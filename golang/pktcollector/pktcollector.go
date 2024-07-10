@@ -26,18 +26,11 @@ var fname = flag.String("file", "", "pcap file to read packets from")
 var debug = flag.Int("debug", 0, "debug level")
 var capacity = flag.Int("capacity", 0, "ring buffer capacity for capturing packets")
 
-func printUsage(progName string) {
-	fmt.Fprintf(os.Stderr, "usage: %s\n", progName)
-	fmt.Fprintln(os.Stderr, "            [ --iface <interface_name> ]")
-	fmt.Fprintln(os.Stderr, "            [ --file <pcap_filename> ]")
-	fmt.Fprintln(os.Stderr)
-}
-
 func main() {
 	flag.Parse()
 	if (*iface == "" && *fname == "") || (*iface != "" && *fname != "") {
-		fmt.Fprintf(os.Stderr, "You must specify exactly one of --iface and --file options\n")
-		printUsage(os.Args[0])
+		fmt.Fprintf(os.Stderr, "You must specify exactly one of -file and -iface options\n")
+		flag.PrintDefaults()
 		os.Exit(1)
 	}
 	var sourceOpts map[string]interface{}
