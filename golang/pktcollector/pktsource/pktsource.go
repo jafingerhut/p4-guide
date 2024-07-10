@@ -143,9 +143,16 @@ func feedDelayedChannel(s *State, origChan <- chan gopacket.Packet, delayedChan 
 	delta := time.Duration(s.firstPacketWaitTimeSeconds * float64(time.Second))
 	firstPktSendTime := startTime.Add(delta)
 
+	if s.debug >= 2 {
+		fmt.Fprintf(os.Stderr, "firstPacketWaitTimeSeconds=%v\n", s.firstPacketWaitTimeSeconds)
+		fmt.Fprintf(os.Stderr, "timeScale=%v\n", s.timeScale)
+	}
+
 	var firstOrigPktTime time.Time
 	var nextPktSendTime time.Time
+	pktCount := 0
 	for pkt := range origChan {
+		pktCount += 1
 		pktMeta := pkt.Metadata()
 		pktTimestamp := pktMeta.Timestamp
 		if firstPkt {
@@ -163,7 +170,11 @@ func feedDelayedChannel(s *State, origChan <- chan gopacket.Packet, delayedChan 
 			sendTimeDelta := time.Duration(float64(origTimeDelta) * s.timeScale)
 			nextPktSendTime = firstPktSendTime.Add(sendTimeDelta)
 		}
-		time.Sleep(nextPktSendTime.Sub(time.Now()))
+		waitDuration := nextPktSendTime.Sub(time.Now())
+		if s.debug >= 2 {
+			fmt.Fprintf(os.Stderr, "pkt %d: sleeping for %v before writing\n", pktCount, waitDuration)
+		}
+		time.Sleep(waitDuration)
 		delayedChan <- pkt
 	}
 }
