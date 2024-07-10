@@ -8,9 +8,10 @@ language](http://p4.org).
 ## Installing open source P4 development tools
 
 There are install scripts in this repository that can assist you in
-building and installing the `p4c` and `behavioral-model` projects and
-their dependencies on some recent versions of Ubuntu or Fedora Linux
-systems.
+building and installing the [`p4c`](https://github.com/p4lang/p4c) and
+[`behavioral-model`](https://github.com/p4lang/behavioral-model)
+projects and their dependencies on some recent versions of Ubuntu or
+Fedora Linux systems.
 
 See [these instructions and trouble-shooting
 tips](bin/README-install-troubleshooting.md) for using these scripts.
@@ -24,6 +25,12 @@ and using the DPDK software switch to load and run P4 programs.
 
 See [this page](docs/README.md) for a list of articles included in
 this repository.
+
+This is the home for documentation on P4C that is auto-generated via
+doxygen and configuration files checked into the
+https://github.com/p4lang/p4c repository:
+
++ https://p4lang.github.io/p4c
 
 
 ## Overview of public P4.org documentation and code repositories
