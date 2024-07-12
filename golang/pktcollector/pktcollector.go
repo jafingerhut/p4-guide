@@ -21,6 +21,9 @@ import (
 	"github.com/jafingerhut/p4-guide/golang/pktcollector/pktwatcher"
 )
 
+const version_string = "1.0"
+
+var show_version = flag.Bool("version", false, "show program version")
 var iface = flag.String("iface", "", "Select interface where to capture")
 var fname = flag.String("file", "", "pcap file to read packets from")
 var firstPacketWaitTimeSeconds = flag.Float64("delay", 0.0, "when reading packets from pcap file, the duration in seconds to wait before processing the first packet")
@@ -30,6 +33,10 @@ var capacity = flag.Int("capacity", 0, "ring buffer capacity for capturing packe
 
 func main() {
 	flag.Parse()
+	if *show_version {
+		fmt.Println(version_string)
+		os.Exit(0)
+	}
 	if (*iface == "" && *fname == "") || (*iface != "" && *fname != "") {
 		fmt.Fprintf(os.Stderr, "You must specify exactly one of -file and -iface options\n")
 		flag.PrintDefaults()
