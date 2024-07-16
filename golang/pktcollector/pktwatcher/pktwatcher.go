@@ -16,7 +16,6 @@ package pktwatcher
 import (
 	"fmt"
 	"os"
-	"sync"
 	"time"
 
 	"github.com/google/gopacket"
@@ -26,6 +25,14 @@ import (
 
 const defaultCapacity = 128
 
+type respReadAndClear struct {
+	packetBuf *ringbuf.Buf
+}
+
+type cmdReadAndClear struct {
+	resp chan<- respReadAndClear
+}
+
 type State struct {
 	capacity int
 	numCapturedPkts int
@@ -33,7 +40,7 @@ type State struct {
 	packetBuf *ringbuf.Buf
 	debug int
 	c <-chan gopacket.Packet
-	mu sync.Mutex  // guards this entire struct
+	cmdsRAC chan cmdReadAndClear
 }
 
 type PktInfo struct {
@@ -48,7 +55,9 @@ func Start(opts map[string]interface{}, c <-chan gopacket.Packet) (watcherState 
 	debugVal, ok := opts["debug"]
 	if ok {
 		w.debug = debugVal.(int)
-		fmt.Fprintf(os.Stderr, "pktwatcher.Start found debug=%d\n", w.debug)
+		if w.debug >= 1 {
+			fmt.Fprintf(os.Stderr, "pktwatcher.Start found debug=%d\n", w.debug)
+		}
 	}
 	w.capacity = defaultCapacity
 	if capacityVal, ok := opts["capacity"]; ok {
@@ -58,20 +67,16 @@ func Start(opts map[string]interface{}, c <-chan gopacket.Packet) (watcherState 
 	w.numDiscardedPkts = 0
 	w.packetBuf = ringbuf.New(w.capacity)
 	w.c = c
+	w.cmdsRAC = make(chan cmdReadAndClear)
 	go capturePackets(&w)
 	return &w, nil
 }
 
 func (w *State) ReadAndClearPackets() (curPackets *ringbuf.Buf) {
-	// Create a new ring buffer to use for later packets
-	rb := ringbuf.New(w.capacity)
-
-	// Get the current ring buffer, and replace it with the new,
-	// empty one.
-	w.mu.Lock()
-	pkts := w.packetBuf
-	w.packetBuf = rb
-	w.mu.Unlock()
+	respChan := make(chan respReadAndClear)
+	w.cmdsRAC <- cmdReadAndClear{resp: respChan}
+	resp := <-respChan
+	pkts := resp.packetBuf
 	return pkts
 }
 
@@ -81,18 +86,32 @@ func capturePackets(w *State) {
 	}
 	w.numCapturedPkts = 0
 	w.numDiscardedPkts = 0
-	for packet := range w.c {
-		w.mu.Lock()
-		pktDiscarded := w.packetBuf.Append(packet)
-		if pktDiscarded {
-			w.numDiscardedPkts += 1
-		} else {
-			w.numCapturedPkts += 1
+	for {
+		select {
+		case packet, ok := <-w.c:
+			if !ok {
+				w.c = nil
+				if w.debug >= 2 {
+					fmt.Println("pktwatcher read channel was closed.  Assigning it nil.")
+				}
+				continue
+			}
+			pktDiscarded := w.packetBuf.Append(packet)
+			if pktDiscarded {
+				w.numDiscardedPkts += 1
+			} else {
+				w.numCapturedPkts += 1
+			}
+			if w.debug >= 2 {
+				fmt.Printf("\n%d\n", w.numCapturedPkts)
+				fmt.Println(packet.Dump())
+			}
+		case cmd := <-w.cmdsRAC:
+			// Get the current ring buffer, and replace it with a new,
+			// empty one.
+			r := respReadAndClear{packetBuf: w.packetBuf}
+			w.packetBuf = ringbuf.New(w.capacity)
+			cmd.resp <- r
 		}
-		if w.debug >= 2 {
-			fmt.Printf("\n%d\n", w.numCapturedPkts)
-			fmt.Println(packet.Dump())
-		}
-		w.mu.Unlock()
 	}
 }

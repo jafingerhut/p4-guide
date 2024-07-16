@@ -30,10 +30,3 @@ lead to modifications to the program:
   stops doing so before packets have all been read.  See section
   "Always Clean Up Your Goroutines" in Chapter 12 "Concurrency in Go"
   in the book "Learning Go" by Jon Bodner.
-+ The use of a `Mutex` in package `pktwatcher` could be replaced with
-  using a separate channel to send commands to the goroutine executing
-  function `capturePackets`, and having a `select` statement inside of
-  `capturePackets` to choose between processing the next packet, or a
-  command.  In this case, the mutex use is limited to exactly two
-  functions in a single package, so it is fairly well contained and
-  understandable, but it does seem nice to avoid its use completely.

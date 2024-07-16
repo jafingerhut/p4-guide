@@ -72,7 +72,9 @@ func Start(opts map[string]interface{}) (c <- chan gopacket.Packet, s *State, er
 	debugVal, ok := opts["debug"]
 	if ok {
 		w.debug = debugVal.(int)
-		fmt.Fprintf(os.Stderr, "pktsource.Start found debug=%d\n", w.debug)
+		if w.debug >= 1 {
+			fmt.Fprintf(os.Stderr, "pktsource.Start found debug=%d\n", w.debug)
+		}
 	}
 	intfName, ok1 := opts["interface_name"]
 	fileName, ok2 := opts["file_name"]
