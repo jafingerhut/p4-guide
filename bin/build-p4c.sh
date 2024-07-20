@@ -68,24 +68,36 @@ else
 fi
 
 usage() {
-    2>&1 echo "usage: $0 [ update ]"
+    2>&1 echo "usage: $0 [ update | release | debug ]*"
 }
 
 DO_UPDATE_FIRST=0
-if [ $# -eq 1 ]
-then
-    if [ "$1" == "update" ]
-    then
-	DO_UPDATE_FIRST=1
-    else
-	usage
-	exit 1
-    fi
-elif [ $# -ne 0 ]
-then
-    usage
-    exit 1
-fi
+BUILD_TYPE="DEBUG"
+while [ $# -ge 1 ]
+do
+    case "$1" in
+	update)
+	    DO_UPDATE_FIRST=1
+	    ;;
+	release)
+	    BUILD_TYPE="RELEASE"
+	    ;;
+	debug)
+	    BUILD_TYPE="DEBUG"
+	    ;;
+	*)
+	    2>&1 echo "Unknown command line option: $1"
+	    2>&1 echo ""
+	    usage
+	    exit 1
+	    ;;
+    esac
+    shift
+done
+
+echo "DO_UPDATE_FIRST=${DO_UPDATE_FIRST}"
+echo "BUILD_TYPE=${BUILD_TYPE}"
+exit 0
 
 #echo "DO_UPDATE_FIRST=${DO_UPDATE_FIRST}"
 if [ ${DO_UPDATE_FIRST} -eq 1 ]
@@ -115,8 +127,18 @@ fi
 echo "Building p4c from scratch"
 mkdir build
 cd build
-# Configure for a debug build, with build of testgen enabled
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_TEST_TOOLS=ON
+PROCESSOR=`uname --machine`
+if [ ${PROCESSOR} = "x86_64" ]
+then
+    # If you have not already installed Z3 before now, using this
+    # option will fetch an x86_64-specific pre-built binary.
+    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
+else
+    # We have installed the Z3 library by compiling from source
+    # code already above.
+    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DTOOLS_USE_PREINSTALLED_Z3=ON"
+fi
+cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${P4C_CMAKE_OPTS}
 # Copied from p4c/Dockerfile
 #cmake .. '-DCMAKE_CXX_FLAGS:STRING=-O3'
 
