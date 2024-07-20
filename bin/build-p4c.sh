@@ -95,11 +95,10 @@ do
     shift
 done
 
-echo "DO_UPDATE_FIRST=${DO_UPDATE_FIRST}"
-echo "BUILD_TYPE=${BUILD_TYPE}"
-exit 0
-
 #echo "DO_UPDATE_FIRST=${DO_UPDATE_FIRST}"
+#echo "BUILD_TYPE=${BUILD_TYPE}"
+#exit 0
+
 if [ ${DO_UPDATE_FIRST} -eq 1 ]
 then
     echo "Will update files before clean and build."
