@@ -204,7 +204,7 @@ packet.
 >>> import re
 >>> def hex_to_bytes(hex_s):
 ...     tmp = re.sub('[ \t]', '', hex_s)
-...     return bytes(bytearray.fromhex(tmp))
+...     return bytes.fromhex(tmp)
 ... 
 
 >>> pkt2=Ether(hex_to_bytes(s1))
@@ -223,7 +223,7 @@ def bytes_to_hex(b):
 import re
 def hex_to_bytes(hex_s):
     tmp = re.sub('[ \t]', '', hex_s)
-    return bytes(bytearray.fromhex(tmp))
+    return bytes.fromhex(tmp)
 ```
 
 
@@ -596,3 +596,97 @@ b'\x03\x10'
 TBD: There must be built-in methods for converting between type `str`
 and `bytes`, I would guess.  There might even be more than one,
 depending upon character set encoding, perhaps?
+
+
+## Converting between a few different time types in Python3
+
+The value of `pkt.time` for a packet created with Scapy is typically a
+`float`, and its value is the number of seconds since 00:00:00 UTC on
+January 1, 1970, according to this Wikipedia article:
+
++ https://en.wikipedia.org/wiki/Unix_time
+
+Convert from Unix time `ut` to Python3 type `datetime` value named
+`dt`, and also the other way.  Note that this example is for a
+so-called "aware" `datetime` value, which has a time zone as part of
+its value, as opposed to a "naive" `datetime` value which has no
+associated time zone.
+
+```python
+import datetime
+
+dt = datetime.datetime.fromtimestamp(ut, timezone.utc)
+
+ut = dt.timestamp()
+```
+
+Example:
+
+```python
+>>> ut=1722051396.1462226
+>>> dt=datetime.datetime.fromtimestamp(ut, timezone.utc)
+>>> dt
+datetime.datetime(2024, 7, 27, 3, 36, 36, 146223, tzinfo=datetime.timezone.utc)
+
+>>> dt.timestamp()
+1722051396.146223
+
+>>> dt.timestamp() == ut
+False
+>>> dt.timestamp() - ut
+4.76837158203125e-07
+```
+
+Note that there can be small differences in the floating point value
+if you attempt to round-trip conversion from Unix time to datetime and
+back again.
+
+Convert from a date + time + time zone in string format specified by
+RFC 3339 in variable `rfc3339_str` into datetime variable `dt`, and
+also the other way.
+
+```python
+import datetime
+
+dt = datetime.datetime.fromisoformat(rfc3339_str)
+
+rfc3339_str = dt.isoformat('T')
+```
+
+Example:
+
+```python
+>>> rfc3339_str = '2024-05-09T10:36:26-04:00'
+>>> dt = datetime.datetime.fromisoformat(rfc3339_str)
+>>> dt
+datetime.datetime(2024, 5, 9, 10, 36, 26, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=72000)))
+
+>>> rfc3339_str2 = dt.isoformat('T')
+>>> rfc3339_str2
+'2024-05-09T10:36:26-04:00'
+
+>>> rfc3339_str == rfc3339_str2
+True
+
+>>> rfc3339_str = '2024-05-09T10:36:26.123456-04:00'
+```
+
+Similar results with fractional seconds included:
+
+```python
+>>> rfc3339_str = '2024-05-09T10:36:26.123456-04:00'
+>>> dt = datetime.datetime.fromisoformat(rfc3339_str)
+>>> dt
+datetime.datetime(2024, 5, 9, 10, 36, 26, 123456, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=72000)))
+
+>>> rfc3339_str2 = dt.isoformat('T')
+>>> rfc3339_str2
+'2024-05-09T10:36:26.123456-04:00'
+
+>>> rfc3339_str == rfc3339_str2
+True
+```
+
+Obviously one can use the above to convert from Unix time to a string
+in RFC 3339 format, or in the other direction, in two steps, by first
+converting to an aware datetime.
