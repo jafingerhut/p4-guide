@@ -33,7 +33,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
-| 2024-Aug-01 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1WOuj7FtkpZ9QiwsWwd0qTDr8c4GOKGWt/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1jwoFN9uqNjKz1tToHGEp_wz9AaYobFYr/view?usp=sharing) | Combo23 | no |
+| 2024-Aug-01 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1GDL1Nu5DY8YIf7NBkQ5JazGlxCIBO4nY/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1jwoFN9uqNjKz1tToHGEp_wz9AaYobFYr/view?usp=sharing) | Combo23 | no |
 | 2024-Aug-01 | Ubuntu 20.04 | [3.0 GByte VM image](https://drive.google.com/file/d/1UakkQ-qGUzfv0INnmDcIWLCYvTuwpPGW/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1_C0-No7mgVzzdYyngIlowPmwdns62p3f/view?usp=sharing) | Combo23 | no |
 | 2024-Jul-04 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1zY06ux9THW_iABKVmAcIT8S7WRvmbcaL/view?usp=drive_link) | no such VM created | [README](https://drive.google.com/file/d/1nzLOl2DR2fuI0TCUkI5SNJsaIpGDQBbR/view?usp=drive_link) | Combo23 | no |
 | 2024-Jul-04 | Ubuntu 20.04 | [3.0 GByte VM image](https://drive.google.com/file/d/1-lb125xKvcyqSXzEVwF_Efbr_ZUzV4D7/view?usp=drive_link) | no such VM created | [README](https://drive.google.com/file/d/1o4FcS2fwZ8AQVCn4eeFtPcPd20fPv9jE/view?usp=drive_link) | Combo23 | no |
