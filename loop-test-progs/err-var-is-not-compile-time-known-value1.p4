@@ -46,7 +46,7 @@ control ingressImpl(inout headers_t hdr,
                     inout standard_metadata_t stdmeta)
 {
     bit<8> n = hdr.ethernet.srcAddr[15:8];
-    const bit<3> i = 0;
+    bit<3> i = 0;
     apply {
         {
             // In the 2024-Jul-01 P4 language design work group
@@ -54,9 +54,9 @@ control ingressImpl(inout headers_t hdr,
             // _believe_ could be the same as the following question:
 
             // Should a P4 variable be treated as if its value is a
-            // compile-time known value, if the compile can prove that
-            // it can have one and only one value at a specific point
-            // of the program?
+            // compile-time known value, if the compiler can prove that
+            // the variable can have one and only one value at a specific
+            // point of the program?
 
             // The question was raised in the context of a discussion
             // about loops in P4, but since the discussion was also
@@ -64,13 +64,16 @@ control ingressImpl(inout headers_t hdr,
             // loops, it seems to me that the question is relevant for
             // a program like this one that has no loops.
 
-            // i was initialized to 0 above, and there are no
+            // The variable i is initialized to 0 above, and there are no
             // statements afterwards that could change it, so one
             // could imagine a sufficiently sophisticated compiler
             // that could determine that the expression i was always 0
             // at this point during the execution.
+
+            // See this issue for a longer example:
+            // https://github.com/p4lang/p4-spec/issues/1291
             n[i:i] = 1;
-            
+
             hdr.ethernet.srcAddr[15:8] = n;
             stdmeta.egress_spec = 1;
         }
