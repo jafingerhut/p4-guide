@@ -1,0 +1,7 @@
+# These are all the latest commit SHA versions in the main/master
+# branch of their respective repositories as of 2024-Aug-16.
+export INSTALL_BEHAVIORAL_MODEL_SOURCE_VERSION="11c789bd4e49fbac666d543c3101be74cf88b45d"
+export INSTALL_P4C_SOURCE_VERSION="39d9d44473baf387e4b7ce1cdc1d176718733ded"
+export INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION="8869f64f4e9215098919db129127791e249c4d3a"
+export INSTALL_PI_SOURCE_VERSION="05cb92564af77ae4826565cbde84e3fd4960c6bd"
+export INSTALL_PTF_SOURCE_VERSION="c554f83685186be4cfa9387eb5d6d700d2bbd7c0"

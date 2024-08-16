@@ -911,6 +911,9 @@ else
     TIME_PI_CLONE_START=$(date +%s)
     git clone https://github.com/p4lang/PI
     cd PI
+    if [ "x${INSTALL_PI_SOURCE_VERSION}" != "x" ]; then
+	git checkout ${INSTALL_PI_SOURCE_VERSION}
+    fi
     git submodule update --init --recursive
     TIME_PI_CLONE_END=$(date +%s)
     git log -n 1
@@ -996,6 +999,9 @@ else
     cd behavioral-model
     # Get latest updates that are not in the repo cache version
     git pull
+    if [ "x${INSTALL_BEHAVIORAL_MODEL_SOURCE_VERSION}" != "x" ]; then
+	git checkout ${INSTALL_BEHAVIORAL_MODEL_SOURCE_VERSION}
+    fi
     TIME_BEHAVIORAL_MODEL_CLONE_END=$(date +%s)
     git log -n 1
     TIME_BEHAVIORAL_MODEL_INSTALL_START=$(date +%s)
@@ -1091,6 +1097,11 @@ else
     # Clone p4c and its submodules:
     get_from_nearest https://github.com/p4lang/p4c.git p4c.tar.gz
     cd p4c
+    # Get latest updates that are not in the repo cache version
+    git pull
+    if [ "x${INSTALL_P4C_SOURCE_VERSION}" != "x" ]; then
+	git checkout ${INSTALL_P4C_SOURCE_VERSION}
+    fi
     git log -n 1
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
@@ -1205,6 +1216,10 @@ TIME_PTF_START=$(date +%s)
 
 git clone https://github.com/p4lang/ptf
 cd ptf
+if [ "x${INSTALL_PTF_SOURCE_VERSION}" != "x" ]; then
+    git checkout ${INSTALL_PTF_SOURCE_VERSION}
+fi
+git log -n 1
 pip install .
 TIME_PTF_END=$(date +%s)
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
@@ -1257,6 +1272,10 @@ fi
 
 git clone https://github.com/p4lang/p4runtime-shell
 cd p4runtime-shell
+if [ "x${INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION}" != "x" ]; then
+    git checkout ${INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION}
+fi
+git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/p4runtime-shell-2023-changes.patch"
 pip3 install .
