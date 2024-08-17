@@ -1,14 +1,49 @@
 #! /bin/bash
 
-T="`realpath $HOME/p4c/tools/ptf`"
+print_p4c_dir_message() {
+    1>&2 echo "To run this script successfully, either:"
+    1>&2 echo ""
+    1>&2 echo "(a) Use the following commands to create a clone of the p4c repository there:"
+    1>&2 echo "    cd `dirname $P4C_CLONE_DIR`"
+    1>&2 echo "    git clone https://github.com/p4lang/p4c"
+    1>&2 echo ""
+    1>&2 echo "(b) Edit the script '$0' and change the definition"
+    1>&2 echo "    of P4C_CLONE_DIR to be the path to a copy of the"
+    1>&2 echo "    p4c repository that you have installed on your system."
+}
+
+P4C_CLONE_DIR="$HOME/p4c"
+if [ ! -d ${P4C_CLONE_DIR} ]; then
+    1>&2 echo "No such directory: $P4C_CLONE_DIR"
+    1>&2 echo "Expected to find a clone of the repository there."
+    print_p4c_dir_message
+    exit 1
+fi
+
+BASE_TEST_DIR="$P4C_CLONE_DIR/tools/ptf"
+if [ -r "${BASE_TEST_DIR}/base_test.py" ]; then
+    echo "Found p4c base_test.py package: ${BASE_TEST_DIR}/base_test.py"
+else
+    1>&2 echo "Did not find p4c base_test.py package: ${BASE_TEST_DIR}/base_test.py"
+    print_p4c_dir_message
+fi
+
+P4TESTGEN_OUTPUT_DIR="out-p4testgen"
+if [ -d "${P4TESTGEN_OUTPUT_DIR}" ]; then
+    echo "Found p4testgen output directory: ${P4TESTGEN_OUTPUT_DIR}"
+else
+    1>&2 echo "No such directory: ${P4TESTGEN_OUTPUT_DIR}"
+    1>&2 echo "See README-p4testgen.md for the p4testgen command to run."
+    exit 1
+fi
+
+T="`realpath ${BASE_TEST_DIR}`"
 if [ x"${PYTHONPATH}" == "x" ]
 then
     P="${T}"
 else
     P="${T}:${PYTHONPATH}"
 fi
-
-echo "P is: $P"
 
 set -x
 p4c --target bmv2 \
