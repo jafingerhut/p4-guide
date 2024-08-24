@@ -11,6 +11,11 @@ import (
 	"time"
 )
 
+type uint16pair struct {
+	x uint16
+	y uint16
+}
+
 func main() {
 	var i int
 	var b byte
@@ -20,6 +25,7 @@ func main() {
 	s1 := "foo"
 	s2 := "the quick brown fox jumped over the lazy dog"
 	now := time.Now()
+	var p uint16pair
 
 	fmt.Printf("%4d reflect.TypeOf(int).Size()\n",
 		reflect.TypeOf(i).Size())
@@ -37,4 +43,6 @@ func main() {
 		len(s2), reflect.TypeOf(s2).Size())
 	fmt.Printf("%4d reflect.TypeOf(time.Time).Size()\n",
 		reflect.TypeOf(now).Size())
+	fmt.Printf("%4d reflect.TypeOf(uint16pair struct containing 2 uint16 fields).Size()\n",
+		reflect.TypeOf(p).Size())
 }
