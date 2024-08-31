@@ -220,7 +220,7 @@ def assertP4RuntimeError(self, code=None, msg_regexp=None):
 def read_p4info_txt_file(p4info_txt_fname):
     p4info_data = p4info_pb2.P4Info()
     with open(p4info_txt_fname, "rb") as fin:
-        google.protobuf.text_format.Merge(fin.read(), p4info_data)
+        google.protobuf.text_format.Merge(fin.read(), p4info_data, allow_unknown_field=True)
     return p4info_data
 
 def serializable_enum_dict(p4info_data, name):
