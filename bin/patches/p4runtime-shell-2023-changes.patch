@@ -1,3 +1,16 @@
+diff --git a/p4runtime_sh/p4runtime.py b/p4runtime_sh/p4runtime.py
+index f858f92..85ef344 100644
+--- a/p4runtime_sh/p4runtime.py
++++ b/p4runtime_sh/p4runtime.py
+@@ -289,7 +289,7 @@ class P4RuntimeClient:
+         with open(p4info_path, 'r') as f1:
+             with open(bin_path, 'rb') as f2:
+                 try:
+-                    google.protobuf.text_format.Merge(f1.read(), req.config.p4info)
++                    google.protobuf.text_format.Merge(f1.read(), req.config.p4info, allow_unknown_field=True)
+                 except google.protobuf.text_format.ParseError:
+                     logging.error("Error when parsing P4Info")
+                     raise
 diff --git a/setup.cfg b/setup.cfg
 index 07c5c31..8a9dad9 100644
 --- a/setup.cfg
