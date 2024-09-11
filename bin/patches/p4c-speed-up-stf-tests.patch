@@ -79,10 +79,10 @@ index 94ec54d5d..79c36f48c 100755
      # If no build directory is provided, use current working directory
      if args.builddir:
 diff --git a/backends/p4tools/modules/testgen/targets/bmv2/test/TestTemplate.cmake b/backends/p4tools/modules/testgen/targets/bmv2/test/TestTemplate.cmake
-index ab7a73a2a..21e7ad621 100644
+index ab7a73a2a..38f97312a 100644
 --- a/backends/p4tools/modules/testgen/targets/bmv2/test/TestTemplate.cmake
 +++ b/backends/p4tools/modules/testgen/targets/bmv2/test/TestTemplate.cmake
-@@ -10,9 +10,19 @@ function(check_with_bmv2 testfile testfolder p4test)
+@@ -10,10 +10,20 @@ function(check_with_bmv2 testfile testfolder p4test)
    set(__bmv2runner "${CMAKE_BINARY_DIR}/run-bmv2-test.py")
    # Find all the stf tests generated for this P4 file and test them with bmv2 model
    file(APPEND ${testfile} "stffiles=($(find ${testfolder} -name \"*.stf\"  | sort -n ))\n")
@@ -90,7 +90,8 @@ index ab7a73a2a..21e7ad621 100644
    file(APPEND ${testfile} "for item in \${stffiles[@]}\n")
    file(APPEND ${testfile} "do\n")
    file(APPEND ${testfile} "\techo \"Found \${item}\"\n")
-+  file(APPEND ${testfile} "\tjsonfile=`basename ${p4test} .p4`\n")
+-  file(APPEND ${testfile} "\tpython3 ${__bmv2runner} . -v -b -tf \${item} -bd ${__p4cbmv2path} ${p4test}\n")
++  file(APPEND ${testfile} "\tjsonfile=\"`basename ${p4test} .p4`.json\"\n")
 +  file(APPEND ${testfile} "\tjsonfile=\"${testfolder}/\${jsonfile}\"\n")
 +  file(APPEND ${testfile} "\tif [ \${first_stffile} == 1 ]\n")
 +  file(APPEND ${testfile} "\tthen\n")
@@ -99,6 +100,7 @@ index ab7a73a2a..21e7ad621 100644
 +  file(APPEND ${testfile} "\telse\n")
 +  file(APPEND ${testfile} "\t\tmore_args=\"-cf \${jsonfile}\"\n")
 +  file(APPEND ${testfile} "\tfi\n")
-   file(APPEND ${testfile} "\tpython3 ${__bmv2runner} . -v -b -tf \${item} -bd ${__p4cbmv2path} ${p4test}\n")
++  file(APPEND ${testfile} "\tpython3 ${__bmv2runner} . -v -b -tf \${item} \${more_args} -bd ${__p4cbmv2path} ${p4test}\n")
    file(APPEND ${testfile} "done\n")
  endfunction(check_with_bmv2)
+ 
