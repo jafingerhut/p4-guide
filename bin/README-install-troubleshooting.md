@@ -75,10 +75,17 @@ Start with:
       amd64), running either Windows or macOS (on an Intel-based Mac
       system), running an Ubuntu Linux VM inside of
       [VirtualBox](https://www.virtualbox.org).
+      + See
+        [here](https://github.com/jafingerhut/jafingerhut.github.com/blob/master/notes/macos-virtualbox-ubuntu-install-notes.md)
+        for instructions I have successfully followed in creating
+        Ubuntu Linux VMs within VirtualBox.
     + In 2024 I began supporting aarch64 processor architectures (also
       known as arm64), at least Apple Silicon Macs with a VM created
       with one of these virtualization programs:
-      + [UTM](https://mac.getutm.app)
+      + [UTM](https://mac.getutm.app) - See
+        [here](https://github.com/jafingerhut/jafingerhut.github.com/blob/master/notes/macos-utm-notes.md)
+        for instructions on creating an Ubuntu Linux VM within UTM
+        that have worked for me.
       + [VirtualBox](https://www.virtualbox.org), which now has Beta
         level support for Apple Silicon Macs starting with version
         7.1.0.
