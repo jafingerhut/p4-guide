@@ -7,8 +7,9 @@ Pick one of these alternatives that best fits your situation:
     P4 development tools on it.  (This might be a new VM created for
     this purpose.)
 
-(b) I am comfortable downloading and running a virtual machine image
-    with the P4 open source tools already compiled and installed,
+(b) I have a system with a 64-bit Intel/AMD processor, and I am
+    comfortable downloading and running a virtual machine image with
+    the P4 open source tools already compiled and installed,
     e.g. using a virtual machine application like VirtualBox, VMware
     Fusion, VMware Workstation, Parallels, etc.
 
