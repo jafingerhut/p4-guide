@@ -71,15 +71,22 @@ Start with:
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
   + Ubuntu 20.04, 22.04, 24.04
-    + All supported Ubuntu versions have now been tested working with
-      install-p4dev-v8.sh in a VM created inside the [UTM
-      virtualization software](https://mac.getutm.app), running on an
-      Apple Silicon Mac (aarch64 processor architecture, aka arm64)
-
-  + Fedora 35, 36, 37, 38
-    + Only some Fedora releases are supported by each script.  When
-      you run one of them, it will quickly do an OS version check to
-      see if the script supports it.
+    + These have been most tested on x86_64 processors (also known as
+      amd64), running either Windows or macOS (on an Intel-based Mac
+      system), running an Ubuntu Linux VM inside of
+      [VirtualBox](https://www.virtualbox.org).
+    + In 2024 I began supporting aarch64 processor architectures (also
+      known as arm64), at least Apple Silicon Macs with a VM created
+      with one of these virtualization programs:
+      + [UTM](https://mac.getutm.app)
+      + [VirtualBox](https://www.virtualbox.org), which now has Beta
+        level support for Apple Silicon Macs starting with version
+        7.1.0.
+  + Fedora Linux
+    + Only a few Fedora releases are supported by the older
+      `install-p4dev-v6.sh` and `install-p4dev-v7.sh` scripts, no
+      longer tested by me.  You can search for `fedora` in these
+      scripts to see which versions of Fedora they support.
     + To get a copy of older Fedora releases, see one of these places:
       + [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
 	  + [dl.fedoraproject.org releases](https://dl.fedoraproject.org/pub/fedora/linux/releases/)
