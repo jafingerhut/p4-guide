@@ -197,10 +197,12 @@ packets on Ethernet interfaces (such as the veth virtual interfaces)
 must run as the super-user root, hence the use of `sudo`:
 
 ```bash
-$ sudo scapy
+$ sudo PATH=$PATH VIRTUAL_ENV=$VIRTUAL_ENV python3
 ```
 
 ```python
+from scapy.all import *
+
 fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
 drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 
