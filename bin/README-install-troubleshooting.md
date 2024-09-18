@@ -7,8 +7,9 @@ Pick one of these alternatives that best fits your situation:
     P4 development tools on it.  (This might be a new VM created for
     this purpose.)
 
-(b) I am comfortable downloading and running a virtual machine image
-    with the P4 open source tools already compiled and installed,
+(b) I have a system with a 64-bit Intel/AMD processor, and I am
+    comfortable downloading and running a virtual machine image with
+    the P4 open source tools already compiled and installed,
     e.g. using a virtual machine application like VirtualBox, VMware
     Fusion, VMware Workstation, Parallels, etc.
 
@@ -38,12 +39,6 @@ upgraded to more recent versions if such have been released.
 | 2024-Aug-01 | Ubuntu 20.04 | [3.0 GByte VM image](https://drive.google.com/file/d/1UakkQ-qGUzfv0INnmDcIWLCYvTuwpPGW/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1_C0-No7mgVzzdYyngIlowPmwdns62p3f/view?usp=sharing) | Combo23 | no |
 | 2024-Jul-04 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1zY06ux9THW_iABKVmAcIT8S7WRvmbcaL/view?usp=drive_link) | no such VM created | [README](https://drive.google.com/file/d/1nzLOl2DR2fuI0TCUkI5SNJsaIpGDQBbR/view?usp=drive_link) | Combo23 | no |
 | 2024-Jul-04 | Ubuntu 20.04 | [3.0 GByte VM image](https://drive.google.com/file/d/1-lb125xKvcyqSXzEVwF_Efbr_ZUzV4D7/view?usp=drive_link) | no such VM created | [README](https://drive.google.com/file/d/1o4FcS2fwZ8AQVCn4eeFtPcPd20fPv9jE/view?usp=drive_link) | Combo23 | no |
-| 2024-Jun-08 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1WOuj7FtkpZ9QiwsWwd0qTDr8c4GOKGWt/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1fnkN1z-xf1prLWcSowtDksbdUHEKgjKR/view?usp=sharing) | Combo23 | no |
-| 2024-Jun-08 | Ubuntu 20.04 | [2.9 GByte VM image](https://drive.google.com/file/d/1NV7VYHSq39Mxdp2n2qn-7Ix-tJqIl6s9/view?usp=sharing) | [2.0 GByte VM image](https://drive.google.com/file/d/1n_QbcLoMr_3DUD3rhxx7IPoXZFO-bjkt/view?usp=sharing) | [README](https://drive.google.com/file/d/1XvwbseGn4WoGHzwEEte8JNrmrug8hAGf/view?usp=sharing) | Combo23 | no |
-| 2024-May-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1XMbnW-xcnInZsZbms5robk3X-OQHk_Pp) | [2.0 GBytes VM image](https://drive.google.com/file/d/11SnZjYuh3lAHqe-pdJrI9bXlBU9Pwszq) | [README](https://drive.google.com/file/d/1wT131SDyJ-0WCAEaH3eRAEV2ILmX_a0M) | Combo22 | no |
-| 2024-Apr-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1bXa1aL9e1mCCI5NQdDCmY54EDs4XuAD5/view?usp=drive_link) | [2.7 GBytes VM image](https://drive.google.com/file/d/1S_Pe1mGv4HPgCYr5Ndw9fWOF8mCVtADo/view?usp=drive_link) | [README](https://drive.google.com/file/d/1Lc756eGIen2ZdH5dost_sgl5bkoAvGO0/view?usp=drive_link) | Combo22 | no |
-| 2024-Mar-01 | Ubuntu 20.04 | [3.1 GByte VM image](https://drive.google.com/file/d/1RqG-UEBW5dTpyx3Y6f_9C_tbWSoAnJbP/view?usp=drive_link) | [2.1 GBytes VM image](https://drive.google.com/file/d/1_pkrQgtilzUjA_NNgw9GiuIs5YrLt55a/view?usp=drive_link) | [README](https://drive.google.com/file/d/1ueUi80uKra3Xu8yyYnKbAN1qOw_q_guj/view?usp=drive_link) | Combo22 | no |
-| 2024-Feb-05 | Ubuntu 20.04 | [2.6 GByte VM image](https://drive.google.com/file/d/1Qcf2V0JBEtPO0hIjWvUSo1LS86cdH_7H/view?usp=drive_link) | [2.1 GBytes VM image](https://drive.google.com/file/d/1TS5cpGg8wwsOPvJbNz9VLGG6VO_FILjs/view?usp=drive_link) | [README](https://drive.google.com/file/d/1WDY6O3J0Qw_UvCwqzZutvA7zhIr3fzlc/view?usp=drive_link) | Combo21 | no |
 | 2024-Jan-01 | Ubuntu 20.04 | [2.8 GByte VM image](https://drive.google.com/file/d/1RAXXx-J9DJSyCq1JogEaVLrBW8zut0C0/view?usp=drive_link) | [2.2 GBytes VM image](https://drive.google.com/file/d/1N7n9O6dX2H5gdFUb4EDrbk2C13fGmWwp/view?usp=drive_link) | [README](https://drive.google.com/file/d/1R1gp0dcmquE9QVgH2hlXkqbtqIbQU4-1/view?usp=drive_link) | Combo21 | no |
 | 2023-Jul-01 | Ubuntu 20.04 | [3.0 GByte VM image](https://drive.google.com/file/d/1JWq05uRe4hwk5DwhpeG_yGJaKP4xYrOi/view?usp=drive_link) | [2.4 GBytes VM image](https://drive.google.com/file/d/1Lxb0VCW0DY_jkPEMbHOzX6Ssp3YxFves/view?usp=drive_link) | [README](https://drive.google.com/file/d/1cIuM36CXvx2yrrpMCGRInKUY2vJSJyfk/view?usp=drive_link) | Combo18 | Combo19 |
 | 2023-Jan-01 | Ubuntu 20.04 | [4.2 GByte VM image](https://drive.google.com/file/d/1uy5g0lHr1Cb0f9F-d5ujv44nZJepvI8S/view?usp=share_link) | [2.2 GBytes VM image](https://drive.google.com/file/d/1v5v1lbn6mfqywq0LuOFJJhGaY5ruSe1m/view?usp=share_link) | [README](https://drive.google.com/file/d/1A363Mp8TSl_e2GoTB0NGn0flkjM_-4qe/view?usp=share_link) | Combo12 | Combo13 |
@@ -65,7 +60,6 @@ Version combinations I have used above for testing VM images:
 | Combo18 | macOS 12.6.x | VirtualBox 7.0.8 |
 | Combo19 | Windows 11 Enterprise | VirtualBox 7.0.8 |
 | Combo21 | macOS 12.7.x | VirtualBox 7.0.12 |
-| Combo22 | macOS 12.7.x | VirtualBox 7.0.14 |
 | Combo23 | macOS 12.7.x | VirtualBox 7.0.18 |
 | Combo24 | macOS 12.7.x | VirtualBox 7.0.20 |
 
@@ -78,15 +72,29 @@ Start with:
 + an _unmodified_ _fresh_ installation of one of these supported
   operating systems:
   + Ubuntu 20.04, 22.04, 24.04
-    + All supported Ubuntu versions have now been tested working with
-      install-p4dev-v8.sh in a VM created inside the [UTM
-      virtualization software](https://mac.getutm.app), running on an
-      Apple Silicon Mac (aarch64 processor architecture, aka arm64)
-
-  + Fedora 35, 36, 37, 38
-    + Only some Fedora releases are supported by each script.  When
-      you run one of them, it will quickly do an OS version check to
-      see if the script supports it.
+    + These have been most tested on x86_64 processors (also known as
+      amd64), running either Windows or macOS (on an Intel-based Mac
+      system), running an Ubuntu Linux VM inside of
+      [VirtualBox](https://www.virtualbox.org).
+      + See
+        [here](https://github.com/jafingerhut/jafingerhut.github.com/blob/master/notes/macos-virtualbox-ubuntu-install-notes.md)
+        for instructions I have successfully followed in creating
+        Ubuntu Linux VMs within VirtualBox.
+    + In 2024 I began supporting aarch64 processor architectures (also
+      known as arm64), at least Apple Silicon Macs with a VM created
+      with one of these virtualization programs:
+      + [UTM](https://mac.getutm.app) - See
+        [here](https://github.com/jafingerhut/jafingerhut.github.com/blob/master/notes/macos-utm-notes.md)
+        for instructions on creating an Ubuntu Linux VM within UTM
+        that have worked for me.
+      + [VirtualBox](https://www.virtualbox.org), which now has Beta
+        level support for Apple Silicon Macs starting with version
+        7.1.0.
+  + Fedora Linux
+    + Only a few Fedora releases are supported by the older
+      `install-p4dev-v6.sh` and `install-p4dev-v7.sh` scripts, no
+      longer tested by me.  You can search for `fedora` in these
+      scripts to see which versions of Fedora they support.
     + To get a copy of older Fedora releases, see one of these places:
       + [fedoraproject.org releases](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases)
 	  + [dl.fedoraproject.org releases](https://dl.fedoraproject.org/pub/fedora/linux/releases/)
@@ -161,30 +169,15 @@ you wish to run the P4 development tools.  You can add the `source
 p4setup.bash` line to your `$HOME/.bashrc` file, so that it will
 automatically be run for you in any new `bash` shell you create.
 
-Historical notes:
-
-+ Ubuntu 18.04 reached its [end of standard
-  support](https://wiki.ubuntu.com/Releases) in April 2023.  I tested
-  `install-p4dev-v4.sh` on Ubuntu 18.04 monthly until Feb 2023, and
-  `install-p4dev-v6.sh` monthly until March 2023, but discontinued
-  testing those combinations at that time.  They might continue
-  working after that, but I have no plans to update those scripts to
-  work on Ubuntu 18.04 after those dates.
-+ Similarly Ubuntu 16.04 reached its end of standard support in April
-  2021.  I tested the `install-p4dev-v2.sh` script on Ubuntu 16.04
-  monthly until August 2021, but I do not plan to test it any longer.
-
 
 ## Which install script should I use?
 
-I would recommend using `install-p4dev-v5.sh` if you are able to use
-Ubuntu 20.04 on an x86_64 processor.  It requires the least disk
-space, installs quickly, and it installs pre-compiled P4 development
-tools from Debian packages that can be updated later to more recent
-versions as they are published, if you wish.  Note: The source code
-for behavioral-model and p4c that this installs tends to be up to 2-3
-months older than the date when you install them.  If you really need
-the latest version of these programs, use a different install script.
+I would recommend using `install-p4dev-v8.sh` as shown in the example
+commands above.  It does take a significant amount of time to install,
+and a decent amount of disk space.  However, `install-p4dev-v5.sh`
+installs pre-compiled binaries last updated in Aug 2023, and it is not
+clear whether anyone will ever take the effort required to update
+them to a more recent version.
 
 Minor note: As of 2023-Jan when I updated the PTF tests in this
 p4-guide repository to use p4runtime-shell as the Python API for table
@@ -222,143 +215,14 @@ through 2024.  They all include the following:
 | install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 
 
-The scripts in the next table below are no longer tested by me.  They
-are listed here only for possible historical interest.
+## Other details
 
-| Script | Versions of Ubuntu it was formerly tested on | Last tested | P4Runtime API support? | Mininet installed? | Uses Python3 only? | PTF installed? | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc |
-| ------ | ------------------------------ | ----------- | ---------------------- | ------------------ | ------------------ | -------------- | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- |
-| install-p4dev-v7.sh | 22.04, 20.04 | 2024-Jun | yes | yes | yes | yes | 25 GB | 200 mins | 2 GB | v3.21.6 | v1.51.3 |
-| install-p4dev-v6.sh | 22.04, 20.04 | 2024-Jun | yes | yes | yes | yes | 25 GB | 160 mins | 2 GB | v3.18.1 | v1.43.2 |
-| install-p4dev-v4.sh | 20.04, 18.04 | 2023-Feb | yes | yes | yes | yes | 12 GB | 100 mins | 2 GB | v3.6.1 | v1.17.2 |
-| install-p4dev-v3.sh | DO NOT USE | Not tested | -- | -- | -- | -- | -- | -- | -- | -- | -- |
-| install-p4dev-v2.sh | 18.04, 16.04 | 18.04 in 2022-Mar, 16.04 in 2021-Aug | yes | yes | no, Python2 | no | 11 GB | 100 mins |   2 GB | v3.6.1 | v1.17.2 |
-| install-p4dev-p4runtime.sh | 18.04, 16.04 | 2020-Mar | yes | yes | no, Python2 | no | 8.5 GB |  70 mins | ? | v3.2.0 | v1.3.2 |
-| install-p4dev.sh | -- | 2019-Oct |  no |  no | no, Python2 | no |  5 GB |  40 mins | ? | v3.2.0 | not installed |
+I have moved many details that are only for running additional tests,
+and notes of historical interest, to a separate article.  If you have
+installed a working system from the instructions above, there is _NO
+REASON_ to read the other article.  You are good to go without ever
+having to read it.
 
+If you understand that, that other article is
+[here](testing-history-and-other-details.md).
 
-## Testing your installation
-
-Note: Running any of the steps later in this section is completely
-optional.  I run them in my monthly test of the install scripts, for
-additional assurance that they are doing their jobs correctly.
-
-
-### Run tests included with `p4c`
-
-One way to test your installation is to run the `p4c` P4 compiler's
-included tests, which will compile well over 1000 test P4 programs,
-and for several hundred of them it also runs the compiled code on
-`simple_switch` and checks that the right packets come out.
-
-Starting from the directory where you ran the install script, enter
-these commands in a terminal.  No superuser privileges are required.
-```bash
-$ cd p4c/build
-$ make -j2 check |& tee out.txt
-```
-
-With the current install script, it is normal for about 500 of these
-tests to fail.  Many of those will pass if you re-run them as the user
-`root` with a command like this:
-
-```bash
-$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} ${P4GUIDE_SUDO_OPTS} make -j2 recheck |& tee out2.txt
-```
-
-
-### Send ping packets in the solution to `basic` exercise of `p4lang/tutorials` repository
-
-A quick test is to try running the solution to the `basic` exercise in
-the tutorials repository.  To do so, follow these steps:
-
-```bash
-$ git clone https://github.com/p4lang/tutorials
-$ cd tutorials/exercises/basic
-$ cp solution/basic.p4 basic.p4
-$ make run
-```
-
-If at the end of many lines of logging output you see a prompt
-`mininet>`, you can try entering the command `h1 ping h2` to ping from
-virtual host `h1` in the exercise to `h2`, and it should report a
-successful ping every second.  It will not stop on its own.  You can
-type Control-C to stop it and return to the `mininet>` prompt, and you
-can type Control-D to exit from mininet and get back to the original
-shell prompt.
-
-You may restore the modified `basic.p4` program back to its original
-contents with the command:
-
-```bash
-$ git checkout basic.p4
-```
-
-This test exercises at least `p4c` for the v1model architecture,
-`simple_switch_grpc`, and a portion of the P4Runtime API
-implementation in `simple_switch_grpc` for adding table entries.
-
-Historical note: If you are trying to use versions of the install
-script older than `install-p4dev-v4.sh` (no longer tested by me, so
-use at your own risk of lost time trying to make things work), you may
-need to use a version of the `p4lang/tutorials` repository at version
-`4914893445ae24bd1fa3b4aeea4910eeb412f7de` or older (end of year
-2020), since the next commit after that updated all Python code to
-Python3, not Python2.
-
-If you are using the `install-p4dev-v5.sh` or `install-p4dev-v6.sh`
-script, that should install only Python3 packages, and should work
-with the latest version of the `p4lang/tutorials` repository.
-
-
-## Details
-
-You can find the (long) output files from my test runs of these
-scripts that I do about once per month in [the bin/output
-directory](output/) of this repository.  The dates on those files show
-when I last ran them.
-
-Things I did that helped this process go smoothly:
-
-+ I started from an _unmodified_ _fresh_ installation of Ubuntu Linux.
-  These install scripts install many packages using `apt-get`, and
-  although I do not know how to determine a complete list of which
-  Ubuntu packages conflict with each other, I know there are some that
-  when simultaneously installed on a system, _can_ cause problems for
-  each other.  Thus if you start from an Ubuntu machine with many
-  packages installed on it already, and one of them conflicts with the
-  packages installed by these scripts, you may not end up with a
-  working installation of the open source P4 development tools.
-  
-  In my testing, I installed Ubuntu Desktop Linux as a virtual machine
-  using VirtualBox on a Mac running a relatively recent version of
-  macOS as the host operating system.  Installing them as a virtual
-  machine on a different host operating system, or on a bare machine,
-  should also work.
-+ My machine had 2 GBytes of RAM available.  Less than 2 Gbytes will
-  almost certainly not be enough.
-
-
-## Version of P4 tools installed in Release VM images
-
-The version of the P4 tools compiled and included with the
-"Development" VM images is always the latest version of the source
-code available for that project on Github as of the date of the image,
-for these projects:
-
-+ p4c https://github.com/p4lang/p4c
-+ behavioral-model https://github.com/p4lang/behavioral-model
-+ PI https://github.com/p4lang/PI
-+ ptf https://github.com/p4lang/ptf
-
-The version of the P4 tools installed with the "Release" VM images is
-the latest version of the Ubuntu 20.04 package published as of the
-date of the release image, which can be an older version of the source
-code, since the Ubuntu 20.04 packages do not have new versions
-published as often as commits are made to the repositories above.
-
-| Date published | Operating system | p4c version | behavioral-model version |
-| -------------- | ---------------- | ----------- | ------------------------ |
-| 2023-Jul-01 | Ubuntu 20.04 | SHA: 71a06fe 2023-Jun-02 | SHA: 7a8843ff 2023-May-17 |
-| 2022-Nov-01 | Ubuntu 20.04 | SHA: 1576090 2022-Aug-02 | SHA: f745e1db 2022-Feb-10 |
-| 2022-Mar-01 | Ubuntu 20.04 | SHA: a9aa5ff 2022-Feb-08 | SHA: c76a03c3 2022-Feb-08 |
-| 2022-Feb-03 | Ubuntu 20.04 | SHA: b28fbbb 2021-Nov-23 | SHA: 2de095c7 This is not the SHA of any behavioral-model commit SHA in the main branch of its source repository |

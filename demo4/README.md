@@ -71,8 +71,9 @@ scapy session for sending packets
 I believe we must run scapy as root for it to have permission to send
 packets on veth interfaces.
 
-    sudo scapy
+    sudo PATH=$PATH VIRTUAL_ENV=$VIRTUAL_ENV python3
 
+    from scapy.all import *
     fwd_pkt1=Ether() / IP(dst='10.1.0.1') / TCP(sport=5793, dport=80)
     drop_pkt1=Ether() / IP(dst='10.1.0.34') / TCP(sport=5793, dport=80)
 

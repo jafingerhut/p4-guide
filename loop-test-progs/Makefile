@@ -12,6 +12,9 @@ all-good: \
 	loop-var-in-range-modifiable-in-body1.p4i \
 	loop-var-modifiable-in-body1.p4i \
 	loop-vars-multiple-in-initializer1.p4i \
+	loop-var-in-list-elems-modified1.p4i \
+	loop-var-in-list-elems-modified2.p4i \
+	loop-var-in-range-bounds-modified1.p4i \
 	var-shadowing-test1.p4i \
 	var-shadowing-test2.p4i
 

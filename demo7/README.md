@@ -264,7 +264,7 @@ need not concern itself with them.
 # Scapy session for sending packets
 
 ```bash
-$ sudo scapy
+$ sudo PATH=$PATH VIRTUAL_ENV=$VIRTUAL_ENV python3
 ```
 
 The packet below should match the example table entry created above in
@@ -273,6 +273,7 @@ the `ipv4_mc_route_lookup` table, finish its ingress processing with
 configured output ports.
 
 ```python
+from scapy.all import *
 pkt1=Ether(src='00:00:c0:01:d0:0d', dst='ff:ff:ff:ff:ff:ff') / IP(src='10.2.3.5', dst='224.3.3.3') / UDP()
 sendp(pkt1, iface='veth0')
 ```
@@ -284,25 +285,25 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit fcfb044b0070d78ee3a09bed0e26f3f785598f02
-Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
-Date:   Tue Dec 20 16:08:09 2022 +0000
+commit b90f777a8f77fea209f61a964fd9e1c180df644e
+Author: Anton Korobeynikov <anton@korobeynikov.info>
+Date:   Mon Sep 16 01:26:59 2024 -0700
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit e97b6a8b4aec6da9f148326f7677f5e46b09e5ee
-Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
-Date:   Mon Dec 12 21:05:06 2022 +0000
+commit 199af48e04ea8747f8296bdc51c2ce16bb96cb04
+Author: Jiwon Kim <kim1685@purdue.edu>
+Date:   Wed Sep 11 12:05:33 2024 -0400
 ```
 
 For https://github.com/p4lang/PI
 
 ```
 $ git log -n 1 | head -n 3
-commit 21592d61b314ba0c44a7409a733dbf9e46da6556
-Author: Antonin Bas <antonin.bas@gmail.com>
-Date:   Tue Dec 20 12:45:36 2022 -0800
+commit 5eae9c84d7a55f9554775e498b9146f67eac7bd4
+Author: Davide Scano <d.scano89@gmail.com>
+Date:   Mon Aug 26 16:47:51 2024 -0500
 ```
