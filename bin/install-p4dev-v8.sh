@@ -363,7 +363,7 @@ fi
 echo "Minimum recommended memory to run this script: ${min_mem_MBytes} MBytes"
 echo "Memory on this system from /proc/meminfo:      ${memtotal_MBytes} MBytes -> $memtotal_comment"
 
-min_free_disk_MBytes=`expr 19 \* 1024`
+min_free_disk_MBytes=`expr 22 \* 1024`
 free_disk_MBytes=`df --output=avail --block-size=1M . | tail -n 1`
 
 if [ "${free_disk_MBytes}" -lt "${min_free_disk_MBytes}" ]
@@ -1398,16 +1398,12 @@ echo "set path = ( ${P4GUIDE_BIN} ${INSTALL_DIR}/behavioral-model/tools /usr/loc
 echo "setenv P4GUIDE_SUDO_OPTS \"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.csh
 
 echo ""
-echo "Created files: p4setup.bash p4setup.csh"
+echo "If you use a Bash-like command shell, you may wish to add a line like"
+echo "the following to your .bashrc or other shell rc file:"
 echo ""
-echo "If you use a Bash-like command shell, you may wish to copy the lines"
-echo "of the file p4setup.bash to your .bashrc or .profile files in your"
-echo "home directory to add some useful commands to your"
-echo "command path every time you log in or create a new shell."
+echo "    source \$HOME/p4setup.bash"
 echo ""
-echo "If you use the tcsh or csh shells, instead copy the contents of the"
-echo "file p4setup.csh to your .tcshrc or .cshrc file in your home"
-echo "directory."
+echo "If you use the tcsh or csh shells, use p4setup.csh instead."
 
 echo "----------------------------------------------------------------------"
 echo "CONSIDER READING WHAT IS ABOVE"
