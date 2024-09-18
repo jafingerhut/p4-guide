@@ -250,16 +250,16 @@ For https://github.com/p4lang/p4c
 
 ```
 $ git log -n 1 | head -n 3
-commit fcfb044b0070d78ee3a09bed0e26f3f785598f02
-Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
-Date:   Tue Dec 20 16:08:09 2022 +0000
+commit b90f777a8f77fea209f61a964fd9e1c180df644e
+Author: Anton Korobeynikov <anton@korobeynikov.info>
+Date:   Mon Sep 16 01:26:59 2024 -0700
 ```
 
 For https://github.com/p4lang/behavioral-model
 
 ```
 $ git log -n 1 | head -n 3
-commit e97b6a8b4aec6da9f148326f7677f5e46b09e5ee
-Author: Radostin Stoyanov <rstoyanov@fedoraproject.org>
-Date:   Mon Dec 12 21:05:06 2022 +0000
+commit 199af48e04ea8747f8296bdc51c2ce16bb96cb04
+Author: Jiwon Kim <kim1685@purdue.edu>
+Date:   Wed Sep 11 12:05:33 2024 -0400
 ```
