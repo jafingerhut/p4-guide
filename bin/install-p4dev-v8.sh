@@ -457,7 +457,7 @@ echo "  + nnpy latest version available via 'pip install'"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
-echo "+ Mininet: github.com/mininet/mininet latest version as of 2023-May-28"
+echo "+ Mininet: github.com/mininet/mininet latest version as of 2024-Sep-18"
 echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by pip3"
 echo "+ Python packages: scapy, psutil, crcmod"
 echo ""
@@ -1164,12 +1164,12 @@ TIME_MININET_START=$(date +%s)
 # Pin to a particular version, so that I know the patch below will
 # continue to apply.  Will likely want to update this to newer
 # versions once or twice a year.
-MININET_COMMIT="5b1b376336e1c6330308e64ba41baac6976b6874"  # 2023-May-28
+MININET_COMMIT="6eb8973c0bfd13c25c244a3871130c5e36b5fbd7"  # 2024-Sep-18
 git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2023-jun-enable-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
 cd ..
 RESTORE_SUDOERS_FILE=0
 if [ -e /etc/sudoers.d/sudoers-dotfiles ]
