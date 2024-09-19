@@ -119,6 +119,8 @@ of Ubuntu Linux using VirtualBox on these host operating systems:
 + macOS 10.14.x
 + macOS 10.15.x
 + macOS 12.6.x
++ macOS 13.6.x
++ macOS 14.6.x
 + Windows 10
 + Windows 11
 
@@ -131,7 +133,7 @@ Then run the commands below in a terminal.  Note:
   using this that in a VM where they created a shared folder between
   the guest OS and the host OS, and tried to run one of the install
   scripts in that directory, it failed.  It worked when they later
-  tried running in a folder that was loal only within the guest OS,
+  tried running in a folder that was only within the guest OS,
   which is the only way I have ever tested this script myself, and
   thus strongly recommend.
 + I have only tried these install scripts when running as a normal
@@ -211,7 +213,7 @@ through 2024.  They all include the following:
 
 | Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc | Where are Python3 packages installed? |
 | ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- | ------------------------------------- |
-| install-p4dev-v8.sh | 24.04, 22.04, 20.04 | 20 GB | 200 mins |   2 GB | binary lib version varies by OS | binary lib varies by OS, Python grpcio package v1.51.3, or v1.59.3 on Ubuntu 24.04 | ~/p4dev-python-venv virtual environment |
+| install-p4dev-v8.sh | 24.04, 22.04, 20.04 | 22 GB | 120 mins |   2 GB | binary lib version varies by OS | binary lib varies by OS, Python grpcio package v1.51.3, or v1.59.3 on Ubuntu 24.04 | ~/p4dev-python-venv virtual environment |
 | install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
 
 
