@@ -459,7 +459,7 @@ echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2024-Sep-18"
 echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by pip3"
-echo "+ Python packages: scapy, psutil, crcmod"
+echo "+ Python packages: scapy (2.5.0), psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
 echo "its precise contents from one run of this script to another."
@@ -1086,7 +1086,10 @@ debug_dump_installed_z3_files snap10
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
-pip3 install scapy ply
+# TODO: It appears that some changes were made from scapy 2.5.0 to
+# 2.6.0 that require changes in P4 open source tools in order to use
+# version 2.6.0.  Until those changes are made, install scapy 2.5.0.
+pip3 install scapy==2.5.0 ply
 pip3 list
 
 DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
