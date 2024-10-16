@@ -36,6 +36,30 @@ List of programs compiled via `make all-good` that have loops:
 |  no |  no | in-range | yes | yes | N/A | yes | loop-var-in-range-modifiable-in-body1.p4 |
 |  no |  no | in-range |  no |  no | yes | yes | loop-var-in-range-bounds-modified1.p4 |
 
+Other cases to write test programs for, to see if p4c unrolls the loop
+at compile time:
+
+| Errors? | Warnings? | Loop kind | Loop var modified in body? | Other loop exprs constant? | Other loop exprs modified in body? | Loop unrolled? | Program |
+| ------- | --------- | --------- | -------------------------- | -------------------------- | ---------------------------------- | -------------- | ------- |
+|     |     | 3-clause |  no | yes | N/A |  ?  | already done
+|     |     | 3-clause |  no |  no |  no |  ?  | already done
+|     |     | 3-clause |  no |  no | yes |  ?  | todo
+|     |     | 3-clause | yes | yes | N/A |  ?  | already done
+|     |     | 3-clause | yes |  no |  no |  ?  | todo with only 1 loop var, not 2 like loop-vars-multiple-in-initializer1.p4
+|     |     | 3-clause | yes |  no | yes |  ?  | todo
+|     |     |  in-list |  no | yes | N/A |  ?  | todo
+|     |     |  in-list |  no |  no |  no |  ?  | todo
+|     |     |  in-list |  no |  no | yes |  ?  | already done
+|     |     |  in-list | yes | yes | N/A |  ?  | todo
+|     |     |  in-list | yes |  no |  no |  ?  | todo
+|     |     |  in-list | yes |  no | yes |  ?  | todo
+|     |     | in-range |  no | yes | N/A |  ?  | todo
+|     |     | in-range |  no |  no |  no |  ?  | todo
+|     |     | in-range |  no |  no | yes |  ?  | already done
+|     |     | in-range | yes | yes | N/A |  ?  | already done
+|     |     | in-range | yes |  no |  no |  ?  | todo
+|     |     | in-range | yes |  no | yes |  ?  | todo
+
 List of programs compiled via `make all-good` that _do not_ have loops:
 
 | Errors? | Warnings? | Program |
@@ -45,11 +69,11 @@ List of programs compiled via `make all-good` that _do not_ have loops:
 
 List of programs compiled via `make -i all-errors`:
 
-	err-var-is-not-compile-time-known-value1.p4
-	err-loop-var-not-in-scope-outside-of-loop1.p4
-	err-loop-var-cannot-be-used-in-slice1.p4
-	err-loop-var-in-range-no-typeref1.p4
-	err-loop-var-in-range-no-typeref2.p4
++ err-var-is-not-compile-time-known-value1.p4
++ err-loop-var-not-in-scope-outside-of-loop1.p4
++ err-loop-var-cannot-be-used-in-slice1.p4
++ err-loop-var-in-range-no-typeref1.p4
++ err-loop-var-in-range-no-typeref2.p4
 
 
 ## Non-error cases
