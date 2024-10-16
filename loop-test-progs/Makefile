@@ -19,7 +19,7 @@ all-good: \
 	var-shadowing-test2.p4i
 
 ct-known: \
-	const-treated-as-compile-time-known-value1.p4i \
+	const-treated-as-compile-time-known-value1.p4i
 
 all-errors: \
 	err-var-is-not-compile-time-known-value1.p4i \

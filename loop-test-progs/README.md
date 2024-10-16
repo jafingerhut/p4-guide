@@ -12,6 +12,44 @@ of the p4c source code:
 + v1 - p4c git SHA d5df09b77201b87ad9356c45ae2ffdb1c67b35d1 dated 2024-Jun-04
 + v2 - p4c git SHA 32e73964a43941ae10ef5ac1e0dbd3a9d7975ed3 dated 2024-Jun-21
 + v3 - p4c git SHA fd23e565cb4eae51e72a07b04bd9963d4e45c5b2 dated 2024-Aug-03
++ v4 - p4c git SHA 9fcd7d5985f22ae6ff437a30dfb613a1347d8079 dated 2024-Oct-13
+
+
+```bash
+make all-good
+make -i all-errors
+```
+
+
+## Summary of results with p4c source version "v4"
+
+List of programs compiled via `make all-good` that have loops:
+
+| Errors? | Warnings? | Loop kind | Loop var modified in body? | Other loop exprs constant? | Other loop exprs modified in body? | Loop unrolled? | Program |
+| ------- | --------- | -------------- | ------- |
+|  no |  no | 3-clause |  no | yes | N/A | yes | loop-var-can-be-declared-before-loop1.p4 |
+|  no |  no | 3-clause |  no |  no |  no |  no | loop-var-exprs-not-constant1.p4 |
+|  no |  no | 3-clause | yes | yes | N/A |  no | loop-var-modifiable-in-body1.p4 |
+|  no |  no | 3-clause | yes |  no |  no | yes | loop-vars-multiple-in-initializer1.p4 |
+|  no |  no |  in-list |  no |  no | yes |  no | loop-var-in-list-elems-modified1.p4 |
+|  no |  no |  in-list |  no |  no | yes |  no | loop-var-in-list-elems-modified2.p4 |
+|  no |  no | in-range | yes | yes | N/A | yes | loop-var-in-range-modifiable-in-body1.p4 |
+|  no |  no | in-range |  no |  no | yes | yes | loop-var-in-range-bounds-modified1.p4 |
+
+List of programs compiled via `make all-good` that _do not_ have loops:
+
+| Errors? | Warnings? | Program |
+| ------- | --------- | ------- |
+|  no | yes | var-shadowing-test1.p4 |
+|  no | yes | var-shadowing-test2.p4 |
+
+List of programs compiled via `make -i all-errors`:
+
+	err-var-is-not-compile-time-known-value1.p4
+	err-loop-var-not-in-scope-outside-of-loop1.p4
+	err-loop-var-cannot-be-used-in-slice1.p4
+	err-loop-var-in-range-no-typeref1.p4
+	err-loop-var-in-range-no-typeref2.p4
 
 
 ## Non-error cases
