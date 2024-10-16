@@ -26,7 +26,7 @@ make -i all-errors
 List of programs compiled via `make all-good` that have loops:
 
 | Errors? | Warnings? | Loop kind | Loop var modified in body? | Other loop exprs constant? | Other loop exprs modified in body? | Loop unrolled? | Program |
-| ------- | --------- | -------------- | ------- |
+| ------- | --------- | --------- | -------------------------- | -------------------------- | ---------------------------------- | -------------- | ------- |
 |  no |  no | 3-clause |  no | yes | N/A | yes | loop-var-can-be-declared-before-loop1.p4 |
 |  no |  no | 3-clause |  no |  no |  no |  no | loop-var-exprs-not-constant1.p4 |
 |  no |  no | 3-clause | yes | yes | N/A |  no | loop-var-modifiable-in-body1.p4 |
