@@ -49,6 +49,15 @@ List of programs compiled via `make all-good` that have loops:
 |  no |  no | in-range | yes |  no |  no |  no | loop-var-in-range-modifiable-in-body2.p4 |
 |  no |  no | in-range | yes |  no | yes |  no | loop-var-in-range-modifiable-in-body3.p4 |
 
+Note: I believe that the only reason that
+`loop-var-in-range-bounds-modified1.p4` is able to unroll the loop,
+even though the range includes a variable `m`, is because shortly
+before the loop the program has the assignment `m = 3;`, and the
+compiler is able to propagate that value 3 into the loop's range
+expression before the loop-unrolling pass is reached.  If you change
+the program so that `m`'s value is not easily inferred as a constant,
+then the compiler no longer unrolls the loop.
+
 List of programs compiled via `make all-good` that _do not_ have loops:
 
 | Errors? | Warnings? | Program |
