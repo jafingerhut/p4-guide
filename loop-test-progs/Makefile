@@ -9,12 +9,25 @@ P4TESTGEN=$(P4BIN)/p4testgen
 all-good: \
 	loop-var-can-be-declared-before-loop1.p4i \
 	loop-var-exprs-not-constant1.p4i \
-	loop-var-in-range-modifiable-in-body1.p4i \
+	loop-var-exprs-not-constant2.p4i \
 	loop-var-modifiable-in-body1.p4i \
+	loop-var-modifiable-in-body2.p4i \
+	loop-var-modifiable-in-body3.p4i \
 	loop-vars-multiple-in-initializer1.p4i \
+	loop-var-in-list-const-list1.p4i \
+	loop-var-in-list-elems-variable1.p4i \
 	loop-var-in-list-elems-modified1.p4i \
 	loop-var-in-list-elems-modified2.p4i \
+	loop-var-in-list4.p4i \
+	loop-var-in-list-elems-variable2.p4i \
+	loop-var-in-list-elems-modified3.p4i \
+	loop-var-in-range-const-range1.p4i \
+	loop-var-in-range-var-range1.p4i \
+	loop-var-in-range-var-range2.p4i \
 	loop-var-in-range-bounds-modified1.p4i \
+	loop-var-in-range-modifiable-in-body1.p4i \
+	loop-var-in-range-modifiable-in-body2.p4i \
+	loop-var-in-range-modifiable-in-body3.p4i \
 	var-shadowing-test1.p4i \
 	var-shadowing-test2.p4i
 
