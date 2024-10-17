@@ -29,36 +29,25 @@ List of programs compiled via `make all-good` that have loops:
 | ------- | --------- | --------- | -------------------------- | -------------------------- | ---------------------------------- | -------------- | ------- |
 |  no |  no | 3-clause |  no | yes | N/A | yes | loop-var-can-be-declared-before-loop1.p4 |
 |  no |  no | 3-clause |  no |  no |  no |  no | loop-var-exprs-not-constant1.p4 |
+|  no |  no | 3-clause |  no |  no | yes |  no | loop-var-exprs-not-constant2.p4 |
 |  no |  no | 3-clause | yes | yes | N/A |  no | loop-var-modifiable-in-body1.p4 |
-|  no |  no | 3-clause | yes |  no |  no | yes | loop-vars-multiple-in-initializer1.p4 |
+|  no |  no | 3-clause | yes |  no |  no |  no | loop-var-modifiable-in-body2.p4 |
+|  no |  no | 3-clause | yes |  no | yes |  no | loop-var-modifiable-in-body3.p4 |
+|  no |  no | 3-clause |  no |  no |  no | yes | loop-vars-multiple-in-initializer1.p4 |
+|  no |  no |  in-list |  no | yes | N/A |  no | loop-var-in-list-const-list1.p4 |
+|  no |  no |  in-list |  no |  no |  no |  no | loop-var-in-list-elems-variable1.p4 |
 |  no |  no |  in-list |  no |  no | yes |  no | loop-var-in-list-elems-modified1.p4 |
 |  no |  no |  in-list |  no |  no | yes |  no | loop-var-in-list-elems-modified2.p4 |
-|  no |  no | in-range | yes | yes | N/A | yes | loop-var-in-range-modifiable-in-body1.p4 |
+|  no |  no |  in-list | yes | yes | N/A |  no | loop-var-in-list4.p4 |
+|  no |  no |  in-list | yes |  no |  no |  no | loop-var-in-list-elems-variable2.p4 |
+|  no |  no |  in-list | yes |  no | yes |  no | loop-var-in-list-elems-modified3.p4 |
+|  no |  no | in-range |  no | yes | N/A | yes | loop-var-in-range-const-range1.p4 |
+|  no |  no | in-range |  no |  no |  no |  no | loop-var-in-range-var-range1.p4 |
+|  no |  no | in-range |  no |  no | yes |  no | loop-var-in-range-var-range2.p4 |
 |  no |  no | in-range |  no |  no | yes | yes | loop-var-in-range-bounds-modified1.p4 |
-
-Other cases to write test programs for, to see if p4c unrolls the loop
-at compile time:
-
-| Errors? | Warnings? | Loop kind | Loop var modified in body? | Other loop exprs constant? | Other loop exprs modified in body? | Loop unrolled? | Program |
-| ------- | --------- | --------- | -------------------------- | -------------------------- | ---------------------------------- | -------------- | ------- |
-|     |     | 3-clause |  no | yes | N/A |  ?  | already done
-|     |     | 3-clause |  no |  no |  no |  ?  | already done
-|     |     | 3-clause |  no |  no | yes |  ?  | todo
-|     |     | 3-clause | yes | yes | N/A |  ?  | already done
-|     |     | 3-clause | yes |  no |  no |  ?  | todo with only 1 loop var, not 2 like loop-vars-multiple-in-initializer1.p4
-|     |     | 3-clause | yes |  no | yes |  ?  | todo
-|     |     |  in-list |  no | yes | N/A |  ?  | todo
-|     |     |  in-list |  no |  no |  no |  ?  | todo
-|     |     |  in-list |  no |  no | yes |  ?  | already done
-|     |     |  in-list | yes | yes | N/A |  ?  | todo
-|     |     |  in-list | yes |  no |  no |  ?  | todo
-|     |     |  in-list | yes |  no | yes |  ?  | todo
-|     |     | in-range |  no | yes | N/A |  ?  | todo
-|     |     | in-range |  no |  no |  no |  ?  | todo
-|     |     | in-range |  no |  no | yes |  ?  | already done
-|     |     | in-range | yes | yes | N/A |  ?  | already done
-|     |     | in-range | yes |  no |  no |  ?  | todo
-|     |     | in-range | yes |  no | yes |  ?  | todo
+|  no |  no | in-range | yes | yes | N/A | yes | loop-var-in-range-modifiable-in-body1.p4 |
+|  no |  no | in-range | yes |  no |  no |  no | loop-var-in-range-modifiable-in-body2.p4 |
+|  no |  no | in-range | yes |  no | yes |  no | loop-var-in-range-modifiable-in-body3.p4 |
 
 List of programs compiled via `make all-good` that _do not_ have loops:
 
