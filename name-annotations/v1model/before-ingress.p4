@@ -55,6 +55,13 @@ control verifyChecksum(
     apply { }
 }
 
+action foo1() {
+}
+
+@name("foo2")
+action foo2() {
+}
+
 control ingressImpl(
     inout headers_t hdr,
     inout metadata_t meta,

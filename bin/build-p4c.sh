@@ -72,7 +72,8 @@ usage() {
 }
 
 DO_UPDATE_FIRST=0
-BUILD_TYPE="DEBUG"
+BUILD_TYPE="RELEASE"
+BUILD_TARGETS="bmv2"
 while [ $# -ge 1 ]
 do
     case "$1" in
@@ -85,6 +86,12 @@ do
 	debug)
 	    BUILD_TYPE="DEBUG"
 	    ;;
+	full)
+	    BUILD_TARGETS="full"
+	    ;;
+	bmv2)
+	    BUILD_TARGETS="bmv2"
+	    ;;
 	*)
 	    2>&1 echo "Unknown command line option: $1"
 	    2>&1 echo ""
@@ -95,8 +102,9 @@ do
     shift
 done
 
-#echo "DO_UPDATE_FIRST=${DO_UPDATE_FIRST}"
-#echo "BUILD_TYPE=${BUILD_TYPE}"
+echo "DO_UPDATE_FIRST=${DO_UPDATE_FIRST}"
+echo "BUILD_TYPE=${BUILD_TYPE}"
+echo "BUILD_TARGETS=${BUILD_TARGETS}"
 #exit 0
 
 if [ ${DO_UPDATE_FIRST} -eq 1 ]
@@ -126,17 +134,22 @@ fi
 echo "Building p4c from scratch"
 mkdir build
 cd build
+P4C_CMAKE_OPTS=""
 PROCESSOR=`uname --machine`
-if [ ${PROCESSOR} = "x86_64" ]
+if [ ${PROCESSOR} = "aarch64" ]
 then
-    # If you have not already installed Z3 before now, using this
-    # option will fetch an x86_64-specific pre-built binary.
-    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
-else
-    # We have installed the Z3 library by compiling from source
-    # code already above.
-    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DTOOLS_USE_PREINSTALLED_Z3=ON"
+    # Assuming you used install-p4dev-*.sh script to install, we have
+    # installed the Z3 library by compiling from source code then.
+    P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DTOOLS_USE_PREINSTALLED_Z3=ON"
 fi
+case "${BUILD_TARGETS}" in
+    full)
+	P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=ON -DENABLE_UBPF=ON -DENABLE_DPDK=ON -DENABLE_P4C_GRAPHS=ON -DENABLE_TEST_TOOLS=ON -DENABLE_DOCS=ON -DENABLE_P4FMT=ON -DENABLE_P4TC=ON -DENABLE_GTESTS=ON"
+	;;
+    bmv2)
+	P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4C_GRAPHS=OFF -DENABLE_TEST_TOOLS=OFF -DENABLE_DOCS=OFF -DENABLE_P4FMT=OFF -DENABLE_P4TC=OFF -DENABLE_GTESTS=OFF"
+	;;
+esac
 cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${P4C_CMAKE_OPTS}
 # Copied from p4c/Dockerfile
 #cmake .. '-DCMAKE_CXX_FLAGS:STRING=-O3'
