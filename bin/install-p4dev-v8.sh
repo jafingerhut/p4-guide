@@ -1024,7 +1024,7 @@ else
     mkdir build
     cd build
     # Configure for a release build and build p4testgen
-    cmake .. -DCMAKE_BUILD_TYPE=RELEASE ${P4C_CMAKE_OPTS}
+    cmake .. -DCMAKE_BUILD_TYPE=Release ${P4C_CMAKE_OPTS}
     debug_dump_installed_z3_files snap11
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
