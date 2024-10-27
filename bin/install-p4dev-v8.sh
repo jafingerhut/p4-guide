@@ -629,94 +629,6 @@ TIME_AUTOTOOLS_END=$(date +%s)
 echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
 DISK_USED_AFTER_AUTOTOOLS=`get_used_disk_space_in_mbytes`
 
-cd "${INSTALL_DIR}"
-
-# I have found that if I follow the steps for isntalling Z3 _after_
-# creating the Python venv, the step `sudo make install` installs Z3
-# files not into system-wide directories like /usr/include and
-# /usr/lib, but instead inside of the Python venv.  If that happens,
-# then the build of p4c cannot find the Z3 files there.  I am sure
-# there is some way to modify the Z3 install commands to install them
-# it in /usr system-wide directories even after the Python venv has
-# been created, but there should be no harm in just installing Z3
-# before the venv is created.
-
-# Make clone time 0 if we don't clone Z3
-TIME_Z3_CLONE_START=$(date +%s)
-TIME_Z3_CLONE_END=$(date +%s)
-TIME_Z3_INSTALL_START=$(date +%s)
-DISK_USED_BEFORE_Z3_CLEANUP=`get_used_disk_space_in_mbytes`
-if [ ${PROCESSOR} = "x86_64" ]
-then
-    echo "Processor type is ${PROCESSOR}.  p4c build scripts will fetch precompiled Z3 library for you."
-else
-    set +x
-    echo "------------------------------------------------------------"
-    echo "Installing Z3Prover/z3"
-    echo "start install z3:"
-    set -x
-
-    if [ -d z3 ]
-    then
-	echo "Found directory ${INSTALL_DIR}/z3.  Assuming desired version of z3 is already installed."
-    else
-	TMP="${REPO_CACHE_DIR}/z3-4.11.2-made-for-aarch64-ubuntu-22.04.tar.gz"
-	if [ -r ${TMP} ]
-	then
-	    TIME_Z3_CLONE_START=$(date +%s)
-	    tar xzf ${TMP}
-	    TIME_Z3_CLONE_END=$(date +%s)
-	    TIME_Z3_INSTALL_START=$(date +%s)
-	    cd z3/build
-	else
-	    TIME_Z3_CLONE_START=$(date +%s)
-	    git clone https://github.com/Z3Prover/z3
-	    TIME_Z3_CLONE_END=$(date +%s)
-	    cd z3
-	    git checkout z3-4.11.2
-	    TIME_Z3_INSTALL_START=$(date +%s)
-	    python3 scripts/mk_make.py
-	    cd build
-	    make
-	fi
-	sudo make install
-	# On some systems the following find command returns non-0
-	# exit status.
-	set +e
-	find /usr -name '*z3*' -ls
-	set -e
-	debug_dump_installed_z3_files snap1
-    fi
-    if [ "${ID}" = "ubuntu" ]
-    then
-	echo "Installing 'dummy' packages named libz3-4 libz3-dev"
-	echo "so that later package installations will not overwrite"
-	echo "the version of the Z3 header and compiled library files"
-	echo "that we have just installed from source code."
-	sudo apt-get --yes install equivs
-	${THIS_SCRIPT_DIR_ABSOLUTE}/gen-dummy-package.sh -i libz3-4 libz3-dev
-	debug_dump_installed_z3_files snap2
-    fi
-    DISK_USED_BEFORE_Z3_CLEANUP=`get_used_disk_space_in_mbytes`
-    if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
-    then
-	echo "Disk space used just before cleaning up z3:"
-	df -BM .
-	cd "${INSTALL_DIR}"
-	cd z3
-	/bin/rm -fr build
-    fi
-
-    set +x
-    echo "end install z3:"
-    set -x
-    date
-fi
-TIME_Z3_INSTALL_END=$(date +%s)
-echo "Z3Prover/z3 clone      : $(($TIME_Z3_CLONE_END-$TIME_Z3_CLONE_START)) sec"
-echo "Z3Prover/z3 install    : $(($TIME_Z3_INSTALL_END-$TIME_Z3_INSTALL_START)) sec"
-DISK_USED_AFTER_Z3=`get_used_disk_space_in_mbytes`
-
 # Create a new Python virtual environment using venv.  Later we will
 # attempt to ensure that all new Python packages installed are
 # installed into this virtual environment, not into system-wide
@@ -880,7 +792,6 @@ objdump -t /usr/local/lib/libprotobuf.a | grep hidden | sort | uniq -c | wc -l
 objdump -t /usr/local/lib/libprotobuf.a | grep hidden | sort | uniq -c | sort -nr | head -n 20
 
 cd "${INSTALL_DIR}"
-debug_dump_installed_z3_files snap3
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-3-after-grpc.txt
 
 set +x
@@ -965,7 +876,6 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_installed_z3_files snap4
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-4-after-PI.txt
 
 set +x
@@ -1012,7 +922,6 @@ else
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
     ./install_deps.sh
-    debug_dump_installed_z3_files snap8
     # simple_switch_grpc README.md says to configure and build the bmv2
     # code first, using these commands:
     ./autogen.sh
@@ -1106,20 +1015,12 @@ else
     if [ "x${INSTALL_P4C_SOURCE_VERSION}" != "x" ]; then
 	git checkout ${INSTALL_P4C_SOURCE_VERSION}
     fi
+    git checkout fruffy/z3_source
     git log -n 1
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
     TIME_P4C_INSTALL_START=$(date +%s)
-    if [ ${PROCESSOR} = "x86_64" ]
-    then
-	# If you have not already installed Z3 before now, using this
-	# option will fetch an x86_64-specific pre-built binary.
-	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
-    else
-	# We have installed the Z3 library by compiling from source
-	# code already above.
-	P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DTOOLS_USE_PREINSTALLED_Z3=ON"
-    fi
+    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
     mkdir build
     cd build
     # Configure for a release build and build p4testgen
@@ -1331,8 +1232,6 @@ set +x
 echo ""
 echo "Elapsed time for various install steps:"
 echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
-echo "Z3Prover/z3 clone      : $(($TIME_Z3_CLONE_END-$TIME_Z3_CLONE_START)) sec"
-echo "Z3Prover/z3 install    : $(($TIME_Z3_INSTALL_END-$TIME_Z3_INSTALL_START)) sec"
 echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
 echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
 echo "p4lang/PI clone        : $(($TIME_PI_CLONE_END-$TIME_PI_CLONE_START)) sec"
@@ -1353,8 +1252,6 @@ echo "All disk space utilizations below are in MBytes:"
 echo ""
 echo  "DISK_USED_START                ${DISK_USED_START}"
 echo  "DISK_USED_AFTER_AUTOTOOLS      ${DISK_USED_AFTER_AUTOTOOLS}"
-echo  "DISK_USED_BEFORE_Z3_CLEANUP    ${DISK_USED_BEFORE_Z3_CLEANUP}"
-echo  "DISK_USED_AFTER_Z3             ${DISK_USED_AFTER_Z3}"
 echo  "DISK_USED_BEFORE_GRPC_CLEANUP  ${DISK_USED_BEFORE_GRPC_CLEANUP}"
 echo  "DISK_USED_AFTER_GRPC           ${DISK_USED_AFTER_GRPC}"
 echo  "DISK_USED_BEFORE_PI_CLEANUP    ${DISK_USED_BEFORE_PI_CLEANUP}"
@@ -1366,7 +1263,7 @@ echo  "DISK_USED_AFTER_P4C            ${DISK_USED_AFTER_P4C}"
 echo  "DISK_USED_AFTER_MININET        ${DISK_USED_AFTER_MININET}"
 echo  "DISK_USED_END                  ${DISK_USED_END}"
 
-DISK_USED_MAX=`max_of_list ${DISK_USED_START} ${DISK_USED_AFTER_AUTOTOOLS} ${DISK_USED_BEFORE_Z3_CLEANUP} ${DISK_USED_AFTER_Z3} ${DISK_USED_BEFORE_GRPC_CLEANUP} ${DISK_USED_AFTER_GRPC} ${DISK_USED_BEFORE_PI_CLEANUP} ${DISK_USED_AFTER_PI} ${DISK_USED_BEFORE_BMV2_CLEANUP} ${DISK_USED_AFTER_BMV2} ${DISK_USED_BEFORE_P4C_CLEANUP} ${DISK_USED_AFTER_P4C} ${DISK_USED_AFTER_MININET} ${DISK_USED_END}`
+DISK_USED_MAX=`max_of_list ${DISK_USED_START} ${DISK_USED_AFTER_AUTOTOOLS} ${DISK_USED_BEFORE_GRPC_CLEANUP} ${DISK_USED_AFTER_GRPC} ${DISK_USED_BEFORE_PI_CLEANUP} ${DISK_USED_AFTER_PI} ${DISK_USED_BEFORE_BMV2_CLEANUP} ${DISK_USED_AFTER_BMV2} ${DISK_USED_BEFORE_P4C_CLEANUP} ${DISK_USED_AFTER_P4C} ${DISK_USED_AFTER_MININET} ${DISK_USED_END}`
 echo  "DISK_USED_MAX                  ${DISK_USED_MAX}"
 echo  "DISK_USED_MAX - DISK_USED_START : $((${DISK_USED_MAX}-${DISK_USED_START})) MBytes"
 set -x
