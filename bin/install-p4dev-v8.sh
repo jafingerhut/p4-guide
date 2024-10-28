@@ -171,52 +171,6 @@ debug_dump_many_install_files() {
     fi
 }
 
-# Environment variables read by debug_dump_installed_z3_files:
-# DEBUG_INSTALL
-# INSTALL_DIR
-# ID
-debug_dump_installed_z3_files() {
-    local OUT_FNAME="$1"
-    local SAVE_PWD="$PWD"
-    local NUMFILES=""
-    local DO_SNAP=1
-
-    if [ ${OUT_FNAME} != "snap1" ]
-    then
-	if [ ! -d ${INSTALL_DIR}/snap1 ]
-	then
-	    DO_SNAP=0
-	fi
-    fi
-    if [ ${DEBUG_INSTALL} -ge 2 -a ${DO_SNAP} -eq 1 ]
-    then
-	mkdir -p ${INSTALL_DIR}/${OUT_FNAME}
-        # On some systems the following find command returns non-0
-        # exit status.
-        set +e
-        NUMFILES=`find /usr -name '*z3*' -a \! -type d | wc -l`
-        if [ ${NUMFILES} -eq 0 ]
-        then
-            touch ${INSTALL_DIR}/${OUT_FNAME}/no-z3-files-in-usr-dirs
-        else
-            find /usr -name '*z3*' -a \! -type d | xargs tar cf ${INSTALL_DIR}/${OUT_FNAME}/snap.tar
-            set -e
-            cd ${INSTALL_DIR}/${OUT_FNAME}
-            tar xf snap.tar
-        fi
-        if [ "${ID}" = "ubuntu" ]
-        then
-            cd ${INSTALL_DIR}/${OUT_FNAME}
-            set +e
-            apt list --installed | grep -i z3 > z3-in-output-of-apt-list--installed.txt
-            dpkg -L libz3-dev > out-dpkg-L-libz3-dev.txt
-            dpkg -L libz3-4 > out-dpkg-L-libz3-4.txt
-            set -e
-        fi
-        cd ${SAVE_PWD}
-    fi
-}
-
 # max_parallel_jobs calculates a number of parallel jobs N to run for
 # a command like `make -j<N>`
 
@@ -960,7 +914,6 @@ set -x
 date
 
 cd "${INSTALL_DIR}"
-debug_dump_installed_z3_files snap9
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
 set +x
@@ -991,7 +944,6 @@ then
          boost-devel boost-iostreams boost-graph \
          llvm llvm-devel pkgconf python3-pip tcpdump clang
 fi
-debug_dump_installed_z3_files snap10
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
 # ply package is needed for ebpf and ubpf backend tests to pass
@@ -1015,7 +967,6 @@ else
     if [ "x${INSTALL_P4C_SOURCE_VERSION}" != "x" ]; then
 	git checkout ${INSTALL_P4C_SOURCE_VERSION}
     fi
-    git checkout fruffy/z3_source
     git log -n 1
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
@@ -1025,10 +976,8 @@ else
     cd build
     # Configure for a release build and build p4testgen
     cmake .. -DCMAKE_BUILD_TYPE=Release ${P4C_CMAKE_OPTS}
-    debug_dump_installed_z3_files snap11
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
-    debug_dump_installed_z3_files snap12
     sudo make install/strip
     sudo ldconfig
     DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
