@@ -72,7 +72,7 @@ usage() {
 }
 
 DO_UPDATE_FIRST=0
-BUILD_TYPE="RELEASE"
+BUILD_TYPE="Release"
 BUILD_TARGETS="bmv2"
 while [ $# -ge 1 ]
 do
@@ -81,10 +81,10 @@ do
 	    DO_UPDATE_FIRST=1
 	    ;;
 	release)
-	    BUILD_TYPE="RELEASE"
+	    BUILD_TYPE="Release"
 	    ;;
 	debug)
-	    BUILD_TYPE="DEBUG"
+	    BUILD_TYPE="Debug"
 	    ;;
 	full)
 	    BUILD_TARGETS="full"
