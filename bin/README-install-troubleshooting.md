@@ -35,6 +35,7 @@ upgraded to more recent versions if such have been released.
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
 | 2024-Nov-01 | Ubuntu 24.04 | [2.4 GByte VM image](https://drive.google.com/file/d/1uf9upiDVtHTT2ZoFb_Ekt4X-vIQCSNvh/view?usp=sharing) | no such VM created | -- | Combo24 | Combo25 |
+| 2024-Nov-01 | Ubuntu 20.04 | [3.1 GByte VM image](https://drive.google.com/file/d/186nVLMGVIJkjiBdjpV6OakdX5gugZqCt/view?usp=sharing) | no such VM created | -- | Combo24 | Combo25 |
 | 2024-Oct-16 | Ubuntu 24.04 | [2.4 GByte VM image](https://drive.google.com/file/d/1JkuFoAKuOp6_yLyFN3eJBQguViBUfOIg/view?usp=sharing) | no such VM created | -- | Combo24 | no |
 | 2024-Sep-02 | Ubuntu 24.04 | [2.4 GByte VM image](https://drive.google.com/file/d/1mUspxxo7sG0-omvnu6IJasKKSP0PVbCj/view?usp=drive_link) | no such VM created | -- | Combo24 | no |
 | 2024-Aug-01 | Ubuntu 24.04 | [2.3 GByte VM image](https://drive.google.com/file/d/1GDL1Nu5DY8YIf7NBkQ5JazGlxCIBO4nY/view?usp=sharing) | no such VM created | [README](https://drive.google.com/file/d/1jwoFN9uqNjKz1tToHGEp_wz9AaYobFYr/view?usp=sharing) | Combo23 | no |
