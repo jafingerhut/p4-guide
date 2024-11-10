@@ -63,19 +63,14 @@ is specific to BMv2, which I will call "BMv2-JSON".
 
 The BMv2-JSON format has supported conditional jumps since 2017.  See
 this commit:
+
 https://github.com/p4lang/behavioral-model/commit/207d2e23db195b51325736334c92827320bb3243
 
-This support enables general implementation of `if` conditions within
-P4 actions.  However, as of 2024-Feb-15, no one has chosen to enhance
-the `p4c-bm2-ss` compiler back end to take advantage of this support
-in BMv2.  Anyone with the desire and skill and time can do so, but no
-such person has yet chosen to do this.  Often people working on open
-source p4lang projects are paid to do so.  So far, no company has
-chosen to pay any of their employees to perform this task.
+As of 2024-Nov-08, after the PR linked below was merged into the `p4c`
+compiler, `p4c-bm2-ss` now supports general `if` conditions within P4
+actions!
 
-Why didn't the original BMv2 back end support general `if` statements
-inside of actions?  Probably because the original Tofino did not (my
-guess -- I do not know the full history here).
++ https://github.com/p4lang/p4c/pull/4999
 
 Thus `p4c-bm2-ss` combined with BMv2 has the following support for
 `if` statements:
@@ -84,35 +79,7 @@ Thus `p4c-bm2-ss` combined with BMv2 has the following support for
 + Yes in the body of a parser's `state` definition.
 + Yes in the body of a function definition, if that function is only
   called within the places listed above.
-+ _Limited_ yes in the body of an `action` definition,
-  + Yes if, after inlining any action or function calls, all
-    statements in every branch of the `if` statements are assignment
-    statements.
-  + Otherwise no, e.g. if any branch contains something other than an
-    assignment statement, e.g. an extern function or method call.
-
-The reason for the limited yes support for `if` statements within
-actions is because p4c BMv2 back end code implements an automated
-transformation of action bodies containing `if` statements, where the
-branches contain only assignment statements, into an equivalent action
-body that uses no `if` statements.  It does this by constructing an
-equivalent way to represent the behavior using only assignments that
-have the ternary operator `(cond) ? (then_expr) : (else_expr)` on the
-right hand side of the assignments.
-
-This transformation is implemented in a pass called the "Predication"
-pass.  This seems to work correctly for `if` statements in action
-bodies that are not nested, and at least for some cases where they are
-nested, but there are known bugs as of 2024-Feb-15 where the
-Predication pass does transform the original code into non-equivalent
-code that behaves differently, which is a bug in the Predication pass.
-For an example, see this issue:
-https://github.com/p4lang/p4c/issues/4370
-
-See the example P4 program
-[`demo-if-stmts1.p4`](../demo-if-stmts/demo-if-stmts1.p4) for examples
-of supported `if` statements for the BMv2 target, and some that have
-been #ifdef'd out with comments explaining why they are not supported.
++ Yes in the body of an `action` definition.
 
 
 ## DPDK
