@@ -52,10 +52,16 @@ control ingress(inout headers_t hdr,
                 inout metadata_t meta,
                 inout standard_metadata_t stdmeta)
 {
-    action set_headers(Eth0_t addr0, Eth1_t addr1, Eth2_t addr2) {
+    Eth0_t local0 = (bit<48>) stdmeta.ingress_port;
+    Eth1_t local1 = 0;
+    Eth2_t local2 = 0;
+    bit<48> local3 = 0;
+    
+    action set_headers(Eth0_t addr0, Eth1_t addr1, Eth2_t addr2, bit<16> etherType) {
         hdr.ethernet.addr0 = addr0;
         hdr.ethernet.addr1 = addr1;
         hdr.ethernet.addr2 = addr2;
+        hdr.ethernet.etherType = etherType;
     }
     action my_drop() {
         mark_to_drop(stdmeta);
@@ -65,6 +71,12 @@ control ingress(inout headers_t hdr,
             hdr.ethernet.addr0 : exact;
             hdr.ethernet.addr1 : exact;
             hdr.ethernet.addr2 : exact;
+            hdr.ethernet.addr0 & 48w0xffff : exact;
+            (bit<48>) hdr.ethernet.addr1 & 48w0xffff : exact @name("foo");
+            local0: exact;
+            local1: exact;
+            local2: exact;
+            local3: exact;
         }
         actions = {
             set_headers;

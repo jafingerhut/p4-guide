@@ -3,7 +3,13 @@
     {
       "name" : "scalars_0",
       "id" : 0,
-      "fields" : []
+      "fields" : [
+        ["local0_0", 48, false],
+        ["local1_0", 48, false],
+        ["local2_0", 48, false],
+        ["local3_0", 48, false],
+        ["key_0", 48, false]
+      ]
     },
     {
       "name" : "standard_metadata",
@@ -99,7 +105,8 @@
           ],
           "transitions" : [
             {
-              "value" : "default",
+              "type" : "default",
+              "value" : null,
               "mask" : null,
               "next_state" : null
             }
@@ -116,7 +123,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "typedef-test1.p4",
-        "line" : 89,
+        "line" : 101,
         "column" : 8,
         "source_fragment" : "DeparserImpl"
       },
@@ -145,6 +152,10 @@
         {
           "name" : "addr2",
           "bitwidth" : 48
+        },
+        {
+          "name" : "etherType",
+          "bitwidth" : 16
         }
       ],
       "primitives" : [
@@ -162,7 +173,7 @@
           ],
           "source_info" : {
             "filename" : "typedef-test1.p4",
-            "line" : 56,
+            "line" : 61,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.addr0 = addr0"
           }
@@ -181,7 +192,7 @@
           ],
           "source_info" : {
             "filename" : "typedef-test1.p4",
-            "line" : 57,
+            "line" : 62,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.addr1 = addr1"
           }
@@ -200,9 +211,28 @@
           ],
           "source_info" : {
             "filename" : "typedef-test1.p4",
-            "line" : 58,
+            "line" : 63,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.addr2 = addr2"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ethernet", "etherType"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 3
+            }
+          ],
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 64,
+            "column" : 8,
+            "source_fragment" : "hdr.ethernet.etherType = etherType"
           }
         }
       ]
@@ -222,9 +252,154 @@
           ],
           "source_info" : {
             "filename" : "typedef-test1.p4",
-            "line" : 61,
+            "line" : 67,
             "column" : 8,
             "source_fragment" : "mark_to_drop(stdmeta)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "typedeftest1l75",
+      "id" : 2,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "key_0"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ethernet", "addr1"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x00000000ffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 75,
+            "column" : 12,
+            "source_fragment" : "            (bit<48>) hdr.ethernet.addr1 & 48w0xffff : exact @name(\\\"foo\\\");"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "typedeftest1l55",
+      "id" : 3,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "local0_0"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["standard_metadata", "ingress_port"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 55,
+            "column" : 4,
+            "source_fragment" : "Eth0_t local0 = (bit<48>) stdmeta.ingress_port"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "local1_0"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x000000000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 56,
+            "column" : 4,
+            "source_fragment" : "Eth1_t local1 = 0"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "local2_0"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x000000000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 57,
+            "column" : 4,
+            "source_fragment" : "Eth2_t local2 = 0"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "local3_0"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x000000000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 58,
+            "column" : 4,
+            "source_fragment" : "bit<48> local3 = 0"
           }
         }
       ]
@@ -240,14 +415,72 @@
         "column" : 8,
         "source_fragment" : "ingress"
       },
-      "init_table" : "node_2",
+      "init_table" : "tbl_typedeftest1l55",
       "tables" : [
         {
-          "name" : "ingress.custom_table",
+          "name" : "tbl_typedeftest1l55",
           "id" : 0,
           "source_info" : {
             "filename" : "typedef-test1.p4",
-            "line" : 63,
+            "line" : 55,
+            "column" : 4,
+            "source_fragment" : "Eth0_t local0 = (bit<48>) stdmeta.ingress_port; ..."
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [3],
+          "actions" : ["typedeftest1l55"],
+          "base_default_next" : "node_3",
+          "next_tables" : {
+            "typedeftest1l55" : "node_3"
+          },
+          "default_entry" : {
+            "action_id" : 3,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_typedeftest1l75",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 75,
+            "column" : 12,
+            "source_fragment" : "            (bit<48>) hdr.ethernet.addr1 & 48w0xffff : exact @name(\\\"foo\\\");"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [2],
+          "actions" : ["typedeftest1l75"],
+          "base_default_next" : "ingress.custom_table",
+          "next_tables" : {
+            "typedeftest1l75" : "ingress.custom_table"
+          },
+          "default_entry" : {
+            "action_id" : 2,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "ingress.custom_table",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "typedef-test1.p4",
+            "line" : 69,
             "column" : 10,
             "source_fragment" : "custom_table"
           },
@@ -268,6 +501,42 @@
               "match_type" : "exact",
               "name" : "hdr.ethernet.addr2",
               "target" : ["ethernet", "addr2"],
+              "mask" : null
+            },
+            {
+              "match_type" : "exact",
+              "name" : "hdr.ethernet.addr0 & 0xffff",
+              "target" : ["ethernet", "addr0"],
+              "mask" : "0x00000000ffff"
+            },
+            {
+              "match_type" : "exact",
+              "name" : "foo",
+              "target" : ["scalars", "key_0"],
+              "mask" : null
+            },
+            {
+              "match_type" : "exact",
+              "name" : "local0",
+              "target" : ["scalars", "local0_0"],
+              "mask" : null
+            },
+            {
+              "match_type" : "exact",
+              "name" : "local1",
+              "target" : ["scalars", "local1_0"],
+              "mask" : null
+            },
+            {
+              "match_type" : "exact",
+              "name" : "local2",
+              "target" : ["scalars", "local2_0"],
+              "mask" : null
+            },
+            {
+              "match_type" : "exact",
+              "name" : "local3",
+              "target" : ["scalars", "local3_0"],
               "mask" : null
             }
           ],
@@ -295,11 +564,11 @@
       "action_profiles" : [],
       "conditionals" : [
         {
-          "name" : "node_2",
+          "name" : "node_3",
           "id" : 0,
           "source_info" : {
             "filename" : "typedef-test1.p4",
-            "line" : 76,
+            "line" : 88,
             "column" : 12,
             "source_fragment" : "hdr.ethernet.isValid()"
           },
@@ -315,7 +584,7 @@
             }
           },
           "false_next" : null,
-          "true_next" : "ingress.custom_table"
+          "true_next" : "tbl_typedeftest1l75"
         }
       ]
     },
@@ -324,7 +593,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "typedef-test1.p4",
-        "line" : 82,
+        "line" : 94,
         "column" : 8,
         "source_fragment" : "egress"
       },
@@ -377,7 +646,7 @@
   ],
   "program" : "./typedef-test1.p4i",
   "__meta__" : {
-    "version" : [2, 18],
+    "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"
   }
 }

@@ -9,20 +9,21 @@ are the same as each other in the underlying `bit<48>` type:
   a `@p4runtime_translation` annotation
 
 If you run the p4c command in the script `compile.sh`, it generates
-the P4Info file `typedef-test1.p4info.txtpb`, as well as the P4_16 code
-at the end of all front-end passes (file name
-`typedef-test1-FrontEnd_54_FrontEndLast.p4i`), and at the end of all
-mid-end passes (file name
-`typedef-test1-BMV2::SimpleSwitchMidEnd_39_MidEndLast.p4i`).
+the P4Info file `typedef-test1.p4info.txtpb`, as well as the P4_16
+code at the end of all front-end passes (file name
+`tmp/typedef-test1-0002-FrontEnd_70_FrontEndLast.p4`), and at the end
+of all mid-end passes (file name
+`tmp/typedef-test1-0003-P4::BMV2::SimpleSwitchMidEnd_44_MidEndLast.p4`).
 
-Both of those preserve the `typedef` declaration of `Eth0_t`, and both
-preserve the type of field `addr0` as `Eth0_t` in these places:
+Both of those preserve the `typedef` declaration of `Eth0_t`, but only
+the `FrontEndLast` file preserves the type of field `addr0` as
+`Eth0_t` in these places:
 
 + the type of the first field `addr0` of header type `ethernet_t`
 + the first parameter of action `set_headers`
 
-Thus it seems that p4c has not yet erased the existence, nor the uses,
-of the `typedef` `Eth0_t`.
+Thus it seems that p4c does not erase the existence, nor the uses, of
+the `typedef` `Eth0_t`, until somewhere in a midend pass.
 
 
 # Experiment #1
