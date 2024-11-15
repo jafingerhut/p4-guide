@@ -11,10 +11,16 @@ vs. which are not.
 
 To compile and generate test cases with p4testgen, but _not_ run them:
 ```bash
+# To compile all test programs
+make all
+
+# To compile only one:
 make exit-1-bmv2.p4i
+make exit-2-bmv2.p4i
 ```
 
 To compile, generate test cases with p4testgen, and run them on BMv2:
 ```bash
 ./p4testgen-runptf.sh exit-1-bmv2.p4
+./p4testgen-runptf.sh exit-2-bmv2.p4
 ```

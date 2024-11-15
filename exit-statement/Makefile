@@ -1,7 +1,8 @@
 P4GUIDE=$(HOME)/p4-guide
 
 all: \
-	exit-1-bmv2.p4i
+	exit-1-bmv2.p4i \
+	exit-2-bmv2.p4i
 
 %.p4i: %.p4
 	/bin/mkdir -p tmp out-p4testgen
