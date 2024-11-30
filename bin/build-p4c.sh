@@ -68,7 +68,10 @@ else
 fi
 
 usage() {
-    2>&1 echo "usage: $0 [ update | release | debug ]*"
+    2>&1 echo "usage: $0 [ update | release | debug | bmv2 | full ]*"
+    2>&1 echo ""
+    2>&1 echo "    release, debug - last one one cmd line controls whether RELEASE or DEBUG build are done for p4c"
+    2>&1 echo "    bmv2, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, or all back ends"
 }
 
 DO_UPDATE_FIRST=0
