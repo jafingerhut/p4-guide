@@ -120,3 +120,115 @@ $ p4c --target bmv2 --arch v1model fabric_border_router.p4
 $ wc fabric_border_router.json 
  12341  29814 359909 fabric_border_router.json
 ```
+
+
+# In what ways does the original code use P4 `type` and the `p4runtime_translation` annotation?
+
+Also how often it uses `typedef`, which I show mostly for my own
+curiosity.  It has little to do directly with the use of the
+`p4runtime_translation` annotation.
+
+```bash
+$ find sai_p4 ! -type d | xargs egrep '\btypedef\b'
+sai_p4/fixed/metadata.p4:typedef bit<ROUTE_METADATA_BITWIDTH> route_metadata_t;
+sai_p4/fixed/metadata.p4:typedef bit<ACL_METADATA_BITWIDTH> acl_metadata_t;
+sai_p4/fixed/metadata.p4:typedef bit<MULTICAST_GROUP_ID_BITWIDTH> multicast_group_id_t;
+sai_p4/fixed/metadata.p4:typedef bit<REPLICA_INSTANCE_BITWIDTH> replica_instance_t;
+sai_p4/fixed/headers.p4:typedef bit<48> ethernet_addr_t;
+sai_p4/fixed/headers.p4:typedef bit<32> ipv4_addr_t;
+sai_p4/fixed/headers.p4:typedef bit<128> ipv6_addr_t;
+sai_p4/fixed/headers.p4:typedef bit<12> vlan_id_t;
+sai_p4/fixed/headers.p4:typedef bit<16> ether_type_t;
+```
+
+Now `type`:
+
+```bash
+$ find sai_p4 ! -type d | xargs egrep '\btype\b'
+sai_p4/instantiations/google/acl_ingress.p4:      headers.icmp.type : ternary @name("icmp_type") @id(19)
+sai_p4/instantiations/google/acl_ingress.p4:      headers.icmp.type : ternary @name("icmpv6_type") @id(14)
+sai_p4/instantiations/google/acl_ingress.p4:      headers.icmp.type : ternary
+sai_p4/instantiations/google/acl_ingress.p4:      headers.icmp.type : ternary
+sai_p4/instantiations/google/acl_pre_ingress.p4:      headers.icmp.type : ternary
+sai_p4/fixed/metadata.p4:type bit<NEXTHOP_ID_BITWIDTH> nexthop_id_t;
+sai_p4/fixed/metadata.p4:type bit<TUNNEL_ID_BITWIDTH> tunnel_id_t;
+sai_p4/fixed/metadata.p4:type bit<WCMP_GROUP_ID_BITWIDTH> wcmp_group_id_t;
+sai_p4/fixed/metadata.p4:type bit<VRF_BITWIDTH> vrf_id_t;
+sai_p4/fixed/metadata.p4:type bit<ROUTER_INTERFACE_ID_BITWIDTH> router_interface_id_t;
+sai_p4/fixed/metadata.p4:type bit<PORT_BITWIDTH> port_id_t;
+sai_p4/fixed/metadata.p4:type bit<MIRROR_SESSION_ID_BITWIDTH> mirror_session_id_t;
+sai_p4/fixed/metadata.p4:type bit<QOS_QUEUE_BITWIDTH> qos_queue_t;
+sai_p4/fixed/metadata.p4:  // applied regardless of instance type of a packet.
+sai_p4/fixed/metadata.p4:  // has port_id_t as the type for all fields that match on ports. This allows
+sai_p4/fixed/ids.h:// type: INSERT
+sai_p4/fixed/packet_io.p4:      // Cast is necessary, because v1model does not define port using `type`.
+sai_p4/fixed/routing.p4:  // Models SAI IPMC entries of type (*,G) whose destination is an IPv4 address.
+sai_p4/fixed/routing.p4:  // Models SAI IPMC entries of type (*,G) whose destination is an IPv6 address.
+sai_p4/fixed/routing.p4:    // Cast is necessary, because v1model does not define port using `type`.
+sai_p4/fixed/headers.p4:  bit<8> type;
+sai_p4/fixed/ingress_cloning.p4:  // | type       | match fields             | action           | entry count  |
+```
+
+Trim that list of result lines to actual uses of the P4_16 `type`
+keyword and type-defining mechanism.  I did this manually, since I
+know of no easily automated way to do it.
+
+```bash
+sai_p4/fixed/metadata.p4:type bit<NEXTHOP_ID_BITWIDTH> nexthop_id_t;
+sai_p4/fixed/metadata.p4:type bit<TUNNEL_ID_BITWIDTH> tunnel_id_t;
+sai_p4/fixed/metadata.p4:type bit<WCMP_GROUP_ID_BITWIDTH> wcmp_group_id_t;
+sai_p4/fixed/metadata.p4:type bit<VRF_BITWIDTH> vrf_id_t;
+sai_p4/fixed/metadata.p4:type bit<ROUTER_INTERFACE_ID_BITWIDTH> router_interface_id_t;
+sai_p4/fixed/metadata.p4:type bit<PORT_BITWIDTH> port_id_t;
+sai_p4/fixed/metadata.p4:type bit<MIRROR_SESSION_ID_BITWIDTH> mirror_session_id_t;
+sai_p4/fixed/metadata.p4:type bit<QOS_QUEUE_BITWIDTH> qos_queue_t;
+```
+
+And the `p4runtime_translation` annotation:
+
+```bash
+$ find sai_p4 ! -type d | xargs egrep p4runtime_translation
+sai_p4/instantiations/google/bitwidths.p4:  // Number of bits used for types that use @p4runtime_translation("", string).
+sai_p4/fixed/metadata.p4:// BMv2 does not support @p4runtime_translation.
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation_mappings({
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+sai_p4/fixed/metadata.p4:@p4runtime_translation("", string)
+```
+
+Here are a list of `type` names, and which ones have a
+`p4runtime_translation` on them, and how often they appear in the
+source code:
+
+Columns:
+
++ A - Number of uses of the type name in the P4 code, not counting
+  comments, and not counting the line defining the type.
++ B - The type name.
++ C - The underlying type.
+
+```
+ 4 nexthop_id_t          bit<NEXTHOP_ID_BITWIDTH>
+ 2 tunnel_id_t           bit<TUNNEL_ID_BITWIDTH>
+ 3 wcmp_group_id_t       bit<WCMP_GROUP_ID_BITWIDTH>
+ 2 vrf_id_t              bit<VRF_BITWIDTH>
+ 4 router_interface_id_t bit<ROUTER_INTERFACE_ID_BITWIDTH>
+16 port_id_t             bit<PORT_BITWIDTH>
+ 2 mirror_session_id_t   bit<MIRROR_SESSION_ID_BITWIDTH>
+ 9 qos_queue_t           bit<QOS_QUEUE_BITWIDTH>
+```
+
+All of these type definitions have an annotation of
+`@p4runtime_translation("", string)`, unless the preprocessor symbol
+`PLATFORM_BMV2` is defined, in which case there is no such annotation
+on any type definitions.
+
+```bash
+cd sai_p4/instantiations/google
+p4c --target bmv2 --arch v1model tor.p4 --p4runtime-files tor.txtpb
+```
