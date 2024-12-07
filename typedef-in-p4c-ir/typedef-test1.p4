@@ -18,6 +18,7 @@ limitations under the License.
 #include <v1model.p4>
 
 
+@p4runtime_translation("co2.com/EthAddr", 50)
 typedef bit<48> Eth0_t;
 type    bit<48> Eth1_t;
 @p4runtime_translation("mycompany.com/EthernetAddress", 49)

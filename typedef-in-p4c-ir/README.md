@@ -93,3 +93,17 @@ Output of this command is in the file shown in the command:
 ```bash
 $ ./compile.sh >& experiment2-compile-out.txt
 ```
+
+
+# Places where a typedef type should perhaps matter for propagating the `@p4runtime_translation` annotation
+
++ Fields in a header or struct declared as typedef
++ Action parameters declared as typedef
++ Local variables in a control or parser declared as typedef
++ Elements of a list where element type is a typedef?
++ Table key expressions
+  + If the expression has a (typedef) cast at the "top level" of the
+    expression.
+  + If the expression is "simple", i.e. it is just a local variable or
+    struct/header member.  In this case, look up whether it is
+    declared as typedef.
