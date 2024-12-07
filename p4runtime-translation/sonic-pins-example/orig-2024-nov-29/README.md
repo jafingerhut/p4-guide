@@ -230,5 +230,8 @@ on any type definitions.
 
 ```bash
 cd sai_p4/instantiations/google
-p4c --target bmv2 --arch v1model tor.p4 --p4runtime-files tor.txtpb
+for p in tor wbb middleblock fabric_border_router
+do
+    p4c --target bmv2 --arch v1model $p.p4 --p4runtime-files $p.txtpb
+done
 ```
