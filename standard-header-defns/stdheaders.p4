@@ -21,11 +21,38 @@ typedef bit<32>   ipv4_address_t;
 typedef bit<128>  ipv6_address_t;
 typedef bit<24>   vni_t;
 
-// Some typical ether_types
-const bit<16> ETHERTYPE_MAC    = 0x6558;
-const bit<16> ETHERTYPE_IPV4   = 0x0800;
-const bit<16> ETHERTYPE_ARP    = 0x0806;
-const bit<16> ETHERTYPE_IPV6   = 0x86DD;
+// Some typical ether_types from IANA RFC9542
+const bit<16> ETHERTYPE_MAC            = 0x6558;
+const bit<16> ETHERTYPE_IPV4           = 0x0800;
+const bit<16> ETHERTYPE_ARP            = 0x0806;
+const bit<16> ETHERTYPE_IPV6           = 0x86DD;
+const bit<16> ETHERTYPE_MPLS_UCAST     = 0x8847;
+const bit<16> ETHERTYPE_MPLS_MCAST     = 0x8848;
+const bit<16> ETHERTYPE_PPOE_D         = 0x8863;
+const bit<16> ETHERTYPE_PPOE_S         = 0x8864;
+const bit<16> ETHERTYPE_VLAN           = 0x8100;
+const bit<16> ETHERTYPE_VLACP          = 0x8103;
+const bit<16> ETHERTYPE_PTP            = 0x88F7;
+const bit<16> ETHERTYPE_CFM            = 0x8902;
+const bit<16> ETHERTYPE_RoCE           = 0x8915;
+
+
+
+// Some typical protocol_types from IANA RFC5237 RFC7045
+// In IPv4 there is a field called "Protocol" to identify the next level protocol.  
+// In IPv6 this field  is called the "Next Header" field.
+
+const bit<8>  IP_PROTOCOL_ICMP         = 1;
+const bit<8>  IP_PROTOCOL_IGMP         = 2;
+const bit<8>  IP_PROTOCOL_IPv4         = 4;
+const bit<8>  IP_PROTOCOL_TCP          = 6;
+const bit<8>  IP_PROTOCOL_UDP          = 17;
+const bit<8>  IP_PROTOCOL_IPv6         = 41;
+const bit<8>  IP_PROTOCOL_IPv6_ICMP    = 48;
+const bit<8>  IP_PROTOCOL_IPIP         = 94;
+const bit<8>  IP_PROTOCOL_PTP          = 123;
+const bit<8>  IP_PROTOCOL_MPLS_in_IP   = 137;
+
 
 header ethernet_t
 {
