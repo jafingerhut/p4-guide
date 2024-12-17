@@ -131,6 +131,9 @@ cd open-p4studio
 git checkout fruffy/runners
 git log -n 1 | head -n 3
 git submodule update --init --recursive
+cd .git/modules/pkgsrc/p4-compilers/p4c
+git log -n 1 | head -n 3
+cd "${INSTALL_DIR}/open-p4studio"
 
 sudo -E ./p4studio/p4studio profile apply ./p4studio/profiles/all-tofino.yaml
 
