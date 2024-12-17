@@ -83,7 +83,7 @@ fi
 # memory usage of some C++ compiler runs is over 3 GBytes.
 
 num_procs=`nproc`
-min_mem_MBytes=`expr ${num_procs} \* \( 4096 - 64 \)`
+min_mem_MBytes=`expr ${num_procs} \* \( 4096 - 256 \)`
 memtotal_KBytes=`head -n 1 /proc/meminfo | awk '{print $2;}'`
 memtotal_MBytes=`expr ${memtotal_KBytes} / 1024`
 
