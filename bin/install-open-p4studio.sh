@@ -137,9 +137,10 @@ cd "${INSTALL_DIR}/open-p4studio"
 
 sudo -E ./p4studio/p4studio profile apply ./p4studio/profiles/all-tofino.yaml
 
+set +x
 cd "${INSTALL_DIR}"
 cp /dev/null setup-open-p4studio.bash
-echo "export SDE=${INSTALL_DIR}/open-p4studio" >> setup-open-p4studio.bash
+echo "export SDE=\"${INSTALL_DIR}/open-p4studio\"" >> setup-open-p4studio.bash
 echo "export SDE_INSTALL=\"\${SDE}/install\"" >> setup-open-p4studio.bash
 echo "export LD_LIBRARY_PATH=\"\${SDE_INSTALL}/lib\"" >> setup-open-p4studio.bash
 echo "export PATH=\"\${SDE_INSTALL}/bin:\${PATH}\"" >> setup-open-p4studio.bash
