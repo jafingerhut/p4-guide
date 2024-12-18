@@ -128,7 +128,7 @@ sudo apt-get install --yes ccache
 
 git clone git@github.com:p4lang/open-p4studio
 cd open-p4studio
-#git checkout fruffy/runners
+git checkout fruffy/assembler_fixes
 git log -n 1 | head -n 3
 git submodule update --init --recursive
 cd .git/modules/pkgsrc/p4-compilers/p4c
