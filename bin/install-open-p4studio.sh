@@ -120,7 +120,36 @@ then
     exit 1
 fi
 
+get_used_disk_space_in_mbytes() {
+    echo $(df --output=used --block-size=1M . | tail -n 1)
+}
+
+max_of_list() {
+    local lst=$*
+    local max=""
+    for x in $lst
+    do
+	if [ -z ${max} ]
+	then
+	    max=${x}
+	else
+	    if [ ${x} -gt ${max} ]
+	    then
+		max=${x}
+	    fi
+	fi
+    done
+    echo ${max}
+}
+
+echo "------------------------------------------------------------"
+echo "Time and disk space used before installation begins:"
+DISK_USED_START=`get_used_disk_space_in_mbytes`
 set -x
+date
+df -h .
+df -BM .
+TIME_START=$(date +%s)
 
 # This is required for some of the build steps, but is not installed
 # by any later commands.
@@ -128,10 +157,16 @@ sudo apt-get install --yes ccache
 
 git clone git@github.com:p4lang/open-p4studio
 cd open-p4studio
-git checkout fruffy/assembler_fixes
+#git checkout fruffy/assembler_fixes
+set +x
+echo "Version of p4lang/open-p4studio repo used:"
+set -x
 git log -n 1 | head -n 3
 git submodule update --init --recursive
 cd .git/modules/pkgsrc/p4-compilers/p4c
+set +x
+echo "Version of p4lang/p4c repo used:"
+set -x
 git log -n 1 | head -n 3
 cd "${INSTALL_DIR}/open-p4studio"
 
@@ -150,6 +185,31 @@ echo "the following to your .bashrc or other shell rc file:"
 echo ""
 echo "    source \$HOME/setup-open-p4studio.bash"
 
+set +x
+echo "------------------------------------------------------------"
+echo "Time and disk space used when installation was complete:"
+set -x
+date
+df -h .
+df -BM .
+TIME_END=$(date +%s)
+set +x
+echo ""
+echo "Elapsed time for various install steps:"
+echo "Total time             : $(($TIME_END-$TIME_START)) sec"
+set -x
+
+DISK_USED_END=`get_used_disk_space_in_mbytes`
+
+set +x
+echo "All disk space utilizations below are in MBytes:"
+echo ""
+echo  "DISK_USED_START                ${DISK_USED_START}"
+echo  "DISK_USED_END                  ${DISK_USED_END}"
+
+DISK_USED_MAX=`max_of_list ${DISK_USED_START} ${DISK_USED_END}`
+echo  "DISK_USED_MAX                  ${DISK_USED_MAX}"
+echo  "DISK_USED_MAX - DISK_USED_START : $((${DISK_USED_MAX}-${DISK_USED_START})) MBytes"
 
 # To run some tests:
 
