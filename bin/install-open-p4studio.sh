@@ -172,18 +172,9 @@ cd "${INSTALL_DIR}/open-p4studio"
 
 sudo -E ./p4studio/p4studio profile apply ./p4studio/profiles/testing.yaml
 
-set +x
-cd "${INSTALL_DIR}"
-cp /dev/null setup-open-p4studio.bash
-echo "export SDE=\"${INSTALL_DIR}/open-p4studio\"" >> setup-open-p4studio.bash
-echo "export SDE_INSTALL=\"\${SDE}/install\"" >> setup-open-p4studio.bash
-echo "export LD_LIBRARY_PATH=\"\${SDE_INSTALL}/lib\"" >> setup-open-p4studio.bash
-echo "export PATH=\"\${SDE_INSTALL}/bin:\${PATH}\"" >> setup-open-p4studio.bash
-
-echo "If you use a Bash-like command shell, you may wish to add a line like"
-echo "the following to your .bashrc or other shell rc file:"
-echo ""
-echo "    source \$HOME/setup-open-p4studio.bash"
+# FIXME: Hopefully some other install step above will do the following,
+# but for now this is needed in order to enable run_p4_tests.sh to work.
+sudo pip3 install tabulate
 
 set +x
 echo "------------------------------------------------------------"
@@ -211,9 +202,22 @@ DISK_USED_MAX=`max_of_list ${DISK_USED_START} ${DISK_USED_END}`
 echo  "DISK_USED_MAX                  ${DISK_USED_MAX}"
 echo  "DISK_USED_MAX - DISK_USED_START : $((${DISK_USED_MAX}-${DISK_USED_START})) MBytes"
 
+set +x
+cd "${INSTALL_DIR}"
+cp /dev/null setup-open-p4studio.bash
+echo "export SDE=\"${INSTALL_DIR}/open-p4studio\"" >> setup-open-p4studio.bash
+echo "export SDE_INSTALL=\"\${SDE}/install\"" >> setup-open-p4studio.bash
+echo "export LD_LIBRARY_PATH=\"\${SDE_INSTALL}/lib\"" >> setup-open-p4studio.bash
+echo "export PATH=\"\${SDE_INSTALL}/bin:\${PATH}\"" >> setup-open-p4studio.bash
+
+echo "If you use a Bash-like command shell, you may wish to add a line like"
+echo "the following to your .bashrc or other shell rc file:"
+echo ""
+echo "    source \$HOME/setup-open-p4studio.bash"
+
 # To run some tests:
 
-# source setup-p4studio.bash
+# source setup-open-p4studio.bash
 ##sudo -E ENABLE_BF_ASM=TRUE make -C build tna_counter install |& tee out1.txt
 #sudo -E ENABLE_BF_ASM=TRUE PATH=$PATH LD_LBIRARY_PATH=$LD_LIBRARY_PATH make -C build tna_counter install |& tee out1.txt
 #
