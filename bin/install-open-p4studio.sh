@@ -157,7 +157,7 @@ sudo apt-get install --yes ccache
 
 git clone git@github.com:p4lang/open-p4studio
 cd open-p4studio
-#git checkout fruffy/assembler_fixes
+git checkout fruffy/fixes
 set +x
 echo "Version of p4lang/open-p4studio repo used:"
 set -x
