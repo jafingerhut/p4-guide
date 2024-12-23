@@ -1,3 +1,7 @@
+
+[comment]: # (Copyright 2024 Andy Fingerhut)
+[comment]: # (SPDX-License-Identifier:  Apache-2.0)
+
 # Introduction
 
 This repository contains a variety of potentially useful information
