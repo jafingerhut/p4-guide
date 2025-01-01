@@ -26,7 +26,7 @@ tests to fail.  Many of those will pass if you re-run them as the user
 `root` with a command like this:
 
 ```bash
-$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} ${P4GUIDE_SUDO_OPTS} make -j2 recheck |& tee out2.txt
+$ sudo PATH=${PATH} VIRTUAL_ENV=${VIRTUAL_ENV} ${P4_EXTRA_SUDO_OPTS} make -j2 recheck |& tee out2.txt
 ```
 
 

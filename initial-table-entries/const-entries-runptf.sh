@@ -52,7 +52,7 @@ sleep 2
 # of getting this mapping other than by telling it on its command
 # line.
 
-sudo ${P4GUIDE_SUDO_OPTS} `which ptf` \
+sudo ${P4_EXTRA_SUDO_OPTS} `which ptf` \
     --pypath "$P" \
     -i 0@veth1 \
     -i 1@veth3 \
