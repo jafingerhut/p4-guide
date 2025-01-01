@@ -122,7 +122,7 @@ for f2 in sorted(fl2):
     # I am not sure, but I think the p4c-dpdk tests use files with
     # this suffix, whereas all other back ends use .p4-stderr
     suffixes = ['-first.p4', '-frontend.p4', '-midend.p4', '.p4',
-                '.p4-error', '.p4-stderr', '.p4.p4info.txt', '.p4.entries.txt',
+                '.p4-error', '.p4-stderr', '.p4.p4info.txtpb', '.p4.entries.txtpb',
                 '.p4.bfrt.json', '.p4.spec']
     for suf in suffixes:
         pre = ends_with(f2, suf)
@@ -145,15 +145,15 @@ for suf in dir2_prefix_lst.keys():
     dir2_prefix_set[suf] = set(dir2_prefix_lst[suf])
 
 print("")
-# For every file foo.p4.entries.txt, there is a file foo.p4.p4info.txt
-# For every file foo.p4info.txt, there is a file foo.p4
+# For every file foo.p4.entries.txt, there is a file foo.p4.p4info.txtpb
+# For every file foo.p4info.txtpb, there is a file foo.p4
 # For every file foo.p4-stderr, there is a file foo.p4
 # For every file foo.p4-error, there is a file foo.p4
 # For every file 'foo-first.p4' there is a file 'foo.p4', and vice versa
 # For every file 'foo-frontend.p4' there is a file 'foo.p4', and vice versa
 # For every file 'foo-midend.p4' there is a file 'foo.p4', and vice versa
-suf_pair_lst = [['.p4.entries.txt', '.p4.p4info.txt'],
-                ['.p4.p4info.txt', '.p4'],
+suf_pair_lst = [['.p4.entries.txt', '.p4.p4info.txtpb'],
+                ['.p4.p4info.txtpb', '.p4'],
                 ['.p4-stderr', '.p4'],
                 ['.p4-error', '.p4'],
                 ['-first.p4', '.p4'],
