@@ -60,18 +60,18 @@ if [ -d .git -a -d midend ]
 then
     echo "Found directories .git and midend"
 else
-    2>&1 echo "At least one of .git and midend directories is not present."
-    2>&1 echo ""
-    2>&1 echo "This command must be run from inside top level directory of"
-    2>&1 echo "a clone of the Github repository https://github.com/p4lang/p4c"
+    1>&2 echo "At least one of .git and midend directories is not present."
+    1>&2 echo ""
+    1>&2 echo "This command must be run from inside top level directory of"
+    1>&2 echo "a clone of the Github repository https://github.com/p4lang/p4c"
     exit 1
 fi
 
 usage() {
-    2>&1 echo "usage: $0 [ update | release | debug | bmv2 | full ]*"
-    2>&1 echo ""
-    2>&1 echo "    release, debug - last one one cmd line controls whether RELEASE or DEBUG build are done for p4c"
-    2>&1 echo "    bmv2, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, or all back ends"
+    1>&2 echo "usage: $0 [ update | release | debug | bmv2 | full ]*"
+    1>&2 echo ""
+    1>&2 echo "    release, debug - last one one cmd line controls whether RELEASE or DEBUG build are done for p4c"
+    1>&2 echo "    bmv2, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, or all back ends"
 }
 
 DO_UPDATE_FIRST=0
@@ -96,8 +96,8 @@ do
 	    BUILD_TARGETS="bmv2"
 	    ;;
 	*)
-	    2>&1 echo "Unknown command line option: $1"
-	    2>&1 echo ""
+	    1>&2 echo "Unknown command line option: $1"
+	    1>&2 echo ""
 	    usage
 	    exit 1
 	    ;;
