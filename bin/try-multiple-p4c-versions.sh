@@ -26,24 +26,24 @@ if [ -d .git -a -d midend ]
 then
     echo "Found directories .git and midend"
 else
-    2>&1 echo "At least one of .git and midend directories is not present."
-    2>&1 echo ""
-    2>&1 echo "This command must be run from inside top level directory of"
-    2>&1 echo "a clone of the Github repository https://github.com/p4lang/p4c"
+    1>&2 echo "At least one of .git and midend directories is not present."
+    1>&2 echo ""
+    1>&2 echo "This command must be run from inside top level directory of"
+    1>&2 echo "a clone of the Github repository https://github.com/p4lang/p4c"
     exit 1
 fi
 
 usage() {
-    2>&1 echo "usage: $0 <file_containing_git_shas> <script_to_run>"
-    2>&1 echo ""
-    2>&1 echo "For each of a list of git commit SHAs given in the file"
-    2>&1 echo "<file_containing_git_shas>, build p4c at that version,"
-    2>&1 echo "and run a shell script <script_to_run>."
-    2>&1 echo "<script_to_run> will be given two command line"
-    2>&1 echo "arguments.  The first is the full path name to the p4c"
-    2>&1 echo "executable that was built, and the second is a string"
-    2>&1 echo "in the form <number>-<sha>, where <number> begins at 1"
-    2>&1 echo "and increments by 1 for each <sha>."
+    1>&2 echo "usage: $0 <file_containing_git_shas> <script_to_run>"
+    1>&2 echo ""
+    1>&2 echo "For each of a list of git commit SHAs given in the file"
+    1>&2 echo "<file_containing_git_shas>, build p4c at that version,"
+    1>&2 echo "and run a shell script <script_to_run>."
+    1>&2 echo "<script_to_run> will be given two command line"
+    1>&2 echo "arguments.  The first is the full path name to the p4c"
+    1>&2 echo "executable that was built, and the second is a string"
+    1>&2 echo "in the form <number>-<sha>, where <number> begins at 1"
+    1>&2 echo "and increments by 1 for each <sha>."
 }
 
 if [ $# -ne 2 ]

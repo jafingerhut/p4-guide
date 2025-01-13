@@ -1152,8 +1152,6 @@ date
 git clone https://github.com/p4lang/tutorials
 cd tutorials
 git log -n 1
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/tutorials-support-venv.patch"
 
 set +x
 echo "end install tutorials:"
@@ -1220,7 +1218,7 @@ set -x
 cd "${INSTALL_DIR}"
 DETS="install-details"
 mkdir -p "${DETS}"
-mv usr-local-*.txt pip3-list-2b-before-grpc-pip3.txt "${DETS}"
+mv usr-local-*.txt "${DETS}"
 
 P4GUIDE_BIN="${THIS_SCRIPT_DIR_ABSOLUTE}"
 
@@ -1240,12 +1238,12 @@ cd "${INSTALL_DIR}"
 cp /dev/null p4setup.bash
 echo "source ${INSTALL_DIR}/p4dev-python-venv/bin/activate" >> p4setup.bash
 echo "export PATH=\"${P4GUIDE_BIN}:${INSTALL_DIR}/behavioral-model/tools:/usr/local/bin:\$PATH\"" >> p4setup.bash
-echo "export P4GUIDE_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.bash
+echo "export P4_EXTRA_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.bash
 
 cp /dev/null p4setup.csh
 echo "source ${INSTALL_DIR}/p4dev-python-venv/bin/activate.csh" >> p4setup.csh
 echo "set path = ( ${P4GUIDE_BIN} ${INSTALL_DIR}/behavioral-model/tools /usr/local/bin \$path )" >> p4setup.csh
-echo "setenv P4GUIDE_SUDO_OPTS \"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.csh
+echo "setenv P4_EXTRA_SUDO_OPTS \"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.csh
 
 echo "If you use a Bash-like command shell, you may wish to add a line like"
 echo "the following to your .bashrc or other shell rc file:"

@@ -19,15 +19,15 @@ if [ -d .git -a -d m4 ]
 then
     echo "Found directories .git and m4"
 else
-    2>&1 echo "At least one of .git and m4 directories is not present."
-    2>&1 echo ""
-    2>&1 echo "This command must be run from inside top level directory of"
-    2>&1 echo "a clone of the Github repository https://github.com/p4lang/p4c"
+    1>&2 echo "At least one of .git and m4 directories is not present."
+    1>&2 echo ""
+    1>&2 echo "This command must be run from inside top level directory of"
+    1>&2 echo "a clone of the Github repository https://github.com/p4lang/p4c"
     exit 1
 fi
 
 usage() {
-    2>&1 echo "usage: $0 [ update ]"
+    1>&2 echo "usage: $0 [ update ]"
 }
 
 DO_UPDATE_FIRST=0
