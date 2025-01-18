@@ -139,12 +139,6 @@ mkdir build
 cd build
 P4C_CMAKE_OPTS=""
 PROCESSOR=`uname --machine`
-if [ ${PROCESSOR} = "aarch64" ]
-then
-    # Assuming you used install-p4dev-*.sh script to install, we have
-    # installed the Z3 library by compiling from source code then.
-    P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DTOOLS_USE_PREINSTALLED_Z3=ON"
-fi
 case "${BUILD_TARGETS}" in
     full)
 	P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=ON -DENABLE_UBPF=ON -DENABLE_DPDK=ON -DENABLE_P4C_GRAPHS=ON -DENABLE_TEST_TOOLS=ON -DENABLE_DOCS=ON -DENABLE_P4FMT=ON -DENABLE_P4TC=ON -DENABLE_GTESTS=ON"
