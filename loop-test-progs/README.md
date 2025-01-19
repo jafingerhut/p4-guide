@@ -49,6 +49,41 @@ List of programs compiled via `make all-good` that have loops:
 |  no |  no | in-range | yes |  no |  no |  no | loop-var-in-range-modifiable-in-body2.p4 |
 |  no |  no | in-range | yes |  no | yes |  no | loop-var-in-range-modifiable-in-body3.p4 |
 
+These programs are currently not unrolled by p4c as of version v4, and
+are good candidates for figuring out how to make them work with bmv2
+backend:
+
++ loop-var-exprs-not-constant1.p4
++ loop-var-exprs-not-constant2.p4
++ loop-var-modifiable-in-body1.p4
++ loop-var-modifiable-in-body2.p4
++ loop-var-modifiable-in-body3.p4
++ loop-var-in-range-var-range1.p4
++ loop-var-in-range-var-range2.p4
++ loop-var-in-range-modifiable-in-body2.p4
++ loop-var-in-range-modifiable-in-body3.p4
+
+There are several P4 programs that are not currently unrolled that use
+`for (typeRef var in {list,of,values})`, but I did not include them in
+the list immediately above because my sincere hope is that someone
+implements the unrolling code for this in p4c, and it might be a bit
+tricky to create all of the necessary temporary values in the p4c bmv2
+backend to store and use the values of list elements evaluated before
+the first time the loop body is executed.
+
+I believe this can be accomplished by modifying only the p4c bmv2
+backend, although the techniques of doing so is different depending
+upon whether the loop is inside of the body of an action, or outside
+of the body of an action but inside of a control:
+
++ Inside the body of an action, use `_jump` and/or `_jump_if_zero`
+  primitive instructions inside of the action to create the necessary
+  control flow.
++ Outside the body of an action, use the `conditional` node type
+  inside of a BMv2 `pipeline` object to create either conditional
+  branches, or unconditional branches by making the true/false next
+  node the same.  The next node can be a "backwards" jump.
+
 Note: I believe that the only reason that
 `loop-var-in-range-bounds-modified1.p4` is able to unroll the loop,
 even though the range includes a variable `m`, is because shortly
