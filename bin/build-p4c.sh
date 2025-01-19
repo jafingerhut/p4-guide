@@ -68,18 +68,23 @@ else
 fi
 
 usage() {
-    1>&2 echo "usage: $0 [ update | release | debug | bmv2 | full ]*"
+    1>&2 echo "usage: $0 [ deletebuild | update | release | debug | bmv2 | full ]*"
     1>&2 echo ""
+    1>&2 echo "    deletebuild - first delete build directory, if it exists"
     1>&2 echo "    release, debug - last one one cmd line controls whether RELEASE or DEBUG build are done for p4c"
     1>&2 echo "    bmv2, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, or all back ends"
 }
 
+DO_DELETE_BUILD_DIR=0
 DO_UPDATE_FIRST=0
 BUILD_TYPE="Release"
 BUILD_TARGETS="bmv2"
 while [ $# -ge 1 ]
 do
     case "$1" in
+	deletebuild)
+	    DO_DELETE_BUILD_DIR=1
+	    ;;
 	update)
 	    DO_UPDATE_FIRST=1
 	    ;;
@@ -128,14 +133,20 @@ then
     git submodule update --init --recursive
 fi
 
-if [ -d build ]
+if [ ${DO_DELETE_BUILD_DIR} -eq 1 -a -d build]
 then
     echo "Deleting build directory"
     /bin/rm -fr build
 fi
 
-echo "Building p4c from scratch"
-mkdir build
+if [ -d build ]
+then
+    echo "Building in already-existing build directory"
+else
+    mkdir -p build
+    echo "Building p4c from scratch"
+fi
+
 cd build
 P4C_CMAKE_OPTS=""
 PROCESSOR=`uname --machine`
