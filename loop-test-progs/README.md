@@ -93,6 +93,23 @@ expression before the loop-unrolling pass is reached.  If you change
 the program so that `m`'s value is not easily inferred as a constant,
 then the compiler no longer unrolls the loop.
 
+Note: In examining the midend P4 files created by the command `p4test
+--dump <dir> --top4 FrontEndLast,FrontEndDump,MidEndLast <prog>.p4`
+for 3-clause loops, it appears that loop variables that are declared
+with scope local to the loop body _do_ have their definitions moved
+earlier in the code, to the beginning of the enclosing `control`.
+That should make things easier for the BMv2 backend code to generate
+JSON from, as it does not need to examine the loop IR to decide what
+local variables to create, nor does it need to worry about creating
+unique names for them -- they are already made unique by p4c.
+
+Note: In examining the output for `for (typeRef var in min..max)`
+loops, it appears that the `typeRef` remains in the midend IR, but the
+variable is _also_ moved earlier in the code as well.  This seems like
+a minor bug to be fixed in p4c.  I created
+https://github.com/p4lang/p4c/issues/5106 to track this.
+
+
 List of programs compiled via `make all-good` that _do not_ have loops:
 
 | Errors? | Warnings? | Program |

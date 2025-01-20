@@ -28,6 +28,7 @@ all-good: \
 	loop-var-in-range-modifiable-in-body1.p4i \
 	loop-var-in-range-modifiable-in-body2.p4i \
 	loop-var-in-range-modifiable-in-body3.p4i \
+	loop-var-in-range-modifiable-in-body4.p4i \
 	var-shadowing-test1.p4i \
 	var-shadowing-test2.p4i
 
