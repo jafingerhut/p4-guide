@@ -49,6 +49,41 @@ List of programs compiled via `make all-good` that have loops:
 |  no |  no | in-range | yes |  no |  no |  no | loop-var-in-range-modifiable-in-body2.p4 |
 |  no |  no | in-range | yes |  no | yes |  no | loop-var-in-range-modifiable-in-body3.p4 |
 
+These programs are currently not unrolled by p4c as of version v4, and
+are good candidates for figuring out how to make them work with bmv2
+backend:
+
++ loop-var-exprs-not-constant1.p4
++ loop-var-exprs-not-constant2.p4
++ loop-var-modifiable-in-body1.p4
++ loop-var-modifiable-in-body2.p4
++ loop-var-modifiable-in-body3.p4
++ loop-var-in-range-var-range1.p4
++ loop-var-in-range-var-range2.p4
++ loop-var-in-range-modifiable-in-body2.p4
++ loop-var-in-range-modifiable-in-body3.p4
+
+There are several P4 programs that are not currently unrolled that use
+`for (typeRef var in {list,of,values})`, but I did not include them in
+the list immediately above because my sincere hope is that someone
+implements the unrolling code for this in p4c, and it might be a bit
+tricky to create all of the necessary temporary values in the p4c bmv2
+backend to store and use the values of list elements evaluated before
+the first time the loop body is executed.
+
+I believe this can be accomplished by modifying only the p4c bmv2
+backend, although the techniques of doing so is different depending
+upon whether the loop is inside of the body of an action, or outside
+of the body of an action but inside of a control:
+
++ Inside the body of an action, use `_jump` and/or `_jump_if_zero`
+  primitive instructions inside of the action to create the necessary
+  control flow.
++ Outside the body of an action, use the `conditional` node type
+  inside of a BMv2 `pipeline` object to create either conditional
+  branches, or unconditional branches by making the true/false next
+  node the same.  The next node can be a "backwards" jump.
+
 Note: I believe that the only reason that
 `loop-var-in-range-bounds-modified1.p4` is able to unroll the loop,
 even though the range includes a variable `m`, is because shortly
@@ -57,6 +92,23 @@ compiler is able to propagate that value 3 into the loop's range
 expression before the loop-unrolling pass is reached.  If you change
 the program so that `m`'s value is not easily inferred as a constant,
 then the compiler no longer unrolls the loop.
+
+Note: In examining the midend P4 files created by the command `p4test
+--dump <dir> --top4 FrontEndLast,FrontEndDump,MidEndLast <prog>.p4`
+for 3-clause loops, it appears that loop variables that are declared
+with scope local to the loop body _do_ have their definitions moved
+earlier in the code, to the beginning of the enclosing `control`.
+That should make things easier for the BMv2 backend code to generate
+JSON from, as it does not need to examine the loop IR to decide what
+local variables to create, nor does it need to worry about creating
+unique names for them -- they are already made unique by p4c.
+
+Note: In examining the output for `for (typeRef var in min..max)`
+loops, it appears that the `typeRef` remains in the midend IR, but the
+variable is _also_ moved earlier in the code as well.  This seems like
+a minor bug to be fixed in p4c.  I created
+https://github.com/p4lang/p4c/issues/5106 to track this.
+
 
 List of programs compiled via `make all-good` that _do not_ have loops:
 
