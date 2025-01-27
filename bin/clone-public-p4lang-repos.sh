@@ -16,6 +16,7 @@ for repo in \
     gsoc \
     hackathons \
     ntf \
+    open-p4studio \
     p4-applications \
     p4-build \
     p4-constraints \
