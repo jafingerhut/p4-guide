@@ -17,6 +17,7 @@
 # Andy Fingerhut, andy.fingerhut@gmail.com
 
 import logging
+import queue
 import time
 
 import p4runtime_sh.shell as sh
@@ -58,6 +59,7 @@ def setUp(grpc_addr='localhost:9559',
              election_id=(0, 1), # (high_32bits, lo_32bits)
              config=None,
              verbose=False)
+    self.idlenotes = sh.IdleTimeoutNotification()
 
     # Create Python dicts from name to integer values, and integer
     # values to names, for the P4_16 serializable enum types
@@ -102,13 +104,37 @@ def writeCloneSession(clone_session_id, port_list):
 # Define a few small helper functions that help construct
 # parameters for the table_add() method.
 #############################################################
+def get_idle_notes_block_until_timeout_reached(idlenotes, timeout_sec):
+    pktlist = []
+    logging.info("Sniffing for idlenotes for timeout_sec=%s" % (timeout_sec))
+    idlenotes.sniff(lambda p: pktlist.append(p), timeout=timeout_sec)
+    logging.info("    returning %d idle notifications" % (len(pktlist)))
+    return pktlist
+
+def get_idle_notes(idlenotes, timeout_sec):
+    pktlist = []
+    logging.info("Checking for idlenotes for timeout_sec=%s" % (timeout_sec))
+    start_time = time.time()
+    try:
+        pktlist.append(idlenotes.notification_queue.get(block=True,
+                                                        timeout=timeout_sec))
+    except KeyboardInterrupt:
+        # User sends an interrupt (e.g. Ctrl-C).
+        pass
+    except queue.Empty:
+        # No item available during timeout.  Exiting
+        pass
+    logging.info("    returning %d idle notifications after %s wait time"
+                 "" % (len(pktlist), time.time() - start_time))
+    return pktlist
 
 def add_flow_cache_entry_action_cached_action(ipv4_proto_int,
                                               ipv4_src_addr_str,
                                               ipv4_dst_addr_str,
                                               port_int,
                                               decrement_ttl_bool,
-                                              new_dscp_int):
+                                              new_dscp_int,
+                                              timeout_nsec):
     te = sh.TableEntry('flow_cache')(action='cached_action')
     te.match['protocol'] = '%s' % (ipv4_proto_int)
     te.match['src_addr'] = ipv4_src_addr_str
@@ -120,6 +146,7 @@ def add_flow_cache_entry_action_cached_action(ipv4_proto_int,
         x = 0
     te.action['decrement_ttl'] = '%d' % (x)
     te.action['new_dscp'] = '%d' % (new_dscp_int)
+    te.idle_timeout_ns = timeout_nsec
     te.insert()
 
 
@@ -199,17 +226,20 @@ while True:
                 dest_port_int = 1 + (flow_hash % global_data['NUM_PORTS'])
                 decrement_ttl_bool = True
                 new_dscp_int = 5
+                timeout_nsec = 5 #tTTL for the table entry in nanoseconds
                 add_flow_cache_entry_action_cached_action(ip_proto,
                                                           ip_sa_str,
                                                           ip_da_str,
                                                           dest_port_int,
                                                           decrement_ttl_bool,
-                                                          new_dscp_int)
+                                                          new_dscp_int,
+                                                          timeout_nsec)
                 logger.info("For flow (SA=%s, DA=%s, proto=%d)"
                             " added table entry to send packets"
                             " to port %d with new DSCP %d"
                             "" % (ip_sa_str, ip_da_str, ip_proto,
                                   dest_port_int, new_dscp_int))
+    
     time.sleep(5)
 
 tearDown()
