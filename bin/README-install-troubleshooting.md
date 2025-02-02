@@ -34,6 +34,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | Development VM Image link | Release VM Image link | README link | Tested working on macOS? | Tested working on Windows? |
 | -------------- | ---------------- | ------------------------- | --------------------- | ----------- | ------------------------ | -------------------------- |
+| 2025-Feb-01 | Ubuntu 24.04 | [5.2 GByte VM image](https://drive.google.com/file/d/13_D4c3WWilJKPjyioOM7Ie5ZFXV-xT4S/view?usp=sharing) (first image released with Ubuntu GNOME desktop) | no such VM created | -- | Combo24 | Combo26 |
 | 2025-Jan-01 | Ubuntu 24.04 | [4.5 GByte VM image](https://drive.google.com/file/d/14DI0Ovnn2eo3boFewWHg83xnhtF1jKjK/view?usp=sharing) (first image released with Ubuntu GNOME desktop) | no such VM created | -- | Combo24 | Combo26 |
 | 2024-Dec-01 | Ubuntu 24.04 | [2.4 GByte VM image](https://drive.google.com/file/d/1WK8CIlRtLYzovZtmKqyVLNWroGObclp_/view?usp=sharing) (last image released with Lubuntu desktop) | no such VM created | -- | Combo24 | Combo25 |
 | 2024-Nov-01 | Ubuntu 24.04 | [2.4 GByte VM image](https://drive.google.com/file/d/1uf9upiDVtHTT2ZoFb_Ekt4X-vIQCSNvh/view?usp=sharing) | no such VM created | -- | Combo24 | Combo25 |
