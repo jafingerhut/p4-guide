@@ -10,7 +10,7 @@
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script has only been tested on these combinations:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 23.04"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 24.04"
     1>&2 echo "    ID fedora, VERSION_ID in 36 37 38"
     1>&2 echo "    ID rocky, VERSION_ID in 9.2"
     1>&2 echo ""
@@ -38,7 +38,7 @@ then
 	22.04)
 	    supported_distribution=1
 	    ;;
-	23.04)
+	24.04)
 	    supported_distribution=1
 	    ;;
     esac
