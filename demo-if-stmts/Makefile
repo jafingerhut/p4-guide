@@ -1,3 +1,6 @@
+# Copyright 2024 Andy Fingerhut
+# SPDX-License-Identifier: Apache-2.0
+
 P4GUIDE=$(HOME)/p4-guide
 
 all: p4test \
