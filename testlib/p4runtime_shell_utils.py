@@ -15,6 +15,7 @@
 import logging
 import os
 from collections import Counter
+import socket
 
 from p4.config.v1 import p4info_pb2
 from google.rpc import code_pb2
