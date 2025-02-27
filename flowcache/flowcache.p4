@@ -223,6 +223,7 @@ control ingressImpl(inout headers_t hdr,
             drop_packet;
             flow_unknown;
         }
+        support_timeout = true;
         default_action = flow_unknown();
         size = 65536;
     }
