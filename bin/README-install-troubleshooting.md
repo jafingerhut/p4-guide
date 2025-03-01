@@ -7,11 +7,11 @@ Pick one of these alternatives that best fits your situation:
     P4 development tools on it.  (This might be a new VM created for
     this purpose.)
 
-(b) I have a system with a 64-bit Intel/AMD processor, and I am
-    comfortable downloading and running a virtual machine image with
-    the P4 open source tools already compiled and installed,
-    e.g. using a virtual machine application like VirtualBox, VMware
-    Fusion, VMware Workstation, Parallels, etc.
+(b) I have a system with a 64-bit Intel/AMD processor, or an Apple
+    Silicon Mac, and I am comfortable downloading and running a
+    virtual machine image with the P4 open source tools already
+    compiled and installed, e.g. using the virtual machine application
+    VirtualBox.
 
 If your answer is (a), see the section below [Quick instructions for
 successful install script
@@ -21,7 +21,6 @@ If your answer is (b), there are several VM images with many of the
 open source P4 development tools already installed available from
 links in this table.  Each of them comes with a user account named
 `p4` with password `p4` intended for use in developing P4 programs.
-They also have a user account `vagrant` (password `vagrant`).
 
 All VM images contain a copy of the source code from which the P4
 development tools were built in the home directory of the 'p4'
