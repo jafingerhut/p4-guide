@@ -91,9 +91,9 @@ of Ubuntu Linux using VirtualBox on these host operating systems:
 
 + macOS 10.14.x
 + macOS 10.15.x
-+ macOS 12.6.x
-+ macOS 13.6.x
-+ macOS 14.6.x
++ macOS 12.x.y
++ macOS 13.x.y
++ macOS 14.x.y
 + Windows 10
 + Windows 11
 
