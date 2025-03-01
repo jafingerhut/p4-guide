@@ -34,6 +34,7 @@ upgraded to more recent versions if such have been released.
 
 | Date published | Operating system | x86_64 VM Image link | Tested working on x86_64 Windows? | aarch64 VM Image link | Tested working on Apple Silicon macOS? |
 | -------------- | ---------------- | -------------------- | --------------------- | ------------------------ | -------------------------- |
+| 2025-Mar-01 | Ubuntu 24.04 | [5.4 GByte VM image](https://drive.google.com/file/d/1Khfsugub0Ar_eI-uxBsswbbnJMIcNZ4k/view?usp=sharing) | Combo26 | [4.6 GByte VM image](https://drive.google.com/file/d/1Joky3wfAyA0zz9GqCdNhjGA9eVRr2Ibe/view?usp=sharing) | Combo27 |
 | 2025-Feb-01 | Ubuntu 24.04 | [5.2 GByte VM image](https://drive.google.com/file/d/13_D4c3WWilJKPjyioOM7Ie5ZFXV-xT4S/view?usp=sharing) | Combo26 | no such VM created | -- |
 | 2025-Jan-01 | Ubuntu 24.04 | [4.5 GByte VM image](https://drive.google.com/file/d/14DI0Ovnn2eo3boFewWHg83xnhtF1jKjK/view?usp=sharing) (first image released with Ubuntu GNOME desktop) | Combo26 | no such VM created | -- |
 
@@ -73,6 +74,7 @@ Version combinations I have used above for testing VM images:
 | Combo24 | macOS 12.7.x | VirtualBox 7.0.20 |
 | Combo25 | Windows 11 Pro | VirtualBox 7.0.22 |
 | Combo26 | Windows 11 Pro | VirtualBox 7.1.4 |
+| Combo27 | macOS 14.7.x | VirtualBox 7.1.6 |
 
 
 
