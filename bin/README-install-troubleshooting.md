@@ -62,13 +62,12 @@ Start with:
     + In 2024 I began supporting aarch64 processor architectures (also
       known as arm64), at least Apple Silicon Macs with a VM created
       with one of these virtualization programs:
+      + [VirtualBox](https://www.virtualbox.org), which now supports
+        Apple Silicon Macs starting with version 7.1.0.
       + [UTM](https://mac.getutm.app) - See
         [here](https://github.com/jafingerhut/jafingerhut.github.com/blob/master/notes/macos-utm-notes.md)
         for instructions on creating an Ubuntu Linux VM within UTM
         that have worked for me.
-      + [VirtualBox](https://www.virtualbox.org), which now has Beta
-        level support for Apple Silicon Macs starting with version
-        7.1.0.
   + Fedora Linux
     + Only a few Fedora releases are supported by the older
       `install-p4dev-v6.sh` and `install-p4dev-v7.sh` scripts, no
@@ -85,11 +84,6 @@ Start with:
   + a reliable Internet connection that is up for the entire duration
     of running the install script -- it will download approximately 2
     to 3 GByte of data.
-
-If you use the `install-p4dev-v5.sh` script (supported only for Ubuntu
-20.04 on x86_64 systems), you need only 3 GB of free disk space, and
-about 250 MByte of data will be downloaded from the Internet.  See the
-table below for more details.
 
 Note: These scripts have been reported NOT WORKING on WSL (Windows
 Subsystem for Linux).  I have had success running supported versions
@@ -133,67 +127,18 @@ $ ./p4-guide/bin/install-p4dev-v8.sh |& tee log.txt
 # If you used v8 version of the install script, see Note 1 below.
 ```
 
-Replace the `v8` in `install-p4dev-v8.sh` with `v5` if you prefer to
-use that version.  More details on the differences between them are in
-the next section.
-
 The `|& tee log.txt` part of the command is not necessary for the
 install to work.  It causes the output of the script to be saved to
 the file `log.txt`, as well as appear in the terminal window.  The
 output is about 10,000 lines long on a good run, so saving it to a
 file is good if you want to see what it did.
 
-Note 1: If you use `install-p4dev-v8.sh` and use `bash` as your
-command shell (the default on Ubuntu and Fedora Linux), you should
-execute the command `source p4setup.bash` in every `bash` shell where
-you wish to run the P4 development tools.  You can add the `source
-p4setup.bash` line to your `$HOME/.bashrc` file, so that it will
-automatically be run for you in any new `bash` shell you create.
-
-
-## Which install script should I use?
-
-I would recommend using `install-p4dev-v8.sh` as shown in the example
-commands above.  It does take a significant amount of time to install,
-and a decent amount of disk space.  However, `install-p4dev-v5.sh`
-installs pre-compiled binaries last updated in Aug 2023, and it is not
-clear whether anyone will ever take the effort required to update
-them to a more recent version.
-
-Minor note: As of 2023-Jan when I updated the PTF tests in this
-p4-guide repository to use p4runtime-shell as the Python API for table
-add/delete/modify, a system that results from running
-`install-p4dev-v5.sh` can run the exercises in the p4lang/tutorials
-repository, but does not have the `p4runtime-shell` package installed,
-so cannot run the PTF tests in the p4-guide repository.  If you
-install `p4runtime-shell` system-wide, you can then run the PTF tests
-in the p4-guide repository, but then the exercises in p4lang/tutorials
-fail to run, probably because of some conflict in how the Python
-packages are installed.  This can probably be worked around by using
-Python virtual environments, but I have not tested this.  A system
-installed using any other version of the install script does not have
-this issue.
-
-All of the current install scripts install everything required to
-enable you to run the examples in the
-[tutorials](https://github.com/p4lang/tutorials) repository, since
-2021.
-
-See the tables below if you want to make a more informed decision.
-
-The scripts in the next table below have all been tested monthly
-through 2024.  They all include the following:
-
-+ [P4Runtime API support](https://github.com/p4lang/p4runtime)
-+ [Mininet](http://mininet.org)
-+ [PTF](https://github.com/p4lang/ptf)
-+ [p4runtime-shell](https://github.com/p4lang/p4runtime-shell)
-+ Uses Python3 only, no Python2 installed
-
-| Script | Versions of Ubuntu it works on | Free disk space required | Time to run on 2019 MacBook Pro with VirtualBox | Data downloaded from Internet | protobuf | grpc | Where are Python3 packages installed? |
-| ------ | ------------------------------ | ------------------------ | ----------------------------------------------- | ----------------------------- | -------- | ---- | ------------------------------------- |
-| install-p4dev-v8.sh | 24.04, 22.04, 20.04 | 22 GB | 120 mins |   2 GB | binary lib version varies by OS | binary lib varies by OS, Python grpcio package v1.51.3, or v1.59.3 on Ubuntu 24.04 | ~/p4dev-python-venv virtual environment |
-| install-p4dev-v5.sh | 20.04        |  2 GB |   3 mins | 250 MB | v3.6.1  | v1.16.1 ? | System-wide directories, e.g. /usr/local/lib/python3.*/dist-packages |
+If you use `bash` as your command shell (the default on Ubuntu and
+Fedora Linux), you should execute the command `source p4setup.bash` in
+every `bash` shell where you wish to run the P4 development tools.
+You can add the `source p4setup.bash` line to your `$HOME/.bashrc`
+file, so that it will automatically be run for you in any new `bash`
+shell you create.
 
 
 ## Other details
