@@ -9,6 +9,12 @@ import ptf
 
 modlst2 = sorted(list(sys.modules.keys()))
 
+if len(sys.argv) >= 2:
+    if sys.argv[1] == "bf_pktpy":
+        ptf.config["packet_manipulation_module"] = "bf_pktpy.ptf.packet_pktpy"
+    elif sys.argv[1] == "scapy":
+        ptf.config["packet_manipulation_module"] = "ptf.packet_scapy"
+
 import ptf.packet
 
 modlst3 = sorted(list(sys.modules.keys()))
