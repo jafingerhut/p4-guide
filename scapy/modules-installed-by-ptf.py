@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import os
 import sys
 import difflib
 
@@ -9,11 +10,28 @@ import ptf
 
 modlst2 = sorted(list(sys.modules.keys()))
 
+pmm = None
 if len(sys.argv) >= 2:
     if sys.argv[1] == "bf_pktpy":
-        ptf.config["packet_manipulation_module"] = "bf_pktpy.ptf.packet_pktpy"
+        pmm = "bf_pktpy.ptf.packet_pktpy"
     elif sys.argv[1] == "scapy":
-        ptf.config["packet_manipulation_module"] = "ptf.packet_scapy"
+        pmm = "ptf.packet_scapy"
+if pmm is not None:
+    ptf.config["packet_manipulation_module"] = pmm
+
+print("sys.version=%s" % (sys.version))
+print("os.getenv('VIRTUAL_ENV')=%s" % (os.getenv('VIRTUAL_ENV')))
+print("----------------------------------------")
+print("Contents of file /etc/os-release")
+print("----------------------------------------")
+try:
+    with open('/etc/os-release', 'r') as f:
+        contents = f.read()
+    print(contents)
+except:
+    print("=== Failed to open file /etc/os-release ===")
+print("----------------------------------------")
+print("Attempting to import ptf.packet with pmm='%s'" % (pmm))
 
 import ptf.packet
 
@@ -28,22 +46,26 @@ def show_diff(diff):
     for line in diff:
         print(line)
 
-#diff12 = difflib.unified_diff(modlst1, modlst2, lineterm='')
-#print("----------------------------------------")
-#print("unidified_diff modlst1 modlst2 after ptf was imported")
-#print("----------------------------------------")
-#show_diff(diff12)
+print("----------------------------------------")
+print("modlst1 = all python modules imported after only importing os, sys, difflib")
+print("modlst1 (%d modules):" % (len(modlst1)))
+print("----------------------------------------")
+for module in sorted(modlst1):
+    print(module)
 
-#diff12n = difflib.ndiff(modlst1, modlst2)
-#diff12lst = [line for line in diff12n if not line.startswith('  ')]
 diff12lst = calc_diff(modlst1, modlst2)
 print("----------------------------------------")
-print("ndiff modlst1 modlst2 after ptf was imported")
+print("modlst2 = all python modules imported after then importing ptf")
+print("diff modlst1 modlst2 after ptf was imported (%d lines)"
+      "" % (len(diff12lst)))
 print("----------------------------------------")
 show_diff(diff12lst)
 
 diff23lst = calc_diff(modlst2, modlst3)
 print("----------------------------------------")
-print("diff modlst2 modlst3 after ptf.packet was imported with default scapy")
+print("modlst3 = python modules imported after also importing ptf.packet"
+      " with pmm='%s'" % (pmm))
+print("diff modlst2 modlst3 after ptf.packet was imported with default scapy"
+      " (%d lines)" % (len(diff23lst)))
 print("----------------------------------------")
 show_diff(diff23lst)
