@@ -109,3 +109,32 @@ to one with behavioral-model and p4c installed on it.
   p4lang/pi` and produces image `p4lang/behavioral-model`
 + `docker build -f p4c/Dockerfile` starts `FROM
   p4lang/behavioral-model` and produces image `p4lang/p4c`
+
+
+```bash
+SAVE=$PWD
+# Create image jafingerhut/third-party
+git clone https://github.com/jafingerhut/third-party
+cd third-party
+git checkout use-ubuntu-24.04-in-docker-container
+docker build -t jafingerhut/third-party . |& tee out-docker-build1.txt
+
+cd $SAVE
+git clone https://github.com/jafingerhut/PI
+cd PI
+git checkout use-jafingerhut-docker-image
+git submodule update --init
+docker build -t jafingerhut/pi . |& tee out-docker-build1.txt
+
+cd $SAVE
+git clone https://github.com/jafingerhut/behavioral-model
+cd behavioral-model
+git checkout dockerfile-updates-for-ubuntu-24.04
+docker build -t jafingerhut/behavioral-model . |& tee out-docker-build1.txt
+
+cd $SAVE
+git clone https://github.com/jafingerhut/p4c
+cd p4c
+git checkout dockerfile-updates-for-ubuntu-24.04
+docker build -t jafingerhut/p4c . |& tee out-docker-build1.txt
+```
