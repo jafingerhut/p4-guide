@@ -1,115 +1,147 @@
 # Introduction
 
-It is a somewhat laborious manual process to compare the P4_16 grammar
-in the file
-[`grammar.mdk`](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/grammar.mdk)
-of the [p4-spec repository](https://github.com/p4lang/p4-spec) to the
-file
-[`p4parser.ypp`](https://github.com/p4lang/p4c/blob/main/frontends/parsers/p4/p4parser.ypp)
-of the [p4c repository](https://github.com/p4lang/p4c).
+The differences below were last determined from a comparison of the
+specification vs. p4c language grammars on 2025-Mar-27.
 
-What if we could make it easier?
+[SPEC] means the P4_16 specification grammar, found in this file:
++ https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/grammar.adoc
 
-One way is to modify `grammar.mdk` so that it becomes closer to
-`p4parser.ypp`, and then write a simple program that removes the C++
-code in braces in the file `p4parser.ypp`.  Then the resulting files
-become much more similar, and easy to compare with tools like tkdiff
-or emacs ediff.
+[P4C] means the p4c reference compiler grammar, found in this file:
++ https://github.com/p4lang/p4c/blob/main/frontends/parsers/p4/p4parser.ypp
+
+See this directory for scripts that can produce modified versions of
+those files, easier for a human to use `diff`-based tools and examine
+much shorter output:
++ https://github.com/p4lang/p4-spec/tree/main/p4-16/spec/scripts
 
 
-## Changes to `grammar.mdk` file
+## annotation in P4C has extra production rule for `@pragma` annotations
 
-This directory shows several variations of the file `grammar.mdk` in a
-step-by-step transformation.
-
-
-### The original `grammar.mdk` file
-
-The file `grammmar.orig.mdk` is from this commit of the p4-spec
-repository, unchanged:
-
+This extra production rule exists in [P4C] that is not present in [SPEC]:
 ```
-commit afbaae184a5293d3b1352ff70d1f93edf144799f
-Merge: cb30110 531bbef
-Author: Mihai Budiu <mbudiu@vmware.com>
+annotation
+    | PRAGMA annotationName annotationBody END_PRAGMA
 ```
 
+Example use of this rule:
++ https://github.com/p4lang/p4c/blob/main/testdata/p4_16_samples/pragmas.p4#L20
++ Other examples can be found by searching for string `@pragma`
+  throughout the p4c repo.
 
-### Reorder some definitions
+An early version of this rule was added with this commit to the p4c
+repo:
+```
+commit 68dea2b31beb8a6e527ae375d05356ea7fc12145
+Author: Jed Liu <jed-github.com@uma.litech.org>
+Date:   Tue Dec 4 17:08:19 2018 -0500
+```
 
-The file `grammar.step1.mdk` is the same as the original, except
-some of the non-terminals are defined in a different order, and some
-of the alternatives in the definitions of some non-terminals are
-given in a different order.  None of these change the meaning of the
-grammar, though.
-
-
-### Replace all single quotes with double quotes
-
-The file `grammar.step2.mdk` was produced by simply globally replacing
-all single quote characters in `grammar.step1.mdk` with double quote
-characters, since double quote characters are used consistently in the
-`p4parser.ypp` version.
-
-
-### Replace several other miscellaneous differences
-
-The file `grammar.step3.mdk` file was created from `grammar.step2.mdk`
-by making these small changes:
-
-+ Replace `UNKNOWN_TOKEN` with `UNEXPECTED_TOKEN` (1 ooccurrence)
-+ Replace `MASK` with `"&&&"` (1 occurrence)
-+ Replace `RANGE` with `".."` (1 occurrence)
-+ Replace `DONTCARE` with `"_"` (5 occurrences)
-+ Add an alternative `THIS` to the definition of the non-terminal
-  symbol `annotationToken`.
-+ Change a couple of one-line comments to be the same as in
-  `p4parser.ypp`.
-
-
-### Add definition of `optCONST` non-terminal and use it
-
-This change is very small, and probably best explained with the output
-of the diff between the step3 and step4 files:
-
-```bash
-$ diff grammar.step3.mdk grammar.step4.mdk
-44a45,49
-> optCONST
->     : /* empty */
->     | CONST
->     ;
-> 
-648,650c653,654
-<     | optAnnotations CONST ENTRIES "=" "{" entriesList "}" /* immutable entries */
-<     | optAnnotations CONST nonTableKwName "=" initializer ";"
-<     | optAnnotations nonTableKwName "=" initializer ";"
----
->     | optAnnotations optCONST ENTRIES "=" "{" entriesList "}" /* immutable entries */
->     | optAnnotations optCONST nonTableKwName "=" initializer ";"
+The comment for that commit includes this text that appears relevant:
+```
+Backwards compatibility with P4₁₄-style pragmas is also added as an
+experimental feature.
+    
+On the initial parsing pass, annotation bodies are parsed as a
+sequence of tokens in a new field, `Annotation::body`. After the
+initial parse, `Annotation::expr` and `Annotation::kv` are
+empty. P4₁₄-style pragmas are translated by the parser into P4₁₆
+annotations: `@pragma name body` is translated into `@name(body)`.
 ```
 
 
-## Changes to `p4parser.ypp` file
+## externDeclaration in P4C has extra production rule for forward declarations of externs
 
-
-### The original `p4parser.ypp` file
-
-The file `p4parser.orig.ypp` is from this commit of the p4c
-repository, unchanged:
-
+This extra production rule exists in [P4C] that is not present in [SPEC]:
 ```
-commit 0b2a555f856370362e63d8e7ea187cc56a037489
-Author: Fabian Ruffy <fabian.ruffy@intel.com>
-Date:   Wed Dec 7 20:33:49 2022 +0100
+externDeclaration
+    | optAnnotations EXTERN name ";"
 ```
 
+I did not find any examples of this in any of these directories in a
+few minutes of looking:
++ testdata/p4_16_samples
++ backends/tofino/bf-p4c/p4include
 
-### Remove C++ code from Bison grammar
+Teis grammar rule was added with this commit to the p4c repo:
 
-The file `p4parser.trimmed.ypp` was produced from a simple Python
-program as follows:
-
-```bash
-./trim-p4c-p4parser-file.py p4parser.orig.ypp > p4parser.trimmed.ypp
 ```
+commit aa88d998c31e357b8a3e217d4e39626e70ddf2f7
+Author: Chris Dodd <chris@barefootnetworks.com>
+Date:   Mon Jun 5 08:08:10 2017 -0700
+```
+
+It has the comment "forward declaration" in [P4C].
+
+
+## grammar.adoc file for [SPEC] is missing rule for declaring abstract methods
+
+This extra production rule exists in [P4C] that is not present in [SPEC]:
+```
+methodPrototype
+    | optAnnotations ABSTRACT functionPrototype ";"
+```
+
+However, it _is_ present in the body of the spec, but not in the
+`grammar.adoc` file.
+
+The language spec grammar has had this production rule for a while
+now, since the following commit in the p4-spec repo:
+```
+commit ec2f2e105d59e003ab39d8f9d645e73b78a18fd6
+Author: mbudiu-vmw <mbudiu@vmware.com>
+Date:   Wed Jul 10 17:39:44 2019 -0700
+```
+
+However, it seems to have been neglected to add it to the
+`grammar.adoc` file (formerly the `grammar.mdk` file).
+
+This PR is intended to fix this minor issue:
++ https://github.com/p4lang/p4-spec/pull/1367
+
+
+
+## statementOrDeclaration in P4C has extra production rule for instantiations, to give clearer error message
+
+This extra production rule exists in [P4C] that is not present in [SPEC]:
+```
+statementOrDeclaration
+    | instantiation
+```
+
+The earliest p4c commit I found that added this rule to the grammar
+was:
+```
+commit f8e3df3d1d3432cf5f07c03f691af54e0cad2067
+Author: Seth Fowler <seth@blackhail.net>
+Date:   Thu May 4 11:08:46 2017 -0700
+```
+
+With this commit to the p4c repo:
+```
+commit cfb32104304888489236a14998a6e819cdf907b5
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Tue Aug 22 02:56:56 2023 -0400
+```
+
+the following comment was added to [P4C]:
+
+```
+     // The transition to instantiation below is not required by the
+     // languge spec, but it does help p4c give a more clear error
+     // message if one erroneously attempts to perform an
+     // instantiation inside of a block.
+     | instantiation            { $$ = $1; }
+```
+
+
+## 
+
+This extra production rule exists in [P4C] that is not present in [SPEC]:
+```
+forCollectionExpr
+    | typeRef
+```
+
+This has been added to both [P4C] and [SPEC] in 2024 by Chris Dodd.
+
+TODO: Check with Chris what the intent is here.
