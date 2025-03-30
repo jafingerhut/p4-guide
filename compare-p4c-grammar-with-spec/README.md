@@ -10,9 +10,22 @@ specification vs. p4c language grammars on 2025-Mar-27.
 + https://github.com/p4lang/p4c/blob/main/frontends/parsers/p4/p4parser.ypp
 
 See this directory for scripts that can produce modified versions of
-those files, easier for a human to use `diff`-based tools and examine
+those files, easier for a person to use `diff`-based tools and examine
 much shorter output:
 + https://github.com/p4lang/p4-spec/tree/main/p4-16/spec/scripts
+
+
+## forCollectionExpr in P4C has extra production rule for typeRef
+
+This extra production rule exists in [P4C] that is not present in [SPEC]:
+```
+forCollectionExpr
+    | typeRef
+```
+
+This has been added to both [P4C] and [SPEC] in 2024 by Chris Dodd.
+
+TODO: Check with Chris what the intent is here.
 
 
 ## annotation in P4C has extra production rule for `@pragma` annotations
@@ -62,7 +75,7 @@ few minutes of looking:
 + testdata/p4_16_samples
 + backends/tofino/bf-p4c/p4include
 
-Teis grammar rule was added with this commit to the p4c repo:
+This grammar rule was added with this commit to the p4c repo:
 
 ```
 commit aa88d998c31e357b8a3e217d4e39626e70ddf2f7
@@ -71,32 +84,6 @@ Date:   Mon Jun 5 08:08:10 2017 -0700
 ```
 
 It has the comment "forward declaration" in [P4C].
-
-
-## grammar.adoc file for [SPEC] is missing rule for declaring abstract methods
-
-This extra production rule exists in [P4C] that is not present in [SPEC]:
-```
-methodPrototype
-    | optAnnotations ABSTRACT functionPrototype ";"
-```
-
-However, it _is_ present in the body of the spec, but not in the
-`grammar.adoc` file.
-
-The language spec grammar has had this production rule for a while
-now, since the following commit in the p4-spec repo:
-```
-commit ec2f2e105d59e003ab39d8f9d645e73b78a18fd6
-Author: mbudiu-vmw <mbudiu@vmware.com>
-Date:   Wed Jul 10 17:39:44 2019 -0700
-```
-
-However, it seems to have been neglected to add it to the
-`grammar.adoc` file (formerly the `grammar.mdk` file).
-
-This PR is intended to fix this minor issue:
-+ https://github.com/p4lang/p4-spec/pull/1367
 
 
 
@@ -134,14 +121,27 @@ the following comment was added to [P4C]:
 ```
 
 
-## 
+## grammar.adoc file for [SPEC] is missing rule for declaring abstract methods
 
 This extra production rule exists in [P4C] that is not present in [SPEC]:
 ```
-forCollectionExpr
-    | typeRef
+methodPrototype
+    | optAnnotations ABSTRACT functionPrototype ";"
 ```
 
-This has been added to both [P4C] and [SPEC] in 2024 by Chris Dodd.
+However, it _is_ present in the body of the spec, but not in the
+`grammar.adoc` file.
 
-TODO: Check with Chris what the intent is here.
+The language spec grammar has had this production rule for a while
+now, since the following commit in the p4-spec repo:
+```
+commit ec2f2e105d59e003ab39d8f9d645e73b78a18fd6
+Author: mbudiu-vmw <mbudiu@vmware.com>
+Date:   Wed Jul 10 17:39:44 2019 -0700
+```
+
+However, it seems to have been neglected to add it to the
+`grammar.adoc` file (formerly the `grammar.mdk` file).
+
+This PR is intended to fix this minor issue:
++ https://github.com/p4lang/p4-spec/pull/1367
