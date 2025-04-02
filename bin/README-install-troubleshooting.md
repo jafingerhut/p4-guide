@@ -29,6 +29,7 @@ compiled again.
 
 | Date published | Operating system | x86_64 VM Image link | Tested working on x86_64 Windows? | aarch64 VM Image link | Tested working on Apple Silicon macOS? |
 | -------------- | ---------------- | -------------------- | --------------------- | ------------------------ | -------------------------- |
+| 2025-Apr-01 | Ubuntu 24.04 | [5.5 GByte VM image](https://drive.google.com/file/d/1tWOKZtqNDKzk928f0b7rjje8nRHXk02c/view?usp=sharing) | Combo26 | [4.6 GByte VM image](https://drive.google.com/file/d/1SMs7AORZMwWUF9niGFBanqtKjDkSUsaV/view?usp=sharing) | Combo27 |
 | 2025-Mar-01 | Ubuntu 24.04 | [5.4 GByte VM image](https://drive.google.com/file/d/1Khfsugub0Ar_eI-uxBsswbbnJMIcNZ4k/view?usp=sharing) | Combo26 | [4.6 GByte VM image](https://drive.google.com/file/d/1Joky3wfAyA0zz9GqCdNhjGA9eVRr2Ibe/view?usp=sharing) | Combo27 |
 | 2025-Feb-01 | Ubuntu 24.04 | [5.2 GByte VM image](https://drive.google.com/file/d/13_D4c3WWilJKPjyioOM7Ie5ZFXV-xT4S/view?usp=sharing) | Combo26 | no such VM created | -- |
 | 2025-Jan-01 | Ubuntu 24.04 | [4.5 GByte VM image](https://drive.google.com/file/d/14DI0Ovnn2eo3boFewWHg83xnhtF1jKjK/view?usp=sharing) (first image released with Ubuntu GNOME desktop) | Combo26 | no such VM created | -- |
