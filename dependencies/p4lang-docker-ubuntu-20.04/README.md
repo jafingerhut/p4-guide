@@ -62,10 +62,12 @@ docker run hello-world
 The command above ran successfully.
 
 
-## Create the Ubuntu 20.04 Docker image for the third-party repository
+## Create an Ubuntu 20.04 Docker image from the third-party repository
 
 ```bash
-$ cd ~
+$ mkdir -p ~/ubuntu20.04
+
+$ cd ~/ubuntu20.04
 
 $ git clone https://github.com/p4lang/third-party
 [... output omitted ... ]
@@ -100,7 +102,7 @@ because its Dockerfile starts with the one created by the
 p4lang/third-party repository.
 
 
-## Create the Ubuntu 20.04 Docker image for the PI repository
+## Create an Ubuntu 20.04 Docker image from the PI repository
 
 Note: Below is what _should_ be done next, if the steps in the
 previous section were working.  However, since they are not, these are
@@ -109,7 +111,7 @@ how to change the steps in the previous section so that they produce a
 Docker image named `testing1/third-party`.
 
 ```bash
-$ cd ~
+$ cd ~/ubuntu20.04
 
 $ git clone https://github.com/p4lang/PI
 [... output omitted ... ]
@@ -141,4 +143,80 @@ previous section.
 
 ```bash
 $ time docker build -t testing1/pi . |& tee out-docker-build-pi-1.txt
+```
+
+
+## Create an Ubuntu 20.04 Docker image from the behavioral-model repository
+
+Note: Below is what _should_ be done next, if the steps in all of the
+the previous sections were working.
+
+```bash
+$ cd ~/ubuntu20.04
+
+$ git clone https://github.com/p4lang/behavioral-model
+[... output omitted ... ]
+
+$ cd behavioral-model
+
+$ git log -n 1 | head -n 3
+commit d12eefc7bc19fb4da615b1b45c1235899f2e4fb1
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Tue Feb 18 21:18:38 2025 -0500
+```
+
+Here, hand-edit the file Dockerfile so that this line:
+```
+FROM p4lang/pi:${PARENT_VERSION}
+```
+
+is changed to this:
+```
+FROM testing1/pi:${PARENT_VERSION}
+```
+
+That change causes the behavioral-model/Dockerfile build command below
+to start with the Docker image named `testing1/pi` that was created in
+the previous section.
+
+```bash
+$ time docker build -t testing1/behavioral-model . |& tee out-docker-build-behavioral-model-1.txt
+```
+
+
+## Create an Ubuntu 20.04 Docker image from the p4c repository
+
+Note: Below is what _should_ be done next, if the steps in all of the
+the previous sections were working.
+
+```bash
+$ cd ~/ubuntu20.04
+
+$ git clone https://github.com/p4lang/p4c
+[... output omitted ... ]
+
+$ cd p4c
+
+$ git log -n 1 | head -n 3
+commit e3f7fb367c59081d6019eab1b4e9f51237461fb2
+Author: Fabian Ruffy <5960321+fruffy@users.noreply.github.com>
+Date:   Sun Apr 6 20:09:25 2025 +0000
+```
+
+Here, hand-edit the file Dockerfile so that this line:
+```
+ARG BASE_IMAGE=p4lang/behavioral-model:latest
+```
+
+is changed to this:
+```
+ARG BASE_IMAGE=testing1/behavioral-model:latest
+```
+
+That change causes the p4c/Dockerfile build command below to start
+with the Docker image named `testing1/behavioral-model` that was
+created in the previous section.
+
+```bash
+$ time docker build -t testing1/p4c . |& tee out-docker-build-p4c-1.txt
 ```
