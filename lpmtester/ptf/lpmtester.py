@@ -69,11 +69,51 @@ logger.addHandler(ch)
 #logging.warn("30 logging.warn message")
 #logging.error("40 logging.error message")
 
-IN_IP_SRC_ADDR = '0::0'
-MISS_IP_SRC_ADDR = 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'
+def int_to_ipv6_addr(n):
+    assert 0 <= n
+    assert n < (1 << 128)
+    hex_str = '%032x' % (n)
+    lst = []
+    while len(hex_str) > 0:
+        lst.append(hex_str[:4])
+        hex_str = hex_str[4:]
+    return ':'.join(lst)
+
+
+prefix_mask = None
+suffix_mask = None
+bit_after_prefix = None
+KEY_WIDTH_BITS = 128
+
+#MISS_IP_SRC_ADDR = 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'
+MISS_IP_SRC_ADDR = int_to_ipv6_addr((1 << KEY_WIDTH_BITS) - 1)
+#IN_IP_SRC_ADDR = '0::0'
+IN_IP_SRC_ADDR = int_to_ipv6_addr((1 << KEY_WIDTH_BITS) - 2)
+
+def init_prefix_masks():
+    global prefix_mask
+    global suffix_mask
+    global bit_after_prefix
+    if prefix_mask is not None:
+        return
+    prefix_mask = [0] * (KEY_WIDTH_BITS + 1)
+    suffix_mask = [0] * (KEY_WIDTH_BITS + 1)
+    bit_after_prefix = [0] * (KEY_WIDTH_BITS)
+    full_width_mask = (1 << KEY_WIDTH_BITS) - 1
+    for prefix_len in range(KEY_WIDTH_BITS, -1, -1):
+        mask = (1 << (KEY_WIDTH_BITS - prefix_len)) - 1
+        suffix_mask[prefix_len] = mask
+        prefix_mask[prefix_len] = full_width_mask & (~mask)
+        if prefix_len != KEY_WIDTH_BITS:
+            bit_after_prefix[prefix_len] = (1 << (KEY_WIDTH_BITS - 1 - prefix_len))
+        if False:
+            logging.info("prefix_len=%3d prefix_mask=0x%032x suffix_mask=0x%032x"
+                         "" % (prefix_len, prefix_mask[prefix_len],
+                               suffix_mask[prefix_len]))
 
 class LpmTesterTest(BaseTest):
     def setUp(self):
+        init_prefix_masks()
         # Setting up PTF dataplane
         self.dataplane = ptf.dataplane_instance
         self.dataplane.flush()
@@ -101,16 +141,6 @@ class LpmTesterTest(BaseTest):
 # Define a few small helper functions that make adding entries to
 # particular tables in demo2.p4 slightly shorter to write.
 #############################################################
-
-def int_to_ipv6_addr(n):
-    assert 0 <= n
-    assert n < (1 << 128)
-    hex_str = '%032x' % (n)
-    lst = []
-    while len(hex_str) > 0:
-        lst.append(hex_str[:4])
-        hex_str = hex_str[4:]
-    return ':'.join(lst)
 
 def fail_if_table_not_empty(table_name):
     nentries = shu.entry_count(table_name)
@@ -203,6 +233,22 @@ class BasicTest1(LpmTesterTest):
 
 class BasicTest2(LpmTesterTest):
     def runTest(self):
-        ip_dst_addr = 'fe80::1'
+        ip_dst_addr_int = 0xdead_beef_c001_d00d_cafe_9889_1234_5678
+        ip_dst_addr = int_to_ipv6_addr(ip_dst_addr_int)
         fail_if_table_not_empty('ipv6_da_lpm')
         verify_lookup_misses(self, ip_dst_addr)
+        for prefix_len in range(1, KEY_WIDTH_BITS+1):
+            entry_id = prefix_len
+            a = ip_dst_addr_int & prefix_mask[prefix_len]
+            logging.info("Inserting entry with prefix len %d"
+                         "" % (prefix_len))
+            insert_lpm_entry(int_to_ipv6_addr(a), prefix_len, entry_id)
+        for prefix_len in range(1, KEY_WIDTH_BITS+1):
+            entry_id = prefix_len
+            if prefix_len == KEY_WIDTH_BITS:
+                a = ip_dst_addr_int
+            else:
+                a = ip_dst_addr_int ^ bit_after_prefix[prefix_len]
+            logging.info("Attempting to match entry with prefix len %d"
+                         "" % (prefix_len))
+            verify_lookup_hits(self, int_to_ipv6_addr(a), entry_id)
