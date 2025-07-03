@@ -83,10 +83,10 @@ control ingressImpl(inout headers_t hdr,
         mark_to_drop(stdmeta);
     }
     action miss_action() {
-        hdr.ipv6.src_addr = 1;
+        hdr.ipv6.src_addr = 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff;
     }
-    action hit_action(IPv6Address new_src_addr) {
-        hdr.ipv6.src_addr = new_src_addr;
+    action hit_action(IPv6Address entry_id) {
+        hdr.ipv6.src_addr = entry_id;
     }
     table ipv6_da_lpm {
         key = {
