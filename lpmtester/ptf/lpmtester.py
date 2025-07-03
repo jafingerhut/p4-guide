@@ -19,6 +19,7 @@
 import logging
 
 import ptf
+import ptf.packet as packet
 import ptf.testutils as tu
 from ptf.base_tests import BaseTest
 import p4runtime_sh.shell as sh
@@ -111,6 +112,17 @@ def int_to_ipv6_addr(n):
         hex_str = hex_str[4:]
     return ':'.join(lst)
 
+def fail_if_table_not_empty(table_name):
+    nentries = shu.entry_count(table_name)
+    if nentries == 0:
+        logging.info("Table '%s' has 0 entries, as expected"
+                     "" % (table_name))
+    else:
+        logging.error("Expected table '%s' to be empty, but it contains %d entries:"
+                      "" % (table_name, nentries))
+        shu.entry_count(table_name, print_entries=True)
+        assert nentries != 0
+
 # TODO: Verify that some kind of error is returned, or exception is
 # raised, if we attempt to insert a prefix that is already inserted,
 # or to delete a prefix that is not currently in the table.  Add extra
@@ -134,37 +146,63 @@ def delete_lpm_entry(prefix_str, prefix_len_int):
         te.match['dst_addr'] = '%s/%d' % (prefix_str, prefix_len_int)
     te.delete()
 
+def simple_ipv6_pkt(src_ip, dst_ip,
+                    ipv6_fl=0,
+                    ipv6_tc=0,
+                    ipv6_hlim=64):
+    dmac = 'ee:30:ca:9d:1e:00'
+    smac = 'ee:cd:00:7e:70:00'
+    pkt = packet.Ether(dst=dmac, src=smac)
+    pkt /= packet.IPv6(
+        src=src_ip, dst=dst_ip, fl=ipv6_fl, tc=ipv6_tc, hlim=ipv6_hlim
+    )
+    return pkt
+
+def verify_lookup_misses(self, ip_dst_addr):
+    in_dmac = 'ee:30:ca:9d:1e:00'
+    in_smac = 'ee:cd:00:7e:70:00'
+    ig_port = 1
+    eg_port = 1
+    pkt = simple_ipv6_pkt(IN_IP_SRC_ADDR, ip_dst_addr)
+    tu.send_packet(self, ig_port, pkt)
+    # Check that the lookup misses, by confirming that its IPv6 source
+    # address is replaced with the expected value encoding a lookup
+    # miss.
+    pkt[IPv6].src = MISS_IP_SRC_ADDR
+    #logging.info("BasicTest1 show exp_pkt #1")
+    #pkt.show()
+    tu.verify_packets(self, pkt, [eg_port])
+
+def verify_lookup_hits(self, ip_dst_addr, expected_entry_id):
+    in_dmac = 'ee:30:ca:9d:1e:00'
+    in_smac = 'ee:cd:00:7e:70:00'
+    ig_port = 1
+    eg_port = 1
+    pkt = simple_ipv6_pkt(IN_IP_SRC_ADDR, ip_dst_addr)
+    tu.send_packet(self, ig_port, pkt)
+    # Check that the desired entry is hit, by confirming that its IPv6
+    # source address is replaced with the expected entry id.
+    pkt[IPv6].src = int_to_ipv6_addr(expected_entry_id)
+    #logging.info("BasicTest1 show exp_pkt #2")
+    #pkt.show()
+    tu.verify_packets(self, pkt, [eg_port])
+
 
 class BasicTest1(LpmTesterTest):
     def runTest(self):
-        in_dmac = 'ee:30:ca:9d:1e:00'
-        in_smac = 'ee:cd:00:7e:70:00'
         ip_dst_addr = 'fe80::1'
-        ip_src_addr = '0::0'
-        ig_port = 1
-        eg_port = 1
-
-        # Before adding any table entries, the default behavior for
-        # sending in an IPv6 packet is to change its source IPv6
-        # address to 1.
-        pkt = tu.simple_tcpv6_packet(eth_src=in_smac, eth_dst=in_dmac,
-                                     ipv6_dst=ip_dst_addr,
-                                     ipv6_src=IN_IP_SRC_ADDR)
-        tu.send_packet(self, ig_port, pkt)
-        exp_pkt = pkt
-        logging.info("BasicTest1 show exp_pkt #1")
-        exp_pkt[IPv6].src = MISS_IP_SRC_ADDR
-        exp_pkt.show()
-        tu.verify_packets(self, exp_pkt, [eg_port])
-
+        fail_if_table_not_empty('ipv6_da_lpm')
+        # Before adding any table entries, verify with at least one
+        # lookup key that the table gives a miss.
+        verify_lookup_misses(self, ip_dst_addr)
         # Add a single table entry that the next packet should match.
         entry_id = 42
         insert_lpm_entry('fe80::0', 10, entry_id)
+        verify_lookup_hits(self, ip_dst_addr, entry_id)
 
-        # Check that the one entry is hit.
-        exp_pkt = pkt
-        exp_pkt[IPv6].src = int_to_ipv6_addr(entry_id)
-        logging.info("BasicTest1 show exp_pkt #2")
-        exp_pkt.show()
-        tu.send_packet(self, ig_port, pkt)
-        tu.verify_packets(self, exp_pkt, [eg_port])
+
+class BasicTest2(LpmTesterTest):
+    def runTest(self):
+        ip_dst_addr = 'fe80::1'
+        fail_if_table_not_empty('ipv6_da_lpm')
+        verify_lookup_misses(self, ip_dst_addr)
