@@ -102,6 +102,7 @@ EG_PORT = 1
 
 #FLUSH_THRESHOLD = 16
 FLUSH_THRESHOLD = 1
+total_packets_sent = 0
 pending_packets_to_send = []
 pending_packets_to_expect = []
 
@@ -297,19 +298,27 @@ def simple_ipv6_pkt(src_ip, dst_ip,
     return pkt
 
 def execute_pending_tests(self):
+    global total_packets_sent
     global pending_packets_to_send
     global pending_packets_to_expect
     start_time = time.time()
-    logging.info("execute_pending_tests sending %d packets then expecting %d"
-                 "" % (len(pending_packets_to_send),
-                       len(pending_packets_to_expect)))
+    do_logging = False
+    #logging.info("execute_pending_tests sending %d packets then expecting %d"
+    #             "" % (len(pending_packets_to_send),
+    #                   len(pending_packets_to_expect)))
     for pkt in pending_packets_to_send:
         tu.send_packet(self, IG_PORT, pkt)
+        total_packets_sent += 1
+        if total_packets_sent % 100 == 0:
+            do_logging = True
     for pkt in pending_packets_to_expect:
         tu.verify_packets(self, pkt, [EG_PORT])
     end_time = time.time()
-    logging.info("execute_pending_tests completed in %.1f sec"
-                 "" % (end_time - start_time))
+    if do_logging:
+        logging.info("execute_pending_tests completed sending %d packets"
+                     "" % (total_packets_sent))
+    #logging.info("execute_pending_tests completed in %.1f sec"
+    #             "" % (end_time - start_time))
     pending_packets_to_send = []
     pending_packets_to_expect = []
 
@@ -464,6 +473,7 @@ class BigTest1(LpmTesterTest):
         fail_if_table_not_empty('ipv6_da_lpm')
         random.seed(42)
         #random.seed(99)
+        #random.seed(101)
 
         t1 = time.time()
         # Weight the random generation of prefix lengths so that
@@ -481,7 +491,7 @@ class BigTest1(LpmTesterTest):
         # sec per key for 3 packets/key.
         #num_prefixes = 100
         num_prefixes = 1000
-        #num_prefixes = 1100
+        #num_prefixes = 10000
         
         key_lst = add_random_prefixes(num_prefixes, prefix_len_weight)
         if True:
