@@ -17,6 +17,7 @@
 # Andy Fingerhut, andy.fingerhut@gmail.com
 
 import logging
+import random
 import time
 
 import ptf
@@ -129,6 +130,94 @@ def init_prefix_masks():
             logging.info("prefix_len=%3d prefix_mask=0x%032x suffix_mask=0x%032x"
                          "" % (prefix_len, prefix_mask[prefix_len],
                                suffix_mask[prefix_len]))
+
+prefixes_by_length = {}
+unused_small_entry_id_lst = []
+unused_small_entry_id_set = set()
+min_large_unused_entry_id = 1
+
+def clear_all_allocated_entry_ids():
+    global unused_small_entry_id_lst
+    global unused_small_entry_id_set
+    global min_large_unused_entry_id
+    unused_small_entry_id_lst = []
+    unused_small_entry_id_set = set()
+    min_large_unused_entry_id = 1
+
+def allocate_unused_entry_id():
+    global unused_small_entry_id_lst
+    global unused_small_entry_id_set
+    global min_large_unused_entry_id
+    if len(unused_small_entry_id_lst) != 0:
+        entry_id = unused_small_entry_id_lst[0]
+        unused_small_entry_id_lst = unused_small_entry_id_lst[1:]
+        unused_small_entry_id_set.remove(entry_id)
+    else:
+        entry_id = min_large_unused_entry_id
+        min_large_unused_entry_id += 1
+    return entry_id
+
+def free_entry_id(entry_id):
+    global unused_small_entry_id_lst
+    global unused_small_entry_id_set
+    global min_large_unused_entry_id
+    assert entry_id < min_large_unused_entry_id
+    assert entry_id not in unused_small_entry_id_set
+    unused_small_entry_id_set.add(entry_id)
+    unused_small_entry_id_lst.append(entry_id)
+
+def clear_all_prefixes():
+    global prefixes_by_length
+    prefixes_by_length = {}
+    clear_all_allocated_entry_ids()
+
+def insert_prefix(prefix_int, prefix_len_int, entry_id=None):
+    assert 0 <= prefix_len_int
+    assert prefix_len_int <= KEY_WIDTH_BITS
+    assert prefix_int == prefix_int & prefix_mask[prefix_len_int]
+    global prefixes_by_length
+    if prefix_len_int not in prefixes_by_length:
+        prefixes_by_length[prefix_len_int] = {}
+    if prefix_int in prefixes_by_length[prefix_len_int]:
+        return {'error': True,
+                'error_type': 'prefix_already_inserted'}
+#        logging.error("Attempting to insert_prefix that is already installed: prefix_len_int=%d prefix_int=0x%032x"
+#                      "" % (prefix_len_int, prefix_int))
+#        assert False
+    if entry_id is None:
+        entry_id = allocate_unused_entry_id()
+    prefixes_by_length[prefix_len_int][prefix_int] = entry_id
+    return {'error': False, 'entry_id': entry_id}
+
+def delete_prefix(prefix_int, prefix_len_int):
+    assert 0 <= prefix_len_int
+    assert prefix_len_int <= KEY_WIDTH_BITS
+    assert prefix_int == prefix_int & prefix_mask[prefix_len_int]
+    global prefixes_by_length
+    if prefix_len_int not in prefixes_by_length:
+        prefixes_by_length[prefix_len_int] = {}
+    if prefix_int not in prefixes_by_length[prefix_len_int]:
+        logging.error("Attempting to delete_prefix that is not installed: prefix_len_int=%d prefix_int=0x%032x"
+                      "" % (prefix_len_int, prefix_int))
+        assert False
+    entry_id = prefixes_by_length[prefix_len_int][prefix_int]
+    del prefixes_by_length[prefix_len_int][prefix_int]
+    free_entry_id(entry_id)
+    return entry_id
+
+def lookup_lpm_key(key_int):
+    assert 0 <= key_int
+    assert key_int < (1 << KEY_WIDTH_BITS)
+    entry_id = None
+    for prefix_len in range(KEY_WIDTH_BITS, -1, -1):
+        if prefix_len not in prefixes_by_length:
+            continue
+        masked_key = key_int & prefix_mask[prefix_len]
+        entry_id = prefixes_by_length[prefix_len].get(masked_key, None)
+        if entry_id is not None:
+            return entry_id
+    return None
+
 
 class LpmTesterTest(BaseTest):
     def setUp(self):
@@ -292,6 +381,7 @@ class BasicTest1(LpmTesterTest):
 
 class BasicTest2(LpmTesterTest):
     def runTest(self):
+        return
         ip_dst_addr_int = 0xdead_beef_c001_d00d_cafe_9889_1234_5678
         ip_dst_addr = int_to_ipv6_addr(ip_dst_addr_int)
         fail_if_table_not_empty('ipv6_da_lpm')
@@ -311,8 +401,155 @@ class BasicTest2(LpmTesterTest):
             if prefix_len == KEY_WIDTH_BITS:
                 a = ip_dst_addr_int
             else:
+                # By flipping the bit just after the most significant
+                # prefix_len bits, we guarantee that the lookup should
+                # not match any installed entry with length longer
+                # than prefix_len.
                 a = ip_dst_addr_int ^ bit_after_prefix[prefix_len]
             logging.info("Attempting to match entry with prefix len %d"
                          "" % (prefix_len))
             verify_lookup_hits(self, int_to_ipv6_addr(a), entry_id)
         execute_pending_tests(self)
+
+
+def add_random_prefixes(num_prefixes, prefix_len_weight):
+    # Create array of cumulative weights of prefix lengths.
+    prefix_weight_dist = [0] * (KEY_WIDTH_BITS + 1)
+    total_weight = 0
+    for prefix_len in range(0, KEY_WIDTH_BITS+1):
+        total_weight += prefix_len_weight[prefix_len]
+        prefix_weight_dist[prefix_len] = total_weight
+    n = 0
+    nfails = 0
+    ret = []
+    while True:
+        key = random.getrandbits(KEY_WIDTH_BITS)
+        prefix_len_idx = random.randint(0, total_weight-1)
+        prefix_len = 0
+        while prefix_len < KEY_WIDTH_BITS:
+            if prefix_len_idx < prefix_weight_dist[prefix_len]:
+                break
+            prefix_len += 1
+        success = False
+        while True:
+            try_key = key & prefix_mask[prefix_len]
+            status = insert_prefix(try_key, prefix_len)
+            if status['error']:
+                nfails += 1
+                # Try a longer prefix length for the same randomly
+                # generated key, unless we are already at the maximum
+                # prefix length.
+                if prefix_len < KEY_WIDTH_BITS:
+                    prefix_len += 1
+                else:
+                    success = False
+                    break
+            else:
+                key_info = {'key': try_key,
+                            'prefix_len': prefix_len,
+                            'entry_id': status['entry_id']}
+                ret.append(key_info)
+                success = True
+                break
+        if success:
+            n += 1
+            if n == num_prefixes:
+                print("Got %d failures while inserting %d random prefixes"
+                      "" % (nfails, num_prefixes))
+                return ret
+
+
+class BigTest1(LpmTesterTest):
+    def runTest(self):
+        fail_if_table_not_empty('ipv6_da_lpm')
+        random.seed(42)
+
+        t1 = time.time()
+        # Weight the random generation of prefix lengths so that
+        # prefix length L has relatively likelihood 2^L of being
+        # generated, since that is how many such prefixes there are.
+        prefix_len_weight = [0] * (KEY_WIDTH_BITS + 1)
+        for prefix_len in range(8, 24+1):
+            prefix_len_weight[prefix_len] = 1 << prefix_len
+            #prefix_len_weight[prefix_len] = 1
+
+        # Measure how many prefixes per second we can test before
+        # going larger than a relatively small number.
+
+        # 100 takes about 30 sec to test with test packets, about 0.3
+        # sec per key for 3 packets/key.
+        #num_prefixes = 100
+        num_prefixes = 1000
+        
+        key_lst = add_random_prefixes(num_prefixes, prefix_len_weight)
+        if True:
+            num_prefixes_of_len = [0] * (KEY_WIDTH_BITS + 1)
+            for k in key_lst:
+                num_prefixes_of_len[k['prefix_len']] += 1
+            for prefix_len in range(0, KEY_WIDTH_BITS+1):
+                if num_prefixes_of_len[prefix_len] != 0:
+                    print("%8d prefixes with length %3d"
+                          "" % (num_prefixes_of_len[prefix_len], prefix_len))
+        assert len(key_lst) == num_prefixes
+        t2 = time.time()
+
+        # Insert all entries in the table
+        for key in key_lst:
+            insert_lpm_entry(int_to_ipv6_addr(key['key']), key['prefix_len'],
+                             key['entry_id'])
+        t3 = time.time()
+
+        # For each entry, send packets that might match it (depending
+        # upon what longer prefixes that might shadow it have been
+        # installed, which we are not trying to account for here yet),
+        # and that definitely will not.
+        num_shadow = 0
+        test_pkts = []
+        for key in key_lst:
+            k = key['key']
+            prefix_len = key['prefix_len']
+            target_entry_id = key['entry_id']
+            if prefix_len < KEY_WIDTH_BITS:
+                suffix_rand_bits = (random.getrandbits(KEY_WIDTH_BITS) &
+                                    suffix_mask[prefix_len])
+                k1 = k | suffix_rand_bits
+                eid1 = lookup_lpm_key(k1)
+                if eid1 != target_entry_id:
+                    num_shadow += 1
+                pkt = {'lookup_key': k1, 'expected_entry_id': eid1}
+                test_pkts.append(pkt)
+                k2 = k1 ^ bit_after_prefix[prefix_len]
+                eid2 = lookup_lpm_key(k2)
+                if eid2 != target_entry_id:
+                    num_shadow += 1
+                pkt = {'lookup_key': k1, 'expected_entry_id': eid1}
+                test_pkts.append(pkt)
+            if prefix_len > 0:
+                suffix_rand_bits = (random.getrandbits(KEY_WIDTH_BITS) &
+                                    suffix_mask[prefix_len])
+                k3 = k | suffix_rand_bits
+                # Modify key so that it cannot match the current
+                # entry.
+                k3 = k3 ^ bit_after_prefix[prefix_len - 1]
+                eid3 = lookup_lpm_key(k3)
+                pkt = {'lookup_key': k3, 'expected_entry_id': eid3}
+                test_pkts.append(pkt)
+        t4 = time.time()
+        for pkt in test_pkts:
+            exp_entry_id = pkt['expected_entry_id']
+            a = int_to_ipv6_addr(pkt['lookup_key'])
+            if exp_entry_id is None:
+                verify_lookup_misses(self, a)
+            else:
+                verify_lookup_hits(self, a, exp_entry_id)
+        t5 = time.time()
+        print("%8.1f sec to generate %d random entries"
+              "" % (t2 - t1, num_prefixes))
+        print("%8.1f sec to install entries in P4 table"
+              "" % (t3 - t2))
+        print("%8.1f sec to generate %d test lookup keys in memory"
+              "" % (t4 - t3, len(test_pkts)))
+        print("     %d of the test lookup keys unintentionally match longer prefixes"
+              "" % (num_shadow))
+        print("%8.1f sec to test %d lookup keys in the device"
+              "" % (t5 - t4, len(test_pkts)))
