@@ -454,8 +454,8 @@ def add_random_prefixes(num_prefixes, prefix_len_weight):
         if success:
             n += 1
             if n == num_prefixes:
-                print("Got %d failures while inserting %d random prefixes"
-                      "" % (nfails, num_prefixes))
+                logging.info("Got %d failures while inserting %d random prefixes"
+                             "" % (nfails, num_prefixes))
                 return ret
 
 
@@ -463,6 +463,7 @@ class BigTest1(LpmTesterTest):
     def runTest(self):
         fail_if_table_not_empty('ipv6_da_lpm')
         random.seed(42)
+        #random.seed(99)
 
         t1 = time.time()
         # Weight the random generation of prefix lengths so that
@@ -480,6 +481,7 @@ class BigTest1(LpmTesterTest):
         # sec per key for 3 packets/key.
         #num_prefixes = 100
         num_prefixes = 1000
+        #num_prefixes = 1100
         
         key_lst = add_random_prefixes(num_prefixes, prefix_len_weight)
         if True:
@@ -488,8 +490,8 @@ class BigTest1(LpmTesterTest):
                 num_prefixes_of_len[k['prefix_len']] += 1
             for prefix_len in range(0, KEY_WIDTH_BITS+1):
                 if num_prefixes_of_len[prefix_len] != 0:
-                    print("%8d prefixes with length %3d"
-                          "" % (num_prefixes_of_len[prefix_len], prefix_len))
+                    logging.info("%8d prefixes with length %3d"
+                                 "" % (num_prefixes_of_len[prefix_len], prefix_len))
         assert len(key_lst) == num_prefixes
         t2 = time.time()
 
@@ -535,21 +537,25 @@ class BigTest1(LpmTesterTest):
                 pkt = {'lookup_key': k3, 'expected_entry_id': eid3}
                 test_pkts.append(pkt)
         t4 = time.time()
+        num_exp_miss = 0
         for pkt in test_pkts:
             exp_entry_id = pkt['expected_entry_id']
             a = int_to_ipv6_addr(pkt['lookup_key'])
             if exp_entry_id is None:
+                num_exp_miss += 1
                 verify_lookup_misses(self, a)
             else:
                 verify_lookup_hits(self, a, exp_entry_id)
         t5 = time.time()
-        print("%8.1f sec to generate %d random entries"
-              "" % (t2 - t1, num_prefixes))
-        print("%8.1f sec to install entries in P4 table"
-              "" % (t3 - t2))
-        print("%8.1f sec to generate %d test lookup keys in memory"
-              "" % (t4 - t3, len(test_pkts)))
-        print("     %d of the test lookup keys unintentionally match longer prefixes"
-              "" % (num_shadow))
-        print("%8.1f sec to test %d lookup keys in the device"
-              "" % (t5 - t4, len(test_pkts)))
+        logging.info("%8.1f sec to generate %d random entries"
+                     "" % (t2 - t1, num_prefixes))
+        logging.info("%8.1f sec to install entries in P4 table"
+                     "" % (t3 - t2))
+        logging.info("%8.1f sec to generate %d test lookup keys in memory"
+                     "" % (t4 - t3, len(test_pkts)))
+        logging.info("     %d of the test lookup keys unintentionally match longer prefixes"
+                     "" % (num_shadow))
+        logging.info("%8.1f sec to test %d lookup keys in the device"
+                     "" % (t5 - t4, len(test_pkts)))
+        logging.info("     %d of the test lookup keys got miss result"
+                     "" % (num_exp_miss))

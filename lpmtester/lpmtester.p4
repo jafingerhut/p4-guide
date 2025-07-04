@@ -89,6 +89,7 @@ control ingressImpl(inout headers_t hdr,
         hdr.ipv6.src_addr = entry_id;
     }
     table ipv6_da_lpm {
+        size = 100000;
         key = {
             hdr.ipv6.dst_addr: lpm;
         }
