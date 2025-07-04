@@ -106,6 +106,13 @@ total_packets_sent = 0
 pending_packets_to_send = []
 pending_packets_to_expect = []
 
+# There is only one table of interest in the P4 program, one with a
+# single key field with match_kind equal to lpm.  The "constants"
+# below are equal to the name of the table, and the name of the lpm
+# key field.
+LPM_TABLE_NAME = 'ipv6_da_lpm'
+LPM_KEY_FIELD_NAME = 'dst_addr'
+
 #MISS_IP_SRC_ADDR = 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'
 MISS_IP_SRC_ADDR = int_to_ipv6_addr((1 << KEY_WIDTH_BITS) - 1)
 #IN_IP_SRC_ADDR = '0::0'
@@ -268,21 +275,21 @@ def fail_if_table_not_empty(table_name):
 # error checking if that is not the case.
 
 def insert_lpm_entry(prefix_str, prefix_len_int, entry_id_int):
-    te = sh.TableEntry('ipv6_da_lpm')(action='hit_action')
+    te = sh.TableEntry(LPM_TABLE_NAME)(action='hit_action')
     # Note: p4runtime-shell raises an exception if you attempt to
     # explicitly assign to te.match['dstAddr'] a prefix with length 0.
     # Just skip assigning to te.match['dstAddr'] completely, and then
     # inserting the entry will give a wildcard match for that field,
     # as defined in the P4Runtime API spec.
     if prefix_len_int != 0:
-        te.match['dst_addr'] = '%s/%d' % (prefix_str, prefix_len_int)
+        te.match[LPM_KEY_FIELD_NAME] = '%s/%d' % (prefix_str, prefix_len_int)
     te.action['entry_id'] = '%d' % (entry_id_int)
     te.insert()
 
 def delete_lpm_entry(prefix_str, prefix_len_int):
-    te = sh.TableEntry('ipv6_da_lpm')(action='set_l2ptr')
+    te = sh.TableEntry(LPM_TABLE_NAME)
     if prefix_len_int != 0:
-        te.match['dst_addr'] = '%s/%d' % (prefix_str, prefix_len_int)
+        te.match[LPM_KEY_FIELD_NAME] = '%s/%d' % (prefix_str, prefix_len_int)
     te.delete()
 
 def simple_ipv6_pkt(src_ip, dst_ip,
@@ -374,7 +381,7 @@ def verify_lookup_hits(self, ip_dst_addr, expected_entry_id, postpone=True):
 class BasicTest1(LpmTesterTest):
     def runTest(self):
         ip_dst_addr = 'fe80::1'
-        fail_if_table_not_empty('ipv6_da_lpm')
+        fail_if_table_not_empty(LPM_TABLE_NAME)
         # Before adding any table entries, verify with at least one
         # lookup key that the table gives a miss.
         verify_lookup_misses(self, ip_dst_addr)
@@ -390,21 +397,24 @@ class BasicTest1(LpmTesterTest):
 
 class BasicTest2(LpmTesterTest):
     def runTest(self):
-        return
         ip_dst_addr_int = 0xdead_beef_c001_d00d_cafe_9889_1234_5678
         ip_dst_addr = int_to_ipv6_addr(ip_dst_addr_int)
-        fail_if_table_not_empty('ipv6_da_lpm')
+        fail_if_table_not_empty(LPM_TABLE_NAME)
         verify_lookup_misses(self, ip_dst_addr)
         # Execute all pending tests before changing the set of
         # installed table entries.
         execute_pending_tests(self)
 
+        logging.info("Begin    inserting entries with prefix lengths from 1 to %d"
+                     "" % (KEY_WIDTH_BITS))
         for prefix_len in range(1, KEY_WIDTH_BITS+1):
             entry_id = prefix_len
             a = ip_dst_addr_int & prefix_mask[prefix_len]
-            logging.info("Inserting entry with prefix len %d"
-                         "" % (prefix_len))
             insert_lpm_entry(int_to_ipv6_addr(a), prefix_len, entry_id)
+        logging.info("Finished inserting entries with prefix lengths from 1 to %d"
+                     "" % (KEY_WIDTH_BITS))
+        logging.info("Begin    matching entries with prefix lengths from 1 to %d"
+                     "" % (KEY_WIDTH_BITS))
         for prefix_len in range(1, KEY_WIDTH_BITS+1):
             entry_id = prefix_len
             if prefix_len == KEY_WIDTH_BITS:
@@ -415,10 +425,10 @@ class BasicTest2(LpmTesterTest):
                 # not match any installed entry with length longer
                 # than prefix_len.
                 a = ip_dst_addr_int ^ bit_after_prefix[prefix_len]
-            logging.info("Attempting to match entry with prefix len %d"
-                         "" % (prefix_len))
             verify_lookup_hits(self, int_to_ipv6_addr(a), entry_id)
         execute_pending_tests(self)
+        logging.info("Finished matching entries with prefix lengths from 1 to %d"
+                     "" % (KEY_WIDTH_BITS))
 
 
 def add_random_prefixes(num_prefixes, prefix_len_weight):
@@ -470,7 +480,7 @@ def add_random_prefixes(num_prefixes, prefix_len_weight):
 
 class BigTest1(LpmTesterTest):
     def runTest(self):
-        fail_if_table_not_empty('ipv6_da_lpm')
+        fail_if_table_not_empty(LPM_TABLE_NAME)
         random.seed(42)
         #random.seed(99)
         #random.seed(101)
