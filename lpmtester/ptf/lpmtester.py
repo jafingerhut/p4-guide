@@ -17,6 +17,7 @@
 # Andy Fingerhut, andy.fingerhut@gmail.com
 
 import logging
+import time
 
 import ptf
 import ptf.packet as packet
@@ -80,10 +81,28 @@ def int_to_ipv6_addr(n):
     return ':'.join(lst)
 
 
+KEY_WIDTH_BITS = 128
 prefix_mask = None
 suffix_mask = None
 bit_after_prefix = None
-KEY_WIDTH_BITS = 128
+
+IG_PORT = 1
+EG_PORT = 1
+
+# I have tried this code with FLUSH_THRESHOLD > 1, but it fails for
+# reasons I have not determined yet.  My intent with implementing
+# FLUSH_THRESHOLD > 1 was to speed up the test runs significantly.
+#
+# Later I found that if you run with 8 ports, then verify_packets()
+# calls take about 0.8 sec per call, even when it finds the expected
+# packet.  If you run with 1 port, then verify_packets() calls take
+# about 0.1 sec per call.  That is enough faster that I will postpone
+# attempting to make FLUSH_THRESHOLD > 1 work for a while longer.
+
+#FLUSH_THRESHOLD = 16
+FLUSH_THRESHOLD = 1
+pending_packets_to_send = []
+pending_packets_to_expect = []
 
 #MISS_IP_SRC_ADDR = 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'
 MISS_IP_SRC_ADDR = int_to_ipv6_addr((1 << KEY_WIDTH_BITS) - 1)
@@ -188,34 +207,70 @@ def simple_ipv6_pkt(src_ip, dst_ip,
     )
     return pkt
 
-def verify_lookup_misses(self, ip_dst_addr):
+def execute_pending_tests(self):
+    global pending_packets_to_send
+    global pending_packets_to_expect
+    start_time = time.time()
+    logging.info("execute_pending_tests sending %d packets then expecting %d"
+                 "" % (len(pending_packets_to_send),
+                       len(pending_packets_to_expect)))
+    for pkt in pending_packets_to_send:
+        tu.send_packet(self, IG_PORT, pkt)
+    for pkt in pending_packets_to_expect:
+        tu.verify_packets(self, pkt, [EG_PORT])
+    end_time = time.time()
+    logging.info("execute_pending_tests completed in %.1f sec"
+                 "" % (end_time - start_time))
+    pending_packets_to_send = []
+    pending_packets_to_expect = []
+
+def verify_lookup_misses(self, ip_dst_addr, postpone=True):
     in_dmac = 'ee:30:ca:9d:1e:00'
     in_smac = 'ee:cd:00:7e:70:00'
-    ig_port = 1
-    eg_port = 1
     pkt = simple_ipv6_pkt(IN_IP_SRC_ADDR, ip_dst_addr)
-    tu.send_packet(self, ig_port, pkt)
+    if postpone:
+        global pending_packets_to_send
+        pending_packets_to_send.append(pkt)
+    else:
+        tu.send_packet(self, IG_PORT, pkt)
     # Check that the lookup misses, by confirming that its IPv6 source
     # address is replaced with the expected value encoding a lookup
     # miss.
-    pkt[IPv6].src = MISS_IP_SRC_ADDR
-    #logging.info("BasicTest1 show exp_pkt #1")
-    #pkt.show()
-    tu.verify_packets(self, pkt, [eg_port])
+    if postpone:
+        exp_pkt = simple_ipv6_pkt(MISS_IP_SRC_ADDR, ip_dst_addr)
+        global pending_packets_to_expect
+        pending_packets_to_expect.append(exp_pkt)
+    else:
+        pkt[IPv6].src = MISS_IP_SRC_ADDR
+        #logging.info("BasicTest1 show exp_pkt #1")
+        #pkt.show()
+        tu.verify_packets(self, pkt, [EG_PORT])
+    if (len(pending_packets_to_send) >= FLUSH_THRESHOLD) or (len(pending_packets_to_expect) >= FLUSH_THRESHOLD):
+        execute_pending_tests(self)
 
-def verify_lookup_hits(self, ip_dst_addr, expected_entry_id):
+def verify_lookup_hits(self, ip_dst_addr, expected_entry_id, postpone=True):
     in_dmac = 'ee:30:ca:9d:1e:00'
     in_smac = 'ee:cd:00:7e:70:00'
-    ig_port = 1
-    eg_port = 1
     pkt = simple_ipv6_pkt(IN_IP_SRC_ADDR, ip_dst_addr)
-    tu.send_packet(self, ig_port, pkt)
+    if postpone:
+        global pending_packets_to_send
+        pending_packets_to_send.append(pkt)
+    else:
+        tu.send_packet(self, IG_PORT, pkt)
     # Check that the desired entry is hit, by confirming that its IPv6
     # source address is replaced with the expected entry id.
-    pkt[IPv6].src = int_to_ipv6_addr(expected_entry_id)
-    #logging.info("BasicTest1 show exp_pkt #2")
-    #pkt.show()
-    tu.verify_packets(self, pkt, [eg_port])
+    a = int_to_ipv6_addr(expected_entry_id)
+    if postpone:
+        exp_pkt = simple_ipv6_pkt(a, ip_dst_addr)
+        global pending_packets_to_expect
+        pending_packets_to_expect.append(exp_pkt)
+    else:
+        pkt[IPv6].src = a
+        #logging.info("BasicTest1 show exp_pkt #2")
+        #pkt.show()
+        tu.verify_packets(self, pkt, [EG_PORT])
+    if (len(pending_packets_to_send) >= FLUSH_THRESHOLD) or (len(pending_packets_to_expect) >= FLUSH_THRESHOLD):
+        execute_pending_tests(self)
 
 
 class BasicTest1(LpmTesterTest):
@@ -225,10 +280,14 @@ class BasicTest1(LpmTesterTest):
         # Before adding any table entries, verify with at least one
         # lookup key that the table gives a miss.
         verify_lookup_misses(self, ip_dst_addr)
+        # Execute all pending tests before changing the set of
+        # installed table entries.
+        execute_pending_tests(self)
         # Add a single table entry that the next packet should match.
         entry_id = 42
         insert_lpm_entry('fe80::0', 10, entry_id)
         verify_lookup_hits(self, ip_dst_addr, entry_id)
+        execute_pending_tests(self)
 
 
 class BasicTest2(LpmTesterTest):
@@ -237,6 +296,10 @@ class BasicTest2(LpmTesterTest):
         ip_dst_addr = int_to_ipv6_addr(ip_dst_addr_int)
         fail_if_table_not_empty('ipv6_da_lpm')
         verify_lookup_misses(self, ip_dst_addr)
+        # Execute all pending tests before changing the set of
+        # installed table entries.
+        execute_pending_tests(self)
+
         for prefix_len in range(1, KEY_WIDTH_BITS+1):
             entry_id = prefix_len
             a = ip_dst_addr_int & prefix_mask[prefix_len]
@@ -252,3 +315,4 @@ class BasicTest2(LpmTesterTest):
             logging.info("Attempting to match entry with prefix len %d"
                          "" % (prefix_len))
             verify_lookup_hits(self, int_to_ipv6_addr(a), entry_id)
+        execute_pending_tests(self)
