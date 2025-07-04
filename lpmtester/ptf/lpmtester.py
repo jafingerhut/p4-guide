@@ -304,6 +304,10 @@ def simple_ipv6_pkt(src_ip, dst_ip,
     )
     return pkt
 
+def clear_packets_sent_count():
+    global total_packets_sent
+    total_packets_sent = 0
+
 def execute_pending_tests(self):
     global total_packets_sent
     global pending_packets_to_send
@@ -397,6 +401,7 @@ class BasicTest1(LpmTesterTest):
 
 class BasicTest2(LpmTesterTest):
     def runTest(self):
+        clear_packets_sent_count()
         ip_dst_addr_int = 0xdead_beef_c001_d00d_cafe_9889_1234_5678
         ip_dst_addr = int_to_ipv6_addr(ip_dst_addr_int)
         fail_if_table_not_empty(LPM_TABLE_NAME)
@@ -480,10 +485,11 @@ def add_random_prefixes(num_prefixes, prefix_len_weight):
 
 class BigTest1(LpmTesterTest):
     def runTest(self):
+        clear_packets_sent_count()
         fail_if_table_not_empty(LPM_TABLE_NAME)
-        random.seed(42)
-        #random.seed(99)
-        #random.seed(101)
+        myseed = int(time.time())
+        random.seed(myseed)
+        logging.info("Using random seed %d" % (myseed))
 
         t1 = time.time()
         # Weight the random generation of prefix lengths so that
@@ -526,26 +532,27 @@ class BigTest1(LpmTesterTest):
         # installed, which we are not trying to account for here yet),
         # and that definitely will not.
         num_shadow = 0
-        test_pkts = []
+        ntestpkts = 0
         for key in key_lst:
+            test_pkts = []
             k = key['key']
             prefix_len = key['prefix_len']
             target_entry_id = key['entry_id']
+            lookup_keys = []
             if prefix_len < KEY_WIDTH_BITS:
                 suffix_rand_bits = (random.getrandbits(KEY_WIDTH_BITS) &
                                     suffix_mask[prefix_len])
                 k1 = k | suffix_rand_bits
-                eid1 = lookup_lpm_key(k1)
-                if eid1 != target_entry_id:
-                    num_shadow += 1
-                pkt = {'lookup_key': k1, 'expected_entry_id': eid1}
-                test_pkts.append(pkt)
+                lookup_keys.append(k1)
                 k2 = k1 ^ bit_after_prefix[prefix_len]
-                eid2 = lookup_lpm_key(k2)
-                if eid2 != target_entry_id:
-                    num_shadow += 1
-                pkt = {'lookup_key': k1, 'expected_entry_id': eid1}
-                test_pkts.append(pkt)
+                lookup_keys.append(k2)
+                for tmpk in lookup_keys:
+                    eid = lookup_lpm_key(tmpk)
+                    if eid != target_entry_id:
+                        num_shadow += 1
+                    pkt = {'lookup_key': tmpk, 'expected_entry_id': eid}
+                    test_pkts.append(pkt)
+            lookup_keys = []
             if prefix_len > 0:
                 suffix_rand_bits = (random.getrandbits(KEY_WIDTH_BITS) &
                                     suffix_mask[prefix_len])
@@ -553,29 +560,36 @@ class BigTest1(LpmTesterTest):
                 # Modify key so that it cannot match the current
                 # entry.
                 k3 = k3 ^ bit_after_prefix[prefix_len - 1]
-                eid3 = lookup_lpm_key(k3)
-                pkt = {'lookup_key': k3, 'expected_entry_id': eid3}
-                test_pkts.append(pkt)
+                lookup_keys.append(k3)
+                for tmpk in lookup_keys:
+                    eid = lookup_lpm_key(tmpk)
+                    pkt = {'lookup_key': tmpk, 'expected_entry_id': eid}
+                    test_pkts.append(pkt)
+            key['test_packets'] = test_pkts
+            ntestpkts += len(test_pkts)
         t4 = time.time()
+        logging.info("Sending %d test packets to verify correct matching behavior"
+                     "" % (ntestpkts))
         num_exp_miss = 0
-        for pkt in test_pkts:
-            exp_entry_id = pkt['expected_entry_id']
-            a = int_to_ipv6_addr(pkt['lookup_key'])
-            if exp_entry_id is None:
-                num_exp_miss += 1
-                verify_lookup_misses(self, a)
-            else:
-                verify_lookup_hits(self, a, exp_entry_id)
+        for key in key_lst:
+            for pkt in key['test_packets']:
+                exp_entry_id = pkt['expected_entry_id']
+                a = int_to_ipv6_addr(pkt['lookup_key'])
+                if exp_entry_id is None:
+                    num_exp_miss += 1
+                    verify_lookup_misses(self, a)
+                else:
+                    verify_lookup_hits(self, a, exp_entry_id)
         t5 = time.time()
         logging.info("%8.1f sec to generate %d random entries"
                      "" % (t2 - t1, num_prefixes))
         logging.info("%8.1f sec to install entries in P4 table"
                      "" % (t3 - t2))
         logging.info("%8.1f sec to generate %d test lookup keys in memory"
-                     "" % (t4 - t3, len(test_pkts)))
+                     "" % (t4 - t3, ntestpkts))
         logging.info("     %d of the test lookup keys unintentionally match longer prefixes"
                      "" % (num_shadow))
         logging.info("%8.1f sec to test %d lookup keys in the device"
-                     "" % (t5 - t4, len(test_pkts)))
+                     "" % (t5 - t4, ntestpkts))
         logging.info("     %d of the test lookup keys got miss result"
                      "" % (num_exp_miss))
