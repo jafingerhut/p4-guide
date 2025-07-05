@@ -226,6 +226,16 @@ def lookup_lpm_key(key_int):
             return entry_id
     return None
 
+def current_prefixes_to_tuple_set():
+    ret = set()
+    global prefixes_by_length
+    for prefix_len in sorted(prefixes_by_length.keys()):
+        for prefix_int in sorted(prefixes_by_length[prefix_len].keys()):
+            entry_id = prefixes_by_length[prefix_len][prefix_int]
+            prefix_tuple = (prefix_int, prefix_len, entry_id)
+            ret.add(prefix_tuple)
+    return ret
+
 
 class LpmTesterTest(BaseTest):
     def setUp(self):
@@ -381,6 +391,67 @@ def verify_lookup_hits(self, ip_dst_addr, expected_entry_id, postpone=True):
     if (len(pending_packets_to_send) >= FLUSH_THRESHOLD) or (len(pending_packets_to_expect) >= FLUSH_THRESHOLD):
         execute_pending_tests(self)
 
+def p4info_entries_to_prefix_set(p4info_entries_read):
+    # TODO: This probably does not correctly handle converting an
+    # entry read from an LPM table with prefix length 0 into a tuple
+    # with prefix_len_int=0.
+    ret = set()
+    for te in p4info_entries_read:
+        #print(te)
+        for fld_name in te.match._fields:
+            fld = te.match[fld_name]
+            _fld = te.match._fields[fld_name]
+            assert _fld.match_type == _fld.LPM
+            #print("fld (type %s)=%s" % (type(fld), fld))
+            prefix_val_int = int.from_bytes(fld.lpm.value, 'big')
+            prefix_len_int = fld.lpm.prefix_len
+            #print("prefix 0x%032x / %d" % (prefix_val_int, prefix_len_int))
+        entry_id_int = int.from_bytes(te.action['entry_id'].value, 'big')
+        entry_tuple = (prefix_val_int, prefix_len_int, entry_id_int)
+        #print("entry_tuple=%s" % (list(entry_tuple)))
+        ret.add(entry_tuple)
+    return ret
+
+def log_some_examples(entries_set, max_to_show, desc_str):
+    n = len(entries_set)
+    if n == 0:
+        return
+    if n > max_to_show:
+        comment = ("showing only %d examples out of %d such entries"
+                   "" % (max_to_show, n))
+    else:
+        comment = ("showing all %d entries" % (n))
+    logging.error("Found %d %s (%s)"
+                  "" % (n, desc_str, comment))
+    count = 0
+    for entry in list(entries_set):
+        logging.error("prefix=0x%032x / %d -> %d"
+                      "" % (entry[0], entry[1], entry[2]))
+        count += 1
+        if count == max_to_show:
+            break
+
+def fail_if_wrong_entries_read(entries_read_set, expected_entries_set):
+    if entries_read_set == expected_entries_set:
+        logging.info("Read %d entries, exactly matching the entries expected"
+                     "" % (len(entries_read_set)))
+        return
+    entries_read_but_not_expected = entries_read_set - expected_entries_set
+    entries_expected_but_not_read = expected_entries_set - entries_read_set
+    logging.error("Among %d entries read and %d expected, %d were read but not expected, and %d were expected but not read"
+                  "" % (len(entries_read_set),
+                        len(expected_entries_set),
+                        len(entries_read_but_not_expected),
+                        len(entries_expected_but_not_read)))
+    max_to_show = 5
+    log_some_examples(entries_read_but_not_expected,
+                      max_to_show,
+                      "entries read but not expected")
+    log_some_examples(entries_expected_but_not_read,
+                      max_to_show,
+                      "entries expected but not read")
+    assert False
+
 
 class BasicTest1(LpmTesterTest):
     def runTest(self):
@@ -521,16 +592,24 @@ class BigTest1(LpmTesterTest):
         assert len(key_lst) == num_prefixes
         t2 = time.time()
 
-        # Insert all entries in the table
+        # Insert all generated entries into the table
         for key in key_lst:
             insert_lpm_entry(int_to_ipv6_addr(key['key']), key['prefix_len'],
                              key['entry_id'])
         t3 = time.time()
 
-        # For each entry, send packets that might match it (depending
-        # upon what longer prefixes that might shadow it have been
-        # installed, which we are not trying to account for here yet),
-        # and that definitely will not.
+        # Read the table entries back, and confirm they are the same
+        # set that we tried to insert.
+        p4info_entries_read = shu.read_table_normal_entries(LPM_TABLE_NAME)
+        entries_read_set = p4info_entries_to_prefix_set(p4info_entries_read)
+        expected_entries_set = current_prefixes_to_tuple_set()
+        fail_if_wrong_entries_read(entries_read_set, expected_entries_set)
+
+        # For each entry, send two packets that might match it
+        # (depending upon what longer prefixes that might shadow it
+        # have been installed, which we are not trying to account for
+        # here yet), and one that definitely will not match that
+        # entry.
         num_shadow = 0
         ntestpkts = 0
         for key in key_lst:
@@ -593,3 +672,40 @@ class BigTest1(LpmTesterTest):
                      "" % (t5 - t4, ntestpkts))
         logging.info("     %d of the test lookup keys got miss result"
                      "" % (num_exp_miss))
+
+        # Remove subsets of the inserted entries, and after each
+        # subset is removed, perform lookups to verify that they were
+        # removed.
+        group_size = (len(key_lst) + 9) // 10
+        first_unremoved_idx = 0
+        while first_unremoved_idx < len(key_lst):
+            group_keys = []
+            for i in range(0, group_size):
+                if first_unremoved_idx >= len(key_lst):
+                    break
+                key = key_lst[first_unremoved_idx]
+                delete_prefix(key['key'], key['prefix_len'])
+                delete_lpm_entry(int_to_ipv6_addr(key['key']),
+                                 key['prefix_len'])
+                group_keys.append(key)
+                first_unremoved_idx += 1
+            # Again, read and compare currently installed table
+            # entries against the expected set of entries.
+            expected_entries_set = current_prefixes_to_tuple_set()
+            logging.info("Removed all but %d entries from table."
+                         "" % (len(expected_entries_set)))
+            p4info_entries_read = shu.read_table_normal_entries(LPM_TABLE_NAME)
+            entries_read_set = p4info_entries_to_prefix_set(p4info_entries_read)
+            fail_if_wrong_entries_read(entries_read_set, expected_entries_set)
+            # Send test packets for recently-removed entires only.
+            for key in group_keys:
+                for pkt in key['test_packets']:
+                    a = int_to_ipv6_addr(pkt['lookup_key'])
+                    # Calculate new expected matching entry_id.  It is
+                    # likely to have changed after removing entries.
+                    exp_entry_id = lookup_lpm_key(pkt['lookup_key'])
+                    if exp_entry_id is None:
+                        num_exp_miss += 1
+                        verify_lookup_misses(self, a)
+                    else:
+                        verify_lookup_hits(self, a, exp_entry_id)
