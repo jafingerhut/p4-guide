@@ -592,6 +592,16 @@ echo "start install grpc:"
 set -x
 date
 
+# We might not need cmake for installing Protobuf and gRPC, but we
+# will definitely use it later below, even if not immediately.
+if [ "${ID}" = "ubuntu" ]
+then
+    sudo apt-get --yes install cmake
+elif [ "${ID}" = "fedora" ]
+then
+    sudo dnf -y install cmake
+fi
+
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
 then
     TIME_GRPC_CLONE_START=$(date +%s)
@@ -616,14 +626,6 @@ else
 
     cd "${INSTALL_DIR}"
     debug_dump_many_install_files ${INSTALL_DIR}/usr-local-2-after-protobuf.txt
-
-    if [ "${ID}" = "ubuntu" ]
-    then
-	sudo apt-get --yes install cmake
-    elif [ "${ID}" = "fedora" ]
-    then
-	sudo dnf -y install cmake
-    fi
 
     # From BUILDING.md of grpc source repository
     if [ "${ID}" = "ubuntu" ]
