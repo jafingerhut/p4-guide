@@ -886,7 +886,8 @@ else
 	df -BM .
 	cd "${INSTALL_DIR}"
 	cd behavioral-model
-	make clean
+	# TODO: What is correct command to do this using cmake?
+	#make clean
     fi
 fi
 TIME_BEHAVIORAL_MODEL_INSTALL_END=$(date +%s)
