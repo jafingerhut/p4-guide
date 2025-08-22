@@ -872,7 +872,7 @@ else
 #    fi
     mkdir build
     cd build
-    cmake -DWITH_PI=on ..
+    cmake -DWITH_PI=on -DWITH_THRIFT=on -DHAVE_PCAP_SET_IMMEDIATE_MODE=on ..
     make
     sudo make install
     sudo ldconfig
