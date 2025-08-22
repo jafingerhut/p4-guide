@@ -429,8 +429,6 @@ change_owner_and_group_of_venv_lib_python3_files() {
     venv="$1"
     user_name=`id --user --name`
     group_name=`id --group --name`
-    # Check to see whether this command is actually changing anything
-    find . ! -user ${user_name} | head -n 20
     sudo chown -R ${user_name}:${group_name} ${venv}/lib/python*/site-packages
 }
 
@@ -875,8 +873,7 @@ else
 	df -BM .
 	cd "${INSTALL_DIR}"
 	cd behavioral-model
-	# TODO: What is correct command to do this using cmake?
-	#make clean
+	make clean
     fi
 fi
 TIME_BEHAVIORAL_MODEL_INSTALL_END=$(date +%s)
