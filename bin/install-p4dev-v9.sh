@@ -873,7 +873,7 @@ else
 	df -BM .
 	cd "${INSTALL_DIR}"
 	cd behavioral-model
-	make clean
+	/bin/rm -fr build
     fi
 fi
 TIME_BEHAVIORAL_MODEL_INSTALL_END=$(date +%s)
