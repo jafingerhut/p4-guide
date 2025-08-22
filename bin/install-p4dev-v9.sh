@@ -863,7 +863,7 @@ else
     cd build
     cmake -DWITH_PI=on -DWITH_THRIFT=on ..
     make
-    sudo make install
+    sudo make install/strip
     sudo ldconfig
     # 'sudo make install-strip' installs several files in ${PYTHON_VENV}
     # with root owner.  Change them to be owned by the regular user id.
