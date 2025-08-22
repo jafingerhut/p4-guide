@@ -859,20 +859,9 @@ else
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
     ./install_deps.sh
-#    # simple_switch_grpc README.md says to configure and build the bmv2
-#    # code first, using these commands:
-#    ./autogen.sh
-#    # Remove 'CXXFLAGS ...' part to disable debug
-#    if [ "${ID}" = "ubuntu" ]
-#    then
-#	./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
-#    elif [ "${ID}" = "fedora" ]
-#    then
-#	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
-#    fi
     mkdir build
     cd build
-    cmake -DWITH_PI=on -DWITH_THRIFT=on -DHAVE_PCAP_SET_IMMEDIATE_MODE=on ..
+    cmake -DWITH_PI=on -DWITH_THRIFT=on ..
     make
     sudo make install
     sudo ldconfig
