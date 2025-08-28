@@ -859,7 +859,7 @@ else
     ./install_deps.sh
     mkdir build
     cd build
-    cmake -DWITH_PI=on -DWITH_THRIFT=on ..
+    cmake -DWITH_PI=on -DWITH_THRIFT=on -DENABLE_MODULES=on ..
     make
     sudo make install/strip
     sudo ldconfig
