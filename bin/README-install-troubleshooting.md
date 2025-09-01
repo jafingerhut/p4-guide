@@ -32,10 +32,6 @@ compiled again.
 | 2025-Sep-01 | Ubuntu 24.04 | [5.6 GByte VM image](https://drive.google.com/file/d/1tkeRa7hPBcyM-KcCaFvaEpnYs6pLtGWS/view?usp=sharing) | Combo28 | [5.1 GByte VM image](https://drive.google.com/file/d/1ITW3Zvmm_V6jmrdvt0crQPWlyp47aMtt/view?usp=sharing) | Combo29 |
 | 2025-Aug-01 | Ubuntu 24.04 | [5.9 GByte VM image](https://drive.google.com/file/d/1dfSXvmFKiOIhjhp3Oh6AIuxL4FRG3akh/view?usp=sharing) | Combo26 | [5.1 GByte VM image](https://drive.google.com/file/d/10gaBQctEgFtpm91s8Ln6msND3AJwp5AS/view?usp=sharing) | Combo27 |
 | 2025-Jul-01 | Ubuntu 24.04 | [5.6 GByte VM image](https://drive.google.com/file/d/1MIhUZykmqBAcUQ7hBlaNHoNthvVta2lb/view?usp=sharing) | Combo26 | [4.8 GByte VM image](https://drive.google.com/file/d/1dyJBk6ujtv3Ypz3amAxLDJBjVNOcXSho/view?usp=sharing) | Combo27 |
-| 2025-May-01 | Ubuntu 24.04 | VM not created yet | Combo26 | [4.7 GByte VM image](https://drive.google.com/file/d/1AR976xoVN2pfjAqcthSq_PH7BKNrG79d/view?usp=sharing) | Combo27 |
-| 2025-Apr-01 | Ubuntu 24.04 | [5.5 GByte VM image](https://drive.google.com/file/d/1tWOKZtqNDKzk928f0b7rjje8nRHXk02c/view?usp=sharing) | Combo26 | [4.6 GByte VM image](https://drive.google.com/file/d/1SMs7AORZMwWUF9niGFBanqtKjDkSUsaV/view?usp=sharing) | Combo27 |
-| 2025-Mar-01 | Ubuntu 24.04 | [5.4 GByte VM image](https://drive.google.com/file/d/1Khfsugub0Ar_eI-uxBsswbbnJMIcNZ4k/view?usp=sharing) | Combo26 | [4.6 GByte VM image](https://drive.google.com/file/d/1Joky3wfAyA0zz9GqCdNhjGA9eVRr2Ibe/view?usp=sharing) | Combo27 |
-| 2025-Feb-01 | Ubuntu 24.04 | [5.2 GByte VM image](https://drive.google.com/file/d/13_D4c3WWilJKPjyioOM7Ie5ZFXV-xT4S/view?usp=sharing) | Combo26 | no such VM created | -- |
 | 2025-Jan-01 | Ubuntu 24.04 | [4.5 GByte VM image](https://drive.google.com/file/d/14DI0Ovnn2eo3boFewWHg83xnhtF1jKjK/view?usp=sharing) (first image released with Ubuntu GNOME desktop) | Combo26 | no such VM created | -- |
 
 If you are looking for a VM image built in 2024 or earlier, see [this
