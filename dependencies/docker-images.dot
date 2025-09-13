@@ -1,0 +1,123 @@
+digraph {
+	rankdir="LR";
+
+	img_ubuntu_1404 [ label="ubuntu:14.04" shape="box" ];
+	img_ubuntu_1604 [ label="ubuntu:16.04" shape="box" ];
+	img_ubuntu_1804 [ label="ubuntu:18.04" shape="box" ];
+	img_ubuntu_2004 [ label="ubuntu:20.04" shape="box" ];
+	img_ubuntu_2204 [ label="ubuntu:22.04" shape="box" ];
+	img_ubuntu_2404 [ label="ubuntu:24.04" shape="box" ];
+	img_debian_bullseye [ label="debian:bullseye" shape="box" ];
+	img_ruby_335 [ label="ruby:3.3.5" shape="box" ];
+
+	img_behavioral_model [ label="p4lang/behavioral-model:latest" shape="box" ];
+	img_behavioral_model_no_pi [ label="p4lang/behavioral-model:no-pi" shape="box" ];
+	img_p4runtime_sh [ label="p4lang/p4runtime-sh:latest" shape="box" ];
+	img_p4runtime_sh_dev [ label="p4lang/p4runtime-sh-dev:latest" shape="box" ];
+	img_third_party [ label="p4lang/third-party:latest" shape="box" ];
+	img_p4c [ label="p4lang/p4c:latest" shape="box" ];
+	img_p4c_sha256 [ label="p4lang/p4c@sha256:c1cbb66cea83de50b43d7ef78d478dd5e43ce9e1116921d6700cc40bb505e12a" shape="box" ];
+	img_pi [ label="p4lang/pi:latest" shape="box" ];
+
+	dockerfile_p4c [ label="p4c/Dockerfile" ];
+	img_behavioral_model -> dockerfile_p4c;
+
+	dockerfile_p4runtime_shell [ label="p4runtime-shell/Dockerfile" ];
+	img_ubuntu_2204 -> dockerfile_p4runtime_shell;
+
+	dockerfile_p4runtime_shell_dev [ label="p4runtime-shell/Dockerfile.dev" ];
+	img_p4runtime_sh -> dockerfile_p4runtime_shell_dev;
+
+	dockerfile_p4_spec_v1 [ label="p4-spec/tools/Dockerfile.asciidoc_v1" ];
+	img_ubuntu_2204 -> dockerfile_p4_spec_v1;
+
+	dockerfile_p4_spec_v2 [ label="p4-spec/tools/Dockerfile.asciidoc_v2" ];
+	img_ruby_335 -> dockerfile_p4_spec_v2;
+
+	dockerfile_p4runtime_docs_tools [ label="p4runtime/docs/tools/Dockerfile.asciidoc" ];
+	img_ruby_335 -> dockerfile_p4runtime_docs_tools;
+
+	dockerfile_p4runtime_codegen [ label="p4runtime/codegen/Dockerfile" ];
+	img_third_party -> dockerfile_p4runtime_codegen;
+
+	dockerfile_p4_constraints [ label="p4-constraints/Dockerfile" ];
+	img_ubuntu_1604 -> dockerfile_p4_constraints;
+
+	// I am not including dockerfile from p4app-switchML repo right now.
+
+	dockerfile_p4app [ label="p4app/Dockerfile" ];
+	img_p4c -> dockerfile_p4app;
+
+	dockerfile_PI [ label="PI/Dockerfile" ];
+	img_third_party -> dockerfile_PI;
+
+	dockerfile_PI_bmv2 [ label="PI/Dockerfile.bmv2" ];
+	img_behavioral_model_no_pi -> dockerfile_PI_bmv2;
+
+	dockerfile_p4_dpdk_target [ label="p4-dpdk-target/Dockerfile" ];
+	img_p4c_sha256 -> dockerfile_p4_dpdk_target;
+	img_ubuntu_2004 -> dockerfile_p4_dpdk_target;
+
+	dockerfile_switch [ label="switch/docker/Dockerfile" ];
+	img_ubuntu_1404 -> dockerfile_switch;
+
+	dockerfile_switch_bmv2 [ label="switch/docker/bmv2/Dockerfile" ];
+	img_ubuntu_1404 -> dockerfile_switch_bmv2;
+
+	dockerfile_third_party [ label="third-party/Dockerfile" ];
+	img_ubuntu_2004 -> dockerfile_third_party;
+
+	dockerfile_p4pi_pi_gen [ label="p4pi/pi-gen/Dockerfile" ];
+	img_debian_bullseye -> dockerfile_p4pi_pi_gen;
+
+	dockerfile_behavioral_model [ label="behavioral-model/Dockerfile" ];
+	img_pi -> dockerfile_behavioral_model;
+
+	dockerfile_behavioral_model_noPI [ label="behavioral-model/Dockerfile.noPI" ];
+	img_third_party -> dockerfile_behavioral_model_noPI;
+
+	// I am inferring that from dockerfile_p4c we create img_p4c
+	// from the following line in a p4c .yml file, because there is
+	// only one Dockerfile in the p4c repo:
+	// ./other/p4c/.github/workflows/ci-release.yml:          tags: p4lang/p4c:${{ env.VERSION }}
+	dockerfile_p4c -> img_p4c [ label="p4c ci-release.yml" ];
+
+	// ./other/p4c/.github/workflows/ci-container-image.yml:          tags: p4lang/p4c:${{ steps.get-tag.outputs.tag }}
+	dockerfile_p4c -> img_p4c [ label="p4c ci-container-image.yml" ];
+
+	// ./other/p4runtime-shell/.github/workflows/test.yml:        tags: localhost:5000/p4lang/p4runtime-sh
+	// Same as p4lang/p4runtime-sh below
+
+	// ./other/p4runtime-shell/.github/workflows/test.yml:        tags: p4lang/p4runtime-sh-dev
+	dockerfile_p4runtime_shell_dev -> img_p4runtime_sh_dev [ label="p4runtime-shell test.yml" ];
+
+	// ./other/p4runtime-shell/.github/workflows/test.yml:        tags: p4lang/p4runtime-sh
+	dockerfile_p4runtime_shell -> img_p4runtime_sh [ label="p4runtime-shell test.yml" ];
+
+	// ./other/p4runtime-shell/.github/workflows/pypi.yml:    tags:
+	// no Docker image created by this "tags:" line.
+
+	// ./other/p4runtime/.github/workflows/tag-uploads.yml:    tags:
+	// no Docker image created by this "tags:" line.
+
+	// ./other/PI/.github/workflows/build.yml:        tags: p4lang/pi:${{ steps.get-tag.outputs.tag }}
+	dockerfile_PI -> img_pi [ label="PI build.yml" ];
+
+	dockerfile_PI_bmv2 -> testonly_todo [ label="PI test.yml" ];
+
+	// ./other/ptf/.github/workflows/pypi.yml:    tags:
+	// no Docker image created by this "tags:" line.
+
+	// ./other/third-party/.github/workflows/build.yml:        tags: p4lang/third-party:${{ steps.get-tag.outputs.tag }}
+	dockerfile_third_party -> img_third_party [ label="third-party build.yml" ];
+
+	// ./other/third-party/.github/workflows/build.yml:        tags: p4lang/third-party:${{ steps.get-tag.outputs.tag }}
+	// Same as above.  Not clear to my why this same file has 2
+	// tags: lines with the same image name as the target.
+
+	// ./other/behavioral-model/.github/workflows/build.yml:        tags: p4lang/behavioral-model:${{ steps.get-tag.outputs.tag }}
+	dockerfile_behavioral_model -> img_behavioral_model [ label="behavioral-model build.yml" ];
+
+	// ./other/behavioral-model/.github/workflows/build.yml:        tags: p4lang/behavioral-model:no-pi
+	dockerfile_behavioral_model_noPI -> img_behavioral_model_no_pi [ label="behavioral-model build.yml" ];
+}

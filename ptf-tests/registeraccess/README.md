@@ -27,6 +27,11 @@ externs, in such a way that they happen "between" processing other
 received data packets, effectively atomically, and/or you want to do
 an operation other than merely reading or writing a value.
 
+See
+[here](../packetinout/README.md#notes-on-the-cpu-port-packetin-and-packetout-messages-and-controller-metadata)
+for notes on the CPU port, `PacketIn` and `PacketOut` messages, and
+controller metadata.
+
 
 # Commands
 
