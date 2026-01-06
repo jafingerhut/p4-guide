@@ -1097,7 +1097,7 @@ pip3 install psutil crcmod
 # otherwise installing p4runtime-shell packages will likely pick some
 # very recent version of grpcio that may cause trouble.
 pip3 install wheel
-if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
+if [ "${ID}" == "ubuntu" -a \( "${VERSION_ID}" == "24.04" -o "${VERSION_ID}" == "25.10" \) ]
 then
     # Version 1.51.3 fails to install on Ubuntu 24.04 as of
     # 2024-May-20.
