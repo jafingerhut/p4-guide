@@ -1004,7 +1004,7 @@ git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-jan-enable-venv.patch"
 cd ..
 RESTORE_SUDOERS_FILE=0
 if [ -e /etc/sudoers.d/sudoers-dotfiles ]
