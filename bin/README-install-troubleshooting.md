@@ -90,9 +90,8 @@ Start with:
     of running the install script -- it will download approximately 2
     to 3 GByte of data.
 
-Note: These scripts have been reported NOT WORKING on WSL (Windows
-Subsystem for Linux).  I have had success running supported versions
-of Ubuntu Linux using VirtualBox on these host operating systems:
+I have had success running supported versions of Ubuntu Linux using
+VirtualBox on these host operating systems:
 
 + macOS 10.14.x
 + macOS 10.15.x
@@ -101,6 +100,10 @@ of Ubuntu Linux using VirtualBox on these host operating systems:
 + macOS 14.x.y
 + Windows 10
 + Windows 11
+
+I have also successfully used this script on a WSL2 (Windows Subsystem
+for Linux 2) installation of Ubuntu 24.04 Linux, running on Windows
+11.
 
 Then run the commands below in a terminal.  Note:
 + You may run the commands from any directory you wish -- I typically
