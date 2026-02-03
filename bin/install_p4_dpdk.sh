@@ -19,6 +19,7 @@ echo -e "${BOLD}${BLUE}=== P4 DPDK Target Installation Script ===${NC}"
 # ------------------------------------------------------------
 # 1. Base directories
 # ------------------------------------------------------------
+INSTALL_DIR=$(pwd)
 export SDE=$(pwd)/sde
 export SDE_INSTALL=$SDE/install
 
