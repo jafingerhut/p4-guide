@@ -24,6 +24,17 @@ export SDE_INSTALL=$SDE/install
 
 mkdir -p "$SDE"
 
+# Create a new Python virtual environment using venv.  Later we will
+# attempt to ensure that all new Python packages installed are
+# installed into this virtual environment, not into system-wide
+# directories like /usr/local/bin
+sudo apt-get --yes install \
+    autoconf make g++ \
+    python3-pip python3-venv
+PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
+python3 -m venv "${PYTHON_VENV}"
+source "${PYTHON_VENV}/bin/activate"
+
 # ------------------------------------------------------------
 # 1. Cloning p4-dpdk-target
 # ------------------------------------------------------------
