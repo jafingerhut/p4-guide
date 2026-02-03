@@ -29,12 +29,14 @@ mkdir -p "$SDE"
 # attempt to ensure that all new Python packages installed are
 # installed into this virtual environment, not into system-wide
 # directories like /usr/local/bin
-sudo apt-get --yes install \
-    autoconf make g++ \
-    python3-pip python3-venv
+sudo apt-get --yes install python3-pip python3-venv
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 python3 -m venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
+
+# Install wireshark and tshark in a way that avoids an interactive
+# response being required.
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install wireshark tshark
 
 # ------------------------------------------------------------
 # 1. Cloning p4-dpdk-target
