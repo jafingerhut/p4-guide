@@ -44,8 +44,6 @@ Version combinations I have used above for testing VM images:
 | -------------- | ---------------- | ----------- |
 | Combo26 | Windows 11 Pro | VirtualBox 7.1.4 |
 | Combo27 | macOS 14.7.x | VirtualBox 7.1.6 |
-| Combo28 | Windows 11 Pro | VirtualBox 7.1.12 |
-| Combo29 | macOS 14.7.x | VirtualBox 7.1.12 |
 | Combo30 | Windows 11 Pro | VirtualBox 7.1.14 |
 | Combo31 | macOS 15.7.x | VirtualBox 7.1.14 |
 | Combo32 | Windows 11 Pro | VirtualBox 7.2.6 |
