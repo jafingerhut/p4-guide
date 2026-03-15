@@ -49,12 +49,12 @@ max_parallel_jobs() {
     1>&2 echo "Max number of parallel jobs for processors: ${max_jobs_for_processors}"
     if [ ${max_jobs_for_processors} -lt ${max_jobs_for_mem} ]
     then
-	echo ${max_jobs_for_processors}
+        echo ${max_jobs_for_processors}
     elif [ ${max_jobs_for_mem} -ge 1 ]
     then
-	echo ${max_jobs_for_mem}
+        echo ${max_jobs_for_mem}
     else
-	echo 1
+        echo 1
     fi
 }
 
@@ -84,30 +84,30 @@ BUILD_TARGETS="bmv2"
 while [ $# -ge 1 ]
 do
     case "$1" in
-	deletebuild)
-	    DO_DELETE_BUILD_DIR=1
-	    ;;
-	update)
-	    DO_UPDATE_FIRST=1
-	    ;;
-	release)
-	    BUILD_TYPE="Release"
-	    ;;
-	debug)
-	    BUILD_TYPE="Debug"
-	    ;;
-	full)
-	    BUILD_TARGETS="full"
-	    ;;
-	bmv2)
-	    BUILD_TARGETS="bmv2"
-	    ;;
-	*)
-	    1>&2 echo "Unknown command line option: $1"
-	    1>&2 echo ""
-	    usage
-	    exit 1
-	    ;;
+        deletebuild)
+            DO_DELETE_BUILD_DIR=1
+            ;;
+        update)
+            DO_UPDATE_FIRST=1
+            ;;
+        release)
+            BUILD_TYPE="Release"
+            ;;
+        debug)
+            BUILD_TYPE="Debug"
+            ;;
+        full)
+            BUILD_TARGETS="full"
+            ;;
+        bmv2)
+            BUILD_TARGETS="bmv2"
+            ;;
+        *)
+            1>&2 echo "Unknown command line option: $1"
+            1>&2 echo ""
+            usage
+            exit 1
+            ;;
     esac
     shift
 done
@@ -149,46 +149,39 @@ else
     echo "Building p4c from scratch"
 fi
 
-cd build
 P4C_CMAKE_OPTS=""
 PROCESSOR=`uname --machine`
 case "${BUILD_TARGETS}" in
     full)
-	P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=ON -DENABLE_UBPF=ON -DENABLE_DPDK=ON -DENABLE_P4C_GRAPHS=ON -DENABLE_TEST_TOOLS=ON -DENABLE_DOCS=ON -DENABLE_P4FMT=ON -DENABLE_P4TC=ON -DENABLE_GTESTS=ON -DENABLE_TOFINO=ON"
-	;;
+        # Make all back ends, including:
+        # gtestp4c
+        # p4c-bm2-psa
+        # p4c-bm2-ss
+        # p4c-dpdk
+        # p4c-ebpf
+        # p4c-graphs
+        # p4c-ubpf
+        # p4test
+        P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=ON -DENABLE_UBPF=ON -DENABLE_DPDK=ON -DENABLE_P4C_GRAPHS=ON -DENABLE_TEST_TOOLS=ON -DENABLE_DOCS=ON -DENABLE_P4FMT=ON -DENABLE_P4TC=ON -DENABLE_GTESTS=ON -DENABLE_TOFINO=ON"
+
+        ;;
     bmv2)
-	P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4C_GRAPHS=OFF -DENABLE_TEST_TOOLS=OFF -DENABLE_DOCS=OFF -DENABLE_P4FMT=OFF -DENABLE_P4TC=OFF -DENABLE_GTESTS=OFF -DENABLE_TOFINO=OFF"
-	;;
+        P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4C_GRAPHS=OFF -DENABLE_TEST_TOOLS=OFF -DENABLE_DOCS=OFF -DENABLE_P4FMT=OFF -DENABLE_P4TC=OFF -DENABLE_GTESTS=OFF -DENABLE_TOFINO=OFF"
+        ;;
 esac
-cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${P4C_CMAKE_OPTS}
-# Copied from p4c/Dockerfile
-#cmake .. '-DCMAKE_CXX_FLAGS:STRING=-O3'
-
-# Make all back ends, including:
-# gtestp4c
-# p4c-bm2-psa
-# p4c-bm2-ss
-# p4c-dpdk
-# p4c-ebpf
-# p4c-graphs
-# p4c-ubpf
-# p4test
+cmake -B build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${P4C_CMAKE_OPTS}
 MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
-make -j${MAX_PARALLEL_JOBS}
-
-# Make only the explicitly listed back ends:
-#make -j${MAX_PARALLEL_JOBS} p4c-dpdk p4test p4c-bm2-ss
+cmake --build build -j${MAX_PARALLEL_JOBS}
 
 set +x
 echo ""
 echo "If you want to run p4c automated tests, run these commands:"
 echo ""
-echo "    cd build"
-echo "    make check"
+echo "    cmake --build build --target check"
 echo ""
 echo "If you want to install these versions of p4c in system-wide"
 echo "directories, e.g. /usr/local/bin, run the commands:"
 echo ""
 echo "    cd build"
-echo "    sudo make install  # to install larger binaries with debug symbols included"
-echo "    sudo make install/strip  # to install smaller binaries without debug symbols"
+echo "    sudo cmake --build build --target install  # to install larger binaries with debug symbols included"
+echo "    sudo cmake --build build --target install/strip  # to install smaller binaries without debug symbols"
