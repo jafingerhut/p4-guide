@@ -77,6 +77,12 @@ usage() {
     1>&2 echo "    bmv2, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, or all back ends"
 }
 
+function build_tofino() {
+    P4C_TOFINO_PACKAGES="rapidjson-dev"
+    sudo apt-get install -y --no-install-recommends ${P4C_TOFINO_PACKAGES}
+    pip install jsl=="0.2.4" pyinstaller=="6.11.0" jsonschema=="4.23.0" pyyaml=="6.0.2"
+}
+
 DO_DELETE_BUILD_DIR=0
 DO_UPDATE_FIRST=0
 BUILD_TYPE="Release"
@@ -163,7 +169,7 @@ case "${BUILD_TARGETS}" in
         # p4c-ubpf
         # p4test
         P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=ON -DENABLE_UBPF=ON -DENABLE_DPDK=ON -DENABLE_P4C_GRAPHS=ON -DENABLE_TEST_TOOLS=ON -DENABLE_DOCS=ON -DENABLE_P4FMT=ON -DENABLE_P4TC=ON -DENABLE_GTESTS=ON -DENABLE_TOFINO=ON"
-
+	build_tofino
         ;;
     bmv2)
         P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4C_GRAPHS=OFF -DENABLE_TEST_TOOLS=OFF -DENABLE_DOCS=OFF -DENABLE_P4FMT=OFF -DENABLE_P4TC=OFF -DENABLE_GTESTS=OFF -DENABLE_TOFINO=OFF"
