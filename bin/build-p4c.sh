@@ -70,11 +70,11 @@ else
 fi
 
 usage() {
-    1>&2 echo "usage: $0 [ deletebuild | update | release | debug | bmv2 | full ]*"
+    1>&2 echo "usage: $0 [ deletebuild | update | release | debug | bmv2 | bmv2testgen | full ]*"
     1>&2 echo ""
     1>&2 echo "    deletebuild - first delete build directory, if it exists"
     1>&2 echo "    release, debug - last one one cmd line controls whether RELEASE or DEBUG build are done for p4c"
-    1>&2 echo "    bmv2, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, or all back ends"
+    1>&2 echo "    bmv2, bmv2testgen, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, bmv2 and p4test and p4testgen, or all back ends"
 }
 
 function build_tofino() {
@@ -107,6 +107,9 @@ do
             ;;
         bmv2)
             BUILD_TARGETS="bmv2"
+            ;;
+        bmv2testgen)
+            BUILD_TARGETS="bmv2testgen"
             ;;
         *)
             1>&2 echo "Unknown command line option: $1"
@@ -173,6 +176,9 @@ case "${BUILD_TARGETS}" in
         ;;
     bmv2)
         P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4C_GRAPHS=OFF -DENABLE_TEST_TOOLS=OFF -DENABLE_DOCS=OFF -DENABLE_P4FMT=OFF -DENABLE_P4TC=OFF -DENABLE_GTESTS=OFF -DENABLE_TOFINO=OFF"
+        ;;
+    bmv2testgen)
+        P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_BMV2=ON -DENABLE_P4TEST=ON -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4C_GRAPHS=OFF -DENABLE_TEST_TOOLS=ON -DENABLE_DOCS=OFF -DENABLE_P4FMT=OFF -DENABLE_P4TC=OFF -DENABLE_GTESTS=OFF -DENABLE_TOFINO=OFF"
         ;;
 esac
 cmake -B build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${P4C_CMAKE_OPTS}
