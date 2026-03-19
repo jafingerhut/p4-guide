@@ -52,7 +52,7 @@ for idx in 0 1 2 3 4 5 6 7 8; do
         # simple_switch out to scapy sniffing.
         #
         # https://superuser.com/questions/356286/how-can-i-switch-off-ipv6-nd-ra-transmissions-in-linux
-        sysctl net.ipv6.conf.${intf0}.disable_ipv6=1
-        sysctl net.ipv6.conf.${intf1}.disable_ipv6=1
+        sysctl -q net.ipv6.conf.${intf0}.disable_ipv6=1
+        sysctl -q net.ipv6.conf.${intf1}.disable_ipv6=1
     fi
 done
