@@ -1,0 +1,47 @@
+diff -cr src/ptf/dataplane.py /home/p4/src/p4dev-python-venv/lib/python3.12/site-packages/ptf/dataplane.py
+*** src/ptf/dataplane.py	2026-03-01 07:26:47.186729892 -0800
+--- /home/p4/src/p4dev-python-venv/lib/python3.12/site-packages/ptf/dataplane.py	2026-03-20 14:13:33.340550341 -0700
+***************
+*** 648,658 ****
+                          if t is None:
+                              continue
+                          device_number, port_number, pkt, timestamp = t
+!                         self.logger.debug(
+!                             "Pkt len %d in on device %d, port %d",
+                              len(pkt),
+                              device_number,
+                              port_number,
+                          )
+                          if self.pcap_writer:
+                              self.pcap_writer.write(
+--- 648,659 ----
+                          if t is None:
+                              continue
+                          device_number, port_number, pkt, timestamp = t
+!                         self.logger.info(
+!                             "Pkt len %d in on device %d, port %d: %s",
+                              len(pkt),
+                              device_number,
+                              port_number,
++                             bytes(pkt),
+                          )
+                          if self.pcap_writer:
+                              self.pcap_writer.write(
+***************
+*** 952,957 ****
+--- 953,965 ----
+                      rcv_device_number,
+                      rcv_port_number,
+                  )
++                 self.logger.info(
++                     "Received packet out from device %d, port %d with len %d bytes: %s",
++                     rcv_device_number,
++                     rcv_port_number,
++                     len(pkt),
++                     pkt,
++                 )
+                  if not filter_check(pkt):
+                      self.logger.debug("Paket does not match filter, discarding")
+                      continue
+Only in /home/p4/src/p4dev-python-venv/lib/python3.12/site-packages/ptf/platforms: __pycache__
+Only in /home/p4/src/p4dev-python-venv/lib/python3.12/site-packages/ptf/: __pycache__
