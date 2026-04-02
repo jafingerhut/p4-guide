@@ -89,12 +89,28 @@ from one execution of the control to another.
 
 ## Summary table
 
-| Location in program source code | P4_16 (p4c source 2026-Apr-01) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Rust (rustc 1.94.1) | Java (JDK 23) |
+Consider a program like the ones in the snippets above where `i` is
+declared in an outer scope, and also in an inner scope.
+
+The entries of the table below indicate whether a mention of a
+variable name in the part of the program described in the first column
+will refer to the variable declared in the outer scope, or the
+variable declared in the inner scope.
+
+For example, with all of the programming languages listed (except
+Java), if there is a variable name in the inner scope, _before_ the
+inner declaration that shadows the outer definition, that name refers
+to the variable declared in the outer scope.
+
+| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Rust (rustc 1.94.1) | Java (JDK 23) |
 | ------------------------------- | ------------------------------ | ------------------------------ | -------------------------------- | ------------------- | ------------- |
 | outer scope | outer | outer | outer | outer | It is compile-time error for inner scopes to declare local variables that shadow variables in outer scopes. |
 | inner scope before declaration of shadowing variable | outer | outer | outer | outer | N/A |
 | inner scope in right-hand side expression that initializes shadowing variable | outer | inner [Note 1] | inner [Note 1] | outer | N/A |
 | inner scope after declaration of shadowing variable | inner | inner | inner | inner | N/A |
+
+Note: Rust also allows a variable to be declared multiple times in the
+_same_ scope.  Later ones shadow earlier ones.
 
 
 ## Behavior of p4c as of 2026-Apr-01
