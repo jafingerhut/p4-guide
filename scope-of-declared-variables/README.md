@@ -109,6 +109,10 @@ to the variable declared in the outer scope.
 | inner scope in right-hand side expression that initializes shadowing variable | outer | inner [Note 1] | inner [Note 1] | outer | N/A |
 | inner scope after declaration of shadowing variable | inner | inner | inner | inner | N/A |
 
+Note 1: In this case, the value of the variable is uninitialized, so
+its value is unpredictable.  If you take the address of it, that
+storage location is well defined and predictable.
+
 Note: Rust also allows a variable to be declared multiple times in the
 _same_ scope.  Later ones shadow earlier ones.
 
