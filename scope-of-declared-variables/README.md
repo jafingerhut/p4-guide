@@ -123,13 +123,11 @@ storage location is well defined and predictable.
 Note: Rust also allows a variable to be declared multiple times in the
 _same_ scope.  Later ones shadow earlier ones.
 
-Here is a summary of the results for test programs in each language
-that attempt to refer to a name in the initialization expression of
-the declaration of that same symbol, when there is _no_ earlier symbol
-defined with that name.  These are in the test programs with "4" in
-their names.
-
- P4_16 (p4c source 2026-Apr-01) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Rust (rustc 1.94.1) | Java (JDK 23) |
+Below are the results for test programs in each language that attempt
+to refer to a name in the initialization expression of the declaration
+of that same name (e.g. `int i = i;`), when there is _no_ earlier
+symbol defined with that name.  These are in the test programs with
+"4" in their names.
 
 + P4_16 - compile-time error.  Error message "<name>: declaration not
   found".
