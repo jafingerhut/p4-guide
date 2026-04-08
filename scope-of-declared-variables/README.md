@@ -129,14 +129,14 @@ of that same name (e.g. `int i = i;`), when there is _no_ earlier
 symbol defined with that name.  These are in the test programs with
 "4" in their names.
 
-+ P4_16 - compile-time error.  Error message "<name>: declaration not
-  found".
++ P4_16 - compile-time error.  Error message `<name>: declaration not
+  found`.
 + C - legal.  Value of symbol is uninitialized.
 + C++ - legal.  Value of symbol is uninitialized.
-+ Rust - compile-time error.  Error message "not found in this scope"
++ Rust - compile-time error.  Error message `not found in this scope`
   at reference to symbol in initialization expression.
-+ Java - compile-time error.  Error message "variable <name> might not
-  have been initialized".
++ Java - compile-time error.  Error message `variable <name> might not
+  have been initialized`.
 
 
 ## Behavior of p4c as of 2026-Apr-01
