@@ -160,12 +160,15 @@ The only difference with the notes for Program snippet #1 is:
   line 4 refers to the declaration in line 1, and value assigned in
   line 2.
 
+File prog4p4.p4 is similar to prog2p4.p4, but it eliminates the `i`
+declared in the outer scope.
+
 
 ## What does C do?
 
 I tested with GCC version 13.3.0 on Ubuntu Linux.
 
-See files: prog1c.c prog2c.c prog3c.c
+See files: prog1c.c prog2c.c prog3c.c prog4c.c
 
 From the behavior of the compiler and the test programs, the scope of
 outer variable `i` includes:
@@ -182,7 +185,7 @@ scope for the inner `i`, but its value is uninitialized.
 
 I tested with GCC version 13.3.0 on Ubuntu Linux.
 
-See files: prog1cpp.cpp prog2cpp.cpp prog3cpp.cpp
+See files: prog1cpp.cpp prog2cpp.cpp prog3cpp.cpp prog4cpp.cpp
 
 The behavior is the same as for C.
 
@@ -191,7 +194,7 @@ The behavior is the same as for C.
 
 I tested with rustc version 1.94.1.
 
-See files: prog1rs.rs prog2rs.rs prog3rs.rs
+See files: prog1rs.rs prog2rs.rs prog3rs.rs prog4rs.rs
 
 From the behavior of the compiler and the test programs, the scope of
 outer variable `i` includes:
@@ -207,7 +210,7 @@ of the outer `i` is at the time of the initialization.
 
 ## What does Java do?
 
-See file: prog1.java
+See file: prog1.java prog4.java
 
 It is a compile-time error to attempt to declare a local variable in
 an inner scope with the same name as a local variable in an outer
