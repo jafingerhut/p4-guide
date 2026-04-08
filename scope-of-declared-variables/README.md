@@ -109,11 +109,11 @@ Java), if there is a variable name in the inner scope, _before_ the
 inner declaration that shadows the outer definition, that name refers
 to the variable declared in the outer scope.
 
-| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Rust (rustc 1.94.1) | Java (JDK 23) |
+| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | Rust (rustc 1.94.1) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Java (JDK 23) |
 | ------------------------------- | ------------------------------ | ------------------------------ | -------------------------------- | ------------------- | ------------- |
 | outer scope | outer | outer | outer | outer | It is compile-time error for inner scopes to declare local variables that shadow variables in outer scopes. |
 | inner scope before declaration of shadowing variable | outer | outer | outer | outer | N/A |
-| inner scope in right-hand side expression that initializes shadowing variable | outer | inner [Note 1] | inner [Note 1] | outer | N/A |
+| inner scope in right-hand side expression that initializes shadowing variable | outer | outer | inner [Note 1] | inner [Note 1] | N/A |
 | inner scope after declaration of shadowing variable | inner | inner | inner | inner | N/A |
 
 Note 1: In this case, the value of the variable is uninitialized, so
@@ -131,10 +131,10 @@ symbol defined with that name.  These are in the test programs with
 
 + P4_16 - compile-time error.  Error message `<name>: declaration not
   found`.
-+ C - legal.  Value of symbol is uninitialized.
-+ C++ - legal.  Value of symbol is uninitialized.
 + Rust - compile-time error.  Error message `not found in this scope`
   at reference to symbol in initialization expression.
++ C - legal.  Value of symbol is uninitialized.
++ C++ - legal.  Value of symbol is uninitialized.
 + Java - compile-time error.  Error message `variable <name> might not
   have been initialized`.
 
