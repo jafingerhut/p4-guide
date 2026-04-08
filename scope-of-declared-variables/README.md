@@ -89,6 +89,13 @@ from one execution of the control to another.
 
 ## Summary table
 
+Executive summary: P4_16 in its implementation today, and for several
+years, behaves similarly to Rust in its handling of scopes, and also
+in how it handles references to names in initialization expressions of
+variable declarations, meaning: in initialization expressions, a
+reference to a name can only refer to an earlier declaration of the
+name, not to the one currently being declared.
+
 Consider a program like the ones in the snippets above where `i` is
 declared in an outer scope, and also in an inner scope.
 
@@ -115,6 +122,23 @@ storage location is well defined and predictable.
 
 Note: Rust also allows a variable to be declared multiple times in the
 _same_ scope.  Later ones shadow earlier ones.
+
+Here is a summary of the results for test programs in each language
+that attempt to refer to a name in the initialization expression of
+the declaration of that same symbol, when there is _no_ earlier symbol
+defined with that name.  These are in the test programs with "4" in
+their names.
+
+ P4_16 (p4c source 2026-Apr-01) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Rust (rustc 1.94.1) | Java (JDK 23) |
+
++ P4_16 - compile-time error.  Error message "<name>: declaration not
+  found".
++ C - legal.  Value of symbol is uninitialized.
++ C++ - legal.  Value of symbol is uninitialized.
++ Rust - compile-time error.  Error message "not found in this scope"
+  at reference to symbol in initialization expression.
++ Java - compile-time error.  Error message "variable <name> might not
+  have been initialized".
 
 
 ## Behavior of p4c as of 2026-Apr-01
