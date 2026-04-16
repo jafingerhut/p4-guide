@@ -237,6 +237,15 @@ then
 	    # Closest versions available via "pip3 install" to the above
 	    PROTOBUF_VERSION_FOR_PIP="4.21.12"
 	    ;;
+       26.04)
+           supported_distribution=1
+           INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+           # Versions installed by Ubuntu apt
+           PROTOBUF_PKG_VERSION="3.21.12"
+           GRPC_PKG_VERSION="1.51.1"
+           # Closest versions available via "pip3 install" to the above
+           PROTOBUF_VERSION_FOR_PIP="4.21.12"
+           ;;
     esac
 elif [ "${ID}" = "fedora" ]
 then
@@ -456,7 +465,7 @@ pip3 -V || echo "No such command in PATH: pip3"
 # my own convenience):
 if [ "${ID}" = "ubuntu" ]
 then
-    sudo apt-get --yes update
+#    sudo apt-get --yes update
     sudo apt-get --yes install git vim
 elif [ "${ID}" = "fedora" ]
 then
