@@ -30,7 +30,7 @@ index 1316476..2debef9 100644
 +cd thrift-0.22.0
 +BUILDDIR="cmakebuild"
 +mkdir -p "${BUILDDIR}"
-+cmake -B "${BUILDDIR}" -DWITH_JAVASCRIPT=OFF -DWITH_JAVA=OFF -DWITH_PYTHON=OFF -DWITH_NODEJS=OFF
++cmake -B "${BUILDDIR}" -DBUILD_SHARED_LIBS=ON -DWITH_JAVASCRIPT=OFF -DWITH_JAVA=OFF -DWITH_PYTHON=OFF -DWITH_NODEJS=OFF
 +cmake --build "${BUILDDIR}"
 +sudo cmake --build "${BUILDDIR}" --target install
 +cd ..
