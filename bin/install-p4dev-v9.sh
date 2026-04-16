@@ -752,6 +752,11 @@ TIME_PI_INSTALL_START=$(date +%s)
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+    if [ "${VERSION_ID}" == "26.04" ]
+    then
+	# Later versions of Thrift require these packages, too.
+	sudo apt-get --yes install libboost-random-dev
+    fi
 elif [ "${ID}" = "fedora" ]
 then
     # Any other libraries output from 'dnf search libtool' that need
@@ -920,11 +925,6 @@ then
          bison flex libfl-dev libgmp-dev \
          libboost-dev libboost-iostreams-dev libboost-graph-dev \
          llvm pkg-config python3-pip tcpdump libelf-dev clang
-    if [ "${VERSION_ID}" == "26.04" ]
-    then
-	# Later versions of Thrift require these packages, too.
-	sudo apt-get --yes install libboost-random-dev
-    fi
 elif [ "${ID}" = "fedora" ]
 then
     sudo dnf -y install g++ git automake libtool gc-devel \
