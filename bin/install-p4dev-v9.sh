@@ -20,6 +20,8 @@
 # This script differs from install-p4dev-v8.sh as follows:
 
 # * Install behavioral-model using cmake instead of GNU Autotools.
+# * Remove support for Fedora Linux and Ubuntu 20.04
+# * Add support for Ubuntu 26.04
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
@@ -31,8 +33,7 @@ THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 24.04"
-    #1>&2 echo "    ID fedora, VERSION_ID in 36 37 38"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04 26.04"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -207,18 +208,6 @@ tried_but_got_build_errors=0
 if [ "${ID}" = "ubuntu" ]
 then
     case "${VERSION_ID}" in
-	20.04)
-	    supported_distribution=1
-	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
-	    # Versions installed by Ubuntu apt
-	    PROTOBUF_PKG_VERSION="3.6.1.3"
-	    GRPC_PKG_VERSION="1.16.1"
-	    # Versions to install for Ubuntu 20.04 are newer than
-	    # those above, because PI and behavioral-model require
-	    # later versions.
-	    GRPC_SOURCE_VERSION="1.30.2"
-	    PROTOBUF_VERSION_FOR_PIP="3.12.4"
-	    ;;
 	22.04)
 	    supported_distribution=1
 	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
@@ -245,18 +234,11 @@ then
            GRPC_PKG_VERSION="1.51.1"
            # Closest versions available via "pip3 install" to the above
            PROTOBUF_VERSION_FOR_PIP="4.21.12"
+	   # GCC 15 is the default on Ubuntu 26.04, but as of
+	   # 2026-Apr-24 the latest behavioral-model code does not
+	   # compile using that GCC version.
+	   UBUNTU_USE_GCC_VERSION="13"
            ;;
-    esac
-elif [ "${ID}" = "fedora" ]
-then
-    # I have not tested this script with fedora yet.
-    case "${VERSION_ID}" in
-	38)
-	    supported_distribution=0
-	    ;;
-	39)
-	    supported_distribution=0
-	    ;;
     esac
 fi
 
@@ -283,6 +265,10 @@ else
     fi
     exit 1
 fi
+
+# TODO: It might have been a while no, e.g. adding Tofino back end to
+# p4c, since more than 2 GBytes is required.  Test it with a 2 GByte
+# VM and see if it actually builds.
 
 # Minimum required system memory is 2 GBytes, minus a few MBytes
 # because from experiments I have run on several different Ubuntu
@@ -372,15 +358,16 @@ echo "compiler, and the behavioral-model software packet forwarding"
 echo "program, that can behave as just about any legal P4 program."
 echo ""
 echo "It is regularly tested on freshly installed versions of these systems:"
-echo "    Ubuntu 20.04"
 echo "    Ubuntu 22.04"
 echo "    Ubuntu 24.04"
+echo "    Ubuntu 26.04"
 echo "with all Ubuntu software updates as of the date of testing.  See"
 echo "this directory for log files recording the last date this script"
 echo "was tested on its supported operating systems:"
 echo ""
 echo "    https://github.com/jafingerhut/p4-guide/tree/master/bin/output"
 echo ""
+# TODO: Update this disk space requirement if it is obsolete.
 echo "The files installed by this script consume about 8 GB of disk space."
 echo ""
 echo "On a 2019 MacBook Pro with a decent speed Internet connection"
@@ -391,6 +378,7 @@ echo "Versions of software that will be installed by this script:"
 echo ""
 echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
+# TODO: Update the date below, and the versions of packages installed
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
 echo "  which, as of 2023-Sep-22, also installs these things:"
 echo "  + thrift version 0.16.0"
@@ -401,6 +389,7 @@ echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2024-Sep-18"
 echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by pip3"
+# TODO: Consider trying to update to more recent version of Scapy than 2.5.0
 echo "+ Python packages: scapy (2.5.0), psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -465,12 +454,8 @@ pip3 -V || echo "No such command in PATH: pip3"
 # my own convenience):
 if [ "${ID}" = "ubuntu" ]
 then
-#    sudo apt-get --yes update
+    sudo apt-get --yes update
     sudo apt-get --yes install git vim
-elif [ "${ID}" = "fedora" ]
-then
-    sudo dnf -y update
-    sudo dnf -y install git vim
 fi
 
 # Run a child process in the background that will keep sudo
@@ -498,78 +483,12 @@ set -x
 # Kill the child process
 trap clean_up SIGHUP SIGINT SIGTERM
 
-# Install pkg-config here, as it is required for p4lang/PI
-# installation to succeed.
-
-# It appears that some part of the build process for Thrift 0.16.0
-# requires that pip3 has been installed first.  Without this, there is
-# an error during building Thrift 0.16.0 where a Python 3 program
-# cannot import from the setuptools package.
-TIME_AUTOTOOLS_START=$(date +%s)
-if [ "${ID}" = "ubuntu" ]
+if [[ -n "${UBUNTU_USE_GCC_VERSION}" ]]
 then
-    sudo apt-get --yes install \
-	 autoconf automake libtool curl make g++ unzip \
-	 pkg-config python3-pip python3-venv
-elif [ "${ID}" = "fedora" ]
-then
-    sudo dnf -y install \
-	 autoconf automake libtool curl make g++ unzip \
-	 pkg-config python3-pip
+    sudo apt-get install -y gcc-${UBUNTU_USE_GCC_VERSION}
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${UBUNTU_USE_GCC_VERSION} 10
+    gcc --version
 fi
-
-if [ \( "${ID}" = "ubuntu" -a "${VERSION_ID}" = "20.04" \) -o \( "${ID}" = "fedora" -a "${VERSION_ID}" = "35" \) ]
-then
-    if [ -d automake-1.16.5 ]
-    then
-	echo "Found directory ${INSTALL_DIR}/automake-1.16.5.  Assuming desired version of automake-1.16.5 is already installed."
-    else
-	# Install more recent versions of autoconf and automake than those
-	# that are installed by the Ubuntu 20.04 packages.  That helps
-	# cause Python packages to be installed in the venv while building
-	# grpc and behavioral-model below.
-	wget https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz
-	tar xkzf automake-1.16.5.tar.gz
-	cd automake-1.16.5
-	./configure
-	make
-	sudo make install
-	cd ..
-    fi
-
-    if [ -d autoconf-2.71 ]
-    then
-	echo "Found directory ${INSTALL_DIR}/autoconf-2.71.  Assuming desired version of autoconf-2.71 is already installed."
-    else
-	wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz
-	tar xkzf autoconf-2.71.tar.gz
-	cd autoconf-2.71
-	./configure
-	make
-	sudo make install
-	cd ..
-    fi
-
-    if [ "${ID}" = "ubuntu" ]
-    then
-	sudo apt-get purge -y autoconf automake
-	sudo apt-get install --yes libtool-bin
-    elif [ "${ID}" = "fedora" ]
-    then
-	sudo dnf remove -y autoconf automake
-	sudo dnf install -y libtool
-    fi
-    # I learned about the fix-up commands below in an answer here:
-    # https://superuser.com/questions/565988/autoconf-libtool-and-an-undefined-ac-prog-libtool
-    for file in /usr/share/aclocal/*.m4
-    do
-	b=`basename $file .m4`
-	sudo ln -s /usr/share/aclocal/$b.m4 /usr/local/share/aclocal/$b.m4 || echo "Creating symbolic link /usr/local/share/aclocal/$b.m4 failed, probably because the file already exists"
-    done
-fi
-TIME_AUTOTOOLS_END=$(date +%s)
-echo "autotools              : $(($TIME_AUTOTOOLS_END-$TIME_AUTOTOOLS_START)) sec"
-DISK_USED_AFTER_AUTOTOOLS=`get_used_disk_space_in_mbytes`
 
 # Create a new Python virtual environment using venv.  Later we will
 # attempt to ensure that all new Python packages installed are
@@ -604,9 +523,6 @@ date
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install cmake
-elif [ "${ID}" = "fedora" ]
-then
-    sudo dnf -y install cmake
 fi
 
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
@@ -643,20 +559,6 @@ else
 	# building of grpc failed with not being able to find an OpenSSL
 	# library.
 	sudo apt-get --yes install libssl-dev
-    elif [ "${ID}" = "fedora" ]
-    then
-	# I am not sure that the 'Development Tools' group on Fedora is
-	# identical to installing the build-essential package on Ubuntu,
-	# but there is at least significant overlap between what they
-	# install.
-	sudo dnf group install -y 'Development Tools'
-	# python3-devel is needed on Fedora systems for the `pip3 install
-	# .` step below
-	sudo dnf -y install autoconf libtool pkg-config python3-devel
-	# TODO: Should I install openssl-devel here on Fedora?  There is
-	# no package named libssl-dev or libssl-devel.  It seems like it
-	# might be unnecessary, as without doing so the build of grpc
-	# below went through with no errors.
     fi
 
     TIME_GRPC_CLONE_START=$(date +%s)
@@ -757,11 +659,6 @@ then
 	# Later versions of Thrift require these packages, too.
 	sudo apt-get --yes install libboost-random-dev
     fi
-elif [ "${ID}" = "fedora" ]
-then
-    # Any other libraries output from 'dnf search libtool' that need
-    # to be installed?
-    sudo dnf -y install readline-devel valgrind libtool boost-devel boost-system boost-thread
 fi
 
 DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
@@ -786,9 +683,6 @@ else
     if [ "${ID}" = "ubuntu" ]
     then
 	./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
-    elif [ "${ID}" = "fedora" ]
-    then
-	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
     fi
     # Check what version of protoc is installed before the 'make'
     # command below uses protoc on P4Runtime protobuf definition
@@ -866,7 +760,6 @@ else
     git log -n 1
     TIME_BEHAVIORAL_MODEL_INSTALL_START=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-    patch -p1 < "${PATCH_DIR}/behavioral-model-support-fedora.patch"
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-thrift-0.22.0.patch"
     patch -p1 < "${PATCH_DIR}/behavioral-model-install-nanomsg-1.2.2.patch"
     # This command installs Thrift, which I want to include in my build of
@@ -925,12 +818,6 @@ then
          bison flex libfl-dev libgmp-dev \
          libboost-dev libboost-iostreams-dev libboost-graph-dev \
          llvm pkg-config python3-pip tcpdump libelf-dev clang
-elif [ "${ID}" = "fedora" ]
-then
-    sudo dnf -y install g++ git automake libtool gc-devel \
-         bison flex libfl-devel gmp-devel \
-         boost-devel boost-iostreams boost-graph \
-         llvm llvm-devel pkgconf python3-pip tcpdump clang
 fi
 # Starting in 2019-Nov, Python3 version of Scapy is needed for `cd
 # p4c/build ; make check` to succeed.
@@ -1085,9 +972,6 @@ date
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install libgflags-dev net-tools
-elif [ "${ID}" = "fedora" ]
-then
-    sudo dnf -y install gflags-devel net-tools
 fi
 pip3 install psutil crcmod
 
@@ -1103,6 +987,8 @@ pip3 install psutil crcmod
 # otherwise installing p4runtime-shell packages will likely pick some
 # very recent version of grpcio that may cause trouble.
 pip3 install wheel
+# TODO: Test what versions of grpcio can be installed via pip3 install
+# as of 2026-Apr-24
 if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
 then
     # Version 1.51.3 fails to install on Ubuntu 24.04 as of
