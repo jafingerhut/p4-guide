@@ -234,10 +234,6 @@ then
            GRPC_PKG_VERSION="1.51.1"
            # Closest versions available via "pip3 install" to the above
            PROTOBUF_VERSION_FOR_PIP="4.21.12"
-	   # GCC 15 is the default on Ubuntu 26.04, but as of
-	   # 2026-Apr-24 the latest behavioral-model code does not
-	   # compile using that GCC version.
-	   UBUNTU_USE_GCC_VERSION="13"
            ;;
     esac
 fi
@@ -488,6 +484,15 @@ then
     sudo apt-get install -y gcc-${UBUNTU_USE_GCC_VERSION}
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${UBUNTU_USE_GCC_VERSION} 10
     gcc --version
+fi
+
+if [ "${ID}" = "ubuntu" ]
+then
+    # autoconf, automake still used by p4lang/PI
+    # python3-venv is needed to create python3 venv
+    sudo apt-get --yes install \
+	 autoconf automake libtool curl make g++ unzip \
+	 pkg-config python3-pip python3-venv
 fi
 
 # Create a new Python virtual environment using venv.  Later we will
