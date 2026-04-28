@@ -30,22 +30,46 @@ files accessed by the GUI window manager processes, etc.
 In one terminal, start the program that will record all files accessed
 by any process:
 
+The value of `OPENSNOOP` used below varies depending upon Linux
+distribution.  Examples from recent Ubuntu LTS releases include:
+
++ Ubuntu 22.04 program name: `opensnoop-bpfcc`
+  + To install: `sudo apt install bpfcc-tools linux-headers-$(uname -r)`
++ Ubuntu 24.04 program name: `opensnoop`
+  + To install: `sudo apt-get install libbpf-tools`
++ Ubuntu 26.04 program name: `opensnoop-libbpf`
+  + To install: `sudo apt-get install libbpf-tools`
+
 ```bash
-sudo execsnoop-bpfcc |& tee ~/out-files-accessed-during-p4c-build.txt
+sudo ${OPENSNOOP} > out-files-opened.txt
 ```
+
+Note: `opensnoop` prints normal output to stdout, but at unpredictable
+times relative to printing those normal output lines it prints
+messages like `Lost <number> events` to stderr.  The `Lost` messages
+interfere with proper parsing of the stdout data if they are mingled
+together, so it is best to keep them separate, e.g. by _not_ using
+bash features that redirect stdout and stderr to the same place.
 
 After that process has started, in another terminal:
 
 ```bash
 ~/p4-guide/bin/build-p4c.sh release full
 ```
+or whatever sequence of commands instead of that one, that you wish to
+know what files they open.
 
 Filtering out programs that are unrelated to the build:
 
 ```bash
-F="out-files-accessed-during-p4c-build.txt"
-egrep -v '\b(dbus-daemon|gnome-terminal|systemd-oomd|VBoxClient|VBoxService|Xorg)\b' $F | m
-file-access-stats.py $F >| out2.txt
+./file-access-stats.py out-files-opened.txt > tmp.txt
+./filter.sh tmp.txt > files-accessed-during-cmds.txt
+```
 
-cat out2.txt | ./filter.sh
+If you would like to know which of a given set of files were accessed,
+and which were not, you can follow up with commands like below:
+
+```
+find /absolute/path/to/directory/of/interest \! -type d > full-paths-of-interest.txt
+./files-accessed-from-list.py full-paths-of-interest.txt files-accessed-during-cmds.txt > annotated-full-paths-of-interest.txt
 ```
