@@ -228,12 +228,18 @@ then
 	    ;;
        26.04)
            supported_distribution=1
-           INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+           INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+           #GRPC_SOURCE_VERSION="1.54.3"  # failed in abseil
+           #GRPC_SOURCE_VERSION="1.57.1"  # failed in abseil
+           #GRPC_SOURCE_VERSION="1.59.5"  # failed in abseil
+           #GRPC_SOURCE_VERSION="1.65.5"  # failed in abseil
+           GRPC_SOURCE_VERSION="1.75.1"  # failed in abseil
            # Versions installed by Ubuntu apt
            PROTOBUF_PKG_VERSION="3.21.12"
            GRPC_PKG_VERSION="1.51.1"
            # Closest versions available via "pip3 install" to the above
-           PROTOBUF_VERSION_FOR_PIP="4.21.12"
+           #PROTOBUF_VERSION_FOR_PIP="4.21.12"
+           PROTOBUF_VERSION_FOR_PIP="6.31.1"  # corresponds to grpc 1.75.1
            ;;
     esac
 fi
@@ -512,6 +518,23 @@ pip3 -V || echo "No such command in PATH: pip3"
 # execution.
 pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list || echo "Some error occurred attempting to run command: pip3"
+
+# The most recent versions of cmake are too new for the CMakeFile.txt
+# files in some projects.  Install the most recent version of cmake
+# tested to work.
+cd "${INSTALL_DIR}"
+CMAKE="cmake-3.31.9-linux-$(uname --machine)"
+if [ -d "install/${CMAKE}" ]
+then
+    echo "Found directory ${INSTALL_DIR}/install/${CMAKE}.  Assuming desired version of cmake is already installed."
+else
+    mkdir -p install
+    cd install
+    curl -O "https://cmake.org/files/v3.31/${CMAKE}.tar.gz"
+    tar xkzf "${CMAKE}.tar.gz"
+    cd ..
+fi
+export PATH="${INSTALL_DIR}/install/${CMAKE}/bin:${PATH}"
 
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
