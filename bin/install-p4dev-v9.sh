@@ -219,28 +219,45 @@ then
 	    ;;
 	24.04)
 	    supported_distribution=1
-	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
-	    # Versions installed by Ubuntu apt
-	    PROTOBUF_PKG_VERSION="3.21.12"
-	    GRPC_PKG_VERSION="1.51.1"
-	    # Closest versions available via "pip3 install" to the above
-	    PROTOBUF_VERSION_FOR_PIP="4.21.12"
+	    ##################################################
+	    # This combination of settings works for Ubuntu 24.04 as
+	    # of my last run of this script on 2026-May-24:
+	    ##################################################
+	    #INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+	    ## Versions installed by Ubuntu apt
+	    #PROTOBUF_PKG_VERSION="3.21.12"
+	    #GRPC_PKG_VERSION="1.51.1"
+	    ## Closest versions available via "pip3 install" to the above
+	    #PROTOBUF_VERSION_FOR_PIP="4.21.12"
+	    ##################################################
+
+	    ##################################################
+	    # See if this works on Ubuntu 24.04:
+	    ##################################################
+	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            GRPC_SOURCE_VERSION="1.75.1"  # failed in abseil
+            # Versions installed by Ubuntu apt
+            PROTOBUF_PKG_VERSION="3.21.12"
+            GRPC_PKG_VERSION="1.51.1"
+            # Closest versions available via "pip3 install" to the above
+            #PROTOBUF_VERSION_FOR_PIP="4.21.12"
+            PROTOBUF_VERSION_FOR_PIP="6.31.1"  # corresponds to grpc 1.75.1
 	    ;;
-       26.04)
-           supported_distribution=1
-           INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
-           #GRPC_SOURCE_VERSION="1.54.3"  # failed in abseil
-           #GRPC_SOURCE_VERSION="1.57.1"  # failed in abseil
-           #GRPC_SOURCE_VERSION="1.59.5"  # failed in abseil
-           #GRPC_SOURCE_VERSION="1.65.5"  # failed in abseil
-           GRPC_SOURCE_VERSION="1.75.1"  # failed in abseil
-           # Versions installed by Ubuntu apt
-           PROTOBUF_PKG_VERSION="3.21.12"
-           GRPC_PKG_VERSION="1.51.1"
-           # Closest versions available via "pip3 install" to the above
-           #PROTOBUF_VERSION_FOR_PIP="4.21.12"
-           PROTOBUF_VERSION_FOR_PIP="6.31.1"  # corresponds to grpc 1.75.1
-           ;;
+        26.04)
+            supported_distribution=1
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            #GRPC_SOURCE_VERSION="1.54.3"  # failed in abseil
+            #GRPC_SOURCE_VERSION="1.57.1"  # failed in abseil
+            #GRPC_SOURCE_VERSION="1.59.5"  # failed in abseil
+            #GRPC_SOURCE_VERSION="1.65.5"  # failed in abseil
+            GRPC_SOURCE_VERSION="1.75.1"  # failed in abseil
+            # Versions installed by Ubuntu apt
+            PROTOBUF_PKG_VERSION="3.21.12"
+            GRPC_PKG_VERSION="1.51.1"
+            # Closest versions available via "pip3 install" to the above
+            #PROTOBUF_VERSION_FOR_PIP="4.21.12"
+            PROTOBUF_VERSION_FOR_PIP="6.31.1"  # corresponds to grpc 1.75.1
+            ;;
     esac
 fi
 
