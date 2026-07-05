@@ -29,6 +29,8 @@ compiled again.
 
 | Date published | Operating system | x86_64 VM Image link | Tested working on x86_64 Windows? | aarch64 VM Image link | Tested working on Apple Silicon macOS? |
 | -------------- | ---------------- | -------------------- | --------------------- | ------------------------ | -------------------------- |
+| 2026-Jul-04 | Ubuntu 24.04 | [5.6 GByte VM image](https://drive.google.com/file/d/1DCzaojvp2-iRc6cHC23BjMxpGpojBv4i/view?usp=sharing) | Combo35 | [4.3 GByte VM image](https://drive.google.com/file/d/149k1RR6Q_tI03a2AVnD_2SjObtBPh1dB/view?usp=sharing) | Combo36 |
+| 2026-Jun-01 | Ubuntu 24.04 | [5.3 GByte VM image](https://drive.google.com/file/d/1fKIHOHmyK-sIj8XlA-Uw4n6dt_zZcREK/view?usp=sharing) | Combo35 | [4.3 GByte VM image](https://drive.google.com/file/d/1ew1yPz3EAslbxdLs46Q6dnX3lDt0BfW4/view?usp=sharing) | Combo36 |
 | 2026-May-01 | Ubuntu 24.04 | [6.0 GByte VM image](https://drive.google.com/file/d/1ZvNL4RAeSbwDqwLpjBSfjA0nT5YkRufj/view?usp=sharing) | Combo35 | [4.4 GByte VM image](https://drive.google.com/file/d/1L-XIWKDvYheVH-LoHTagOj-4mncEb04v/view?usp=sharing) | Combo36 |
 | 2026-Apr-01 | Ubuntu 24.04 | [5.0 GByte VM image](https://drive.google.com/file/d/1q2hof3pudi4dez7L1E5MGl0jMOQrlcvx/view?usp=sharing) | Combo32 | [4.1 GByte VM image](https://drive.google.com/file/d/1uotiHtEcJ5EGRo9X96OQwnMey4vpq0AE/view?usp=sharing) | Combo34 |
 | 2026-Mar-01 | Ubuntu 24.04 | [5.3 GByte VM image](https://drive.google.com/file/d/1M9BiL95JF56qVpAZCVc-rdPap0O5T060/view?usp=sharing) | Combo32 | [4.1 GByte VM image](https://drive.google.com/file/d/101pfYwkVR27VIF9PNwl16bPSNA7DSI5T/view?usp=sharing) | Combo33 |
