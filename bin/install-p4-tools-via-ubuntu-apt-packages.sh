@@ -7,6 +7,12 @@ THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
 THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
+get_used_disk_space_in_mbytes() {
+    echo $(df --output=used --block-size=1M . | tail -n 1)
+}
+
+DISK_USED_START=`get_used_disk_space_in_mbytes`
+
 sudo apt-get --yes install git curl python3-pip python3-venv
 
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
@@ -64,6 +70,16 @@ pip install p4runtime psutil crcmod
 
 pip install ptf p4runtime-shell
 
-echo "Define this environment variable to enable P4 tutorials to run:"
+DISK_USED_END=`get_used_disk_space_in_mbytes`
+
+set +x
+echo "All disk space utilizations below are in MBytes:"
 echo ""
+echo  "DISK_USED_START                ${DISK_USED_START}"
+echo  "DISK_USED_END                  ${DISK_USED_END}"
+echo  "DISK_USED_END - DISK_USED_START : $((${DISK_USED_END}-${DISK_USED_START})) MBytes"
+
+echo "Run these commands in your shell's rc file, or at least in any shell where you want to use these tools:"
+echo ""
+echo "    source \"${PYTHON_VENV}/bin/activate\""
 echo "    export P4_EXTRA_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\""
