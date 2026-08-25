@@ -19,7 +19,7 @@ source "${PYTHON_VENV}/bin/activate"
 echo 'deb http://download.opensuse.org/repositories/home:/p4lang:/latest/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/home:p4lang:latest.list
 curl -fsSL https://download.opensuse.org/repositories/home:p4lang:latest/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg > /dev/null
 sudo apt update
-sudo apt install p4lang-p4c p4lang-bmv2
+sudo apt --yes install p4lang-p4c p4lang-bmv2
 
 
 # Install Mininet
@@ -62,7 +62,7 @@ pip install p4runtime psutil crcmod
 # Other Python packages required for running p4-guide/demo1 and other
 # demo programs.
 
-pip install p4runtime-shell
+pip install ptf p4runtime-shell
 
 echo "Define this environment variable to enable P4 tutorials to run:"
 echo ""
