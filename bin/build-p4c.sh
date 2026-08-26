@@ -77,10 +77,31 @@ usage() {
     1>&2 echo "    bmv2, bmv2testgen, full - last one one cmd line controls whether only bmv2 and p4test back ends are built, bmv2 and p4test and p4testgen, or all back ends"
 }
 
+venv_created_by_uv() {
+    local dir="$1"
+    grep -q '^uv = ' "${dir}/pyvenv.cfg"
+    exit_status=$?
+    if [ ${exit_status} -ne 0 ]
+    then
+	(( 0 ))
+    else
+	(( 1 ))
+    fi
+}
+
+install_python_packages() {
+    if venv_created_by_uv ${VIRTUAL_ENV}
+    then
+	uv pip install $*
+    else
+	pip install $*
+    fi
+}
+
 function build_tofino() {
     P4C_TOFINO_PACKAGES="rapidjson-dev"
     sudo apt-get install -y --no-install-recommends ${P4C_TOFINO_PACKAGES}
-    pip install jsl=="0.2.4" pyinstaller=="6.11.0" jsonschema=="4.23.0" pyyaml=="6.0.2"
+    install_python_packages jsl=="0.2.4" pyinstaller=="6.11.0" jsonschema=="4.23.0" pyyaml=="6.0.2"
 }
 
 DO_DELETE_BUILD_DIR=0
