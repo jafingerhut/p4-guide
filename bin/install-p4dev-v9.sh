@@ -250,13 +250,20 @@ then
             #GRPC_SOURCE_VERSION="1.57.1"  # failed in abseil
             #GRPC_SOURCE_VERSION="1.59.5"  # failed in abseil
             #GRPC_SOURCE_VERSION="1.65.5"  # failed in abseil
-            GRPC_SOURCE_VERSION="1.75.1"  # failed in abseil
+            #GRPC_SOURCE_VERSION="1.75.1"  # failed in abseil
+            #GRPC_SOURCE_VERSION="1.76.0"  # not tried yet
+            #GRPC_SOURCE_VERSION="1.78.1"  # not tried yet
+            #GRPC_SOURCE_VERSION="1.80.0"  # not tried yet
+            #GRPC_SOURCE_VERSION="1.81.1"  # not tried yet
+            #GRPC_SOURCE_VERSION="1.82.1"  # not tried yet
+            GRPC_SOURCE_VERSION="1.83.0"  # not tried yet
             # Versions installed by Ubuntu apt
             PROTOBUF_PKG_VERSION="3.21.12"
             GRPC_PKG_VERSION="1.51.1"
             # Closest versions available via "pip3 install" to the above
             #PROTOBUF_VERSION_FOR_PIP="4.21.12"
-            PROTOBUF_VERSION_FOR_PIP="6.31.1"  # corresponds to grpc 1.75.1
+            #PROTOBUF_VERSION_FOR_PIP="6.31.1"  # corresponds to grpc 1.75.1
+            PROTOBUF_VERSION_FOR_PIP="7.35.1"  # corresponds to grpc 1.83.0
             ;;
     esac
 fi
