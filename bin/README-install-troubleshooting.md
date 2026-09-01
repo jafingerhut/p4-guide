@@ -31,11 +31,6 @@ compiled again.
 | -------------- | ---------------- | -------------------- | --------------------- | ------------------------ | -------------------------- |
 | 2026-Aug-01 | Ubuntu 24.04 | [5.5 GByte VM image](https://drive.google.com/file/d/1NhjcWYYIFv1vUyDCaYC5DvqswYafhXkS/view?usp=sharing) | Combo35 | [4.5 GByte VM image](https://drive.google.com/file/d/1S-UM_R5XQ2nw1pt1YwB9A8rd7GPA7aNl/view?usp=sharing) | Combo36 |
 | 2026-Jul-04 | Ubuntu 24.04 | [5.6 GByte VM image](https://drive.google.com/file/d/1DCzaojvp2-iRc6cHC23BjMxpGpojBv4i/view?usp=sharing) | Combo35 | [4.3 GByte VM image](https://drive.google.com/file/d/149k1RR6Q_tI03a2AVnD_2SjObtBPh1dB/view?usp=sharing) | Combo36 |
-| 2026-Jun-01 | Ubuntu 24.04 | [5.3 GByte VM image](https://drive.google.com/file/d/1fKIHOHmyK-sIj8XlA-Uw4n6dt_zZcREK/view?usp=sharing) | Combo35 | [4.3 GByte VM image](https://drive.google.com/file/d/1ew1yPz3EAslbxdLs46Q6dnX3lDt0BfW4/view?usp=sharing) | Combo36 |
-| 2026-May-01 | Ubuntu 24.04 | [6.0 GByte VM image](https://drive.google.com/file/d/1ZvNL4RAeSbwDqwLpjBSfjA0nT5YkRufj/view?usp=sharing) | Combo35 | [4.4 GByte VM image](https://drive.google.com/file/d/1L-XIWKDvYheVH-LoHTagOj-4mncEb04v/view?usp=sharing) | Combo36 |
-| 2026-Apr-01 | Ubuntu 24.04 | [5.0 GByte VM image](https://drive.google.com/file/d/1q2hof3pudi4dez7L1E5MGl0jMOQrlcvx/view?usp=sharing) | Combo32 | [4.1 GByte VM image](https://drive.google.com/file/d/1uotiHtEcJ5EGRo9X96OQwnMey4vpq0AE/view?usp=sharing) | Combo34 |
-| 2026-Mar-01 | Ubuntu 24.04 | [5.3 GByte VM image](https://drive.google.com/file/d/1M9BiL95JF56qVpAZCVc-rdPap0O5T060/view?usp=sharing) | Combo32 | [4.1 GByte VM image](https://drive.google.com/file/d/101pfYwkVR27VIF9PNwl16bPSNA7DSI5T/view?usp=sharing) | Combo33 |
-| 2026-Feb-01 | Ubuntu 24.04 | [5.8 GByte VM image](https://drive.google.com/file/d/1ZThY2gO5ZE0HlvXHycVEIXpB_J6f9LkB/view?usp=sharing) | Combo32 | [5.1 GByte VM image](https://drive.google.com/file/d/1SFQHDJ9NYZ0dqybu6dCa78945307JWLC/view?usp=sharing) | Combo33 |
 | 2026-Jan-01 | Ubuntu 24.04 | [5.8 GByte VM image](https://drive.google.com/file/d/1hMw799MNg7HmC8hNhhDIUPYHAefMBLQG/view?usp=sharing) | Combo30 | [5.1 GByte VM image](https://drive.google.com/file/d/1MwM_91fL7Oc8w9_dFA3poZNBWs-thE2W/view?usp=sharing) | Combo31 |
 | 2025-Jul-01 | Ubuntu 24.04 | [5.6 GByte VM image](https://drive.google.com/file/d/1MIhUZykmqBAcUQ7hBlaNHoNthvVta2lb/view?usp=sharing) | Combo26 | [4.8 GByte VM image](https://drive.google.com/file/d/1dyJBk6ujtv3Ypz3amAxLDJBjVNOcXSho/view?usp=sharing) | Combo27 |
 | 2025-Jan-01 | Ubuntu 24.04 | [4.5 GByte VM image](https://drive.google.com/file/d/14DI0Ovnn2eo3boFewWHg83xnhtF1jKjK/view?usp=sharing) (first image released with Ubuntu GNOME desktop) | Combo26 | no such VM created | -- |
@@ -51,9 +46,6 @@ Version combinations I have used above for testing VM images:
 | Combo27 | macOS 14.7.x | VirtualBox 7.1.6 |
 | Combo30 | Windows 11 Pro | VirtualBox 7.1.14 |
 | Combo31 | macOS 15.7.x | VirtualBox 7.1.14 |
-| Combo32 | Windows 11 Pro | VirtualBox 7.2.6 |
-| Combo33 | macOS 15.7.x | VirtualBox 7.2.6 |
-| Combo34 | macOS 26.x | VirtualBox 7.2.6 |
 | Combo35 | Windows 11 Pro | VirtualBox 7.2.8 |
 | Combo36 | macOS 26.x | VirtualBox 7.2.8 |
 
