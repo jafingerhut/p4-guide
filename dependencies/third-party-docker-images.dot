@@ -94,7 +94,7 @@ digraph {
     // same dockerfile as above, so do not repeat it here.
     img_p4c [ label="p4lang\np4c:latest" shape="box" color="green"];
     // step 'Push Docker image to registry'
-    dockerfile_p4c_Dockerfile -> img_p4c [ label="p4c/\nci-container-image.yml\n(name 'conainer-image')\njob build" ];
+    dockerfile_p4c_Dockerfile -> img_p4c [ label="p4c/\nci-container-image.yml\n(name 'container-image')\njob build" ];
     /////////////////////////////////////////////////
     // End of p4c repo, all CI docker commands
     /////////////////////////////////////////////////
