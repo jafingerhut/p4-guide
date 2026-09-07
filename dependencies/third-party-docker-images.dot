@@ -1,0 +1,105 @@
+// done: third-party: all Dockerfiles and Github actions represented here
+digraph {
+    //rankdir="LR";
+
+    legend [ label="Based on latest versions of the mentioned\nrepositories as of 2026-Sep-06\nexcept for PI which is jafingerhut\nPR #670" shape="box" color="blue" ];
+
+    img_ubuntu_2004 [ label="ubuntu:20.04" shape="box" ];
+    img_ubuntu_2404 [ label="ubuntu:24.04" shape="box" ];
+
+    // Confirmed that this Dockerfile is used in only one Github
+    // action, and that Github action is represented in this file.
+    dockerfile_third_party_Dockerfile_20 [ label="third-party/\nDockerfile.20" ];
+    img_ubuntu_2004 -> dockerfile_third_party_Dockerfile_20;
+
+    img_third_party_20 [ label="p4lang/\nthird-party:latest-20" shape="box" ];
+    // step 'Build and push\nDockerfile.20 image\nif needed'
+    dockerfile_third_party_Dockerfile_20 -> img_third_party_20 [ label="third-party/\nbuild.yml\n(name 'Build and push\nlatest image')\njob build" ];
+
+    // Confirmed that this Dockerfile is used in only one Github
+    // action, TODO: and that Github action is represented in this file.
+    dockerfile_third_party_Dockerfile_24 [ label="third-party/\nDockerfile.24" ];
+    img_ubuntu_2404 -> dockerfile_third_party_Dockerfile_24;
+    
+    /////////////////////////////////////////////////
+    img_third_party [ label="p4lang/\nthird-party:latest" shape="box" color="green"];
+    // third-party/.github/workflows/build.yml:        tags: p4lang/third-party:${{ steps.get-tag.outputs.tag }}
+    // step 'Build and push\nto Docker\nif needed'
+    dockerfile_third_party_Dockerfile_24 -> img_third_party [ label="third-party/\nbuild.yml\n(name 'Build and push\nlatest image')\njob build" ];
+
+    /////////////////////////////////////////////////
+    // Start of PI repo, all CI docker commands
+    /////////////////////////////////////////////////
+    dockerfile_PI_Dockerfile [ label="PI/\nDockerfile" ];
+    img_third_party -> dockerfile_PI_Dockerfile;
+
+    img_pi [label="p4lang/\npi:latest" shape="box" color="green"];
+    // step 'Build and push\nDocker image\nto repository'
+    dockerfile_PI_Dockerfile -> img_pi [ label="PI/\nbuild.yml\n(name 'Build and\npush latest image')\njob build" ];
+
+    dockerfile_PI_Dockerfile_bmv2 [ label="PI/\nDockerfile.bmv2" ];
+    img_behavioral_model_no_pi -> dockerfile_PI_Dockerfile_bmv2;
+
+    img_localonly_pi [label="pi\n(local only,\nnot pushed)" shape="box" color="red"];
+    // step 'Build test\nDocker image'
+    dockerfile_PI_Dockerfile_bmv2 -> img_localonly_pi [ label="PI/\ntest.yml\n(name 'Test')\njob test" ];
+    /////////////////////////////////////////////////
+    // End of PI repo, all CI docker commands
+    /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    // Start of behavioral-model repo, all CI docker commands
+    /////////////////////////////////////////////////
+    dockerfile_behavioral_model_Dockerfile [ label="behavioral-model/\nDockerfile" ];
+    img_pi -> dockerfile_behavioral_model_Dockerfile;
+    
+    img_behavioral_model [label="p4lang/\nbehavioral-model:latest" shape="box" color="green"];
+    // step 'Push\nproduction image'
+    dockerfile_behavioral_model_Dockerfile -> img_behavioral_model [ label="behavioral-model/\nbuild.yml\n(name 'Build and\npush latest image')\njob build" ];
+
+    dockerfile_behavioral_model_Dockerfile_noPI [ label="behavioral-model/\nDockerfile.noPI" ];
+    img_third_party -> dockerfile_behavioral_model_Dockerfile_noPI;
+
+    img_behavioral_model_no_pi [label="p4lang/\nbehavioral-model:no-pi" shape="box" ];
+    // step 'Push\nproduction image'
+    dockerfile_behavioral_model_Dockerfile_noPI -> img_behavioral_model_no_pi [ label="behavioral-model/\nbuild.yml\n(name 'Build and\npush latest image')\njob build-no-pi" ];
+    /////////////////////////////////////////////////
+    // End of behavioral-model repo, all CI docker commands
+    /////////////////////////////////////////////////
+
+    // todo
+    /////////////////////////////////////////////////
+    // Start of p4c repo, all CI docker commands
+    /////////////////////////////////////////////////
+
+    // publish-release.yml
+    // name 'Publish Release'
+    // job docker-push
+    // Dockerfile
+    // FROM p4lang/behavioral-model:latest
+    // writes img p4lang/p4c:${{ env.VERSION }} where env.VERSION string is of the form "x.y.z.w", where x, y, z, w are all decimal integers read from file Version.txt in the repo.
+    dockerfile_p4c_Dockerfile [label="p4c/\nDockerfile" ];
+    img_behavioral_model -> dockerfile_p4c_Dockerfile;
+
+    img_p4c_x_y_z_w [label="p4lang/\np4c:x.y.z.w" shape="box" color="green"];
+    // step 'Build and push Docker image to registry'
+    dockerfile_p4c_Dockerfile -> img_p4c_x_y_z_w [ label="p4c/\npublish-release.yml\n(name 'Publish\nRelease')\njob docker-push" ];
+    
+    // ci-container-image.yml
+    // name 'container-image'
+    // job build
+    // Dockerfile
+    // FROM p4lang/behavioral-model:latest
+    // writes img p4lang/p4c:latest
+    // same dockerfile as above, so do not repeat it here.
+    img_p4c [ label="p4lang\np4c:latest" shape="box" color="green"];
+    // step 'Push Docker image to registry'
+    dockerfile_p4c_Dockerfile -> img_p4c [ label="p4c/\nci-container-image.yml\n(name 'conainer-image')\njob build" ];
+    /////////////////////////////////////////////////
+    // End of p4c repo, all CI docker commands
+    /////////////////////////////////////////////////
+
+    // comment out info related to p4runtime for now
+    //dockerfile_p4runtime_codegen [ label="p4runtime/codegen/Dockerfile" ];
+    //img_third_party_20 -> dockerfile_p4runtime_codegen;
+}
