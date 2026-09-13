@@ -2,12 +2,12 @@
 
 SAVEDIR=$PWD
 
-VERSION_PI="fix-dockerfile-masking-of-command-failures1"
-# commit 88859f8628487131cf464a398819497739a5d2ac
-# Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-# Date:   Sat Sep 5 17:44:07 2026 -0400
+VERSION_PI="ece73758c20b0c5a539a73e903ee242f89cf4dac"
+# commit ece73758c20b0c5a539a73e903ee242f89cf4dac (HEAD -> master, tag: v0.1.4, up/main, origin/master, origin/HEAD)
+# Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+# Date:   Sat Sep 12 13:06:51 2026 -0400
 # 
-#     See if running tests with `uv run` affects the results
+#     Automated Release v0.1.4 (#671)
 
 if [ ! -d repos/PI ]
 then

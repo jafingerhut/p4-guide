@@ -2,12 +2,12 @@
 
 SAVEDIR=$PWD
 
-VERSION_BMV2="add-extra-cmake-debug1"
-# commit a2117a9a22735741a9ec3b2a8f5e97524434d173 (HEAD -> add-extra-cmake-debug1, origin/add-extra-cmake-debug1)
+VERSION_BMV2="14e39e2217b576910a4edf8f68a82278adcc4194"
+# commit 14e39e2217b576910a4edf8f68a82278adcc4194 (HEAD -> main, up/main, origin/main, origin/HEAD)
 # Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
-# Date:   Mon Sep 7 13:55:53 2026 -0400
+# Date:   Wed Sep 9 15:03:51 2026 -0400
 # 
-#     Cause cmake install to put Python code in venv if one has been configured
+#     Cause cmake install to put Python code in venv if one has been configured (#1450)
 
 if [ ! -d repos/behavioral-model ]
 then

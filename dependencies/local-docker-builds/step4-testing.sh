@@ -46,4 +46,9 @@ test_python_import "from google.rpc import code_pb2, status_pb2"
 test_python_import "import sswitch_runtime"
 test_python_import "import bm.pdfixed.sswitch_pd_rpc"
 
+echo "--> unset VIRTUAL_ENV"
+unset VIRTUAL_ENV
+echo "--> pip list"
+pip list
+
 exit $EXIT_STATUS
