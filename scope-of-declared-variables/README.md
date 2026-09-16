@@ -173,6 +173,20 @@ symbol defined with that name.  These are in the test programs with
 + Java - compile-time error.  Error message `variable <name> might not
   have been initialized`.
 
+Below are the results for test programs in each language that define a
+function (or for P4, a `control`) with a parameter named `i`, and then
+declare local variables with the same name `i`.
+
++ P4_16 - Legal.  The later declarations with the same name shadow the
+  parameter.
++ Rust - Same as P4_16.
++ C - compile-time error.  Error message "`i` redeclared as different
+  kind of symbol".
++ C++ - compile-time error.  Error message "declaration of ‘int i’
+  shadows a parameter".
++ Java - compile-time error.  Error message "variable i is already
+  defined in method foo(int,int[])"
+
 
 ## Behavior of p4c as of 2026-Apr-01
 
@@ -411,3 +425,46 @@ The only difference between this and the `p4c` output file for the
 previous snippet is on line 4, where it is clear that in the
 initialization expression on the right hand side it refers to `i_0`,
 declared on line 1, not to `i_1`, declared on line 4.
+
+
+Below is an exerpt of program `prog5p4.p4` which has a control `foo`
+with parameter named `i`, and two local declarations of a variable `i`
+as well, to test which occurrences refer to which definition.
+
+```
+control foo (inout bit<8> i, out bit<8> out1, out bit<8> out2, out bit<8> out3) {
+    bit<8> i = i + 1;            // line 1
+    apply {
+        out1 = i;                // line 2
+        {
+            bit<8> i = i + 1;    // line 3
+            out2 = i;            // line 4
+        }
+        out3 = i;                // line 5
+    }
+}
+```
+
+Below is an excerpt of the intermediate p4c output file named
+`prog5p4-0033-FrontEnd_32_UniqueNames.p4`, with comments added to show
+the correspondence of lines in the excerpt above with the lines below.
+
+```
+control foo(inout bit<8> i, out bit<8> out1, out bit<8> out2, out bit<8> out3) {
+    @name("i") bit<8> i_0 = i + 8w1;             // line 1
+    apply {
+        out1 = i_0;                              // line 2
+        {
+            @name("i") bit<8> i_1 = i_0 + 8w1;   // line 3
+            out2 = i_1;                          // line 4
+        }
+        out3 = i_0;                              // line 5
+    }
+}
+```
+
+Almost all of the occurrences of `i` in the input program refer to the
+one defined on line 1.  The one on line 4 refers to the definition
+from line 3.  None of the original occurrences of `i` refer to the
+parameter, except for the first one on line 1 in the initialization
+expression.

@@ -20,12 +20,7 @@ struct headers_t {
 struct metadata_t {
 }
 
-control foo (
-    inout bit<8> i,
-    out bit<8> out1,
-    out bit<8> out2,
-    out bit<8> out3)
-{
+control foo (inout bit<8> i, out bit<8> out1, out bit<8> out2, out bit<8> out3) {
     bit<8> i = i + 1;            // line 1
     apply {
         out1 = i;                // line 2
