@@ -28,8 +28,6 @@ do
     set +x
 done
 
-javac prog1java.java
-
 for p in prog1rs prog2rs prog3rs prog4rs prog5rs
 do
     set -x
@@ -37,3 +35,9 @@ do
     set +x
 done
 
+for p in prog1 prog4 prog5
+do
+    set -x
+    javac ${p}.java
+    set +x
+done
