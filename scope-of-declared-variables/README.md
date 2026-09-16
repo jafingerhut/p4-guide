@@ -13,7 +13,7 @@ late 2025 and 2026:
 Consider this snippet of P4 code for the definition of a control:
 
 ```
-// Program snippet #1
+// Program snippet #1, from file prog1p4.p4
 control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
@@ -32,6 +32,12 @@ control ingressImpl(inout headers_t hdr,
 }
 ```
 
+Note that all declarations of `i` have the same type, intentionally.
+This should avoid any possibility that the compiler might be using the
+type of an occurrence of `i`, or the "type expected by the context
+where it is used", to distinguish which declaration of `i` it refers
+to.
+
 The rules of scoping for P4_16 seem to state pretty clearly that the
 symbol `i` on the right-hand side of the line 7 assignment should
 refer to the declaration from line 1, and its current value should be
@@ -45,16 +51,16 @@ assigned by line 4.
 There seems to be some controversy among P4 language designers over
 whether the symbol `i` in the assignment of line 3 should refer to the
 one declared in line 1 or line 4.  It does seem very odd to me
-personally if refers to the one from line 4, and especially so if
+personally if it refers to the one from line 4, and especially so if
 `i`'s value assigned to `j` in line 3 is the one assigned to `i` in
 line 4, since line 4 is after line 3.
 
 There is even more controversy over whether Program snippet #3 should
-be considered legal, and if so, what its behavior is.  Program shippet
+be considered legal, and if so, what its behavior is.  Program snippet
 #3 is identical to Program snippet #1, except for line 4.
 
 ```
-// Program snippet #3
+// Program snippet #3, from file prog3p4.p4
 control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
@@ -84,6 +90,15 @@ language specification, i.e. an implementatino is free to implement
 any value of type `bit<8>` there, and even for that value to differ
 from one execution of the control to another.
 
+As of the version of p4c source code described below, p4c implements
+the first interpretation.
+
+```
+commit 55fe8f2775842125fec9f6261cfa10bf5a7031e6 (HEAD, origin/main, origin/HEAD, main)
+Author: Abhishek Agarwal <agab0323@gmail.com>
+Date:   Tue Sep 1 00:19:12 2026 +0000
+```
+
 
 # Scoping rules used by several programming languages
 
@@ -109,7 +124,7 @@ Java), if there is a variable name in the inner scope, _before_ the
 inner declaration that shadows the outer definition, that name refers
 to the variable declared in the outer scope.
 
-| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | Rust (rustc 1.94.1) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Java (JDK 23) |
+| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | Rust (rustc 1.94.1) | C (GCC 13.3.0 on Ubuntu Linux 24.04) | C++ (GCC 13.3.0 on Ubuntu Linux 24.04) | Java (JDK 23) |
 | ------------------------------- | ------------------------------ | ------------------------------ | -------------------------------- | ------------------- | ------------- |
 | outer scope | outer | outer | outer | outer | It is compile-time error for inner scopes to declare local variables that shadow variables in outer scopes. |
 | inner scope before declaration of shadowing variable | outer | outer | outer | outer | N/A |
