@@ -18,16 +18,26 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
     bit<8> i;                                 // line 1
     apply {
-        i = hdr.eth.srcAddr[7:0];             // line 2
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
         {
-            bit<4> j = i[3:0];                // line 3
-            bit<8> i = hdr.eth.srcAddr[15:8]; // line 4
-            hdr.eth.dstAddr[15:8] = i;        // line 5
-            hdr.eth.dstAddr[19:16] = j;       // line 6
+            bit<8> j = i + 1;                 // line 3
+            bit<8> i = in2;                   // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
         }
-        hdr.eth.dstAddr[7:0] = i;             // line 7
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
     }
 }
 ```
@@ -48,12 +58,12 @@ right-hand side of the line 5 assignment should refer to the
 declaration from line 4, and its current value should be the one
 assigned by line 4.
 
-There seems to be some controversy among P4 language designers over
-whether the symbol `i` in the assignment of line 3 should refer to the
-one declared in line 1 or line 4.  It does seem very odd to me
-personally if it refers to the one from line 4, and especially so if
-`i`'s value assigned to `j` in line 3 is the one assigned to `i` in
-line 4, since line 4 is after line 3.
+There may be some controversy among P4 language designers over whether
+the symbol `i` in the assignment of line 3 should refer to the one
+declared in line 1 or line 4.  It does seem very odd to me personally
+if it refers to the one from line 4, and especially so if `i`'s value
+assigned to `j` in line 3 is the one assigned to `i` in line 4, since
+line 4 is after line 3.
 
 There is even more controversy over whether Program snippet #3 should
 be considered legal, and if so, what its behavior is.  Program snippet
@@ -65,16 +75,26 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
     bit<8> i;                                 // line 1
     apply {
-        i = hdr.eth.srcAddr[7:0];             // line 2
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
         {
-            bit<4> j = i[3:0];                // line 3
+            bit<8> j = i + 1;                 // line 3
             bit<8> i = i + 2;                 // line 4
-            hdr.eth.dstAddr[15:8] = i;        // line 5
-            hdr.eth.dstAddr[19:16] = j;       // line 6
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
         }
-        hdr.eth.dstAddr[7:0] = i;             // line 7
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
     }
 }
 ```
@@ -230,3 +250,164 @@ See file: prog1.java prog4.java
 It is a compile-time error to attempt to declare a local variable in
 an inner scope with the same name as a local variable in an outer
 scope.
+
+
+# Some details of p4c compiler passes that provide supporting evidence for its behavior
+
+On a Linux system with `p4c` installed, you can run the script
+`build.sh` to compile all of the example P4, C, C++, and Java programs
+in this directory.
+
+While compiling the P4 programs, it generates P4 source code for the
+intermediate representation of the P4 program in the compiler's memory
+after every one of its frontend and midend passes.  Then the script
+removes all of those, except the ones that differ from the version of
+the previous pass, to emphasize only those versions of the IR that
+changed from the previous pass.
+
+The snippets of code below were generated using `p4c` built from this
+version of the source code of the repository
+https://github.com/p4lang/p4c:
+```
+commit 55fe8f2775842125fec9f6261cfa10bf5a7031e6 (HEAD, origin/main, origin/HEAD, main)
+Author: Abhishek Agarwal <agab0323@gmail.com>
+Date:   Tue Sep 1 00:19:12 2026 +0000
+```
+
+First, a repeat of the original source code snippet #1 from program
+`prog1p4.p4`, the same as appeared earlier in this article:
+
+```
+// Program snippet #1, from file prog1p4.p4
+control ingressImpl(inout headers_t hdr,
+                    inout metadata_t meta,
+                    inout standard_metadata_t stdmeta)
+{
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
+    bit<8> i;                                 // line 1
+    apply {
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
+        {
+            bit<8> j = i + 1;                 // line 3
+            bit<8> i = in2;                   // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
+        }
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
+    }
+}
+```
+
+Below is an excerpt from the compiler output file named
+`prog1p4-0033-FrontEnd_32_UniqueNames.p4`, the most relevant pass here
+because that pass renames most or all occurrences of variable names to
+be unique.  This demonstrates very clearly which input symbols that
+p4c considers refer to which declaration.
+
+The actual compiler output file contains no comments.  I have added in
+comments to make it easier to correspond lines below with lines in the
+previous excerpt.
+
+```
+control ingressImpl(inout headers_t hdr, inout metadata_t meta, inout standard_metadata_t stdmeta) {
+    @name("out1") bit<8> out1_0;
+    @name("out2") bit<8> out2_0;
+    @name("out3") bit<8> out3_0;
+    @name("i") bit<8> i_0;                       // line 1
+    apply {
+        @name("in1") bit<8> in1_0 = hdr.eth.srcAddr[7:0];
+        @name("in2") bit<8> in2_0 = hdr.eth.srcAddr[15:8];
+        i_0 = in1_0;                             // line 2
+        {
+            @name("j") bit<8> j_0 = i_0 + 8w1;   // line 3
+            @name("i") bit<8> i_1 = in2_0;       // line 4
+            out2_0 = i_1;                        // line 5
+            out3_0 = j_0;                        // line 6
+        }
+        out1_0 = i_0;                            // line 7
+        log_msg<tuple<bit<8>, bit<8>, bit<8>, bit<8>, bit<8>, bit<8>>>("out1={} out2={} out3={} in1={} in2={} i={}", { out1_0, out2_0, out3_0, in1_0, in2_0, i_0 });
+        hdr.eth.dstAddr[7:0] = out1_0;
+        hdr.eth.dstAddr[15:8] = out2_0;
+        hdr.eth.dstAddr[23:16] = out3_0;
+    }
+}
+```
+
+The occurrences of `i_0` on lines 1, 2, 3, and 7, but not anywhere
+else, make it clear that those are all of the occurrences of `i` in
+the original program that correspond to the declaration on line 1, and
+only those.  Similarly for the occurrences of `i_1` on lines 4 and 5.
+
+Below is a repeat of snippet #3 from earlier in this article:
+
+```
+// Program snippet #3, from file prog3p4.p4
+control ingressImpl(inout headers_t hdr,
+                    inout metadata_t meta,
+                    inout standard_metadata_t stdmeta)
+{
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
+    bit<8> i;                                 // line 1
+    apply {
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
+        {
+            bit<8> j = i + 1;                 // line 3
+            bit<8> i = i + 2;                 // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
+        }
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
+    }
+}
+```
+
+and below is the corresponding excerpt from the `p4c` output file
+`prog3p4-0033-FrontEnd_32_UniqueNames.p4`, with comments added:
+
+```
+control ingressImpl(inout headers_t hdr, inout metadata_t meta, inout standard_metadata_t stdmeta) {
+    @name("out1") bit<8> out1_0;
+    @name("out2") bit<8> out2_0;
+    @name("out3") bit<8> out3_0;
+    @name("i") bit<8> i_0;                          // line 1
+    apply {
+        @name("in1") bit<8> in1_0 = hdr.eth.srcAddr[7:0];
+        @name("in2") bit<8> in2_0 = hdr.eth.srcAddr[15:8];
+        i_0 = in1_0;                                // line 2
+        {
+            @name("j") bit<8> j_0 = i_0 + 8w1;      // line 3
+            @name("i") bit<8> i_1 = i_0 + 8w2;      // line 4
+            out2_0 = i_1;                           // line 5
+            out3_0 = j_0;                           // line 6
+        }
+        out1_0 = i_0;                               // line 7
+        log_msg<tuple<bit<8>, bit<8>, bit<8>, bit<8>, bit<8>, bit<8>>>("out1={} out2={} out3={} in1={} in2={} i={}", { out1_0, out2_0, out3_0, in1_0, in2_0, i_0 });
+        hdr.eth.dstAddr[7:0] = out1_0;
+        hdr.eth.dstAddr[15:8] = out2_0;
+        hdr.eth.dstAddr[23:16] = out3_0;
+    }
+}
+```
+
+The only difference between this and the `p4c` output file for the
+previous snippet is on line 4, where it is clear that in the
+initialization expression on the right hand side it refers to `i_0`,
+declared on line 1, not to `i_1`, declared on line 4.
