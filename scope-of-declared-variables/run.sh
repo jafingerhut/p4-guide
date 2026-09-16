@@ -29,4 +29,5 @@ do
     echo "${p}"
     ./${p} ${IN1} ${IN2}
 done
-
+echo "prog5rs"
+./prog5rs ${IN1}
