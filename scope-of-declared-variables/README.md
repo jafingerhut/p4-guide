@@ -268,6 +268,8 @@ scope.
 
 # Some details of p4c compiler passes that provide supporting evidence for its behavior
 
+## prog1p4.p4
+
 On a Linux system with `p4c` installed, you can run the script
 `build.sh` to compile all of the example P4, C, C++, and Java programs
 in this directory.
@@ -361,6 +363,9 @@ else, make it clear that those are all of the occurrences of `i` in
 the original program that correspond to the declaration on line 1, and
 only those.  Similarly for the occurrences of `i_1` on lines 4 and 5.
 
+
+## prog3p4.p4
+
 Below is a repeat of snippet #3 from earlier in this article:
 
 ```
@@ -426,6 +431,8 @@ previous snippet is on line 4, where it is clear that in the
 initialization expression on the right hand side it refers to `i_0`,
 declared on line 1, not to `i_1`, declared on line 4.
 
+
+## prog5p4.p4
 
 Below is an exerpt of program `prog5p4.p4` which has a control `foo`
 with parameter named `i`, and two local declarations of a variable `i`
