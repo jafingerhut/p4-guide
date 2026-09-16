@@ -268,8 +268,6 @@ scope.
 
 # Some details of p4c compiler passes that provide supporting evidence for its behavior
 
-## prog1p4.p4
-
 On a Linux system with `p4c` installed, you can run the script
 `build.sh` to compile all of the example P4, C, C++, and Java programs
 in this directory.
@@ -289,6 +287,9 @@ commit 55fe8f2775842125fec9f6261cfa10bf5a7031e6 (HEAD, origin/main, origin/HEAD,
 Author: Abhishek Agarwal <agab0323@gmail.com>
 Date:   Tue Sep 1 00:19:12 2026 +0000
 ```
+
+
+## prog1p4.p4
 
 First, a repeat of the original source code snippet #1 from program
 `prog1p4.p4`, the same as appeared earlier in this article:
