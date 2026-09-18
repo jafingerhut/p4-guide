@@ -21,4 +21,8 @@ then
 fi
 
 set -x
-docker build --progress=plain --build-context p4lang/behavioral-model:no-pi=docker-image://mybmv2-nopi:latest -f repos/PI/Dockerfile.bmv2 -t mypi2 --build-arg IMAGE_TYPE=test --build-arg CC=gcc --build-arg CXX=g++ repos/PI
+CC=gcc
+CXX=g++
+#CC=clang
+#CXX=clang++
+docker build --progress=plain --build-context p4lang/behavioral-model:no-pi=docker-image://mybmv2-nopi:latest -f repos/PI/Dockerfile.bmv2 -t mypi2 --build-arg IMAGE_TYPE=test --build-arg CC=$CC --build-arg CXX=$CXX repos/PI
