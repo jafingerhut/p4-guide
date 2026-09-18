@@ -1,18 +1,6 @@
 /*
 Copyright 2026 Andy Fingerhut
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
 SPDX-License-Identifier: Apache-2.0
 */
 
@@ -36,16 +24,26 @@ control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
     //bit<8> i;                                 // line 1
     apply {
-        //i = hdr.eth.srcAddr[7:0];             // line 2
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        //i = in1;                              // line 2
         {
             bit<8> i = i;                     // line 3
-            bit<4> j = i[3:0];                // line 4
-            hdr.eth.dstAddr[15:8] = i;        // line 5
-            hdr.eth.dstAddr[19:16] = j;       // line 6
+            bit<8> j = i + 1;                 // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
         }
-        hdr.eth.dstAddr[7:0] = hdr.eth.srcAddr[7:0]; // line 7
+        out1 = in1;                           // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={}",
+            {out1, out2, out3, in1, in2});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
     }
 }
 

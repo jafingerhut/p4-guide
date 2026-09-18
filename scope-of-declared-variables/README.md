@@ -13,24 +13,40 @@ late 2025 and 2026:
 Consider this snippet of P4 code for the definition of a control:
 
 ```
-// Program snippet #1
+// Program snippet #1, from file prog1p4.p4
 control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
     bit<8> i;                                 // line 1
     apply {
-        i = hdr.eth.srcAddr[7:0];             // line 2
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
         {
-            bit<4> j = i[3:0];                // line 3
-            bit<8> i = hdr.eth.srcAddr[15:8]; // line 4
-            hdr.eth.dstAddr[15:8] = i;        // line 5
-            hdr.eth.dstAddr[19:16] = j;       // line 6
+            bit<8> j = i + 1;                 // line 3
+            bit<8> i = in2;                   // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
         }
-        hdr.eth.dstAddr[7:0] = i;             // line 7
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
     }
 }
 ```
+
+Note that all declarations of `i` have the same type, intentionally.
+This should avoid any possibility that the compiler might be using the
+type of an occurrence of `i`, or the "type expected by the context
+where it is used", to distinguish which declaration of `i` it refers
+to.
 
 The rules of scoping for P4_16 seem to state pretty clearly that the
 symbol `i` on the right-hand side of the line 7 assignment should
@@ -42,33 +58,43 @@ right-hand side of the line 5 assignment should refer to the
 declaration from line 4, and its current value should be the one
 assigned by line 4.
 
-There seems to be some controversy among P4 language designers over
-whether the symbol `i` in the assignment of line 3 should refer to the
-one declared in line 1 or line 4.  It does seem very odd to me
-personally if refers to the one from line 4, and especially so if
-`i`'s value assigned to `j` in line 3 is the one assigned to `i` in
-line 4, since line 4 is after line 3.
+There may be some controversy among P4 language designers over whether
+the symbol `i` in the assignment of line 3 should refer to the one
+declared in line 1 or line 4.  It does seem very odd to me personally
+if it refers to the one from line 4, and especially so if `i`'s value
+assigned to `j` in line 3 is the one assigned to `i` in line 4, since
+line 4 is after line 3.
 
 There is even more controversy over whether Program snippet #3 should
-be considered legal, and if so, what its behavior is.  Program shippet
+be considered legal, and if so, what its behavior is.  Program snippet
 #3 is identical to Program snippet #1, except for line 4.
 
 ```
-// Program snippet #3
+// Program snippet #3, from file prog3p4.p4
 control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
     bit<8> i;                                 // line 1
     apply {
-        i = hdr.eth.srcAddr[7:0];             // line 2
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
         {
-            bit<4> j = i[3:0];                // line 3
+            bit<8> j = i + 1;                 // line 3
             bit<8> i = i + 2;                 // line 4
-            hdr.eth.dstAddr[15:8] = i;        // line 5
-            hdr.eth.dstAddr[19:16] = j;       // line 6
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
         }
-        hdr.eth.dstAddr[7:0] = i;             // line 7
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
     }
 }
 ```
@@ -83,6 +109,15 @@ its current value is uninitialized and thus not determined by the
 language specification, i.e. an implementatino is free to implement
 any value of type `bit<8>` there, and even for that value to differ
 from one execution of the control to another.
+
+As of the version of p4c source code described below, p4c implements
+the first interpretation.
+
+```
+commit 55fe8f2775842125fec9f6261cfa10bf5a7031e6 (HEAD, origin/main, origin/HEAD, main)
+Author: Abhishek Agarwal <agab0323@gmail.com>
+Date:   Tue Sep 1 00:19:12 2026 +0000
+```
 
 
 # Scoping rules used by several programming languages
@@ -109,7 +144,7 @@ Java), if there is a variable name in the inner scope, _before_ the
 inner declaration that shadows the outer definition, that name refers
 to the variable declared in the outer scope.
 
-| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | Rust (rustc 1.94.1) | C (GCC 3.13.0 on Ubuntu Linux) | C++ (GCC 3.13.0 on Ubuntu Linux) | Java (JDK 23) |
+| Location in program source code of the mention of the variable | P4_16 (p4c source 2026-Apr-01) | Rust (rustc 1.94.1) | C (GCC 13.3.0 on Ubuntu Linux 24.04) | C++ (GCC 13.3.0 on Ubuntu Linux 24.04) | Java (JDK 23) |
 | ------------------------------- | ------------------------------ | ------------------------------ | -------------------------------- | ------------------- | ------------- |
 | outer scope | outer | outer | outer | outer | It is compile-time error for inner scopes to declare local variables that shadow variables in outer scopes. |
 | inner scope before declaration of shadowing variable | outer | outer | outer | outer | N/A |
@@ -137,6 +172,20 @@ symbol defined with that name.  These are in the test programs with
 + C++ - legal.  Value of symbol is uninitialized.
 + Java - compile-time error.  Error message `variable <name> might not
   have been initialized`.
+
+Below are the results for test programs in each language that define a
+function (or for P4, a `control`) with a parameter named `i`, and then
+declare local variables with the same name `i`.
+
++ P4_16 - Legal.  The later declarations with the same name shadow the
+  parameter.
++ Rust - Same as P4_16.
++ C - compile-time error.  Error message "`i` redeclared as different
+  kind of symbol".
++ C++ - compile-time error.  Error message "declaration of ‘int i’
+  shadows a parameter".
++ Java - compile-time error.  Error message "variable i is already
+  defined in method foo(int,int[])"
 
 
 ## Behavior of p4c as of 2026-Apr-01
@@ -215,3 +264,215 @@ See file: prog1.java prog4.java
 It is a compile-time error to attempt to declare a local variable in
 an inner scope with the same name as a local variable in an outer
 scope.
+
+
+# Some details of p4c compiler passes that provide supporting evidence for its behavior
+
+On a Linux system with `p4c` installed, you can run the script
+`build.sh` to compile all of the example P4, C, C++, and Java programs
+in this directory.
+
+While compiling the P4 programs, it generates P4 source code for the
+intermediate representation of the P4 program in the compiler's memory
+after every one of its frontend and midend passes.  Then the script
+removes all of those, except the ones that differ from the version of
+the previous pass, to emphasize only those versions of the IR that
+changed from the previous pass.
+
+The snippets of code below were generated using `p4c` built from this
+version of the source code of the repository
+https://github.com/p4lang/p4c:
+```
+commit 55fe8f2775842125fec9f6261cfa10bf5a7031e6 (HEAD, origin/main, origin/HEAD, main)
+Author: Abhishek Agarwal <agab0323@gmail.com>
+Date:   Tue Sep 1 00:19:12 2026 +0000
+```
+
+
+## prog1p4.p4
+
+First, a repeat of the original source code snippet #1 from program
+`prog1p4.p4`, the same as appeared earlier in this article:
+
+```
+// Program snippet #1, from file prog1p4.p4
+control ingressImpl(inout headers_t hdr,
+                    inout metadata_t meta,
+                    inout standard_metadata_t stdmeta)
+{
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
+    bit<8> i;                                 // line 1
+    apply {
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
+        {
+            bit<8> j = i + 1;                 // line 3
+            bit<8> i = in2;                   // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
+        }
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
+    }
+}
+```
+
+Below is an excerpt from the compiler output file named
+`prog1p4-0033-FrontEnd_32_UniqueNames.p4`, the most relevant pass here
+because that pass renames most or all occurrences of variable names to
+be unique.  This demonstrates very clearly which input symbols that
+p4c considers refer to which declaration.
+
+The actual compiler output file contains no comments.  I have added in
+comments to make it easier to correspond lines below with lines in the
+previous excerpt.
+
+```
+control ingressImpl(inout headers_t hdr, inout metadata_t meta, inout standard_metadata_t stdmeta) {
+    @name("out1") bit<8> out1_0;
+    @name("out2") bit<8> out2_0;
+    @name("out3") bit<8> out3_0;
+    @name("i") bit<8> i_0;                       // line 1
+    apply {
+        @name("in1") bit<8> in1_0 = hdr.eth.srcAddr[7:0];
+        @name("in2") bit<8> in2_0 = hdr.eth.srcAddr[15:8];
+        i_0 = in1_0;                             // line 2
+        {
+            @name("j") bit<8> j_0 = i_0 + 8w1;   // line 3
+            @name("i") bit<8> i_1 = in2_0;       // line 4
+            out2_0 = i_1;                        // line 5
+            out3_0 = j_0;                        // line 6
+        }
+        out1_0 = i_0;                            // line 7
+        log_msg<tuple<bit<8>, bit<8>, bit<8>, bit<8>, bit<8>, bit<8>>>("out1={} out2={} out3={} in1={} in2={} i={}", { out1_0, out2_0, out3_0, in1_0, in2_0, i_0 });
+        hdr.eth.dstAddr[7:0] = out1_0;
+        hdr.eth.dstAddr[15:8] = out2_0;
+        hdr.eth.dstAddr[23:16] = out3_0;
+    }
+}
+```
+
+The occurrences of `i_0` on lines 1, 2, 3, and 7, but not anywhere
+else, make it clear that those are all of the occurrences of `i` in
+the original program that correspond to the declaration on line 1, and
+only those.  Similarly for the occurrences of `i_1` on lines 4 and 5.
+
+
+## prog3p4.p4
+
+Below is a repeat of snippet #3 from earlier in this article:
+
+```
+// Program snippet #3, from file prog3p4.p4
+control ingressImpl(inout headers_t hdr,
+                    inout metadata_t meta,
+                    inout standard_metadata_t stdmeta)
+{
+    bit<8> out1;
+    bit<8> out2;
+    bit<8> out3;
+    bit<8> i;                                 // line 1
+    apply {
+        bit<8> in1 = hdr.eth.srcAddr[7:0];
+        bit<8> in2 = hdr.eth.srcAddr[15:8];
+        i = in1;                              // line 2
+        {
+            bit<8> j = i + 1;                 // line 3
+            bit<8> i = i + 2;                 // line 4
+            out2 = i;                         // line 5
+            out3 = j;                         // line 6
+        }
+        out1 = i;                             // line 7
+        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
+            {out1, out2, out3, in1, in2, i});
+        hdr.eth.dstAddr[ 7: 0] = out1;
+        hdr.eth.dstAddr[15: 8] = out2;
+        hdr.eth.dstAddr[23:16] = out3;
+    }
+}
+```
+
+and below is the corresponding excerpt from the `p4c` output file
+`prog3p4-0033-FrontEnd_32_UniqueNames.p4`, with comments added:
+
+```
+control ingressImpl(inout headers_t hdr, inout metadata_t meta, inout standard_metadata_t stdmeta) {
+    @name("out1") bit<8> out1_0;
+    @name("out2") bit<8> out2_0;
+    @name("out3") bit<8> out3_0;
+    @name("i") bit<8> i_0;                          // line 1
+    apply {
+        @name("in1") bit<8> in1_0 = hdr.eth.srcAddr[7:0];
+        @name("in2") bit<8> in2_0 = hdr.eth.srcAddr[15:8];
+        i_0 = in1_0;                                // line 2
+        {
+            @name("j") bit<8> j_0 = i_0 + 8w1;      // line 3
+            @name("i") bit<8> i_1 = i_0 + 8w2;      // line 4
+            out2_0 = i_1;                           // line 5
+            out3_0 = j_0;                           // line 6
+        }
+        out1_0 = i_0;                               // line 7
+        log_msg<tuple<bit<8>, bit<8>, bit<8>, bit<8>, bit<8>, bit<8>>>("out1={} out2={} out3={} in1={} in2={} i={}", { out1_0, out2_0, out3_0, in1_0, in2_0, i_0 });
+        hdr.eth.dstAddr[7:0] = out1_0;
+        hdr.eth.dstAddr[15:8] = out2_0;
+        hdr.eth.dstAddr[23:16] = out3_0;
+    }
+}
+```
+
+The only difference between this and the `p4c` output file for the
+previous snippet is on line 4, where it is clear that in the
+initialization expression on the right hand side it refers to `i_0`,
+declared on line 1, not to `i_1`, declared on line 4.
+
+
+## prog5p4.p4
+
+Below is an exerpt of program `prog5p4.p4` which has a control `foo`
+with parameter named `i`, and two local declarations of a variable `i`
+as well, to test which occurrences refer to which definition.
+
+```
+control foo (inout bit<8> i, out bit<8> out1, out bit<8> out2, out bit<8> out3) {
+    bit<8> i = i + 1;            // line 1
+    apply {
+        out1 = i;                // line 2
+        {
+            bit<8> i = i + 1;    // line 3
+            out2 = i;            // line 4
+        }
+        out3 = i;                // line 5
+    }
+}
+```
+
+Below is an excerpt of the intermediate p4c output file named
+`prog5p4-0033-FrontEnd_32_UniqueNames.p4`, with comments added to show
+the correspondence of lines in the excerpt above with the lines below.
+
+```
+control foo(inout bit<8> i, out bit<8> out1, out bit<8> out2, out bit<8> out3) {
+    @name("i") bit<8> i_0 = i + 8w1;             // line 1
+    apply {
+        out1 = i_0;                              // line 2
+        {
+            @name("i") bit<8> i_1 = i_0 + 8w1;   // line 3
+            out2 = i_1;                          // line 4
+        }
+        out3 = i_0;                              // line 5
+    }
+}
+```
+
+Almost all of the occurrences of `i` in the input program refer to the
+one defined on line 1.  The one on line 4 refers to the definition
+from line 3.  None of the original occurrences of `i` refer to the
+parameter, except for the first one on line 1 in the initialization
+expression.

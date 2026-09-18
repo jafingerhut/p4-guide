@@ -20,30 +20,31 @@ struct headers_t {
 struct metadata_t {
 }
 
+control foo (inout bit<8> i, out bit<8> out1, out bit<8> out2, out bit<8> out3) {
+    bit<8> i = i + 1;            // line 1
+    apply {
+        out1 = i;                // line 2
+        {
+            bit<8> i = i + 1;    // line 3
+            out2 = i;            // line 4
+        }
+        out3 = i;                // line 5
+    }
+}
+
 control ingressImpl(inout headers_t hdr,
                     inout metadata_t meta,
                     inout standard_metadata_t stdmeta)
 {
+    bit<8> i;
     bit<8> out1;
     bit<8> out2;
     bit<8> out3;
-    bit<8> i;                                 // line 1
     apply {
-        bit<8> in1 = hdr.eth.srcAddr[7:0];
-        bit<8> in2 = hdr.eth.srcAddr[15:8];
-        i = in1;                              // line 2
-        {
-            bit<8> j = i + 1;                 // line 3
-            bit<8> i = i + 2;                 // line 4
-            out2 = i;                         // line 5
-            out3 = j;                         // line 6
-        }
-        out1 = i;                             // line 7
-        log_msg("out1={} out2={} out3={} in1={} in2={} i={}",
-            {out1, out2, out3, in1, in2, i});
-        hdr.eth.dstAddr[ 7: 0] = out1;
-        hdr.eth.dstAddr[15: 8] = out2;
-        hdr.eth.dstAddr[23:16] = out3;
+        i = hdr.eth.srcAddr[7:0];
+        foo.apply(i, out1, out2, out3);
+        log_msg("i={} out1={} out2={} out3={}",
+            {i, out1, out2, out3});
     }
 }
 
