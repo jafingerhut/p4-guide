@@ -70,7 +70,6 @@ fi
 # Compile and install simple_switch and simple_switch_grpc, and I
 # believe also psa_switch (but the latter is not feature complete and
 # working as of 2023-Mar)
-./autogen.sh
 if [ -z ${VIRTUAL_ENV} ]
 then
     # This case is to support P4 installs from install-p4dev-v6.sh script
@@ -78,19 +77,13 @@ then
     configure_python_prefix=""
 else
     PYTHON_VENV="${VIRTUAL_ENV}"
-    configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
+    configure_python_prefix="-DPY_SITE_PKG_DIR=${VIRTUAL_ENV}"
 fi
-# With debug enabled in binaries:
-./configure --with-pi --with-thrift ${configure_python_prefix} 'CXXFLAGS=-O0 -g'
-# With debug and P4_16 stack operation support enabled in binaries:
-#./configure --enable-WP4-16-stacks 'CXXFLAGS=-O0 -g'
-# Without debug enabled:
-#./configure
-# With more aggressive C++ compiler optimization enabled, but I believe
-# that with all of these options, the resulting simple_switch binary
-# cannot be used to achieve passing results on all p4c tests.
-#./configure 'CXXFLAGS=-g -O3' 'CFLAGS=-g -O3' --disable-logging-macros --disable-elogger
-
-make
-sudo make install
+mkdir -p build
+cd build
+set -x
+cmake -DWITH_PI=ON -DWITH_THRIFT=ON -DENABLE_PACKET_TRACE=ON ..
+set +x
+cmake --build . -j$(nproc)
+sudo cmake --install .
 sudo ldconfig
