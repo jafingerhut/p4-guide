@@ -308,7 +308,7 @@ echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2024-Sep-18"
-echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by pip3"
+echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by uv pip install"
 echo "+ Python packages: scapy (2.5.0), psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -412,11 +412,19 @@ then
 	 pkg-config python3-pip python3-venv
 fi
 
+# Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+echo $PATH
+source $HOME/.local/bin/env
+echo $PATH
+which uv
+uv pip list
+
 # Create a new Python virtual environment using venv.  Later we will
 # attempt to ensure that all new Python packages installed are
 # installed into this virtual environment, not into system-wide
 # directories like /usr/local/bin
-python3 -m venv "${PYTHON_VENV}"
+uv venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
 
 pip -V  || echo "No such command in PATH: pip"
@@ -455,10 +463,10 @@ then
     sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
-	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+	uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
     TIME_GRPC_INSTALL_END=$(date +%s)
-    pip3 list
+    uv pip list
 else
     # Do not bother installing protobuf package from source code, as
     # whatever parts of protobuf we need is installed as a result of
@@ -466,7 +474,7 @@ else
     # protobuf package using pip.
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
-	pip3 install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+	uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
     fi
 
     cd "${INSTALL_DIR}"
@@ -678,7 +686,7 @@ else
     TIME_BEHAVIORAL_MODEL_INSTALL_START=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/behavioral-model-adjust-ubuntu-packages.patch"
-    patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-thrift-0.22.0.patch"
+    patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-2026-sep.patch"
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
     ./install_deps.sh
@@ -742,8 +750,8 @@ fi
 # TODO: It appears that some changes were made from scapy 2.5.0 to
 # 2.6.0 that require changes in P4 open source tools in order to use
 # version 2.6.0.  Until those changes are made, install scapy 2.5.0.
-pip3 install scapy==2.5.0 ply
-pip3 list
+uv pip install scapy==2.5.0 ply
+uv pip list
 
 DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d p4c ]
@@ -814,7 +822,7 @@ git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-jan-enable-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-sep-enable-uv-venv.patch"
 cd ..
 RESTORE_SUDOERS_FILE=0
 if [ -e /etc/sudoers.d/sudoers-dotfiles ]
@@ -866,7 +874,7 @@ if [ "x${INSTALL_PTF_SOURCE_VERSION}" != "x" ]; then
     git checkout ${INSTALL_PTF_SOURCE_VERSION}
 fi
 git log -n 1
-pip install .
+uv pip install .
 TIME_PTF_END=$(date +%s)
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 
@@ -890,7 +898,7 @@ if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install libgflags-dev net-tools
 fi
-pip3 install psutil crcmod
+uv pip install psutil crcmod
 
 # Install p4runtime-shell from source repo, with a slightly modified
 # setup.cfg file so that it allows us to keep the version of the
@@ -903,14 +911,14 @@ pip3 install psutil crcmod
 # First install a known working version of the grpcio package, because
 # otherwise installing p4runtime-shell packages will likely pick some
 # very recent version of grpcio that may cause trouble.
-pip3 install wheel
+uv pip install wheel
 if [ "${ID}" == "ubuntu" -a \( "${VERSION_ID}" == "24.04" \) ]
 then
     # Version 1.51.3 fails to install on Ubuntu 24.04 as of
     # 2024-May-20.
-    pip3 install grpcio==1.59.3
+    uv pip install grpcio==1.59.3
 else
-    pip3 install grpcio==1.51.3
+    uv pip install grpcio==1.51.3
 fi
 
 git clone https://github.com/p4lang/p4runtime-shell
@@ -921,9 +929,9 @@ fi
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/p4runtime-shell-2023-changes.patch"
-pip3 install .
+uv pip install .
 
-pip3 list
+uv pip list
 
 set +x
 echo "end install miscellaneous packages:"
@@ -952,7 +960,7 @@ cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-9-after-miscellaneous-install.txt
 
 pip list  || echo "Some error occurred attempting to run command: pip"
-pip3 list
+uv pip list
 
 set +e
 
