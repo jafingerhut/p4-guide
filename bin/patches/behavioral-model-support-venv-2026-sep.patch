@@ -1,8 +1,8 @@
 diff --git a/ci/install-nanomsg.sh b/ci/install-nanomsg.sh
-index 675a3290..0587dd81 100644
+index 675a3290..235a7caa 100644
 --- a/ci/install-nanomsg.sh
 +++ b/ci/install-nanomsg.sh
-@@ -4,6 +4,38 @@
+@@ -4,6 +4,39 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
@@ -11,10 +11,11 @@ index 675a3290..0587dd81 100644
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
-+    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
++    cp /dev/null ${outf}
++    echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> ${outf}
 +    # This variable enables `uv sync` and other commands to use the
 +    # venv.
-+    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
++    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
 +    echo "All directories named site-packages or dist-packages:" > ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
@@ -41,7 +42,7 @@ index 675a3290..0587dd81 100644
  THIS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
  source $THIS_DIR/common.sh
  
-@@ -22,5 +54,7 @@ cd build
+@@ -22,5 +55,7 @@ cd build
  # some reason ldconfig cannot find it
  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
  cmake --build .
@@ -50,10 +51,10 @@ index 675a3290..0587dd81 100644
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/033c-behavioral-model-just-after-nanomsg-cmake-install"
  cd ..
 diff --git a/ci/install-pynng.sh b/ci/install-pynng.sh
-index 6abcd8e3..8b22eea9 100644
+index 6abcd8e3..90db4536 100644
 --- a/ci/install-pynng.sh
 +++ b/ci/install-pynng.sh
-@@ -4,5 +4,38 @@
+@@ -4,5 +4,39 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
@@ -62,10 +63,11 @@ index 6abcd8e3..8b22eea9 100644
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
-+    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
++    cp /dev/null ${outf}
++    echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> ${outf}
 +    # This variable enables `uv sync` and other commands to use the
 +    # venv.
-+    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
++    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
 +    echo "All directories named site-packages or dist-packages:" > ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
@@ -94,10 +96,10 @@ index 6abcd8e3..8b22eea9 100644
 +uv pip install pynng==0.9.0
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/034-behavioral-model-just-after-pip-install-pynng"
 diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
-index 587e9d31..1e9d79ff 100644
+index 587e9d31..4fa27232 100644
 --- a/ci/install-thrift.sh
 +++ b/ci/install-thrift.sh
-@@ -4,25 +4,55 @@
+@@ -4,25 +4,56 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
@@ -106,10 +108,11 @@ index 587e9d31..1e9d79ff 100644
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
-+    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
++    cp /dev/null ${outf}
++    echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> ${outf}
 +    # This variable enables `uv sync` and other commands to use the
 +    # venv.
-+    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
++    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
 +    echo "All directories named site-packages or dist-packages:" > ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}

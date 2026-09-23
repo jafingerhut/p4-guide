@@ -95,11 +95,12 @@ dump_python_lib_info() {
     set +e
     mkdir -p ${output_dir}
     outf=${output_dir}/dirs.txt
-    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
+    cp /dev/null ${outf}
+    echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> ${outf}
     # This variable enables `uv sync` and other commands to use the
     # venv.
-    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
-    echo "All directories named site-packages or dist-packages:" > ${outf}
+    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
+    echo "All directories named site-packages or dist-packages:" >> ${outf}
     find / -name site-packages -o -name dist-packages | sort >> ${outf}
     echo "" >> ${outf}
     echo "ls -la on each such directory:" >> ${outf}
