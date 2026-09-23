@@ -1,5 +1,5 @@
 diff --git a/ci/install-nanomsg.sh b/ci/install-nanomsg.sh
-index 675a3290..235a7caa 100644
+index 675a3290..36de78e2 100644
 --- a/ci/install-nanomsg.sh
 +++ b/ci/install-nanomsg.sh
 @@ -4,6 +4,39 @@
@@ -16,7 +16,7 @@ index 675a3290..235a7caa 100644
 +    # This variable enables `uv sync` and other commands to use the
 +    # venv.
 +    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
-+    echo "All directories named site-packages or dist-packages:" > ${outf}
++    echo "All directories named site-packages or dist-packages:" >> ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
 +    echo "ls -la on each such directory:" >> ${outf}
@@ -51,7 +51,7 @@ index 675a3290..235a7caa 100644
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/033c-behavioral-model-just-after-nanomsg-cmake-install"
  cd ..
 diff --git a/ci/install-pynng.sh b/ci/install-pynng.sh
-index 6abcd8e3..90db4536 100644
+index 6abcd8e3..679c030a 100644
 --- a/ci/install-pynng.sh
 +++ b/ci/install-pynng.sh
 @@ -4,5 +4,39 @@
@@ -68,7 +68,7 @@ index 6abcd8e3..90db4536 100644
 +    # This variable enables `uv sync` and other commands to use the
 +    # venv.
 +    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
-+    echo "All directories named site-packages or dist-packages:" > ${outf}
++    echo "All directories named site-packages or dist-packages:" >> ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
 +    echo "ls -la on each such directory:" >> ${outf}
@@ -96,7 +96,7 @@ index 6abcd8e3..90db4536 100644
 +uv pip install pynng==0.9.0
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/034-behavioral-model-just-after-pip-install-pynng"
 diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
-index 587e9d31..4fa27232 100644
+index 587e9d31..26e677fb 100644
 --- a/ci/install-thrift.sh
 +++ b/ci/install-thrift.sh
 @@ -4,25 +4,56 @@
@@ -113,7 +113,7 @@ index 587e9d31..4fa27232 100644
 +    # This variable enables `uv sync` and other commands to use the
 +    # venv.
 +    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
-+    echo "All directories named site-packages or dist-packages:" > ${outf}
++    echo "All directories named site-packages or dist-packages:" >> ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
 +    echo "ls -la on each such directory:" >> ${outf}
