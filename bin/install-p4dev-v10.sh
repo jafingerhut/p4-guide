@@ -95,6 +95,10 @@ dump_python_lib_info() {
     set +e
     mkdir -p ${output_dir}
     outf=${output_dir}/dirs.txt
+    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
+    # This variable enables `uv sync` and other commands to use the
+    # venv.
+    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
     echo "All directories named site-packages or dist-packages:" > ${outf}
     find / -name site-packages -o -name dist-packages | sort >> ${outf}
     echo "" >> ${outf}
@@ -461,6 +465,11 @@ uv pip list
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/008-just-before-venv-creation"
 uv venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
+# Set this variable to enable `uv sync` and other commands to use the
+# venv.
+export UV_PROJECT_ENVIRONMENT="${VIRTUAL_ENV}"
+echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
+echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
 
 pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"

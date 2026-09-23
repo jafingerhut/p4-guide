@@ -1,8 +1,8 @@
 diff --git a/ci/install-nanomsg.sh b/ci/install-nanomsg.sh
-index 675a3290..54fcb3d4 100644
+index 675a3290..0587dd81 100644
 --- a/ci/install-nanomsg.sh
 +++ b/ci/install-nanomsg.sh
-@@ -4,6 +4,34 @@
+@@ -4,6 +4,38 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
@@ -11,6 +11,10 @@ index 675a3290..54fcb3d4 100644
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
++    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
++    # This variable enables `uv sync` and other commands to use the
++    # venv.
++    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
 +    echo "All directories named site-packages or dist-packages:" > ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
@@ -32,24 +36,24 @@ index 675a3290..54fcb3d4 100644
 +    set -e
 +}
 +
-+PYTHON_DEBUG_DUMP_DIR="${HOME}/install-p4dev-dumpdir"
++DEBUG_DUMP_DIR="${HOME}/install-p4dev-dumpdir"
 +
  THIS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
  source $THIS_DIR/common.sh
  
-@@ -22,5 +50,7 @@ cd build
+@@ -22,5 +54,7 @@ cd build
  # some reason ldconfig cannot find it
  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
  cmake --build .
-+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/033b-behavioral-model-just-before-nanomsg-cmake-install"
++dump_python_lib_info "${DEBUG_DUMP_DIR}/033b-behavioral-model-just-before-nanomsg-cmake-install"
  sudo cmake --build . --target install
-+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/033c-behavioral-model-just-after-nanomsg-cmake-install"
++dump_python_lib_info "${DEBUG_DUMP_DIR}/033c-behavioral-model-just-after-nanomsg-cmake-install"
  cd ..
 diff --git a/ci/install-pynng.sh b/ci/install-pynng.sh
-index 6abcd8e3..3b4ae9f4 100644
+index 6abcd8e3..8b22eea9 100644
 --- a/ci/install-pynng.sh
 +++ b/ci/install-pynng.sh
-@@ -4,5 +4,34 @@
+@@ -4,5 +4,38 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
@@ -58,6 +62,10 @@ index 6abcd8e3..3b4ae9f4 100644
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
++    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
++    # This variable enables `uv sync` and other commands to use the
++    # venv.
++    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
 +    echo "All directories named site-packages or dist-packages:" > ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
@@ -79,17 +87,17 @@ index 6abcd8e3..3b4ae9f4 100644
 +    set -e
 +}
 +
-+PYTHON_DEBUG_DUMP_DIR="${HOME}/install-p4dev-dumpdir"
++DEBUG_DUMP_DIR="${HOME}/install-p4dev-dumpdir"
 +
  set -e
 -python3 -m pip install --upgrade pynng==0.9.0
 +uv pip install pynng==0.9.0
-+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/034-behavioral-model-just-after-pip-install-pynng"
++dump_python_lib_info "${DEBUG_DUMP_DIR}/034-behavioral-model-just-after-pip-install-pynng"
 diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
-index 587e9d31..088569df 100644
+index 587e9d31..1e9d79ff 100644
 --- a/ci/install-thrift.sh
 +++ b/ci/install-thrift.sh
-@@ -4,25 +4,51 @@
+@@ -4,25 +4,55 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
@@ -98,6 +106,10 @@ index 587e9d31..088569df 100644
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
++    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
++    # This variable enables `uv sync` and other commands to use the
++    # venv.
++    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
 +    echo "All directories named site-packages or dist-packages:" > ${outf}
 +    find / -name site-packages -o -name dist-packages | sort >> ${outf}
 +    echo "" >> ${outf}
@@ -119,7 +131,7 @@ index 587e9d31..088569df 100644
 +    set -e
 +}
 +
-+PYTHON_DEBUG_DUMP_DIR="${HOME}/install-p4dev-dumpdir"
++DEBUG_DUMP_DIR="${HOME}/install-p4dev-dumpdir"
 +
  THIS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
  source $THIS_DIR/common.sh
@@ -147,7 +159,7 @@ index 587e9d31..088569df 100644
 -cd lib/py
 -sudo python3 setup.py install
 -cd ../../..
-+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/032-behavioral-model-just-before-pip-install-thrift"
++dump_python_lib_info "${DEBUG_DUMP_DIR}/032-behavioral-model-just-before-pip-install-thrift"
 +cd ..
 +uv pip install thrift==0.16.0
-+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/033-behavioral-model-just-after-pip-install-thrift"
++dump_python_lib_info "${DEBUG_DUMP_DIR}/033-behavioral-model-just-after-pip-install-thrift"
