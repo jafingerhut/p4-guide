@@ -87,6 +87,35 @@ KEEP_P4C_BUILD_FOR_TESTING=1
 
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 
+PYTHON_DEBUG_DUMP_DIR="${INSTALL_DIR}/install-p4dev-dumpdir"
+mkdir -p ${PYTHON_DEBUG_DUMP_DIR}
+
+dump_python_lib_info() {
+    local output_dir=$1
+    set +e
+    mkdir -p ${output_dir}
+    outf=${output_dir}/dirs.txt
+    echo "All directories named site-packages or dist-packages:" > ${outf}
+    find / -name site-packages -o -name dist-packages | sort >> ${outf}
+    echo "" >> ${outf}
+    echo "ls -la on each such directory:" >> ${outf}
+    for d in $(find / -name site-packages -o -name dist-packages | sort)
+    do
+	echo $d >> ${outf}
+	ls -la $d >> ${outf}
+    done
+    #echo "" >> ${outf}
+    #echo "ls -laR on each such directory:" >> ${outf}
+    for d in $(find / -name site-packages -o -name dist-packages | sort)
+    do
+	outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
+	cp /dev/null ${outf}
+	#echo $d >> ${outf}
+	ls -laR $d >> ${outf}
+    done
+    set -e
+}
+
 debug_dump_many_install_files() {
     local OUT_FNAME="$1"
     local DIRNAME="${INSTALL_DIR}/`basename $1 .txt`"
@@ -366,6 +395,8 @@ pip -V  || echo "No such command in PATH: pip"
 pip2 -V || echo "No such command in PATH: pip2"
 pip3 -V || echo "No such command in PATH: pip3"
 
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/000-init"
+
 # On new systems if you have never checked repos you should do that first
 
 # Install a few packages (vim is not strictly necessary -- installed for
@@ -407,10 +438,13 @@ trap clean_up SIGHUP SIGINT SIGTERM
 # cannot import from the setuptools package.
 if [ "${ID}" = "ubuntu" ]
 then
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/003-just-before-python3-pip-install"
     sudo apt-get --yes install \
 	 autoconf automake libtool curl make g++ unzip \
 	 pkg-config python3-pip python3-venv
 fi
+
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/005-after-python-apt-installs"
 
 # Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -424,6 +458,7 @@ uv pip list
 # attempt to ensure that all new Python packages installed are
 # installed into this virtual environment, not into system-wide
 # directories like /usr/local/bin
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/008-just-before-venv-creation"
 uv venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
 
@@ -440,6 +475,7 @@ pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/010-before-installing-grpc"
 
 set +x
 echo "------------------------------------------------------------"
@@ -463,7 +499,9 @@ then
     sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
 	uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
     fi
     TIME_GRPC_INSTALL_END=$(date +%s)
     uv pip list
@@ -474,7 +512,9 @@ else
     # protobuf package using pip.
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
 	uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
     fi
 
     cd "${INSTALL_DIR}"
@@ -517,9 +557,11 @@ else
 	# https://github.com/grpc/grpc/issues/30524
 	cmake ../.. -DgRPC_SSL_PROVIDER=package
 	make
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-grpc-sudo-make-install"
 	sudo make install
 	cd ../..
 	sudo ldconfig
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/020-after-installing-grpc-from-source"
 	# Without the following command, later the command 'pkg-config
 	# --cflags grpc' fails, at least on Ubuntu 23.10 after building
 	# grpc v1.54.2
@@ -577,6 +619,8 @@ echo "start install PI:"
 set -x
 date
 
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/025-before-PI"
+
 TIME_PI_CLONE_START=$(date +%s)
 TIME_PI_CLONE_END=$(date +%s)
 TIME_PI_INSTALL_START=$(date +%s)
@@ -619,7 +663,9 @@ else
     /usr/local/bin/protoc --version
     set -e
     make
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/027-PI-just-before-sudo-make-install"
     sudo make install
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/029-PI-just-after-sudo-make-install"
 
     DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
@@ -642,6 +688,8 @@ set +x
 echo "end install PI:"
 set -x
 date
+
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/030-before-behavioral-model"
 
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-4-after-PI.txt
@@ -689,16 +737,21 @@ else
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-2026-sep.patch"
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/031-behavioral-model-just-before-install_deps"
     ./install_deps.sh
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/035-behavioral-model-just-after-install_deps"
     mkdir build
     cd build
     cmake -DWITH_PI=on -DWITH_THRIFT=on -DENABLE_MODULES=on ..
     make
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/038-behavioral-model-just-before-sudo-make-install-strip"
     sudo make install/strip
     sudo ldconfig
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/040-after-behavioral-model-install"
     # 'sudo make install-strip' installs several files in ${PYTHON_VENV}
     # with root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/045-after-behavioral-model-change_owner"
     DISK_USED_BEFORE_BMV2_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
@@ -721,6 +774,8 @@ date
 
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
+
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/050-before-p4c"
 
 set +x
 echo "------------------------------------------------------------"
@@ -753,6 +808,8 @@ fi
 uv pip install scapy==2.5.0 ply
 uv pip list
 
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/055-before-p4c-after-install-scapy"
+
 DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d p4c ]
 then
@@ -778,7 +835,9 @@ else
     cmake .. -DCMAKE_BUILD_TYPE=Release ${P4C_CMAKE_OPTS}
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/058-p4c-just-before-sudo-make-install-strip"
     sudo make install/strip
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/060-p4c-just-after-sudo-make-install-strip"
     sudo ldconfig
     DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
@@ -836,7 +895,9 @@ then
     sudo mv /etc/sudoers.d/sudoers-dotfiles /etc/sudoers.d/sudoers-dotfiles.orig
     RESTORE_SUDOERS_FILE=1
 fi
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/065-mininet-just-before-install"
 PYTHON=python3 ./mininet/util/install.sh -nw
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/070-mininet-just-after-install"
 if [ ${RESTORE_SUDOERS_FILE} -eq 1 ]
 then
     sudo mv /etc/sudoers.d/sudoers-dotfiles.orig /etc/sudoers.d/sudoers-dotfiles
@@ -868,13 +929,16 @@ TIME_PTF_START=$(date +%s)
 # Ubuntu 22.04.
 #sudo pip3 install pypcap
 
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/075-before-ptf"
 git clone https://github.com/p4lang/ptf
 cd ptf
 if [ "x${INSTALL_PTF_SOURCE_VERSION}" != "x" ]; then
     git checkout ${INSTALL_PTF_SOURCE_VERSION}
 fi
 git log -n 1
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/078-ptf-just-before-pip-install"
 uv pip install .
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/080-ptf-just-after-pip-install"
 TIME_PTF_END=$(date +%s)
 echo "p4lang/ptf             : $(($TIME_PTF_END-$TIME_PTF_START)) sec"
 
@@ -898,7 +962,9 @@ if [ "${ID}" = "ubuntu" ]
 then
     sudo apt-get --yes install libgflags-dev net-tools
 fi
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/084-before-pip-install-psutil-crcmod"
 uv pip install psutil crcmod
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/085-after-pip-install-psutil-crcmod"
 
 # Install p4runtime-shell from source repo, with a slightly modified
 # setup.cfg file so that it allows us to keep the version of the
@@ -912,7 +978,8 @@ uv pip install psutil crcmod
 # otherwise installing p4runtime-shell packages will likely pick some
 # very recent version of grpcio that may cause trouble.
 uv pip install wheel
-if [ "${ID}" == "ubuntu" -a \( "${VERSION_ID}" == "24.04" \) ]
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/090-after-pip-install-wheel"
+if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
 then
     # Version 1.51.3 fails to install on Ubuntu 24.04 as of
     # 2024-May-20.
@@ -920,6 +987,7 @@ then
 else
     uv pip install grpcio==1.51.3
 fi
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/095-after-pip-install-grpcio"
 
 git clone https://github.com/p4lang/p4runtime-shell
 cd p4runtime-shell
@@ -929,7 +997,9 @@ fi
 git log -n 1
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 patch -p1 < "${PATCH_DIR}/p4runtime-shell-2023-changes.patch"
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/099-p4runtime-shell-just-before-pip-install"
 uv pip install .
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/100-p4runtime-shell-just-after-pip-install"
 
 uv pip list
 
