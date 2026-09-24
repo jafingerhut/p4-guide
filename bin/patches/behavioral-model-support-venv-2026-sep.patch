@@ -166,3 +166,16 @@ index 587e9d31..26e677fb 100644
 +cd ..
 +uv pip install thrift==0.16.0
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/033-behavioral-model-just-after-pip-install-thrift"
+diff --git a/install_deps.sh b/install_deps.sh
+index 02dd6d2b..110419c5 100755
+--- a/install_deps.sh
++++ b/install_deps.sh
+@@ -50,7 +50,7 @@ cd $tmpdir
+ 
+ bash ../ci/install-thrift.sh
+ bash ../ci/install-nanomsg.sh
+-bash ../ci/install-pi.sh
++#bash ../ci/install-pi.sh
+ sudo ldconfig
+ bash ../ci/install-pynng.sh
+ 
