@@ -21,9 +21,9 @@
 
 # * Remove old checks for Python2 files
 # * Remove vestiges of support for Fedora Linux
-# * No longer support Ubuntu 20.04
+# * Remove support for Ubuntu 20.04
+# * Use uv for creating Python venv and installing Python packages
 # * TODO: Add support for Ubuntu 26.04
-# * TODO: Use uv for creating Python venv and installing Python packages
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
@@ -52,15 +52,15 @@ max_of_list() {
     local max=""
     for x in $lst
     do
-	if [ -z ${max} ]
-	then
-	    max=${x}
-	else
-	    if [ ${x} -gt ${max} ]
-	    then
-		max=${x}
-	    fi
-	fi
+        if [ -z ${max} ]
+        then
+            max=${x}
+        else
+            if [ ${x} -gt ${max} ]
+            then
+                max=${x}
+            fi
+        fi
     done
     echo ${max}
 }
@@ -69,7 +69,7 @@ max_of_list() {
 # output.  It is occasionally useful to debug why Python package
 # install files, or other files installed system-wide, are not going
 # to the places where one might hope.
-DEBUG_INSTALL=2
+export DEBUG_INSTALL_P4DEV=2
 
 # By default, save storage space by cleaning up various builds as we
 # go.  This is not always what you want when things are failing, so it
@@ -92,6 +92,10 @@ mkdir -p ${PYTHON_DEBUG_DUMP_DIR}
 
 dump_python_lib_info() {
     local output_dir=$1
+    if [ ${DEBUG_INSTALL_P4DEV} -lt 2 ]
+    then
+        return
+    fi
     set +e
     mkdir -p ${output_dir}
     outf=${output_dir}/dirs.txt
@@ -106,17 +110,17 @@ dump_python_lib_info() {
     echo "ls -la on each such directory:" >> ${outf}
     for d in $(find / -name site-packages -o -name dist-packages | sort)
     do
-	echo $d >> ${outf}
-	ls -la $d >> ${outf}
+        echo $d >> ${outf}
+        ls -la $d >> ${outf}
     done
     #echo "" >> ${outf}
     #echo "ls -laR on each such directory:" >> ${outf}
     for d in $(find / -name site-packages -o -name dist-packages | sort)
     do
-	outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
-	cp /dev/null ${outf}
-	#echo $d >> ${outf}
-	ls -laR $d >> ${outf}
+        outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
+        cp /dev/null ${outf}
+        #echo $d >> ${outf}
+        ls -laR $d >> ${outf}
     done
     set -e
 }
@@ -124,13 +128,13 @@ dump_python_lib_info() {
 debug_dump_many_install_files() {
     local OUT_FNAME="$1"
     local DIRNAME="${INSTALL_DIR}/`basename $1 .txt`"
-    if [ ${DEBUG_INSTALL} -ge 2 ]
+    if [ ${DEBUG_INSTALL_P4DEV} -ge 2 ]
     then
-	find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+        find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
     fi
-    if [ ${DEBUG_INSTALL} -ge 3 ]
+    if [ ${DEBUG_INSTALL_P4DEV} -ge 3 ]
     then
-	/bin/cp -pr ${PYTHON_VENV}/lib/python*/site-packages ${DIRNAME}
+        /bin/cp -pr ${PYTHON_VENV}/lib/python*/site-packages ${DIRNAME}
     fi
 }
 
@@ -166,12 +170,12 @@ max_parallel_jobs() {
     1>&2 echo "Max number of parallel jobs for processors: ${max_jobs_for_processors}"
     if [ ${max_jobs_for_processors} -lt ${max_jobs_for_mem} ]
     then
-	echo ${max_jobs_for_processors}
+        echo ${max_jobs_for_processors}
     elif [ ${max_jobs_for_mem} -ge 1 ]
     then
-	echo ${max_jobs_for_mem}
+        echo ${max_jobs_for_mem}
     else
-	echo 1
+        echo 1
     fi
 }
 
@@ -191,24 +195,24 @@ tried_but_got_build_errors=0
 if [ "${ID}" = "ubuntu" ]
 then
     case "${VERSION_ID}" in
-	22.04)
-	    supported_distribution=1
-	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
-	    # Versions installed by Ubuntu apt
-	    PROTOBUF_PKG_VERSION="3.12.4"
-	    GRPC_PKG_VERSION="1.30.2"
-	    # Closest versions available via "pip3 install" to the above
-	    PROTOBUF_VERSION_FOR_PIP="3.12.4"
-	    ;;
-	24.04)
-	    supported_distribution=1
-	    INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
-	    # Versions installed by Ubuntu apt
-	    PROTOBUF_PKG_VERSION="3.21.12"
-	    GRPC_PKG_VERSION="1.51.1"
-	    # Closest versions available via "pip3 install" to the above
-	    PROTOBUF_VERSION_FOR_PIP="4.21.12"
-	    ;;
+        22.04)
+            supported_distribution=1
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+            # Versions installed by Ubuntu apt
+            PROTOBUF_PKG_VERSION="3.12.4"
+            GRPC_PKG_VERSION="1.30.2"
+            # Closest versions available via "pip3 install" to the above
+            PROTOBUF_VERSION_FOR_PIP="3.12.4"
+            ;;
+        24.04)
+            supported_distribution=1
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+            # Versions installed by Ubuntu apt
+            PROTOBUF_PKG_VERSION="3.21.12"
+            GRPC_PKG_VERSION="1.51.1"
+            # Closest versions available via "pip3 install" to the above
+            PROTOBUF_VERSION_FOR_PIP="4.21.12"
+            ;;
     esac
 fi
 
@@ -226,12 +230,12 @@ else
     linux_version_warning
     if [ ${tried_but_got_build_errors} -eq 1 ]
     then
-	1>&2 echo ""
-	1>&2 echo "This OS has been tried at least once before, but"
-	1>&2 echo "there were errors during a compilation or build"
-	1>&2 echo "step that have not yet been fixed.  If you have"
-	1>&2 echo "experience in fixing such matters, your help is"
-	1>&2 echo "appreciated."
+        1>&2 echo ""
+        1>&2 echo "This OS has been tried at least once before, but"
+        1>&2 echo "there were errors during a compilation or build"
+        1>&2 echo "step that have not yet been fixed.  If you have"
+        1>&2 echo "experience in fixing such matters, your help is"
+        1>&2 echo "appreciated."
     fi
     exit 1
 fi
@@ -284,10 +288,10 @@ for dir in "${PATCH_DIR1}"
 do
     if [ -d "${dir}" ]
     then
-	echo "Found directory containing patches: ${dir}"
+        echo "Found directory containing patches: ${dir}"
     else
-	echo "NO directory containing patches: ${dir}"
-	abort_script=1
+        echo "NO directory containing patches: ${dir}"
+        abort_script=1
     fi
 done
 
@@ -364,11 +368,11 @@ get_from_nearest() {
 
     if [ -e "${REPO_CACHE_DIR}/${repo_cache_name}" ]
     then
-	echo "Creating contents of ${git_url} from local cached copy ${REPO_CACHE_DIR}/${repo_cache_name}"
-	tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
+        echo "Creating contents of ${git_url} from local cached copy ${REPO_CACHE_DIR}/${repo_cache_name}"
+        tar xkzf "${REPO_CACHE_DIR}/${repo_cache_name}"
     else
-	echo "git clone ${git_url}"
-	git clone "${git_url}"
+        echo "git clone ${git_url}"
+        git clone "${git_url}"
     fi
 }
 
@@ -445,8 +449,8 @@ if [ "${ID}" = "ubuntu" ]
 then
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/003-just-before-python3-pip-install"
     sudo apt-get --yes install \
-	 autoconf automake libtool curl make g++ unzip \
-	 pkg-config python3-pip python3-venv
+         autoconf automake libtool curl make g++ unzip \
+         pkg-config python3-pip python3-venv
 fi
 
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/005-after-python-apt-installs"
@@ -509,9 +513,9 @@ then
     sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
-	uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
+        uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
     fi
     TIME_GRPC_INSTALL_END=$(date +%s)
     uv pip list
@@ -522,9 +526,9 @@ else
     # protobuf package using pip.
     if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
     then
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
-	uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
+        uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
     fi
 
     cd "${INSTALL_DIR}"
@@ -533,12 +537,12 @@ else
     # From BUILDING.md of grpc source repository
     if [ "${ID}" = "ubuntu" ]
     then
-	sudo apt-get --yes install build-essential autoconf libtool pkg-config
-	# TODO: This package is not mentioned in grpc BUILDING.md
-	# instructions, but when I tried on Ubuntu 20.04 without it, the
-	# building of grpc failed with not being able to find an OpenSSL
-	# library.
-	sudo apt-get --yes install libssl-dev
+        sudo apt-get --yes install build-essential autoconf libtool pkg-config
+        # TODO: This package is not mentioned in grpc BUILDING.md
+        # instructions, but when I tried on Ubuntu 20.04 without it, the
+        # building of grpc failed with not being able to find an OpenSSL
+        # library.
+        sudo apt-get --yes install libssl-dev
     fi
 
     TIME_GRPC_CLONE_START=$(date +%s)
@@ -547,61 +551,61 @@ else
     DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ -d grpc ]
     then
-	echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
+        echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
     else
-	TIME_GRPC_CLONE_START=$(date +%s)
-	get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-	cd grpc
-	git checkout v${GRPC_SOURCE_VERSION}
-	# These commands are recommended in grpc's BUILDING.md file for Unix:
-	git submodule update --init --recursive
-	TIME_GRPC_CLONE_END=$(date +%s)
-	TIME_GRPC_INSTALL_START=$(date +%s)
-	mkdir -p cmake/build
-	cd cmake/build
-	# I learned about the cmake option -DgRPC_SSL_PROVIDER=package
-	# from the pages linked below, after experiencing link-time errors
-	# when trying to build behavioral-model with gRPC v1.54.2 and
-	# getting errors that it could not find symbols like OPENSSL_free,
-	# and many others.
-	# https://github.com/grpc/grpc/issues/30524
-	cmake ../.. -DgRPC_SSL_PROVIDER=package
-	make
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-grpc-sudo-make-install"
-	sudo make install
-	cd ../..
-	sudo ldconfig
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/020-after-installing-grpc-from-source"
-	# Without the following command, later the command 'pkg-config
-	# --cflags grpc' fails, at least on Ubuntu 23.10 after building
-	# grpc v1.54.2
-	RE2_PKGCONFIG_FILE=""
-	if [ -e third_party/re2/re2.pc ]
-	then
-	    RE2_PKGCONFIG_FILE="third_party/re2/re2.pc"
-	elif [ -e third_party/bloaty/third_party/re2/re2.pc ]
-	then
-	    RE2_PKGCONFIG_FILE="third_party/bloaty/third_party/re2/re2.pc"
-	fi
-	if [ "${RE2_PKGCONFIG_FILE}" != "" ]
-	then
-	    sudo /usr/bin/install -c -m 644 ${RE2_PKGCONFIG_FILE} /usr/local/lib/pkgconfig
-	fi
-	DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
-	if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
-	then
-	    echo "Disk space used just before cleaning up grpc:"
-	    df -BM .
-	    cd "${INSTALL_DIR}"
-	    /bin/rm -fr grpc
-	    # Make an empty directory with the name grpc, so that if a
-	    # later step fails, and someone re-runs this script, it will
-	    # not build grpc again.
-	    mkdir grpc
-	fi
-	TIME_GRPC_INSTALL_END=$(date +%s)
-	echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
-	echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
+        TIME_GRPC_CLONE_START=$(date +%s)
+        get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+        cd grpc
+        git checkout v${GRPC_SOURCE_VERSION}
+        # These commands are recommended in grpc's BUILDING.md file for Unix:
+        git submodule update --init --recursive
+        TIME_GRPC_CLONE_END=$(date +%s)
+        TIME_GRPC_INSTALL_START=$(date +%s)
+        mkdir -p cmake/build
+        cd cmake/build
+        # I learned about the cmake option -DgRPC_SSL_PROVIDER=package
+        # from the pages linked below, after experiencing link-time errors
+        # when trying to build behavioral-model with gRPC v1.54.2 and
+        # getting errors that it could not find symbols like OPENSSL_free,
+        # and many others.
+        # https://github.com/grpc/grpc/issues/30524
+        cmake ../.. -DgRPC_SSL_PROVIDER=package
+        make
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-grpc-sudo-make-install"
+        sudo make install
+        cd ../..
+        sudo ldconfig
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/020-after-installing-grpc-from-source"
+        # Without the following command, later the command 'pkg-config
+        # --cflags grpc' fails, at least on Ubuntu 23.10 after building
+        # grpc v1.54.2
+        RE2_PKGCONFIG_FILE=""
+        if [ -e third_party/re2/re2.pc ]
+        then
+            RE2_PKGCONFIG_FILE="third_party/re2/re2.pc"
+        elif [ -e third_party/bloaty/third_party/re2/re2.pc ]
+        then
+            RE2_PKGCONFIG_FILE="third_party/bloaty/third_party/re2/re2.pc"
+        fi
+        if [ "${RE2_PKGCONFIG_FILE}" != "" ]
+        then
+            sudo /usr/bin/install -c -m 644 ${RE2_PKGCONFIG_FILE} /usr/local/lib/pkgconfig
+        fi
+        DISK_USED_BEFORE_GRPC_CLEANUP=`get_used_disk_space_in_mbytes`
+        if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
+        then
+            echo "Disk space used just before cleaning up grpc:"
+            df -BM .
+            cd "${INSTALL_DIR}"
+            /bin/rm -fr grpc
+            # Make an empty directory with the name grpc, so that if a
+            # later step fails, and someone re-runs this script, it will
+            # not build grpc again.
+            mkdir grpc
+        fi
+        TIME_GRPC_INSTALL_END=$(date +%s)
+        echo "grpc clone             : $(($TIME_GRPC_CLONE_END-$TIME_GRPC_CLONE_START)) sec"
+        echo "grpc install           : $(($TIME_GRPC_INSTALL_END-$TIME_GRPC_INSTALL_START)) sec"
     fi
 fi
 DISK_USED_AFTER_GRPC=`get_used_disk_space_in_mbytes`
@@ -649,7 +653,7 @@ else
     git clone https://github.com/p4lang/PI
     cd PI
     if [ "x${INSTALL_PI_SOURCE_VERSION}" != "x" ]; then
-	git checkout ${INSTALL_PI_SOURCE_VERSION}
+        git checkout ${INSTALL_PI_SOURCE_VERSION}
     fi
     git submodule update --init --recursive
     TIME_PI_CLONE_END=$(date +%s)
@@ -661,7 +665,7 @@ else
     configure_python_prefix="--with-python_prefix=${PYTHON_VENV}"
     if [ "${ID}" = "ubuntu" ]
     then
-	./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
+        ./configure --with-proto --without-internal-rpc --without-cli --without-bmv2 ${configure_python_prefix}
     fi
     # Check what version of protoc is installed before the 'make'
     # command below uses protoc on P4Runtime protobuf definition
@@ -680,10 +684,10 @@ else
     DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
-	echo "Disk space used just before cleaning up PI:"
-	df -BM .
-	# Save about 0.25G of storage by cleaning up PI build
-	make clean
+        echo "Disk space used just before cleaning up PI:"
+        df -BM .
+        # Save about 0.25G of storage by cleaning up PI build
+        make clean
     fi
     # 'sudo make install' installs several files in ${PYTHON_VENV} with
     # root owner.  Change them to be owned by the regular user id.
@@ -737,7 +741,7 @@ else
     # Get latest updates that are not in the repo cache version
     git pull
     if [ "x${INSTALL_BEHAVIORAL_MODEL_SOURCE_VERSION}" != "x" ]; then
-	git checkout ${INSTALL_BEHAVIORAL_MODEL_SOURCE_VERSION}
+        git checkout ${INSTALL_BEHAVIORAL_MODEL_SOURCE_VERSION}
     fi
     TIME_BEHAVIORAL_MODEL_CLONE_END=$(date +%s)
     git log -n 1
@@ -758,18 +762,18 @@ else
     sudo make install/strip
     sudo ldconfig
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/040-after-behavioral-model-install"
-    # 'sudo make install-strip' installs several files in ${PYTHON_VENV}
+    # 'sudo make install/strip' installs several files in ${PYTHON_VENV}
     # with root owner.  Change them to be owned by the regular user id.
     change_owner_and_group_of_venv_lib_python3_files ${PYTHON_VENV}
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/045-after-behavioral-model-change_owner"
     DISK_USED_BEFORE_BMV2_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then
-	echo "Disk space used just before cleaning up behavioral-model:"
-	df -BM .
-	cd "${INSTALL_DIR}"
-	cd behavioral-model
-	/bin/rm -fr build
+        echo "Disk space used just before cleaning up behavioral-model:"
+        df -BM .
+        cd "${INSTALL_DIR}"
+        cd behavioral-model
+        /bin/rm -fr build
     fi
 fi
 TIME_BEHAVIORAL_MODEL_INSTALL_END=$(date +%s)
@@ -832,7 +836,7 @@ else
     # Get latest updates that are not in the repo cache version
     git pull
     if [ "x${INSTALL_P4C_SOURCE_VERSION}" != "x" ]; then
-	git checkout ${INSTALL_P4C_SOURCE_VERSION}
+        git checkout ${INSTALL_P4C_SOURCE_VERSION}
     fi
     git log -n 1
     git submodule update --init --recursive
@@ -852,11 +856,11 @@ else
     DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 -a ${KEEP_P4C_BUILD_FOR_TESTING} -eq 0 ]
     then
-	echo "Disk space used just before cleaning up p4c:"
-	df -BM .
-	cd "${INSTALL_DIR}"
-	cd p4c
-	/bin/rm -fr build
+        echo "Disk space used just before cleaning up p4c:"
+        df -BM .
+        cd "${INSTALL_DIR}"
+        cd p4c
+        /bin/rm -fr build
     fi
 fi
 TIME_P4C_INSTALL_END=$(date +%s)

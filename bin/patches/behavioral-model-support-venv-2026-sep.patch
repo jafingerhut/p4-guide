@@ -2,12 +2,16 @@ diff --git a/ci/install-nanomsg.sh b/ci/install-nanomsg.sh
 index 675a3290..36de78e2 100644
 --- a/ci/install-nanomsg.sh
 +++ b/ci/install-nanomsg.sh
-@@ -4,6 +4,39 @@
+@@ -4,6 +4,43 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
 +dump_python_lib_info() {
 +    local output_dir=$1
++    if [ ${DEBUG_INSTALL_P4DEV} -lt 2 ]
++    then
++       return
++    fi
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
@@ -22,17 +26,17 @@ index 675a3290..36de78e2 100644
 +    echo "ls -la on each such directory:" >> ${outf}
 +    for d in $(find / -name site-packages -o -name dist-packages | sort)
 +    do
-+	echo $d >> ${outf}
-+	ls -la $d >> ${outf}
++       echo $d >> ${outf}
++       ls -la $d >> ${outf}
 +    done
 +    #echo "" >> ${outf}
 +    #echo "ls -laR on each such directory:" >> ${outf}
 +    for d in $(find / -name site-packages -o -name dist-packages | sort)
 +    do
-+	outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
-+	cp /dev/null ${outf}
-+	#echo $d >> ${outf}
-+	ls -laR $d >> ${outf}
++       outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
++       cp /dev/null ${outf}
++       #echo $d >> ${outf}
++       ls -laR $d >> ${outf}
 +    done
 +    set -e
 +}
@@ -54,12 +58,16 @@ diff --git a/ci/install-pynng.sh b/ci/install-pynng.sh
 index 6abcd8e3..679c030a 100644
 --- a/ci/install-pynng.sh
 +++ b/ci/install-pynng.sh
-@@ -4,5 +4,39 @@
+@@ -4,5 +4,43 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
 +dump_python_lib_info() {
 +    local output_dir=$1
++    if [ ${DEBUG_INSTALL_P4DEV} -lt 2 ]
++    then
++       return
++    fi
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
@@ -74,17 +82,17 @@ index 6abcd8e3..679c030a 100644
 +    echo "ls -la on each such directory:" >> ${outf}
 +    for d in $(find / -name site-packages -o -name dist-packages | sort)
 +    do
-+	echo $d >> ${outf}
-+	ls -la $d >> ${outf}
++       echo $d >> ${outf}
++       ls -la $d >> ${outf}
 +    done
 +    #echo "" >> ${outf}
 +    #echo "ls -laR on each such directory:" >> ${outf}
 +    for d in $(find / -name site-packages -o -name dist-packages | sort)
 +    do
-+	outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
-+	cp /dev/null ${outf}
-+	#echo $d >> ${outf}
-+	ls -laR $d >> ${outf}
++       outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
++       cp /dev/null ${outf}
++       #echo $d >> ${outf}
++       ls -laR $d >> ${outf}
 +    done
 +    set -e
 +}
@@ -99,12 +107,16 @@ diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
 index 587e9d31..26e677fb 100644
 --- a/ci/install-thrift.sh
 +++ b/ci/install-thrift.sh
-@@ -4,25 +4,56 @@
+@@ -4,25 +4,60 @@
  #
  # SPDX-License-Identifier: Apache-2.0
  
 +dump_python_lib_info() {
 +    local output_dir=$1
++    if [ ${DEBUG_INSTALL_P4DEV} -lt 2 ]
++    then
++       return
++    fi
 +    set +e
 +    mkdir -p ${output_dir}
 +    outf=${output_dir}/dirs.txt
@@ -119,17 +131,17 @@ index 587e9d31..26e677fb 100644
 +    echo "ls -la on each such directory:" >> ${outf}
 +    for d in $(find / -name site-packages -o -name dist-packages | sort)
 +    do
-+	echo $d >> ${outf}
-+	ls -la $d >> ${outf}
++       echo $d >> ${outf}
++       ls -la $d >> ${outf}
 +    done
 +    #echo "" >> ${outf}
 +    #echo "ls -laR on each such directory:" >> ${outf}
 +    for d in $(find / -name site-packages -o -name dist-packages | sort)
 +    do
-+	outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
-+	cp /dev/null ${outf}
-+	#echo $d >> ${outf}
-+	ls -laR $d >> ${outf}
++       outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
++       cp /dev/null ${outf}
++       #echo $d >> ${outf}
++       ls -laR $d >> ${outf}
 +    done
 +    set -e
 +}
