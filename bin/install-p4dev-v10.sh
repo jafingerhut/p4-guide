@@ -85,6 +85,8 @@ CLEAN_UP_AS_WE_GO=1
 # CLEAN_UP_AS_WE_GO=1).
 KEEP_P4C_BUILD_FOR_TESTING=1
 
+USE_DISTRIBUTION_SSL_PACKAGE=0
+
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 
 PYTHON_DEBUG_DUMP_DIR="${INSTALL_DIR}/install-p4dev-dumpdir"
@@ -561,11 +563,14 @@ else
     if [ "${ID}" = "ubuntu" ]
     then
         sudo apt-get --yes install build-essential autoconf libtool pkg-config
-        # TODO: This package is not mentioned in grpc BUILDING.md
-        # instructions, but when I tried on Ubuntu 20.04 without it, the
-        # building of grpc failed with not being able to find an OpenSSL
-        # library.
-        sudo apt-get --yes install libssl-dev
+        if [ ${USE_DISTRIBUTION_SSL_PACKAGE} -eq 1 ]
+        then
+            # TODO: This package is not mentioned in grpc BUILDING.md
+            # instructions, but when I tried on Ubuntu 20.04 without it, the
+            # building of grpc failed with not being able to find an OpenSSL
+            # library.
+            sudo apt-get --yes install libssl-dev
+        fi
     fi
 
     TIME_GRPC_CLONE_START=$(date +%s)
@@ -577,28 +582,34 @@ else
         echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
     else
         TIME_GRPC_CLONE_START=$(date +%s)
-	if [ -r ${REPO_CACHE_DIR}/grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz ]
-	then
+        if [ -r ${REPO_CACHE_DIR}/grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz ]
+        then
             get_from_nearest https://github.com/grpc/grpc.git grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz
             cd grpc
-	else
+        else
             get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
             cd grpc
             git checkout v${GRPC_SOURCE_VERSION}
             # These commands are recommended in grpc's BUILDING.md file for Unix:
             git submodule update --init --recursive
-	fi
+        fi
         TIME_GRPC_CLONE_END=$(date +%s)
         TIME_GRPC_INSTALL_START=$(date +%s)
         mkdir -p cmake/build
         cd cmake/build
-        # I learned about the cmake option -DgRPC_SSL_PROVIDER=package
-        # from the pages linked below, after experiencing link-time errors
-        # when trying to build behavioral-model with gRPC v1.54.2 and
-        # getting errors that it could not find symbols like OPENSSL_free,
-        # and many others.
-        # https://github.com/grpc/grpc/issues/30524
-        cmake ../.. -DgRPC_SSL_PROVIDER=package
+        if [ ${USE_DISTRIBUTION_SSL_PACKAGE} -eq 1 ]
+           # I learned about the cmake option
+           # -DgRPC_SSL_PROVIDER=package from the pages linked below,
+           # after experiencing link-time errors when trying to build
+           # behavioral-model with gRPC v1.54.2 and getting errors
+           # that it could not find symbols like OPENSSL_free, and
+           # many others.
+           # https://github.com/grpc/grpc/issues/30524
+           GRPC_CMAKE_OPTS="-DgRPC_SSL_PROVIDER=package"
+        else
+           GRPC_CMAKE_OPTS=""
+        fi
+        cmake ../.. ${GRPC_CMAKE_OPTS}
         make
         dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-grpc-sudo-make-install"
         sudo make install
