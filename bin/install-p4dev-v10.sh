@@ -597,7 +597,9 @@ else
         TIME_GRPC_INSTALL_START=$(date +%s)
         mkdir -p cmake/build
         cd cmake/build
+       GRPC_CMAKE_OPTS="-DgRPC_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_STANDARD=17 -DgRPC_ABSL_PROVIDER=module -DgRPC_CARES_PROVIDER=module -DgRPC_PROTOBUF_PROVIDER=module -DgRPC_RE2_PROVIDER=module -DgRPC_SSL_PROVIDER=module -DgRPC_ZLIB_PROVIDER=module"
         if [ ${USE_DISTRIBUTION_SSL_PACKAGE} -eq 1 ]
+        then
            # I learned about the cmake option
            # -DgRPC_SSL_PROVIDER=package from the pages linked below,
            # after experiencing link-time errors when trying to build
@@ -605,11 +607,9 @@ else
            # that it could not find symbols like OPENSSL_free, and
            # many others.
            # https://github.com/grpc/grpc/issues/30524
-           GRPC_CMAKE_OPTS="-DgRPC_SSL_PROVIDER=package"
-        else
-           GRPC_CMAKE_OPTS=""
+           GRPC_CMAKE_OPTS="${GRPC_CMAKE_OPTS} -DgRPC_SSL_PROVIDER=package"
         fi
-        cmake ../.. ${GRPC_CMAKE_OPTS}
+        cmake ${GRPC_CMAKE_OPTS} ../..
         make
         dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-grpc-sudo-make-install"
         sudo make install
