@@ -580,6 +580,7 @@ else
 	if [ -r ${REPO_CACHE_DIR}/grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz ]
 	then
             get_from_nearest https://github.com/grpc/grpc.git grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz
+            cd grpc
 	else
             get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
             cd grpc

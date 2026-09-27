@@ -161,7 +161,7 @@ index 587e9d31..89c0117e 100644
  source $THIS_DIR/common.sh
  
 -check_lib libthrift libthrift-0.13.0
-+check_lib libthrift libthrift-0.16.0
++check_lib libthrift libthrift-0.22.0
  
  set -e
 -# Make it possible to get thrift in China
@@ -169,8 +169,8 @@ index 587e9d31..89c0117e 100644
 -# tar -xzvf thrift-0.13.0.tar.gz
 -git clone -b 0.13.0 https://github.com/apache/thrift.git thrift-0.13.0
 -cd thrift-0.13.0
-+git clone -b 0.16.0 https://github.com/apache/thrift.git thrift-0.16.0
-+cd thrift-0.16.0
++git clone -b 0.22.0 https://github.com/apache/thrift.git thrift-0.22.0
++cd thrift-0.22.0
  ./bootstrap.sh
  ./configure --with-as3=no --with-c_glib=no --with-csharp=no --with-cpp=yes \
      --with-cl=no --with-d=no --with-dart=no --with-dotnetcore=no \
@@ -185,7 +185,7 @@ index 587e9d31..89c0117e 100644
 -cd ../../..
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/032-behavioral-model-just-before-pip-install-thrift"
 +cd ..
-+uv pip install thrift==0.16.0
++uv pip install thrift==0.22.0
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/033-behavioral-model-just-after-pip-install-thrift"
 diff --git a/install_deps.sh b/install_deps.sh
 index 02dd6d2b..f1510feb 100755
