@@ -30,7 +30,7 @@ INSTALL_DIR="${PWD}"
 
 THIS_SCRIPT_FILE_MAYBE_RELATIVE="$0"
 THIS_SCRIPT_DIR_MAYBE_RELATIVE="${THIS_SCRIPT_FILE_MAYBE_RELATIVE%/*}"
-THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
+export THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"`
 
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
@@ -105,17 +105,17 @@ dump_python_lib_info() {
     # venv.
     echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
     echo "All directories named site-packages or dist-packages:" >> ${outf}
-    find / -name site-packages -o -name dist-packages | sort >> ${outf}
+    find / -name site-packages -o -name dist-packages 2>/dev/null | sort >> ${outf}
     echo "" >> ${outf}
     echo "ls -la on each such directory:" >> ${outf}
-    for d in $(find / -name site-packages -o -name dist-packages | sort)
+    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
     do
         echo $d >> ${outf}
         ls -la $d >> ${outf}
     done
     #echo "" >> ${outf}
     #echo "ls -laR on each such directory:" >> ${outf}
-    for d in $(find / -name site-packages -o -name dist-packages | sort)
+    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
     do
         outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
         cp /dev/null ${outf}
@@ -130,7 +130,7 @@ debug_dump_many_install_files() {
     local DIRNAME="${INSTALL_DIR}/`basename $1 .txt`"
     if [ ${DEBUG_INSTALL_P4DEV} -ge 2 ]
     then
-        find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" | sort > "${OUT_FNAME}"
+        find /usr/lib /usr/local $HOME/.local "${PYTHON_VENV}" 2>/dev/null | sort > "${OUT_FNAME}"
     fi
     if [ ${DEBUG_INSTALL_P4DEV} -ge 3 ]
     then
@@ -212,6 +212,26 @@ then
             GRPC_PKG_VERSION="1.51.1"
             # Closest versions available via "pip3 install" to the above
             PROTOBUF_VERSION_FOR_PIP="4.21.12"
+            ;;
+        26.04)
+            supported_distribution=1
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            # Versions installed by Ubuntu apt
+            PROTOBUF_PKG_VERSION="3.21.12"
+            GRPC_PKG_VERSION="1.51.1"
+            # Version of grpc source to install by building it
+            #GRPC_SOURCE_VERSION="1.70.2"  # failed at cmake step.  Google search recommended grpc 1.75 or later
+            #GRPC_SOURCE_VERSION="1.71.2"  # not tried
+            #GRPC_SOURCE_VERSION="1.72.2"  # not tried
+            #GRPC_SOURCE_VERSION="1.73.1"  # not tried
+            #GRPC_SOURCE_VERSION="1.74.1"  # not tried
+            GRPC_SOURCE_VERSION="1.75.1"  # not tried
+            #GRPC_SOURCE_VERSION="1.76.0"  # not tried
+            #GRPC_SOURCE_VERSION="1.78.1"  # not tried
+            # Version of Python package protobuf to install
+            # corresponding to grpc source version above
+            #PROTOBUF_VERSION_FOR_PIP="5.29.0"  # this version goes with grpc 1.70.2
+            PROTOBUF_VERSION_FOR_PIP="6.31.0"  # this version goes with grpc 1.75.1
             ;;
     esac
 fi
@@ -468,7 +488,10 @@ uv pip list
 # installed into this virtual environment, not into system-wide
 # directories like /usr/local/bin
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/008-just-before-venv-creation"
-uv venv "${PYTHON_VENV}"
+if [ ! -d "${PYTHON_VENV}" ]
+then
+    uv venv "${PYTHON_VENV}"
+fi
 source "${PYTHON_VENV}/bin/activate"
 # Set this variable to enable `uv sync` and other commands to use the
 # venv.
@@ -554,11 +577,16 @@ else
         echo "Found directory ${INSTALL_DIR}/grpc.  Assuming desired version of grpc is already installed."
     else
         TIME_GRPC_CLONE_START=$(date +%s)
-        get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
-        cd grpc
-        git checkout v${GRPC_SOURCE_VERSION}
-        # These commands are recommended in grpc's BUILDING.md file for Unix:
-        git submodule update --init --recursive
+	if [ -r ${REPO_CACHE_DIR}/grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz ]
+	then
+            get_from_nearest https://github.com/grpc/grpc.git grpc-with-submodules-v${GRPC_SOURCE_VERSION}.tar.gz
+	else
+            get_from_nearest https://github.com/grpc/grpc.git grpc.tar.gz
+            cd grpc
+            git checkout v${GRPC_SOURCE_VERSION}
+            # These commands are recommended in grpc's BUILDING.md file for Unix:
+            git submodule update --init --recursive
+	fi
         TIME_GRPC_CLONE_END=$(date +%s)
         TIME_GRPC_INSTALL_START=$(date +%s)
         mkdir -p cmake/build
@@ -641,7 +669,13 @@ TIME_PI_INSTALL_START=$(date +%s)
 # Deps needed to build PI:
 if [ "${ID}" = "ubuntu" ]
 then
-    sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-system-dev libboost-thread-dev
+    sudo apt-get --yes install libreadline-dev valgrind libtool-bin libboost-dev libboost-thread-dev
+    if [ "${VERSION_ID}" != "26.04" ]
+    then
+        # libboost-system-dev package does not exist on Ubuntu 26.04
+        # (it did on Ubuntu 22.04 and 24.04).
+        sudo apt-get --yes install libboost-system-dev
+    fi
 fi
 
 DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
@@ -659,6 +693,13 @@ else
     TIME_PI_CLONE_END=$(date +%s)
     git log -n 1
     TIME_PI_INSTALL_START=$(date +%s)
+    if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "26.04" ]
+    then
+        # libboost-system-dev package does not exist on Ubuntu 26.04
+        # (it did on Ubuntu 22.04 and 24.04).
+        PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+        patch -p1 < "${PATCH_DIR}/PI-dont-require-boost-system.patch"
+    fi
     ./autogen.sh
     # Cause 'sudo make install' to install Python packages for PI in a
     # Python virtual environment, if one is in use.

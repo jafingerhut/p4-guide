@@ -1,5 +1,5 @@
 diff --git a/ci/install-nanomsg.sh b/ci/install-nanomsg.sh
-index 675a3290..36de78e2 100644
+index 675a3290..0559dea9 100644
 --- a/ci/install-nanomsg.sh
 +++ b/ci/install-nanomsg.sh
 @@ -4,6 +4,43 @@
@@ -21,17 +21,17 @@ index 675a3290..36de78e2 100644
 +    # venv.
 +    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
 +    echo "All directories named site-packages or dist-packages:" >> ${outf}
-+    find / -name site-packages -o -name dist-packages | sort >> ${outf}
++    find / -name site-packages -o -name dist-packages 2>/dev/null | sort >> ${outf}
 +    echo "" >> ${outf}
 +    echo "ls -la on each such directory:" >> ${outf}
-+    for d in $(find / -name site-packages -o -name dist-packages | sort)
++    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
 +    do
 +       echo $d >> ${outf}
 +       ls -la $d >> ${outf}
 +    done
 +    #echo "" >> ${outf}
 +    #echo "ls -laR on each such directory:" >> ${outf}
-+    for d in $(find / -name site-packages -o -name dist-packages | sort)
++    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
 +    do
 +       outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
 +       cp /dev/null ${outf}
@@ -46,7 +46,16 @@ index 675a3290..36de78e2 100644
  THIS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
  source $THIS_DIR/common.sh
  
-@@ -22,5 +55,7 @@ cd build
+@@ -15,6 +52,8 @@ set -e
+ wget https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz -O nanomsg-1.0.0.tar.gz
+ tar -xzvf nanomsg-1.0.0.tar.gz
+ cd nanomsg-1.0.0
++PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
++patch -p1 < "${PATCH_DIR}/nanomsg-1.0.0-bump-minimum-cmake-version.patch"
+ mkdir build
+ cd build
+ # I added -DCMAKE_INSTALL_PREFIX=/usr because on my Ubuntu 14.04 machine, the
+@@ -22,5 +61,7 @@ cd build
  # some reason ldconfig cannot find it
  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
  cmake --build .
@@ -55,7 +64,7 @@ index 675a3290..36de78e2 100644
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/033c-behavioral-model-just-after-nanomsg-cmake-install"
  cd ..
 diff --git a/ci/install-pynng.sh b/ci/install-pynng.sh
-index 6abcd8e3..679c030a 100644
+index 6abcd8e3..9e95cdb6 100644
 --- a/ci/install-pynng.sh
 +++ b/ci/install-pynng.sh
 @@ -4,5 +4,43 @@
@@ -77,17 +86,17 @@ index 6abcd8e3..679c030a 100644
 +    # venv.
 +    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
 +    echo "All directories named site-packages or dist-packages:" >> ${outf}
-+    find / -name site-packages -o -name dist-packages | sort >> ${outf}
++    find / -name site-packages -o -name dist-packages 2>/dev/null | sort >> ${outf}
 +    echo "" >> ${outf}
 +    echo "ls -la on each such directory:" >> ${outf}
-+    for d in $(find / -name site-packages -o -name dist-packages | sort)
++    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
 +    do
 +       echo $d >> ${outf}
 +       ls -la $d >> ${outf}
 +    done
 +    #echo "" >> ${outf}
 +    #echo "ls -laR on each such directory:" >> ${outf}
-+    for d in $(find / -name site-packages -o -name dist-packages | sort)
++    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
 +    do
 +       outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
 +       cp /dev/null ${outf}
@@ -104,7 +113,7 @@ index 6abcd8e3..679c030a 100644
 +uv pip install pynng==0.9.0
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/034-behavioral-model-just-after-pip-install-pynng"
 diff --git a/ci/install-thrift.sh b/ci/install-thrift.sh
-index 587e9d31..26e677fb 100644
+index 587e9d31..89c0117e 100644
 --- a/ci/install-thrift.sh
 +++ b/ci/install-thrift.sh
 @@ -4,25 +4,60 @@
@@ -126,17 +135,17 @@ index 587e9d31..26e677fb 100644
 +    # venv.
 +    echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> ${outf}
 +    echo "All directories named site-packages or dist-packages:" >> ${outf}
-+    find / -name site-packages -o -name dist-packages | sort >> ${outf}
++    find / -name site-packages -o -name dist-packages 2>/dev/null | sort >> ${outf}
 +    echo "" >> ${outf}
 +    echo "ls -la on each such directory:" >> ${outf}
-+    for d in $(find / -name site-packages -o -name dist-packages | sort)
++    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
 +    do
 +       echo $d >> ${outf}
 +       ls -la $d >> ${outf}
 +    done
 +    #echo "" >> ${outf}
 +    #echo "ls -laR on each such directory:" >> ${outf}
-+    for d in $(find / -name site-packages -o -name dist-packages | sort)
++    for d in $(find / -name site-packages -o -name dist-packages 2>/dev/null | sort)
 +    do
 +       outf="${output_dir}/ls-laR-of-$(echo "$d" | tr '/' '-')"
 +       cp /dev/null ${outf}
@@ -179,15 +188,14 @@ index 587e9d31..26e677fb 100644
 +uv pip install thrift==0.16.0
 +dump_python_lib_info "${DEBUG_DUMP_DIR}/033-behavioral-model-just-after-pip-install-thrift"
 diff --git a/install_deps.sh b/install_deps.sh
-index 02dd6d2b..110419c5 100755
+index 02dd6d2b..f1510feb 100755
 --- a/install_deps.sh
 +++ b/install_deps.sh
-@@ -50,7 +50,7 @@ cd $tmpdir
+@@ -50,7 +39,6 @@ cd $tmpdir
  
  bash ../ci/install-thrift.sh
  bash ../ci/install-nanomsg.sh
 -bash ../ci/install-pi.sh
-+#bash ../ci/install-pi.sh
  sudo ldconfig
  bash ../ci/install-pynng.sh
  
