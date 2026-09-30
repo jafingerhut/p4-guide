@@ -1048,7 +1048,10 @@ dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/085-after-pip-install-psutil-crcm
 # very recent version of grpcio that may cause trouble.
 uv pip install wheel
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/090-after-pip-install-wheel"
-if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
+if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "26.04" ]
+then
+    uv pip install grpcio==1.75.1
+elif [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
 then
     # Version 1.51.3 fails to install on Ubuntu 24.04 as of
     # 2024-May-20.
