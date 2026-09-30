@@ -85,7 +85,7 @@ CLEAN_UP_AS_WE_GO=1
 # CLEAN_UP_AS_WE_GO=1).
 KEEP_P4C_BUILD_FOR_TESTING=1
 
-USE_DISTRIBUTION_SSL_PACKAGE=0
+USE_DISTRIBUTION_SSL_PACKAGE=1
 
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 
@@ -803,6 +803,7 @@ else
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/behavioral-model-adjust-ubuntu-packges.patch"
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-2026-sep.patch"
+    patch -p1 < "${PATCH_DIR}/behavioral-model-extra-libs-for-build.patch"
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/031-behavioral-model-just-before-install_deps"
