@@ -202,24 +202,27 @@ then
             PROTOBUF_VERSION_FOR_PIP="4.21.12"
             ;;
         26.04)
+            #############################################################
+            # Use Ubuntu apt to install grpc and protobuf
+            #############################################################
             supported_distribution=1
-            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
             # Versions installed by Ubuntu apt
             PROTOBUF_PKG_VERSION="3.21.12"
             GRPC_PKG_VERSION="1.51.1"
-            # Version of grpc source to install by building it
-            #GRPC_SOURCE_VERSION="1.70.2"  # failed at cmake step.  Google search recommended grpc 1.75 or later
-            #GRPC_SOURCE_VERSION="1.71.2"  # not tried
-            #GRPC_SOURCE_VERSION="1.72.2"  # not tried
-            #GRPC_SOURCE_VERSION="1.73.1"  # not tried
-            #GRPC_SOURCE_VERSION="1.74.1"  # not tried
-            GRPC_SOURCE_VERSION="1.75.1"  # not tried
-            #GRPC_SOURCE_VERSION="1.76.0"  # not tried
-            #GRPC_SOURCE_VERSION="1.78.1"  # not tried
-            # Version of Python package protobuf to install
-            # corresponding to grpc source version above
-            #PROTOBUF_VERSION_FOR_PIP="5.29.0"  # this version goes with grpc 1.70.2
-            PROTOBUF_VERSION_FOR_PIP="6.31.0"  # this version goes with grpc 1.75.1
+            # Closest versions available via "pip3 install" to the above
+            PROTOBUF_VERSION_FOR_PIP="4.21.12"
+
+            #############################################################
+            # Build grpc and protobuf from source
+            #############################################################
+            #supported_distribution=1
+            #INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            ## Version of grpc source to install by building it
+            #GRPC_SOURCE_VERSION="1.75.1"
+            ## Version of Python package protobuf to install
+            ## corresponding to grpc source version above
+            #PROTOBUF_VERSION_FOR_PIP="6.31.0"
             ;;
     esac
 fi
@@ -532,8 +535,8 @@ then
 else
     if [ ! -d grpc ]
     then
-	debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
-	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/010-before-installing-grpc"
+        debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
+        dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/010-before-installing-grpc"
     fi
     # Do not bother installing protobuf package from source code, as
     # whatever parts of protobuf we need is installed as a result of
