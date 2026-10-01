@@ -1,29 +1,15 @@
 #! /bin/bash
 
 # Copyright 2025 Andy Fingerhut
-
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 # SPDX-License-Identifier: Apache-2.0
-
 
 # This script differs from install-p4dev-v9.sh as follows:
 
-# * Remove old checks for Python2 files
-# * Remove vestiges of support for Fedora Linux
+# * Add support for Ubuntu 26.04
 # * Remove support for Ubuntu 20.04
 # * Use uv for creating Python venv and installing Python packages
-# * TODO: Add support for Ubuntu 26.04
+# * Remove old checks for Python2 files
+# * Remove vestiges of support for Fedora Linux
 
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
@@ -473,25 +459,24 @@ then
     sudo apt-get --yes install \
          autoconf automake libtool curl make g++ unzip \
          pkg-config python3-pip python3-venv
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/005-after-python-apt-installs"
 fi
 
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/005-after-python-apt-installs"
-
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-echo $PATH
-source $HOME/.local/bin/env
-echo $PATH
+if ! command -v uv &> /dev/null; then
+    # Install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    source $HOME/.local/bin/env
+fi
 which uv
 uv pip list
 
-# Create a new Python virtual environment using venv.  Later we will
-# attempt to ensure that all new Python packages installed are
-# installed into this virtual environment, not into system-wide
-# directories like /usr/local/bin
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/008-just-before-venv-creation"
 if [ ! -d "${PYTHON_VENV}" ]
 then
+    # Create a new Python virtual environment using venv.  Later we
+    # will attempt to ensure that all new Python packages installed
+    # are installed into this virtual environment, not into
+    # system-wide directories like /usr/local/bin
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/008-just-before-venv-creation"
     uv venv "${PYTHON_VENV}"
 fi
 source "${PYTHON_VENV}/bin/activate"
@@ -513,8 +498,6 @@ pip list  || echo "Some error occurred attempting to run command: pip"
 pip3 list || echo "Some error occurred attempting to run command: pip3"
 
 cd "${INSTALL_DIR}"
-debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/010-before-installing-grpc"
 
 set +x
 echo "------------------------------------------------------------"
@@ -532,6 +515,8 @@ fi
 
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
 then
+    debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/010-before-installing-grpc"
     TIME_GRPC_CLONE_START=$(date +%s)
     TIME_GRPC_CLONE_END=$(date +%s)
     TIME_GRPC_INSTALL_START=$(date +%s)
@@ -545,6 +530,11 @@ then
     TIME_GRPC_INSTALL_END=$(date +%s)
     uv pip list
 else
+    if [ ! -d grpc ]
+    then
+	debug_dump_many_install_files ${INSTALL_DIR}/usr-local-1-before-protobuf.txt
+	dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/010-before-installing-grpc"
+    fi
     # Do not bother installing protobuf package from source code, as
     # whatever parts of protobuf we need is installed as a result of
     # installing grpc from source code, and/or installing the Python
@@ -674,8 +664,6 @@ echo "start install PI:"
 set -x
 date
 
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/025-before-PI"
-
 TIME_PI_CLONE_START=$(date +%s)
 TIME_PI_CLONE_END=$(date +%s)
 TIME_PI_INSTALL_START=$(date +%s)
@@ -696,6 +684,7 @@ if [ -d PI ]
 then
     echo "Found directory ${INSTALL_DIR}/PI.  Assuming desired version of PI is already installed."
 else
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/025-before-PI"
     TIME_PI_CLONE_START=$(date +%s)
     git clone https://github.com/p4lang/PI
     cd PI
@@ -757,8 +746,6 @@ echo "end install PI:"
 set -x
 date
 
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/030-before-behavioral-model"
-
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-4-after-PI.txt
 
@@ -789,6 +776,7 @@ if [ -d behavioral-model ]
 then
     echo "Found directory ${INSTALL_DIR}/behavioral-model.  Assuming desired version of behavioral-model is already installed."
 else
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/030-before-behavioral-model"
     TIME_BEHAVIORAL_MODEL_CLONE_START=$(date +%s)
     get_from_nearest https://github.com/p4lang/behavioral-model.git behavioral-model.tar.gz
     cd behavioral-model
@@ -844,7 +832,10 @@ date
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-5-after-behavioral-model.txt
 
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/050-before-p4c"
+if [ ! -d p4c ]
+then
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/050-before-p4c"
+fi
 
 set +x
 echo "------------------------------------------------------------"
@@ -877,7 +868,10 @@ fi
 uv pip install scapy==2.5.0 ply
 uv pip list
 
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/055-before-p4c-after-install-scapy"
+if [ ! -d p4c ]
+then
+    dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/055-before-p4c-after-install-scapy"
+fi
 
 DISK_USED_BEFORE_P4C_CLEANUP=`get_used_disk_space_in_mbytes`
 if [ -d p4c ]
