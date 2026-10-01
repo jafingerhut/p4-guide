@@ -100,6 +100,8 @@ VirtualBox on these host operating systems:
 + macOS 12.x.y
 + macOS 13.x.y
 + macOS 14.x.y
++ macOS 15.x.y
++ macOS 26.x.y (this is the next version after macOS 15)
 + Windows 10
 + Windows 11
 
@@ -133,8 +135,6 @@ $ sudo apt install git     # For Ubuntu
 $ sudo dnf install git     # For Fedora
 $ git clone https://github.com/jafingerhut/p4-guide
 $ ./p4-guide/bin/install-p4dev-v8.sh |& tee log.txt
-
-# If you used v8 version of the install script, see Note 1 below.
 ```
 
 The `|& tee log.txt` part of the command is not necessary for the
@@ -149,6 +149,14 @@ every `bash` shell where you wish to run the P4 development tools.
 You can add the `source p4setup.bash` line to your `$HOME/.bashrc`
 file, so that it will automatically be run for you in any new `bash`
 shell you create.
+
+
+## Beta version of script for installing on Ubuntu 26.04
+
+Replace `install-p4dev-v8.sh` with `install-p4dev-v10.sh` if you wish
+to try out a newer, still experimental, version of the script that may
+work on Ubuntu 26.04.  See [here](ubuntu-26.04-caveats.md) for details
+on potential problems with using it.
 
 
 ## Other details
