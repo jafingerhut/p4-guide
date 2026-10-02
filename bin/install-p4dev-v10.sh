@@ -794,6 +794,12 @@ else
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/behavioral-model-adjust-ubuntu-packges.patch"
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-2026-sep.patch"
+    # I have confirmed that as of the latest version of this script on
+    # 2026-Oct-02, if you attempt to run it with the only change being
+    # to remove the following patch command, the linking of
+    # simple_switch_grpc fails on Ubuntu 26.04.  I think it builds
+    # fine on Ubuntu 22.04 and 24.04 without these changes.  I do not
+    # know why there is a difference on 26.04.
     patch -p1 < "${PATCH_DIR}/behavioral-model-extra-libs-for-build.patch"
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
