@@ -29,6 +29,7 @@ compiled again.
 
 | Date published | Operating system | x86_64 VM Image link | Tested working on x86_64 Windows? | aarch64 VM Image link | Tested working on Apple Silicon macOS? |
 | -------------- | ---------------- | -------------------- | --------------------- | ------------------------ | -------------------------- |
+| 2026-Oct-01 | Ubuntu 24.04 | [5.7 GByte VM image](https://drive.google.com/file/d/1_-Tr5mKCvjP1TCGQvjVTA5bqyNefGqSP/view?usp=sharing) | Combo37 | [5.5 GByte VM image](https://drive.google.com/file/d/1AlTV6rlxdRW8P6oMi0ECIMG8CiNEZJBb/view?usp=sharing) | Combo38 |
 | 2026-Sep-01 | Ubuntu 24.04 | [5.5 GByte VM image](https://drive.google.com/file/d/1pl659YrTcNlk9Y61lVLaky0R12vRrUoU/view?usp=sharing) | Combo35 | [5.4 GByte VM image](https://drive.google.com/file/d/1HBX3IaqRCwF8NhDufUjVRwUwWt_q5v0B/view?usp=sharing) | Combo36 |
 | 2026-Aug-01 | Ubuntu 24.04 | [5.5 GByte VM image](https://drive.google.com/file/d/1NhjcWYYIFv1vUyDCaYC5DvqswYafhXkS/view?usp=sharing) | Combo35 | [4.5 GByte VM image](https://drive.google.com/file/d/1S-UM_R5XQ2nw1pt1YwB9A8rd7GPA7aNl/view?usp=sharing) | Combo36 |
 | 2026-Jul-04 | Ubuntu 24.04 | [5.6 GByte VM image](https://drive.google.com/file/d/1DCzaojvp2-iRc6cHC23BjMxpGpojBv4i/view?usp=sharing) | Combo35 | [4.3 GByte VM image](https://drive.google.com/file/d/149k1RR6Q_tI03a2AVnD_2SjObtBPh1dB/view?usp=sharing) | Combo36 |
@@ -49,6 +50,8 @@ Version combinations I have used above for testing VM images:
 | Combo31 | macOS 15.7.x | VirtualBox 7.1.14 |
 | Combo35 | Windows 11 Pro | VirtualBox 7.2.8 |
 | Combo36 | macOS 26.x | VirtualBox 7.2.8 |
+| Combo37 | Windows 11 Pro | VirtualBox 7.2.14 |
+| Combo38 | macOS 26.x | VirtualBox 7.2.14 |
 
 
 ## Quick instructions for successful install script run
