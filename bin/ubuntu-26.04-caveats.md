@@ -145,3 +145,133 @@ The following tests FAILED:
 	4875 - testgen-p4c-ebpf/ebpf_conntrack_extern.p4 (Failed) testgen-p4c-ebpf
 	4967 - gtestp4c (Failed)                                 gtest
 ```
+
+
+# Test results for install-p4dev-v10.sh on multiple OS versions
+
+Version of the p4-guide repository tested:
+```
+commit 3eb855a3d8253d564fedf33b6d167c8a5164a6fa (HEAD -> master, origin/master, origin/HEAD)
+Author: Andy Fingerhut <andy_fingerhut@alum.wustl.edu>
+Date:   Fri Oct 2 15:29:08 2026 -0400
+
+    Only use a new patch on Ubuntu 26.04 installs.  Causes failure on 22.04
+```
+
++ x86_64 physical host, Windows 11, VirtualBox 7.2.14
+  + guest OS Ubuntu 22.04: install ok, all p4c tests except gtestp4c pass
+    + installed apt package list #1, python package list #1, libthrift-0.22.0
+  + guest OS Ubuntu 24.04: install ok, all p4c tests except gtestp4c pass
+    + installed apt package list #2, python package list #2, libthrift-0.22.0
+  + guest OS Ubuntu 26.04: install ok, all p4c tests except gtestp4c, and except for testgen-p4c-ebpf/op_bin.p4, all tests in testgen-p4c-ebpf failed
+    + installed apt package list #3, python package list #3, libthrift-0.22.0
++ aarch64 physical host (Apple Silicon Mac), macOS 26.7.x, UTM
+  + guest OS Ubuntu 22.04: install ok, all p4c tests except gtestp4c pass
+    + installed apt package list #1, python package list #1, libthrift-0.22.0
+  + guest OS Ubuntu 24.04: install ok, all p4c tests except gtestp4c pass
+    + installed apt package list #2, python package list #2, libthrift-0.22.0
+  + guest OS Ubuntu 26.04: install ok, all p4c tests except gtestp4c, and except for testgen-p4c-ebpf/op_bin.p4, all tests in testgen-p4c-ebpf failed
+    + installed apt package list #3, python package list #3, libthrift-0.22.0
+
+
+## Ubuntu apt package list #1
+
++ libprotobuf-c1 1.3.3-1ubuntu2.1
++ libprotoc23 3.12.4-1ubuntu7.22.04.6
++ libprotobuf23 3.12.4-1ubuntu7.22.04.6
++ libprotobuf-dev 3.12.4-1ubuntu7.22.04.6
++ libgrpc++1 1.30.2-3-build6
++ libgrpc++-dev 1.30.2-3-build6
++ libgrpc10 1.30.2-3build6
++ libgrpc-dev 1.30.2-3build6
+
+
+## Ubuntu apt package list #2
+
++ libprotobuf-c1 1.4.1-1ubuntu4
++ libprotoc32t64 3.21.12-8.2ubuntu0.3
++ libprotobuf32t64 3.21.12-8.2ubuntu0.3
++ libprotobuf-dev 3.21.12-8.2ubuntu0.3
++ libgrpc++1.51t64 1.51.1-4.1build5
++ libgrpc++-dev 1.51.1-4.1build5
++ libgrpc29t64 1.51.1-4.1build5
++ libgrpc-dev 1.51.1-4.1build5
+
+
+## Ubuntu apt package list #3
+
++ libprotobuf-lite32t64 3.21.12-15ubuntu1
++ libprotoc32t64 3.21.12-15ubuntu1
++ libprotobuf32t64 3.21.12-15ubuntu1
++ libprotobuf-dev 3.21.12-15ubuntu1
++ libgrpc++1.51t64 1.51.1-8ubuntu1
++ libgrpc++-dev 1.51.1-8ubuntu1
++ libgrpc29t64 1.51.1-8ubuntu1
++ libgrpc-dev 1.51.1-8ubuntu1
+
+
+## Python installed package list #1
+
+```
+$ uv pip list
+Using Python 3.14.4 environment at: /home/p4/src/p4dev-python-venv
+Package                  Version                           Editable project location
+------------------------ --------------------------------- -------------------------
+backcall                 0.2.0
+cffi                     2.1.1
+crcmod                   1.7
+decorator                5.3.1
+getmac                   0.9.5
+googleapis-common-protos 1.73.0
+grpcio                   1.51.3
+ipython                  7.31.1
+jedi                     0.17.2
+matplotlib-inline        0.2.2
+mininet                  2.3.1b4                           /home/p4/src/mininet
+netifaces                0.11.0
+p4runtime                1.4.1
+p4runtime-shell          0.0.6.post28+ge6fa803ce.d20260930
+packaging                26.3
+parso                    0.7.1
+pexpect                  4.9.0
+pickleshare              0.7.5
+ply                      3.11
+prompt-toolkit           3.0.53
+protobuf                 3.20.3
+psutil                   7.2.2
+ptf                      0.12.3
+ptyprocess               0.7.0
+pycparser                3.0
+pygments                 2.21.0
+pynng                    0.9.0
+pyperclip                1.8.2
+scapy                    2.5.0
+scapy-helper             0.14.8
+setuptools               84.0.0
+six                      1.17.0
+sniffio                  1.3.1
+tabulate                 0.8.10
+thrift                   0.22.0
+traitlets                5.16.1
+wcwidth                  0.9.1
+wheel                    0.48.0
+```
+
+
+## Python installed package list #2
+
+Same as list #1, except grpcio is version 1.59.3
+
+
+## Python installed package list #3
+
+Same as list #1, except grpcio is version 1.75.1.  This is because the
+install-p4dev-v10.sh has an explicit if condition checking for Ubuntu
+26.04 that causes grpcio version 1.75.1 Python package to be
+installed.  I can easily change this.
+
+Also this package was installed:
+
+```
+typing-extensions        4.16.0
+```
