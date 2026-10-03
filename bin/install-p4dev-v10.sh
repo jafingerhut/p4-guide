@@ -21,7 +21,7 @@ export THIS_SCRIPT_DIR_ABSOLUTE=`readlink -f "${THIS_SCRIPT_DIR_MAYBE_RELATIVE}"
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04 26.04"
     1>&2 echo ""
     1>&2 echo "Proceed installing manually at your own risk of"
     1>&2 echo "significant time spent figuring out how to make it all"
@@ -190,7 +190,8 @@ then
             PROTOBUF_PKG_VERSION="3.12.4"
             GRPC_PKG_VERSION="1.30.2"
             # Closest versions available via "pip3 install" to the above
-            PROTOBUF_VERSION_FOR_PIP="3.12.4"
+            PROTOBUF_PYTHON_PKG_VERSION="3.12.4"
+	    GRPCIO_PYTHON_PKG_VERSION="1.51.3"
             ;;
         24.04)
             supported_distribution=1
@@ -199,7 +200,10 @@ then
             PROTOBUF_PKG_VERSION="3.21.12"
             GRPC_PKG_VERSION="1.51.1"
             # Closest versions available via "pip3 install" to the above
-            PROTOBUF_VERSION_FOR_PIP="4.21.12"
+            PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
+	    # grpcio version 1.51.3 fails to install on Ubuntu 24.04
+	    # as of 2024-May-20.
+	    GRPCIO_PYTHON_PKG_VERSION="1.59.3"
             ;;
         26.04)
             #############################################################
@@ -211,7 +215,10 @@ then
             PROTOBUF_PKG_VERSION="3.21.12"
             GRPC_PKG_VERSION="1.51.1"
             # Closest versions available via "pip3 install" to the above
-            PROTOBUF_VERSION_FOR_PIP="4.21.12"
+            PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
+	    # TODO: Try changing grpcio to version 1.51.1 to see if it
+	    # works.
+	    GRPCIO_PYTHON_PKG_VERSION="1.75.1"
 
             #############################################################
             # Build grpc and protobuf from source
@@ -222,7 +229,7 @@ then
             #GRPC_SOURCE_VERSION="1.75.1"
             ## Version of Python package protobuf to install
             ## corresponding to grpc source version above
-            #PROTOBUF_VERSION_FOR_PIP="6.31.0"
+            #PROTOBUF_PYTHON_PKG_VERSION="6.31.0"
             ;;
     esac
 fi
@@ -332,6 +339,7 @@ echo ""
 echo "It is regularly tested on freshly installed versions of these systems:"
 echo "    Ubuntu 22.04"
 echo "    Ubuntu 24.04"
+echo "    Ubuntu 26.04"
 echo "with all Ubuntu software updates as of the date of testing.  See"
 echo "this directory for log files recording the last date this script"
 echo "was tested on its supported operating systems:"
@@ -349,15 +357,15 @@ echo ""
 echo "+ gRPC: github.com/google/grpc.git v${GRPC_VERSION}"
 echo "+ PI: github.com/p4lang/PI latest version"
 echo "+ behavioral-model: github.com/p4lang/behavioral-model latest version"
-echo "  which, as of 2023-Sep-22, also installs these things:"
-echo "  + thrift version 0.16.0"
+echo "  which, as of 2026-Oct-03, also installs these things:"
+echo "  + thrift version 0.22.0"
 echo "  + nanomsg version 1.0.0"
 echo "  + nnpy latest version available via 'pip install'"
 echo "+ p4c: github.com/p4lang/p4c latest version"
 echo "+ ptf: github.com/p4lang/ptf latest version"
 echo "+ tutorials: github.com/p4lang/tutorials latest version"
 echo "+ Mininet: github.com/mininet/mininet latest version as of 2024-Sep-18"
-echo "+ Python packages: protobuf ${PROTOBUF_VERSION_FOR_PIP}, grpcio - a recent version auto-selected by uv pip install"
+echo "+ Python packages: protobuf ${PROTOBUF_PYTHON_PKG_VERSION}, grpcio ${GRPCIO_PYTHON_PKG_VERSION}"
 echo "+ Python packages: scapy (2.5.0), psutil, crcmod"
 echo ""
 echo "Note that anything installed as 'the latest version' can change"
@@ -524,10 +532,10 @@ then
     TIME_GRPC_CLONE_END=$(date +%s)
     TIME_GRPC_INSTALL_START=$(date +%s)
     sudo apt-get --yes install libprotobuf-dev protobuf-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev
-    if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
+    if [ "${PROTOBUF_PYTHON_PKG_VERSION}" != "" ]
     then
         dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
-        uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+        uv pip install protobuf==${PROTOBUF_PYTHON_PKG_VERSION}
         dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
     fi
     TIME_GRPC_INSTALL_END=$(date +%s)
@@ -542,10 +550,10 @@ else
     # whatever parts of protobuf we need is installed as a result of
     # installing grpc from source code, and/or installing the Python
     # protobuf package using pip.
-    if [ "${PROTOBUF_VERSION_FOR_PIP}" != "" ]
+    if [ "${PROTOBUF_PYTHON_PKG_VERSION}" != "" ]
     then
         dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/013-just-before-installing-protobuf-via-pip"
-        uv pip install protobuf==${PROTOBUF_VERSION_FOR_PIP}
+        uv pip install protobuf==${PROTOBUF_PYTHON_PKG_VERSION}
         dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/015-after-installing-protobuf-via-pip"
     fi
 
@@ -590,8 +598,7 @@ else
         TIME_GRPC_INSTALL_START=$(date +%s)
         mkdir -p cmake/build
         cd cmake/build
-       #GRPC_CMAKE_OPTS="-DgRPC_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_STANDARD=17 -DgRPC_ABSL_PROVIDER=module -DgRPC_CARES_PROVIDER=module -DgRPC_PROTOBUF_PROVIDER=module -DgRPC_RE2_PROVIDER=module -DgRPC_SSL_PROVIDER=module -DgRPC_ZLIB_PROVIDER=module"
-       GRPC_CMAKE_OPTS="-DgRPC_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_STANDARD=17"
+        GRPC_CMAKE_OPTS="-DgRPC_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_STANDARD=17"
         if [ ${USE_DISTRIBUTION_SSL_PACKAGE} -eq 1 ]
         then
            # I learned about the cmake option
@@ -1054,17 +1061,7 @@ dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/085-after-pip-install-psutil-crcm
 # very recent version of grpcio that may cause trouble.
 uv pip install wheel
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/090-after-pip-install-wheel"
-if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "26.04" ]
-then
-    uv pip install grpcio==1.75.1
-elif [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "24.04" ]
-then
-    # Version 1.51.3 fails to install on Ubuntu 24.04 as of
-    # 2024-May-20.
-    uv pip install grpcio==1.59.3
-else
-    uv pip install grpcio==1.51.3
-fi
+uv pip install grpcio=="${GRPCIO_PYTHON_PKG_VERSION}"
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/095-after-pip-install-grpcio"
 
 git clone https://github.com/p4lang/p4runtime-shell
