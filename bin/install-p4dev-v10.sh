@@ -1,6 +1,8 @@
 #! /bin/bash
 
-# Copyright 2025 Andy Fingerhut
+# SPDX-FileCopyrightText: 2024 Andy Fingerhut
+# Copyright 2024 Andy Fingerhut
+#
 # SPDX-License-Identifier: Apache-2.0
 
 # This script differs from install-p4dev-v9.sh as follows:
@@ -1102,7 +1104,6 @@ set +x
 echo "end install tutorials:"
 set -x
 date
-
 
 cd "${INSTALL_DIR}"
 debug_dump_many_install_files ${INSTALL_DIR}/usr-local-9-after-miscellaneous-install.txt
