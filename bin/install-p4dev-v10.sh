@@ -217,7 +217,10 @@ then
             # Closest versions available via "pip3 install" to the above
             PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
 	    # TODO: Try changing grpcio to version 1.51.1 to see if it
-	    # works.
+	    # works.  'uv pip install grpcio==<version>' fails to
+	    # install on Ubuntu 26.04 for versions 1.51.3 and 1.59.3
+	    # as of 2026-Oct-03.  This version installs, and enables
+	    # tests to pass.
 	    GRPCIO_PYTHON_PKG_VERSION="1.75.1"
 
             #############################################################
