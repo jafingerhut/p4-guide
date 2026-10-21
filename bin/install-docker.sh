@@ -1,20 +1,7 @@
 #! /bin/bash
 # Copyright 2019 Andy Fingerhut
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 # SPDX-License-Identifier: Apache-2.0
-
 
 # Use the test environment install script provided with Docker to install it.
 # We can use a different method to install Docker later if we decide we
@@ -26,7 +13,7 @@
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script has only been tested on these combinations:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 24.04"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 20.04 22.04 24.04 26.04"
     1>&2 echo "    ID fedora, VERSION_ID in 36 37 38"
     1>&2 echo "    ID rocky, VERSION_ID in 9.2"
     1>&2 echo ""
@@ -55,6 +42,9 @@ then
 	    supported_distribution=1
 	    ;;
 	24.04)
+	    supported_distribution=1
+	    ;;
+	26.04)
 	    supported_distribution=1
 	    ;;
     esac
