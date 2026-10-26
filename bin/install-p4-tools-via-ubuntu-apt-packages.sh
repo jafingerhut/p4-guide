@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
 
