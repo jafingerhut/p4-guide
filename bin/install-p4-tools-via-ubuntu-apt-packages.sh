@@ -53,7 +53,7 @@ else
     exit 1
 fi
 
-sudo apt-get --yes install git curl
+sudo apt-get --yes install git curl python3-dev
 
 if ! command -v uv &> /dev/null; then
     # Install uv
@@ -61,16 +61,15 @@ if ! command -v uv &> /dev/null; then
     source $HOME/.local/bin/env
 fi
 
-sudo apt-get --yes install git curl
-
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
-uv venv "${PYTHON_VENV}"
+uv venv --seed "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
 # Set this variable to enable `uv sync` and other commands to use the
 # venv.
 export UV_PROJECT_ENVIRONMENT="${VIRTUAL_ENV}"
 echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
 echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
+uv pip install wheel
 
 
 # Install open source P4 development tools via Debian packages
@@ -139,10 +138,11 @@ echo  "DISK_USED_END - DISK_USED_START : $((${DISK_USED_END}-${DISK_USED_START})
 
 cd "${INSTALL_DIR}"
 cp /dev/null p4setup.bash
+echo "source \"$HOME/.local/bin/env\"" >> p4setup.bash
 echo "source \"${PYTHON_VENV}/bin/activate\"" >> p4setup.bash
 echo "export UV_PROJECT_ENVIRONMENT=\${PYTHON_VENV}" >> p4setup.bash
 echo "export P4_EXTRA_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.bash
 
 echo "Run these commands in your shell's rc file, or at least in any shell where you want to use these tools:"
 echo ""
-echo "    source \"${INSTALL_DIR}/p4setup\""
+echo "    source \"${INSTALL_DIR}/p4setup.bash\""
