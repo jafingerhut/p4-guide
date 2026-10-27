@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 # Remember the current directory when the script was started:
 INSTALL_DIR="${PWD}"
 
@@ -11,7 +13,45 @@ get_used_disk_space_in_mbytes() {
     echo $(df --output=used --block-size=1M . | tail -n 1)
 }
 
+linux_version_warning() {
+    1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
+    1>&2 echo "This script only supports these:"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04"
+}
+
 DISK_USED_START=`get_used_disk_space_in_mbytes`
+
+if [ ! -r /etc/os-release ]
+then
+    1>&2 echo "No file /etc/os-release.  Cannot determine what OS this is."
+    linux_version_warning
+    exit 1
+fi
+source /etc/os-release
+
+supported_distribution=0
+if [ "${ID}" = "ubuntu" ]
+then
+    case "${VERSION_ID}" in
+        22.04)
+            supported_distribution=1
+            ;;
+        24.04)
+            supported_distribution=1
+            ;;
+        26.04)
+            supported_distribution=1
+            ;;
+    esac
+fi
+
+if [ ${supported_distribution} -eq 1 ]
+then
+    echo "Found supported ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
+else
+    linux_version_warning
+    exit 1
+fi
 
 sudo apt-get --yes install git curl
 
@@ -20,6 +60,8 @@ if ! command -v uv &> /dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
     source $HOME/.local/bin/env
 fi
+
+sudo apt-get --yes install git curl
 
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
 uv venv "${PYTHON_VENV}"
@@ -33,8 +75,8 @@ echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
 
 # Install open source P4 development tools via Debian packages
 
-echo 'deb http://download.opensuse.org/repositories/home:/p4lang:/latest/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/home:p4lang:latest.list
-curl -fsSL https://download.opensuse.org/repositories/home:p4lang:latest/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg > /dev/null
+echo "deb http://download.opensuse.org/repositories/home:/p4lang:/latest/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/home:p4lang:latest.list
+curl -fsSL https://download.opensuse.org/repositories/home:p4lang:latest/xUbuntu_${VERSION_ID}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg > /dev/null
 sudo apt update
 sudo apt --yes install p4lang-p4c p4lang-bmv2
 
@@ -51,7 +93,12 @@ git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
+# TODO: Do I need to use different patches for different versions of
+# Ubuntu Linux here?  The following commented-out one I have recently
+# tested working on 22.04 and 24.04, but it fails attempting to
+# install no longer existing cgroupfs package on 26.04.
+#patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-sep-enable-uv-venv.patch"
 cd ..
 RESTORE_SUDOERS_FILE=0
 if [ -e /etc/sudoers.d/sudoers-dotfiles ]
