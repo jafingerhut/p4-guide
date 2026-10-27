@@ -39,6 +39,9 @@ then
         24.04)
             supported_distribution=1
             ;;
+        26.04)
+            supported_distribution=1
+            ;;
     esac
 fi
 
@@ -77,7 +80,12 @@ git clone https://github.com/mininet/mininet mininet
 cd mininet
 git checkout ${MININET_COMMIT}
 PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
+# TODO: Do I need to use different patches for different versions of
+# Ubuntu Linux here?  The following commented-out one I have recently
+# tested working on 22.04 and 24.04, but it fails attempting to
+# install no longer existing cgroupfs package on 26.04.
+#patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-sep-enable-uv-venv.patch"
 cd ..
 RESTORE_SUDOERS_FILE=0
 if [ -e /etc/sudoers.d/sudoers-dotfiles ]
