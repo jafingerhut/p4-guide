@@ -13,11 +13,22 @@ get_used_disk_space_in_mbytes() {
 
 DISK_USED_START=`get_used_disk_space_in_mbytes`
 
-sudo apt-get --yes install git curl python3-pip python3-venv
+sudo apt-get --yes install git curl
+
+if ! command -v uv &> /dev/null; then
+    # Install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    source $HOME/.local/bin/env
+fi
 
 PYTHON_VENV="${INSTALL_DIR}/p4dev-python-venv"
-python3 -m venv "${PYTHON_VENV}"
+uv venv "${PYTHON_VENV}"
 source "${PYTHON_VENV}/bin/activate"
+# Set this variable to enable `uv sync` and other commands to use the
+# venv.
+export UV_PROJECT_ENVIRONMENT="${VIRTUAL_ENV}"
+echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
+echo "UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}"
 
 
 # Install open source P4 development tools via Debian packages
@@ -63,12 +74,12 @@ fi
 
 # Other Python packages required for running tutorials exercises successfully
 
-pip install p4runtime psutil crcmod
+uv pip install p4runtime psutil crcmod
 
 # Other Python packages required for running p4-guide/demo1 and other
 # demo programs.
 
-pip install ptf p4runtime-shell
+uv pip install ptf p4runtime-shell
 
 DISK_USED_END=`get_used_disk_space_in_mbytes`
 
@@ -79,7 +90,12 @@ echo  "DISK_USED_START                ${DISK_USED_START}"
 echo  "DISK_USED_END                  ${DISK_USED_END}"
 echo  "DISK_USED_END - DISK_USED_START : $((${DISK_USED_END}-${DISK_USED_START})) MBytes"
 
+cd "${INSTALL_DIR}"
+cp /dev/null p4setup.bash
+echo "source \"${PYTHON_VENV}/bin/activate\"" >> p4setup.bash
+echo "export UV_PROJECT_ENVIRONMENT=\${PYTHON_VENV}" >> p4setup.bash
+echo "export P4_EXTRA_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.bash
+
 echo "Run these commands in your shell's rc file, or at least in any shell where you want to use these tools:"
 echo ""
-echo "    source \"${PYTHON_VENV}/bin/activate\""
-echo "    export P4_EXTRA_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\""
+echo "    source \"${INSTALL_DIR}/p4setup\""
