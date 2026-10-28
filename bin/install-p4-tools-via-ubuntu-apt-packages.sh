@@ -16,7 +16,8 @@ get_used_disk_space_in_mbytes() {
 linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
-    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04"
+    1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04 26.04"
+    1>&2 echo "    ID debian, VERSION_ID 13"
 }
 
 DISK_USED_START=`get_used_disk_space_in_mbytes`
@@ -32,6 +33,7 @@ source /etc/os-release
 supported_distribution=0
 if [ "${ID}" = "ubuntu" ]
 then
+    TAGNAME="xUbuntu_${VERSION_ID}"
     case "${VERSION_ID}" in
         22.04)
             supported_distribution=1
@@ -40,6 +42,14 @@ then
             supported_distribution=1
             ;;
         26.04)
+            supported_distribution=1
+            ;;
+    esac
+elif [ "${ID}" = "debian" ]
+then
+    TAGNAME="Debian_${VERSION_ID}"
+    case "${VERSION_ID}" in
+        13)
             supported_distribution=1
             ;;
     esac
@@ -74,8 +84,8 @@ uv pip install wheel
 
 # Install open source P4 development tools via Debian packages
 
-echo "deb http://download.opensuse.org/repositories/home:/p4lang:/latest/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/home:p4lang:latest.list
-curl -fsSL https://download.opensuse.org/repositories/home:p4lang:latest/xUbuntu_${VERSION_ID}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg > /dev/null
+echo "deb http://download.opensuse.org/repositories/home:/p4lang:/latest/${TAGNAME}/ /" | sudo tee /etc/apt/sources.list.d/home:p4lang:latest.list
+curl -fsSL https://download.opensuse.org/repositories/home:p4lang:latest/${TAGNAME}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg > /dev/null
 sudo apt update
 sudo apt --yes install p4lang-p4c p4lang-bmv2
 
@@ -140,6 +150,7 @@ cd "${INSTALL_DIR}"
 cp /dev/null p4setup.bash
 echo "source \"$HOME/.local/bin/env\"" >> p4setup.bash
 echo "source \"${PYTHON_VENV}/bin/activate\"" >> p4setup.bash
+echo "export PATH=\"/usr/sbin:\${PATH}\"" >> p4setup.bash
 echo "export UV_PROJECT_ENVIRONMENT=\${PYTHON_VENV}" >> p4setup.bash
 echo "export P4_EXTRA_SUDO_OPTS=\"PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python\"" >> p4setup.bash
 
