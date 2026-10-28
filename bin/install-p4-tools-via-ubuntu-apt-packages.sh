@@ -107,7 +107,7 @@ PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
 # tested working on 22.04 and 24.04, but it fails attempting to
 # install no longer existing cgroupfs package on 26.04.
 #patch -p1 < "${PATCH_DIR}/mininet-patch-for-2024-sep-enable-venv.patch"
-patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-sep-enable-uv-venv.patch"
+patch -p1 < "${PATCH_DIR}/mininet-patch-for-2026-oct-enable-uv-venv.patch"
 cd ..
 RESTORE_SUDOERS_FILE=0
 if [ -e /etc/sudoers.d/sudoers-dotfiles ]
