@@ -17,7 +17,7 @@ linux_version_warning() {
     1>&2 echo "Found ID ${ID} and VERSION_ID ${VERSION_ID} in /etc/os-release"
     1>&2 echo "This script only supports these:"
     1>&2 echo "    ID ubuntu, VERSION_ID in 22.04 24.04 26.04"
-    1>&2 echo "    ID debian, VERSION_ID 13"
+    1>&2 echo "    ID debian, VERSION_ID 12 13"
 }
 
 DISK_USED_START=`get_used_disk_space_in_mbytes`
@@ -49,6 +49,9 @@ elif [ "${ID}" = "debian" ]
 then
     TAGNAME="Debian_${VERSION_ID}"
     case "${VERSION_ID}" in
+        12)
+            supported_distribution=1
+            ;;
         13)
             supported_distribution=1
             ;;
