@@ -64,7 +64,7 @@ Start with:
     pre-built binary packages)
     + These have been most tested on x86_64 processors (also known as
       amd64), running either Windows or macOS (on an Intel-based Mac
-      system), running an Ubuntu Linux VM inside of
+      system), running a Linux VM inside of
       [VirtualBox](https://www.virtualbox.org).
       + See
         [here](https://github.com/jafingerhut/jafingerhut.github.com/blob/master/notes/macos-virtualbox-ubuntu-install-notes.md)
