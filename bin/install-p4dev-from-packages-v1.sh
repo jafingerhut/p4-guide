@@ -87,8 +87,11 @@ uv pip install wheel
 
 # Install open source P4 development tools via Debian packages
 
-echo "deb http://download.opensuse.org/repositories/home:/p4lang:/latest/${TAGNAME}/ /" | sudo tee /etc/apt/sources.list.d/home:p4lang:latest.list
-curl -fsSL https://download.opensuse.org/repositories/home:p4lang:latest/${TAGNAME}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg > /dev/null
+# Drop any home:p4lang:latest source and key, which must not be mixed
+# with home:p4lang.
+sudo rm -f /etc/apt/sources.list.d/home:p4lang:latest.list /etc/apt/trusted.gpg.d/home_p4lang_latest.gpg
+echo "deb http://download.opensuse.org/repositories/home:/p4lang/${TAGNAME}/ /" | sudo tee /etc/apt/sources.list.d/home:p4lang.list
+curl -fsSL https://download.opensuse.org/repositories/home:p4lang/${TAGNAME}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_p4lang.gpg > /dev/null
 sudo apt update
 sudo apt --yes install p4lang-p4c p4lang-bmv2
 
