@@ -915,6 +915,8 @@ else
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
     TIME_P4C_INSTALL_START=$(date +%s)
+    PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+    patch -p1 < "${PATCH_DIR}/p4c-use-protobuf-33.6.patch"
     P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
     mkdir build
     cd build
