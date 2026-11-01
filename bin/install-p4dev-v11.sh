@@ -232,6 +232,7 @@ then
             INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
             # Version of grpc source to install by building it
             GRPC_SOURCE_VERSION="1.81.1"
+	    GRPCIO_PYTHON_PKG_VERSION="1.81.1"
             # Version of Python package protobuf to install
             # corresponding to grpc source version above
             PROTOBUF_PYTHON_PKG_VERSION="6.33.6"
