@@ -710,13 +710,6 @@ else
     TIME_PI_CLONE_END=$(date +%s)
     git log -n 1
     TIME_PI_INSTALL_START=$(date +%s)
-    if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "26.04" ]
-    then
-        # libboost-system-dev package does not exist on Ubuntu 26.04
-        # (it did on Ubuntu 22.04 and 24.04).
-        PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-        patch -p1 < "${PATCH_DIR}/PI-dont-require-boost-system.patch"
-    fi
     ./autogen.sh
     # Cause 'sudo make install' to install Python packages for PI in a
     # Python virtual environment, if one is in use.
@@ -806,16 +799,6 @@ else
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/behavioral-model-adjust-ubuntu-packges.patch"
     patch -p1 < "${PATCH_DIR}/behavioral-model-support-venv-2026-sep.patch"
-    if [ "${ID}" == "ubuntu" -a "${VERSION_ID}" == "26.04" ]
-    then
-        # I have confirmed that as of the latest version of this
-        # script on 2026-Oct-02, if you attempt to run it with the
-        # only change being to remove the following patch command, the
-        # linking of simple_switch_grpc fails on Ubuntu 26.04.  I
-        # think it builds fine on Ubuntu 22.04 and 24.04 without these
-        # changes.  I do not know why there is a difference on 26.04.
-        patch -p1 < "${PATCH_DIR}/behavioral-model-extra-libs-for-build.patch"
-    fi
     # This command installs Thrift, which I want to include in my build of
     # simple_switch_grpc
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/031-behavioral-model-just-before-install_deps"
