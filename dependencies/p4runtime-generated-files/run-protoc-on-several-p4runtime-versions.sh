@@ -1,5 +1,29 @@
 #! /bin/bash
 
+cd "$1"
+
+echo "------------------------------------------------------------"
+echo "/etc/os-release"
+echo "------------------------------------------------------------"
+cat /etc/os-release
+echo "------------------------------------------------------------"
+echo "PWD=$PWD"
+set -x
+apt-get update
+apt-get install --yes git
+protoc --version
+which protoc
+ls -l `which protoc`
+which grpc_python_plugin
+ls -l `which grpc_python_plugin`
+which grpc_cpp_plugin
+ls -l `which grpc_cpp_plugin`
+GRPC_PYTHON_PLUGIN=$(which grpc_python_plugin)
+ls -l
+echo $HOME
+echo $PATH
+set +x
+
 PROTOBASE="proto"
 
 #    google/rpc/status.proto \
@@ -26,13 +50,13 @@ do
     P="${LOCAL_GOOGLE_PROTO_DIR}/google/rpc/status.proto ${PROTOFILES}"
     mkdir -p py_out
     set -x
-    /usr/bin/protoc \
+    protoc \
         ${P} \
        ${ADDITIONAL_INCLUDE_DIR} \
        -I${PROTOBASE} \
         --python_out ./py_out \
         --grpc_out ./py_out \
-        --plugin=protoc-gen-grpc=/usr/bin/grpc_python_plugin
+        --plugin=protoc-gen-grpc=${GRPC_PYTHON_PLUGIN}
     set +x
     find py_out ! -type d -ls | sort
     cd ..

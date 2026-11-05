@@ -1,6 +1,8 @@
 #! /bin/bash
 
-if [ ! -d p4runtime ]; then
+if [ -d p4runtime ]; then
+    echo "Directory p4runtime already exists."
+else
     git clone https://github.com/p4lang/p4runtime
 fi
 
@@ -9,7 +11,9 @@ fi
 # convenience, but perhaps also pinning its version without having to
 # clone the entire googleapis repository, which is sizeable.
 
-if [ ! -d googleapis ]; then
+if [ -d googleapis ]; then
+    echo "Directory googleapis already exists."
+else
     git clone --depth 1 https://github.com/googleapis/googleapis.git
 fi
 
@@ -22,8 +26,12 @@ do
         # repository.
         TAG="ec4eb5ef70dbcbcbf2f8357a4b2b8c2f218845a5"
     fi
-    /bin/cp -pr p4runtime p4runtime-${v}
-    cd p4runtime-${v}
-    git checkout ${TAG}
-    cd ..
+    if [ -d p4runtime-${v} ]; then
+	echo "Directory p4runtime-${v} already exists."
+    else
+	/bin/cp -pr p4runtime p4runtime-${v}
+	cd p4runtime-${v}
+	git checkout ${TAG}
+	cd ..
+    fi
 done
