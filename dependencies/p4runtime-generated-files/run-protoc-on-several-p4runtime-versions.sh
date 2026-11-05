@@ -1,5 +1,19 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2026 Andy Fingerhut
+# Copyright 2026 Andy Fingerhut
+#
+# SPDX-License-Identifier: Apache-2.0
+
+print_usage() {
+    1>&2 echo "usage: `basename $0` <directory_to_run>"
+}
+
+if [ $# -ne 1 ]
+then
+    print_usage
+    exit 1
+fi
 cd "$1"
 
 echo "------------------------------------------------------------"

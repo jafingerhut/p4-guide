@@ -1,5 +1,10 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2026 Andy Fingerhut
+# Copyright 2026 Andy Fingerhut
+#
+# SPDX-License-Identifier: Apache-2.0
+
 IMG="p4lang/third-party:latest"
 
 RUN_DIR="${PWD}"

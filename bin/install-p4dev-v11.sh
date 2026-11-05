@@ -737,6 +737,17 @@ else
     sudo make install
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/029-PI-just-after-sudo-make-install"
 
+    # Save the generated Python code.  Why?  p4runtime-shell depends
+    # on the p4runtime package, and right now the p4runtime Python
+    # package installs Python files for p4runtime that were generated
+    # with protoc version 3.18.x, which is significantly older than
+    # the protoc version used in the rest of this install script, and
+    # not 100% compatible with the newer generated Python files for
+    # p4runtime.  So by saving the generated Python code now, we make
+    # it quick and easy to overwrite the files installed by the
+    # p4runtime package later.
+    /bin/cp -pr proto/py_out "${INSTALL_DIR}/PI-py_out"
+
     DISK_USED_BEFORE_PI_CLEANUP=`get_used_disk_space_in_mbytes`
     if [ ${CLEAN_UP_AS_WE_GO} -eq 1 ]
     then

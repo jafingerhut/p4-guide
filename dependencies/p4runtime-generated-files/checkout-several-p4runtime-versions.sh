@@ -1,5 +1,10 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2026 Andy Fingerhut
+# Copyright 2026 Andy Fingerhut
+#
+# SPDX-License-Identifier: Apache-2.0
+
 if [ -d p4runtime ]; then
     echo "Directory p4runtime already exists."
 else
