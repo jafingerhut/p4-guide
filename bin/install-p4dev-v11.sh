@@ -193,7 +193,9 @@ then
             GRPC_PKG_VERSION="1.30.2"
             # Closest versions available via "pip3 install" to the above
             PROTOBUF_PYTHON_PKG_VERSION="3.12.4"
-	    GRPCIO_PYTHON_PKG_VERSION="1.51.3"
+            GRPCIO_PYTHON_PKG_VERSION="1.51.3"
+            P4RUNTIME_VERSION="1.6.0"
+            P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
             ;;
         24.04)
             supported_distribution=1
@@ -203,9 +205,11 @@ then
             GRPC_PKG_VERSION="1.51.1"
             # Closest versions available via "pip3 install" to the above
             PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
-	    # grpcio version 1.51.3 fails to install on Ubuntu 24.04
-	    # as of 2024-May-20.
-	    GRPCIO_PYTHON_PKG_VERSION="1.59.3"
+            # grpcio version 1.51.3 fails to install on Ubuntu 24.04
+            # as of 2024-May-20.
+            GRPCIO_PYTHON_PKG_VERSION="1.59.3"
+            P4RUNTIME_VERSION="1.6.0"
+            P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
             ;;
         26.04)
             #############################################################
@@ -218,12 +222,12 @@ then
             #GRPC_PKG_VERSION="1.51.1"
             ## Closest versions available via "pip3 install" to the above
             #PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
-	    ## TODO: Try changing grpcio to version 1.51.1 to see if it
-	    ## works.  'uv pip install grpcio==<version>' fails to
-	    ## install on Ubuntu 26.04 for versions 1.51.3 and 1.59.3
-	    ## as of 2026-Oct-03.  This version installs, and enables
-	    ## tests to pass.
-	    #GRPCIO_PYTHON_PKG_VERSION="1.75.1"
+            ## TODO: Try changing grpcio to version 1.51.1 to see if it
+            ## works.  'uv pip install grpcio==<version>' fails to
+            ## install on Ubuntu 26.04 for versions 1.51.3 and 1.59.3
+            ## as of 2026-Oct-03.  This version installs, and enables
+            ## tests to pass.
+            #GRPCIO_PYTHON_PKG_VERSION="1.75.1"
 
             #############################################################
             # Build grpc and protobuf from source
@@ -232,10 +236,19 @@ then
             INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
             # Version of grpc source to install by building it
             GRPC_SOURCE_VERSION="1.81.1"
-	    GRPCIO_PYTHON_PKG_VERSION="1.81.1"
+            GRPCIO_PYTHON_PKG_VERSION="1.81.1"
+            # When bulding grpc from source, the version above clones
+            # the following version of the protobuf repository at the
+            # specified version.
+            PROTOBUF_VERSION="33.5"
+            # The version number that cmake need to look for, to find
+            # the already-installed protobuf, is slightly different.
+            PROTOBUF_CMAKE_VERSION="33.5.0"
             # Version of Python package protobuf to install
-            # corresponding to grpc source version above
-            PROTOBUF_PYTHON_PKG_VERSION="6.33.6"
+            # corresponding to PROTOBUF_VERSION
+            PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
+            P4RUNTIME_VERSION="1.6.0"
+            P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
             ;;
     esac
 fi
@@ -708,9 +721,9 @@ else
         git checkout ${INSTALL_PI_SOURCE_VERSION}
     fi
     git submodule update --init --recursive
-    # Update p4runtime to version 1.6.0
+    # Update p4runtime to desired version
     cd proto/p4runtime
-    git checkout v1.6.0
+    git checkout ${P4RUNTIME_GIT_VERSION}
     cd ../..
     TIME_PI_CLONE_END=$(date +%s)
     git log -n 1
@@ -915,8 +928,8 @@ else
     TIME_P4C_CLONE_END=$(date +%s)
     TIME_P4C_INSTALL_START=$(date +%s)
     PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-    patch -p1 < "${PATCH_DIR}/p4c-use-protobuf-33.6.patch"
-    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON"
+    patch -p1 < "${PATCH_DIR}/p4c-let-protobuf-version-be-configured-from-cmdline.patch"
+    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=${PROTOBUF_CMAKE_VERSION}"
     mkdir build
     cd build
     # Configure for a release build and build p4testgen
@@ -1054,14 +1067,25 @@ dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/084-before-pip-install-psutil-crc
 uv pip install psutil crcmod
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/085-after-pip-install-psutil-crcmod"
 
-# Install p4runtime-shell from source repo, with a slightly modified
-# setup.cfg file so that it allows us to keep the version of the
-# protobuf package already installed earlier above, without changing
-# it, and so that it does _not_ install the p4runtime Python package,
-# which would replace the current Python files in
-# ${PYTHON_VENV}/lib/python*/site-packages/p4 with ones generated
-# using an older version of protobuf.
+git clone https://github.com/p4lang/p4runtime-shell
+cd p4runtime-shell
+if [ "x${INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION}" != "x" ]; then
+    git checkout ${INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION}
+fi
+git log -n 1
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/099-p4runtime-shell-just-before-pip-install"
+uv pip install .
+dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/100-p4runtime-shell-just-after-pip-install"
 
+cd "${INSTALL_DIR}"
+set +x
+echo "------------------------------------------------------------"
+echo "Fix up versions of some installed Python packages:"
+# Installing p4runtime-shell and/or other software somewhere before
+# now causes these packages to have versions other than the ones we
+# want.
+set -x
+date
 # First install a known working version of the grpcio package, because
 # otherwise installing p4runtime-shell packages will likely pick some
 # very recent version of grpcio that may cause trouble.
@@ -1069,18 +1093,10 @@ uv pip install wheel
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/090-after-pip-install-wheel"
 uv pip install grpcio=="${GRPCIO_PYTHON_PKG_VERSION}"
 dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/095-after-pip-install-grpcio"
-
-git clone https://github.com/p4lang/p4runtime-shell
-cd p4runtime-shell
-if [ "x${INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION}" != "x" ]; then
-    git checkout ${INSTALL_P4RUNTIME_SHELL_SOURCE_VERSION}
-fi
-git log -n 1
-PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
-patch -p1 < "${PATCH_DIR}/p4runtime-shell-2023-changes.patch"
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/099-p4runtime-shell-just-before-pip-install"
-uv pip install .
-dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/100-p4runtime-shell-just-after-pip-install"
+uv pip install p4runtime==${P4RUNTIME_VERSION}
+uv pip install protobuf==${PROTOBUF_PYTHON_PKG_VERSION}
+cd "${INSTALL_DIR}/PI-py_out"
+"${THIS_SCRIPT_DIR_ABSOLUTE}/install-PI-py_out.sh" "${VIRTUAL_ENV}"
 
 uv pip list
 

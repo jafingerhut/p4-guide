@@ -1,0 +1,16 @@
+diff --git a/cmake/Protobuf.cmake b/cmake/Protobuf.cmake
+index 98c587f6ea..450bd3954d 100644
+--- a/cmake/Protobuf.cmake
++++ b/cmake/Protobuf.cmake
+@@ -3,7 +3,10 @@
+ # SPDX-License-Identifier: Apache-2.0
+ 
+ macro(p4c_obtain_protobuf)
+-  set(P4C_PROTOBUF_VERSION 25.3)
++  option(
++    P4C_PROTOBUF_VERSION
++    "Protobuf version to use in building p4c"
++    25.3)
+   option(
+     P4C_USE_PREINSTALLED_PROTOBUF
+     "Look for a preinstalled version of Protobuf in the system instead of installing a prebuilt binary using FetchContent."
