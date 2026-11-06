@@ -187,13 +187,34 @@ then
     case "${VERSION_ID}" in
         22.04)
             supported_distribution=1
-            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
-            # Versions installed by Ubuntu apt
-            PROTOBUF_PKG_VERSION="3.12.4"
-            GRPC_PKG_VERSION="1.30.2"
-            # Closest versions available via "pip3 install" to the above
-            PROTOBUF_PYTHON_PKG_VERSION="3.12.4"
-            GRPCIO_PYTHON_PKG_VERSION="1.51.3"
+            #INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+            ## Versions installed by Ubuntu apt
+            #PROTOBUF_PKG_VERSION="3.12.4"
+            #GRPC_PKG_VERSION="1.30.2"
+            ## Closest versions available via "pip3 install" to the above
+            #PROTOBUF_PYTHON_PKG_VERSION="3.12.4"
+            #GRPCIO_PYTHON_PKG_VERSION="1.51.3"
+            #P4RUNTIME_VERSION="1.6.0"
+            #P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
+
+            #############################################################
+            # Build grpc and protobuf from source
+            #############################################################
+            supported_distribution=1
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            # Version of grpc source to install by building it
+            GRPC_SOURCE_VERSION="1.81.1"
+            GRPCIO_PYTHON_PKG_VERSION="1.81.1"
+            # When bulding grpc from source, the version above clones
+            # the following version of the protobuf repository at the
+            # specified version.
+            PROTOBUF_VERSION="33.5"
+            # The version number that cmake need to look for, to find
+            # the already-installed protobuf, is slightly different.
+            PROTOBUF_CMAKE_VERSION="33.5.0"
+            # Version of Python package protobuf to install
+            # corresponding to PROTOBUF_VERSION
+            PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
             P4RUNTIME_VERSION="1.6.0"
             P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
             ;;
@@ -536,11 +557,19 @@ echo "start install grpc:"
 set -x
 date
 
-# We might not need cmake for installing Protobuf and gRPC, but we
-# will definitely use it later below, even if not immediately.
+# Install a later version of cmake than is default on Ubuntu 22.04 or
+# 24.04, in hopes that I can later when building p4c let it use a
+# preinstalled version of Protobuf, rather than an independently
+# selected version.
 if [ "${ID}" = "ubuntu" ]
 then
-    sudo apt-get --yes install cmake
+    sudo apt install --yes make g++ libssl-dev
+    git clone https://gitlab.kitware.com/cmake/cmake.git
+    cd cmake
+    git checkout v4.2.3
+    ./bootstrap
+    make
+    sudo make install
 fi
 
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]

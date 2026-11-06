@@ -179,7 +179,8 @@ else
     echo "Building p4c from scratch"
 fi
 
-P4C_CMAKE_OPTS=""
+#P4C_CMAKE_OPTS=""
+P4C_CMAKE_OPTS="-DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=33.5.0"
 PROCESSOR=`uname --machine`
 case "${BUILD_TARGETS}" in
     full)
