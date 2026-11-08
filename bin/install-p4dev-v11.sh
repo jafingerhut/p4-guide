@@ -564,12 +564,16 @@ date
 if [ "${ID}" = "ubuntu" ]
 then
     sudo apt install --yes make g++ libssl-dev
-    git clone https://gitlab.kitware.com/cmake/cmake.git
-    cd cmake
-    git checkout v4.2.3
-    ./bootstrap
-    make
-    sudo make install
+    if [ -d cmake ]; then
+        echo "Found directory ${INSTALL_DIR}/cmake.  Assuming desired version of cmake is already installed."
+    else
+        git clone https://gitlab.kitware.com/cmake/cmake.git
+        cd cmake
+        git checkout v4.2.3
+        ./bootstrap
+        make
+        sudo make install
+    fi
 fi
 
 if [ ${INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS} -eq 1 ]
@@ -864,7 +868,10 @@ else
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/035-behavioral-model-just-after-install_deps"
     mkdir build
     cd build
-    cmake -DWITH_PI=on -DWITH_THRIFT=on -DENABLE_MODULES=on ..
+    if [ "${ID}" = "ubuntu" -a "${VERSION_ID}" = "22.04" ]; then
+        EXTRA_CMAKE_OPTS="-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+    fi
+    cmake -DWITH_PI=on -DWITH_THRIFT=on -DENABLE_MODULES=on ${EXTRA_CMAKE_OPTS} ..
     make
     dump_python_lib_info "${PYTHON_DEBUG_DUMP_DIR}/038-behavioral-model-just-before-sudo-make-install-strip"
     sudo make install/strip
@@ -956,12 +963,17 @@ else
     git submodule update --init --recursive
     TIME_P4C_CLONE_END=$(date +%s)
     TIME_P4C_INSTALL_START=$(date +%s)
-    PATCH_DIR1="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
+    PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/p4c-let-protobuf-version-be-configured-from-cmdline.patch"
     P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=${PROTOBUF_CMAKE_VERSION}"
     mkdir build
     cd build
     # Configure for a release build and build p4testgen
+    if [ "${ID}" = "ubuntu" -a "${VERSION_ID}" = "22.04" ]; then
+        # On Ubuntu 22.04 where Boost version is < 1.83, skip building the
+        # graphs p4 back end, until and unless we figure out how to make it work.
+        P4C_CMAKE_OPTS="${P4C_CMAKE_OPTS} -DENABLE_P4C_GRAPHS=OFF"
+    fi
     cmake .. -DCMAKE_BUILD_TYPE=Release ${P4C_CMAKE_OPTS}
     MAX_PARALLEL_JOBS=`max_parallel_jobs 2048`
     make -j${MAX_PARALLEL_JOBS}
