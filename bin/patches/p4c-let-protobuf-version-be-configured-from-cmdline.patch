@@ -1,8 +1,8 @@
 diff --git a/cmake/Protobuf.cmake b/cmake/Protobuf.cmake
-index 98c587f6ea..97b4e12ef1 100644
+index 98c587f6ea..0dbd148b53 100644
 --- a/cmake/Protobuf.cmake
 +++ b/cmake/Protobuf.cmake
-@@ -3,7 +3,14 @@
+@@ -3,7 +3,10 @@
  # SPDX-License-Identifier: Apache-2.0
  
  macro(p4c_obtain_protobuf)
@@ -11,19 +11,14 @@ index 98c587f6ea..97b4e12ef1 100644
 +    P4C_PROTOBUF_VERSION
 +    "Protobuf version to use in building p4c, of the form 25.3 or 33.5"
 +    25.3)
-+  option(
-+    P4C_PROTOBUF_VERSION2
-+    "Protobuf version to use in building p4c, of the form 4.25.3 or 6.33.5"
-+    25.3)
    option(
      P4C_USE_PREINSTALLED_PROTOBUF
      "Look for a preinstalled version of Protobuf in the system instead of installing a prebuilt binary using FetchContent."
-@@ -41,6 +48,9 @@ macro(p4c_obtain_protobuf)
+@@ -41,6 +44,8 @@ macro(p4c_obtain_protobuf)
      if(ENABLE_PROTOBUF_STATIC)
        set(CMAKE_FIND_LIBRARY_SUFFIXES ${SAVED_CMAKE_FIND_LIBRARY_SUFFIXES})
      endif()
-+    message(STATUS "Attempting find_package(Protobuf ${P4C_PROTOBUF_VERSION2})")
-+    find_package(Protobuf ${P4C_PROTOBUF_VERSION2})
++    get_target_property(Protobuf_INCLUDE_DIRS protobuf::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)
 +    message(STATUS "Protobuf_INCLUDE_DIRS=${Protobuf_INCLUDE_DIRS}")
    else()
      message(STATUS "Fetching Protobuf version ${P4C_PROTOBUF_VERSION} for P4C...")

@@ -212,7 +212,6 @@ then
             # The version number that cmake need to look for, to find
             # the already-installed protobuf, is slightly different.
             PROTOBUF_CMAKE_VERSION="33.5.0"
-            PROTOBUF_CMAKE_VERSION2="6.33.5"
             # Version of Python package protobuf to install
             # corresponding to PROTOBUF_VERSION
             PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
@@ -248,7 +247,6 @@ then
             # The version number that cmake need to look for, to find
             # the already-installed protobuf, is slightly different.
             PROTOBUF_CMAKE_VERSION="33.5.0"
-            PROTOBUF_CMAKE_VERSION2="6.33.5"
             # Version of Python package protobuf to install
             # corresponding to PROTOBUF_VERSION
             PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
@@ -288,7 +286,6 @@ then
             # The version number that cmake need to look for, to find
             # the already-installed protobuf, is slightly different.
             PROTOBUF_CMAKE_VERSION="33.5.0"
-            PROTOBUF_CMAKE_VERSION2="6.33.5"
             # Version of Python package protobuf to install
             # corresponding to PROTOBUF_VERSION
             PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
@@ -989,7 +986,7 @@ else
     TIME_P4C_INSTALL_START=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/p4c-let-protobuf-version-be-configured-from-cmdline.patch"
-    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=${PROTOBUF_CMAKE_VERSION} -DP4C_PROTOBUF_VERSION2=${PROTOBUF_CMAKE_VERSION2}"
+    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=${PROTOBUF_CMAKE_VERSION}"
     mkdir build
     cd build
     # Configure for a release build and build p4testgen
