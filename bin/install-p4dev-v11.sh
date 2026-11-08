@@ -212,6 +212,7 @@ then
             # The version number that cmake need to look for, to find
             # the already-installed protobuf, is slightly different.
             PROTOBUF_CMAKE_VERSION="33.5.0"
+            PROTOBUF_CMAKE_VERSION2="6.33.5"
             # Version of Python package protobuf to install
             # corresponding to PROTOBUF_VERSION
             PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
@@ -220,15 +221,37 @@ then
             ;;
         24.04)
             supported_distribution=1
-            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
-            # Versions installed by Ubuntu apt
-            PROTOBUF_PKG_VERSION="3.21.12"
-            GRPC_PKG_VERSION="1.51.1"
-            # Closest versions available via "pip3 install" to the above
-            PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
-            # grpcio version 1.51.3 fails to install on Ubuntu 24.04
-            # as of 2024-May-20.
-            GRPCIO_PYTHON_PKG_VERSION="1.59.3"
+            #INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=1
+            ## Versions installed by Ubuntu apt
+            #PROTOBUF_PKG_VERSION="3.21.12"
+            #GRPC_PKG_VERSION="1.51.1"
+            ## Closest versions available via "pip3 install" to the above
+            #PROTOBUF_PYTHON_PKG_VERSION="4.21.12"
+            ## grpcio version 1.51.3 fails to install on Ubuntu 24.04
+            ## as of 2024-May-20.
+            #GRPCIO_PYTHON_PKG_VERSION="1.59.3"
+            #P4RUNTIME_VERSION="1.6.0"
+            #P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
+
+            #############################################################
+            # Build grpc and protobuf from source
+            #############################################################
+            supported_distribution=1
+            INSTALL_GRPC_PROTOBUF_FROM_PREBUILT_PKGS=0
+            # Version of grpc source to install by building it
+            GRPC_SOURCE_VERSION="1.81.1"
+            GRPCIO_PYTHON_PKG_VERSION="1.81.1"
+            # When bulding grpc from source, the version above clones
+            # the following version of the protobuf repository at the
+            # specified version.
+            PROTOBUF_VERSION="33.5"
+            # The version number that cmake need to look for, to find
+            # the already-installed protobuf, is slightly different.
+            PROTOBUF_CMAKE_VERSION="33.5.0"
+            PROTOBUF_CMAKE_VERSION2="6.33.5"
+            # Version of Python package protobuf to install
+            # corresponding to PROTOBUF_VERSION
+            PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
             P4RUNTIME_VERSION="1.6.0"
             P4RUNTIME_GIT_VERSION="v${P4RUNTIME_VERSION}"
             ;;
@@ -265,6 +288,7 @@ then
             # The version number that cmake need to look for, to find
             # the already-installed protobuf, is slightly different.
             PROTOBUF_CMAKE_VERSION="33.5.0"
+            PROTOBUF_CMAKE_VERSION2="6.33.5"
             # Version of Python package protobuf to install
             # corresponding to PROTOBUF_VERSION
             PROTOBUF_PYTHON_PKG_VERSION="6.33.5"
@@ -965,7 +989,7 @@ else
     TIME_P4C_INSTALL_START=$(date +%s)
     PATCH_DIR="${THIS_SCRIPT_DIR_ABSOLUTE}/patches"
     patch -p1 < "${PATCH_DIR}/p4c-let-protobuf-version-be-configured-from-cmdline.patch"
-    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=${PROTOBUF_CMAKE_VERSION}"
+    P4C_CMAKE_OPTS="-DENABLE_TEST_TOOLS=ON -DP4C_USE_PREINSTALLED_PROTOBUF=ON -DP4C_PROTOBUF_VERSION=${PROTOBUF_CMAKE_VERSION} -DP4C_PROTOBUF_VERSION2=${PROTOBUF_CMAKE_VERSION2}"
     mkdir build
     cd build
     # Configure for a release build and build p4testgen
