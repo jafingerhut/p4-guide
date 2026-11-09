@@ -99,6 +99,15 @@ export P4C_DIR="${INSTALL_DIR}/p4c"
 export IPDK_RECIPE="${INSTALL_DIR}/ipdk.recipe"
 export DEPEND_INSTALL="/usr/local"
 
+# + checkout stratum to IPDK_RECIPE/setup
+cd "${IPDK_RECIPE}"
+if [ ! -d "setup" ]; then
+git clone https://github.com/ipdk-io/stratum-deps.git setup
+fi
+cd setup
+git log -n 1 | cat
+git submodule update --init --recursive
+
 # + Install DPDK dependencies
 cd "${INSTALL_DIR}"
 cd p4sde/tools/setup
